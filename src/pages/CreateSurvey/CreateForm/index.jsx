@@ -34,7 +34,8 @@ export const CreateForm: React.FC<IPage> = () => {
           d="flex"
           justifyContent="center"
           alignItems="center">
-          <ToolBox onSelect={(id) => handleSelect(id)} />
+          Toolbox
+          {/* <ToolBox onSelect={(id) => handleSelect(id)} /> */}
         </Box>
         <Box
           bg={bg}

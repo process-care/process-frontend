@@ -1,11 +1,11 @@
+import { ChakraProvider } from "@chakra-ui/react";
 import * as React from "react";
-import { ChakraProvider, theme } from "@chakra-ui/react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
-
-import routes from "routes";
-import { Layout } from "components/Layout";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import theme from "theme";
+import { Layout } from "components/Layout";
+import routes from "routes";
 
 const queryClient = new QueryClient();
 

@@ -2,7 +2,6 @@ import React from "react";
 
 import IRoute from "interfaces/routes";
 import { Authentification } from "pages/Authentification";
-
 import { CreateSurvey } from "pages/CreateSurvey";
 import { CreateForm } from "pages/CreateSurvey/CreateForm";
 import { Dashboard } from "pages/Dashboard";
@@ -25,7 +24,7 @@ const routes: IRoute[] = [
   },
   {
     name: "Création du formulaire",
-    path: "/create-form",
+    path: "/create-survey/create-form",
     component: <CreateForm />,
     exact: true,
   },

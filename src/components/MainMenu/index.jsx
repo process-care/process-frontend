@@ -13,7 +13,8 @@ const MainMenu: React.FC = () => {
       w="80%"
       m="0 auto"
       fontSize="13"
-      p="0 10px">
+      p="0 10px"
+      h="fit-content">
       {routes.map(({ name, path }) => {
         return (
           <NavLink

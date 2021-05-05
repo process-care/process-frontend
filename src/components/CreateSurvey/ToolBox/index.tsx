@@ -1,12 +1,16 @@
 import React from "react";
 import { Button, ButtonGroup } from "@chakra-ui/react";
 import { inputs } from "constants/inputs";
+import { formStore } from "stores/inputs";
 
 interface Props {
-  onSelect: (id: string) => void;
+  // onSelect: (id: string) => void;
+  addInput: (id: string) => void;
 }
 
-const ToolBox: React.FC<Props> = ({ onSelect }) => {
+const ToolBox: React.FC<Props> = () => {
+  const addInput = formStore((state) => state.addInput);
+
   return (
     <ButtonGroup
       d="flex"
@@ -16,7 +20,7 @@ const ToolBox: React.FC<Props> = ({ onSelect }) => {
       justifyContent="center">
       {inputs.map(({ id, name }) => {
         return (
-          <Button variant="box" key={id} onClick={() => onSelect(id)}>
+          <Button variant="box" key={id} onClick={() => addInput(id)}>
             {name}
           </Button>
         );

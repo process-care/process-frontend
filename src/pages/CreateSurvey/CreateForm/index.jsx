@@ -1,22 +1,22 @@
 import { Box, useColorModeValue } from "@chakra-ui/react";
 import React from "react";
 
-import ToolBox from "components/ToolBox";
+// import ToolBox from "components/ToolBox";
 import IPage from "interfaces/page";
-import IInput from "interfaces/inputs";
+// import IInput from "interfaces/inputs";
 import Drawer from "components/Drawer";
 import InputForm from "components/ToolBox/InputForm";
 
 export const CreateForm: React.FC<IPage> = () => {
   const color = useColorModeValue("gray.800", "white");
   const bg = useColorModeValue("gray.100", "gray.700");
-  const [selectedInput, setSelectedInput] = React.useState(null);
+  const [selectedInput] = React.useState(null);
   const [isOpen, setIsOpen] = React.useState(false);
 
-  const handleSelect = (id: IInput) => {
-    setSelectedInput(id);
-    setIsOpen(true);
-  };
+  // const handleSelect = (id: IInput) => {
+  //   setSelectedInput(id);
+  //   setIsOpen(true);
+  // };
 
   return (
     <>

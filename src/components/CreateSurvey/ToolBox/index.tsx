@@ -5,7 +5,7 @@ import { formStore } from "stores/inputs";
 
 interface Props {
   // onSelect: (id: string) => void;
-  addInput: (id: string) => void;
+  addInput: (slug: string) => void;
 }
 
 const ToolBox: React.FC<Props> = () => {
@@ -18,9 +18,12 @@ const ToolBox: React.FC<Props> = () => {
       w="100%"
       flexWrap="wrap"
       justifyContent="center">
-      {inputs.map(({ id, name }) => {
+      {inputs.map(({ slug, name }, i) => {
         return (
-          <Button variant="box" key={id} onClick={() => addInput(id)}>
+          <Button
+            variant="box"
+            key={i}
+            onClick={() => addInput(slug, name, Date.now())}>
             {name}
           </Button>
         );

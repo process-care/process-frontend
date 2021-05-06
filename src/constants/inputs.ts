@@ -2,35 +2,35 @@ import IInputs from "interfaces/inputs";
 
 export const inputs: IInputs[] = [
   {
-    id: "input",
+    slug: "input",
     name: "Input",
   },
   {
-    id: "checkbox",
+    slug: "checkbox",
     name: "Checkbox",
   },
   {
-    id: "select",
+    slug: "select",
     name: "Select",
   },
   {
-    id: "radio",
+    slug: "radio",
     name: "Radio",
   },
   {
-    id: "text-area",
+    slug: "text-area",
     name: "Text-area",
   },
   {
-    id: "slider",
+    slug: "slider",
     name: "Slider",
   },
   {
-    id: "date-picker",
+    slug: "date-picker",
     name: "Date-picker",
   },
   {
-    id: "cursor",
+    slug: "cursor",
     name: "Cursor",
   },
 ];

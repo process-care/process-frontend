@@ -6,6 +6,8 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import theme from "theme";
 import { Layout } from "components/Layout";
 import routes from "routes";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 const queryClient = new QueryClient();
 
@@ -13,23 +15,25 @@ const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <ChakraProvider theme={theme}>
-        <BrowserRouter>
-          <Layout>
-            <Switch>
-              {routes.map(({ name, path, exact, component }) => {
-                return (
-                  <Route
-                    key={name}
-                    path={path}
-                    exact={exact}
-                    component={() => component}
-                    strict
-                  />
-                );
-              })}
-            </Switch>
-          </Layout>
-        </BrowserRouter>
+        <DndProvider backend={HTML5Backend}>
+          <BrowserRouter>
+            <Layout>
+              <Switch>
+                {routes.map(({ name, path, exact, component }) => {
+                  return (
+                    <Route
+                      key={name}
+                      path={path}
+                      exact={exact}
+                      component={() => component}
+                      strict
+                    />
+                  );
+                })}
+              </Switch>
+            </Layout>
+          </BrowserRouter>
+        </DndProvider>
       </ChakraProvider>
       <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
     </QueryClientProvider>

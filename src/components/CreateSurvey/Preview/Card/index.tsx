@@ -93,6 +93,7 @@ const Card: React.FC<CardProps> = ({ id, name, index, moveCard }) => {
   drag(drop(ref));
   return (
     <Box
+      _hover={{ cursor: "grab" }}
       ref={ref}
       bg="white"
       key={id}

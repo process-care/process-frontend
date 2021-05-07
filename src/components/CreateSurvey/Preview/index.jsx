@@ -4,7 +4,9 @@ import { formStore } from "stores/inputs";
 import Card from "./Card";
 import { useDrop } from "react-dnd";
 import { ItemTypes } from "./Card/itemTypes";
+
 import update from "immutability-helper";
+import { MockInput } from "./fakeInputs";
 
 export interface Item {
   id: number;
@@ -62,7 +64,6 @@ const Preview: React.FC = () => {
   const Container: React.FC<> = ({ children }) => {
     return (
       <Box
-        _hover={{ cursor: "grab" }}
         ref={drop}
         bg={isOver ? "gray.200" : ""}
         w="100%"
@@ -92,6 +93,7 @@ const Preview: React.FC = () => {
       </Button>
 
       {cards.map((input, i) => renderCard(input, i))}
+      <MockInput />
     </Container>
   );
 };

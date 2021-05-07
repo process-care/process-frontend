@@ -14,7 +14,7 @@ const theme = extendTheme({
         box: (props) => ({
           bg: "transparent",
           borderRadius: "none",
-          padding: 10,
+          padding: 5,
           border: "1px solid",
           fontSize: "25px",
           minWidth: "220px",

@@ -28,12 +28,7 @@ export const CreateForm: React.FC<IPage> = () => {
         size="md"
         content={<InputForm selectedInput={selectedInput} />}
       />
-      <Box
-        d="flex"
-        justifyContent="space-around"
-        w="100%"
-        h="fit-content"
-        overflow="hidden">
+      <Box d="flex" justifyContent="space-around" w="100%" overflow="hidden">
         <Box
           w="33%"
           minW="250px"

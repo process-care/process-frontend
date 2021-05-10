@@ -3,6 +3,9 @@ import { CustomInput as Input } from "components/CreateSurvey/ToolBox/Inputs/Inp
 import { CustomTextarea as Textarea } from "components/CreateSurvey/ToolBox/Inputs/Textarea";
 import { CustomNumberInput as NumberInput } from "components/CreateSurvey/ToolBox/Inputs/NumberInput";
 import { CustomCheckbox as Checkbox } from "components/CreateSurvey/ToolBox/Inputs/Checkbox";
+import { CustomRadioBox as Radiobox } from "components/CreateSurvey/ToolBox/Inputs/Radiobox";
+import { CustomSelect as Select } from "components/CreateSurvey/ToolBox/Inputs/Select";
+import { CustomSlider as Slider } from "components/CreateSurvey/ToolBox/Inputs/Slider";
 
 export const MockInput: React.FC = () => {
   return (
@@ -11,19 +14,58 @@ export const MockInput: React.FC = () => {
         name="aa"
         id="aa"
         rows="small"
-        minLength="2"
-        maxLength="4"
+        minLength={2}
+        maxLength={4}
         label="Question #1"
         helpText="Voici un texte d'aide - Maximum 4 charactères."
         placeholder="Input small"
       />
-      <Checkbox label="Quel fruit mangez-vous ?" />
+      <Checkbox
+        label="Quel fruit mangez-vous ?"
+        checkbox={[
+          { id: "aaa", value: "pomme", labelValue: "Pomme" },
+          { id: "bbb", value: "fraise", labelValue: "Fraise" },
+          { id: "ccc", value: "framboise", labelValue: "Framboise" },
+          { id: "ddd", value: "poire", labelValue: "Poire" },
+          { id: "eee", value: "ananas", labelValue: "Ananas" },
+        ]}
+      />
+      <Radiobox
+        label="Quel est votre sexe ?"
+        radios={[
+          { id: "12312", value: "homme", labelValue: "Homme" },
+          { id: "56465465", value: "femme", labelValue: "Femme" },
+        ]}
+      />
       <Textarea
         name="aa"
         id="aa"
         rows="medium"
         label="Question #1"
         placeholder="Input medium"
+      />
+
+      <Select
+        id="aa"
+        label="Question #1"
+        placeholder="Choisissez un fruit"
+        options={[
+          { value: "pomme", labelValue: "Pomme" },
+          { value: "fraise", labelValue: "Fraise" },
+          { value: "framboise", labelValue: "Framboise" },
+          { value: "poire", labelValue: "Poire" },
+          { value: "ananas", labelValue: "Ananas" },
+        ]}
+      />
+      <Slider
+        id="aa"
+        label="Comment vous sentez-vous ?"
+        defaultValue={40}
+        orientation="horizontal"
+        min={0}
+        max={300}
+        step={10}
+        helpText="De 1 à 6,  6 étant très bien."
       />
       <Textarea
         name="aa"
@@ -36,8 +78,8 @@ export const MockInput: React.FC = () => {
         name="bb"
         id="bb"
         isRequired
-        min="2"
-        max="15"
+        min={2}
+        max={15}
         defaultValue="10"
         label="Question #1"
         helpText="Voici un champ avec valeur 10 par défaut - Minum 2 et Maximum 15."
@@ -48,13 +90,13 @@ export const MockInput: React.FC = () => {
         id="cc"
         label="Question #1"
         helpText="Voici un champ. 4 valeurs après la virgule."
-        precision="4"
+        precision={4}
       />
       <Input
         name="dd"
         id="dd"
-        minLength="2"
-        maxLength="4"
+        minLength={2}
+        maxLength={4}
         label="Question #"
         type="email"
         helpText="Voici un texte d'aide - Maximum 4 charactères."
@@ -79,6 +121,8 @@ export const MockInput: React.FC = () => {
         label="Nombre de kilomètres"
         placeholder="Votre réponse ici à la question 4"
         inputRightAddon="km"
+        id="km"
+        name="km"
       />
     </>
   );

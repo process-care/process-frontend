@@ -16,11 +16,11 @@ import {
 interface Props {
   label: string;
   helpText?: string;
-  inputRightAddon: string;
+  inputRightAddon?: string;
   defaultValue?: string;
-  min: number;
-  max: number;
-  precision: number;
+  min?: number;
+  max?: number;
+  precision?: number;
   isRequired?: boolean;
   name: string;
   id: string;

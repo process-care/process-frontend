@@ -4,12 +4,12 @@ import {
   FormControl,
   FormHelperText,
   FormLabel,
-  Checkbox,
-  CheckboxGroup,
+  Radio,
+  RadioGroup,
   HStack,
 } from "@chakra-ui/react";
 
-interface Checkbox {
+interface Radios {
   id: string;
   value: string;
   labelValue: string;
@@ -18,13 +18,13 @@ interface Checkbox {
 interface Props {
   label: string;
   helpText?: string;
-  checkbox: Checkbox[];
+  radios: Radios[];
 }
 
-export const CustomCheckbox: React.FC<Props> = ({
+export const CustomRadioBox: React.FC<Props> = ({
   label,
   helpText,
-  checkbox,
+  radios,
 }) => {
   return (
     <Box
@@ -37,18 +37,17 @@ export const CustomCheckbox: React.FC<Props> = ({
       width="100%">
       <FormControl id="email" textAlign="left">
         <FormLabel>{label}</FormLabel>
-        <CheckboxGroup colorScheme="green">
+        <RadioGroup colorScheme="green">
           <HStack flexWrap="wrap" spacing={5}>
-            {checkbox.map(({ id, value, labelValue }) => {
+            {radios.map(({ id, value, labelValue }) => {
               return (
-                <Checkbox id={id} name={value} value={value} key={id}>
+                <Radio id={id} name={value} value={value} key={id}>
                   {labelValue}
-                </Checkbox>
+                </Radio>
               );
             })}
           </HStack>
-        </CheckboxGroup>
-
+        </RadioGroup>
         <FormHelperText>{helpText}</FormHelperText>
       </FormControl>
     </Box>

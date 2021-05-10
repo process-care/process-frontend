@@ -14,7 +14,7 @@ interface Props {
   helpText?: string;
   placeholder: string;
   type: string;
-  inputRightAddon: string;
+  inputRightAddon?: string;
   minLength?: number;
   maxLength?: number;
   name: string;
@@ -49,7 +49,7 @@ export const CustomInput: React.FC<Props> = ({
             name={name}
             id={id}
             placeholder={placeholder}
-            minlength={minLength}
+            minLength={minLength}
             maxLength={maxLength}
           />
           {inputRightAddon && <InputRightAddon children={inputRightAddon} />}

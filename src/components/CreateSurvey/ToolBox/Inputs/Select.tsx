@@ -4,27 +4,29 @@ import {
   FormControl,
   FormHelperText,
   FormLabel,
-  Checkbox,
-  CheckboxGroup,
-  HStack,
+  Select,
 } from "@chakra-ui/react";
 
-interface Checkbox {
-  id: string;
+interface Options {
   value: string;
   labelValue: string;
 }
 
 interface Props {
   label: string;
+  id: string;
+  placeholder: string;
   helpText?: string;
-  checkbox: Checkbox[];
+  options: Options[];
+  isRequired?: boolean;
 }
-
-export const CustomCheckbox: React.FC<Props> = ({
+export const CustomSelect: React.FC<Props> = ({
   label,
   helpText,
-  checkbox,
+  placeholder,
+  isRequired,
+  id,
+  options,
 }) => {
   return (
     <Box
@@ -37,17 +39,19 @@ export const CustomCheckbox: React.FC<Props> = ({
       width="100%">
       <FormControl id="email" textAlign="left">
         <FormLabel>{label}</FormLabel>
-        <CheckboxGroup colorScheme="green">
-          <HStack flexWrap="wrap" spacing={5}>
-            {checkbox.map(({ id, value, labelValue }) => {
-              return (
-                <Checkbox id={id} name={value} value={value} key={id}>
-                  {labelValue}
-                </Checkbox>
-              );
-            })}
-          </HStack>
-        </CheckboxGroup>
+        <Select
+          size="lg"
+          id={id}
+          isRequired={isRequired}
+          placeholder={placeholder}>
+          {options.map(({ value, labelValue }) => {
+            return (
+              <option value={value} key={value}>
+                {labelValue}
+              </option>
+            );
+          })}
+        </Select>
 
         <FormHelperText>{helpText}</FormHelperText>
       </FormControl>

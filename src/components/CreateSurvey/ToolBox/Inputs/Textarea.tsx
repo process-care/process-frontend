@@ -48,7 +48,7 @@ export const CustomTextarea: React.FC<Props> = ({
           style={{ resize: "none" }}
           rows={getRows(rows)}
           placeholder={placeholder}
-          minlength={minLength}
+          minLength={minLength}
           maxLength={maxLength}
         />
 

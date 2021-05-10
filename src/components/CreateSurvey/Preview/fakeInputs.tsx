@@ -60,12 +60,22 @@ export const MockInput: React.FC = () => {
       <Slider
         id="aa"
         label="Comment vous sentez-vous ?"
-        defaultValue={40}
-        orientation="horizontal"
         min={0}
-        max={300}
-        step={10}
+        max={6}
+        step={1}
+        defaultValue={2}
         helpText="De 1 à 6,  6 étant très bien."
+        vertical={false}
+      />
+      <Slider
+        id="aa"
+        label="Comment vous sentez-vous à l'envers ?"
+        min={0}
+        max={20}
+        step={1}
+        defaultValue={4}
+        vertical={false}
+        reverse
       />
       <Textarea
         name="aa"

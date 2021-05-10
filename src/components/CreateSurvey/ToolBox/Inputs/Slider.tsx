@@ -5,46 +5,42 @@ import {
   FormControl,
   FormHelperText,
   FormLabel,
-  Slider,
-  SliderFilledTrack,
-  SliderThumb,
-  SliderTrack,
 } from "@chakra-ui/react";
+
+import Slider from "rc-slider";
+import "rc-slider/assets/index.css";
 
 interface Props {
   label: string;
   id: string;
   helpText?: string;
   defaultValue?: number;
-  orientation: "vertical" | "horizontal";
-  step: number;
+  step: number | null;
   min: number;
   max: number;
+  vertical?: boolean;
+  reverse?: boolean;
 }
+
+const createSliderWithTooltip = Slider.createSliderWithTooltip;
+const Range = createSliderWithTooltip(Slider);
+
 export const CustomSlider: React.FC<Props> = ({
   label,
   helpText,
   defaultValue,
-  orientation = "horizontal",
+  vertical,
   step,
   min,
   max,
+  reverse,
 }) => {
-  const renderStep = () => {
-    const steps = [];
-
-    for (let i = 0; i < max; i++) {
-      steps.push(i);
+  const createMarks = (max: number) => {
+    const arr = [];
+    for (let index = 0; index <= max; index++) {
+      arr.push({ [index]: index });
     }
-    return (
-      <Box d="flex" justifyContent="space-between" mt={10}>
-        {steps.map((el) => (
-          <Text color="gray.400" fontSize="14" key={el}>
-            {el}
-          </Text>
-        ))}
-      </Box>
-    );
+    return arr.map((el, i) => el[i]);
   };
 
   return (
@@ -56,25 +52,22 @@ export const CustomSlider: React.FC<Props> = ({
       borderColor="gray.300"
       backgroundColor="white"
       width="100%">
-      <FormControl id="email" textAlign="left">
+      <FormControl
+        id="email"
+        textAlign="left"
+        h={vertical ? "700px" : "fit-content"}>
         <FormLabel>{label}</FormLabel>
-        <Slider
-          aria-label={label}
-          defaultValue={defaultValue}
-          orientation={orientation}
-          step={step}
+        <Range
+          reverse={vertical || reverse}
+          marks={createMarks(max)}
           min={min}
           max={max}
-          size="lg">
-          {renderStep()}
-          <SliderTrack bg="red.100">
-            <Box position="relative" right={10} />
-            <SliderFilledTrack bg="tomato" />
-          </SliderTrack>
-          <SliderThumb boxSize={6} />
-        </Slider>
-
-        <FormHelperText>{helpText}</FormHelperText>
+          step={step}
+          defaultValue={defaultValue}
+          vertical={vertical}
+          style={vertical ? { height: "85%", margin: "30px 0 0 30px" } : {}}
+        />
+        <FormHelperText mt={10}>{helpText}</FormHelperText>
       </FormControl>
     </Box>
   );

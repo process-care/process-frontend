@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Box,
-  Text,
-  FormControl,
-  FormHelperText,
-  FormLabel,
-} from "@chakra-ui/react";
+import { Box, FormControl, FormHelperText, FormLabel } from "@chakra-ui/react";
 
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";

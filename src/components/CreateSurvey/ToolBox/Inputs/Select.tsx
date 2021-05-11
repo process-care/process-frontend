@@ -1,15 +1,11 @@
 import React from "react";
-import {
-  Box,
-  FormControl,
-  FormHelperText,
-  FormLabel,
-  Select,
-} from "@chakra-ui/react";
+import { Box, FormControl, FormHelperText, FormLabel } from "@chakra-ui/react";
+import t from "static/survey.json";
+import Select from "react-select";
 
 interface Options {
   value: string;
-  labelValue: string;
+  label: string;
 }
 
 interface Props {
@@ -19,6 +15,7 @@ interface Props {
   helpText?: string;
   options: Options[];
   isRequired?: boolean;
+  isMulti?: boolean;
 }
 export const CustomSelect: React.FC<Props> = ({
   label,
@@ -27,6 +24,7 @@ export const CustomSelect: React.FC<Props> = ({
   isRequired,
   id,
   options,
+  isMulti,
 }) => {
   return (
     <Box
@@ -40,19 +38,14 @@ export const CustomSelect: React.FC<Props> = ({
       <FormControl id="email" textAlign="left">
         <FormLabel>{label}</FormLabel>
         <Select
-          size="lg"
+          isMulti={isMulti}
+          isClearable
           id={id}
           isRequired={isRequired}
-          placeholder={placeholder}>
-          {options.map(({ value, labelValue }) => {
-            return (
-              <option value={value} key={value}>
-                {labelValue}
-              </option>
-            );
-          })}
-        </Select>
-
+          placeholder={placeholder}
+          options={options}
+          noOptionsMessage={() => t.not_found}
+        />
         <FormHelperText>{helpText}</FormHelperText>
       </FormControl>
     </Box>

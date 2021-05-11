@@ -50,12 +50,27 @@ export const MockInput: React.FC = () => {
         label="Question #1"
         placeholder="Choisissez un fruit"
         options={[
-          { value: "pomme", labelValue: "Pomme" },
-          { value: "fraise", labelValue: "Fraise" },
-          { value: "framboise", labelValue: "Framboise" },
-          { value: "poire", labelValue: "Poire" },
-          { value: "ananas", labelValue: "Ananas" },
+          { value: "pomme", label: "Pomme" },
+          { value: "fraise", label: "Fraise" },
+          { value: "framboise", label: "Framboise" },
+          { value: "poire", label: "Poire" },
+          { value: "ananas", label: "Ananas" },
         ]}
+      />
+
+      <Select
+        isMulti
+        id="aa"
+        label="Question #1"
+        placeholder="Choisissez un fruit"
+        options={[
+          { value: "pomme", label: "Pomme" },
+          { value: "fraise", label: "Fraise" },
+          { value: "framboise", label: "Framboise" },
+          { value: "poire", label: "Poire" },
+          { value: "ananas", label: "Ananas" },
+        ]}
+        helpText="Select avec plusieurs valeurs selectionnable"
       />
       <Slider
         id="aa"

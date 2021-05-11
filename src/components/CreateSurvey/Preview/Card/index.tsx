@@ -1,23 +1,24 @@
 import React from "react";
-import { Box, Text, useColorModeValue } from "@chakra-ui/react";
+import { Box, useColorModeValue, Text } from "@chakra-ui/react";
 import { useDrag, useDrop, DropTargetMonitor } from "react-dnd";
 import { ItemTypes } from "./itemTypes";
 import { XYCoord } from "dnd-core";
+import { renderInput } from "./utils";
 
 interface CardProps {
   id: string;
   name: string;
   index: number;
+  type: string;
   moveCard: (dragIndex: number, hoverIndex: number) => void;
 }
 
 interface DragItem {
   index: number;
   id: string;
-  type: string;
 }
 
-const Card: React.FC<CardProps> = ({ id, name, index, moveCard }) => {
+const Card: React.FC<CardProps> = ({ id, name, index, moveCard, type }) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const color = useColorModeValue("gray.800", "gray.900");
 
@@ -95,14 +96,11 @@ const Card: React.FC<CardProps> = ({ id, name, index, moveCard }) => {
     <Box
       _hover={{ cursor: "grab" }}
       ref={ref}
-      bg="white"
       key={id}
-      m="2"
-      w="50%"
-      p="5"
+      w="100%"
       opacity={opacity}
       data-handler-id={handlerId}>
-      <Text color={color}>{name}</Text>
+      <Text color={color}>{renderInput(type)}</Text>
     </Box>
   );
 };

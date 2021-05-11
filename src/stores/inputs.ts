@@ -10,7 +10,7 @@ interface FormState {
 
 interface Store {
   formState: FormState;
-  addInput: (slug: string, name: string, id: number) => void;
+  addInput: (type: string, name: string, id: number) => void;
   removeAllInputs: () => void;
 }
 
@@ -21,12 +21,12 @@ export const formStore = create<Store>(
         inputs: [],
         id: 1,
       },
-      addInput: (slug, name, id) =>
+      addInput: (type, name, id) =>
         set((state): unknown => ({
           formState: {
             inputs: [
               ...state.formState.inputs,
-              { slug, name, uid: id, id: state.formState.id },
+              { type, name, uid: id, id: state.formState.id },
             ],
             id: state.formState.id + 1,
           },

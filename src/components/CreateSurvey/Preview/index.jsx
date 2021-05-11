@@ -6,7 +6,7 @@ import { useDrop } from "react-dnd";
 import { ItemTypes } from "./Card/itemTypes";
 import t from "static/preview.json";
 import update from "immutability-helper";
-import { MockInput } from "./fakeInputs";
+// import { MockInput } from "./fakeInputs";
 
 export interface Item {
   id: number;
@@ -42,7 +42,10 @@ const Preview: React.FC = () => {
     [cards]
   );
 
-  const renderCard = (input: { id: number, name: string }, index: number) => {
+  const renderCard = (
+    input: { id: number, name: string, type: string },
+    index: number
+  ) => {
     return (
       <Card
         key={input.id}
@@ -50,6 +53,7 @@ const Preview: React.FC = () => {
         name={input.name}
         index={index}
         moveCard={moveCard}
+        type={input.type}
       />
     );
   };
@@ -72,7 +76,7 @@ const Preview: React.FC = () => {
         alignItems="center"
         h="100%"
         overflowY="scroll"
-        p="10">
+        p="0 20px">
         {children}
       </Box>
     );
@@ -92,7 +96,7 @@ const Preview: React.FC = () => {
         {t.clear_all_fields}
       </Button>
       {cards.map((input, i) => renderCard(input, i))}
-      <MockInput />
+      {/* <MockInput /> */}
     </Container>
   );
 };

@@ -93,7 +93,7 @@ const theme = extendTheme({
           borderRadius: 5,
           borderColor: props.colorMode === "dark" ? "white" : "gray.300",
           backgroundColor: "white",
-          width: "100%",
+          width: "-webkit-fill-available",
           maxWidth: "unset",
           _hover: {
             cursor: "grab",

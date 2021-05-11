@@ -17,12 +17,12 @@ const ToolBox: React.FC<Props> = () => {
       w="100%"
       flexWrap="wrap"
       justifyContent="center">
-      {inputs.map(({ slug, name }, i) => {
+      {inputs.map(({ type, name }, i) => {
         return (
           <Button
             variant="box"
             key={i}
-            onClick={() => addInput(slug, name, Date.now())}>
+            onClick={() => addInput(type, name, Date.now())}>
             {name}
           </Button>
         );

@@ -1,6 +1,6 @@
 export default interface Inputs {
-  slug: string;
+  type: string;
   name: string;
-  uid: number;
-  id: number;
+  uid?: number;
+  id?: number;
 }

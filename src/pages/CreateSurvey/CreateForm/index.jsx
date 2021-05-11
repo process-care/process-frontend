@@ -8,6 +8,7 @@ import IPage from "interfaces/page";
 import IInput from "interfaces/inputs";
 import Drawer from "components/Drawer";
 import InputForm from "components/CreateSurvey/ToolBox/InputForm";
+import PageBuilder from "components/CreateSurvey/PageBuilder";
 
 export const CreateForm: React.FC<IPage> = () => {
   const color = useColorModeValue("gray.800", "white");
@@ -32,7 +33,16 @@ export const CreateForm: React.FC<IPage> = () => {
         <Box
           bg={bg}
           color={color}
-          w="67%"
+          w="50px"
+          h="98vh"
+          d="flex"
+          justifyContent="center">
+          <PageBuilder />
+        </Box>
+        <Box
+          bg={bg}
+          color={color}
+          w="62%"
           h="98vh"
           d="flex"
           justifyContent="center"
@@ -40,7 +50,7 @@ export const CreateForm: React.FC<IPage> = () => {
           <Preview />
         </Box>
         <Box
-          w="33%"
+          w="28%"
           minW="250px"
           h="90vh"
           d="flex"

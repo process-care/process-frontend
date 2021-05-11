@@ -75,8 +75,8 @@ const Preview: React.FC = () => {
         flexDirection="column"
         alignItems="center"
         h="100%"
-        overflowY="scroll"
-        p="0 20px">
+        overflowY="auto"
+        p={10}>
         {children}
       </Box>
     );

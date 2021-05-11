@@ -34,7 +34,7 @@ export const CreateForm: React.FC<IPage> = () => {
           bg={bg}
           color={color}
           w="50px"
-          h="98vh"
+          h="100vh"
           d="flex"
           justifyContent="center">
           <PageBuilder />
@@ -43,7 +43,7 @@ export const CreateForm: React.FC<IPage> = () => {
           bg={bg}
           color={color}
           w="62%"
-          h="98vh"
+          h="100vh"
           d="flex"
           justifyContent="center"
           alignItems="center">
@@ -52,11 +52,11 @@ export const CreateForm: React.FC<IPage> = () => {
         <Box
           w="28%"
           minW="250px"
-          h="90vh"
+          h="100vh"
           d="flex"
           justifyContent="center"
           alignItems="center"
-          overflowY="scroll">
+          overflowY="auto">
           <ToolBox onSelect={(id) => handleSelect(id)} />
         </Box>
       </Box>

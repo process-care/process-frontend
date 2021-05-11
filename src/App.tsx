@@ -1,14 +1,9 @@
-import {
-  ChakraProvider,
-  ColorModeScript,
-  CSSReset,
-  theme,
-} from "@chakra-ui/react";
+import { ChakraProvider, ColorModeScript, CSSReset } from "@chakra-ui/react";
 import * as React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-// import theme from "theme";
+import theme from "theme";
 import { Layout } from "components/Layout";
 import routes from "routes";
 import { DndProvider } from "react-dnd";

@@ -99,7 +99,8 @@ const Card: React.FC<CardProps> = ({ id, name, index, moveCard, type }) => {
       key={id}
       w="100%"
       opacity={opacity}
-      data-handler-id={handlerId}>
+      data-handler-id={handlerId}
+    >
       <Container variant="inputContainer">
         <Text color={color}>{renderInput(type)}</Text>
       </Container>

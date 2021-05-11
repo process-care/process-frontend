@@ -10,7 +10,7 @@ interface FormState {
 
 interface Store {
   formState: FormState;
-  addInput: (type: string, name: string, id: number) => void;
+  addInput: ({ type, name, id }) => void;
   removeAllInputs: () => void;
 }
 

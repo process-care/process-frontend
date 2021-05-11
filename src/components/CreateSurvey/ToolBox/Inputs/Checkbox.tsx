@@ -41,7 +41,7 @@ export const CustomCheckbox: React.FC<Props> = ({
             })}
           </HStack>
         </CheckboxGroup>
-        <FormHelperText>{helpText}</FormHelperText>
+        <FormHelperText fontSize="xs">{helpText}</FormHelperText>
       </FormControl>
     </Container>
   );

@@ -82,6 +82,18 @@ const theme = extendTheme({
             color: props.colorMode === "dark" ? "gray.800" : "white",
           },
         }),
+        rounded: (props) => ({
+          bg: "black",
+          borderRadius: "50px",
+          color: "white",
+          padding: "0 30px",
+          border: "1px solid",
+          fontWeight: "bold",
+          _hover: {
+            bg: props.colorMode === "dark" ? "white" : "gray.800",
+            color: props.colorMode === "dark" ? "gray.800" : "white",
+          },
+        }),
       },
     },
     Container: {

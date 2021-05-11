@@ -7,7 +7,8 @@ import { CustomSelect as Select } from "components/CreateSurvey/ToolBox/Inputs/S
 import { CustomSlider as Slider } from "components/CreateSurvey/ToolBox/Inputs/Slider";
 
 export const renderInput = (type: string): React.ReactNode => {
-  switch (type) {
+  // TO DO REFACTO
+  switch (type.selectedInput.type) {
     case "input":
       return (
         <Input
@@ -47,13 +48,14 @@ export const renderInput = (type: string): React.ReactNode => {
         />
       );
       break;
-    case "radio-box":
+    case "radio":
       return (
         <Radiobox
+          id="sexe"
           label="Quel est votre sexe ?"
           radios={[
-            { id: "12312", value: "homme", labelValue: "Homme" },
-            { id: "56465465", value: "femme", labelValue: "Femme" },
+            { value: "homme", labelValue: "Homme" },
+            { value: "femme", labelValue: "Femme" },
           ]}
         />
       );

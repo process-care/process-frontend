@@ -43,9 +43,10 @@ const Preview: React.FC = () => {
   );
 
   const renderCard = (
-    input: { id: number, name: string, type: string },
+    input: { id: number; name: string; type: string },
     index: number
   ) => {
+    console.log(input);
     return (
       <Card
         key={input.id}
@@ -65,7 +66,7 @@ const Preview: React.FC = () => {
     }),
   });
 
-  const Container: React.FC<> = ({ children }) => {
+  const Container: React.FC = ({ children }) => {
     return (
       <Box
         ref={drop}
@@ -76,7 +77,8 @@ const Preview: React.FC = () => {
         alignItems="center"
         h="100%"
         overflowY="auto"
-        p={10}>
+        p={10}
+      >
         {children}
       </Box>
     );

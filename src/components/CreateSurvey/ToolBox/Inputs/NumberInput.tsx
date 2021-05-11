@@ -51,7 +51,8 @@ export const CustomNumberInput: React.FC<Props> = ({
             max={max}
             precision={precision}
             allowMouseWheel
-            w="100%">
+            w="100%"
+          >
             <NumberInputField />
             <NumberInputStepper>
               <NumberIncrementStepper />
@@ -60,7 +61,7 @@ export const CustomNumberInput: React.FC<Props> = ({
           </NumberInput>
           {inputRightAddon && <InputRightAddon children={inputRightAddon} />}
         </InputGroup>
-        <FormHelperText>{helpText}</FormHelperText>
+        <FormHelperText fontSize="xs">{helpText}</FormHelperText>
       </FormControl>
     </Container>
   );

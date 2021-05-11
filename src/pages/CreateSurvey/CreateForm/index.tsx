@@ -5,18 +5,24 @@ import ToolBox from "components/CreateSurvey/ToolBox";
 import Preview from "components/CreateSurvey/Preview";
 
 import IPage from "interfaces/page";
-import IInput from "interfaces/inputs";
+
 import Drawer from "components/Drawer";
 import InputForm from "components/CreateSurvey/ToolBox/InputForm";
 import PageBuilder from "components/CreateSurvey/PageBuilder";
 
 export const CreateForm: React.FC<IPage> = () => {
-  const [selectedInput, setSelectedInput] = React.useState(null);
+  const [selectedInput, setSelectedInput] = React.useState({
+    type: "",
+    name: "",
+    id: "",
+  });
   const [isOpen, setIsOpen] = React.useState(false);
 
-  const handleSelect = (id: IInput) => {
-    setSelectedInput(id);
-    setIsOpen(true);
+  const handleSelect = (type: string, name: string, id: string) => {
+    if (id) {
+      setSelectedInput({ type, name, id });
+      setIsOpen(true);
+    }
   };
 
   return (
@@ -25,7 +31,12 @@ export const CreateForm: React.FC<IPage> = () => {
         isOpen={isOpen}
         onOverlayClick={() => setIsOpen(false)}
         size="md"
-        content={<InputForm selectedInput={selectedInput} />}
+        content={
+          <InputForm
+            selectedInput={selectedInput}
+            onClose={() => setIsOpen(false)}
+          />
+        }
         placement="right"
       />
       <Box d="flex" justifyContent="space-around" w="100%" overflow="hidden">
@@ -37,15 +48,19 @@ export const CreateForm: React.FC<IPage> = () => {
           w="65%"
           bg="gray.100"
           p={0}
-          alignItems="center">
+          alignItems="center"
+        >
           <Preview />
         </Container>
         <Container
           variant="createformColumn"
           w="32%"
           alignItems="center"
-          overflowY="auto">
-          <ToolBox onSelect={(id) => handleSelect(id)} />
+          overflowY="auto"
+        >
+          <ToolBox
+            onSelect={(type, name, id) => handleSelect(type, name, id)}
+          />
         </Container>
       </Box>
     </>

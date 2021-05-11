@@ -47,7 +47,8 @@ export const CustomSlider: React.FC<Props> = ({
       <FormControl
         id="email"
         textAlign="left"
-        h={vertical ? "700px" : "fit-content"}>
+        h={vertical ? "700px" : "fit-content"}
+      >
         <FormLabel>{label}</FormLabel>
         <Range
           reverse={vertical || reverse}
@@ -59,7 +60,9 @@ export const CustomSlider: React.FC<Props> = ({
           vertical={vertical}
           style={vertical ? { height: "85%", margin: "30px 0 0 30px" } : {}}
         />
-        <FormHelperText mt={10}>{helpText}</FormHelperText>
+        <FormHelperText fontSize="xs" mt={10}>
+          {helpText}
+        </FormHelperText>
       </FormControl>
     </Container>
   );

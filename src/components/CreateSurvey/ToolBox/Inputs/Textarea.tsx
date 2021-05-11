@@ -17,6 +17,8 @@ interface Props {
   isRequired?: boolean;
   name: string;
   id: string;
+  m?: string | number;
+  p?: string | number;
 }
 export const CustomTextarea: React.FC<Props> = ({
   label,
@@ -28,9 +30,11 @@ export const CustomTextarea: React.FC<Props> = ({
   isRequired,
   name,
   id,
+  m,
+  p,
 }) => {
   return (
-    <FormControl id="email" textAlign="left">
+    <FormControl id="email" textAlign="left" m={m} p={p}>
       <FormLabel>{label}</FormLabel>
       <Textarea
         name={name}
@@ -39,11 +43,12 @@ export const CustomTextarea: React.FC<Props> = ({
         style={{ resize: "none" }}
         rows={getRows(rows)}
         placeholder={placeholder}
-        minlength={minLength}
+        minLength={minLength}
         maxLength={maxLength}
       />
-
-      <FormHelperText>{helpText}</FormHelperText>
+      <FormHelperText mt={0} lineHeight={1.4} fontSize="xs" color="gray.400">
+        {helpText}
+      </FormHelperText>
     </FormControl>
   );
 };

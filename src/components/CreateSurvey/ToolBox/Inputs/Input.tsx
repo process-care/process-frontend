@@ -48,7 +48,7 @@ export const CustomInput: React.FC<Props> = ({
           {inputRightAddon && <InputRightAddon children={inputRightAddon} />}
         </InputGroup>
 
-        <FormHelperText>{helpText}</FormHelperText>
+        <FormHelperText fontSize="xs">{helpText}</FormHelperText>
       </FormControl>
     </Container>
   );

@@ -44,7 +44,7 @@ export const CustomSelect: React.FC<Props> = ({
           options={options}
           noOptionsMessage={() => t.not_found}
         />
-        <FormHelperText>{helpText}</FormHelperText>
+        <FormHelperText fontSize="xs">{helpText}</FormHelperText>
       </FormControl>
     </Container>
   );

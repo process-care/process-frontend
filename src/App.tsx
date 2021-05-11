@@ -1,4 +1,4 @@
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, ColorModeScript, CSSReset } from "@chakra-ui/react";
 import * as React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
@@ -14,7 +14,9 @@ const queryClient = new QueryClient();
 const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
+      <ColorModeScript />
       <ChakraProvider theme={theme}>
+        <CSSReset />
         <DndProvider backend={HTML5Backend}>
           <BrowserRouter>
             <Layout>

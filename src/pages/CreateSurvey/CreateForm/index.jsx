@@ -1,4 +1,4 @@
-import { Box, useColorModeValue } from "@chakra-ui/react";
+import { Box, Container } from "@chakra-ui/react";
 import React from "react";
 
 import ToolBox from "components/CreateSurvey/ToolBox";
@@ -11,8 +11,6 @@ import InputForm from "components/CreateSurvey/ToolBox/InputForm";
 import PageBuilder from "components/CreateSurvey/PageBuilder";
 
 export const CreateForm: React.FC<IPage> = () => {
-  const color = useColorModeValue("gray.800", "white");
-  const bg = useColorModeValue("gray.100", "gray.700");
   const [selectedInput, setSelectedInput] = React.useState(null);
   const [isOpen, setIsOpen] = React.useState(false);
 
@@ -28,37 +26,27 @@ export const CreateForm: React.FC<IPage> = () => {
         onOverlayClick={() => setIsOpen(false)}
         size="md"
         content={<InputForm selectedInput={selectedInput} />}
+        placement="right"
       />
       <Box d="flex" justifyContent="space-around" w="100%" overflow="hidden">
-        <Box
-          bg={bg}
-          color={color}
-          w="50px"
-          h="100vh"
-          d="flex"
-          justifyContent="center">
+        <Container variant="createformColumn" w="6%" minW="100px">
           <PageBuilder />
-        </Box>
-        <Box
-          bg={bg}
-          color={color}
-          w="62%"
-          h="100vh"
-          d="flex"
-          justifyContent="center"
+        </Container>
+        <Container
+          variant="createformColumn"
+          w="65%"
+          bg="gray.100"
+          p={0}
           alignItems="center">
           <Preview />
-        </Box>
-        <Box
-          w="28%"
-          minW="250px"
-          h="100vh"
-          d="flex"
-          justifyContent="center"
+        </Container>
+        <Container
+          variant="createformColumn"
+          w="32%"
           alignItems="center"
           overflowY="auto">
           <ToolBox onSelect={(id) => handleSelect(id)} />
-        </Box>
+        </Container>
       </Box>
     </>
   );

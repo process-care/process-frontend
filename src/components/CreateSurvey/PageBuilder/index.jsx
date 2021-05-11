@@ -6,12 +6,12 @@ const PageBuilder: React.FC = () => {
   const [page, setPage] = React.useState({ data: [], totalPage: 0 });
 
   React.useEffect(() => {
-    setPage({ data: ["page 1"], totalPage: 1 });
+    setPage({ data: ["Page 1"], totalPage: 1 });
   }, []);
 
   const handlePage = () => {
     setPage({
-      data: [...page.data, `page ${page.totalPage + 1}`],
+      data: [...page.data, `Page ${page.totalPage + 1}`],
       totalPage: page.totalPage + 1,
     });
   };
@@ -32,8 +32,9 @@ const PageBuilder: React.FC = () => {
             borderColor="gray.300"
             p="40px 5px"
             key={el}
-            marginY={4}
-            width="100%">
+            marginY={2}
+            width="100%"
+            _hover={{ cursor: "pointer" }}>
             <Text fontSize="10">{el}</Text>
           </Box>
         );

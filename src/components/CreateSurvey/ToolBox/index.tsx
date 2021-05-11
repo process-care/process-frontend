@@ -1,14 +1,14 @@
 import React from "react";
 import { Button, ButtonGroup } from "@chakra-ui/react";
 import { inputs } from "constants/inputs";
-import { formStore } from "stores/inputs";
+// import { formStore } from "stores/inputs";
 
 interface Props {
-  addInput: (slug: string) => void;
+  onSelect: (type: string, name: string, date: number) => void;
 }
 
-const ToolBox: React.FC<Props> = () => {
-  const addInput = formStore((state) => state.addInput);
+const ToolBox: React.FC<Props> = ({ onSelect }) => {
+  // const addInput = formStore((state) => state.addInput);
 
   return (
     <ButtonGroup
@@ -22,7 +22,7 @@ const ToolBox: React.FC<Props> = () => {
           <Button
             variant="box"
             key={i}
-            onClick={() => addInput(type, name, Date.now())}>
+            onClick={() => onSelect(type, name, Date.now())}>
             {name}
           </Button>
         );

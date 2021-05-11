@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Box,
   FormControl,
   FormHelperText,
   FormLabel,
@@ -11,6 +10,7 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  Container,
 } from "@chakra-ui/react";
 
 interface Props {
@@ -38,14 +38,7 @@ export const CustomNumberInput: React.FC<Props> = ({
   id,
 }) => {
   return (
-    <Box
-      margin="5"
-      border="1px"
-      padding={4}
-      borderRadius={5}
-      borderColor="gray.300"
-      backgroundColor="white"
-      width="100%">
+    <Container variant="inputContainer">
       <FormControl id="email" textAlign="left">
         <FormLabel>{label}</FormLabel>
         <InputGroup size="md" w="100%">
@@ -69,6 +62,6 @@ export const CustomNumberInput: React.FC<Props> = ({
         </InputGroup>
         <FormHelperText>{helpText}</FormHelperText>
       </FormControl>
-    </Box>
+    </Container>
   );
 };

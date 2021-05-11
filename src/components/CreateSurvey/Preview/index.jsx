@@ -4,7 +4,7 @@ import { formStore } from "stores/inputs";
 import Card from "./Card";
 import { useDrop } from "react-dnd";
 import { ItemTypes } from "./Card/itemTypes";
-
+import t from "static/preview.json";
 import update from "immutability-helper";
 import { MockInput } from "./fakeInputs";
 
@@ -81,17 +81,16 @@ const Preview: React.FC = () => {
   if (cards.length === 0) {
     return (
       <Container>
-        <p>No Inputs</p>
+        <p>{t.no_inputs}</p>
       </Container>
     );
   }
 
   return (
     <Container>
-      <Button variant="outline" onClick={removeAllInputs} mb={8}>
-        Clear all fields
+      <Button variant="box" onClick={removeAllInputs} mb={8}>
+        {t.clear_all_fields}
       </Button>
-
       {cards.map((input, i) => renderCard(input, i))}
       <MockInput />
     </Container>

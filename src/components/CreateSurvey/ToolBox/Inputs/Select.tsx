@@ -1,5 +1,10 @@
 import React from "react";
-import { Box, FormControl, FormHelperText, FormLabel } from "@chakra-ui/react";
+import {
+  Container,
+  FormControl,
+  FormHelperText,
+  FormLabel,
+} from "@chakra-ui/react";
 import t from "static/survey.json";
 import Select from "react-select";
 
@@ -27,14 +32,7 @@ export const CustomSelect: React.FC<Props> = ({
   isMulti,
 }) => {
   return (
-    <Box
-      margin="5"
-      border="1px"
-      padding={4}
-      borderRadius={5}
-      borderColor="gray.300"
-      backgroundColor="white"
-      width="100%">
+    <Container variant="inputContainer">
       <FormControl id="email" textAlign="left">
         <FormLabel>{label}</FormLabel>
         <Select
@@ -48,6 +46,6 @@ export const CustomSelect: React.FC<Props> = ({
         />
         <FormHelperText>{helpText}</FormHelperText>
       </FormControl>
-    </Box>
+    </Container>
   );
 };

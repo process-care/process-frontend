@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  Box,
+  Container,
   FormControl,
   FormHelperText,
   FormLabel,
@@ -31,14 +31,7 @@ export const CustomTextarea: React.FC<Props> = ({
   id,
 }) => {
   return (
-    <Box
-      margin="5"
-      border="1px"
-      padding={4}
-      borderRadius={5}
-      borderColor="gray.300"
-      backgroundColor="white"
-      width="100%">
+    <Container variant="inputContainer">
       <FormControl id="email" textAlign="left">
         <FormLabel>{label}</FormLabel>
         <Textarea
@@ -48,12 +41,12 @@ export const CustomTextarea: React.FC<Props> = ({
           style={{ resize: "none" }}
           rows={getRows(rows)}
           placeholder={placeholder}
-          minLength={minLength}
+          minlength={minLength}
           maxLength={maxLength}
         />
 
         <FormHelperText>{helpText}</FormHelperText>
       </FormControl>
-    </Box>
+    </Container>
   );
 };

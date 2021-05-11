@@ -1,5 +1,10 @@
 import React from "react";
-import { Box, FormControl, FormHelperText, FormLabel } from "@chakra-ui/react";
+import {
+  Container,
+  FormControl,
+  FormHelperText,
+  FormLabel,
+} from "@chakra-ui/react";
 
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
@@ -38,14 +43,7 @@ export const CustomSlider: React.FC<Props> = ({
   };
 
   return (
-    <Box
-      margin="5"
-      border="1px"
-      padding={4}
-      borderRadius={5}
-      borderColor="gray.300"
-      backgroundColor="white"
-      width="100%">
+    <Container variant="inputContainer">
       <FormControl
         id="email"
         textAlign="left"
@@ -63,6 +61,6 @@ export const CustomSlider: React.FC<Props> = ({
         />
         <FormHelperText mt={10}>{helpText}</FormHelperText>
       </FormControl>
-    </Box>
+    </Container>
   );
 };

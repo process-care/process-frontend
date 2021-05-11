@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  Box,
+  Container,
   FormControl,
   FormHelperText,
   FormLabel,
@@ -33,14 +33,7 @@ export const CustomInput: React.FC<Props> = ({
   name,
 }) => {
   return (
-    <Box
-      margin="5"
-      border="1px"
-      padding={4}
-      borderRadius={5}
-      borderColor="gray.300"
-      backgroundColor="white"
-      width="100%">
+    <Container variant="inputContainer">
       <FormControl id="email" textAlign="left">
         <FormLabel>{label}</FormLabel>
         <InputGroup size="sm">
@@ -57,6 +50,6 @@ export const CustomInput: React.FC<Props> = ({
 
         <FormHelperText>{helpText}</FormHelperText>
       </FormControl>
-    </Box>
+    </Container>
   );
 };

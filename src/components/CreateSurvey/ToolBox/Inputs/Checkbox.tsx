@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  Box,
+  Container,
   FormControl,
   FormHelperText,
   FormLabel,
@@ -27,14 +27,7 @@ export const CustomCheckbox: React.FC<Props> = ({
   checkbox,
 }) => {
   return (
-    <Box
-      margin="5"
-      border="1px"
-      padding={4}
-      borderRadius={5}
-      borderColor="gray.300"
-      backgroundColor="white"
-      width="100%">
+    <Container variant="inputContainer">
       <FormControl id="email" textAlign="left">
         <FormLabel>{label}</FormLabel>
         <CheckboxGroup colorScheme="green">
@@ -48,9 +41,8 @@ export const CustomCheckbox: React.FC<Props> = ({
             })}
           </HStack>
         </CheckboxGroup>
-
         <FormHelperText>{helpText}</FormHelperText>
       </FormControl>
-    </Box>
+    </Container>
   );
 };

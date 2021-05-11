@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  Box,
+  Container,
   FormControl,
   FormHelperText,
   FormLabel,
@@ -27,14 +27,7 @@ export const CustomRadioBox: React.FC<Props> = ({
   radios,
 }) => {
   return (
-    <Box
-      margin="5"
-      border="1px"
-      padding={4}
-      borderRadius={5}
-      borderColor="gray.300"
-      backgroundColor="white"
-      width="100%">
+    <Container variant="inputContainer">
       <FormControl id="email" textAlign="left">
         <FormLabel>{label}</FormLabel>
         <RadioGroup colorScheme="green">
@@ -50,6 +43,6 @@ export const CustomRadioBox: React.FC<Props> = ({
         </RadioGroup>
         <FormHelperText>{helpText}</FormHelperText>
       </FormControl>
-    </Box>
+    </Container>
   );
 };

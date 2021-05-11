@@ -84,6 +84,23 @@ const theme = extendTheme({
         }),
       },
     },
+    Container: {
+      variants: {
+        inputContainer: (props) => ({
+          margin: 5,
+          border: "1px",
+          padding: 4,
+          borderRadius: 5,
+          borderColor: props.colorMode === "dark" ? "white" : "gray.300",
+          backgroundColor: "white",
+          width: "100%",
+          maxWidth: "unset",
+          _hover: {
+            cursor: "grab",
+          },
+        }),
+      },
+    },
   },
 });
 export default theme;

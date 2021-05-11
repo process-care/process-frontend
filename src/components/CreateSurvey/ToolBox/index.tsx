@@ -4,7 +4,6 @@ import { inputs } from "constants/inputs";
 import { formStore } from "stores/inputs";
 
 interface Props {
-  // onSelect: (id: string) => void;
   addInput: (slug: string) => void;
 }
 

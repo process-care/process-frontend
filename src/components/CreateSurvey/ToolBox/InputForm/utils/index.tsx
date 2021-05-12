@@ -7,7 +7,7 @@ import { CustomSelect as Select } from "components/Fields/Select";
 import { CustomSlider as Slider } from "components/Fields/Slider";
 import Inputs from "interfaces/inputs";
 
-export const renderInput = (input: Inputs): React.ReactNode => {
+export const renderForm = (input: Inputs): React.ReactNode => {
   // TO DO REFACTO
 
   switch (input.type) {

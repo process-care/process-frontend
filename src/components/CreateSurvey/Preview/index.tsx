@@ -18,7 +18,7 @@ export interface PreviewState {
 }
 
 const Preview: React.FC = () => {
-  const inputsState = formStore((state) => state.formState.inputs);
+  const inputsState = formStore((state) => state.form.inputs);
   const removeAllInputs = formStore((state) => state.removeAllInputs);
   const [cards, setCards] = React.useState(inputsState);
 
@@ -66,8 +66,7 @@ const Preview: React.FC = () => {
         alignItems="center"
         h="100%"
         overflowY="auto"
-        p={10}
-      >
+        p={10}>
         {children}
       </Box>
     );

@@ -2,9 +2,7 @@ import React from "react";
 import { formStore } from "stores/inputs";
 
 import { Box, FormControl, Button, Text, ButtonGroup } from "@chakra-ui/react";
-import { CustomTextarea as Textarea } from "components/CreateSurvey/ToolBox/Inputs/Textarea";
-import { CustomSwitch as Switch } from "components/CreateSurvey/ToolBox/Inputs/Switch";
-import { CustomRadioBox as Radiobox } from "components/CreateSurvey/ToolBox/Inputs/Radiobox";
+import { Switch, Textarea, Radiobox } from "components/Fields";
 
 interface SelectedInput {
   type: string;
@@ -36,8 +34,7 @@ const InputForm: React.FC<Props> = ({ selectedInput, onClose }) => {
       alignItems="center"
       justifyContent="center"
       fontSize="30"
-      flexDirection="column"
-    >
+      flexDirection="column">
       <Text fontSize="lg">Créer un champ {selectedInput.type}</Text>
       <hr />
       <FormControl id="email" p="5">
@@ -93,16 +90,15 @@ const InputForm: React.FC<Props> = ({ selectedInput, onClose }) => {
           justifyContent="space-between"
           w="75%"
           mx="auto"
-          pt={2}
-          onClick={() => onSubmit(selectedInput)}
-        >
-          <Button variant="rounded">Valider</Button>
+          pt={2}>
+          <Button onClick={() => onSubmit(selectedInput)} variant="rounded">
+            Valider
+          </Button>
           <Button
             variant="link"
             textDecoration="underline"
             color="black"
-            onClick={() => onCancel()}
-          >
+            onClick={() => onCancel()}>
             Annuler
           </Button>
         </ButtonGroup>

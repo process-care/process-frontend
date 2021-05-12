@@ -3,7 +3,7 @@ import {
   DrawerBody,
   DrawerContent,
   DrawerHeader,
-  DrawerOverlay,
+  // DrawerOverlay,
   Box,
   Portal,
 } from "@chakra-ui/react";
@@ -43,9 +43,8 @@ const CustomDrawer: React.FC<Props> = ({
           motionPreset="scale"
           isCentered
           onOverlayClick={onOverlayClick}
-          {...props}
-        >
-          <DrawerOverlay />
+          {...props}>
+          {/* <DrawerOverlay /> */}
           <DrawerContent background="white">
             <DrawerHeader textAlign="center" pt="20px" pb="5px" color="black">
               <p>{headerTitle}</p>

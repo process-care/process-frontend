@@ -3,13 +3,13 @@ import { mountStoreDevtool } from "simple-zustand-devtools";
 import { persist } from "zustand/middleware";
 import Inputs from "interfaces/inputs";
 
-interface FormState {
+interface form {
   inputs: Inputs[];
   count: number;
 }
 
 interface Store {
-  formState: FormState;
+  form: form;
   addInput: (input: Inputs) => void;
   removeAllInputs: () => void;
 }
@@ -17,21 +17,21 @@ interface Store {
 export const formStore = create<Store>(
   persist(
     (set) => ({
-      formState: {
+      form: {
         inputs: [],
         count: 0,
       },
       addInput: (input) =>
         set((state): unknown => ({
-          formState: {
+          form: {
             inputs: [
-              ...state.formState.inputs,
-              { ...input, position: state.formState.count },
+              ...state.form.inputs,
+              { ...input, position: state.form.count },
             ],
-            count: state.formState.count + 1,
+            count: state.form.count + 1,
           },
         })),
-      removeAllInputs: () => set({ formState: { inputs: [], count: 0 } }),
+      removeAllInputs: () => set({ form: { inputs: [], count: 0 } }),
     }),
     {
       name: "form-storage",

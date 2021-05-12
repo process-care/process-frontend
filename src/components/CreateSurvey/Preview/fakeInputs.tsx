@@ -1,11 +1,13 @@
 import React from "react";
-import { CustomInput as Input } from "components/CreateSurvey/ToolBox/Inputs/Input";
-import { CustomTextarea as Textarea } from "components/CreateSurvey/ToolBox/Inputs/Textarea";
-import { CustomNumberInput as NumberInput } from "components/CreateSurvey/ToolBox/Inputs/NumberInput";
-import { CustomCheckbox as Checkbox } from "components/CreateSurvey/ToolBox/Inputs/Checkbox";
-import { CustomRadioBox as Radiobox } from "components/CreateSurvey/ToolBox/Inputs/Radiobox";
-import { CustomSelect as Select } from "components/CreateSurvey/ToolBox/Inputs/Select";
-import { CustomSlider as Slider } from "components/CreateSurvey/ToolBox/Inputs/Slider";
+import {
+  Input,
+  Textarea,
+  NumberInput,
+  Checkbox,
+  Radiobox,
+  Select,
+  Slider,
+} from "components/Fields";
 
 export const MockInput: React.FC = () => {
   return (
@@ -31,10 +33,11 @@ export const MockInput: React.FC = () => {
         ]}
       />
       <Radiobox
+        id="sexe"
         label="Quel est votre sexe ?"
         radios={[
-          { id: "12312", value: "homme", labelValue: "Homme" },
-          { id: "56465465", value: "femme", labelValue: "Femme" },
+          { value: "homme", labelValue: "Homme" },
+          { value: "femme", labelValue: "Femme" },
         ]}
       />
       <Textarea

@@ -122,6 +122,14 @@ const theme = extendTheme({
         }),
       },
     },
+    Text: {
+      variants: {
+        label: () => ({
+          fontSize: "14px",
+          fontWeight: "bold",
+        }),
+      },
+    },
   },
 });
 export default theme;

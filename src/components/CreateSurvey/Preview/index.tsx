@@ -42,7 +42,6 @@ const Preview: React.FC = () => {
   );
 
   const renderCard = (input: Inputs, index: number) => {
-    console.log(input, "IN CARDS");
     return (
       <Card key={input.id} input={input} index={index} moveCard={moveCard} />
     );

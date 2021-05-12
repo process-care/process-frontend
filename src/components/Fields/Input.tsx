@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Container,
   FormControl,
   FormHelperText,
   FormLabel,
@@ -19,6 +18,8 @@ interface Props {
   maxLength?: number;
   name: string;
   id: string;
+  onChange?: (e: Event) => void;
+  onBlur?: () => void;
 }
 
 export const CustomInput: React.FC<Props> = ({
@@ -31,25 +32,27 @@ export const CustomInput: React.FC<Props> = ({
   maxLength,
   id,
   name,
+  onChange,
+  onBlur,
 }) => {
   return (
-    <Container variant="inputContainer">
-      <FormControl id="email" textAlign="left">
-        <FormLabel>{label}</FormLabel>
-        <InputGroup size="sm">
-          <Input
-            type={type}
-            name={name}
-            id={id}
-            placeholder={placeholder}
-            minLength={minLength}
-            maxLength={maxLength}
-          />
-          {inputRightAddon && <InputRightAddon children={inputRightAddon} />}
-        </InputGroup>
+    <FormControl id="email" textAlign="left">
+      <FormLabel>{label}</FormLabel>
+      <InputGroup size="sm">
+        <Input
+          type={type}
+          name={name}
+          id={id}
+          placeholder={placeholder}
+          minLength={minLength}
+          maxLength={maxLength}
+          onChange={onChange}
+          onBlur={onBlur}
+        />
+        {inputRightAddon && <InputRightAddon children={inputRightAddon} />}
+      </InputGroup>
 
-        <FormHelperText fontSize="xs">{helpText}</FormHelperText>
-      </FormControl>
-    </Container>
+      <FormHelperText fontSize="xs">{helpText}</FormHelperText>
+    </FormControl>
   );
 };

@@ -1,8 +1,9 @@
 import React from "react";
 import { formStore } from "stores/inputs";
 
-import { Box, FormControl, Button, Text, ButtonGroup } from "@chakra-ui/react";
-import { Switch, Textarea, Radiobox } from "components/Fields";
+import { Flex, FormControl, Text } from "@chakra-ui/react";
+import { Footer } from "./Template/Footer";
+import { renderFormTemplate } from "./utils";
 
 interface SelectedInput {
   type: string;
@@ -23,14 +24,12 @@ const InputForm: React.FC<Props> = ({ selectedInput, onClose }) => {
   };
 
   const onSubmit = (selectedInput: SelectedInput) => {
-    console.log("on Submit", selectedInput);
     addInput(selectedInput);
     onClose();
   };
 
   return (
-    <Box
-      d="flex"
+    <Flex
       alignItems="center"
       justifyContent="center"
       fontSize="30"
@@ -38,72 +37,13 @@ const InputForm: React.FC<Props> = ({ selectedInput, onClose }) => {
       <Text fontSize="lg">Créer un champ {selectedInput.type}</Text>
       <hr />
       <FormControl id="email" p="5">
-        <Textarea
-          rows="small"
-          label="Label"
-          placeholder="Renseigner le label de votre question"
-          name="label"
-          id="label"
+        {renderFormTemplate(selectedInput)}
+        <Footer
+          onSubmit={() => onSubmit(selectedInput)}
+          onCancel={() => onCancel()}
         />
-
-        <Textarea
-          p="10px 0"
-          rows="medium"
-          label="Champ d'aide"
-          placeholder="Renseigner le texte d'aide de votre question. "
-          name="help"
-          id="help"
-        />
-        <Textarea
-          p="10px 0"
-          rows="small"
-          label="Nom interne de la question"
-          placeholder="Renseigner le nom interne de votre question"
-          name="internalDescription"
-          id="internalDescription"
-          helpText="Ce champ vous permet de donner un titre à la question,il n'est pas visible par les utilisateurs."
-        />
-        <Radiobox
-          p="10px 0"
-          label="Taille de la zone de réponse"
-          radios={[
-            { value: "small", labelValue: "Petite" },
-            { value: "medium", labelValue: "Moyenne" },
-            { value: "large", labelValue: "Grande" },
-          ]}
-          id="rows_size"
-        />
-        <Textarea
-          p="10px 0"
-          rows="medium"
-          label="Note"
-          placeholder="Renseigner une note relative à votre question"
-          name="internalNote"
-          id="internalNote"
-          helpText="Ce champ n'est pas visible par les utilisateurs."
-        />
-
-        <Switch p="20px 0" label="Réponse obligatoire" id="required" />
-
-        <ButtonGroup
-          d="flex"
-          justifyContent="space-between"
-          w="75%"
-          mx="auto"
-          pt={2}>
-          <Button onClick={() => onSubmit(selectedInput)} variant="rounded">
-            Valider
-          </Button>
-          <Button
-            variant="link"
-            textDecoration="underline"
-            color="black"
-            onClick={() => onCancel()}>
-            Annuler
-          </Button>
-        </ButtonGroup>
       </FormControl>
-    </Box>
+    </Flex>
   );
 };
 

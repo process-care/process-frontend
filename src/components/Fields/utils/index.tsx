@@ -4,7 +4,7 @@ export const getRows = (size: string): number => {
       return 1;
       break;
     case "medium":
-      return 5;
+      return 3;
       break;
     case "large":
       return 10;

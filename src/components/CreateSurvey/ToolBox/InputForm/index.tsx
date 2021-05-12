@@ -6,12 +6,14 @@ import { CustomTextarea as Textarea } from "components/CreateSurvey/ToolBox/Inpu
 import { CustomSwitch as Switch } from "components/CreateSurvey/ToolBox/Inputs/Switch";
 import { CustomRadioBox as Radiobox } from "components/CreateSurvey/ToolBox/Inputs/Radiobox";
 
+interface SelectedInput {
+  type: string;
+  name: string;
+  id: number;
+}
+
 interface Props {
-  selectedInput: {
-    type: string;
-    name: string;
-    id: string;
-  };
+  selectedInput: SelectedInput;
   onClose: () => void;
 }
 
@@ -21,9 +23,10 @@ const InputForm: React.FC<Props> = ({ selectedInput, onClose }) => {
   const onCancel = () => {
     onClose();
   };
-  const onSubmit = ({ selectedInput }) => {
-    console.log("11", selectedInput);
-    addInput({ selectedInput });
+
+  const onSubmit = (selectedInput: SelectedInput) => {
+    console.log("on Submit", selectedInput);
+    addInput(selectedInput);
     onClose();
   };
 
@@ -91,7 +94,7 @@ const InputForm: React.FC<Props> = ({ selectedInput, onClose }) => {
           w="75%"
           mx="auto"
           pt={2}
-          onClick={() => onSubmit({ selectedInput })}
+          onClick={() => onSubmit(selectedInput)}
         >
           <Button variant="rounded">Valider</Button>
           <Button

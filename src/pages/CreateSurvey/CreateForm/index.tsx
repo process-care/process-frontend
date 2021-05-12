@@ -14,11 +14,11 @@ export const CreateForm: React.FC<IPage> = () => {
   const [selectedInput, setSelectedInput] = React.useState({
     type: "",
     name: "",
-    id: "",
+    id: 0,
   });
   const [isOpen, setIsOpen] = React.useState(false);
 
-  const handleSelect = (type: string, name: string, id: string) => {
+  const handleSelect = (type: string, name: string, id: number) => {
     if (id) {
       setSelectedInput({ type, name, id });
       setIsOpen(true);
@@ -37,7 +37,6 @@ export const CreateForm: React.FC<IPage> = () => {
             onClose={() => setIsOpen(false)}
           />
         }
-        placement="right"
       />
       <Box d="flex" justifyContent="space-around" w="100%" overflow="hidden">
         <Container variant="createformColumn" w="6%" minW="100px">

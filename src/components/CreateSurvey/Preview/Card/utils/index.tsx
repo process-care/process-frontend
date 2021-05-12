@@ -5,10 +5,12 @@ import { CustomCheckbox as Checkbox } from "components/CreateSurvey/ToolBox/Inpu
 import { CustomRadioBox as Radiobox } from "components/CreateSurvey/ToolBox/Inputs/Radiobox";
 import { CustomSelect as Select } from "components/CreateSurvey/ToolBox/Inputs/Select";
 import { CustomSlider as Slider } from "components/CreateSurvey/ToolBox/Inputs/Slider";
+import Inputs from "interfaces/inputs";
 
-export const renderInput = (type: string): React.ReactNode => {
+export const renderInput = (input: Inputs): React.ReactNode => {
   // TO DO REFACTO
-  switch (type.selectedInput.type) {
+  console.log("type", input);
+  switch (input.type) {
     case "input":
       return (
         <Input

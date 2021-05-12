@@ -6,13 +6,12 @@ import { useDrop } from "react-dnd";
 import { ItemTypes } from "./Card/itemTypes";
 import t from "static/preview.json";
 import update from "immutability-helper";
-// import { MockInput } from "./fakeInputs";
+import Inputs from "interfaces/inputs";
 
 export interface Item {
   id: number;
   name: string;
-  slug: string;
-  uid: number;
+  type: string;
 }
 export interface PreviewState {
   cards: Item[];
@@ -42,20 +41,10 @@ const Preview: React.FC = () => {
     [cards]
   );
 
-  const renderCard = (
-    input: { id: number; name: string; type: string },
-    index: number
-  ) => {
-    console.log(input);
+  const renderCard = (input: Inputs, index: number) => {
+    console.log(input, "IN CARDS");
     return (
-      <Card
-        key={input.id}
-        id={input.id}
-        name={input.name}
-        index={index}
-        moveCard={moveCard}
-        type={input.type}
-      />
+      <Card key={input.id} input={input} index={index} moveCard={moveCard} />
     );
   };
 

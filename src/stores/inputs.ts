@@ -5,12 +5,12 @@ import Inputs from "interfaces/inputs";
 
 interface FormState {
   inputs: Inputs[];
-  id: number;
+  count: number;
 }
 
 interface Store {
   formState: FormState;
-  addInput: ({ type, name, id }) => void;
+  addInput: (input: Inputs) => void;
   removeAllInputs: () => void;
 }
 
@@ -19,19 +19,19 @@ export const formStore = create<Store>(
     (set) => ({
       formState: {
         inputs: [],
-        id: 1,
+        count: 0,
       },
-      addInput: (type, name, id) =>
+      addInput: (input) =>
         set((state): unknown => ({
           formState: {
             inputs: [
               ...state.formState.inputs,
-              { type, name, uid: id, id: state.formState.id },
+              { ...input, position: state.formState.count },
             ],
-            id: state.formState.id + 1,
+            count: state.formState.count + 1,
           },
         })),
-      removeAllInputs: () => set({ formState: { inputs: [], id: 1 } }),
+      removeAllInputs: () => set({ formState: { inputs: [], count: 0 } }),
     }),
     {
       name: "form-storage",

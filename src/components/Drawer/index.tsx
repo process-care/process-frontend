@@ -8,27 +8,26 @@ import {
   Portal,
 } from "@chakra-ui/react";
 
-import React from "react";
+import React, { ReactChild } from "react";
 
 interface Props {
-  content: string;
-  buttonVariant: string;
-  padding: string;
-  isAlwaysOpen: boolean;
-  headerTitle: string;
-  headerSubtitle: string;
-  onOverlayClick: () => void;
+  content: ReactChild;
+  buttonVariant?: string;
+  padding?: string;
+  headerTitle?: string;
+  headerSubtitle?: string;
+  onOverlayClick?: () => void;
   isOpen: boolean;
-  size: string;
-  onClose: () => void;
+  size?: string;
+  onClose?: () => void;
 }
 const CustomDrawer: React.FC<Props> = ({
   content,
   headerTitle,
   headerSubtitle,
   isOpen,
-  onClose,
   onOverlayClick,
+  onClose,
   size,
   ...props
 }) => {
@@ -36,14 +35,16 @@ const CustomDrawer: React.FC<Props> = ({
     <>
       <Portal>
         <Drawer
+          onClose={onClose}
+          placement="right"
           isFullHeight
           isOpen={isOpen}
-          placement="left"
-          onClose={onClose}
           size={size}
+          motionPreset="scale"
           isCentered
           onOverlayClick={onOverlayClick}
-          {...props}>
+          {...props}
+        >
           <DrawerOverlay />
           <DrawerContent background="white">
             <DrawerHeader textAlign="center" pt="20px" pb="5px" color="black">

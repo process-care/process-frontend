@@ -3,7 +3,7 @@ import { Button, ButtonGroup } from "@chakra-ui/react";
 import { inputs } from "constants/inputs";
 
 interface Props {
-  onSelect: (type: string, name: string, date: number) => void;
+  onSelect: (type: string, name: string, id: number) => void;
 }
 
 const ToolBox: React.FC<Props> = ({ onSelect }) => {

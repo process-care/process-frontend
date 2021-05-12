@@ -4,12 +4,11 @@ import { useDrag, useDrop, DropTargetMonitor } from "react-dnd";
 import { ItemTypes } from "./itemTypes";
 import { XYCoord } from "dnd-core";
 import { renderInput } from "./utils";
+import Inputs from "interfaces/inputs";
 
 interface CardProps {
-  id: string;
-  name: string;
+  input: Inputs;
   index: number;
-  type: string;
   moveCard: (dragIndex: number, hoverIndex: number) => void;
 }
 
@@ -18,7 +17,7 @@ interface DragItem {
   id: string;
 }
 
-const Card: React.FC<CardProps> = ({ id, name, index, moveCard, type }) => {
+const Card: React.FC<CardProps> = ({ input, index, moveCard }) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const color = useColorModeValue("gray.800", "gray.900");
 
@@ -82,7 +81,7 @@ const Card: React.FC<CardProps> = ({ id, name, index, moveCard, type }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: ItemTypes.CARD,
     item: () => {
-      return { id, name, index };
+      return { id: input.id, name: input.name, index };
     },
 
     collect: (monitor) => ({
@@ -96,13 +95,13 @@ const Card: React.FC<CardProps> = ({ id, name, index, moveCard, type }) => {
     <Box
       _hover={{ cursor: "grab" }}
       ref={ref}
-      key={id}
+      key={input.id}
       w="100%"
       opacity={opacity}
       data-handler-id={handlerId}
     >
       <Container variant="inputContainer">
-        <Text color={color}>{renderInput(type)}</Text>
+        <Text color={color}>{renderInput(input)}</Text>
       </Container>
     </Box>
   );

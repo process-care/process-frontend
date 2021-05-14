@@ -1,11 +1,12 @@
 import React from "react";
-import CommonFields from "./CommonFields";
+
+import { CommonFields, RepeatedFields } from "./index";
 
 export const SelectFields: React.FC = () => {
   return (
     <>
       <CommonFields />
-      Add fields
+      <RepeatedFields />
     </>
   );
 };

@@ -1,5 +1,6 @@
 import React from "react";
-import CommonFields from "./CommonFields";
+
+import { CommonFields } from "./index";
 
 export const SliderFields: React.FC = () => {
   return (

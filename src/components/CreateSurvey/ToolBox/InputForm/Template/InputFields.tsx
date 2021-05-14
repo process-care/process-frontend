@@ -3,7 +3,7 @@ import React from "react";
 import { Input, NumberInput } from "components/Fields";
 import { Flex } from "@chakra-ui/react";
 
-import CommonFields from "./CommonFields";
+import { CommonFields } from "./index";
 
 export const InputFields: React.FC = () => {
   return (

@@ -6,6 +6,9 @@ import { RadioboxFields } from "./RadioboxFields";
 import { SelectFields } from "./SelectFields";
 import { SliderFields } from "./SliderFields";
 import { DatepickerFields } from "./DatepickerFields";
+import { RepeatedFields } from "./RepeatedFields";
+import { CommonFields } from "./CommonFields";
+
 export {
   TextareaFields,
   CheckboxFields,
@@ -15,4 +18,6 @@ export {
   SelectFields,
   SliderFields,
   DatepickerFields,
+  RepeatedFields,
+  CommonFields,
 };

@@ -1,12 +1,12 @@
 import React from "react";
 
-import CommonFields from "./CommonFields";
+import { CommonFields, RepeatedFields } from "./index";
 
 export const RadioboxFields: React.FC = () => {
   return (
     <>
       <CommonFields />
-      <p>RadioboxFields</p>
+      <RepeatedFields />
     </>
   );
 };

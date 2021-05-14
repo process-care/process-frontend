@@ -17,10 +17,9 @@ interface Props {
   minLength?: number;
   maxLength?: number;
   name: string;
-  id: string;
-  onChange?: (e: Event) => void;
-  onBlur?: () => void;
-  style: React.CSSProperties | undefined;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  style?: React.CSSProperties | undefined;
 }
 
 export const CustomInput: React.FC<Props> = ({
@@ -31,7 +30,6 @@ export const CustomInput: React.FC<Props> = ({
   inputRightAddon,
   minLength,
   maxLength,
-  id,
   name,
   onChange,
   onBlur,
@@ -46,7 +44,7 @@ export const CustomInput: React.FC<Props> = ({
           type={type}
           size="md"
           name={name}
-          id={id}
+          id={name}
           placeholder={placeholder}
           minLength={minLength}
           maxLength={maxLength}

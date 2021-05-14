@@ -5,7 +5,7 @@ interface Props {
   noPlacehoder?: boolean;
 }
 
-const CommonFields: React.FC<Props> = ({ noPlacehoder = false }) => {
+export const CommonFields: React.FC<Props> = ({ noPlacehoder = false }) => {
   return (
     <>
       <Textarea
@@ -51,5 +51,3 @@ const CommonFields: React.FC<Props> = ({ noPlacehoder = false }) => {
     </>
   );
 };
-
-export default CommonFields;

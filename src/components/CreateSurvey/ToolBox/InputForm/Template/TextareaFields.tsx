@@ -1,7 +1,8 @@
 import React from "react";
-import { Radiobox, NumberInput } from "components/Fields";
 import { Flex } from "@chakra-ui/react";
-import CommonFields from "./CommonFields";
+
+import { Radiobox, NumberInput } from "components/Fields";
+import { CommonFields } from "./index";
 
 export const TextareaFields: React.FC = () => {
   return (

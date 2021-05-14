@@ -1,13 +1,13 @@
-import { TextareaFields } from "./TextareaFields";
-import { CheckboxFields } from "./CheckboxFields";
-import { InputFields } from "./InputFields";
-import { NumberInputFields } from "./NumberInputFields";
-import { RadioboxFields } from "./RadioboxFields";
-import { SelectFields } from "./SelectFields";
-import { SliderFields } from "./SliderFields";
-import { DatepickerFields } from "./DatepickerFields";
+import { TextareaFields } from "./Fields/TextareaFields";
+import { CheckboxFields } from "./Fields/CheckboxFields";
+import { InputFields } from "./Fields/InputFields";
+import { NumberInputFields } from "./Fields/NumberInputFields";
+import { RadioboxFields } from "./Fields/RadioboxFields";
+import { SelectFields } from "./Fields/SelectFields";
+import { SliderFields } from "./Fields/SliderFields";
+import { DatepickerFields } from "./Fields/DatepickerFields";
 import { RepeatedFields } from "./RepeatedFields";
-import { CommonFields } from "./CommonFields";
+import { CommonFields } from "./Fields/CommonFields";
 
 export {
   TextareaFields,

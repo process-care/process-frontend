@@ -29,4 +29,8 @@ export const inputs: IInputs[] = [
     type: "date-picker",
     name: "Date-picker",
   },
+  {
+    type: "number-input",
+    name: "Number input",
+  },
 ];

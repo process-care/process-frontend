@@ -3,7 +3,7 @@ import React from "react";
 import { Input, NumberInput } from "components/Fields";
 import { Flex } from "@chakra-ui/react";
 
-import { CommonFields } from "./index";
+import { CommonFields } from "./../index";
 
 export const InputFields: React.FC = () => {
   return (
@@ -27,7 +27,6 @@ export const InputFields: React.FC = () => {
         style={{ width: "70%" }}
         type="text"
         label="Unité de mesure"
-        id="units"
         name="units"
         placeholder="cm,km, années ..."
         helpText="Cette information s'affichera à droite du champ."

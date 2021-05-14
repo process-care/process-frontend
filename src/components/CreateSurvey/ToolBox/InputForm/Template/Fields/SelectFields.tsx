@@ -1,8 +1,8 @@
 import React from "react";
 
-import { CommonFields, RepeatedFields } from "./index";
+import { CommonFields, RepeatedFields } from "./../index";
 
-export const RadioboxFields: React.FC = () => {
+export const SelectFields: React.FC = () => {
   return (
     <>
       <CommonFields />

@@ -5,7 +5,7 @@ export const SelectFields: React.FC = () => {
   return (
     <>
       <CommonFields />
-      <p>SelectFields</p>
+      Add fields
     </>
   );
 };

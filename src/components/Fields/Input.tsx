@@ -12,7 +12,7 @@ interface Props {
   label: string;
   helpText?: string;
   placeholder: string;
-  type: string;
+  type?: string;
   inputRightAddon?: string;
   minLength?: number;
   maxLength?: number;
@@ -20,13 +20,14 @@ interface Props {
   id: string;
   onChange?: (e: Event) => void;
   onBlur?: () => void;
+  style: React.CSSProperties | undefined;
 }
 
 export const CustomInput: React.FC<Props> = ({
   label,
   helpText,
   placeholder,
-  type,
+  type = "text",
   inputRightAddon,
   minLength,
   maxLength,
@@ -34,13 +35,16 @@ export const CustomInput: React.FC<Props> = ({
   name,
   onChange,
   onBlur,
+  style,
 }) => {
   return (
-    <FormControl id="email" textAlign="left">
+    <FormControl id="email" textAlign="left" style={style}>
       <FormLabel>{label}</FormLabel>
       <InputGroup size="sm">
         <Input
+          borderRadius="7px"
           type={type}
+          size="md"
           name={name}
           id={id}
           placeholder={placeholder}

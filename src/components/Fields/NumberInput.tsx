@@ -10,7 +10,6 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
-  Container,
 } from "@chakra-ui/react";
 
 interface Props {
@@ -24,6 +23,7 @@ interface Props {
   isRequired?: boolean;
   name: string;
   id: string;
+  style: React.CSSProperties | undefined;
 }
 export const CustomNumberInput: React.FC<Props> = ({
   label,
@@ -36,33 +36,32 @@ export const CustomNumberInput: React.FC<Props> = ({
   isRequired,
   name,
   id,
+  style,
 }) => {
   return (
-    <Container variant="inputContainer">
-      <FormControl id="email" textAlign="left">
-        <FormLabel>{label}</FormLabel>
-        <InputGroup size="md" w="100%">
-          <NumberInput
-            name={name}
-            id={id}
-            isRequired={isRequired}
-            defaultValue={defaultValue}
-            min={min}
-            max={max}
-            precision={precision}
-            allowMouseWheel
-            w="100%"
-          >
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
-          {inputRightAddon && <InputRightAddon children={inputRightAddon} />}
-        </InputGroup>
-        <FormHelperText fontSize="xs">{helpText}</FormHelperText>
-      </FormControl>
-    </Container>
+    <FormControl id="email" textAlign="left" style={style}>
+      <FormLabel>{label}</FormLabel>
+      <InputGroup>
+        <NumberInput
+          name={name}
+          id={id}
+          isRequired={isRequired}
+          defaultValue={defaultValue}
+          min={min}
+          max={max}
+          precision={precision}
+          allowMouseWheel
+          w="100%"
+          size="md">
+          <NumberInputField />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+        </NumberInput>
+        {inputRightAddon && <InputRightAddon children={inputRightAddon} />}
+      </InputGroup>
+      <FormHelperText fontSize="xs">{helpText}</FormHelperText>
+    </FormControl>
   );
 };

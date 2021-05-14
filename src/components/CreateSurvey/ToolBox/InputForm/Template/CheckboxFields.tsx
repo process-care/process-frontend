@@ -25,11 +25,9 @@ export const CheckboxFields: React.FC = () => {
     setResponse(newResult);
   };
 
-  console.log(response);
-
   return (
     <>
-      <CommonFields />
+      <CommonFields noPlacehoder />
       <Text variant="label">Indiquez les choix de réponse</Text>
 
       <Flex alignItems="center" justifyContent="space-between">

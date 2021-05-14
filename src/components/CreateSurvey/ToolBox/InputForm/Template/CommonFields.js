@@ -1,31 +1,38 @@
 import React from "react";
-import { Switch, Textarea } from "components/Fields";
+import { Textarea, Input } from "components/Fields";
 
 interface Props {
-  hideRequiredFields?: boolean;
+  noPlacehoder?: boolean;
 }
 
-const CommonFields: React.FC<Props> = ({ hideRequiredFields = false }) => {
+const CommonFields: React.FC<Props> = ({ noPlacehoder = false }) => {
   return (
     <>
       <Textarea
-        rows="small"
-        label="Label"
+        rows="medium"
+        label="Label de la question"
         placeholder="Renseigner le label de votre question"
         name="label"
         id="label"
       />
+      {!noPlacehoder && (
+        <Input
+          id="placeholder"
+          name="placeholder"
+          type="text"
+          label="Placeholder de la question"
+          placeholder="le placeholder s'affiche ici."
+        />
+      )}
+
       <Textarea
-        p="10px 0"
         rows="medium"
-        label="Champ d'aide"
-        placeholder="Renseigner le texte d'aide de votre question. "
+        label="Champ d'aide de la question"
+        placeholder="Renseigner le texte d'aide de votre question.Il s'affichera sous le champ. "
         name="help"
         id="help"
       />
-      <Textarea
-        p="10px 0"
-        rows="small"
+      <Input
         label="Nom interne de la question"
         placeholder="Renseigner le nom interne de votre question"
         name="internalDescription"
@@ -41,9 +48,6 @@ const CommonFields: React.FC<Props> = ({ hideRequiredFields = false }) => {
         id="internalNote"
         helpText="Ce champ n'est pas visible par les utilisateurs."
       />
-      {!hideRequiredFields && (
-        <Switch p="20px 0" label="Réponse obligatoire" id="required" />
-      )}
     </>
   );
 };

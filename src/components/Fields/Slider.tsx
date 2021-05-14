@@ -6,6 +6,8 @@ import {
   FormLabel,
 } from "@chakra-ui/react";
 
+import { useField } from "formik";
+
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 
@@ -33,7 +35,9 @@ export const CustomSlider: React.FC<Props> = ({
   min,
   max,
   reverse,
+  id,
 }) => {
+  const [field, meta] = useField(id);
   const createMarks = (max: number) => {
     const arr = [];
     for (let index = 0; index <= max; index++) {
@@ -47,8 +51,7 @@ export const CustomSlider: React.FC<Props> = ({
       <FormControl
         id="email"
         textAlign="left"
-        h={vertical ? "700px" : "fit-content"}
-      >
+        h={vertical ? "700px" : "fit-content"}>
         <FormLabel>{label}</FormLabel>
         <Range
           reverse={vertical || reverse}
@@ -59,6 +62,7 @@ export const CustomSlider: React.FC<Props> = ({
           defaultValue={defaultValue}
           vertical={vertical}
           style={vertical ? { height: "85%", margin: "30px 0 0 30px" } : {}}
+          {...field}
         />
         <FormHelperText fontSize="xs" mt={10}>
           {helpText}

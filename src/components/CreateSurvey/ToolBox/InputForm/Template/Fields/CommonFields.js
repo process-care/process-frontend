@@ -15,6 +15,7 @@ export const CommonFields: React.FC<Props> = ({ noPlacehoder = false }) => {
         name="label"
         id="label"
       />
+
       {!noPlacehoder && (
         <Input
           id="placeholder"
@@ -32,6 +33,7 @@ export const CommonFields: React.FC<Props> = ({ noPlacehoder = false }) => {
         name="help"
         id="help"
       />
+
       <Input
         label="Nom interne de la question"
         placeholder="Renseigner le nom interne de votre question"

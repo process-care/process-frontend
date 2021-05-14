@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Flex, Text } from "@chakra-ui/react";
-import { Formik } from "formik";
+import { Formik, Form } from "formik";
 
 import { formStore } from "stores/inputs";
 
@@ -26,59 +26,41 @@ const InputForm: React.FC<Props> = ({ selectedInput, onClose }) => {
     onClose();
   };
 
-  const onSubmit = (selectedInput: SelectedInput) => {
-    addInput(selectedInput);
-    onClose();
+  // const onSubmit = (selectedInput: SelectedInput) => {
+  //   addInput(selectedInput);
+  //   onClose();
+  // };
+
+  const onSubmit = (values) => {
+    console.log("Form data", values);
   };
 
   return (
-    <Formik
-      initialValues={{ email: "", password: "" }}
-      validate={(values) => {
-        const errors = {};
-        if (!values.email) {
-          errors.email = "Required";
-        } else if (
-          !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-        ) {
-          errors.email = "Invalid email address";
-        }
-        return errors;
-      }}
-      onSubmit={(values, { setSubmitting }) => {
-        setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
-          setSubmitting(false);
-        }, 400);
-      }}>
-      {({
-        values,
-        errors,
-        touched,
-        handleChange,
-        handleBlur,
-        handleSubmit,
-        isSubmitting,
-        /* and other goodies */
-      }) => (
-        <form onSubmit={handleSubmit}>
-          <Flex
-            alignItems="center"
-            justifyContent="center"
-            fontSize="30"
-            flexDirection="column"
-            px={10}>
-            <Text fontSize="lg">Créer un champ {selectedInput.type}</Text>
-            <hr />
+    <Formik initialValues={{}} onSubmit={onSubmit}>
+      {(formik) => {
+        return (
+          <Form>
+            <Flex
+              alignItems="center"
+              justifyContent="center"
+              fontSize="30"
+              flexDirection="column"
+              px={10}>
+              <Text fontSize="lg">Créer un champ {selectedInput.type}</Text>
+              <hr />
 
-            {renderFormTemplate(selectedInput)}
-            <Footer
-              onSubmit={() => onSubmit(selectedInput)}
-              onCancel={() => onCancel()}
-            />
-          </Flex>
-        </form>
-      )}
+              {renderFormTemplate(selectedInput)}
+              <Footer
+                onSubmit={() => onSubmit(selectedInput)}
+                onCancel={() => onCancel()}
+              />
+            </Flex>
+            <button type="submit" disabled={!formik.isValid}>
+              Submit
+            </button>
+          </Form>
+        );
+      }}
     </Formik>
   );
 };

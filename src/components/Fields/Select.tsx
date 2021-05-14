@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import {
   Container,
   FormControl,
@@ -7,6 +7,8 @@ import {
 } from "@chakra-ui/react";
 import t from "static/survey.json";
 import Select from "react-select";
+
+import { useField } from "formik";
 
 interface Options {
   value: string;
@@ -30,7 +32,16 @@ export const CustomSelect: React.FC<Props> = ({
   id,
   options,
   isMulti,
-}) => {
+}): ReactElement => {
+  // const [field, meta, helpers] = useField(name);
+  // const handleChange = (value) => {
+  //   field.onChange(value[0].value);
+  // };
+
+  // const handleBlur = () => {
+  //   field.onBlur(id, true);
+  // };
+
   return (
     <Container variant="inputContainer">
       <FormControl id="email" textAlign="left">
@@ -43,6 +54,9 @@ export const CustomSelect: React.FC<Props> = ({
           placeholder={placeholder}
           options={options}
           noOptionsMessage={() => t.not_found}
+          onChange={(option) =>
+            helpers.setValue({ id, option: option[0].value })
+          }
         />
         <FormHelperText fontSize="xs">{helpText}</FormHelperText>
       </FormControl>

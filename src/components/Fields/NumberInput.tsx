@@ -10,7 +10,10 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  FormErrorMessage,
 } from "@chakra-ui/react";
+
+import { useField } from "formik";
 
 interface Props {
   label: string;
@@ -38,12 +41,12 @@ export const CustomNumberInput: React.FC<Props> = ({
   id,
   style,
 }) => {
+  const [field, meta] = useField(name);
   return (
     <FormControl id="email" textAlign="left" style={style}>
       <FormLabel>{label}</FormLabel>
       <InputGroup>
         <NumberInput
-          name={name}
           id={id}
           isRequired={isRequired}
           defaultValue={defaultValue}
@@ -53,7 +56,7 @@ export const CustomNumberInput: React.FC<Props> = ({
           allowMouseWheel
           w="100%"
           size="md">
-          <NumberInputField />
+          <NumberInputField {...field} />
           <NumberInputStepper>
             <NumberIncrementStepper />
             <NumberDecrementStepper />
@@ -61,6 +64,7 @@ export const CustomNumberInput: React.FC<Props> = ({
         </NumberInput>
         {inputRightAddon && <InputRightAddon children={inputRightAddon} />}
       </InputGroup>
+      <FormErrorMessage>{meta.error}</FormErrorMessage>
       <FormHelperText fontSize="xs">{helpText}</FormHelperText>
     </FormControl>
   );

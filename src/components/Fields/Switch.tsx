@@ -4,7 +4,10 @@ import {
   FormHelperText,
   FormLabel,
   Switch,
+  FormErrorMessage,
 } from "@chakra-ui/react";
+
+import { useField } from "formik";
 
 interface Props {
   label: string;
@@ -21,6 +24,7 @@ export const CustomSwitch: React.FC<Props> = ({
   p,
   m,
 }) => {
+  const [field, meta] = useField(id);
   return (
     <>
       <FormControl
@@ -29,12 +33,12 @@ export const CustomSwitch: React.FC<Props> = ({
         p={p}
         m={m}
         d="flex"
-        alignItems="center"
-      >
-        <Switch id={id} size="md" mt={-6} />
+        alignItems="center">
+        <Switch id={id} size="md" mt={-6} {...field} />
         <FormLabel ml={5} mt={-2}>
           {label}
         </FormLabel>
+        <FormErrorMessage>{meta.error}</FormErrorMessage>
       </FormControl>
       <FormHelperText fontSize="xs">{helpText}</FormHelperText>
     </>

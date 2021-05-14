@@ -6,7 +6,10 @@ import {
   Input,
   InputGroup,
   InputRightAddon,
+  FormErrorMessage,
 } from "@chakra-ui/react";
+
+import { useField } from "formik";
 
 interface Props {
   label: string;
@@ -31,29 +34,30 @@ export const CustomInput: React.FC<Props> = ({
   minLength,
   maxLength,
   name,
-  onChange,
-  onBlur,
+
   style,
 }) => {
+  const [field, meta] = useField(name);
   return (
-    <FormControl id="email" textAlign="left" style={style}>
+    <FormControl
+      id="email"
+      textAlign="left"
+      style={style}
+      isInvalid={!!meta.error}>
       <FormLabel>{label}</FormLabel>
       <InputGroup size="sm">
         <Input
           borderRadius="7px"
           type={type}
           size="md"
-          name={name}
-          id={name}
           placeholder={placeholder}
           minLength={minLength}
           maxLength={maxLength}
-          onChange={onChange}
-          onBlur={onBlur}
+          {...field}
         />
         {inputRightAddon && <InputRightAddon children={inputRightAddon} />}
       </InputGroup>
-
+      <FormErrorMessage>{meta.error}</FormErrorMessage>
       <FormHelperText fontSize="xs">{helpText}</FormHelperText>
     </FormControl>
   );

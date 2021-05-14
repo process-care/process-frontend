@@ -1,7 +1,7 @@
 import { Box, Container } from "@chakra-ui/react";
 import React from "react";
 
-import ToolBox from "components/CreateSurvey/ToolBox";
+import ToolBox from "components/CreateSurvey/ToolBox/InputsButton";
 import Preview from "components/CreateSurvey/Preview";
 
 import IPage from "interfaces/page";
@@ -47,16 +47,14 @@ export const CreateForm: React.FC<IPage> = () => {
           w="65%"
           bg="gray.100"
           p={0}
-          alignItems="center"
-        >
+          alignItems="center">
           <Preview />
         </Container>
         <Container
           variant="createformColumn"
           w="32%"
           alignItems="center"
-          overflowY="auto"
-        >
+          overflowY="auto">
           <ToolBox
             onSelect={(type, name, id) => handleSelect(type, name, id)}
           />

@@ -1,7 +1,10 @@
 import React from "react";
+
+import { Flex, Text } from "@chakra-ui/react";
+import { Formik } from "formik";
+
 import { formStore } from "stores/inputs";
 
-import { Flex, FormControl, Text } from "@chakra-ui/react";
 import { Footer } from "./Template/Footer";
 import { renderFormTemplate } from "./utils";
 
@@ -29,21 +32,54 @@ const InputForm: React.FC<Props> = ({ selectedInput, onClose }) => {
   };
 
   return (
-    <Flex
-      alignItems="center"
-      justifyContent="center"
-      fontSize="30"
-      flexDirection="column">
-      <Text fontSize="lg">Créer un champ {selectedInput.type}</Text>
-      <hr />
-      <FormControl id="email" p="5">
-        {renderFormTemplate(selectedInput)}
-        <Footer
-          onSubmit={() => onSubmit(selectedInput)}
-          onCancel={() => onCancel()}
-        />
-      </FormControl>
-    </Flex>
+    <Formik
+      initialValues={{ email: "", password: "" }}
+      validate={(values) => {
+        const errors = {};
+        if (!values.email) {
+          errors.email = "Required";
+        } else if (
+          !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+        ) {
+          errors.email = "Invalid email address";
+        }
+        return errors;
+      }}
+      onSubmit={(values, { setSubmitting }) => {
+        setTimeout(() => {
+          alert(JSON.stringify(values, null, 2));
+          setSubmitting(false);
+        }, 400);
+      }}>
+      {({
+        values,
+        errors,
+        touched,
+        handleChange,
+        handleBlur,
+        handleSubmit,
+        isSubmitting,
+        /* and other goodies */
+      }) => (
+        <form onSubmit={handleSubmit}>
+          <Flex
+            alignItems="center"
+            justifyContent="center"
+            fontSize="30"
+            flexDirection="column"
+            px={10}>
+            <Text fontSize="lg">Créer un champ {selectedInput.type}</Text>
+            <hr />
+
+            {renderFormTemplate(selectedInput)}
+            <Footer
+              onSubmit={() => onSubmit(selectedInput)}
+              onCancel={() => onCancel()}
+            />
+          </Flex>
+        </form>
+      )}
+    </Formik>
   );
 };
 

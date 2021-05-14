@@ -42,11 +42,11 @@ export const RepeatedFields: React.FC = () => {
   };
 
   return (
-    <>
+    <Flex flexDirection="column" w="100%">
       <Text mb={4} variant="label">
         Indiquez les choix de réponse
       </Text>
-      <Flex alignItems="center" justifyContent="space-between">
+      <Flex alignItems="center" justifyContent="space-between" w="100%">
         <Box w="85%">
           <Input
             label="Réponse 1"
@@ -65,7 +65,11 @@ export const RepeatedFields: React.FC = () => {
         .filter((el) => el.id !== state[0].id)
         .map(({ id }, i) => {
           return (
-            <Flex alignItems="center" justifyContent="space-between" key={id}>
+            <Flex
+              alignItems="center"
+              justifyContent="space-between"
+              key={id}
+              w="100%">
               <Box w="85%">
                 <Input
                   label={`Réponse ${i + 2}`}
@@ -82,6 +86,6 @@ export const RepeatedFields: React.FC = () => {
             </Flex>
           );
         })}
-    </>
+    </Flex>
   );
 };

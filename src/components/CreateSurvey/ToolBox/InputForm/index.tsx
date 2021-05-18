@@ -33,10 +33,10 @@ const InputForm: React.FC<Props> = ({ selectedInput, onClose }) => {
       initialValues={fields[selectedInput.type]}
       onSubmit={(data, { setSubmitting }) => {
         setSubmitting(true);
-        console.log(data);
+        alert(JSON.stringify(data, null, 2));
         setSubmitting(false);
       }}>
-      {({ values, isValid, isSubmitting }) => {
+      {({ isValid, isSubmitting }) => {
         return (
           <Form>
             <Flex
@@ -54,10 +54,8 @@ const InputForm: React.FC<Props> = ({ selectedInput, onClose }) => {
                 onCancel={() => onCancel()}
               />
             </Flex>
-            <button type="submit" disabled={!isValid || isSubmitting}>
-              Submit
-            </button>
-            <pre>{JSON.stringify(values, null, 2)}</pre>
+
+            {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
           </Form>
         );
       }}

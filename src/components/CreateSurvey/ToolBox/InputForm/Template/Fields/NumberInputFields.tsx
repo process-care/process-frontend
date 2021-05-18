@@ -10,7 +10,7 @@ export const NumberInputFields: React.FC = () => {
     <>
       <CommonFields />
       <Input
-        style={{ width: "70%" }}
+        style={{ width: "100%" }}
         type="text"
         label="Unité de mesure"
         name="units"
@@ -29,16 +29,9 @@ export const NumberInputFields: React.FC = () => {
           label="Nb de charactères max"
           id="max_length"
           name="max_length"
+          defaultValue="20"
         />
       </Flex>
-      <Input
-        style={{ width: "70%" }}
-        type="text"
-        label="Unité de mesure"
-        name="units"
-        placeholder="cm,km, années ..."
-        helpText="Cette information s'affichera à droite du champ."
-      />
     </>
   );
 };

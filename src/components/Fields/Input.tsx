@@ -39,7 +39,7 @@ export const CustomInput: React.FC<Props> = ({
   const [field, meta] = useField(name);
   return (
     <FormControl
-      id="email"
+      id={name}
       textAlign="left"
       style={style}
       isInvalid={!!meta.error}>

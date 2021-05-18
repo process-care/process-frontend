@@ -26,7 +26,7 @@ interface Props {
   isRequired?: boolean;
   name: string;
   id: string;
-  style: React.CSSProperties | undefined;
+  style?: React.CSSProperties | undefined;
 }
 export const CustomNumberInput: React.FC<Props> = ({
   label,
@@ -41,7 +41,14 @@ export const CustomNumberInput: React.FC<Props> = ({
   id,
   style,
 }) => {
-  const [field, meta] = useField(name);
+  const [, meta, helpers] = useField(name);
+
+  React.useEffect(() => {
+    if (defaultValue) {
+      helpers.setValue(defaultValue);
+    }
+  }, [defaultValue]);
+
   return (
     <FormControl id="email" textAlign="left" style={style}>
       <FormLabel>{label}</FormLabel>
@@ -55,8 +62,9 @@ export const CustomNumberInput: React.FC<Props> = ({
           precision={precision}
           allowMouseWheel
           w="100%"
-          size="md">
-          <NumberInputField {...field} />
+          onChange={(value) => helpers.setValue(value)}>
+          <NumberInputField />
+
           <NumberInputStepper>
             <NumberIncrementStepper />
             <NumberDecrementStepper />

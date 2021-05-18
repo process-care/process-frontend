@@ -24,7 +24,6 @@ export const InputFields: React.FC = () => {
         />
       </Flex>
       <Input
-        style={{ width: "70%" }}
         type="text"
         label="Unité de mesure"
         name="units"

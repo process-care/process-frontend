@@ -15,7 +15,6 @@ export const renderInput = (input: Inputs): React.ReactNode => {
       return (
         <Input
           name="dd"
-          id="dd"
           min_length={2}
           max_length={4}
           label="Question #"

@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  Container,
-  FormControl,
-  FormHelperText,
-  FormLabel,
-} from "@chakra-ui/react";
+import { FormControl, FormHelperText, FormLabel } from "@chakra-ui/react";
 
 import { useField } from "formik";
 
@@ -37,7 +32,20 @@ export const CustomSlider: React.FC<Props> = ({
   reverse,
   id,
 }) => {
-  const [field] = useField(id);
+  const [, , helpers] = useField(id);
+
+  React.useEffect(() => {
+    if (defaultValue) {
+      helpers.setValue(defaultValue);
+    }
+  }, [defaultValue]);
+
+  React.useEffect(() => {
+    if (defaultValue) {
+      helpers.setValue(defaultValue);
+    }
+  }, [defaultValue]);
+
   const createMarks = (max: number) => {
     const arr = [];
     for (let index = 0; index <= max; index++) {
@@ -47,27 +55,25 @@ export const CustomSlider: React.FC<Props> = ({
   };
 
   return (
-    <Container variant="inputContainer">
-      <FormControl
-        id="email"
-        textAlign="left"
-        h={vertical ? "700px" : "fit-content"}>
-        <FormLabel>{label}</FormLabel>
-        <Range
-          reverse={vertical || reverse}
-          marks={createMarks(max)}
-          min={min}
-          max={max}
-          step={step}
-          defaultValue={defaultValue}
-          vertical={vertical}
-          style={vertical ? { height: "85%", margin: "30px 0 0 30px" } : {}}
-          {...field}
-        />
-        <FormHelperText fontSize="xs" mt={10}>
-          {helpText}
-        </FormHelperText>
-      </FormControl>
-    </Container>
+    <FormControl
+      id="email"
+      textAlign="left"
+      h={vertical ? "700px" : "fit-content"}>
+      <FormLabel>{label}</FormLabel>
+      <Range
+        reverse={vertical || reverse}
+        marks={createMarks(max)}
+        min={min}
+        max={max}
+        step={step}
+        defaultValue={defaultValue}
+        vertical={vertical}
+        style={vertical ? { height: "85%", margin: "30px 0 0 30px" } : {}}
+        onChange={(value) => helpers.setValue(value)}
+      />
+      <FormHelperText fontSize="xs" mt={10}>
+        {helpText}
+      </FormHelperText>
+    </FormControl>
   );
 };

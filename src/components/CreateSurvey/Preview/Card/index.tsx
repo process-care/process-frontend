@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, useColorModeValue, Container } from "@chakra-ui/react";
+import { Box, useColorModeValue, Container, Badge } from "@chakra-ui/react";
 import { useDrag, useDrop, DropTargetMonitor } from "react-dnd";
 import { ItemTypes } from "./itemTypes";
 import { XYCoord } from "dnd-core";
@@ -100,7 +100,21 @@ const Card: React.FC<CardProps> = ({ input, index, moveCard }) => {
       opacity={opacity}
       data-handler-id={handlerId}>
       <Container variant="inputContainer">
-        <Box color={color}>{renderInput(input)}</Box>
+        <Box color={color}>
+          <Badge
+            minW="120px"
+            float="right"
+            borderRadius="50px"
+            px={5}
+            py={1}
+            bgColor="blackAlpha.800"
+            color="white"
+            fontSize="10px">
+            {input.name}
+          </Badge>
+          <Box style={{ clear: "both" }} />
+          {renderInput(input)}
+        </Box>
       </Container>
     </Box>
   );

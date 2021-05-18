@@ -1,12 +1,13 @@
 import React from "react";
 import { Box, Button, Flex } from "@chakra-ui/react";
-import { formStore } from "stores/inputs";
 import Card from "./Card";
 import { useDrop } from "react-dnd";
 import { ItemTypes } from "./Card/itemTypes";
 import t from "static/preview.json";
 import update from "immutability-helper";
 import Inputs from "interfaces/inputs";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
+import { removeAllInputs, selectInputs } from "redux/slices/formBuilder";
 
 import { Formik, Form } from "formik";
 
@@ -20,13 +21,14 @@ export interface PreviewState {
 }
 
 const Preview: React.FC = () => {
-  const inputsState = formStore((state) => state.form.inputs);
-  const removeAllInputs = formStore((state) => state.removeAllInputs);
-  const [cards, setCards] = React.useState(inputsState);
+  const dispatch = useAppDispatch();
+  const { inputs, inputsCount } = useAppSelector(selectInputs);
+
+  const [cards, setCards] = React.useState(inputs);
 
   React.useEffect(() => {
-    setCards(inputsState);
-  }, [inputsState]);
+    setCards(inputs);
+  }, [inputs]);
 
   const moveCard = React.useCallback(
     (dragIndex: number, hoverIndex: number) => {
@@ -102,8 +104,9 @@ const Preview: React.FC = () => {
 
   return (
     <Container>
-      <Button variant="box" onClick={removeAllInputs} mb={8}>
-        {t.clear_all_fields}
+      <Button variant="box" onClick={() => dispatch(removeAllInputs())} mb={8}>
+        Supprimer le{inputsCount > 1 && "s"} {inputsCount !== 1 && inputsCount}{" "}
+        champs
       </Button>
       {cards.map((input, i) => renderCard(input, i))}
     </Container>

@@ -6,10 +6,12 @@ import { Layout } from "components/Layout";
 import routes from "routes";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { store } from "redux/store";
+import { Provider } from "react-redux";
 
 const App: React.FC = () => {
   return (
-    <>
+    <Provider store={store}>
       <ColorModeScript />
       <ChakraProvider theme={theme}>
         <CSSReset />
@@ -33,7 +35,7 @@ const App: React.FC = () => {
           </BrowserRouter>
         </DndProvider>
       </ChakraProvider>
-    </>
+    </Provider>
   );
 };
 

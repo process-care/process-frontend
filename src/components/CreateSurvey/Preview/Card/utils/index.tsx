@@ -17,15 +17,17 @@ export const renderInput = (input: Inputs): React.ReactNode => {
   switch (input.type) {
     case "input":
       return (
-        <Input
-          name="dd"
-          min_length={2}
-          max_length={4}
-          label="Question #"
-          type="email"
-          helpText="Voici un texte d'aide - Maximum 4 charactères."
-          placeholder="Votre réponse ici à la question 1"
-        />
+        <>
+          <Input
+            name="dd"
+            min_length={2}
+            max_length={4}
+            label="Question #"
+            type="email"
+            helpText="Voici un texte d'aide - Maximum 4 charactères."
+            placeholder="Votre réponse ici à la question 1"
+          />
+        </>
       );
       break;
     case "number-input":

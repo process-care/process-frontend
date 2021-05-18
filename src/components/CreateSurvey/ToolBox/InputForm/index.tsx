@@ -1,13 +1,16 @@
 import React from "react";
 
-import { Flex, Text } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 
-import { formStore } from "stores/inputs";
+// import { formStore } from "stores/inputs";
+
+import { useAppDispatch } from "redux/hooks";
 
 import { Footer } from "./Template/Footer";
 import { renderFormTemplate } from "./utils";
 import { fields } from "./Template/logic/initialValues";
+import { updateInput } from "redux/slices/formBuilder";
 
 interface SelectedInput {
   type: string;
@@ -21,8 +24,8 @@ interface Props {
 }
 
 const InputForm: React.FC<Props> = ({ selectedInput, onClose }) => {
-  const addInput = formStore((state) => state.addInput);
-
+  // const addInput = formStore((state) => state.addInput);
+  const dispatch = useAppDispatch();
   const onCancel = () => {
     onClose();
   };
@@ -34,7 +37,7 @@ const InputForm: React.FC<Props> = ({ selectedInput, onClose }) => {
       initialValues={fields[type]}
       onSubmit={(data, { setSubmitting }) => {
         setSubmitting(true);
-        addInput(selectedInput);
+        // dispatch(addInput(selectedInput));
         console.log("FORM DATA : ", data);
         onClose();
       }}>
@@ -49,7 +52,9 @@ const InputForm: React.FC<Props> = ({ selectedInput, onClose }) => {
               px={10}>
               <Text fontSize="lg">Créer un champ {selectedInput.type}</Text>
               <hr />
-
+              <Button onClick={() => dispatch(updateInput(selectedInput))}>
+                Modifier
+              </Button>
               {renderFormTemplate(selectedInput)}
 
               <Footer

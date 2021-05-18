@@ -21,16 +21,24 @@ export const NumberInputFields: React.FC = () => {
         <NumberInput
           style={{ width: "45%" }}
           label="Nb de charactères min"
-          id="minLength"
-          name="minLength"
+          id="min_length"
+          name="min_length"
         />
         <NumberInput
           style={{ width: "45%" }}
           label="Nb de charactères max"
-          id="maxLength"
-          name="maxLength"
+          id="max_length"
+          name="max_length"
         />
       </Flex>
+      <Input
+        style={{ width: "70%" }}
+        type="text"
+        label="Unité de mesure"
+        name="units"
+        placeholder="cm,km, années ..."
+        helpText="Cette information s'affichera à droite du champ."
+      />
     </>
   );
 };

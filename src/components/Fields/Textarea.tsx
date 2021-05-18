@@ -14,8 +14,8 @@ interface Props {
   label: string;
   helpText?: string;
   placeholder: string;
-  minLength?: number;
-  maxLength?: number;
+  min_length?: number;
+  max_length?: number;
   rows: "small" | "medium" | "large";
   isRequired?: boolean;
   name: string;
@@ -27,8 +27,8 @@ export const CustomTextarea: React.FC<Props> = ({
   label,
   helpText,
   placeholder,
-  minLength,
-  maxLength,
+  min_length,
+  max_length,
   rows,
   isRequired,
   name,
@@ -51,8 +51,8 @@ export const CustomTextarea: React.FC<Props> = ({
         style={{ resize: "none" }}
         rows={getRows(rows)}
         placeholder={placeholder}
-        minLength={minLength}
-        maxLength={maxLength}
+        min_length={min_length}
+        max_length={max_length}
         {...field}
       />
       <FormErrorMessage>{meta.error}</FormErrorMessage>

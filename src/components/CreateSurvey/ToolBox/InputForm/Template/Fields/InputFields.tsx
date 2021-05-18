@@ -13,14 +13,14 @@ export const InputFields: React.FC = () => {
         <NumberInput
           style={{ width: "45%" }}
           label="Nb de charactères min"
-          id="minLength"
-          name="minLength"
+          id="min_length"
+          name="min_length"
         />
         <NumberInput
           style={{ width: "45%" }}
           label="Nb de charactères max"
-          id="maxLength"
-          name="maxLength"
+          id="max_length"
+          name="max_length"
         />
       </Flex>
       <Input

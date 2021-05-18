@@ -17,8 +17,8 @@ interface Props {
   placeholder: string;
   type?: string;
   inputRightAddon?: string;
-  minLength?: number;
-  maxLength?: number;
+  min_length?: number;
+  max_length?: number;
   name: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -31,10 +31,9 @@ export const CustomInput: React.FC<Props> = ({
   placeholder,
   type = "text",
   inputRightAddon,
-  minLength,
-  maxLength,
+  min_length,
+  max_length,
   name,
-
   style,
 }) => {
   const [field, meta] = useField(name);
@@ -51,8 +50,8 @@ export const CustomInput: React.FC<Props> = ({
           type={type}
           size="md"
           placeholder={placeholder}
-          minLength={minLength}
-          maxLength={maxLength}
+          min_length={min_length}
+          max_length={max_length}
           {...field}
         />
         {inputRightAddon && <InputRightAddon children={inputRightAddon} />}

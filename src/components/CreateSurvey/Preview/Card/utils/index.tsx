@@ -16,8 +16,8 @@ export const renderInput = (input: Inputs): React.ReactNode => {
         <Input
           name="dd"
           id="dd"
-          minLength={2}
-          maxLength={4}
+          min_length={2}
+          max_length={4}
           label="Question #"
           type="email"
           helpText="Voici un texte d'aide - Maximum 4 charactères."

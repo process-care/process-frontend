@@ -6,9 +6,8 @@ import {
   FormLabel,
 } from "@chakra-ui/react";
 import t from "static/survey.json";
+import { Field } from "formik";
 import Select from "react-select";
-
-import { useField } from "formik";
 
 interface Options {
   value: string;
@@ -24,6 +23,7 @@ interface Props {
   isRequired?: boolean;
   isMulti?: boolean;
 }
+
 export const CustomSelect: React.FC<Props> = ({
   label,
   helpText,
@@ -33,31 +33,29 @@ export const CustomSelect: React.FC<Props> = ({
   options,
   isMulti,
 }): ReactElement => {
-  // const [field, meta, helpers] = useField(name);
-  // const handleChange = (value) => {
-  //   field.onChange(value[0].value);
-  // };
-
-  // const handleBlur = () => {
-  //   field.onBlur(id, true);
-  // };
+  const SelectField = (FieldProps) => {
+    return (
+      <Select
+        isMulti={isMulti}
+        isClearable
+        id={id}
+        isRequired={isRequired}
+        placeholder={placeholder}
+        noOptionsMessage={() => t.not_found}
+        options={FieldProps.options}
+        {...FieldProps.field}
+        onChange={(option) =>
+          FieldProps.form.setFieldValue(FieldProps.field.name, option)
+        }
+      />
+    );
+  };
 
   return (
     <Container variant="inputContainer">
       <FormControl id="email" textAlign="left">
         <FormLabel>{label}</FormLabel>
-        <Select
-          isMulti={isMulti}
-          isClearable
-          id={id}
-          isRequired={isRequired}
-          placeholder={placeholder}
-          options={options}
-          noOptionsMessage={() => t.not_found}
-          onChange={(option) =>
-            helpers.setValue({ id, option: option[0].value })
-          }
-        />
+        <Field name={id} options={options} component={SelectField} />
         <FormHelperText fontSize="xs">{helpText}</FormHelperText>
       </FormControl>
     </Container>

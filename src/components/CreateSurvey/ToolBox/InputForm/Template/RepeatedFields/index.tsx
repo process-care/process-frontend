@@ -1,91 +1,55 @@
 import React from "react";
-import { v4 as uuidv4 } from "uuid";
+import { FieldArray, useField } from "formik";
+import { Textarea } from "components/Fields";
+import { Flex, Box, Button } from "@chakra-ui/react";
 
-import { Input } from "components/Fields";
-import { Button, Flex, Text, Box } from "@chakra-ui/react";
-
-interface State {
-  id: string;
-  value: string;
-}
-
-const firstFieldId = uuidv4();
 export const RepeatedFields: React.FC = () => {
-  const initialResponse = [
-    {
-      id: firstFieldId,
-      value: "",
-    },
-  ];
+  const name = "responses";
+  const [field] = useField(name);
 
-  const [state, setState] = React.useState<State[]>(initialResponse);
-
-  const addInput = () => {
-    setState([...state, { id: uuidv4(), value: "" }]);
-  };
-
-  const removeInput = (currentId: string) => {
-    setState(state.filter((el) => el.id !== currentId));
-  };
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target) {
-      const { target } = event;
-      const { value, name } = target;
-
-      setState([
-        ...state.map((el) => {
-          return name === el.id ? { ...el, id: name, value } : { ...el };
-        }),
-      ]);
-    }
-  };
-
+  console.log("F in array", field);
   return (
-    <Flex flexDirection="column" w="100%">
-      <Text mb={4} variant="label">
-        Indiquez les choix de réponse
-      </Text>
-      <Flex alignItems="center" justifyContent="space-between" w="100%">
-        <Box w="85%">
-          <Input
-            label="Réponse 1"
-            placeholder="Renseignez la réponse 1"
-            type="text"
-            name={firstFieldId}
-            onChange={(e) => handleChange(e)}
-          />
-        </Box>
-        <Button mt={6} onClick={() => addInput()} variant="solid">
-          +
-        </Button>
-      </Flex>
-
-      {state
-        .filter((el) => el.id !== state[0].id)
-        .map(({ id }, i) => {
-          return (
-            <Flex
-              alignItems="center"
-              justifyContent="space-between"
-              key={id}
-              w="100%">
-              <Box w="85%">
-                <Input
-                  label={`Réponse ${i + 2}`}
-                  placeholder={`Renseigner la réponse ${i + 2}`}
-                  type="text"
-                  name={id}
-                  onChange={(e) => handleChange(e)}
-                />
-              </Box>
-
-              <Button mt={6} variant="solid" onClick={() => removeInput(id)}>
-                -
+    <Box w="100%">
+      <FieldArray
+        name={name}
+        render={(arrayHelpers) => (
+          <Box w="100%">
+            {field.value?.length > 0 ? (
+              field.value.map((_, index: number) => (
+                <Flex key={index} w="100%">
+                  <Textarea
+                    id={`Réponse ${index}`}
+                    label={`Réponse ${index}`}
+                    placeholder={`Réponse ${index}`}
+                    rows="small"
+                    name={`responses.${index}`}
+                  />
+                  <Flex ml={3} mt={8}>
+                    <Button
+                      type="button"
+                      onClick={() => arrayHelpers.remove(index)}>
+                      -
+                    </Button>
+                    {index + 1 === field.value.length && (
+                      <Button
+                        ml={3}
+                        type="button"
+                        onClick={() => arrayHelpers.push("")}
+                        variant="solid">
+                        +
+                      </Button>
+                    )}
+                  </Flex>
+                </Flex>
+              ))
+            ) : (
+              <Button onClick={() => arrayHelpers.push("")} variant="rounded">
+                Ajouter une réponse
               </Button>
-            </Flex>
-          );
-        })}
-    </Flex>
+            )}
+          </Box>
+        )}
+      />
+    </Box>
   );
 };

@@ -3,11 +3,11 @@ import { Switch } from "components/Fields";
 import React from "react";
 
 interface Props {
-  onSubmit: () => void;
   onCancel: () => void;
+  disabled: boolean;
 }
 
-export const Footer: React.FC<Props> = ({ onSubmit, onCancel }) => {
+export const Footer: React.FC<Props> = ({ onCancel, disabled }) => {
   return (
     <>
       <Switch p="20px 0" label="Réponse obligatoire" id="required" />
@@ -17,14 +17,10 @@ export const Footer: React.FC<Props> = ({ onSubmit, onCancel }) => {
         w="75%"
         mx="auto"
         pt={2}>
-        <Button onClick={() => onSubmit()} variant="rounded">
+        <Button type="submit" variant="rounded" disabled={disabled}>
           Valider
         </Button>
-        <Button
-          variant="link"
-          textDecoration="underline"
-          color="black"
-          onClick={() => onCancel()}>
+        <Button variant="link" onClick={() => onCancel()}>
           Annuler
         </Button>
       </ButtonGroup>

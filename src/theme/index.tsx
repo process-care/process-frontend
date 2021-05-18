@@ -67,6 +67,13 @@ const theme = extendTheme({
       },
 
       variants: {
+        link: () => ({
+          color: "black",
+          textDecoration: "underline",
+          _hover: {
+            color: "gray.600",
+          },
+        }),
         box: (props) => ({
           bg: "transparent",
           borderRadius: "none",

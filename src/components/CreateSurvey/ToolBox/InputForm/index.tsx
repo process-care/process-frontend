@@ -3,10 +3,11 @@ import React from "react";
 import { Flex, Text } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 
-import { formStore } from "stores/inputs";
+// import { formStore } from "stores/inputs";
 
 import { Footer } from "./Template/Footer";
 import { renderFormTemplate } from "./utils";
+import { fields } from "./Template/logic/initialValues";
 
 interface SelectedInput {
   type: string;
@@ -20,24 +21,22 @@ interface Props {
 }
 
 const InputForm: React.FC<Props> = ({ selectedInput, onClose }) => {
-  const addInput = formStore((state) => state.addInput);
+  // const addInput = formStore((state) => state.addInput);
 
   const onCancel = () => {
     onClose();
   };
 
-  // const onSubmit = (selectedInput: SelectedInput) => {
-  //   addInput(selectedInput);
-  //   onClose();
-  // };
-
-  const onSubmit = (values) => {
-    console.log("Form data", values);
-  };
-
+  console.log(selectedInput);
   return (
-    <Formik initialValues={{}} onSubmit={onSubmit}>
-      {(formik) => {
+    <Formik
+      initialValues={fields[selectedInput.type]}
+      onSubmit={(data, { setSubmitting }) => {
+        setSubmitting(true);
+        console.log(data);
+        setSubmitting(false);
+      }}>
+      {({ values, isValid, isSubmitting }) => {
         return (
           <Form>
             <Flex
@@ -51,13 +50,14 @@ const InputForm: React.FC<Props> = ({ selectedInput, onClose }) => {
 
               {renderFormTemplate(selectedInput)}
               <Footer
-                onSubmit={() => onSubmit(selectedInput)}
+                disabled={!isValid || isSubmitting}
                 onCancel={() => onCancel()}
               />
             </Flex>
-            <button type="submit" disabled={!formik.isValid}>
+            <button type="submit" disabled={!isValid || isSubmitting}>
               Submit
             </button>
+            <pre>{JSON.stringify(values, null, 2)}</pre>
           </Form>
         );
       }}

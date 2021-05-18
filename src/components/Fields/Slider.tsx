@@ -37,7 +37,7 @@ export const CustomSlider: React.FC<Props> = ({
   reverse,
   id,
 }) => {
-  const [field, meta] = useField(id);
+  const [field] = useField(id);
   const createMarks = (max: number) => {
     const arr = [];
     for (let index = 0; index <= max; index++) {

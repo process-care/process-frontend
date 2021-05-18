@@ -27,13 +27,15 @@ const InputForm: React.FC<Props> = ({ selectedInput, onClose }) => {
     onClose();
   };
 
+  const { type } = selectedInput;
+
   return (
     <Formik
-      initialValues={fields[selectedInput.type]}
+      initialValues={fields[type]}
       onSubmit={(data, { setSubmitting }) => {
         setSubmitting(true);
         addInput(selectedInput);
-
+        console.log("FORM DATA : ", data);
         onClose();
       }}>
       {({ isValid, isSubmitting }) => {
@@ -49,6 +51,7 @@ const InputForm: React.FC<Props> = ({ selectedInput, onClose }) => {
               <hr />
 
               {renderFormTemplate(selectedInput)}
+
               <Footer
                 disabled={!isValid || isSubmitting}
                 onCancel={() => onCancel()}

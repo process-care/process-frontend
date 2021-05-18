@@ -71,7 +71,7 @@ const Preview: React.FC = () => {
         <Formik
           initialValues={{}}
           onSubmit={(data) => {
-            console.log(data);
+            console.log("DATA :", data);
           }}>
           {() => {
             return (

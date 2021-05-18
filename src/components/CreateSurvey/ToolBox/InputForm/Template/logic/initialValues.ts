@@ -17,7 +17,7 @@ const multipleInputFieldsInitialValues = {
   responses: [],
 };
 
-export const fields = {
+export const fields: { [type: string]: Record<string, unknown> } = {
   input: {
     ...commonFieldsInitialValues,
     ...inputFieldsInitialValues,

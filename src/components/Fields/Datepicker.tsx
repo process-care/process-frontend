@@ -16,16 +16,25 @@ interface Props {
   label: string;
   helpText?: string;
 }
+
 export const CustomDatePicker: React.FC<Props> = ({ id, label, helpText }) => {
   const [field, meta] = useField(id);
-  const [startDate, setStartDate] = React.useState(new Date());
+  const [startDate, setStartDate] = React.useState<Date | [Date, Date] | null>(
+    new Date()
+  );
+  const handleChange = (date: Date | [Date, Date] | null) => {
+    if (date) {
+      setStartDate(date);
+    }
+  };
+
   return (
     <FormControl id={id} textAlign="left">
       <FormLabel>{label}</FormLabel>
       <DatePicker
         {...field}
         selected={startDate}
-        onChange={(date) => setStartDate(date)}
+        onChange={(d) => handleChange(d)}
       />
       <FormErrorMessage>{meta.error}</FormErrorMessage>
       <FormHelperText fontSize="xs">{helpText}</FormHelperText>

@@ -7,7 +7,6 @@ export const RepeatedFields: React.FC = () => {
   const name = "responses";
   const [field] = useField(name);
 
-  console.log("F in array", field);
   return (
     <Box w="100%">
       <FieldArray

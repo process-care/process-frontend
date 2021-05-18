@@ -10,7 +10,11 @@ import Drawer from "components/Drawer";
 import InputForm from "components/CreateSurvey/ToolBox/InputForm";
 import PageBuilder from "components/CreateSurvey/PageBuilder";
 
+import { formStore } from "stores/inputs";
+
 export const CreateForm: React.FC<IPage> = () => {
+  const addInput = formStore((state) => state.addInput);
+
   const [selectedInput, setSelectedInput] = React.useState({
     type: "",
     name: "",
@@ -21,6 +25,7 @@ export const CreateForm: React.FC<IPage> = () => {
   const handleSelect = (type: string, name: string, id: number) => {
     if (id) {
       setSelectedInput({ type, name, id });
+      addInput({ type, name, id });
       setIsOpen(true);
     }
   };

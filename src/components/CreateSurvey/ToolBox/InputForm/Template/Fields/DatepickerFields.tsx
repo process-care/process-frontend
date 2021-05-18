@@ -1,12 +1,10 @@
 import React from "react";
-
-import { CommonFields } from "./../index";
+import { CommonFields } from "./CommonFields";
 
 export const DatepickerFields: React.FC = () => {
   return (
     <>
       <CommonFields />
-      <p>Datepicker</p>
     </>
   );
 };

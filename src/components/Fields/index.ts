@@ -6,6 +6,7 @@ import { CustomRadioBox as Radiobox } from "components/Fields/Radiobox";
 import { CustomSelect as Select } from "components/Fields/Select";
 import { CustomSlider as Slider } from "components/Fields/Slider";
 import { CustomSwitch as Switch } from "components/Fields/Switch";
+import { CustomDatePicker as Datepicker } from "components/Fields/Datepicker";
 
 export {
   Input,
@@ -16,4 +17,5 @@ export {
   Select,
   Slider,
   Switch,
+  Datepicker,
 };

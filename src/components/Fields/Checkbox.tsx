@@ -27,22 +27,20 @@ export const CustomCheckbox: React.FC<Props> = ({
   checkbox,
 }) => {
   return (
-    <Container variant="inputContainer">
-      <FormControl id="email" textAlign="left">
-        <FormLabel>{label}</FormLabel>
-        <CheckboxGroup colorScheme="green">
-          <HStack flexWrap="wrap" spacing={5}>
-            {checkbox.map(({ id, value, labelValue }) => {
-              return (
-                <Checkbox id={id} name={value} value={value} key={id}>
-                  {labelValue}
-                </Checkbox>
-              );
-            })}
-          </HStack>
-        </CheckboxGroup>
-        <FormHelperText fontSize="xs">{helpText}</FormHelperText>
-      </FormControl>
-    </Container>
+    <FormControl id="email" textAlign="left">
+      <FormLabel>{label}</FormLabel>
+      <CheckboxGroup colorScheme="green">
+        <HStack flexWrap="wrap" spacing={5}>
+          {checkbox.map(({ id, value, labelValue }) => {
+            return (
+              <Checkbox id={id} name={value} value={value} key={id}>
+                {labelValue}
+              </Checkbox>
+            );
+          })}
+        </HStack>
+      </CheckboxGroup>
+      <FormHelperText fontSize="xs">{helpText}</FormHelperText>
+    </FormControl>
   );
 };

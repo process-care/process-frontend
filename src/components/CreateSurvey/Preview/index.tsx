@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import { formStore } from "stores/inputs";
 import Card from "./Card";
 import { useDrop } from "react-dnd";
@@ -7,6 +7,8 @@ import { ItemTypes } from "./Card/itemTypes";
 import t from "static/preview.json";
 import update from "immutability-helper";
 import Inputs from "interfaces/inputs";
+
+import { Formik, Form } from "formik";
 
 export interface Item {
   id: number;
@@ -65,8 +67,27 @@ const Preview: React.FC = () => {
         alignItems="center"
         h="100%"
         overflowY="auto"
-        p={10}>
-        {children}
+        py={10}>
+        <Formik
+          initialValues={{}}
+          onSubmit={(data, { setSubmitting }) => {
+            console.log(data);
+          }}>
+          {({ isValid, isSubmitting }) => {
+            return (
+              <Form style={{ width: "100%" }}>
+                <Flex
+                  alignItems="center"
+                  justifyContent="center"
+                  fontSize="30"
+                  flexDirection="column"
+                  px={10}>
+                  {children}
+                </Flex>
+              </Form>
+            );
+          }}
+        </Formik>
       </Box>
     );
   };
@@ -85,7 +106,6 @@ const Preview: React.FC = () => {
         {t.clear_all_fields}
       </Button>
       {cards.map((input, i) => renderCard(input, i))}
-      {/* <MockInput /> */}
     </Container>
   );
 };

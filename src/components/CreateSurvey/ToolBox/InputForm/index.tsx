@@ -3,7 +3,7 @@ import React from "react";
 import { Flex, Text } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 
-// import { formStore } from "stores/inputs";
+import { formStore } from "stores/inputs";
 
 import { Footer } from "./Template/Footer";
 import { renderFormTemplate } from "./utils";
@@ -21,20 +21,20 @@ interface Props {
 }
 
 const InputForm: React.FC<Props> = ({ selectedInput, onClose }) => {
-  // const addInput = formStore((state) => state.addInput);
+  const addInput = formStore((state) => state.addInput);
 
   const onCancel = () => {
     onClose();
   };
 
-  console.log(selectedInput);
   return (
     <Formik
       initialValues={fields[selectedInput.type]}
       onSubmit={(data, { setSubmitting }) => {
         setSubmitting(true);
-        alert(JSON.stringify(data, null, 2));
-        setSubmitting(false);
+        addInput(selectedInput);
+
+        onClose();
       }}>
       {({ isValid, isSubmitting }) => {
         return (

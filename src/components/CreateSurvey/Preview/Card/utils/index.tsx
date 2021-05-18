@@ -1,11 +1,16 @@
-import { CustomInput as Input } from "components/Fields/Input";
-import { CustomTextarea as Textarea } from "components/Fields/Textarea";
-import { CustomNumberInput as NumberInput } from "components/Fields/NumberInput";
-import { CustomCheckbox as Checkbox } from "components/Fields/Checkbox";
-import { CustomRadioBox as Radiobox } from "components/Fields/Radiobox";
-import { CustomSelect as Select } from "components/Fields/Select";
-import { CustomSlider as Slider } from "components/Fields/Slider";
+import {
+  Input,
+  NumberInput,
+  Checkbox,
+  Radiobox,
+  Select,
+  Slider,
+  Switch,
+  Datepicker,
+  Textarea,
+} from "components/Fields";
 import Inputs from "interfaces/inputs";
+import React from "react";
 
 export const renderInput = (input: Inputs): React.ReactNode => {
   // TO DO REFACTO
@@ -105,7 +110,7 @@ export const renderInput = (input: Inputs): React.ReactNode => {
       );
       break;
     case "date-picker":
-      return "date picker";
+      return <Datepicker label="Date de naissance" id="datePicker" />;
       break;
 
     default:

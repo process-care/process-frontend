@@ -5,7 +5,6 @@ import {
   Radiobox,
   Select,
   Slider,
-  Switch,
   Datepicker,
   Textarea,
 } from "components/Fields";

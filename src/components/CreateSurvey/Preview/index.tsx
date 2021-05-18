@@ -70,10 +70,10 @@ const Preview: React.FC = () => {
         py={10}>
         <Formik
           initialValues={{}}
-          onSubmit={(data, { setSubmitting }) => {
+          onSubmit={(data) => {
             console.log(data);
           }}>
-          {({ isValid, isSubmitting }) => {
+          {() => {
             return (
               <Form style={{ width: "100%" }}>
                 <Flex

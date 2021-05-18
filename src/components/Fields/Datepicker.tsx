@@ -17,7 +17,7 @@ interface Props {
   helpText?: string;
 }
 export const CustomDatePicker: React.FC<Props> = ({ id, label, helpText }) => {
-  const [field, meta, helpers] = useField(id);
+  const [field, meta] = useField(id);
   const [startDate, setStartDate] = React.useState(new Date());
   return (
     <FormControl id={id} textAlign="left">

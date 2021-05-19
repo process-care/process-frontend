@@ -44,6 +44,7 @@ export const fields: { [type: string]: Record<string, unknown> } = {
   },
   slider: {
     ...multipleInputFieldsInitialValues,
+    orientation: "",
   },
   "date-picker": {
     ...multipleInputFieldsInitialValues,

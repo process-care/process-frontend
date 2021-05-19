@@ -1,25 +1,17 @@
 import React from "react";
 
-import { Button, Flex, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
-
-// import { formStore } from "stores/inputs";
-
 import { useAppDispatch } from "redux/hooks";
 
 import { Footer } from "./Template/Footer";
 import { renderFormTemplate } from "./utils";
 import { fields } from "./Template/logic/initialValues";
 import { updateInput } from "redux/slices/formBuilder";
-
-interface SelectedInput {
-  type: string;
-  name: string;
-  id: number;
-}
+import Inputs from "interfaces/inputs";
 
 interface Props {
-  selectedInput: SelectedInput;
+  selectedInput: Inputs;
   onClose: () => void;
 }
 
@@ -28,6 +20,17 @@ const InputForm: React.FC<Props> = ({ selectedInput, onClose }) => {
   const dispatch = useAppDispatch();
   const onCancel = () => {
     onClose();
+  };
+  const onChange = (event: React.FormEvent<HTMLFormElement>) => {
+    const target = event.target as HTMLFormElement;
+    if (target !== null) {
+      dispatch(
+        updateInput({
+          id: selectedInput.id,
+          data: { [target.id]: target.value },
+        })
+      );
+    }
   };
 
   const { type } = selectedInput;
@@ -43,7 +46,7 @@ const InputForm: React.FC<Props> = ({ selectedInput, onClose }) => {
       }}>
       {({ isValid, isSubmitting }) => {
         return (
-          <Form>
+          <Form onChange={(event) => onChange(event)}>
             <Flex
               alignItems="center"
               justifyContent="center"
@@ -52,9 +55,7 @@ const InputForm: React.FC<Props> = ({ selectedInput, onClose }) => {
               px={10}>
               <Text fontSize="lg">Créer un champ {selectedInput.type}</Text>
               <hr />
-              <Button onClick={() => dispatch(updateInput(selectedInput))}>
-                Modifier
-              </Button>
+
               {renderFormTemplate(selectedInput)}
 
               <Footer

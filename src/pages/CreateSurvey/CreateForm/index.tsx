@@ -19,11 +19,11 @@ export const CreateForm: React.FC<IPage> = () => {
   const [selectedInput, setSelectedInput] = React.useState({
     type: "",
     name: "",
-    id: 0,
+    id: "",
   });
   const [isOpen, setIsOpen] = React.useState(false);
 
-  const handleSelect = (type: string, name: string, id: number) => {
+  const handleSelect = (type: string, name: string, id: string) => {
     if (id) {
       setSelectedInput({ type, name, id });
       dispatch(addInput({ type, name, id }));

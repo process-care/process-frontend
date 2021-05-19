@@ -17,7 +17,7 @@ export const RepeatedFields: React.FC = () => {
               field.value.map((_, index: number) => (
                 <Flex key={index} w="100%">
                   <Textarea
-                    id={`Réponse ${index}`}
+                    id={`response_${index}`}
                     label={`Réponse ${index}`}
                     placeholder={`Réponse ${index}`}
                     rows="small"

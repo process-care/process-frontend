@@ -11,21 +11,23 @@ import {
 import Inputs from "interfaces/inputs";
 import React from "react";
 
+import t from "static/input.json";
+
 export const renderInput = (input: Inputs): React.ReactNode => {
-  // TO DO REFACTO
+  console.log("Input", t);
 
   switch (input.type) {
     case "input":
       return (
         <>
           <Input
-            name="dd"
-            min_length={2}
-            max_length={4}
-            label="Question #"
-            type="email"
-            helpText="Voici un texte d'aide - Maximum 4 charactères."
-            placeholder="Votre réponse ici à la question 1"
+            name={input.id || "input"}
+            min_length={input.min_length}
+            max_length={input.max_length}
+            type="text"
+            label={input.label || t.label}
+            helpText={input.help_text || t.help_text}
+            placeholder={input.placeholder || t.placeholder}
           />
         </>
       );
@@ -33,18 +35,19 @@ export const renderInput = (input: Inputs): React.ReactNode => {
     case "number-input":
       return (
         <NumberInput
-          name="cc"
-          id="cc"
-          label="Question #1"
-          helpText="Voici un champ. 4 valeurs après la virgule."
+          placeholder={input.placeholder || t.placeholder}
+          name={input.id || "number_input"}
           precision={4}
+          label={input.label || t.label}
+          helpText={input.help_text || t.help_text}
         />
       );
       break;
     case "checkbox":
       return (
         <Checkbox
-          label="Quel fruit mangez-vous ?"
+          label="Label à remplir"
+          helpText="Texte d'aide à remplir"
           checkbox={[
             { id: "aaa", value: "pomme", labelValue: "Pomme" },
             { id: "bbb", value: "fraise", labelValue: "Fraise" },
@@ -58,8 +61,8 @@ export const renderInput = (input: Inputs): React.ReactNode => {
     case "radio":
       return (
         <Radiobox
-          id="sexe"
-          label="Quel est votre sexe ?"
+          id="radiobox"
+          label="Label à remplir"
           radios={[
             { value: "homme", labelValue: "Homme" },
             { value: "femme", labelValue: "Femme" },
@@ -72,8 +75,8 @@ export const renderInput = (input: Inputs): React.ReactNode => {
         <Select
           isMulti
           id="aa"
-          label="Question #1"
-          placeholder="Choisissez un fruit"
+          label="Label à remplir"
+          placeholder="Placeholder à remplir"
           options={[
             { value: "pomme", label: "Pomme" },
             { value: "fraise", label: "Fraise" },
@@ -88,13 +91,13 @@ export const renderInput = (input: Inputs): React.ReactNode => {
     case "slider":
       return (
         <Slider
-          id="aa"
-          label="Comment vous sentez-vous ?"
+          id="slider"
+          label="Label à remplir"
           min={0}
           max={6}
           step={1}
           defaultValue={2}
-          helpText="De 1 à 6,  6 étant très bien."
+          helpText="Texte d'aide à remplir"
           vertical={false}
         />
       );
@@ -102,16 +105,16 @@ export const renderInput = (input: Inputs): React.ReactNode => {
     case "text-area":
       return (
         <Textarea
-          name="aa"
-          id="aa"
+          name="textarea"
+          id="textarea"
           rows="large"
-          label="Question #1"
-          placeholder="Input large"
+          label="Label à remplir"
+          placeholder="Placeholder à remplir"
         />
       );
       break;
     case "date-picker":
-      return <Datepicker label="Date de naissance" id="datePicker" />;
+      return <Datepicker label="Label à remplir" id="datePicker" />;
       break;
 
     default:

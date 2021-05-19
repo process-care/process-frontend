@@ -101,17 +101,38 @@ const Card: React.FC<CardProps> = ({ input, index, moveCard }) => {
       data-handler-id={handlerId}>
       <Container variant="inputContainer">
         <Box color={color}>
-          <Badge
-            minW="120px"
-            float="right"
-            borderRadius="50px"
-            px={5}
-            py={1}
-            bgColor="blackAlpha.800"
-            color="white"
-            fontSize="10px">
-            {input.name}
-          </Badge>
+          <Box mt="-26px">
+            <Badge
+              mb={7}
+              minW="120px"
+              float="right"
+              borderRadius="50px"
+              px={5}
+              py={1}
+              bgColor="blackAlpha.800"
+              border="1px"
+              color="white"
+              fontSize="7px">
+              {input.name}
+            </Badge>
+            {input.internal_title && (
+              <Badge
+                minW="120px"
+                float="right"
+                borderRadius="50px"
+                px={5}
+                py={1}
+                border="1px"
+                bgColor="white"
+                borderColor="blackAlpha.800"
+                color="blackAlpha.800"
+                fontSize="7px"
+                mr={3}>
+                {input.internal_title}
+              </Badge>
+            )}
+          </Box>
+
           <Box style={{ clear: "both" }} />
           {renderInput(input)}
         </Box>

@@ -17,8 +17,8 @@ interface Props {
   placeholder: string;
   type?: string;
   inputRightAddon?: string;
-  min_length?: number;
-  max_length?: number;
+  min_length?: string;
+  max_length?: string;
   name: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.ChangeEvent<HTMLInputElement>) => void;

@@ -25,8 +25,8 @@ interface Props {
   precision?: number;
   isRequired?: boolean;
   name: string;
-  id: string;
   style?: React.CSSProperties | undefined;
+  placeholder: string;
 }
 export const CustomNumberInput: React.FC<Props> = ({
   label,
@@ -38,7 +38,7 @@ export const CustomNumberInput: React.FC<Props> = ({
   precision,
   isRequired,
   name,
-  id,
+  placeholder,
   style,
 }) => {
   const [, meta, helpers] = useField(name);
@@ -54,7 +54,7 @@ export const CustomNumberInput: React.FC<Props> = ({
       <FormLabel>{label}</FormLabel>
       <InputGroup>
         <NumberInput
-          id={id}
+          name={name}
           isRequired={isRequired}
           defaultValue={defaultValue}
           min={min}
@@ -63,7 +63,7 @@ export const CustomNumberInput: React.FC<Props> = ({
           allowMouseWheel
           w="100%"
           onChange={(value) => helpers.setValue(value)}>
-          <NumberInputField />
+          <NumberInputField placeholder={placeholder} />
 
           <NumberInputStepper>
             <NumberIncrementStepper />

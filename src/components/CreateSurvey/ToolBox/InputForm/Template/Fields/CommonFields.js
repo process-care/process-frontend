@@ -8,30 +8,6 @@ interface Props {
 export const CommonFields: React.FC<Props> = ({ noPlacehoder = false }) => {
   return (
     <>
-      {/* <Slider
-        id="SLider"
-        label="Comment vous sentez-vous ?"
-        min={0}
-        max={6}
-        step={1}
-        defaultValue={2}
-        helpText="De 1 à 6,  6 étant très bien."
-        vertical={false}
-      />
-      <Select
-        isMulti
-        id="aa"
-        label="Question #1"
-        placeholder="Choisissez un fruit"
-        options={[
-          { value: "pomme", label: "Pomme" },
-          { value: "fraise", label: "Fraise" },
-          { value: "framboise", label: "Framboise" },
-          { value: "poire", label: "Poire" },
-          { value: "ananas", label: "Ananas" },
-        ]}
-        helpText="Select avec plusieurs valeurs selectionnable"
-      /> */}
       <Textarea
         rows="medium"
         label="Label de la question"

@@ -12,8 +12,8 @@ interface Props {
   helpText?: string;
   defaultValue?: number;
   step: number | null;
-  min: number;
-  max: number;
+  min: number | undefined;
+  max: number | undefined;
   vertical?: boolean;
   reverse?: boolean;
 }
@@ -46,12 +46,14 @@ export const CustomSlider: React.FC<Props> = ({
     }
   }, [defaultValue]);
 
-  const createMarks = (max: number) => {
-    const arr = [];
-    for (let index = 0; index <= max; index++) {
-      arr.push({ [index]: index });
+  const createMarks = (max: number | undefined) => {
+    if (max) {
+      const arr = [];
+      for (let index = 0; index <= max; index++) {
+        arr.push({ [index]: index });
+      }
+      return arr.map((el, i) => el[i]);
     }
-    return arr.map((el, i) => el[i]);
   };
 
   return (

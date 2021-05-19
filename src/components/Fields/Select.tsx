@@ -5,8 +5,8 @@ import { useField } from "formik";
 import Select from "react-select";
 
 interface Options {
-  value: string;
-  label: string;
+  value: string | undefined;
+  label: string | undefined;
 }
 
 interface Props {
@@ -14,7 +14,7 @@ interface Props {
   id: string;
   placeholder: string;
   helpText?: string;
-  options: Options[];
+  options: Options[] | undefined;
   isRequired?: boolean;
   isMulti?: boolean;
 }

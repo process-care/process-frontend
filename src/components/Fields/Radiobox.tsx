@@ -6,17 +6,18 @@ import {
   Radio,
   RadioGroup,
   HStack,
+  Box,
 } from "@chakra-ui/react";
 
 interface Radios {
-  value: string;
-  labelValue: string;
+  value: string | undefined;
+  label: string | undefined;
 }
 
 interface Props {
   label: string;
   helpText?: string;
-  radios: Radios[];
+  radios: Radios[] | undefined;
   id: string;
   m?: string;
   p?: string;
@@ -35,13 +36,17 @@ export const CustomRadioBox: React.FC<Props> = ({
       <FormLabel>{label}</FormLabel>
       <RadioGroup colorScheme="green">
         <HStack flexWrap="wrap" spacing={5}>
-          {radios.map(({ value, labelValue }) => {
-            return (
-              <Radio name={value} value={value} key={value}>
-                {labelValue}
-              </Radio>
-            );
-          })}
+          {radios ? (
+            radios.map(({ value, label }) => {
+              return (
+                <Radio name={value} value={value} key={value}>
+                  {label}
+                </Radio>
+              );
+            })
+          ) : (
+            <Box p={5} />
+          )}
         </HStack>
       </RadioGroup>
       <FormHelperText fontSize="xs">{helpText}</FormHelperText>

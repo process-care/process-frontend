@@ -9,7 +9,7 @@ interface FormBuilder {
 interface UpdateInput {
   id: string | undefined;
   data: {
-    [index: string]: string;
+    [index: string]: string | undefined;
   } | null;
 }
 
@@ -29,8 +29,20 @@ export const formBuilderSlice = createSlice({
     },
     updateInput: (state, action: PayloadAction<UpdateInput>) => {
       const { id, data } = action.payload;
-      const current = state.inputs.findIndex((el) => el.id === id);
-      state.inputs[current] = { ...state.inputs[current], ...data };
+      if (data) {
+        for (const [key] of Object.entries(data)) {
+          const current = state.inputs.findIndex((el) => el.id === id);
+
+          if (key.includes("option")) {
+            state.inputs[current] = {
+              ...state.inputs[current],
+              options: { ...state.inputs[current].options, ...data },
+            };
+            return;
+          }
+          state.inputs[current] = { ...state.inputs[current], ...data };
+        }
+      }
     },
     removeInput: (state, action: PayloadAction<Inputs>) => {
       const { id } = action.payload;

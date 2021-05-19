@@ -16,9 +16,8 @@ interface Props {
   placeholder: string;
   min_length?: number;
   max_length?: number;
-  rows: "small" | "medium" | "large";
+  rows: "small" | "medium" | "large" | undefined;
   isRequired?: boolean;
-  name: string;
   id: string;
   m?: string | number;
   p?: string | number;
@@ -31,12 +30,11 @@ export const CustomTextarea: React.FC<Props> = ({
   max_length,
   rows,
   isRequired,
-  name,
   id,
   m,
   p,
 }) => {
-  const [field, meta] = useField(name);
+  const [field, meta] = useField(id);
   return (
     <FormControl
       id="email"
@@ -44,7 +42,7 @@ export const CustomTextarea: React.FC<Props> = ({
       m={m}
       p={p}
       isInvalid={!!meta.error}>
-      <FormLabel htmlFor={name}>{label}</FormLabel>
+      <FormLabel htmlFor={id}>{label}</FormLabel>
       <Textarea
         id={id}
         isRequired={isRequired}

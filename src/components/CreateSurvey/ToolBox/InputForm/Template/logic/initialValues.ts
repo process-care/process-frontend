@@ -14,7 +14,7 @@ const inputFieldsInitialValues = {
 
 const multipleInputFieldsInitialValues = {
   ...commonFieldsInitialValues,
-  responses: [],
+  options: [],
 };
 
 export const fields: { [type: string]: Record<string, unknown> } = {

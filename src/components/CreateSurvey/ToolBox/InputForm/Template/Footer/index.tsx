@@ -10,7 +10,12 @@ interface Props {
 export const Footer: React.FC<Props> = ({ onCancel, disabled }) => {
   return (
     <>
-      <Switch p="20px 0" label="Réponse obligatoire" id="required" />
+      <Switch
+        p="20px 0"
+        label="Réponse obligatoire"
+        id="required"
+        defaultChecked
+      />
       <ButtonGroup
         d="flex"
         justifyContent="space-between"

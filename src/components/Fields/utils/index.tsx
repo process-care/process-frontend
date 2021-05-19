@@ -1,4 +1,4 @@
-export const getRows = (size: string): number => {
+export const getRows = (size: string | undefined): number => {
   switch (size) {
     case "small":
       return 1;

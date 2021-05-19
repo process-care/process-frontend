@@ -9,5 +9,10 @@ export default interface Inputs {
   min_length?: string;
   max_length?: string;
   units?: string;
-  orientation?: string;
+  orientation?: boolean;
+  options?: { [x: string]: string | undefined };
+  min?: number;
+  max?: number;
+  rows?: "small" | "medium" | "large" | undefined;
+  required?: boolean;
 }

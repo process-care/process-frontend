@@ -13,9 +13,23 @@ import React from "react";
 
 import t from "static/input.json";
 
-export const renderInput = (input: Inputs): React.ReactNode => {
-  console.log("Input", t);
+interface Options {
+  value: string | undefined;
+  label: string | undefined;
+}
 
+export const renderInput = (input: Inputs): React.ReactNode => {
+  const formatOptions = (): Options[] | undefined => {
+    if (input.options) {
+      const arr = [];
+      for (const [, value] of Object.entries(input.options)) {
+        arr.push({ value, label: value });
+      }
+      return arr;
+    }
+  };
+  console.log("FO", input.options);
+  console.log(formatOptions());
   switch (input.type) {
     case "input":
       return (
@@ -28,6 +42,7 @@ export const renderInput = (input: Inputs): React.ReactNode => {
             label={input.label || t.label}
             helpText={input.help_text || t.help_text}
             placeholder={input.placeholder || t.placeholder}
+            inputRightAddon={input.units}
           />
         </>
       );
@@ -46,75 +61,63 @@ export const renderInput = (input: Inputs): React.ReactNode => {
     case "checkbox":
       return (
         <Checkbox
-          label="Label à remplir"
-          helpText="Texte d'aide à remplir"
-          checkbox={[
-            { id: "aaa", value: "pomme", labelValue: "Pomme" },
-            { id: "bbb", value: "fraise", labelValue: "Fraise" },
-            { id: "ccc", value: "framboise", labelValue: "Framboise" },
-            { id: "ddd", value: "poire", labelValue: "Poire" },
-            { id: "eee", value: "ananas", labelValue: "Ananas" },
-          ]}
+          label={input.label || t.label}
+          helpText={input.help_text || t.help_text}
+          checkbox={formatOptions()}
         />
       );
       break;
     case "radio":
       return (
         <Radiobox
-          id="radiobox"
-          label="Label à remplir"
-          radios={[
-            { value: "homme", labelValue: "Homme" },
-            { value: "femme", labelValue: "Femme" },
-          ]}
+          id={input.id || "radiobox"}
+          label={input.label || t.label}
+          radios={formatOptions()}
         />
       );
       break;
     case "select":
       return (
         <Select
-          isMulti
-          id="aa"
-          label="Label à remplir"
-          placeholder="Placeholder à remplir"
-          options={[
-            { value: "pomme", label: "Pomme" },
-            { value: "fraise", label: "Fraise" },
-            { value: "framboise", label: "Framboise" },
-            { value: "poire", label: "Poire" },
-            { value: "ananas", label: "Ananas" },
-          ]}
-          helpText="Select avec plusieurs valeurs selectionnable"
+          id={input.id || "select"}
+          label={input.label || t.label}
+          placeholder={input.placeholder || t.placeholder}
+          options={formatOptions()}
+          helpText={input.help_text || t.help_text}
         />
       );
       break;
     case "slider":
       return (
         <Slider
-          id="slider"
-          label="Label à remplir"
-          min={0}
-          max={6}
+          id={input.id || "slider"}
+          label={input.label || t.label}
+          min={input.min}
+          max={input.max}
           step={1}
           defaultValue={2}
-          helpText="Texte d'aide à remplir"
-          vertical={false}
+          helpText={input.help_text || t.help_text}
+          vertical={input.orientation}
         />
       );
       break;
     case "text-area":
       return (
         <Textarea
-          name="textarea"
-          id="textarea"
-          rows="large"
-          label="Label à remplir"
-          placeholder="Placeholder à remplir"
+          id={input.id || "textarea"}
+          rows={input.rows}
+          label={input.label || t.label}
+          placeholder={input.placeholder || t.placeholder}
         />
       );
       break;
     case "date-picker":
-      return <Datepicker label="Label à remplir" id="datePicker" />;
+      return (
+        <Datepicker
+          label={input.label || t.label}
+          id={input.id || "datepicker"}
+        />
+      );
       break;
 
     default:

@@ -12,14 +12,14 @@ export const TextareaFields: React.FC = () => {
       <Flex justifyContent="space-between">
         <NumberInput
           style={{ width: "45%" }}
+          placeholder="ex: 5"
           label="Nb de charactères min"
-          id="min_length"
           name="min_length"
         />
         <NumberInput
+          placeholder="ex: 5"
           style={{ width: "45%" }}
           label="Nb de charactères max"
-          id="max_length"
           name="max_length"
         />
       </Flex>
@@ -27,11 +27,11 @@ export const TextareaFields: React.FC = () => {
         p="10px 0"
         label="Taille de la zone de réponse"
         radios={[
-          { value: "small", labelValue: "Petite" },
-          { value: "medium", labelValue: "Moyenne" },
-          { value: "large", labelValue: "Grande" },
+          { value: "small", label: "Petite" },
+          { value: "medium", label: "Moyenne" },
+          { value: "large", label: "Grande" },
         ]}
-        id="rows_size"
+        id="rows"
       />
     </>
   );

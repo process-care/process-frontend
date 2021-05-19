@@ -6,18 +6,18 @@ import {
   Checkbox,
   CheckboxGroup,
   HStack,
+  Box,
 } from "@chakra-ui/react";
 
 interface Checkbox {
-  id: string;
-  value: string;
-  labelValue: string;
+  value: string | undefined;
+  label: string | undefined;
 }
 
 interface Props {
   label: string;
   helpText?: string;
-  checkbox: Checkbox[];
+  checkbox: Checkbox[] | undefined;
 }
 
 export const CustomCheckbox: React.FC<Props> = ({
@@ -30,13 +30,17 @@ export const CustomCheckbox: React.FC<Props> = ({
       <FormLabel>{label}</FormLabel>
       <CheckboxGroup colorScheme="green">
         <HStack flexWrap="wrap" spacing={5}>
-          {checkbox.map(({ id, value, labelValue }) => {
-            return (
-              <Checkbox id={id} name={value} value={value} key={id}>
-                {labelValue}
-              </Checkbox>
-            );
-          })}
+          {checkbox ? (
+            checkbox.map(({ value, label }) => {
+              return (
+                <Checkbox name={value} value={value} key={value}>
+                  {label}
+                </Checkbox>
+              );
+            })
+          ) : (
+            <Box p={4} />
+          )}
         </HStack>
       </CheckboxGroup>
       <FormHelperText fontSize="xs">{helpText}</FormHelperText>

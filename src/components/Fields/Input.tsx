@@ -54,7 +54,9 @@ export const CustomInput: React.FC<Props> = ({
           max_length={max_length}
           {...field}
         />
-        {inputRightAddon && <InputRightAddon children={inputRightAddon} />}
+        {inputRightAddon && (
+          <InputRightAddon children={inputRightAddon} h="40px" />
+        )}
       </InputGroup>
       <FormErrorMessage>{meta.error}</FormErrorMessage>
       <FormHelperText fontSize="xs">{helpText}</FormHelperText>

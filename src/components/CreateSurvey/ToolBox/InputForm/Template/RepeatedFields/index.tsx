@@ -4,9 +4,8 @@ import { Textarea } from "components/Fields";
 import { Flex, Box, Button } from "@chakra-ui/react";
 
 export const RepeatedFields: React.FC = () => {
-  const name = "responses";
+  const name = "options";
   const [field] = useField(name);
-
   return (
     <Box w="100%">
       <FieldArray
@@ -17,11 +16,11 @@ export const RepeatedFields: React.FC = () => {
               field.value.map((_, index: number) => (
                 <Flex key={index} w="100%">
                   <Textarea
-                    id={`response_${index}`}
+                    id={`option_${index}`}
                     label={`Réponse ${index}`}
                     placeholder={`Réponse ${index}`}
                     rows="small"
-                    name={`responses.${index}`}
+                    name={`option_${index}`}
                   />
                   <Flex ml={3} mt={8}>
                     <Button

@@ -18,22 +18,33 @@ interface Props {
   label: string;
   helpText?: string;
   checkbox: Checkbox[] | undefined;
+  isRequired?: boolean;
+  id: string;
 }
 
 export const CustomCheckbox: React.FC<Props> = ({
   label,
   helpText,
   checkbox,
+  isRequired,
+  id,
 }) => {
   return (
-    <FormControl id="email" textAlign="left">
-      <FormLabel>{label}</FormLabel>
+    <FormControl id={id} textAlign="left">
+      <FormLabel>
+        {/* @ts-expect-error no alternative found for the moment*/}
+        {label} {isRequired === "true" && "*"}
+      </FormLabel>
       <CheckboxGroup colorScheme="green">
         <HStack flexWrap="wrap" spacing={5}>
           {checkbox ? (
             checkbox.map(({ value, label }) => {
               return (
-                <Checkbox name={value} value={value} key={value}>
+                <Checkbox
+                  id={id}
+                  name={label}
+                  key={value}
+                  isRequired={isRequired}>
                   {label}
                 </Checkbox>
               );

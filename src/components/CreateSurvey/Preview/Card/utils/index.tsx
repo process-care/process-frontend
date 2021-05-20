@@ -28,13 +28,12 @@ export const renderInput = (input: Inputs): React.ReactNode => {
       return arr;
     }
   };
-  console.log("FO", input.options);
-  console.log(formatOptions());
   switch (input.type) {
     case "input":
       return (
         <>
           <Input
+            isRequired={input.required}
             name={input.id || "input"}
             min_length={input.min_length}
             max_length={input.max_length}
@@ -50,6 +49,7 @@ export const renderInput = (input: Inputs): React.ReactNode => {
     case "number-input":
       return (
         <NumberInput
+          isRequired={input.required}
           placeholder={input.placeholder || t.placeholder}
           name={input.id || "number_input"}
           precision={4}
@@ -61,6 +61,8 @@ export const renderInput = (input: Inputs): React.ReactNode => {
     case "checkbox":
       return (
         <Checkbox
+          id={input.id || "checkbox"}
+          isRequired={input.required}
           label={input.label || t.label}
           helpText={input.help_text || t.help_text}
           checkbox={formatOptions()}
@@ -70,6 +72,7 @@ export const renderInput = (input: Inputs): React.ReactNode => {
     case "radio":
       return (
         <Radiobox
+          isRequired={input.required}
           id={input.id || "radiobox"}
           label={input.label || t.label}
           radios={formatOptions()}
@@ -90,6 +93,7 @@ export const renderInput = (input: Inputs): React.ReactNode => {
     case "slider":
       return (
         <Slider
+          isRequired={input.required}
           id={input.id || "slider"}
           label={input.label || t.label}
           min={input.min}
@@ -104,6 +108,7 @@ export const renderInput = (input: Inputs): React.ReactNode => {
     case "text-area":
       return (
         <Textarea
+          isRequired={input.required}
           id={input.id || "textarea"}
           rows={input.rows}
           label={input.label || t.label}
@@ -114,6 +119,7 @@ export const renderInput = (input: Inputs): React.ReactNode => {
     case "date-picker":
       return (
         <Datepicker
+          isRequired={input.required}
           label={input.label || t.label}
           id={input.id || "datepicker"}
         />

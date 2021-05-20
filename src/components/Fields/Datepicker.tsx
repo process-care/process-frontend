@@ -15,9 +15,15 @@ interface Props {
   id: string;
   label: string;
   helpText?: string;
+  isRequired?: boolean;
 }
 
-export const CustomDatePicker: React.FC<Props> = ({ id, label, helpText }) => {
+export const CustomDatePicker: React.FC<Props> = ({
+  id,
+  label,
+  helpText,
+  isRequired,
+}) => {
   const [field, meta] = useField(id);
   const [startDate, setStartDate] = React.useState<Date | [Date, Date] | null>(
     new Date()
@@ -30,8 +36,11 @@ export const CustomDatePicker: React.FC<Props> = ({ id, label, helpText }) => {
 
   return (
     <FormControl id={id} textAlign="left">
-      <FormLabel>{label}</FormLabel>
+      <FormLabel>
+        {label} {isRequired && "*"}
+      </FormLabel>
       <DatePicker
+        required={isRequired}
         {...field}
         selected={startDate}
         onChange={(d) => handleChange(d)}

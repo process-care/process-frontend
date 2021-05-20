@@ -3,6 +3,7 @@ const commonFieldsInitialValues = {
   help_text: "",
   internal_title: "",
   internal_description: "",
+  required: true,
 };
 
 const inputFieldsInitialValues = {

@@ -14,6 +14,7 @@ export const CommonFields: React.FC<Props> = ({ noPlacehoder = false }) => {
         placeholder="Renseigner le label de votre question"
         name="label"
         id="label"
+        isRequired
       />
 
       {!noPlacehoder && (

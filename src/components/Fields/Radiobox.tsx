@@ -21,6 +21,7 @@ interface Props {
   id: string;
   m?: string;
   p?: string;
+  isRequired?: boolean;
 }
 
 export const CustomRadioBox: React.FC<Props> = ({
@@ -30,16 +31,23 @@ export const CustomRadioBox: React.FC<Props> = ({
   id,
   m,
   p,
+  isRequired,
 }) => {
   return (
     <FormControl id={id} textAlign="left" m={m} p={p}>
-      <FormLabel>{label}</FormLabel>
+      <FormLabel>
+        {label} {isRequired && "*"}
+      </FormLabel>
       <RadioGroup colorScheme="green">
         <HStack flexWrap="wrap" spacing={5}>
           {radios ? (
             radios.map(({ value, label }) => {
               return (
-                <Radio name={value} value={value} key={value}>
+                <Radio
+                  name={value}
+                  value={value}
+                  key={value}
+                  isRequired={isRequired}>
                   {label}
                 </Radio>
               );

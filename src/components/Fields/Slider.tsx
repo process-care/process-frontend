@@ -16,6 +16,7 @@ interface Props {
   max: number | undefined;
   vertical?: boolean;
   reverse?: boolean;
+  isRequired?: boolean;
 }
 
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
@@ -31,6 +32,7 @@ export const CustomSlider: React.FC<Props> = ({
   max,
   reverse,
   id,
+  isRequired,
 }) => {
   const [, , helpers] = useField(id);
 
@@ -61,7 +63,9 @@ export const CustomSlider: React.FC<Props> = ({
       id="email"
       textAlign="left"
       h={vertical ? "700px" : "fit-content"}>
-      <FormLabel>{label}</FormLabel>
+      <FormLabel>
+        {label} {isRequired && "*"}
+      </FormLabel>
       <Range
         reverse={vertical || reverse}
         marks={createMarks(max)}

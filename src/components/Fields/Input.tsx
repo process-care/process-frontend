@@ -23,6 +23,7 @@ interface Props {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   style?: React.CSSProperties | undefined;
+  isRequired?: boolean;
 }
 
 export const CustomInput: React.FC<Props> = ({
@@ -35,6 +36,7 @@ export const CustomInput: React.FC<Props> = ({
   max_length,
   name,
   style,
+  isRequired,
 }) => {
   const [field, meta] = useField(name);
   return (
@@ -43,9 +45,13 @@ export const CustomInput: React.FC<Props> = ({
       textAlign="left"
       style={style}
       isInvalid={!!meta.error}>
-      <FormLabel>{label}</FormLabel>
+      <FormLabel>
+        {/* @ts-expect-error no alternative found for the moment*/}
+        {label} {isRequired === "true" && "*"}
+      </FormLabel>
       <InputGroup size="sm">
         <Input
+          isRequired={isRequired}
           borderRadius="7px"
           type={type}
           size="md"

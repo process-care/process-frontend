@@ -47,7 +47,7 @@ export const CustomInput: React.FC<Props> = ({
       isInvalid={!!meta.error}>
       <FormLabel>
         {/* @ts-expect-error no alternative found for the moment*/}
-        {label} {isRequired === "true" && "*"}
+        {label} {(isRequired === "true" || isRequired) && "*"}
       </FormLabel>
       <InputGroup size="sm">
         <Input
@@ -64,7 +64,9 @@ export const CustomInput: React.FC<Props> = ({
           <InputRightAddon children={inputRightAddon} h="40px" />
         )}
       </InputGroup>
-      <FormErrorMessage>{meta.error}</FormErrorMessage>
+      <FormErrorMessage mt={1} justifyContent="flex-end" fontSize="10px">
+        {meta.error}
+      </FormErrorMessage>
       <FormHelperText fontSize="xs">{helpText}</FormHelperText>
     </FormControl>
   );

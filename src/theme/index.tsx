@@ -89,7 +89,7 @@ const theme = extendTheme({
             color: props.colorMode === "dark" ? "gray.800" : "white",
           },
         }),
-        rounded: (props) => ({
+        rounded: () => ({
           bg: "black",
           borderRadius: "50px",
           color: "white",
@@ -97,8 +97,8 @@ const theme = extendTheme({
           border: "1px solid",
           fontWeight: "bold",
           _hover: {
-            bg: props.colorMode === "dark" ? "white" : "gray.800",
-            color: props.colorMode === "dark" ? "gray.800" : "white",
+            bg: "gray.800",
+            color: "black",
           },
         }),
       },

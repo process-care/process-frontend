@@ -53,7 +53,7 @@ export const CustomNumberInput: React.FC<Props> = ({
     <FormControl id="email" textAlign="left" style={style}>
       <FormLabel>
         {/* @ts-expect-error no alternative found for the moment*/}
-        {label} {isRequired === "true" && "*"}
+        {label} {(isRequired === "true" || isRequired) && "*"}
       </FormLabel>
       <InputGroup>
         <NumberInput

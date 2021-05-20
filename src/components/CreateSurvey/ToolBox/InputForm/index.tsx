@@ -5,10 +5,14 @@ import { Formik, Form } from "formik";
 import { useAppDispatch } from "redux/hooks";
 
 import { Footer } from "./Template/Footer";
-import { renderFormTemplate } from "./utils";
+import { renderFormTemplate, renderFormValidationSchema } from "./utils";
 import { fields } from "./Template/logic/initialValues";
 import { updateInput } from "redux/slices/formBuilder";
 import Inputs from "interfaces/inputs";
+// import {
+//   CommonFieldsSchema,
+//   MultipleInputFieldsSchema,
+// } from "./ValidationSchemas";
 
 interface Props {
   selectedInput: Inputs;
@@ -37,6 +41,7 @@ const InputForm: React.FC<Props> = ({ selectedInput, onClose }) => {
 
   return (
     <Formik
+      validationSchema={renderFormValidationSchema(selectedInput)}
       initialValues={fields[type]}
       onSubmit={(data, { setSubmitting }) => {
         setSubmitting(true);
@@ -44,7 +49,9 @@ const InputForm: React.FC<Props> = ({ selectedInput, onClose }) => {
         console.log("FORM DATA : ", data);
         onClose();
       }}>
-      {({ isValid, isSubmitting }) => {
+      {({ isValid, isSubmitting, errors, initialValues }) => {
+        console.log(errors);
+        console.log(initialValues, "initialValues");
         return (
           <Form onChange={(event) => onChange(event)}>
             <Flex

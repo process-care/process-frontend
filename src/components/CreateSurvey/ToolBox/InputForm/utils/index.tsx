@@ -9,6 +9,10 @@ import {
   SliderFields,
   DatepickerFields,
 } from "../Template";
+import {
+  CommonFieldsSchema,
+  MultipleInputFieldsSchema,
+} from "../ValidationSchemas";
 
 export const renderFormTemplate = (input: Inputs): React.ReactNode => {
   switch (input.type) {
@@ -39,6 +43,41 @@ export const renderFormTemplate = (input: Inputs): React.ReactNode => {
 
     default:
       return <TextareaFields />;
+      break;
+  }
+};
+
+export const renderFormValidationSchema = (
+  input: Inputs
+): React.ReactFragment => {
+  switch (input.type) {
+    case "input":
+      return CommonFieldsSchema;
+      break;
+    case "number-input":
+      return CommonFieldsSchema;
+      break;
+    case "checkbox":
+      return MultipleInputFieldsSchema;
+      break;
+    case "radio":
+      return MultipleInputFieldsSchema;
+      break;
+    case "select":
+      return MultipleInputFieldsSchema;
+      break;
+    case "slider":
+      return CommonFieldsSchema;
+      break;
+    case "text-area":
+      return CommonFieldsSchema;
+      break;
+    case "date-picker":
+      return CommonFieldsSchema;
+      break;
+
+    default:
+      return CommonFieldsSchema;
       break;
   }
 };

@@ -44,7 +44,7 @@ export const CustomTextarea: React.FC<Props> = ({
       isInvalid={!!meta.error}>
       <FormLabel htmlFor={id}>
         {/* @ts-expect-error no alternative found for the moment*/}
-        {label} {isRequired === "true" && "*"}
+        {label} {(isRequired === "true" || isRequired) && "*"}
       </FormLabel>
       <Textarea
         id={id}
@@ -56,7 +56,9 @@ export const CustomTextarea: React.FC<Props> = ({
         max_length={max_length}
         {...field}
       />
-      <FormErrorMessage>{meta.error}</FormErrorMessage>
+      <FormErrorMessage mt={-2} justifyContent="flex-end" fontSize="10px">
+        {meta.error}
+      </FormErrorMessage>
       <FormHelperText mt={0} lineHeight={1.4} fontSize="xs" color="gray.400">
         {helpText}
       </FormHelperText>

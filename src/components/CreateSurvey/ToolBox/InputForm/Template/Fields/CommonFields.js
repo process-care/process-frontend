@@ -41,6 +41,7 @@ export const CommonFields: React.FC<Props> = ({ noPlacehoder = false }) => {
         name="internal_title"
         id="internal_title"
         helpText="Ce champ vous permet de donner un titre à la question,il n'est pas visible par les utilisateurs."
+        isRequired
       />
       <Textarea
         p="10px 0"

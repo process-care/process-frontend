@@ -11,6 +11,7 @@ export const CommonFieldsSchema = Yup.object().shape({
     .required("Ce champs est requis"),
 });
 
+// Common + options
 export const MultipleInputFieldsSchema = CommonFieldsSchema.shape({
   options: Yup.array().min(2, "Il faut au moins deux réponses"),
 });

@@ -51,7 +51,8 @@ export const CustomInput: React.FC<Props> = ({
       </FormLabel>
       <InputGroup size="sm">
         <Input
-          isRequired={isRequired}
+          // remove browser validation to keep formik validation
+          // isRequired={isRequired}
           borderRadius="7px"
           type={type}
           size="md"

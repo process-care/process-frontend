@@ -7,12 +7,8 @@ import { useAppDispatch } from "redux/hooks";
 import { Footer } from "./Template/Footer";
 import { renderFormTemplate, renderFormValidationSchema } from "./utils";
 import { fields } from "./Template/logic/initialValues";
-import { updateInput } from "redux/slices/formBuilder";
+import { updateInput, removeInput } from "redux/slices/formBuilder";
 import Inputs from "interfaces/inputs";
-// import {
-//   CommonFieldsSchema,
-//   MultipleInputFieldsSchema,
-// } from "./ValidationSchemas";
 
 interface Props {
   selectedInput: Inputs;
@@ -23,6 +19,7 @@ const InputForm: React.FC<Props> = ({ selectedInput, onClose }) => {
   // const addInput = formStore((state) => state.addInput);
   const dispatch = useAppDispatch();
   const onCancel = () => {
+    dispatch(removeInput(selectedInput));
     onClose();
   };
   const onChange = (event: React.FormEvent<HTMLFormElement>) => {
@@ -41,9 +38,12 @@ const InputForm: React.FC<Props> = ({ selectedInput, onClose }) => {
 
   return (
     <Formik
+      validateOnChange={false}
+      validateOnBlur={false}
       validationSchema={renderFormValidationSchema(selectedInput)}
       initialValues={fields[type]}
-      onSubmit={(data, { setSubmitting }) => {
+      onSubmit={(data, { setSubmitting, validateForm }) => {
+        validateForm(data);
         setSubmitting(true);
         // dispatch(addInput(selectedInput));
         console.log("FORM DATA : ", data);
@@ -70,8 +70,6 @@ const InputForm: React.FC<Props> = ({ selectedInput, onClose }) => {
                 onCancel={() => onCancel()}
               />
             </Flex>
-
-            {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
           </Form>
         );
       }}

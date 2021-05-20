@@ -48,7 +48,7 @@ export const CustomTextarea: React.FC<Props> = ({
       </FormLabel>
       <Textarea
         id={id}
-        isRequired={isRequired}
+        // isRequired={isRequired}
         style={{ resize: "none" }}
         rows={getRows(rows)}
         placeholder={placeholder}

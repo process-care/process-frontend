@@ -20,7 +20,7 @@ export const Footer: React.FC<Props> = ({ onCancel, disabled }) => {
         <Button type="submit" variant="rounded" disabled={disabled}>
           Valider
         </Button>
-        <Button variant="link" onClick={() => onCancel()}>
+        <Button variant="link" onClick={() => onCancel()} type="button">
           Annuler
         </Button>
       </ButtonGroup>

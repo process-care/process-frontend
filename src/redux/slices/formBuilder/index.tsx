@@ -57,7 +57,7 @@ export const formBuilderSlice = createSlice({
   },
 });
 
-export const { addInput, removeAllInputs, updateInput } =
+export const { addInput, removeAllInputs, removeInput, updateInput } =
   formBuilderSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type

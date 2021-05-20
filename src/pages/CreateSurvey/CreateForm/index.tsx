@@ -1,4 +1,4 @@
-import { Box, Container } from "@chakra-ui/react";
+import { Box, Container, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 
 import ToolBox from "components/CreateSurvey/ToolBox/InputsButton";
@@ -12,6 +12,8 @@ import PageBuilder from "components/CreateSurvey/PageBuilder";
 
 import { useAppDispatch } from "redux/hooks";
 import { addInput } from "redux/slices/formBuilder";
+
+import "index.css";
 
 export const CreateForm: React.FC<IPage> = () => {
   const dispatch = useAppDispatch();
@@ -32,7 +34,7 @@ export const CreateForm: React.FC<IPage> = () => {
   };
 
   return (
-    <>
+    <Box h="100vh" overflow="hidden">
       <Drawer
         isOpen={isOpen}
         onOverlayClick={() => setIsOpen(false)}
@@ -44,19 +46,44 @@ export const CreateForm: React.FC<IPage> = () => {
           />
         }
       />
+
       <Box d="flex" justifyContent="space-around" w="100%" overflow="hidden">
-        <Container variant="createformColumn" w="6%" minW="100px">
-          <PageBuilder />
-        </Container>
+        <Box w="100%">
+          <Flex p={4} borderBottom="1px" justifyContent="flex-start">
+            <Text fontSize="12px" mr={20} ml={83}>
+              Dashboard
+            </Text>
+            <Text fontSize="12px">TITRE DU FORMULAIRE</Text>
+          </Flex>
+
+          <Box
+            d="flex"
+            justifyContent="space-around"
+            overflow="hidden"
+            w="100%">
+            <Container
+              variant="createformColumn"
+              w="6%"
+              minW="100px"
+              borderRight="1px"
+              borderColor="gray.100">
+              <PageBuilder />
+            </Container>
+
+            <Container
+              variant="createformColumn"
+              w="94%"
+              p={0}
+              alignItems="center">
+              <div className="background__grid">
+                <Preview />
+              </div>
+            </Container>
+          </Box>
+        </Box>
+
         <Container
-          variant="createformColumn"
-          w="65%"
-          bg="gray.100"
-          p={0}
-          alignItems="center">
-          <Preview />
-        </Container>
-        <Container
+          borderLeft="1px"
           variant="createformColumn"
           w="32%"
           alignItems="center"
@@ -66,6 +93,6 @@ export const CreateForm: React.FC<IPage> = () => {
           />
         </Container>
       </Box>
-    </>
+    </Box>
   );
 };

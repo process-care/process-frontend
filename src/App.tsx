@@ -9,6 +9,8 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { store } from "redux/store";
 import { Provider } from "react-redux";
 
+import "index.css";
+
 const App: React.FC = () => {
   return (
     <Provider store={store}>

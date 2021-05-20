@@ -1,0 +1,20 @@
+.background__grid {
+  height: 100%;
+  width: 100%;
+  background-size: auto auto;
+  background-color: rgba(255, 255, 255, 1);
+  background-image: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 80px,
+      rgba(234, 234, 234, 1) 81px,
+      rgba(234, 234, 234, 1) 81px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 80px,
+      rgba(234, 234, 234, 1) 81px,
+      rgba(234, 234, 234, 1) 80px
+    );
+}

@@ -1,4 +1,4 @@
-import { Box, Container, Flex, Text } from "@chakra-ui/react";
+import { Box, Container } from "@chakra-ui/react";
 import React from "react";
 
 import ToolBox from "components/CreateSurvey/ToolBox/InputsButton";
@@ -13,7 +13,7 @@ import PageBuilder from "components/CreateSurvey/PageBuilder";
 import { useAppDispatch } from "redux/hooks";
 import { addInput } from "redux/slices/formBuilder";
 
-import "index.css";
+import { Menu } from "components/Menu/CreateForm";
 
 export const CreateForm: React.FC<IPage> = () => {
   const dispatch = useAppDispatch();
@@ -49,12 +49,7 @@ export const CreateForm: React.FC<IPage> = () => {
 
       <Box d="flex" justifyContent="space-around" w="100%" overflow="hidden">
         <Box w="100%">
-          <Flex p={4} borderBottom="1px" justifyContent="flex-start">
-            <Text fontSize="12px" mr={20} ml={83}>
-              Dashboard
-            </Text>
-            <Text fontSize="12px">TITRE DU FORMULAIRE</Text>
-          </Flex>
+          <Menu />
 
           <Box
             d="flex"

@@ -10,26 +10,27 @@ import Drawer from "components/Drawer";
 import InputForm from "components/CreateSurvey/ToolBox/InputForm";
 import PageBuilder from "components/CreateSurvey/PageBuilder";
 
-import { useAppDispatch } from "redux/hooks";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { addInput } from "redux/slices/formBuilder";
 
 import { Menu } from "components/Menu/CreateForm";
+import { toogleDrawer } from "redux/slices/application";
 
 export const CreateForm: React.FC<IPage> = () => {
   const dispatch = useAppDispatch();
+  const isOpen = useAppSelector((state) => state.application.drawer_is_open);
 
   const [selectedInput, setSelectedInput] = React.useState({
     type: "",
     name: "",
     id: "",
   });
-  const [isOpen, setIsOpen] = React.useState(false);
 
   const handleSelect = (type: string, name: string, id: string) => {
     if (id) {
       setSelectedInput({ type, name, id });
       dispatch(addInput({ type, name, id }));
-      setIsOpen(true);
+      dispatch(toogleDrawer());
     }
   };
 
@@ -37,12 +38,12 @@ export const CreateForm: React.FC<IPage> = () => {
     <Box h="100vh" overflow="hidden">
       <Drawer
         isOpen={isOpen}
-        onOverlayClick={() => setIsOpen(false)}
+        onOverlayClick={() => dispatch(toogleDrawer())}
         size="md"
         content={
           <InputForm
             selectedInput={selectedInput}
-            onClose={() => setIsOpen(false)}
+            onClose={() => dispatch(toogleDrawer())}
           />
         }
       />

@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import formBuilder from "redux/slices/formBuilder";
+import application from "redux/slices/application";
 
 export const store = configureStore({
   reducer: {
     formBuilder,
+    application,
   },
 });
 

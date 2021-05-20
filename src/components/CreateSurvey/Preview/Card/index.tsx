@@ -16,6 +16,8 @@ import Inputs from "interfaces/inputs";
 import { removeInput } from "redux/slices/formBuilder";
 
 import { ReactComponent as Delete } from "./assets/delete.svg";
+import { ReactComponent as Edit } from "./assets/edit.svg";
+
 import { RemovingConfirmation } from "./Status";
 
 interface CardProps {
@@ -147,6 +149,13 @@ const Card: React.FC<CardProps> = ({ input, index, moveCard }) => {
             )}
           </Box>
         </Container>
+      </Box>
+      <Box
+        onClick={() => alert(JSON.stringify(input))}
+        position="absolute"
+        right="-16px"
+        _hover={{ cursor: "pointer", opacity: "0.7", transition: "all 400ms" }}>
+        <Edit />
       </Box>
     </Flex>
   );

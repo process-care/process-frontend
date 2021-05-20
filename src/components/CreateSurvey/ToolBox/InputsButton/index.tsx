@@ -2,12 +2,14 @@ import React from "react";
 import { Button, ButtonGroup } from "@chakra-ui/react";
 import { inputs } from "constants/inputs";
 import { v4 as uuidv4 } from "uuid";
+import { useDispatch } from "react-redux";
 
 interface Props {
   onSelect: (type: string, name: string, id: string) => void;
 }
 
 const ToolBox: React.FC<Props> = ({ onSelect }) => {
+  const dispatch = useDispatch();
   const id = uuidv4();
   return (
     <ButtonGroup

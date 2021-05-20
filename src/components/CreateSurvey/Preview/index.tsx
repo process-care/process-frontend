@@ -22,7 +22,7 @@ export interface PreviewState {
 
 const Preview: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { inputs, inputsCount } = useAppSelector(selectInputs);
+  const { inputs, inputs_count } = useAppSelector(selectInputs);
 
   const [cards, setCards] = React.useState(inputs);
 
@@ -105,8 +105,8 @@ const Preview: React.FC = () => {
   return (
     <Container>
       <Button variant="box" onClick={() => dispatch(removeAllInputs())} mb={8}>
-        Supprimer le{inputsCount > 1 && "s"} {inputsCount !== 1 && inputsCount}{" "}
-        champs
+        Supprimer le{inputs_count > 1 && "s"}{" "}
+        {inputs_count !== 1 && inputs_count} champs
       </Button>
       {cards.map((input, i) => renderCard(input, i))}
     </Container>

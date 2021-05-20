@@ -11,7 +11,7 @@ import InputForm from "components/CreateSurvey/ToolBox/InputForm";
 import PageBuilder from "components/CreateSurvey/PageBuilder";
 
 import { useAppDispatch, useAppSelector } from "redux/hooks";
-import { addInput } from "redux/slices/formBuilder";
+import { addInput, selectInput } from "redux/slices/formBuilder";
 
 import { Menu } from "components/Menu/CreateForm";
 import { toogleDrawer } from "redux/slices/application";
@@ -20,33 +20,22 @@ export const CreateForm: React.FC<IPage> = () => {
   const dispatch = useAppDispatch();
   const isOpen = useAppSelector((state) => state.application.drawer_is_open);
 
-  const [selectedInput, setSelectedInput] = React.useState({
-    type: "",
-    name: "",
-    id: "",
-  });
-
-  const handleSelect = (type: string, name: string, id: string) => {
+  const handleSelect = (
+    type: string,
+    name: string,
+    id: string,
+    internal_title: string | undefined
+  ) => {
     if (id) {
-      setSelectedInput({ type, name, id });
-      dispatch(addInput({ type, name, id }));
+      dispatch(selectInput({ type, name, id, internal_title }));
+      dispatch(addInput({ type, name, id, internal_title }));
       dispatch(toogleDrawer());
     }
   };
 
   return (
     <Box h="100vh" overflow="hidden">
-      <Drawer
-        isOpen={isOpen}
-        onOverlayClick={() => dispatch(toogleDrawer())}
-        size="md"
-        content={
-          <InputForm
-            selectedInput={selectedInput}
-            onClose={() => dispatch(toogleDrawer())}
-          />
-        }
-      />
+      <Drawer isOpen={isOpen} size="md" content={<InputForm />} />
 
       <Box d="flex" justifyContent="space-around" w="100%" overflow="hidden">
         <Box w="100%">
@@ -85,7 +74,9 @@ export const CreateForm: React.FC<IPage> = () => {
           alignItems="center"
           overflowY="auto">
           <ToolBox
-            onSelect={(type, name, id) => handleSelect(type, name, id)}
+            onSelect={(type, name, id, internal_title) =>
+              handleSelect(type, name, id, internal_title)
+            }
           />
         </Container>
       </Box>

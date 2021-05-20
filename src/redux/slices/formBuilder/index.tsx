@@ -5,6 +5,7 @@ import Inputs from "interfaces/inputs";
 interface FormBuilder {
   inputs_count: number;
   inputs: Inputs[];
+  selected_input: Inputs;
 }
 interface UpdateInput {
   id: string | undefined;
@@ -17,6 +18,12 @@ interface UpdateInput {
 const initialState: FormBuilder = {
   inputs_count: 0,
   inputs: [],
+  selected_input: {
+    id: "",
+    type: "",
+    name: "",
+    internal_title: "",
+  },
 };
 
 export const formBuilderSlice = createSlice({
@@ -26,6 +33,9 @@ export const formBuilderSlice = createSlice({
     addInput: (state, action: PayloadAction<Inputs>) => {
       state.inputs.push(action.payload);
       state.inputs_count += 1;
+    },
+    selectInput: (state, action: PayloadAction<Inputs>) => {
+      state.selected_input = action.payload;
     },
     updateInput: (state, action: PayloadAction<UpdateInput>) => {
       const { id, data } = action.payload;
@@ -57,8 +67,13 @@ export const formBuilderSlice = createSlice({
   },
 });
 
-export const { addInput, removeAllInputs, removeInput, updateInput } =
-  formBuilderSlice.actions;
+export const {
+  addInput,
+  removeAllInputs,
+  removeInput,
+  updateInput,
+  selectInput,
+} = formBuilderSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectinputs_count = (state: RootState): number =>

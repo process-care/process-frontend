@@ -2,25 +2,22 @@ import React from "react";
 
 import { Flex, Text } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
-import { useAppDispatch } from "redux/hooks";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 import { Footer } from "./Template/Footer";
 import { renderFormTemplate, renderFormValidationSchema } from "./utils";
 import { fields } from "./Template/logic/initialValues";
 import { updateInput, removeInput } from "redux/slices/formBuilder";
-import Inputs from "interfaces/inputs";
+import { toogleDrawer } from "redux/slices/application";
 
-interface Props {
-  selectedInput: Inputs;
-  onClose: () => void;
-}
-
-const InputForm: React.FC<Props> = ({ selectedInput, onClose }) => {
-  // const addInput = formStore((state) => state.addInput);
+const InputForm: React.FC = () => {
+  const selectedInput = useAppSelector(
+    (state) => state.formBuilder.selected_input
+  );
   const dispatch = useAppDispatch();
   const onCancel = () => {
     dispatch(removeInput(selectedInput));
-    onClose();
+    dispatch(toogleDrawer());
   };
   const onChange = (event: React.FormEvent<HTMLFormElement>) => {
     const target = event.target as HTMLFormElement;
@@ -38,20 +35,16 @@ const InputForm: React.FC<Props> = ({ selectedInput, onClose }) => {
 
   return (
     <Formik
-      validateOnChange={false}
       validateOnBlur={false}
       validationSchema={renderFormValidationSchema(selectedInput)}
-      initialValues={fields[type]}
+      // initialValues={selectedInput ? selectedInput : fields[type]}
+      initialValues={selectedInput ? selectedInput : fields[type]}
       onSubmit={(data, { setSubmitting, validateForm }) => {
         validateForm(data);
         setSubmitting(true);
-        // dispatch(addInput(selectedInput));
-        console.log("FORM DATA : ", data);
-        onClose();
+        dispatch(toogleDrawer());
       }}>
-      {({ isValid, isSubmitting, errors, initialValues }) => {
-        console.log(errors);
-        console.log(initialValues, "initialValues");
+      {({ isValid, isSubmitting }) => {
         return (
           <Form onChange={(event) => onChange(event)}>
             <Flex
@@ -62,9 +55,7 @@ const InputForm: React.FC<Props> = ({ selectedInput, onClose }) => {
               px={10}>
               <Text fontSize="lg">Créer un champ {selectedInput.type}</Text>
               <hr />
-
               {renderFormTemplate(selectedInput)}
-
               <Footer
                 disabled={!isValid || isSubmitting}
                 onCancel={() => onCancel()}

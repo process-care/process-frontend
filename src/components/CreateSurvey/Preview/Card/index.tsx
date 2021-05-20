@@ -13,12 +13,13 @@ import { ItemTypes } from "./itemTypes";
 import { XYCoord } from "dnd-core";
 import { renderInput } from "./utils";
 import Inputs from "interfaces/inputs";
-import { removeInput } from "redux/slices/formBuilder";
+import { removeInput, selectInput } from "redux/slices/formBuilder";
 
 import { ReactComponent as Delete } from "./assets/delete.svg";
 import { ReactComponent as Edit } from "./assets/edit.svg";
 
 import { RemovingConfirmation } from "./Status";
+import { toogleDrawer } from "redux/slices/application";
 
 interface CardProps {
   input: Inputs;
@@ -151,7 +152,10 @@ const Card: React.FC<CardProps> = ({ input, index, moveCard }) => {
         </Container>
       </Box>
       <Box
-        onClick={() => alert(JSON.stringify(input))}
+        onClick={() => {
+          dispatch(selectInput(input));
+          dispatch(toogleDrawer());
+        }}
         position="absolute"
         right="-16px"
         _hover={{ cursor: "pointer", opacity: "0.7", transition: "all 400ms" }}>

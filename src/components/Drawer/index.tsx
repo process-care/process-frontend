@@ -19,7 +19,6 @@ interface Props {
   onOverlayClick?: () => void;
   isOpen: boolean;
   size?: string;
-  onClose?: () => void;
 }
 const CustomDrawer: React.FC<Props> = ({
   content,
@@ -27,7 +26,6 @@ const CustomDrawer: React.FC<Props> = ({
   headerSubtitle,
   isOpen,
   onOverlayClick,
-  onClose,
   size,
   ...props
 }) => {
@@ -35,7 +33,7 @@ const CustomDrawer: React.FC<Props> = ({
     <>
       <Portal>
         <Drawer
-          onClose={onClose}
+          onClose={() => console.log("_")}
           placement="right"
           isFullHeight
           isOpen={isOpen}

@@ -4,7 +4,12 @@ import { inputs } from "constants/inputs";
 import { v4 as uuidv4 } from "uuid";
 
 interface Props {
-  onSelect: (type: string, name: string, id: string) => void;
+  onSelect: (
+    type: string,
+    name: string,
+    id: string,
+    internal_title: string | undefined
+  ) => void;
 }
 
 const ToolBox: React.FC<Props> = ({ onSelect }) => {
@@ -21,7 +26,9 @@ const ToolBox: React.FC<Props> = ({ onSelect }) => {
           <Button
             variant="box"
             key={i}
-            onClick={() => onSelect(type, name, `${type}-${id}`)}>
+            onClick={() =>
+              onSelect(type, name, `${type}-${id}`, `${type}-${id}`)
+            }>
             {name}
           </Button>
         );

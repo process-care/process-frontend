@@ -17,6 +17,7 @@ interface Props {
   options: Options[] | undefined;
   isRequired?: boolean;
   isMulti?: boolean;
+  isCollapsed?: boolean;
 }
 
 export const CustomSelect: React.FC<Props> = ({
@@ -27,24 +28,29 @@ export const CustomSelect: React.FC<Props> = ({
   id,
   options,
   isMulti,
+  isCollapsed,
 }): ReactElement => {
   const [, , helpers] = useField(id);
 
   return (
     <FormControl id="email" textAlign="left">
       <FormLabel>{label}</FormLabel>
-      <Select
-        isMulti={isMulti}
-        isClearable
-        id={id}
-        isRequired={isRequired}
-        placeholder={placeholder}
-        noOptionsMessage={() => t.not_found}
-        options={options}
-        onChange={(value) => helpers.setValue(value)}
-      />
-
-      <FormHelperText fontSize="xs">{helpText}</FormHelperText>
+      {!isCollapsed && (
+        <>
+          {" "}
+          <Select
+            isMulti={isMulti}
+            isClearable
+            id={id}
+            isRequired={isRequired}
+            placeholder={placeholder}
+            noOptionsMessage={() => t.not_found}
+            options={options}
+            onChange={(value) => helpers.setValue(value)}
+          />
+          <FormHelperText fontSize="xs">{helpText}</FormHelperText>
+        </>
+      )}
     </FormControl>
   );
 };

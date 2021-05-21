@@ -20,6 +20,7 @@ interface Props {
   checkbox: Checkbox[] | undefined;
   isRequired?: boolean;
   id: string;
+  isCollapsed?: boolean;
 }
 
 export const CustomCheckbox: React.FC<Props> = ({
@@ -28,6 +29,7 @@ export const CustomCheckbox: React.FC<Props> = ({
   checkbox,
   isRequired,
   id,
+  isCollapsed,
 }) => {
   return (
     <FormControl id={id} textAlign="left">
@@ -35,26 +37,32 @@ export const CustomCheckbox: React.FC<Props> = ({
         {/* @ts-expect-error no alternative found for the moment*/}
         {label} {isRequired === "true" && "*"}
       </FormLabel>
-      <CheckboxGroup colorScheme="green">
-        <HStack flexWrap="wrap" spacing={5}>
-          {checkbox ? (
-            checkbox.map(({ value, label }) => {
-              return (
-                <Checkbox
-                  id={id}
-                  name={label}
-                  key={value}
-                  isRequired={isRequired}>
-                  {label}
-                </Checkbox>
-              );
-            })
-          ) : (
-            <Box p={4} />
-          )}
-        </HStack>
-      </CheckboxGroup>
-      <FormHelperText fontSize="xs">{helpText}</FormHelperText>
+      {!isCollapsed && (
+        <>
+          {" "}
+          <CheckboxGroup colorScheme="green">
+            <HStack flexWrap="wrap" spacing={5}>
+              {checkbox ? (
+                checkbox.map(({ value, label }) => {
+                  return (
+                    <Checkbox
+                      id={id}
+                      name={label}
+                      key={value}
+                      isRequired={isRequired}
+                    >
+                      {label}
+                    </Checkbox>
+                  );
+                })
+              ) : (
+                <Box p={4} />
+              )}
+            </HStack>
+          </CheckboxGroup>
+          <FormHelperText fontSize="xs">{helpText}</FormHelperText>
+        </>
+      )}
     </FormControl>
   );
 };

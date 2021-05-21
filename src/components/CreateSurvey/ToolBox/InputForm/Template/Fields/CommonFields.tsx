@@ -9,17 +9,17 @@ export const CommonFields: React.FC<Props> = ({ noPlacehoder = false }) => {
   return (
     <>
       <Textarea
+        isCollapsed={false}
         rows="medium"
         label="Label de la question"
         placeholder="Renseigner le label de votre question"
-        name="label"
         id="label"
         isRequired
       />
 
       {!noPlacehoder && (
         <Input
-          id="placeholder"
+          isCollapsed={false}
           name="placeholder"
           type="text"
           label="Placeholder de la question"
@@ -28,27 +28,27 @@ export const CommonFields: React.FC<Props> = ({ noPlacehoder = false }) => {
       )}
 
       <Textarea
+        isCollapsed={false}
         rows="medium"
         label="Champ d'aide de la question"
         placeholder="Renseigner le texte d'aide de votre question.Il s'affichera sous le champ. "
-        name="help_text"
         id="help_text"
       />
 
       <Input
+        isCollapsed={false}
         label="Titre interne de la question"
         placeholder="Renseigner le nom interne de votre question"
         name="internal_title"
-        id="internal_title"
         helpText="Ce champ vous permet de donner un titre à la question,il n'est pas visible par les utilisateurs."
         isRequired
       />
       <Textarea
+        isCollapsed={false}
         p="10px 0"
         rows="medium"
         label="Note"
         placeholder="Renseigner une note relative à votre question"
-        name="internal_note"
         id="internal_note"
         helpText="Ce champ n'est pas visible par les utilisateurs."
       />

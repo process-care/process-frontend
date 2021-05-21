@@ -16,6 +16,7 @@ interface Props {
   label: string;
   helpText?: string;
   isRequired?: boolean;
+  isCollapsed?: boolean;
 }
 
 export const CustomDatePicker: React.FC<Props> = ({
@@ -23,6 +24,7 @@ export const CustomDatePicker: React.FC<Props> = ({
   label,
   helpText,
   isRequired,
+  isCollapsed,
 }) => {
   const [field, meta] = useField(id);
   const [startDate, setStartDate] = React.useState<Date | [Date, Date] | null>(
@@ -39,14 +41,18 @@ export const CustomDatePicker: React.FC<Props> = ({
       <FormLabel>
         {label} {isRequired && "*"}
       </FormLabel>
-      <DatePicker
-        required={isRequired}
-        {...field}
-        selected={startDate}
-        onChange={(d) => handleChange(d)}
-      />
-      <FormErrorMessage>{meta.error}</FormErrorMessage>
-      <FormHelperText fontSize="xs">{helpText}</FormHelperText>
+      {!isCollapsed && (
+        <>
+          <DatePicker
+            required={isRequired}
+            {...field}
+            selected={startDate}
+            onChange={(d) => handleChange(d)}
+          />
+          <FormErrorMessage>{meta.error}</FormErrorMessage>
+          <FormHelperText fontSize="xs">{helpText}</FormHelperText>
+        </>
+      )}
     </FormControl>
   );
 };

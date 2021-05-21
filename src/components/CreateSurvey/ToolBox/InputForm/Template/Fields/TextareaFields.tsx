@@ -15,12 +15,14 @@ export const TextareaFields: React.FC = () => {
           placeholder="ex: 5"
           label="Nb de charactères min"
           name="min_length"
+          isCollapsed={false}
         />
         <NumberInput
           placeholder="ex: 5"
           style={{ width: "45%" }}
           label="Nb de charactères max"
           name="max_length"
+          isCollapsed={false}
         />
       </Flex>
       <Radiobox

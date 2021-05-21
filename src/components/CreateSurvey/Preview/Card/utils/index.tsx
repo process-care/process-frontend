@@ -10,6 +10,7 @@ import {
 } from "components/Fields";
 import Inputs from "interfaces/inputs";
 import React from "react";
+import { useAppSelector } from "redux/hooks";
 
 import t from "static/input.json";
 
@@ -19,6 +20,9 @@ interface Options {
 }
 
 export const renderInput = (input: Inputs): React.ReactNode => {
+  const isCollapsed = useAppSelector(
+    (state) => state.formBuilder.is_collapse_view
+  );
   const formatOptions = (): Options[] | undefined => {
     if (input.options) {
       const arr = [];
@@ -33,6 +37,7 @@ export const renderInput = (input: Inputs): React.ReactNode => {
       return (
         <>
           <Input
+            isCollapsed={isCollapsed}
             isRequired={input.required}
             name={input.id || "input"}
             min_length={input.min_length}
@@ -49,6 +54,7 @@ export const renderInput = (input: Inputs): React.ReactNode => {
     case "number-input":
       return (
         <NumberInput
+          isCollapsed={isCollapsed}
           isRequired={input.required}
           placeholder={input.placeholder || t.placeholder}
           name={input.id || "number_input"}
@@ -61,6 +67,7 @@ export const renderInput = (input: Inputs): React.ReactNode => {
     case "checkbox":
       return (
         <Checkbox
+          isCollapsed={isCollapsed}
           id={input.id || "checkbox"}
           isRequired={input.required}
           label={input.label || t.label}
@@ -72,6 +79,7 @@ export const renderInput = (input: Inputs): React.ReactNode => {
     case "radio":
       return (
         <Radiobox
+          isCollapsed={isCollapsed}
           isRequired={input.required}
           id={input.id || "radiobox"}
           label={input.label || t.label}
@@ -82,6 +90,7 @@ export const renderInput = (input: Inputs): React.ReactNode => {
     case "select":
       return (
         <Select
+          isCollapsed={isCollapsed}
           id={input.id || "select"}
           label={input.label || t.label}
           placeholder={input.placeholder || t.placeholder}
@@ -93,6 +102,7 @@ export const renderInput = (input: Inputs): React.ReactNode => {
     case "slider":
       return (
         <Slider
+          isCollapsed={isCollapsed}
           isRequired={input.required}
           id={input.id || "slider"}
           label={input.label || t.label}
@@ -108,6 +118,7 @@ export const renderInput = (input: Inputs): React.ReactNode => {
     case "text-area":
       return (
         <Textarea
+          isCollapsed={isCollapsed}
           isRequired={input.required}
           id={input.id || "textarea"}
           rows={input.rows}
@@ -119,6 +130,7 @@ export const renderInput = (input: Inputs): React.ReactNode => {
     case "date-picker":
       return (
         <Datepicker
+          isCollapsed={isCollapsed}
           isRequired={input.required}
           label={input.label || t.label}
           id={input.id || "datepicker"}

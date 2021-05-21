@@ -22,11 +22,13 @@ export const RepeatedFields: React.FC = () => {
                       placeholder={`Réponse ${index}`}
                       rows="small"
                       isRequired
+                      isCollapsed={false}
                     />
                     <Flex ml={3} mt={8}>
                       <Button
                         type="button"
-                        onClick={() => arrayHelpers.remove(index)}>
+                        onClick={() => arrayHelpers.remove(index)}
+                      >
                         -
                       </Button>
                       {index + 1 === field.value.length && (
@@ -34,7 +36,8 @@ export const RepeatedFields: React.FC = () => {
                           ml={3}
                           type="button"
                           onClick={() => arrayHelpers.push("")}
-                          variant="solid">
+                          variant="solid"
+                        >
                           +
                         </Button>
                       )}
@@ -50,7 +53,8 @@ export const RepeatedFields: React.FC = () => {
                 <Button
                   onClick={() => arrayHelpers.push("")}
                   variant="rounded"
-                  type="button">
+                  type="button"
+                >
                   Ajouter une réponse
                 </Button>
                 <Text mt={1} fontSize="10px" color="red">

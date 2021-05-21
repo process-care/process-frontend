@@ -44,15 +44,15 @@ export const CustomInput: React.FC<Props> = ({
       id={name}
       textAlign="left"
       style={style}
-      isInvalid={!!meta.error}>
+      isInvalid={!!meta.error}
+    >
       <FormLabel>
         {/* @ts-expect-error no alternative found for the moment*/}
         {label} {(isRequired === "true" || isRequired) && "*"}
       </FormLabel>
+
       <InputGroup size="sm">
         <Input
-          // remove browser validation to keep formik validation
-          // isRequired={isRequired}
           borderRadius="7px"
           type={type}
           size="md"

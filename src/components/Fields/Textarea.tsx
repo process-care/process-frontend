@@ -41,11 +41,13 @@ export const CustomTextarea: React.FC<Props> = ({
       textAlign="left"
       m={m}
       p={p}
-      isInvalid={!!meta.error}>
+      isInvalid={!!meta.error}
+    >
       <FormLabel htmlFor={id}>
         {/* @ts-expect-error no alternative found for the moment*/}
         {label} {(isRequired === "true" || isRequired) && "*"}
       </FormLabel>
+
       <Textarea
         id={id}
         // isRequired={isRequired}

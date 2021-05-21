@@ -6,6 +6,7 @@ interface FormBuilder {
   inputs_count: number;
   inputs: Inputs[];
   selected_input: Inputs;
+  is_collapse_view: boolean;
 }
 interface UpdateInput {
   id: string | undefined;
@@ -24,6 +25,7 @@ const initialState: FormBuilder = {
     name: "",
     internal_title: "",
   },
+  is_collapse_view: false,
 };
 
 export const formBuilderSlice = createSlice({
@@ -64,6 +66,9 @@ export const formBuilderSlice = createSlice({
       state.inputs = [];
       state.inputs_count = 0;
     },
+    toggleCollapseView: (state) => {
+      state.is_collapse_view = !state.is_collapse_view;
+    },
   },
 });
 
@@ -73,6 +78,7 @@ export const {
   removeInput,
   updateInput,
   selectInput,
+  toggleCollapseView,
 } = formBuilderSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type

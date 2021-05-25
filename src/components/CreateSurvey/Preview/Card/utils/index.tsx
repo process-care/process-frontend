@@ -79,6 +79,7 @@ export const renderInput = (input: Inputs): React.ReactNode => {
     case "radio":
       return (
         <Radiobox
+          helpText={input.help_text || t.help_text}
           isCollapsed={isCollapsed}
           isRequired={input.required}
           id={input.id || "radiobox"}

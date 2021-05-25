@@ -156,7 +156,9 @@ const Card: React.FC<CardProps> = ({ input, index, moveCard }) => {
                 close={() => setRemoving(false)}
               />
             ) : (
-              renderInput(input)
+              <Box position="relative" top="-7px" mb="10px">
+                {renderInput(input)}
+              </Box>
             )}
           </Box>
         </Container>

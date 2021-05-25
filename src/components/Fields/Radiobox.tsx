@@ -35,6 +35,7 @@ export const CustomRadioBox: React.FC<Props> = ({
   isRequired,
   isCollapsed,
 }) => {
+  console.log(helpText);
   return (
     <FormControl id={id} textAlign="left" m={m} p={p}>
       <FormLabel>
@@ -51,8 +52,7 @@ export const CustomRadioBox: React.FC<Props> = ({
                       name={value}
                       value={value}
                       key={value}
-                      isRequired={isRequired}
-                    >
+                      isRequired={isRequired}>
                       {label}
                     </Radio>
                   );

@@ -15,12 +15,14 @@ export const InputFields: React.FC = () => {
           label="Nb de charactères min"
           name="min_length"
           placeholder="ex: 4"
+          isCollapsed={false}
         />
         <NumberInput
           placeholder="ex: 4"
           style={{ width: "45%" }}
           label="Nb de charactères max"
           name="max_length"
+          isCollapsed={false}
         />
       </Flex>
       <Input
@@ -29,6 +31,7 @@ export const InputFields: React.FC = () => {
         name="units"
         placeholder="cm,km, années ..."
         helpText="Cette information s'affichera à droite du champ."
+        isCollapsed={false}
       />
     </>
   );

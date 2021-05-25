@@ -27,6 +27,7 @@ interface Props {
   name: string;
   style?: React.CSSProperties | undefined;
   placeholder: string;
+  isCollapsed?: boolean;
 }
 export const CustomNumberInput: React.FC<Props> = ({
   label,
@@ -40,6 +41,7 @@ export const CustomNumberInput: React.FC<Props> = ({
   name,
   placeholder,
   style,
+  isCollapsed,
 }) => {
   const [, meta, helpers] = useField(name);
 
@@ -55,28 +57,34 @@ export const CustomNumberInput: React.FC<Props> = ({
         {/* @ts-expect-error no alternative found for the moment*/}
         {label} {(isRequired === "true" || isRequired) && "*"}
       </FormLabel>
-      <InputGroup>
-        <NumberInput
-          name={name}
-          isRequired={isRequired}
-          defaultValue={defaultValue}
-          min={min}
-          max={max}
-          precision={precision}
-          allowMouseWheel
-          w="100%"
-          onChange={(value) => helpers.setValue(value)}>
-          <NumberInputField placeholder={placeholder} />
+      {!isCollapsed && (
+        <>
+          {" "}
+          <InputGroup>
+            <NumberInput
+              name={name}
+              isRequired={isRequired}
+              defaultValue={defaultValue}
+              min={min}
+              max={max}
+              precision={precision}
+              allowMouseWheel
+              w="100%"
+              onChange={(value) => helpers.setValue(value)}
+            >
+              <NumberInputField placeholder={placeholder} />
 
-          <NumberInputStepper>
-            <NumberIncrementStepper />
-            <NumberDecrementStepper />
-          </NumberInputStepper>
-        </NumberInput>
-        {inputRightAddon && <InputRightAddon children={inputRightAddon} />}
-      </InputGroup>
-      <FormErrorMessage>{meta.error}</FormErrorMessage>
-      <FormHelperText fontSize="xs">{helpText}</FormHelperText>
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+            {inputRightAddon && <InputRightAddon children={inputRightAddon} />}
+          </InputGroup>
+          <FormErrorMessage>{meta.error}</FormErrorMessage>
+          <FormHelperText fontSize="xs">{helpText}</FormHelperText>
+        </>
+      )}
     </FormControl>
   );
 };

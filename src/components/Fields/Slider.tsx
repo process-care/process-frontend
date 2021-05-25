@@ -17,6 +17,7 @@ interface Props {
   vertical?: boolean;
   reverse?: boolean;
   isRequired?: boolean;
+  isCollapsed?: boolean;
 }
 
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
@@ -33,6 +34,7 @@ export const CustomSlider: React.FC<Props> = ({
   reverse,
   id,
   isRequired,
+  isCollapsed,
 }) => {
   const [, , helpers] = useField(id);
 
@@ -62,24 +64,29 @@ export const CustomSlider: React.FC<Props> = ({
     <FormControl
       id="email"
       textAlign="left"
-      h={vertical ? "700px" : "fit-content"}>
+      h={vertical ? "700px" : "fit-content"}
+    >
       <FormLabel>
         {label} {isRequired && "*"}
       </FormLabel>
-      <Range
-        reverse={vertical || reverse}
-        marks={createMarks(max)}
-        min={min}
-        max={max}
-        step={step}
-        defaultValue={defaultValue}
-        vertical={vertical}
-        style={vertical ? { height: "85%", margin: "30px 0 0 30px" } : {}}
-        onChange={(value) => helpers.setValue(value)}
-      />
-      <FormHelperText fontSize="xs" mt={10}>
-        {helpText}
-      </FormHelperText>
+      {!isCollapsed && (
+        <>
+          <Range
+            reverse={vertical || reverse}
+            marks={createMarks(max)}
+            min={min}
+            max={max}
+            step={step}
+            defaultValue={defaultValue}
+            vertical={vertical}
+            style={vertical ? { height: "85%", margin: "30px 0 0 30px" } : {}}
+            onChange={(value) => helpers.setValue(value)}
+          />
+          <FormHelperText fontSize="xs" mt={10}>
+            {helpText}
+          </FormHelperText>
+        </>
+      )}
     </FormControl>
   );
 };

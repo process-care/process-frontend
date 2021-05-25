@@ -21,6 +21,7 @@ interface Props {
   id: string;
   m?: string | number;
   p?: string | number;
+  isCollapsed?: boolean;
 }
 export const CustomTextarea: React.FC<Props> = ({
   label,
@@ -33,6 +34,7 @@ export const CustomTextarea: React.FC<Props> = ({
   id,
   m,
   p,
+  isCollapsed,
 }) => {
   const [field, meta] = useField(id);
   return (
@@ -41,27 +43,37 @@ export const CustomTextarea: React.FC<Props> = ({
       textAlign="left"
       m={m}
       p={p}
-      isInvalid={!!meta.error}>
+      isInvalid={!!meta.error}
+    >
       <FormLabel htmlFor={id}>
         {/* @ts-expect-error no alternative found for the moment*/}
         {label} {(isRequired === "true" || isRequired) && "*"}
       </FormLabel>
-      <Textarea
-        id={id}
-        // isRequired={isRequired}
-        style={{ resize: "none" }}
-        rows={getRows(rows)}
-        placeholder={placeholder}
-        min_length={min_length}
-        max_length={max_length}
-        {...field}
-      />
-      <FormErrorMessage mt={-2} justifyContent="flex-end" fontSize="10px">
-        {meta.error}
-      </FormErrorMessage>
-      <FormHelperText mt={0} lineHeight={1.4} fontSize="xs" color="gray.400">
-        {helpText}
-      </FormHelperText>
+      {!isCollapsed && (
+        <>
+          <Textarea
+            id={id}
+            // isRequired={isRequired}
+            style={{ resize: "none" }}
+            rows={getRows(rows)}
+            placeholder={placeholder}
+            min_length={min_length}
+            max_length={max_length}
+            {...field}
+          />
+          <FormErrorMessage mt={-2} justifyContent="flex-end" fontSize="10px">
+            {meta.error}
+          </FormErrorMessage>
+          <FormHelperText
+            mt={0}
+            lineHeight={1.4}
+            fontSize="xs"
+            color="gray.400"
+          >
+            {helpText}
+          </FormHelperText>
+        </>
+      )}
     </FormControl>
   );
 };

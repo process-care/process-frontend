@@ -1,15 +1,16 @@
 import React from "react";
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import Card from "./Card";
 import { useDrop } from "react-dnd";
 import { ItemTypes } from "./Card/itemTypes";
-import t from "static/preview.json";
+
 import update from "immutability-helper";
 import Inputs from "interfaces/inputs";
-import { useAppDispatch, useAppSelector } from "redux/hooks";
-import { removeAllInputs, selectInputs } from "redux/slices/formBuilder";
+import { useAppSelector } from "redux/hooks";
+import { selectInputs } from "redux/slices/formBuilder";
 
 import { Formik, Form } from "formik";
+import { Header } from "./Header";
 
 export interface Item {
   id: number;
@@ -21,8 +22,7 @@ export interface PreviewState {
 }
 
 const Preview: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const { inputs, inputs_count } = useAppSelector(selectInputs);
+  const { inputs } = useAppSelector(selectInputs);
 
   const [cards, setCards] = React.useState(inputs);
 
@@ -69,12 +69,13 @@ const Preview: React.FC = () => {
         alignItems="center"
         h="100%"
         overflowY="auto"
-        py={10}>
+      >
         <Formik
           initialValues={{}}
           onSubmit={(data) => {
             console.log("DATA :", data);
-          }}>
+          }}
+        >
           {() => {
             return (
               <Form style={{ width: "100%" }}>
@@ -83,7 +84,8 @@ const Preview: React.FC = () => {
                   justifyContent="center"
                   fontSize="30"
                   flexDirection="column"
-                  px={10}>
+                  px={10}
+                >
                   {children}
                 </Flex>
               </Form>
@@ -94,20 +96,18 @@ const Preview: React.FC = () => {
     );
   };
 
-  if (cards.length === 0) {
-    return (
-      <Container>
-        <p>{t.no_inputs}</p>
-      </Container>
-    );
-  }
+  // if (cards.length === 0) {
+  //   return (
+  //     <Container>
+  //       <p>{t.no_inputs}</p>
+  //     </Container>
+  //   );
+  // }
 
   return (
     <Container>
-      <Button variant="box" onClick={() => dispatch(removeAllInputs())} mb={8}>
-        Supprimer le{inputs_count > 1 && "s"}{" "}
-        {inputs_count !== 1 && inputs_count} champs
-      </Button>
+      {cards.length > 0 && <Header />}
+
       {cards.map((input, i) => renderCard(input, i))}
     </Container>
   );

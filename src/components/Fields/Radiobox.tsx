@@ -22,6 +22,7 @@ interface Props {
   m?: string;
   p?: string;
   isRequired?: boolean;
+  isCollapsed?: boolean;
 }
 
 export const CustomRadioBox: React.FC<Props> = ({
@@ -32,32 +33,38 @@ export const CustomRadioBox: React.FC<Props> = ({
   m,
   p,
   isRequired,
+  isCollapsed,
 }) => {
   return (
     <FormControl id={id} textAlign="left" m={m} p={p}>
       <FormLabel>
         {label} {isRequired && "*"}
       </FormLabel>
-      <RadioGroup colorScheme="green">
-        <HStack flexWrap="wrap" spacing={5}>
-          {radios ? (
-            radios.map(({ value, label }) => {
-              return (
-                <Radio
-                  name={value}
-                  value={value}
-                  key={value}
-                  isRequired={isRequired}>
-                  {label}
-                </Radio>
-              );
-            })
-          ) : (
-            <Box p={5} />
-          )}
-        </HStack>
-      </RadioGroup>
-      <FormHelperText fontSize="xs">{helpText}</FormHelperText>
+      {!isCollapsed && (
+        <>
+          <RadioGroup colorScheme="green">
+            <HStack flexWrap="wrap" spacing={5}>
+              {radios ? (
+                radios.map(({ value, label }) => {
+                  return (
+                    <Radio
+                      name={value}
+                      value={value}
+                      key={value}
+                      isRequired={isRequired}
+                    >
+                      {label}
+                    </Radio>
+                  );
+                })
+              ) : (
+                <Box p={5} />
+              )}
+            </HStack>
+          </RadioGroup>
+          <FormHelperText fontSize="xs">{helpText}</FormHelperText>
+        </>
+      )}
     </FormControl>
   );
 };

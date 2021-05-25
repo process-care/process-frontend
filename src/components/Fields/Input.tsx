@@ -24,6 +24,7 @@ interface Props {
   onBlur?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   style?: React.CSSProperties | undefined;
   isRequired?: boolean;
+  isCollapsed?: boolean;
 }
 
 export const CustomInput: React.FC<Props> = ({
@@ -37,6 +38,7 @@ export const CustomInput: React.FC<Props> = ({
   name,
   style,
   isRequired,
+  isCollapsed,
 }) => {
   const [field, meta] = useField(name);
   return (
@@ -44,31 +46,36 @@ export const CustomInput: React.FC<Props> = ({
       id={name}
       textAlign="left"
       style={style}
-      isInvalid={!!meta.error}>
+      isInvalid={!!meta.error}
+    >
       <FormLabel>
         {/* @ts-expect-error no alternative found for the moment*/}
         {label} {(isRequired === "true" || isRequired) && "*"}
       </FormLabel>
-      <InputGroup size="sm">
-        <Input
-          // remove browser validation to keep formik validation
-          // isRequired={isRequired}
-          borderRadius="7px"
-          type={type}
-          size="md"
-          placeholder={placeholder}
-          min_length={min_length}
-          max_length={max_length}
-          {...field}
-        />
-        {inputRightAddon && (
-          <InputRightAddon children={inputRightAddon} h="40px" />
-        )}
-      </InputGroup>
-      <FormErrorMessage mt={1} justifyContent="flex-end" fontSize="10px">
-        {meta.error}
-      </FormErrorMessage>
-      <FormHelperText fontSize="xs">{helpText}</FormHelperText>
+
+      {!isCollapsed && (
+        <>
+          {" "}
+          <InputGroup size="sm">
+            <Input
+              borderRadius="7px"
+              type={type}
+              size="md"
+              placeholder={placeholder}
+              min_length={min_length}
+              max_length={max_length}
+              {...field}
+            />
+            {inputRightAddon && (
+              <InputRightAddon children={inputRightAddon} h="40px" />
+            )}
+          </InputGroup>
+          <FormErrorMessage mt={1} justifyContent="flex-end" fontSize="10px">
+            {meta.error}
+          </FormErrorMessage>
+          <FormHelperText fontSize="xs">{helpText}</FormHelperText>
+        </>
+      )}
     </FormControl>
   );
 };

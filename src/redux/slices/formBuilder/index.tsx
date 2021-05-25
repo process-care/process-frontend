@@ -6,6 +6,7 @@ interface FormBuilder {
   inputs_count: number;
   inputs: Inputs[];
   selected_input: Inputs;
+  is_editing: boolean;
 }
 interface UpdateInput {
   id: string | undefined;
@@ -24,6 +25,7 @@ const initialState: FormBuilder = {
     name: "",
     internal_title: "",
   },
+  is_editing: false,
 };
 
 export const formBuilderSlice = createSlice({
@@ -36,6 +38,9 @@ export const formBuilderSlice = createSlice({
     },
     selectInput: (state, action: PayloadAction<Inputs>) => {
       state.selected_input = action.payload;
+    },
+    setIsEditing: (state, action: PayloadAction<boolean>) => {
+      state.is_editing = action.payload;
     },
     updateInput: (state, action: PayloadAction<UpdateInput>) => {
       const { id, data } = action.payload;
@@ -73,6 +78,7 @@ export const {
   removeInput,
   updateInput,
   selectInput,
+  setIsEditing,
 } = formBuilderSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type

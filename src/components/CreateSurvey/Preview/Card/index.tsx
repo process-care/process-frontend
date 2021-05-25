@@ -13,7 +13,11 @@ import { ItemTypes } from "./itemTypes";
 import { XYCoord } from "dnd-core";
 import { renderInput } from "./utils";
 import Inputs from "interfaces/inputs";
-import { removeInput, selectInput } from "redux/slices/formBuilder";
+import {
+  removeInput,
+  selectInput,
+  setIsEditing,
+} from "redux/slices/formBuilder";
 
 import { ReactComponent as Delete } from "./assets/delete.svg";
 import { ReactComponent as Edit } from "./assets/edit.svg";
@@ -87,6 +91,12 @@ const Card: React.FC<CardProps> = ({ input, index, moveCard }) => {
 
   const opacity = isDragging ? 0 : 1;
   drag(drop(ref));
+
+  const handleEdit = () => {
+    dispatch(setIsEditing(true));
+    dispatch(selectInput(input));
+    dispatch(toogleDrawer());
+  };
   return (
     <Flex w="100%" alignItems="center" position="relative">
       <Box
@@ -152,10 +162,7 @@ const Card: React.FC<CardProps> = ({ input, index, moveCard }) => {
         </Container>
       </Box>
       <Box
-        onClick={() => {
-          dispatch(selectInput(input));
-          dispatch(toogleDrawer());
-        }}
+        onClick={() => handleEdit()}
         position="absolute"
         right="-16px"
         _hover={{ cursor: "pointer", opacity: "0.7", transition: "all 400ms" }}>

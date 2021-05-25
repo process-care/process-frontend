@@ -7,17 +7,23 @@ import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { Footer } from "./Template/Footer";
 import { renderFormTemplate, renderFormValidationSchema } from "./utils";
 import { fields } from "./Template/logic/initialValues";
-import { updateInput, removeInput } from "redux/slices/formBuilder";
+import {
+  updateInput,
+  removeInput,
+  setIsEditing,
+} from "redux/slices/formBuilder";
 import { toogleDrawer } from "redux/slices/application";
 
 const InputForm: React.FC = () => {
   const selectedInput = useAppSelector(
     (state) => state.formBuilder.selected_input
   );
+  const isEditing = useAppSelector((state) => state.formBuilder.is_editing);
   const dispatch = useAppDispatch();
   const onCancel = () => {
-    dispatch(removeInput(selectedInput));
+    if (!isEditing) dispatch(removeInput(selectedInput));
     dispatch(toogleDrawer());
+    dispatch(setIsEditing(false));
   };
   const onChange = (event: React.FormEvent<HTMLFormElement>) => {
     const target = event.target as HTMLFormElement;

@@ -10,7 +10,7 @@ interface Props {
   label: string;
   id: string;
   helpText?: string;
-  default_value?: string | undefined;
+  defaultValue?: string | undefined;
   step: string | undefined;
   min: string | undefined;
   max: string | undefined;
@@ -26,7 +26,7 @@ const Range = createSliderWithTooltip(Slider);
 export const CustomSlider: React.FC<Props> = ({
   label,
   helpText,
-  default_value,
+  defaultValue,
   vertical,
   step,
   min,
@@ -39,16 +39,16 @@ export const CustomSlider: React.FC<Props> = ({
   const [, , helpers] = useField(id);
 
   React.useEffect(() => {
-    if (default_value) {
-      helpers.setValue(default_value);
+    if (defaultValue) {
+      helpers.setValue(defaultValue);
     }
-  }, [default_value]);
+  }, [defaultValue]);
 
   React.useEffect(() => {
-    if (default_value) {
-      helpers.setValue(default_value);
+    if (defaultValue) {
+      helpers.setValue(defaultValue);
     }
-  }, [default_value]);
+  }, [defaultValue]);
 
   const createMarks = (max: string | undefined) => {
     if (max) {

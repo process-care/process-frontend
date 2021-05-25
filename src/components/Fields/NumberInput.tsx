@@ -40,9 +40,7 @@ export const CustomNumberInput: React.FC<Props> = ({
   style,
   isCollapsed,
 }) => {
-  const [field, meta, helpers] = useField(name);
-
-  console.log(field);
+  const [field, meta] = useField(name);
 
   return (
     <FormControl

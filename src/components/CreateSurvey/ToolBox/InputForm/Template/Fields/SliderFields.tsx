@@ -1,5 +1,5 @@
 import { Flex, Box } from "@chakra-ui/react";
-import { NumberInput, Switch, Textarea } from "components/Fields";
+import { Switch, Textarea } from "components/Fields";
 import React from "react";
 
 import { CommonFields } from "./../index";

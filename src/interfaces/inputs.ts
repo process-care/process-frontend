@@ -17,5 +17,5 @@ export default interface Inputs {
   step?: string;
   rows?: "small" | "medium" | "large" | undefined;
   required?: boolean;
-  default_value?: string | number | undefined;
+  default_value?: string | undefined;
 }

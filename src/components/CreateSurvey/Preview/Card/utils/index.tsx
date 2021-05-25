@@ -112,7 +112,7 @@ export const renderInput = (input: Inputs): React.ReactNode => {
           step={1}
           defaultValue={2}
           helpText={input.help_text || t.help_text}
-          vertical={input.orientation}
+          vertical={input.vertical}
         />
       );
       break;

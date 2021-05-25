@@ -19,3 +19,11 @@ export const MultipleInputFieldsSchema = CommonFieldsSchema.shape({
     .min(2, "Il faut au moins deux réponses")
     .required("Merci de renseigner deux réponses au minumum"),
 });
+
+// Slider
+
+export const SliderSchema = CommonFieldsSchema.shape({
+  min: Yup.number().required("Ce champs est requis"),
+  max: Yup.number().required("Ce champs est requis"),
+  step: Yup.number().required("Ce champs est requis"),
+});

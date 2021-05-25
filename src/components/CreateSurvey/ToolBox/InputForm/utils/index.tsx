@@ -12,6 +12,7 @@ import {
 import {
   CommonFieldsSchema,
   MultipleInputFieldsSchema,
+  SliderSchema,
 } from "../ValidationSchemas";
 
 export const renderFormTemplate = (input: Inputs): React.ReactNode => {
@@ -67,7 +68,7 @@ export const renderFormValidationSchema = (
       return MultipleInputFieldsSchema;
       break;
     case "slider":
-      return CommonFieldsSchema;
+      return SliderSchema;
       break;
     case "text-area":
       return CommonFieldsSchema;

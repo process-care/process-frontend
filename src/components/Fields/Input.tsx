@@ -46,8 +46,7 @@ export const CustomInput: React.FC<Props> = ({
       id={name}
       textAlign="left"
       style={style}
-      isInvalid={!!meta.error}
-    >
+      isInvalid={!!meta.error}>
       <FormLabel>
         {/* @ts-expect-error no alternative found for the moment*/}
         {label} {(isRequired === "true" || isRequired) && "*"}
@@ -55,7 +54,6 @@ export const CustomInput: React.FC<Props> = ({
 
       {!isCollapsed && (
         <>
-          {" "}
           <InputGroup size="sm">
             <Input
               borderRadius="7px"

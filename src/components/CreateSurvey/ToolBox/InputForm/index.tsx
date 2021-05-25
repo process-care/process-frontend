@@ -50,7 +50,8 @@ const InputForm: React.FC = () => {
         setSubmitting(true);
         dispatch(toogleDrawer());
       }}>
-      {({ isValid, isSubmitting }) => {
+      {({ isValid, isSubmitting, errors }) => {
+        console.log("E", errors);
         return (
           <Form onChange={(event) => onChange(event)}>
             <Flex

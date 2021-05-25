@@ -10,10 +10,10 @@ interface Props {
   label: string;
   id: string;
   helpText?: string;
-  defaultValue?: number;
-  step: number | null;
-  min: number | undefined;
-  max: number | undefined;
+  defaultValue?: string | undefined;
+  step: string | undefined;
+  min: string | undefined;
+  max: string | undefined;
   vertical?: boolean;
   reverse?: boolean;
   isRequired?: boolean;
@@ -50,10 +50,12 @@ export const CustomSlider: React.FC<Props> = ({
     }
   }, [defaultValue]);
 
-  const createMarks = (max: number | undefined) => {
+  const createMarks = (max: string | undefined) => {
     if (max) {
+      const m = parseInt(max, 10);
+
       const arr = [];
-      for (let index = 0; index <= max; index++) {
+      for (let index = 0; index <= m; index++) {
         arr.push({ [index]: index });
       }
       return arr.map((el, i) => el[i]);
@@ -64,8 +66,7 @@ export const CustomSlider: React.FC<Props> = ({
     <FormControl
       id="email"
       textAlign="left"
-      h={vertical ? "700px" : "fit-content"}
-    >
+      h={vertical ? "700px" : "fit-content"}>
       <FormLabel>
         {label} {isRequired && "*"}
       </FormLabel>
@@ -74,10 +75,12 @@ export const CustomSlider: React.FC<Props> = ({
           <Range
             reverse={vertical || reverse}
             marks={createMarks(max)}
-            min={min}
-            max={max}
-            step={step}
-            defaultValue={defaultValue}
+            min={min !== undefined ? parseInt(min, 10) : 0}
+            max={max !== undefined ? parseInt(max, 10) : 10}
+            step={step !== undefined ? parseInt(step, 10) : 1}
+            defaultValue={
+              defaultValue !== undefined ? parseInt(defaultValue, 10) : 0
+            }
             vertical={vertical}
             style={vertical ? { height: "85%", margin: "30px 0 0 30px" } : {}}
             onChange={(value) => helpers.setValue(value)}

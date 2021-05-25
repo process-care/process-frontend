@@ -109,8 +109,8 @@ export const renderInput = (input: Inputs): React.ReactNode => {
           label={input.label || t.label}
           min={input.min}
           max={input.max}
-          step={1}
-          defaultValue={2}
+          step={input.step}
+          defaultValue={input.default_value}
           helpText={input.help_text || t.help_text}
           vertical={input.vertical}
         />

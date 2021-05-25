@@ -43,8 +43,7 @@ export const CustomTextarea: React.FC<Props> = ({
       textAlign="left"
       m={m}
       p={p}
-      isInvalid={!!meta.error}
-    >
+      isInvalid={!!meta.error}>
       <FormLabel htmlFor={id}>
         {/* @ts-expect-error no alternative found for the moment*/}
         {label} {(isRequired === "true" || isRequired) && "*"}
@@ -53,7 +52,6 @@ export const CustomTextarea: React.FC<Props> = ({
         <>
           <Textarea
             id={id}
-            // isRequired={isRequired}
             style={{ resize: "none" }}
             rows={getRows(rows)}
             placeholder={placeholder}
@@ -68,8 +66,7 @@ export const CustomTextarea: React.FC<Props> = ({
             mt={0}
             lineHeight={1.4}
             fontSize="xs"
-            color="gray.400"
-          >
+            color="gray.400">
             {helpText}
           </FormHelperText>
         </>

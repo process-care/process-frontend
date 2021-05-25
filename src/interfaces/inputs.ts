@@ -12,8 +12,10 @@ export default interface Inputs {
   vertical?: boolean;
   reverse?: boolean;
   options?: { [x: string]: string | undefined };
-  min?: number;
-  max?: number;
+  min?: string;
+  max?: string;
   rows?: "small" | "medium" | "large" | undefined;
   required?: boolean;
+  default_value?: string;
+  step?: string;
 }

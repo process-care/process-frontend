@@ -7,11 +7,7 @@ import {
   InputRightAddon,
   NumberInput,
   NumberInputField,
-  // NumberInputStepper,
-  // NumberIncrementStepper,
-  // NumberDecrementStepper,
-  // FormErrorMessage,
-  // Text,
+  Text,
 } from "@chakra-ui/react";
 
 import { useField } from "formik";
@@ -44,17 +40,13 @@ export const CustomNumberInput: React.FC<Props> = ({
   style,
   isCollapsed,
 }) => {
-  const [field, , helpers] = useField(name);
+  const [field, meta, helpers] = useField(name);
 
-  React.useEffect(() => {
-    if (defaultValue) {
-      helpers.setValue(defaultValue);
-    }
-  }, [defaultValue]);
   console.log(field);
 
   return (
     <FormControl
+      id={name}
       textAlign="left"
       style={style}
       // isInvalid={meta.error}
@@ -72,27 +64,21 @@ export const CustomNumberInput: React.FC<Props> = ({
               max={max}
               precision={precision}
               allowMouseWheel
-              w="100%"
-              {...field}>
-              <NumberInputField placeholder={placeholder} />
-
-              {/* <NumberInputStepper
-                onChange={(val) => helpers.setValue(val, true)}>
-                <NumberIncrementStepper
-                  onClick={(val) => helpers.setValue(val, true)}
-                />
-                <NumberDecrementStepper
-                  onClick={(val) => helpers.setValue(val, true)}
-                />
-              </NumberInputStepper> */}
+              w="100%">
+              <NumberInputField
+                placeholder={placeholder}
+                onChange={(e) => helpers.setValue(e.target.value)}
+                // {...field}
+                value={parseInt(field.value, 10)}
+              />
             </NumberInput>
             {inputRightAddon && <InputRightAddon children={inputRightAddon} />}
           </InputGroup>
-          {/* {meta.touched && meta.error && (
-              <Text fontSize="10px" color="red" textAlign="right">
-                {meta.error}
-              </Text>
-            )} */}
+          {meta.touched && meta.error && (
+            <Text fontSize="10px" color="red" textAlign="right">
+              {meta.error}
+            </Text>
+          )}
           <FormHelperText fontSize="xs">{helpText}</FormHelperText>
         </>
       )}

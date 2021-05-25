@@ -49,8 +49,7 @@ export const CustomNumberInput: React.FC<Props> = ({
       id={name}
       textAlign="left"
       style={style}
-      // isInvalid={meta.error}
-    >
+      isInvalid={!!meta.error}>
       <FormLabel>
         {/* @ts-expect-error no alternative found for the moment*/}
         {label} {(isRequired === "true" || isRequired) && "*"}
@@ -65,12 +64,7 @@ export const CustomNumberInput: React.FC<Props> = ({
               precision={precision}
               allowMouseWheel
               w="100%">
-              <NumberInputField
-                placeholder={placeholder}
-                onChange={(e) => helpers.setValue(e.target.value)}
-                // {...field}
-                value={parseInt(field.value, 10)}
-              />
+              <NumberInputField placeholder={placeholder} {...field} />
             </NumberInput>
             {inputRightAddon && <InputRightAddon children={inputRightAddon} />}
           </InputGroup>

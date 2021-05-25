@@ -44,13 +44,15 @@ const InputForm: React.FC = () => {
       validateOnBlur={false}
       validationSchema={renderFormValidationSchema(selectedInput)}
       // initialValues={selectedInput ? selectedInput : fields[type]}
-      initialValues={selectedInput ? selectedInput : fields[type]}
+      initialValues={isEditing ? selectedInput : fields[type]}
       onSubmit={(data, { setSubmitting, validateForm }) => {
         validateForm(data);
         setSubmitting(true);
         dispatch(toogleDrawer());
       }}>
-      {({ isValid, isSubmitting }) => {
+      {({ isValid, isSubmitting, errors, initialValues }) => {
+        console.log("E", errors);
+        console.log(initialValues);
         return (
           <Form onChange={(event) => onChange(event)}>
             <Flex

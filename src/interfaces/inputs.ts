@@ -14,6 +14,8 @@ export default interface Inputs {
   options?: { [x: string]: string | undefined };
   min?: number;
   max?: number;
+  step?: number | null;
   rows?: "small" | "medium" | "large" | undefined;
   required?: boolean;
+  default_value?: string | number | undefined;
 }

@@ -10,7 +10,7 @@ interface Props {
   label: string;
   id: string;
   helpText?: string;
-  defaultValue?: number;
+  default_value?: number;
   step: number | null;
   min: number | undefined;
   max: number | undefined;
@@ -26,7 +26,7 @@ const Range = createSliderWithTooltip(Slider);
 export const CustomSlider: React.FC<Props> = ({
   label,
   helpText,
-  defaultValue,
+  default_value,
   vertical,
   step,
   min,
@@ -39,16 +39,16 @@ export const CustomSlider: React.FC<Props> = ({
   const [, , helpers] = useField(id);
 
   React.useEffect(() => {
-    if (defaultValue) {
-      helpers.setValue(defaultValue);
+    if (default_value) {
+      helpers.setValue(default_value);
     }
-  }, [defaultValue]);
+  }, [default_value]);
 
   React.useEffect(() => {
-    if (defaultValue) {
-      helpers.setValue(defaultValue);
+    if (default_value) {
+      helpers.setValue(default_value);
     }
-  }, [defaultValue]);
+  }, [default_value]);
 
   const createMarks = (max: number | undefined) => {
     if (max) {
@@ -64,8 +64,7 @@ export const CustomSlider: React.FC<Props> = ({
     <FormControl
       id="email"
       textAlign="left"
-      h={vertical ? "700px" : "fit-content"}
-    >
+      h={vertical ? "700px" : "fit-content"}>
       <FormLabel>
         {label} {isRequired && "*"}
       </FormLabel>
@@ -74,10 +73,10 @@ export const CustomSlider: React.FC<Props> = ({
           <Range
             reverse={vertical || reverse}
             marks={createMarks(max)}
-            min={min}
-            max={max}
-            step={step}
-            defaultValue={defaultValue}
+            min={parseInt(min, 10)}
+            max={parseInt(max, 10)}
+            step={10}
+            defaultValue={default_value}
             vertical={vertical}
             style={vertical ? { height: "85%", margin: "30px 0 0 30px" } : {}}
             onChange={(value) => helpers.setValue(value)}

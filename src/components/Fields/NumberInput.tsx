@@ -7,11 +7,7 @@ import {
   InputRightAddon,
   NumberInput,
   NumberInputField,
-  // NumberInputStepper,
-  // NumberIncrementStepper,
-  // NumberDecrementStepper,
-  // FormErrorMessage,
-  // Text,
+  Text,
 } from "@chakra-ui/react";
 
 import { useField } from "formik";
@@ -44,7 +40,7 @@ export const CustomNumberInput: React.FC<Props> = ({
   style,
   isCollapsed,
 }) => {
-  const [field, , helpers] = useField(name);
+  const [field, meta, helpers] = useField(name);
 
   React.useEffect(() => {
     if (defaultValue) {
@@ -55,10 +51,10 @@ export const CustomNumberInput: React.FC<Props> = ({
 
   return (
     <FormControl
+      id={name}
       textAlign="left"
       style={style}
-      // isInvalid={meta.error}
-    >
+      isInvalid={!!meta.error}>
       <FormLabel>
         {/* @ts-expect-error no alternative found for the moment*/}
         {label} {(isRequired === "true" || isRequired) && "*"}
@@ -75,24 +71,14 @@ export const CustomNumberInput: React.FC<Props> = ({
               w="100%"
               {...field}>
               <NumberInputField placeholder={placeholder} />
-
-              {/* <NumberInputStepper
-                onChange={(val) => helpers.setValue(val, true)}>
-                <NumberIncrementStepper
-                  onClick={(val) => helpers.setValue(val, true)}
-                />
-                <NumberDecrementStepper
-                  onClick={(val) => helpers.setValue(val, true)}
-                />
-              </NumberInputStepper> */}
             </NumberInput>
             {inputRightAddon && <InputRightAddon children={inputRightAddon} />}
           </InputGroup>
-          {/* {meta.touched && meta.error && (
-              <Text fontSize="10px" color="red" textAlign="right">
-                {meta.error}
-              </Text>
-            )} */}
+          {meta.touched && meta.error && (
+            <Text fontSize="10px" color="red" textAlign="right">
+              {meta.error}
+            </Text>
+          )}
           <FormHelperText fontSize="xs">{helpText}</FormHelperText>
         </>
       )}

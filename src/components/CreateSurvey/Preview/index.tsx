@@ -68,14 +68,12 @@ const Preview: React.FC = () => {
         flexDirection="column"
         alignItems="center"
         h="100%"
-        overflowY="auto"
-      >
+        overflowY="auto">
         <Formik
           initialValues={{}}
           onSubmit={(data) => {
             console.log("DATA :", data);
-          }}
-        >
+          }}>
           {() => {
             return (
               <Form style={{ width: "100%" }}>
@@ -84,8 +82,7 @@ const Preview: React.FC = () => {
                   justifyContent="center"
                   fontSize="30"
                   flexDirection="column"
-                  px={10}
-                >
+                  px={10}>
                   {children}
                 </Flex>
               </Form>
@@ -95,14 +92,6 @@ const Preview: React.FC = () => {
       </Box>
     );
   };
-
-  // if (cards.length === 0) {
-  //   return (
-  //     <Container>
-  //       <p>{t.no_inputs}</p>
-  //     </Container>
-  //   );
-  // }
 
   return (
     <Container>

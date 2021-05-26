@@ -74,19 +74,19 @@ const theme = extendTheme({
             color: "gray.600",
           },
         }),
-        box: (props) => ({
-          bg: "transparent",
+        box: () => ({
           borderRadius: "none",
-          padding: 5,
           border: "1px solid",
-          fontSize: "25px",
-          minWidth: "220px",
+          borderColor: "#E5E5E5",
+          textTransform: "uppercase",
+          fontSize: "12px",
+          lineHeight: "16px",
+          padding: 10,
           margin: 2,
-          fontWeight: "bold",
-          borderColor: props.colorMode === "dark" ? "white" : "gray.800",
+          fontWeight: "normal",
+          backgroundColor: "#F6F6F6",
           _hover: {
-            bg: props.colorMode === "dark" ? "white" : "gray.800",
-            color: props.colorMode === "dark" ? "gray.800" : "white",
+            bg: "gray.200",
           },
         }),
         rounded: () => ({
@@ -99,6 +99,17 @@ const theme = extendTheme({
           _hover: {
             bg: "gray.800",
             color: "black",
+          },
+        }),
+        roundedTransparent: () => ({
+          bg: "transparent",
+          borderRadius: "50px",
+          color: "black",
+          padding: "0 30px",
+          border: "1px solid",
+          _hover: {
+            bg: "black",
+            color: "white",
           },
         }),
       },

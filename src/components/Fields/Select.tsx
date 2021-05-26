@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import { FormControl, FormHelperText, FormLabel } from "@chakra-ui/react";
-import t from "static/survey.json";
+import { t } from "static/survey";
 import { useField } from "formik";
 import Select from "react-select";
 

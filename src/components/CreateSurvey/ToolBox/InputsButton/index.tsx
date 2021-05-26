@@ -15,16 +15,13 @@ interface Props {
 const ToolBox: React.FC<Props> = ({ onSelect }) => {
   const id = uuidv4();
   return (
-    <ButtonGroup
-      d="flex"
-      spacing="2"
-      w="100%"
-      flexWrap="wrap"
-      justifyContent="center">
+    <ButtonGroup d="flex" spacing="2" w="100%" flexWrap="wrap">
       {inputs.map(({ input_type, name }, i) => {
         return (
           <Button
+            flex="40%"
             variant="box"
+            whiteSpace="normal"
             key={i}
             onClick={() =>
               onSelect(

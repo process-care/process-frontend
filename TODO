@@ -1,7 +1,7 @@
 REFACTO :
 
 DRAG AND DROP
-Champs required ne s'affiche pas bien.
-Affichage des options quand on édite.
+Refacto Affichage des options quand on édite.
+Refacto options pour ne pas avoir differents types (objet ou array).
 Uniformiser les id et name des inputs
 

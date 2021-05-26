@@ -47,7 +47,7 @@ export const CustomSwitch: React.FC<Props> = ({
           onChange={() => helpers.setValue(!field.value)}
         />
         <FormLabel ml={5} mt={-2}>
-          {label} {isRequired && "*"}
+          {label}
         </FormLabel>
         <FormErrorMessage>{meta.error}</FormErrorMessage>
       </FormControl>

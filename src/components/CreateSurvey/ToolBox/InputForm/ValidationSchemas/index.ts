@@ -23,7 +23,7 @@ export const MultipleInputFieldsSchema = CommonFieldsSchema.shape({
 // Slider
 
 export const SliderSchema = CommonFieldsSchema.shape({
-  min: Yup.string().required("Ce champs est requis"),
-  max: Yup.string().required("Ce champs est requis"),
-  step: Yup.string().required("Ce champs est requis"),
+  min: Yup.number().required("Ce champs est requis"),
+  max: Yup.number().required("Ce champs est requis"),
+  step: Yup.number().required("Ce champs est requis"),
 });

@@ -21,13 +21,18 @@ const ToolBox: React.FC<Props> = ({ onSelect }) => {
       w="100%"
       flexWrap="wrap"
       justifyContent="center">
-      {inputs.map(({ type, name }, i) => {
+      {inputs.map(({ input_type, name }, i) => {
         return (
           <Button
             variant="box"
             key={i}
             onClick={() =>
-              onSelect(type, name, `${type}-${id}`, `${type}-${id}`)
+              onSelect(
+                input_type,
+                name,
+                `${input_type}-${id}`,
+                `${input_type}-${id}`
+              )
             }>
             {name}
           </Button>

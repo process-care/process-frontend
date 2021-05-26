@@ -16,19 +16,28 @@ import { addInput, selectInput } from "redux/slices/formBuilder";
 import { Menu } from "components/Menu/CreateForm";
 import { toogleDrawer } from "redux/slices/application";
 
+import { fields } from "components/CreateSurvey/ToolBox/InputForm/Template/logic/initialValues";
+
 export const CreateForm: React.FC<IPage> = () => {
   const dispatch = useAppDispatch();
   const isOpen = useAppSelector((state) => state.application.drawer_is_open);
 
   const handleSelect = (
-    type: string,
+    input_type: string,
     name: string,
     id: string,
     internal_title: string | undefined
   ) => {
     if (id) {
-      dispatch(selectInput({ type, name, id, internal_title }));
-      dispatch(addInput({ type, name, id, internal_title }));
+      const data = {
+        ...fields[input_type],
+        input_type,
+        name,
+        id,
+        internal_title,
+      };
+      dispatch(selectInput(data));
+      dispatch(addInput(data));
       dispatch(toogleDrawer());
     }
   };
@@ -74,8 +83,8 @@ export const CreateForm: React.FC<IPage> = () => {
           alignItems="center"
           overflowY="auto">
           <ToolBox
-            onSelect={(type, name, id, internal_title) =>
-              handleSelect(type, name, id, internal_title)
+            onSelect={(input_type, name, id, internal_title) =>
+              handleSelect(input_type, name, id, internal_title)
             }
           />
         </Container>

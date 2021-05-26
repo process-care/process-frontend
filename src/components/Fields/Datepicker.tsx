@@ -37,10 +37,8 @@ export const CustomDatePicker: React.FC<Props> = ({
   };
 
   return (
-    <FormControl id={id} textAlign="left">
-      <FormLabel>
-        {label} {isRequired && "*"}
-      </FormLabel>
+    <FormControl id={id} textAlign="left" isRequired={isRequired}>
+      <FormLabel>{label}</FormLabel>
       {!isCollapsed && (
         <>
           <DatePicker

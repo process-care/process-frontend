@@ -31,20 +31,19 @@ const InputForm: React.FC = () => {
       dispatch(
         updateInput({
           id: selectedInput.id,
-          data: { [target.id]: target.value },
+          data: { [target.id]: target.checked ? target.checked : target.value },
         })
       );
     }
   };
 
-  const { type } = selectedInput;
+  const { input_type } = selectedInput;
 
   return (
     <Formik
       validateOnBlur={false}
       validationSchema={renderFormValidationSchema(selectedInput)}
-      // initialValues={selectedInput ? selectedInput : fields[type]}
-      initialValues={selectedInput ? selectedInput : fields[type]}
+      initialValues={selectedInput ? selectedInput : fields[input_type]}
       onSubmit={(data, { setSubmitting, validateForm }) => {
         validateForm(data);
         setSubmitting(true);
@@ -59,7 +58,9 @@ const InputForm: React.FC = () => {
               fontSize="30"
               flexDirection="column"
               px={10}>
-              <Text fontSize="lg">Créer un champ {selectedInput.type}</Text>
+              <Text fontSize="lg">
+                Créer un champ {selectedInput.input_type}
+              </Text>
               <hr />
               {renderFormTemplate(selectedInput)}
               <Footer

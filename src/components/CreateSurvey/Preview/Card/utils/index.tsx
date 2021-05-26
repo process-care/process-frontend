@@ -32,7 +32,7 @@ export const renderInput = (input: Inputs): React.ReactNode => {
       return arr;
     }
   };
-  switch (input.type) {
+  switch (input.input_type) {
     case "input":
       return (
         <>
@@ -113,6 +113,7 @@ export const renderInput = (input: Inputs): React.ReactNode => {
           defaultValue={input.default_value}
           helpText={input.help_text || t.help_text}
           vertical={input.vertical}
+          reverse={input.reverse}
         />
       );
       break;

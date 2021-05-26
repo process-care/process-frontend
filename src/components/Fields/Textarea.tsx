@@ -39,15 +39,13 @@ export const CustomTextarea: React.FC<Props> = ({
   const [field, meta] = useField(id);
   return (
     <FormControl
+      isRequired={isRequired}
       id="email"
       textAlign="left"
       m={m}
       p={p}
       isInvalid={!!meta.error}>
-      <FormLabel htmlFor={id}>
-        {/* @ts-expect-error no alternative found for the moment*/}
-        {label} {(isRequired === "true" || isRequired) && "*"}
-      </FormLabel>
+      <FormLabel htmlFor={id}>{label}</FormLabel>
       {!isCollapsed && (
         <>
           <Textarea

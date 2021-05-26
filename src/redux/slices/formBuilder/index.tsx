@@ -22,9 +22,9 @@ const initialState: FormBuilder = {
   inputs: [],
   selected_input: {
     id: "",
-    type: "",
-    name: "",
+    input_type: "",
     internal_title: "",
+    name: "",
   },
   is_editing: false,
   is_collapse_view: false,

@@ -25,13 +25,13 @@ export const CustomSwitch: React.FC<Props> = ({
   id,
   p,
   m,
-  defaultChecked,
   isRequired,
 }) => {
   const [field, meta, helpers] = useField(id);
   return (
     <>
       <FormControl
+        isRequired={isRequired}
         id={id}
         textAlign="left"
         p={p}
@@ -39,13 +39,12 @@ export const CustomSwitch: React.FC<Props> = ({
         d="flex"
         alignItems="center">
         <Switch
-          isRequired={isRequired}
+          aria-labelledby={id}
           id={id}
           size="md"
           mt={-6}
-          value={field.value}
-          onChange={() => helpers.setValue(!field.value, true)}
-          defaultChecked={defaultChecked}
+          isChecked={field.value}
+          onChange={() => helpers.setValue(!field.value)}
         />
         <FormLabel ml={5} mt={-2}>
           {label} {isRequired && "*"}

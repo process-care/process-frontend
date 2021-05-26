@@ -55,6 +55,7 @@ export const SliderFields: React.FC = () => {
       </Flex>
 
       <Switch label="Slider en vue verticale" id="vertical" />
+      <Box mb={4} />
       <Switch label="Slider en vue inversée" id="reverse" />
     </>
   );

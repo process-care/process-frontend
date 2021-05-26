@@ -16,7 +16,7 @@ import {
 } from "../ValidationSchemas";
 
 export const renderFormTemplate = (input: Inputs): React.ReactNode => {
-  switch (input.type) {
+  switch (input.input_type) {
     case "input":
       return <InputFields />;
       break;
@@ -51,7 +51,7 @@ export const renderFormTemplate = (input: Inputs): React.ReactNode => {
 export const renderFormValidationSchema = (
   input: Inputs
 ): React.ReactFragment => {
-  switch (input.type) {
+  switch (input.input_type) {
     case "input":
       return CommonFieldsSchema;
       break;

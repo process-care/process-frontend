@@ -31,13 +31,12 @@ export const CustomSelect: React.FC<Props> = ({
   isCollapsed,
 }): ReactElement => {
   const [, , helpers] = useField(id);
-
+  console.log(options, "o");
   return (
-    <FormControl id="email" textAlign="left">
+    <FormControl id={id} textAlign="left">
       <FormLabel>{label}</FormLabel>
       {!isCollapsed && (
         <>
-          {" "}
           <Select
             isMulti={isMulti}
             isClearable

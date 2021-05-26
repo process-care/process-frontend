@@ -1,5 +1,5 @@
 export default interface Inputs {
-  type: string;
+  input_type: string;
   name: string;
   id?: string;
   label?: string;
@@ -17,5 +17,6 @@ export default interface Inputs {
   step?: string;
   rows?: "small" | "medium" | "large" | undefined;
   required?: boolean;
+  // type?: "text" | "number" | undefined;
   default_value?: string | undefined;
 }

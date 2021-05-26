@@ -1,9 +1,11 @@
 const commonFieldsInitialValues = {
+  type: "",
+  name: "",
   label: "",
   help_text: "",
   internal_title: "",
   internal_description: "",
-  required: true,
+  required: false,
 };
 
 const inputFieldsInitialValues = {
@@ -15,7 +17,7 @@ const inputFieldsInitialValues = {
 
 const multipleInputFieldsInitialValues = {
   ...commonFieldsInitialValues,
-  options: [{}],
+  options: [],
 };
 
 export const fields: { [type: string]: Record<string, unknown> } = {
@@ -45,11 +47,12 @@ export const fields: { [type: string]: Record<string, unknown> } = {
   },
   slider: {
     ...multipleInputFieldsInitialValues,
-    orientation: "",
-    min: "",
-    max: "",
-    step: "",
-    default_value: "",
+    vertical: false,
+    reverse: false,
+    min: undefined,
+    max: undefined,
+    step: undefined,
+    default_value: undefined,
   },
   "date-picker": {
     ...multipleInputFieldsInitialValues,

@@ -36,10 +36,8 @@ export const CustomRadioBox: React.FC<Props> = ({
   isCollapsed,
 }) => {
   return (
-    <FormControl id={id} textAlign="left" m={m} p={p}>
-      <FormLabel>
-        {label} {isRequired && "*"}
-      </FormLabel>
+    <FormControl id={id} textAlign="left" m={m} p={p} isRequired={isRequired}>
+      <FormLabel>{label}</FormLabel>
       {!isCollapsed && (
         <>
           <RadioGroup colorScheme="green">

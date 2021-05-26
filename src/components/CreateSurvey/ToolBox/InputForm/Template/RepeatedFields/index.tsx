@@ -1,43 +1,64 @@
 import React from "react";
-import { FieldArray, useField } from "formik";
+import { FieldArray, useField, useFormikContext } from "formik";
 import { Textarea } from "components/Fields";
 import { Flex, Box, Button, Text } from "@chakra-ui/react";
+import { useAppSelector } from "redux/hooks";
 
 export const RepeatedFields: React.FC = () => {
   const name = "options";
   const [field, meta] = useField(name);
+  const { setFieldValue, values } = useFormikContext();
+  const isEditing = useAppSelector((state) => state.formBuilder.is_editing);
+
+  const fields = isEditing ? Object.values(field.value) : field.value;
+
+  React.useEffect(() => {
+    // Populate options field on edit.
+    if (isEditing) {
+      fields.map((el: string, index: number) => {
+        setFieldValue(`option_${index}`, el);
+      });
+    }
+  }, [fields.length]);
+
+  console.log(values);
   return (
     <Box w="100%">
       <FieldArray
         name={name}
         render={(arrayHelpers) => (
           <Box w="100%">
-            {field.value?.length > 0 ? (
-              field.value.map((_: string, index: number) => (
+            {fields?.length > 0 ? (
+              fields.map((_: string, index: number) => (
                 <Box key={index} w="100%">
                   <Flex w="100%">
                     <Textarea
                       id={`option_${index}`}
                       label={`Réponse ${index}`}
-                      placeholder={`Réponse ${index}`}
+                      placeholder={
+                        isEditing ? fields[index] : `Réponse ${index}`
+                      }
                       rows="small"
                       isRequired
                       isCollapsed={false}
+                      {...field}
                     />
                     <Flex ml={3} mt={8}>
                       <Button
                         type="button"
-                        onClick={() => arrayHelpers.remove(index)}
-                      >
+                        onClick={() => {
+                          arrayHelpers.remove(index);
+                          setFieldValue(index.toString(), undefined);
+                        }}>
                         -
                       </Button>
-                      {index + 1 === field.value.length && (
+                      {(index + 1 === field.value.length ||
+                        (index + 1 !== 1 && isEditing)) && (
                         <Button
                           ml={3}
                           type="button"
                           onClick={() => arrayHelpers.push("")}
-                          variant="solid"
-                        >
+                          variant="solid">
                           +
                         </Button>
                       )}
@@ -53,8 +74,7 @@ export const RepeatedFields: React.FC = () => {
                 <Button
                   onClick={() => arrayHelpers.push("")}
                   variant="rounded"
-                  type="button"
-                >
+                  type="button">
                   Ajouter une réponse
                 </Button>
                 <Text mt={1} fontSize="10px" color="red">

@@ -31,7 +31,6 @@ export const CustomSelect: React.FC<Props> = ({
   isCollapsed,
 }): ReactElement => {
   const [, , helpers] = useField(id);
-  console.log(options, "o");
   return (
     <FormControl id={id} textAlign="left">
       <FormLabel>{label}</FormLabel>

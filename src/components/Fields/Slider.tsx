@@ -1,5 +1,11 @@
 import React from "react";
-import { FormControl, FormHelperText, FormLabel } from "@chakra-ui/react";
+import {
+  Flex,
+  FormControl,
+  FormHelperText,
+  FormLabel,
+  Text,
+} from "@chakra-ui/react";
 
 import { useField } from "formik";
 
@@ -50,15 +56,12 @@ export const CustomSlider: React.FC<Props> = ({
     }
   }, [defaultValue]);
 
-  const createMarks = (max: string | undefined) => {
-    if (max) {
-      const m = parseInt(max, 10);
-
-      const arr = [];
-      for (let index = 0; index <= m; index++) {
-        arr.push({ [index]: index });
-      }
-      return arr.map((el, i) => el[i]);
+  const getMiddleValue = (
+    min: string | undefined,
+    max: string | undefined
+  ): number | undefined => {
+    if (min !== undefined && max !== undefined) {
+      return (parseInt(min, 10) + parseInt(max, 10)) / 2;
     }
   };
 
@@ -74,7 +77,7 @@ export const CustomSlider: React.FC<Props> = ({
         <>
           <Range
             reverse={vertical || reverse}
-            marks={createMarks(max)}
+            dots
             min={min !== undefined ? parseInt(min, 10) : 0}
             max={max !== undefined ? parseInt(max, 10) : 10}
             step={step !== undefined ? parseInt(step, 10) : 1}
@@ -85,6 +88,18 @@ export const CustomSlider: React.FC<Props> = ({
             style={vertical ? { height: "85%", margin: "30px 0 0 30px" } : {}}
             onChange={(value) => helpers.setValue(value)}
           />
+          <Flex w="100%" justifyContent="space-between">
+            <Text fontSize="10px" ml="-5px">
+              {min}
+            </Text>
+            <Text fontSize="10px" ml="4px">
+              {getMiddleValue(min, max)}
+            </Text>
+            <Text fontSize="10px" mr="-5px">
+              {max}
+            </Text>
+          </Flex>
+
           <FormHelperText fontSize="xs" mt={10}>
             {helpText}
           </FormHelperText>

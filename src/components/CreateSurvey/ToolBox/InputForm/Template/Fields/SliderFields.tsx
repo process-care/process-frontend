@@ -1,5 +1,5 @@
 import { Flex, Box } from "@chakra-ui/react";
-import { Switch, Textarea } from "components/Fields";
+import { Input, Switch } from "components/Fields";
 import React from "react";
 
 import { CommonFields } from "./../index";
@@ -11,48 +11,49 @@ export const SliderFields: React.FC = () => {
 
       <Flex justifyContent="space-between" w="100%">
         <Box w="45%">
-          <Textarea
-            rows="small"
+          <Input
+            type="number"
             isRequired
             label="Borne min"
-            id="min"
+            name="min"
             isCollapsed={false}
             placeholder="1"
           />
         </Box>
         <Box w="45%">
-          <Textarea
-            rows="small"
+          <Input
+            type="number"
             isRequired
             label="Borne max"
-            id="max"
+            name="max"
             isCollapsed={false}
             placeholder="1"
           />
         </Box>
       </Flex>
-      <Flex justifyContent="space-between" w="100%">
+      <Flex justifyContent="space-between" w="100%" mb={5}>
         <Box w="45%">
-          <Textarea
-            rows="small"
+          <Input
+            type="number"
             isRequired
             label="Intervalles"
-            id="step"
+            name="step"
             isCollapsed={false}
             placeholder="1"
           />
         </Box>
         <Box w="45%">
-          <Textarea
-            rows="small"
+          <Input
+            type="number"
             isRequired
             label="Valeur par défaut"
-            id="default_value"
+            name="default_value"
             isCollapsed={false}
             placeholder="1"
           />
         </Box>
       </Flex>
+
       <Switch label="Slider en vue verticale" id="vertical" />
       <Switch label="Slider en vue inversée" id="reverse" />
     </>

@@ -5,7 +5,7 @@ import { useDrop } from "react-dnd";
 import { ItemTypes } from "./Card/itemTypes";
 
 import update from "immutability-helper";
-import Inputs from "interfaces/inputs";
+import IInput from "interfaces/form/input";
 import { useAppSelector } from "redux/hooks";
 import { selectInputs } from "redux/slices/formBuilder";
 
@@ -45,7 +45,7 @@ const Preview: React.FC = () => {
     [cards]
   );
 
-  const renderCard = (input: Inputs, index: number) => {
+  const renderCard = (input: IInput, index: number) => {
     return (
       <Card key={input.id} input={input} index={index} moveCard={moveCard} />
     );

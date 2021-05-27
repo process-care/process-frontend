@@ -1,4 +1,4 @@
-import Inputs from "interfaces/inputs";
+import IInput from "interfaces/form/input";
 import {
   TextareaFields,
   CheckboxFields,
@@ -15,7 +15,7 @@ import {
   SliderSchema,
 } from "../ValidationSchemas";
 
-export const renderFormTemplate = (input: Inputs): React.ReactNode => {
+export const renderFormTemplate = (input: IInput): React.ReactNode => {
   switch (input.input_type) {
     case "input":
       return <InputFields />;
@@ -49,7 +49,7 @@ export const renderFormTemplate = (input: Inputs): React.ReactNode => {
 };
 
 export const renderFormValidationSchema = (
-  input: Inputs
+  input: IInput
 ): React.ReactFragment => {
   switch (input.input_type) {
     case "input":

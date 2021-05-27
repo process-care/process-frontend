@@ -1,15 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "redux/store";
-import Inputs from "interfaces/inputs";
+import IInput from "interfaces/form/input";
+import IFormPage from "interfaces/form/page";
 
 interface FormBuilder {
-  inputs_count: number;
-  inputs: Inputs[];
-  selected_input: Inputs;
+  inputs: IInput[];
+  selected_input: IInput;
   is_editing: boolean;
   is_collapse_view: boolean;
+  pages: IFormPage[];
+  selected_page: IFormPage;
 }
-interface UpdateInput {
+interface Update {
   id: string | undefined;
   data: {
     [index: string]: string | undefined;
@@ -18,7 +20,6 @@ interface UpdateInput {
 
 // Define the initial state using that type
 const initialState: FormBuilder = {
-  inputs_count: 0,
   inputs: [],
   selected_input: {
     id: "",
@@ -28,23 +29,30 @@ const initialState: FormBuilder = {
   },
   is_editing: false,
   is_collapse_view: false,
+  pages: [],
+  selected_page: {
+    name: "",
+    id: "",
+    is_locked: false,
+    had_condition: false,
+  },
 };
 
 export const formBuilderSlice = createSlice({
   name: "formBuilder",
   initialState,
   reducers: {
-    addInput: (state, action: PayloadAction<Inputs>) => {
+    // Inputs
+    addInput: (state, action: PayloadAction<IInput>) => {
       state.inputs.push(action.payload);
-      state.inputs_count += 1;
     },
-    selectInput: (state, action: PayloadAction<Inputs>) => {
+    selectInput: (state, action: PayloadAction<IInput>) => {
       state.selected_input = action.payload;
     },
     setIsEditing: (state, action: PayloadAction<boolean>) => {
       state.is_editing = action.payload;
     },
-    updateInput: (state, action: PayloadAction<UpdateInput>) => {
+    updateInput: (state, action: PayloadAction<Update>) => {
       const { id, data } = action.payload;
       if (data) {
         for (const [key] of Object.entries(data)) {
@@ -61,7 +69,7 @@ export const formBuilderSlice = createSlice({
         }
       }
     },
-    removeInput: (state, action: PayloadAction<Inputs>) => {
+    removeInput: (state, action: PayloadAction<IInput>) => {
       const { id } = action.payload;
       const { inputs } = state;
       const index = inputs.findIndex((item) => id === item.id);
@@ -69,10 +77,33 @@ export const formBuilderSlice = createSlice({
     },
     removeAllInputs: (state) => {
       state.inputs = [];
-      state.inputs_count = 0;
     },
     toggleCollapseView: (state) => {
       state.is_collapse_view = !state.is_collapse_view;
+    },
+    // PageForm
+    addPage: (state, action: PayloadAction<IFormPage>) => {
+      state.pages.push(action.payload);
+    },
+    selectPage: (state, action: PayloadAction<IFormPage>) => {
+      state.selected_page = action.payload;
+    },
+
+    updatePage: (state, action: PayloadAction<Update>) => {
+      const { id, data } = action.payload;
+      if (data) {
+        const current = state.pages.findIndex((el) => el.id === id);
+        state.pages[current] = { ...state.pages[current], ...data };
+        state.selected_page = { ...state.selected_page, ...data };
+      }
+    },
+    removePage: (state, action: PayloadAction<IFormPage>) => {
+      const { id } = action.payload;
+      const { pages } = state;
+      const index = pages.findIndex((item) => id === item.id);
+      pages.splice(index, 1);
+      // reset select page
+      state.selected_page = initialState.selected_page;
     },
   },
 });
@@ -85,11 +116,13 @@ export const {
   selectInput,
   setIsEditing,
   toggleCollapseView,
+  addPage,
+  removePage,
+  selectPage,
+  updatePage,
 } = formBuilderSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectinputs_count = (state: RootState): number =>
-  state.formBuilder.inputs_count;
 
 export const selectInputs = (state: RootState): FormBuilder =>
   state.formBuilder;

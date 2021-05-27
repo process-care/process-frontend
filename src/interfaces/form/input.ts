@@ -1,4 +1,4 @@
-export default interface Inputs {
+export default interface IInput {
   input_type: string;
   name: string;
   id?: string;
@@ -17,6 +17,6 @@ export default interface Inputs {
   step?: string;
   rows?: "small" | "medium" | "large" | undefined;
   required?: boolean;
-  // type?: "text" | "number" | undefined;
+  type?: "text" | "number" | undefined;
   default_value?: string | undefined;
 }

@@ -12,7 +12,7 @@ import { useAppDispatch } from "redux/hooks";
 import { ItemTypes } from "./itemTypes";
 import { XYCoord } from "dnd-core";
 import { renderInput } from "./utils";
-import Inputs from "interfaces/inputs";
+import IInput from "interfaces/form/input";
 import {
   removeInput,
   selectInput,
@@ -26,7 +26,7 @@ import { RemovingConfirmation } from "./Status";
 import { toogleDrawer } from "redux/slices/application";
 
 interface CardProps {
-  input: Inputs;
+  input: IInput;
   index: number;
   moveCard: (dragIndex: number, hoverIndex: number) => void;
 }

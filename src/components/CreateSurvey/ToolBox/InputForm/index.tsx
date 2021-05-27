@@ -20,11 +20,13 @@ const InputForm: React.FC = () => {
   );
   const isEditing = useAppSelector((state) => state.formBuilder.is_editing);
   const dispatch = useAppDispatch();
+
   const onCancel = () => {
     if (!isEditing) dispatch(removeInput(selectedInput));
     dispatch(toogleDrawer());
     dispatch(setIsEditing(false));
   };
+
   const onChange = (event: React.FormEvent<HTMLFormElement>) => {
     const target = event.target as HTMLFormElement;
     if (target !== null) {

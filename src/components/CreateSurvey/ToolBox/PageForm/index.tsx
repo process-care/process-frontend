@@ -1,17 +1,23 @@
 import React from "react";
-import { useAppDispatch } from "redux/hooks";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 import { fields } from "components/CreateSurvey/ToolBox/InputForm/Template/logic/initialValues";
-import { addInput, selectInput } from "redux/slices/formBuilder";
+import {
+  addInput,
+  removePage,
+  selectInput,
+  updatePage,
+} from "redux/slices/formBuilder";
 import { toogleDrawer } from "redux/slices/application";
 import { Box, Button, Container, Flex } from "@chakra-ui/react";
 import { t } from "static/survey";
 import ToolBox from "../InputsButton";
 import { Formik, Form } from "formik";
-import { Textarea } from "components/Fields";
+import { Switch, Textarea } from "components/Fields";
 
 export const PageForm: React.FC = () => {
   const dispatch = useAppDispatch();
+  const { selected_page } = useAppSelector((state) => state.formBuilder);
 
   const handleSelect = (
     input_type: string,
@@ -33,8 +39,18 @@ export const PageForm: React.FC = () => {
     }
   };
 
-  const onChange = () => {
-    console.log("onChange");
+  const onChange = (event: React.FormEvent<HTMLFormElement>) => {
+    const target = event.target as HTMLFormElement;
+    if (target !== null) {
+      dispatch(
+        updatePage({
+          id: selected_page.id,
+          data: {
+            [target.id]: target.checked ? target.checked : target.value,
+          },
+        })
+      );
+    }
   };
 
   return (
@@ -49,7 +65,8 @@ export const PageForm: React.FC = () => {
       w="32%">
       <Formik
         validateOnBlur={false}
-        initialValues={{}}
+        initialValues={selected_page}
+        enableReinitialize
         onSubmit={(data, { setSubmitting, validateForm }) => {
           validateForm(data);
           setSubmitting(true);
@@ -57,18 +74,32 @@ export const PageForm: React.FC = () => {
         }}>
         {() => {
           return (
-            <Form onChange={() => onChange()} style={{ width: "100%" }}>
+            <Form
+              onChange={(event) => onChange(event)}
+              style={{ width: "100%" }}>
               <Flex w="100%" justifyContent="space-between">
-                <Button variant="ghost" fontSize="13px">
-                  🔒 Page non modifiable
-                </Button>
-                <Button variant="ghost" fontSize="13px">
+                <Switch
+                  size="sm"
+                  id="is_locked"
+                  label={
+                    selected_page.is_locked
+                      ? "🔒 Page non modifiable"
+                      : "🔓  Page modifiable"
+                  }
+                />
+
+                <Button
+                  variant="ghost"
+                  fontSize="13px"
+                  onClick={() => {
+                    dispatch(removePage(selected_page));
+                  }}>
                   🗑
                 </Button>
               </Flex>
               <Box pt={10}>
                 <Textarea
-                  id="page_name"
+                  id="name"
                   label="Nom de la page"
                   rows="small"
                   placeholder="Page 1"

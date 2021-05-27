@@ -17,6 +17,7 @@ interface Props {
   m?: string;
   defaultChecked?: boolean;
   isRequired?: boolean;
+  size?: "lg" | "md" | "sm";
 }
 
 export const CustomSwitch: React.FC<Props> = ({
@@ -26,6 +27,7 @@ export const CustomSwitch: React.FC<Props> = ({
   p,
   m,
   isRequired,
+  size = "md",
 }) => {
   const [field, meta, helpers] = useField(id);
   return (
@@ -38,14 +40,14 @@ export const CustomSwitch: React.FC<Props> = ({
       d="flex"
       alignItems="center">
       <Switch
+        size={size}
         aria-labelledby={id}
         id={id}
-        size="md"
         mt={-6}
         isChecked={field.value}
         onChange={() => helpers.setValue(!field.value)}
       />
-      <FormLabel ml={5} mt={-2}>
+      <FormLabel ml={5} mt={-2} fontSize={size}>
         {label}
       </FormLabel>
       <FormErrorMessage>{meta.error}</FormErrorMessage>

@@ -1,6 +1,6 @@
-import IInputs from "interfaces/inputs";
+import IInput from "interfaces/form/input";
 
-export const inputs: IInputs[] = [
+export const inputs: IInput[] = [
   {
     input_type: "text-area",
     name: "Question texte",

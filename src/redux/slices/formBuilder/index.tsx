@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "redux/store";
 import IInput from "interfaces/form/input";
 import IFormPage from "interfaces/form/page";
+import { v4 as uuidv4 } from "uuid";
 
 interface FormBuilder {
   inputs: IInput[];
@@ -18,6 +19,13 @@ interface Update {
   } | null;
 }
 
+const initialFirstPage = {
+  name: "Page 1",
+  id: uuidv4(),
+  is_locked: false,
+  had_condition: false,
+};
+
 // Define the initial state using that type
 const initialState: FormBuilder = {
   inputs: [],
@@ -29,13 +37,8 @@ const initialState: FormBuilder = {
   },
   is_editing: false,
   is_collapse_view: false,
-  pages: [],
-  selected_page: {
-    name: "",
-    id: "",
-    is_locked: false,
-    had_condition: false,
-  },
+  pages: [initialFirstPage],
+  selected_page: initialFirstPage,
 };
 
 export const formBuilderSlice = createSlice({

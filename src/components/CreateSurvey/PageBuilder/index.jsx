@@ -19,7 +19,7 @@ const PageBuilder: React.FC = () => {
       addPage({
         name: `Page ${pages.length + 1}`,
         id: `page-${id}`,
-        is_locked: true,
+        is_locked: false,
         had_condition: false,
       })
     );

@@ -4,11 +4,11 @@ import { useAppDispatch } from "redux/hooks";
 import { fields } from "components/CreateSurvey/ToolBox/InputForm/Template/logic/initialValues";
 import { addInput, selectInput } from "redux/slices/formBuilder";
 import { toogleDrawer } from "redux/slices/application";
-import { Button, Container, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Container, Flex } from "@chakra-ui/react";
 import { t } from "static/survey";
 import ToolBox from "../InputsButton";
 import { Formik, Form } from "formik";
-import { Footer } from "../InputForm/Template/Footer";
+import { Textarea } from "components/Fields";
 
 export const PageForm: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -33,28 +33,20 @@ export const PageForm: React.FC = () => {
     }
   };
 
-  const onCancel = () => {
-    console.log("cancel");
-  };
   const onChange = () => {
     console.log("onChange");
   };
 
   return (
     <Container
+      justifyContent="flex-start"
+      pt={2}
       flexDirection="column"
       borderLeft="1px"
       variant="createformColumn"
       minW="300px"
-      alignItems="center"
       overflowY="auto"
       w="32%">
-      <ToolBox
-        onSelect={(input_type, name, id, internal_title) =>
-          handleSelect(input_type, name, id, internal_title)
-        }
-      />
-
       <Formik
         validateOnBlur={false}
         initialValues={{}}
@@ -63,21 +55,38 @@ export const PageForm: React.FC = () => {
           setSubmitting(true);
           dispatch(toogleDrawer());
         }}>
-        {({ isValid, isSubmitting }) => {
+        {() => {
           return (
-            <Form onChange={() => onChange()}>
+            <Form onChange={() => onChange()} style={{ width: "100%" }}>
+              <Flex w="100%" justifyContent="space-between">
+                <Button variant="ghost" fontSize="13px">
+                  🔒 Page non modifiable
+                </Button>
+                <Button variant="ghost" fontSize="13px">
+                  🗑
+                </Button>
+              </Flex>
+              <Box pt={10}>
+                <Textarea
+                  id="page_name"
+                  label="Nom de la page"
+                  rows="small"
+                  placeholder="Page 1"
+                />
+                <ToolBox
+                  onSelect={(input_type, name, id, internal_title) =>
+                    handleSelect(input_type, name, id, internal_title)
+                  }
+                />
+              </Box>
+
               <Flex
                 alignItems="center"
                 w="100%"
                 justifyContent="space-between"
                 mt={5}>
-                <Button variant="roundedTransparent">{t.add_condition}</Button>
-                <Text fontSize="10px">bloquer la page</Text>
+                <Button variant="link">{t.add_condition}</Button>
               </Flex>
-              <Footer
-                disabled={!isValid || isSubmitting}
-                onCancel={() => onCancel()}
-              />
             </Form>
           );
         }}

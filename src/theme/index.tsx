@@ -104,8 +104,9 @@ const theme = extendTheme({
         roundedTransparent: () => ({
           bg: "transparent",
           borderRadius: "50px",
+          fontSize: "12px",
           color: "black",
-          padding: "0 30px",
+          padding: "0 20px",
           border: "1px solid",
           _hover: {
             bg: "black",

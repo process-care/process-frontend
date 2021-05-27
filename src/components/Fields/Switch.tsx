@@ -29,29 +29,27 @@ export const CustomSwitch: React.FC<Props> = ({
 }) => {
   const [field, meta, helpers] = useField(id);
   return (
-    <>
-      <FormControl
-        isRequired={isRequired}
+    <FormControl
+      isRequired={isRequired}
+      id={id}
+      textAlign="left"
+      p={p}
+      m={m}
+      d="flex"
+      alignItems="center">
+      <Switch
+        aria-labelledby={id}
         id={id}
-        textAlign="left"
-        p={p}
-        m={m}
-        d="flex"
-        alignItems="center">
-        <Switch
-          aria-labelledby={id}
-          id={id}
-          size="md"
-          mt={-6}
-          isChecked={field.value}
-          onChange={() => helpers.setValue(!field.value)}
-        />
-        <FormLabel ml={5} mt={-2}>
-          {label}
-        </FormLabel>
-        <FormErrorMessage>{meta.error}</FormErrorMessage>
-      </FormControl>
+        size="md"
+        mt={-6}
+        isChecked={field.value}
+        onChange={() => helpers.setValue(!field.value)}
+      />
+      <FormLabel ml={5} mt={-2}>
+        {label}
+      </FormLabel>
+      <FormErrorMessage>{meta.error}</FormErrorMessage>
       <FormHelperText fontSize="xs">{helpText}</FormHelperText>
-    </>
+    </FormControl>
   );
 };

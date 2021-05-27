@@ -7,6 +7,8 @@ import { toogleDrawer } from "redux/slices/application";
 import { Button, Container, Flex, Text } from "@chakra-ui/react";
 import { t } from "static/survey";
 import ToolBox from "../InputsButton";
+import { Formik, Form } from "formik";
+import { Footer } from "../InputForm/Template/Footer";
 
 export const PageForm: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -31,6 +33,13 @@ export const PageForm: React.FC = () => {
     }
   };
 
+  const onCancel = () => {
+    console.log("cancel");
+  };
+  const onChange = () => {
+    console.log("onChange");
+  };
+
   return (
     <Container
       flexDirection="column"
@@ -46,12 +55,33 @@ export const PageForm: React.FC = () => {
         }
       />
 
-      <Flex alignItems="center">
-        <Button variant="roundedTransparent" mt={5}>
-          {t.add_condition}
-        </Button>
-        <Text fontSize="10px">bloquer la page</Text>
-      </Flex>
+      <Formik
+        validateOnBlur={false}
+        initialValues={{}}
+        onSubmit={(data, { setSubmitting, validateForm }) => {
+          validateForm(data);
+          setSubmitting(true);
+          dispatch(toogleDrawer());
+        }}>
+        {({ isValid, isSubmitting }) => {
+          return (
+            <Form onChange={() => onChange()}>
+              <Flex
+                alignItems="center"
+                w="100%"
+                justifyContent="space-between"
+                mt={5}>
+                <Button variant="roundedTransparent">{t.add_condition}</Button>
+                <Text fontSize="10px">bloquer la page</Text>
+              </Flex>
+              <Footer
+                disabled={!isValid || isSubmitting}
+                onCancel={() => onCancel()}
+              />
+            </Form>
+          );
+        }}
+      </Formik>
     </Container>
   );
 };

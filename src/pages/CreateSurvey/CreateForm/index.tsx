@@ -3,7 +3,7 @@ import React from "react";
 
 import Preview from "components/CreateSurvey/Preview";
 
-import IPage from "interfaces/page";
+import IRoute from "interfaces/route";
 
 import Drawer from "components/Drawer";
 import InputForm from "components/CreateSurvey/ToolBox/InputForm";
@@ -15,7 +15,7 @@ import { Menu } from "components/Menu/CreateForm";
 
 import { PageForm } from "components/CreateSurvey/ToolBox/PageForm";
 
-export const CreateForm: React.FC<IPage> = () => {
+export const CreateForm: React.FC<IRoute> = () => {
   const isOpen = useAppSelector((state) => state.application.drawer_is_open);
 
   return (

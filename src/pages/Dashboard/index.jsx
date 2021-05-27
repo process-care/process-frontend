@@ -1,6 +1,6 @@
 import React from "react";
-import IPage from "interfaces/page";
+import IRoute from "interfaces/route";
 
-export const Dashboard: React.FC<IPage> = () => {
+export const Dashboard: React.FC<IRoute> = () => {
   return <div>Dashboard</div>;
 };

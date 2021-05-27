@@ -17,7 +17,8 @@ import { Switch, Textarea } from "components/Fields";
 
 export const PageForm: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { selected_page } = useAppSelector((state) => state.formBuilder);
+  const { selected_page, pages } = useAppSelector((state) => state.formBuilder);
+  const hasOnePage = pages.length === 1;
 
   const handleSelect = (
     input_type: string,
@@ -32,6 +33,7 @@ export const PageForm: React.FC = () => {
         name,
         id,
         internal_title,
+        page_id: selected_page.id,
       };
       dispatch(selectInput(data));
       dispatch(addInput(data));
@@ -87,20 +89,28 @@ export const PageForm: React.FC = () => {
                       : "🔓  Page modifiable"
                   }
                 />
-
-                <Button
-                  variant="ghost"
-                  fontSize="13px"
-                  onClick={() => {
-                    dispatch(removePage(selected_page));
-                  }}>
-                  🗑
-                </Button>
+                {!hasOnePage && (
+                  <Button
+                    variant="ghost"
+                    fontSize="13px"
+                    onClick={() => {
+                      dispatch(removePage(selected_page));
+                    }}>
+                    🗑
+                  </Button>
+                )}
               </Flex>
+
               <Box pt={10}>
                 <Textarea
                   id="name"
                   label="Nom de la page"
+                  rows="small"
+                  placeholder="Page 1"
+                />
+                <Textarea
+                  id="short_name"
+                  label="Nom court pour la navigation rapide"
                   rows="small"
                   placeholder="Page 1"
                 />
@@ -111,13 +121,15 @@ export const PageForm: React.FC = () => {
                 />
               </Box>
 
-              <Flex
-                alignItems="center"
-                w="100%"
-                justifyContent="space-between"
-                mt={5}>
-                <Button variant="link">{t.add_condition}</Button>
-              </Flex>
+              {!hasOnePage && (
+                <Flex
+                  alignItems="center"
+                  w="100%"
+                  justifyContent="space-between"
+                  mt={5}>
+                  <Button variant="link">{t.add_condition}</Button>
+                </Flex>
+              )}
             </Form>
           );
         }}

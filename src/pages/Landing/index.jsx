@@ -1,6 +1,6 @@
 import React from "react";
-import IPage from "interfaces/page";
+import IRoute from "interfaces/route";
 
-export const Landing: React.FC<IPage> = () => {
+export const Landing: React.FC<IRoute> = () => {
   return <div>Landing</div>;
 };

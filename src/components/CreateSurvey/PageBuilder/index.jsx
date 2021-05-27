@@ -21,6 +21,7 @@ const PageBuilder: React.FC = () => {
         id: `page-${id}`,
         is_locked: false,
         had_condition: false,
+        short_name: `P${pages.length + 1}`,
       })
     );
   };
@@ -34,7 +35,9 @@ const PageBuilder: React.FC = () => {
       <Button onClick={() => handlePage()} variant="ghost">
         +
       </Button>
-      {pages.map((page) => {
+      {pages.map((page, i) => {
+        const isSelected = selected_page.id === page.id;
+
         return (
           <Box mb={4} w="100%" key={page.id}>
             <Flex alignItems="center">
@@ -43,13 +46,9 @@ const PageBuilder: React.FC = () => {
                 d="flex"
                 flexDirection="column"
                 border="1px"
-                backgroundColor={
-                  selected_page.id === page.id ? "blue.200" : "transparent"
-                }
+                backgroundColor={isSelected ? "blue.200" : "transparent"}
                 m="0 auto"
-                borderColor={
-                  selected_page.id === page.id ? "blue.500" : "gray.300"
-                }
+                borderColor={isSelected ? "blue.500" : "gray.300"}
                 key={page.id}
                 py={4}
                 px={3}
@@ -62,13 +61,19 @@ const PageBuilder: React.FC = () => {
                   <Box p="4px 4px 5px 4px"></Box>
                 )}
               </Box>
-              <Box
-                _hover={{ cursor: "pointer" }}
-                onClick={() => dispatch(removePage(page))}>
-                <Delete />
-              </Box>
+              {i !== 0 && (
+                <Box
+                  _hover={{ cursor: "pointer" }}
+                  onClick={() => dispatch(removePage(page))}>
+                  <Delete />
+                </Box>
+              )}
             </Flex>
-            <Text mt={1} color="blue.500" fontSize="10">
+            <Text
+              mt={1}
+              color="blue.500"
+              fontSize="10"
+              fontWeight={isSelected ? "bold" : ""}>
               {page.name}
             </Text>
           </Box>

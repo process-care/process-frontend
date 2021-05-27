@@ -21,9 +21,10 @@ interface Update {
 
 const initialFirstPage = {
   name: "Page 1",
-  id: uuidv4(),
+  id: `page-${uuidv4()}`,
   is_locked: false,
   had_condition: false,
+  short_name: "P1",
 };
 
 // Define the initial state using that type
@@ -34,6 +35,7 @@ const initialState: FormBuilder = {
     input_type: "",
     internal_title: "",
     name: "",
+    page_id: "",
   },
   is_editing: false,
   is_collapse_view: false,

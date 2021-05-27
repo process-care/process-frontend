@@ -1,6 +1,6 @@
 import React from "react";
-import IPage from "interfaces/page";
+import IRoute from "interfaces/route";
 
-export const CreateSurvey: React.FC<IPage> = () => {
+export const CreateSurvey: React.FC<IRoute> = () => {
   return <div>CreateSurvey</div>;
 };

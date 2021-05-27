@@ -19,4 +19,5 @@ export default interface IInput {
   required?: boolean;
   type?: "text" | "number" | undefined;
   default_value?: string | undefined;
+  page_id: string;
 }

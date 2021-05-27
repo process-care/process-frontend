@@ -1,6 +1,6 @@
 import React from "react";
-import IPage from "interfaces/page";
+import IRoute from "interfaces/route";
 
-export const Portail: React.FC<IPage> = () => {
+export const Portail: React.FC<IRoute> = () => {
   return <div>Portail</div>;
 };

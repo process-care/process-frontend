@@ -129,7 +129,9 @@ export const {
 
 // Other code such as selectors can use the imported `RootState` type
 
-export const selectInputs = (state: RootState): FormBuilder =>
-  state.formBuilder;
+export const selectInputsInCurrentPage = (state: RootState): IInput[] =>
+  state.formBuilder.inputs.filter(
+    (input) => input.page_id === state.formBuilder.selected_page.id
+  );
 
 export default formBuilderSlice.reducer;

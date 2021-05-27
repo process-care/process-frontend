@@ -7,10 +7,10 @@ import { ItemTypes } from "./Card/itemTypes";
 import update from "immutability-helper";
 import IInput from "interfaces/form/input";
 import { useAppSelector } from "redux/hooks";
-import { selectInputs } from "redux/slices/formBuilder";
 
 import { Formik, Form } from "formik";
 import { Header } from "./Header";
+import { selectInputsInCurrentPage } from "redux/slices/formBuilder";
 
 export interface Item {
   id: number;
@@ -22,8 +22,8 @@ export interface PreviewState {
 }
 
 const Preview: React.FC = () => {
-  const { inputs } = useAppSelector(selectInputs);
-
+  // const { inputs } = useAppSelector((state) => state.formBuilder);
+  const inputs = useAppSelector(selectInputsInCurrentPage);
   const [cards, setCards] = React.useState(inputs);
 
   React.useEffect(() => {

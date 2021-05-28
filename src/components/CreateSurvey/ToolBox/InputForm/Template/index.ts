@@ -8,6 +8,7 @@ import { SliderFields } from "./Fields/SliderFields";
 import { DatepickerFields } from "./Fields/DatepickerFields";
 import { RepeatedFields } from "./RepeatedFields";
 import { CommonFields } from "./Fields/CommonFields";
+import { WysiwygFields } from "./Fields/WysiwygFields";
 
 export {
   TextareaFields,
@@ -20,4 +21,5 @@ export {
   DatepickerFields,
   RepeatedFields,
   CommonFields,
+  WysiwygFields,
 };

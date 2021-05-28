@@ -1,4 +1,5 @@
 import IInput from "interfaces/form/input";
+import React from "react";
 import {
   TextareaFields,
   CheckboxFields,
@@ -8,11 +9,13 @@ import {
   SelectFields,
   SliderFields,
   DatepickerFields,
+  WysiwygFields,
 } from "../Template";
 import {
   CommonFieldsSchema,
   MultipleInputFieldsSchema,
   SliderSchema,
+  WysiwygSchema,
 } from "../ValidationSchemas";
 
 export const renderFormTemplate = (input: IInput): React.ReactNode => {
@@ -41,6 +44,8 @@ export const renderFormTemplate = (input: IInput): React.ReactNode => {
     case "date-picker":
       return <DatepickerFields />;
       break;
+    case "wysiwyg":
+      return <WysiwygFields />;
 
     default:
       return <TextareaFields />;
@@ -76,6 +81,8 @@ export const renderFormValidationSchema = (
     case "date-picker":
       return CommonFieldsSchema;
       break;
+    case "wysiwyg":
+      return WysiwygSchema;
 
     default:
       return CommonFieldsSchema;

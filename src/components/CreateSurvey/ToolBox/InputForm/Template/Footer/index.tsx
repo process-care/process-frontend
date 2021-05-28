@@ -5,12 +5,19 @@ import React from "react";
 interface Props {
   onCancel: () => void;
   disabled: boolean;
+  hideRequired?: boolean;
 }
 
-export const Footer: React.FC<Props> = ({ onCancel, disabled }) => {
+export const Footer: React.FC<Props> = ({
+  onCancel,
+  disabled,
+  hideRequired,
+}) => {
   return (
     <>
-      <Switch p="20px 0" label="Réponse obligatoire" id="required" />
+      {!hideRequired && (
+        <Switch p="20px 0" label="Réponse obligatoire" id="required" />
+      )}
       <ButtonGroup
         d="flex"
         justifyContent="space-between"

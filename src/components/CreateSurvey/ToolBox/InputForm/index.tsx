@@ -66,6 +66,7 @@ const InputForm: React.FC = () => {
               <hr />
               {renderFormTemplate(selectedInput)}
               <Footer
+                hideRequired={selectedInput.input_type === "wysiwyg"}
                 disabled={!isValid || isSubmitting}
                 onCancel={() => onCancel()}
               />

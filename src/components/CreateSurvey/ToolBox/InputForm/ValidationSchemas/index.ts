@@ -25,3 +25,9 @@ export const SliderSchema = CommonFieldsSchema.shape({
   max: Yup.number().required("Ce champs est requis"),
   step: Yup.number().required("Ce champs est requis"),
 });
+
+// Slider
+
+export const WysiwygSchema = Yup.object().shape({
+  internal_title: Yup.string().required("Ce champs est requis"),
+});

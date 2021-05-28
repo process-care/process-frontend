@@ -8,6 +8,7 @@ import {
   Datepicker,
   Textarea,
 } from "components/Fields";
+import { Wysiwyg } from "components/Fields/Wysiwyg";
 import IInput from "interfaces/form/input";
 import React from "react";
 import { useAppSelector } from "redux/hooks";
@@ -140,6 +141,8 @@ export const renderInput = (input: IInput): React.ReactNode => {
       );
       break;
 
+    case "wysiwyg":
+      return <Wysiwyg isCollapsed={isCollapsed} id={input.id || "wysiwyg"} />;
     default:
       return false;
       break;

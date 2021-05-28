@@ -57,4 +57,8 @@ export const fields: { [type: string]: Record<string, unknown> } = {
   "date-picker": {
     ...multipleInputFieldsInitialValues,
   },
+  wysiwyg: {
+    internal_title: "",
+    internal_description: "",
+  },
 };

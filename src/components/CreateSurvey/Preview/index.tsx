@@ -22,7 +22,7 @@ export interface PreviewState {
 }
 
 const Preview: React.FC = () => {
-  // const { inputs } = useAppSelector((state) => state.formBuilder);
+
   const inputs = useAppSelector(selectInputsInCurrentPage);
   const [cards, setCards] = React.useState(inputs);
 

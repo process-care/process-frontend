@@ -20,4 +20,5 @@ export default interface IInput {
   type?: "text" | "number" | undefined;
   default_value?: string | undefined;
   page_id?: string;
+  wysiwyg?: string | undefined;
 }

@@ -148,18 +148,22 @@ const Card: React.FC<CardProps> = ({ input, index, moveCard }) => {
                 </Badge>
               )}
             </Box>
-
             <Box style={{ clear: "both" }} />
-            {isRemoving ? (
+
+            {isRemoving && (
               <RemovingConfirmation
                 confirm={() => dispatch(removeInput(input))}
                 close={() => setRemoving(false)}
               />
-            ) : (
-              <Box position="relative" top="-7px" mb="10px">
-                {renderInput(input)}
-              </Box>
             )}
+
+            <Box
+              position="relative"
+              top="-7px"
+              mb="10px"
+              display={isRemoving ? "none" : ""}>
+              {renderInput(input)}
+            </Box>
           </Box>
         </Container>
       </Box>

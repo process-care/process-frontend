@@ -1,4 +1,6 @@
+import { Box } from "@chakra-ui/react";
 import { Input, Textarea } from "components/Fields";
+import { Wysiwyg } from "components/Fields/Wysiwyg";
 import React from "react";
 
 export const WysiwygFields: React.FC = () => {
@@ -21,6 +23,9 @@ export const WysiwygFields: React.FC = () => {
         id="internal_note"
         helpText="Ce champ n'est pas visible par les utilisateurs."
       />
+      <Box w="100%">
+        <Wysiwyg id="wysiwyg" />
+      </Box>
     </>
   );
 };

@@ -22,3 +22,11 @@
 .chakra-form__required-indicator {
   color: black !important;
 }
+
+.jodit-ui-group_group_search,
+.jodit-ui-group_group_history,
+.jodit-ui-group_group_script,
+.jodit-ui-group_group_list,
+.jodit-ui-group_group_source {
+  display: none;
+}

@@ -27,18 +27,6 @@ const InputForm: React.FC = () => {
     dispatch(setIsEditing(false));
   };
 
-  const onChange = (event: React.FormEvent<HTMLFormElement>) => {
-    const target = event.target as HTMLFormElement;
-    if (target !== null) {
-      dispatch(
-        updateInput({
-          id: selectedInput.id,
-          data: { [target.id]: target.checked ? target.checked : target.value },
-        })
-      );
-    }
-  };
-
   const { input_type } = selectedInput;
 
   return (
@@ -51,7 +39,32 @@ const InputForm: React.FC = () => {
         setSubmitting(true);
         dispatch(toogleDrawer());
       }}>
-      {({ isValid, isSubmitting }) => {
+      {({ isValid, isSubmitting, values }) => {
+        const onChange = (event: React.FormEvent<HTMLFormElement>) => {
+          const target = event.target as HTMLFormElement;
+          if (target !== null) {
+            dispatch(
+              updateInput({
+                id: selectedInput.id,
+                data: {
+                  [target.id]: target.checked ? target.checked : target.value,
+                },
+              })
+            );
+          }
+        };
+
+        React.useEffect(() => {
+          dispatch(
+            updateInput({
+              id: selectedInput.id,
+              data: {
+                wysiwyg: values.wysiwyg,
+              },
+            })
+          );
+        }, [values.wysiwyg]);
+
         return (
           <Form onChange={(event) => onChange(event)}>
             <Flex

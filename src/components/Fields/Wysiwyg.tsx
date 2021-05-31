@@ -1,24 +1,67 @@
-import React, { useState, useRef } from "react";
+import React from "react";
 import JoditEditor from "jodit-react";
+import { useFormikContext } from "formik";
+import { FormControl } from "@chakra-ui/react";
 
-export const Wysiwyg: React.F = () => {
-  const editor = useRef(null);
-  const [content, setContent] = useState("");
+interface Props {
+  id: string;
+}
 
-  const config = {
-    readonly: false, // all options from https://xdsoft.net/jodit/doc/
-  };
+export const Wysiwyg: React.FC<Props> = ({ id }) => {
+  const editor = React.useRef(null);
+  const { setFieldValue } = useFormikContext();
 
-  return (
-    <JoditEditor
-      ref={editor}
-      value={content}
-      config={config}
-      tabIndex={1} // tabIndex of textarea
-      onBlur={(newContent: string) => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
-      onChange={(newContent) => {
-        console.log(newContent);
-      }}
-    />
+  return React.useMemo(
+    () => (
+      <FormControl id={id} textAlign="left">
+        <JoditEditor
+          id={id}
+          onChange={(newContent: string) => {
+            setFieldValue("wysiwyg", newContent);
+          }}
+          onIn
+          config={{
+            tabIndex: -1,
+            namespace: id,
+            allowTabNavigation: true,
+            uploader: {
+              insertImageAsBase64URI: true,
+            },
+            readonly: false,
+            enableDragAndDropFileToEditor: true,
+            language: "fr",
+            toolbarButtonSize: "small",
+            removeButtons: [
+              "source",
+              "fullsize",
+              "about",
+              "outdent",
+              "indent",
+              "video",
+              "print",
+              "table",
+              "superscript",
+              "subscript",
+              "file",
+              "cut",
+              "selectall",
+              "find",
+              "paste",
+              "copyformat",
+              "dots",
+              "ul",
+              "ol",
+              "hr",
+              "undo",
+              "redo",
+              "strikethrough",
+              "classSpan",
+            ],
+          }}
+          ref={editor}
+        />
+      </FormControl>
+    ),
+    []
   );
 };

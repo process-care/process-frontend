@@ -1,6 +1,6 @@
 import React from "react";
 import JoditEditor from "jodit-react";
-import { useFormikContext } from "formik";
+import { useFormikContext, useField } from "formik";
 import { FormControl } from "@chakra-ui/react";
 
 interface Props {
@@ -9,7 +9,8 @@ interface Props {
 
 export const Wysiwyg: React.FC<Props> = ({ id }) => {
   const editor = React.useRef(null);
-  const { setFieldValue } = useFormikContext();
+  const { setFieldValue, values } = useFormikContext();
+  const [field] = useField(id);
 
   return React.useMemo(
     () => (
@@ -59,6 +60,7 @@ export const Wysiwyg: React.FC<Props> = ({ id }) => {
             ],
           }}
           ref={editor}
+          value={values[field.name]}
         />
       </FormControl>
     ),

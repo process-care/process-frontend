@@ -1,9 +1,11 @@
 import { extendTheme } from "@chakra-ui/react";
+import "@fontsource/ibm-plex-sans";
+
 const theme = extendTheme({
   fonts: {
-    body: "system-ui, sans-serif",
-    heading: "Georgia, serif",
-    mono: "Menlo, monospace",
+    body: "IBM Plex Sans",
+    heading: "IBM Plex Sans",
+    mono: "IBM Plex Sans",
   },
   fontSizes: {
     xs: "0.75rem",
@@ -57,6 +59,14 @@ const theme = extendTheme({
     widest: "0.1em",
   },
   components: {
+    FormLabel: {
+      baseStyle: {
+        fontWeight: 500,
+        fontSize: "14px",
+        fontFamily: "IBM Plex Sans",
+      },
+    },
+
     Button: {
       sizes: {
         xl: {

@@ -42,12 +42,13 @@ const InputForm: React.FC = () => {
       {({ isValid, isSubmitting, values }) => {
         const onChange = (event: React.FormEvent<HTMLFormElement>) => {
           const target = event.target as HTMLFormElement;
+          console.log(target.value);
           if (target !== null) {
             dispatch(
               updateInput({
                 id: selectedInput.id,
                 data: {
-                  [target.id]: target.checked ? target.checked : target.value,
+                  [target.id]: target.value ? target.value : target.checked,
                 },
               })
             );

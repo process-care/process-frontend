@@ -1,4 +1,4 @@
-import { ButtonGroup, Button } from "@chakra-ui/react";
+import { ButtonGroup, Button, Box } from "@chakra-ui/react";
 import { Switch } from "components/Fields";
 import React from "react";
 
@@ -14,7 +14,7 @@ export const Footer: React.FC<Props> = ({
   hideRequired,
 }) => {
   return (
-    <>
+    <Box w="100%" position="sticky" bottom="0" backgroundColor="white" pb="10">
       {!hideRequired && (
         <Switch p="20px 0" label="Réponse obligatoire" id="required" />
       )}
@@ -31,6 +31,6 @@ export const Footer: React.FC<Props> = ({
           Annuler
         </Button>
       </ButtonGroup>
-    </>
+    </Box>
   );
 };

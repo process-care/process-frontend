@@ -1925,6 +1925,11 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
+"@fontsource/ibm-plex-sans@^4.4.2":
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/@fontsource/ibm-plex-sans/-/ibm-plex-sans-4.4.2.tgz#4641697731a7536697ce339e6917a54798e03233"
+  integrity sha512-m/d3ZAN3RSoxkoYaWdvgIBBQMV3k63QC5z/cwbYSFutgu/NdB9LGqzpcEZeDnYHknn01ymYg0LdOVmi4r3Oy3g==
+
 "@hapi/address@2.x.x":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@hapi/address/-/address-2.1.4.tgz#5d67ed43f3fd41a69d4b9ff7b56e7c0d1d0a81e5"

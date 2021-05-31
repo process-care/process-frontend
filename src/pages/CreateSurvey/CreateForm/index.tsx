@@ -25,7 +25,6 @@ export const CreateForm: React.FC<IRoute> = () => {
       <Box d="flex" justifyContent="space-around" w="100%" overflow="hidden">
         <Box w="100%">
           <Menu />
-
           <Box
             d="flex"
             justifyContent="space-around"
@@ -51,7 +50,6 @@ export const CreateForm: React.FC<IRoute> = () => {
             </Container>
           </Box>
         </Box>
-
         <PageForm />
       </Box>
     </Box>

@@ -46,6 +46,7 @@ export const CustomRadioBox: React.FC<Props> = ({
                 radios.map(({ value, label }) => {
                   return (
                     <Radio
+                      id={id}
                       name={value}
                       value={value}
                       key={value}

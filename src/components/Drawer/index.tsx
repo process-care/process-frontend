@@ -50,7 +50,7 @@ const CustomDrawer: React.FC<Props> = ({
                 {headerSubtitle}
               </Box>
             </DrawerHeader>
-            <DrawerBody p="7px 10px">{content}</DrawerBody>
+            <DrawerBody p="0 10px">{content}</DrawerBody>
           </DrawerContent>
         </Drawer>
       </Portal>

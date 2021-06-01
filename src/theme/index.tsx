@@ -10,7 +10,8 @@ const theme = extendTheme({
   colors: {
     brand: {
       blue: "#0084FF",
-      "gray.100": "#9E9E9E",
+      "gray.100": "#F6F6F6",
+      "gray.200": "#9E9E9E",
     },
   },
   fontSizes: {
@@ -177,7 +178,7 @@ const theme = extendTheme({
           },
         }),
         createformColumn: (props) => ({
-          bg: props.colorMode === "dark" ? "gray.100" : "white",
+          bg: props.colorMode === "dark" ? "gray.200" : "white",
           color: props.colorMode === "dark" ? "white" : "gray.800",
           height: "100vh",
           display: "flex",

@@ -25,7 +25,9 @@ export const PageForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const { selected_page, pages } = useAppSelector((state) => state.formBuilder);
   const condtions = useAppSelector(selectConditonInCurrentPage);
-  const hasOnePage = pages.length === 1;
+  const isFirstPage =
+    pages.findIndex((page) => page.id === selected_page.id) === 0;
+
   const [isRemoving, setRemoving] = React.useState(false);
   const condition_id = uuidv4();
 
@@ -102,7 +104,7 @@ export const PageForm: React.FC = () => {
                       : "🔓  Page modifiable"
                   }
                 />
-                {!hasOnePage && (
+                {!isFirstPage ? (
                   <Button
                     variant="ghost"
                     fontSize="13px"
@@ -111,6 +113,8 @@ export const PageForm: React.FC = () => {
                     }}>
                     🗑
                   </Button>
+                ) : (
+                  <Box mt={10} />
                 )}
               </Flex>
 
@@ -136,7 +140,7 @@ export const PageForm: React.FC = () => {
                 />
               </Box>
 
-              {!hasOnePage && (
+              {!isFirstPage && (
                 <Flex
                   alignItems="center"
                   w="100%"

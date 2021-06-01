@@ -13,14 +13,12 @@ import { useAppSelector } from "redux/hooks";
 
 import { Menu } from "components/Menu/CreateForm";
 
-import { selectConditonInCurrentPage } from "redux/slices/formBuilder";
 import { ConditionPreview } from "components/CreateSurvey/Condition/ConditionPreview";
 import { RightPart } from "components/Layout/RightPart";
 
 export const CreateForm: React.FC<IRoute> = () => {
   const isOpen = useAppSelector((state) => state.application.drawer_is_open);
-  const isConditionPreview =
-    useAppSelector(selectConditonInCurrentPage).length > 0;
+  const { selected_condition } = useAppSelector((state) => state.formBuilder);
 
   return (
     <Box h="100vh" overflow="hidden">
@@ -39,7 +37,7 @@ export const CreateForm: React.FC<IRoute> = () => {
               w="6%"
               minW="100px"
               borderRight="1px"
-              borderColor="gray.100">
+              borderColor="gray.200">
               <PageBuilder />
             </Container>
 
@@ -49,12 +47,12 @@ export const CreateForm: React.FC<IRoute> = () => {
               p={0}
               alignItems="center">
               <div className="background__grid">
-                {isConditionPreview ? <ConditionPreview /> : <InputsPreview />}
+                {selected_condition ? <ConditionPreview /> : <InputsPreview />}
               </div>
             </Container>
           </Box>
         </Box>
-        <RightPart isConditionPreview={isConditionPreview} />
+        <RightPart selected_condition={selected_condition} />
       </Box>
     </Box>
   );

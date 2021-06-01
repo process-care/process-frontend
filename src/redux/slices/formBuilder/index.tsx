@@ -12,7 +12,7 @@ interface FormBuilder {
   pages: IFormPage[];
   selected_page: IFormPage;
   conditions: ICondition[];
-  selected_condition: ICondition | [];
+  selected_condition: ICondition | null;
   is_editing: boolean;
   is_collapse_view: boolean;
 }
@@ -44,7 +44,7 @@ const initialState: FormBuilder = {
   pages: [initialFirstPage],
   selected_page: initialFirstPage,
   conditions: [],
-  selected_condition: [],
+  selected_condition: null,
   is_editing: false,
   is_collapse_view: false,
 };
@@ -126,7 +126,10 @@ export const formBuilderSlice = createSlice({
       state.selected_condition = action.payload;
       pages[index].condition.push(action.payload);
     },
-    selectCondition: (state, action: PayloadAction<ICondition>) => {
+    selectCondition: (state, action: PayloadAction<ICondition | null>) => {
+      if (action.payload === null) {
+        state.selected_condition = null;
+      }
       state.selected_condition = action.payload;
     },
   },

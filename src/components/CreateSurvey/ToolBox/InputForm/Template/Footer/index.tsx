@@ -4,7 +4,7 @@ import React from "react";
 
 interface Props {
   onCancel: () => void;
-  disabled: boolean;
+  disabled?: boolean;
   hideRequired?: boolean;
 }
 

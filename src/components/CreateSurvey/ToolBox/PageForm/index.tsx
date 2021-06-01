@@ -58,8 +58,6 @@ export const PageForm: React.FC = () => {
     }
   };
 
-  console.log(isRemoving);
-
   if (isRemoving) {
     return (
       <Container

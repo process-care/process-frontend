@@ -147,7 +147,6 @@ export const renderInput = (input: IInput): React.ReactNode => {
       return (
         <Box
           textAlign="left"
-          isCollapsed={isCollapsed}
           id={input.id || "wysiwyg"}
           dangerouslySetInnerHTML={{
             __html: input.wysiwyg === undefined ? "" : input.wysiwyg,

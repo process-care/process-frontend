@@ -40,6 +40,7 @@ const InputForm: React.FC = () => {
         dispatch(toogleDrawer());
       }}>
       {({ isValid, isSubmitting, values }) => {
+        console.log(values);
         const onChange = (event: React.FormEvent<HTMLFormElement>) => {
           const target = event.target as HTMLFormElement;
           if (target !== null) {
@@ -59,7 +60,9 @@ const InputForm: React.FC = () => {
             updateInput({
               id: selectedInput.id,
               data: {
-                wysiwyg: values.wysiwyg === undefined ? values.wysiwyg : "",
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                wysiwyg: values.wysiwyg,
               },
             })
           );

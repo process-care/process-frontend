@@ -21,7 +21,6 @@ export const RepeatedFields: React.FC = () => {
     }
   }, [fields.length]);
 
-  console.log(values);
   return (
     <Box w="100%">
       <FieldArray

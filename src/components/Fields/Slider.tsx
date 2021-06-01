@@ -65,7 +65,6 @@ export const CustomSlider: React.FC<Props> = ({
     } else return;
   };
 
-  console.log(reverse);
   return (
     <FormControl
       isRequired={isRequired}

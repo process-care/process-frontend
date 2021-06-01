@@ -7,11 +7,12 @@ import { v4 as uuidv4 } from "uuid";
 
 import { ReactComponent as Locked } from "./assets/locked.svg";
 import { ReactComponent as Delete } from "./assets/delete.svg";
+import { ReactComponent as Condition } from "./assets/condition.svg";
 
 const PageBuilder: React.FC = () => {
   const { pages, selected_page } = useAppSelector((state) => state.formBuilder);
-  const id = uuidv4();
 
+  const id = uuidv4();
   const dispatch = useAppDispatch();
 
   const handlePage = () => {
@@ -19,12 +20,13 @@ const PageBuilder: React.FC = () => {
       addPage({
         name: `Page ${pages.length + 1}`,
         id: `page-${id}`,
+        condition: [],
         is_locked: false,
-        had_condition: false,
         short_name: `P${pages.length + 1}`,
       })
     );
   };
+
   return (
     <Flex
       flexDirection="column"
@@ -40,7 +42,10 @@ const PageBuilder: React.FC = () => {
 
         return (
           <Box mb={4} w="100%" key={page.id}>
-            <Flex alignItems="center">
+            <Flex alignItems="center" position="relative">
+              <Box position="absolute" right="16px" bottom="35px">
+                {page.condition.length > 0 ? <Condition /> : ""}
+              </Box>
               <Box
                 onClick={() => dispatch(selectPage(page))}
                 d="flex"

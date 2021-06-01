@@ -2,15 +2,19 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "redux/store";
 import IInput from "interfaces/form/input";
 import IFormPage from "interfaces/form/page";
+
 import { v4 as uuidv4 } from "uuid";
+import ICondition from "interfaces/form/condition";
 
 interface FormBuilder {
   inputs: IInput[];
   selected_input: IInput;
-  is_editing: boolean;
-  is_collapse_view: boolean;
   pages: IFormPage[];
   selected_page: IFormPage;
+  conditions: ICondition[];
+  selected_condition: ICondition | [];
+  is_editing: boolean;
+  is_collapse_view: boolean;
 }
 interface Update {
   id: string | undefined;
@@ -23,7 +27,7 @@ const initialFirstPage = {
   name: "Page 1",
   id: `page-${uuidv4()}`,
   is_locked: false,
-  had_condition: false,
+  condition: [],
   short_name: "P1",
 };
 
@@ -37,10 +41,12 @@ const initialState: FormBuilder = {
     name: "",
     page_id: "",
   },
-  is_editing: false,
-  is_collapse_view: false,
   pages: [initialFirstPage],
   selected_page: initialFirstPage,
+  conditions: [],
+  selected_condition: [],
+  is_editing: false,
+  is_collapse_view: false,
 };
 
 export const formBuilderSlice = createSlice({
@@ -110,6 +116,19 @@ export const formBuilderSlice = createSlice({
       // reset select page
       state.selected_page = initialState.selected_page;
     },
+    // Condition
+    addCondition: (state, action: PayloadAction<ICondition>) => {
+      // add condition & select it & and add it to selected page.
+      const { referer_entity_id } = action.payload;
+      const { conditions, pages } = state;
+      const index = pages.findIndex((item) => referer_entity_id === item.id);
+      conditions.push(action.payload);
+      state.selected_condition = action.payload;
+      pages[index].condition.push(action.payload);
+    },
+    selectCondition: (state, action: PayloadAction<ICondition>) => {
+      state.selected_condition = action.payload;
+    },
   },
 });
 
@@ -125,6 +144,8 @@ export const {
   removePage,
   selectPage,
   updatePage,
+  addCondition,
+  selectCondition,
 } = formBuilderSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
@@ -132,6 +153,12 @@ export const {
 export const selectInputsInCurrentPage = (state: RootState): IInput[] =>
   state.formBuilder.inputs.filter(
     (input) => input.page_id === state.formBuilder.selected_page.id
+  );
+
+export const selectConditonInCurrentPage = (state: RootState): ICondition[] =>
+  state.formBuilder.conditions.filter(
+    (condition) =>
+      condition.referer_entity_id === state.formBuilder.selected_page.id
   );
 
 export default formBuilderSlice.reducer;

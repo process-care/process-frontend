@@ -10,12 +10,13 @@ const theme = extendTheme({
   colors: {
     brand: {
       blue: "#0084FF",
+      "gray.100": "#9E9E9E",
     },
   },
   fontSizes: {
     xs: "0.75rem",
     sm: "0.875rem",
-    md: "1rem",
+    md: "12px",
     lg: "1.125rem",
     xl: "1.25rem",
     "2xl": "1.5rem",
@@ -66,6 +67,21 @@ const theme = extendTheme({
   components: {
     FormLabel: {
       baseStyle: {
+        fontWeight: "bold",
+        fontSize: "14px",
+        fontFamily: "IBM Plex Sans",
+        marginBottom: "3px",
+        marginTop: "10px",
+      },
+    },
+    FormHelperText: {
+      baseStyle: {
+        fontSize: "5px",
+        fontFamily: "IBM Plex Sans",
+      },
+    },
+    Textarea: {
+      baseStyle: {
         fontWeight: 500,
         fontSize: "14px",
         fontFamily: "IBM Plex Sans",
@@ -86,6 +102,7 @@ const theme = extendTheme({
           color: "black",
           textDecoration: "underline",
           fontWeight: "regular",
+          fontSize: "12px",
           _hover: {
             color: "gray.600",
           },
@@ -97,7 +114,7 @@ const theme = extendTheme({
           textTransform: "uppercase",
           fontSize: "12px",
           lineHeight: "16px",
-          padding: 10,
+          padding: 8,
           margin: 2,
           fontWeight: "normal",
           backgroundColor: "#F6F6F6",
@@ -112,6 +129,7 @@ const theme = extendTheme({
           padding: "0 30px",
           border: "1px solid",
           fontWeight: "bold",
+          fontSize: "12px",
           _hover: {
             bg: "gray.800",
             color: "black",
@@ -123,6 +141,7 @@ const theme = extendTheme({
           color: "white",
           padding: "0 30px",
           fontWeight: "regular",
+          fontSize: "12px",
           _hover: {
             bg: "blue",
             color: "white",

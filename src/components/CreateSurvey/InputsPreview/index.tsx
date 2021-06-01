@@ -21,7 +21,7 @@ export interface PreviewState {
   cards: Item[];
 }
 
-const Preview: React.FC = () => {
+const InputsPreview: React.FC = () => {
   const inputs = useAppSelector(selectInputsInCurrentPage);
   const { selected_page } = useAppSelector((state) => state.formBuilder);
   const [cards, setCards] = React.useState(inputs);
@@ -105,4 +105,4 @@ const Preview: React.FC = () => {
   );
 };
 
-export default Preview;
+export default InputsPreview;

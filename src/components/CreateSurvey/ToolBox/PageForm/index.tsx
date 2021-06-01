@@ -3,25 +3,31 @@ import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 import { fields } from "components/CreateSurvey/ToolBox/InputForm/Template/logic/initialValues";
 import {
+  addCondition,
   addInput,
   removePage,
+  selectCondition,
+  selectConditonInCurrentPage,
   selectInput,
   updatePage,
 } from "redux/slices/formBuilder";
 import { toogleDrawer } from "redux/slices/application";
-import { Box, Button, Container, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import { t } from "static/survey";
 import ToolBox from "../InputsButton";
 import { Formik, Form } from "formik";
 import { Switch, Textarea } from "components/Fields";
 import IInput from "interfaces/form/input";
 import { RemovingConfirmation } from "./Status";
+import { v4 as uuidv4 } from "uuid";
 
 export const PageForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const { selected_page, pages } = useAppSelector((state) => state.formBuilder);
+  const condtions = useAppSelector(selectConditonInCurrentPage);
   const hasOnePage = pages.length === 1;
   const [isRemoving, setRemoving] = React.useState(false);
+  const condition_id = uuidv4();
 
   const handleSelect = (
     input_type: IInput["input_type"],
@@ -60,35 +66,18 @@ export const PageForm: React.FC = () => {
 
   if (isRemoving) {
     return (
-      <Container
-        justifyContent="flex-start"
-        flexDirection="column"
-        variant="createformColumn"
-        minW="300px"
-        overflowY="auto"
-        p={0}
-        w="32%">
-        <RemovingConfirmation
-          confirm={() => {
-            dispatch(removePage(selected_page));
-            setRemoving(false);
-          }}
-          close={() => setRemoving(false)}
-        />
-      </Container>
+      <RemovingConfirmation
+        confirm={() => {
+          dispatch(removePage(selected_page));
+          setRemoving(false);
+        }}
+        close={() => setRemoving(false)}
+      />
     );
   }
 
   return (
-    <Container
-      justifyContent="flex-start"
-      pt={2}
-      flexDirection="column"
-      borderLeft="1px"
-      variant="createformColumn"
-      minW="300px"
-      overflowY="auto"
-      w="32%">
+    <Box p={4}>
       <Formik
         validateOnBlur={false}
         initialValues={selected_page}
@@ -153,13 +142,35 @@ export const PageForm: React.FC = () => {
                   w="100%"
                   justifyContent="space-between"
                   mt={5}>
-                  <Button variant="link">{t.add_condition}</Button>
+                  {condtions.length === 0 ? (
+                    <Button
+                      variant="link"
+                      color="brand.blue"
+                      onClick={() =>
+                        dispatch(
+                          addCondition({
+                            id: condition_id,
+                            condition_type: "page",
+                            referer_entity_id: selected_page.id,
+                          })
+                        )
+                      }>
+                      {t.add_condition}
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="link"
+                      color="brand.blue"
+                      onClick={() => dispatch(selectCondition(condtions[0]))}>
+                      {t.edit_condition}
+                    </Button>
+                  )}
                 </Flex>
               )}
             </Form>
           );
         }}
       </Formik>
-    </Container>
+    </Box>
   );
 };

@@ -40,11 +40,8 @@ const InputForm: React.FC = () => {
         dispatch(toogleDrawer());
       }}>
       {({ isValid, isSubmitting, values }) => {
-        console.log(values);
         const onChange = (event: React.FormEvent<HTMLFormElement>) => {
           const target = event.target as HTMLFormElement;
-          console.log(target);
-
           if (target !== null) {
             dispatch(
               updateInput({

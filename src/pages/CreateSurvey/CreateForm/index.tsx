@@ -1,7 +1,7 @@
 import { Box, Container } from "@chakra-ui/react";
 import React from "react";
 
-import Preview from "components/CreateSurvey/Preview";
+import InputsPreview from "components/CreateSurvey/InputsPreview";
 
 import IRoute from "interfaces/route";
 
@@ -13,10 +13,14 @@ import { useAppSelector } from "redux/hooks";
 
 import { Menu } from "components/Menu/CreateForm";
 
-import { PageForm } from "components/CreateSurvey/ToolBox/PageForm";
+import { selectConditonInCurrentPage } from "redux/slices/formBuilder";
+import { ConditionPreview } from "components/CreateSurvey/Condition/ConditionPreview";
+import { RightPart } from "components/Layout/RightPart";
 
 export const CreateForm: React.FC<IRoute> = () => {
   const isOpen = useAppSelector((state) => state.application.drawer_is_open);
+  const isConditionPreview =
+    useAppSelector(selectConditonInCurrentPage).length > 0;
 
   return (
     <Box h="100vh" overflow="hidden">
@@ -45,12 +49,12 @@ export const CreateForm: React.FC<IRoute> = () => {
               p={0}
               alignItems="center">
               <div className="background__grid">
-                <Preview />
+                {isConditionPreview ? <ConditionPreview /> : <InputsPreview />}
               </div>
             </Container>
           </Box>
         </Box>
-        <PageForm />
+        <RightPart isConditionPreview={isConditionPreview} />
       </Box>
     </Box>
   );

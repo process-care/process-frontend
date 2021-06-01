@@ -7,7 +7,7 @@ import { useAppSelector } from "redux/hooks";
 export const RepeatedFields: React.FC = () => {
   const name = "options";
   const [field, meta] = useField(name);
-  const { setFieldValue, values } = useFormikContext();
+  const { setFieldValue } = useFormikContext();
   const isEditing = useAppSelector((state) => state.formBuilder.is_editing);
 
   const fields = isEditing ? Object.values(field.value) : field.value;

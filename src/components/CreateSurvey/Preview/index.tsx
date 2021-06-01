@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import Card from "./Card";
 import { useDrop } from "react-dnd";
 import { ItemTypes } from "./Card/itemTypes";
@@ -22,8 +22,8 @@ export interface PreviewState {
 }
 
 const Preview: React.FC = () => {
-
   const inputs = useAppSelector(selectInputsInCurrentPage);
+  const { selected_page } = useAppSelector((state) => state.formBuilder);
   const [cards, setCards] = React.useState(inputs);
 
   React.useEffect(() => {
@@ -95,6 +95,9 @@ const Preview: React.FC = () => {
 
   return (
     <Container>
+      <Text fontSize="14px" mt={3} textTransform="uppercase">
+        {selected_page.name}
+      </Text>
       {cards.length > 0 && <Header />}
 
       {cards.map((input, i) => renderCard(input, i))}

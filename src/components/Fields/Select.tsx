@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react";
 import { FormControl, FormHelperText, FormLabel } from "@chakra-ui/react";
 import { t } from "static/survey";
-import { useField } from "formik";
+import { useField, useFormikContext } from "formik";
 import Select from "react-select";
 
 interface Options {
@@ -20,6 +20,47 @@ interface Props {
   isCollapsed?: boolean;
 }
 
+interface IProvided {
+  provided: Record<string, unknown>;
+}
+
+const customStyles: Record<string, unknown> = {
+  option: (provided: IProvided) => ({
+    ...provided,
+    padding: "10px",
+    fontSize: "12px",
+  }),
+  input: (provided: IProvided) => ({
+    ...provided,
+
+    fontSize: "12px",
+  }),
+  placeholder: (provided: IProvided) => ({
+    ...provided,
+
+    fontSize: "12px",
+  }),
+  singleValue: (provided: IProvided) => ({
+    ...provided,
+
+    fontSize: "12px",
+  }),
+  noOptionsMessage: (provided: IProvided) => ({
+    ...provided,
+
+    fontSize: "12px",
+  }),
+  container: (provided: IProvided) => ({
+    ...provided,
+
+    padding: 0,
+  }),
+  valueContainer: (provided: IProvided) => ({
+    ...provided,
+    height: "40px",
+  }),
+};
+
 export const CustomSelect: React.FC<Props> = ({
   label,
   helpText,
@@ -27,24 +68,27 @@ export const CustomSelect: React.FC<Props> = ({
   isRequired,
   id,
   options,
-  isMulti,
+
   isCollapsed,
 }): ReactElement => {
-  const [, , helpers] = useField(id);
+  const [field, ,] = useField(id);
+  const { setFieldValue } = useFormikContext();
+
   return (
     <FormControl id={id} textAlign="left">
       <FormLabel>{label}</FormLabel>
       {!isCollapsed && (
         <>
           <Select
-            isMulti={isMulti}
+            styles={customStyles}
             isClearable
             id={id}
             isRequired={isRequired}
             placeholder={placeholder}
             noOptionsMessage={() => t.not_found}
             options={options}
-            onChange={(value) => helpers.setValue(value)}
+            onChange={(value) => setFieldValue(field.name, value.value)}
+            defaultValue={field.value}
           />
           <FormHelperText fontSize="xs">{helpText}</FormHelperText>
         </>

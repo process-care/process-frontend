@@ -131,12 +131,14 @@ export const PageForm: React.FC = () => {
                   label="Nom de la page"
                   rows="small"
                   placeholder="Page 1"
+                  helpText="100 signes maximum"
                 />
                 <Textarea
                   id="short_name"
                   label="Nom court pour la navigation rapide"
                   rows="small"
                   placeholder="Page 1"
+                  helpText="40 signes maximum"
                 />
                 <ToolBox
                   onSelect={(input_type, name, id, internal_title) =>

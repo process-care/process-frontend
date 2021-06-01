@@ -43,6 +43,8 @@ const InputForm: React.FC = () => {
         console.log(values);
         const onChange = (event: React.FormEvent<HTMLFormElement>) => {
           const target = event.target as HTMLFormElement;
+          console.log(target);
+
           if (target !== null) {
             dispatch(
               updateInput({
@@ -55,6 +57,7 @@ const InputForm: React.FC = () => {
           }
         };
 
+        // Handle wysiwyg change
         React.useEffect(() => {
           dispatch(
             updateInput({
@@ -67,6 +70,21 @@ const InputForm: React.FC = () => {
             })
           );
         }, [values.wysiwyg]);
+
+        // Handle select change
+        React.useEffect(() => {
+          dispatch(
+            updateInput({
+              id: selectedInput.id,
+              data: {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                freeclassification_responses_count:
+                  values.freeclassification_responses_count,
+              },
+            })
+          );
+        }, [values.freeclassification_responses_count]);
 
         return (
           <Form onChange={(event) => onChange(event)}>

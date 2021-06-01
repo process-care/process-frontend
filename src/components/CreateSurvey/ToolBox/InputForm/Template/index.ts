@@ -9,6 +9,7 @@ import { DatepickerFields } from "./Fields/DatepickerFields";
 import { RepeatedFields } from "./RepeatedFields";
 import { CommonFields } from "./Fields/CommonFields";
 import { WysiwygFields } from "./Fields/WysiwygFields";
+import { FreeclassificationFields } from "./Fields/FreeclassificationFields";
 
 export {
   TextareaFields,
@@ -22,4 +23,5 @@ export {
   RepeatedFields,
   CommonFields,
   WysiwygFields,
+  FreeclassificationFields,
 };

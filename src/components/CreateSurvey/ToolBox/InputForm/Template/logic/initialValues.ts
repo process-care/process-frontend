@@ -36,6 +36,13 @@ export const fields: { [type: string]: Record<string, unknown> } = {
     ...inputFieldsInitialValues,
     rows: [],
   },
+  "free-classification": {
+    ...commonFieldsInitialValues,
+    ...inputFieldsInitialValues,
+    rows: [],
+    freeclassification_responses_count: "",
+  },
+
   checkbox: {
     ...multipleInputFieldsInitialValues,
   },

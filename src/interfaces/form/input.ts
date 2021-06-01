@@ -31,4 +31,5 @@ export default interface IInput {
   default_value?: string | undefined;
   page_id?: string;
   wysiwyg?: string | undefined;
+  freeclassification_responses_count?: string;
 }

@@ -10,6 +10,7 @@ import {
   SliderFields,
   DatepickerFields,
   WysiwygFields,
+  FreeclassificationFields,
 } from "../Template";
 import {
   CommonFieldsSchema,
@@ -46,6 +47,8 @@ export const renderFormTemplate = (input: IInput): React.ReactNode => {
       break;
     case "wysiwyg":
       return <WysiwygFields />;
+    case "free-classification":
+      return <FreeclassificationFields />;
 
     default:
       return <TextareaFields />;

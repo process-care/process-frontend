@@ -124,7 +124,7 @@ const Card: React.FC<CardProps> = ({ input, index, moveCard }) => {
                   borderRadius="50px"
                   px={5}
                   py={1}
-                  bgColor="blackAlpha.800"
+                  bgColor="black"
                   border="1px"
                   color="white"
                   fontSize="7px">
@@ -140,8 +140,8 @@ const Card: React.FC<CardProps> = ({ input, index, moveCard }) => {
                   py={1}
                   border="1px"
                   bgColor="white"
-                  borderColor="blackAlpha.800"
-                  color="blackAlpha.800"
+                  borderColor="black"
+                  color="black"
                   fontSize="7px"
                   mr={3}>
                   {input.internal_title}

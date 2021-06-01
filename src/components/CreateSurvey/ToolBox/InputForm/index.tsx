@@ -42,7 +42,6 @@ const InputForm: React.FC = () => {
       {({ isValid, isSubmitting, values }) => {
         const onChange = (event: React.FormEvent<HTMLFormElement>) => {
           const target = event.target as HTMLFormElement;
-          console.log(target.value);
           if (target !== null) {
             dispatch(
               updateInput({
@@ -60,7 +59,7 @@ const InputForm: React.FC = () => {
             updateInput({
               id: selectedInput.id,
               data: {
-                wysiwyg: values.wysiwyg,
+                wysiwyg: values.wysiwyg === undefined ? values.wysiwyg : "",
               },
             })
           );

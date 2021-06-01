@@ -27,6 +27,8 @@ const App: React.FC = () => {
                       key={name}
                       path={path}
                       exact={exact}
+                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                      // @ts-ignore
                       component={() => component}
                       strict
                     />

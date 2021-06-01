@@ -4,7 +4,11 @@ import { useLocation } from "react-router-dom";
 
 import MainMenu from "../MainMenu";
 
-export const Layout: React.FC = ({ children }: React.ReactChild) => {
+interface Props {
+  children: React.ReactNode;
+}
+
+export const Layout: React.FC<Props> = ({ children }) => {
   const location = useLocation();
   const { pathname } = location;
 

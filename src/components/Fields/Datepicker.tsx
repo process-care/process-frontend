@@ -27,10 +27,8 @@ export const CustomDatePicker: React.FC<Props> = ({
   isCollapsed,
 }) => {
   const [field, meta] = useField(id);
-  const [startDate, setStartDate] = React.useState<Date | [Date, Date] | null>(
-    new Date()
-  );
-  const handleChange = (date: Date | [Date, Date] | null) => {
+  const [startDate, setStartDate] = React.useState(new Date());
+  const handleChange = (date: Date) => {
     if (date) {
       setStartDate(date);
     }
@@ -45,7 +43,9 @@ export const CustomDatePicker: React.FC<Props> = ({
             required={isRequired}
             {...field}
             selected={startDate}
-            onChange={(d) => handleChange(d)}
+            onChange={(d: Date) => {
+              handleChange(d);
+            }}
           />
           <FormErrorMessage>{meta.error}</FormErrorMessage>
           <FormHelperText fontSize="xs">{helpText}</FormHelperText>

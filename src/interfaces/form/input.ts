@@ -1,5 +1,15 @@
 export default interface IInput {
-  input_type: string;
+  input_type:
+    | "input"
+    | "wysiwyg"
+    | "text-area"
+    | "select"
+    | "slider"
+    | "number-input"
+    | "radio"
+    | "checkbox"
+    | "date-picker"
+    | "free-classification";
   name: string;
   id?: string;
   label?: string;

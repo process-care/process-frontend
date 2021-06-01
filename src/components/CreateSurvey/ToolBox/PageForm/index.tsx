@@ -14,6 +14,7 @@ import { t } from "static/survey";
 import ToolBox from "../InputsButton";
 import { Formik, Form } from "formik";
 import { Switch, Textarea } from "components/Fields";
+import IInput from "interfaces/form/input";
 
 export const PageForm: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -21,7 +22,7 @@ export const PageForm: React.FC = () => {
   const hasOnePage = pages.length === 1;
 
   const handleSelect = (
-    input_type: string,
+    input_type: IInput["input_type"],
     name: string,
     id: string,
     internal_title: string | undefined

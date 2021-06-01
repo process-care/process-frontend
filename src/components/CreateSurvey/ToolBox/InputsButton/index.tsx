@@ -2,10 +2,11 @@ import React from "react";
 import { Button, ButtonGroup } from "@chakra-ui/react";
 import { inputs } from "constants/inputs";
 import { v4 as uuidv4 } from "uuid";
+import IInput from "interfaces/form/input";
 
 interface Props {
   onSelect: (
-    type: string,
+    type: IInput["input_type"],
     name: string,
     id: string,
     internal_title: string | undefined

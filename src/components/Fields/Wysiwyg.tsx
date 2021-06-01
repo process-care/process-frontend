@@ -23,6 +23,8 @@ export const Wysiwyg: React.FC<Props> = ({ id }) => {
             tabIndex: -1,
             namespace: id,
             allowTabNavigation: true,
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             uploader: {
               insertImageAsBase64URI: true,
             },
@@ -58,6 +60,8 @@ export const Wysiwyg: React.FC<Props> = ({ id }) => {
             ],
           }}
           ref={editor}
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           value={values[id]}
         />
       </FormControl>

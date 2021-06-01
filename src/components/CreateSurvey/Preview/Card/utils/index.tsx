@@ -147,7 +147,9 @@ export const renderInput = (input: IInput): React.ReactNode => {
           textAlign="left"
           isCollapsed={isCollapsed}
           id={input.id || "wysiwyg"}
-          dangerouslySetInnerHTML={{ __html: input.wysiwyg }}
+          dangerouslySetInnerHTML={{
+            __html: input.wysiwyg === undefined ? "" : input.wysiwyg,
+          }}
         />
       );
     default:

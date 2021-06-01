@@ -15,11 +15,13 @@ import ToolBox from "../InputsButton";
 import { Formik, Form } from "formik";
 import { Switch, Textarea } from "components/Fields";
 import IInput from "interfaces/form/input";
+import { RemovingConfirmation } from "./Status";
 
 export const PageForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const { selected_page, pages } = useAppSelector((state) => state.formBuilder);
   const hasOnePage = pages.length === 1;
+  const [isRemoving, setRemoving] = React.useState(false);
 
   const handleSelect = (
     input_type: IInput["input_type"],
@@ -55,6 +57,29 @@ export const PageForm: React.FC = () => {
       );
     }
   };
+
+  console.log(isRemoving);
+
+  if (isRemoving) {
+    return (
+      <Container
+        justifyContent="flex-start"
+        flexDirection="column"
+        variant="createformColumn"
+        minW="300px"
+        overflowY="auto"
+        p={0}
+        w="32%">
+        <RemovingConfirmation
+          confirm={() => {
+            dispatch(removePage(selected_page));
+            setRemoving(false);
+          }}
+          close={() => setRemoving(false)}
+        />
+      </Container>
+    );
+  }
 
   return (
     <Container
@@ -95,7 +120,7 @@ export const PageForm: React.FC = () => {
                     variant="ghost"
                     fontSize="13px"
                     onClick={() => {
-                      dispatch(removePage(selected_page));
+                      setRemoving(true);
                     }}>
                     🗑
                   </Button>

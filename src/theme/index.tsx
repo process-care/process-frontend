@@ -7,6 +7,11 @@ const theme = extendTheme({
     heading: "IBM Plex Sans",
     mono: "IBM Plex Sans",
   },
+  colors: {
+    brand: {
+      blue: "#0084FF",
+    },
+  },
   fontSizes: {
     xs: "0.75rem",
     sm: "0.875rem",
@@ -80,6 +85,7 @@ const theme = extendTheme({
         link: () => ({
           color: "black",
           textDecoration: "underline",
+          fontWeight: "regular",
           _hover: {
             color: "gray.600",
           },
@@ -109,6 +115,17 @@ const theme = extendTheme({
           _hover: {
             bg: "gray.800",
             color: "black",
+          },
+        }),
+        roundedBlue: () => ({
+          bg: "brand.blue",
+          borderRadius: "50px",
+          color: "white",
+          padding: "0 30px",
+          fontWeight: "regular",
+          _hover: {
+            bg: "blue",
+            color: "white",
           },
         }),
         roundedTransparent: () => ({

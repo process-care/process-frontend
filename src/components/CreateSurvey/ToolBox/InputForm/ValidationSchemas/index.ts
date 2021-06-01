@@ -8,7 +8,7 @@ export const CommonFieldsSchema = Yup.object().shape({
 
   internal_title: Yup.string()
     .min(2, "Texte trop court (2min)")
-    .max(50, "Texte trop long (50max)")
+    .max(90, "Texte trop long (50max)")
     .required("Ce champs est requis"),
 });
 

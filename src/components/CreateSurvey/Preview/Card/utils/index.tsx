@@ -127,6 +127,7 @@ export const renderInput = (input: IInput): React.ReactNode => {
           rows={input.rows}
           label={input.label || t.label}
           placeholder={input.placeholder || t.placeholder}
+          helpText={input.help_text || t.help_text}
         />
       );
       break;
@@ -137,6 +138,7 @@ export const renderInput = (input: IInput): React.ReactNode => {
           isRequired={input.required}
           label={input.label || t.label}
           id={input.id || "datepicker"}
+          helpText={input.help_text || t.help_text}
         />
       );
       break;
@@ -150,6 +152,18 @@ export const renderInput = (input: IInput): React.ReactNode => {
           dangerouslySetInnerHTML={{
             __html: input.wysiwyg === undefined ? "" : input.wysiwyg,
           }}
+        />
+      );
+    case "free-classification":
+      return (
+        <Textarea
+          isCollapsed={isCollapsed}
+          isRequired={input.required}
+          id={input.id || "free-classification"}
+          rows={input.rows}
+          label={input.label || t.label}
+          placeholder={input.placeholder || t.placeholder}
+          helpText={input.help_text || t.help_text}
         />
       );
     default:

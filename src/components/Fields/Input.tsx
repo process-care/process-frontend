@@ -54,6 +54,7 @@ export const CustomInput: React.FC<Props> = ({
         <>
           <InputGroup size="sm">
             <Input
+              backgroundColor="white"
               borderRadius="7px"
               type={type}
               size="md"

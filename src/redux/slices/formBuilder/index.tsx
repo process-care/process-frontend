@@ -5,6 +5,7 @@ import IFormPage from "interfaces/form/page";
 
 import { v4 as uuidv4 } from "uuid";
 import ICondition from "interfaces/form/condition";
+import IOperator from "interfaces/form/operator";
 
 interface FormBuilder {
   inputs: IInput[];
@@ -20,6 +21,13 @@ interface Update {
   id: string | undefined;
   data: {
     [index: string]: string | undefined;
+  } | null;
+}
+
+interface UpdateCondition {
+  id: string | undefined;
+  data: {
+    [index: string]: IInput | number | IOperator;
   } | null;
 }
 
@@ -126,6 +134,13 @@ export const formBuilderSlice = createSlice({
       state.selected_condition = action.payload;
       pages[index].condition.push(action.payload);
     },
+    updateCondition: (state, action: PayloadAction<UpdateCondition>) => {
+      const { id, data } = action.payload;
+      if (data) {
+        const current = state.conditions.findIndex((el) => el.id === id);
+        state.conditions[current] = { ...state.conditions[current], ...data };
+      }
+    },
     selectCondition: (state, action: PayloadAction<ICondition | null>) => {
       if (action.payload === null) {
         state.selected_condition = null;
@@ -149,6 +164,7 @@ export const {
   updatePage,
   addCondition,
   selectCondition,
+  updateCondition,
 } = formBuilderSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
@@ -163,5 +179,22 @@ export const selectConditonInCurrentPage = (state: RootState): ICondition[] =>
     (condition) =>
       condition.referer_entity_id === state.formBuilder.selected_page.id
   );
+
+export const getPageInCurrentCondition = (
+  state: RootState
+): IFormPage | undefined =>
+  state.formBuilder.pages
+    .filter(
+      (page) =>
+        page.id === state.formBuilder.selected_condition?.referer_entity_id
+    )
+    .shift();
+
+export const getConditionData = (state: RootState): ICondition | undefined =>
+  state.formBuilder.conditions
+    .filter(
+      (condition) => condition.id === state.formBuilder.selected_condition?.id
+    )
+    .shift();
 
 export default formBuilderSlice.reducer;

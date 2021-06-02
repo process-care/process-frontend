@@ -28,7 +28,7 @@ import { toogleDrawer } from "redux/slices/application";
 interface CardProps {
   input: IInput;
   index: number;
-  moveCard: (dragIndex: number, hoverIndex: number) => void;
+  moveCard?: (dragIndex: number, hoverIndex: number) => void;
 }
 
 interface DragItem {
@@ -73,7 +73,9 @@ const Card: React.FC<CardProps> = ({ input, index, moveCard }) => {
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
         return;
       }
-      moveCard(dragIndex, hoverIndex);
+      if (moveCard) {
+        moveCard(dragIndex, hoverIndex);
+      }
       item.index = hoverIndex;
     },
   });

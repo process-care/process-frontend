@@ -108,17 +108,22 @@ const theme = extendTheme({
             color: "gray.600",
           },
         }),
-        box: () => ({
-          borderRadius: "none",
+        box: (props) => ({
           border: "1px solid",
-          borderColor: "#E5E5E5",
+          borderColor: "#black",
           textTransform: "uppercase",
+          borderRadius: "4px",
           fontSize: "12px",
           lineHeight: "16px",
           padding: 8,
           margin: 2,
           fontWeight: "normal",
-          backgroundColor: "#F6F6F6",
+          color: props.isSelected ? "white" : "black",
+
+          backgroundColor: props.isSelected ? "brand.blue" : "white",
+          _active: {
+            backgroundColor: "brand.blue",
+          },
           _hover: {
             bg: "gray.200",
           },

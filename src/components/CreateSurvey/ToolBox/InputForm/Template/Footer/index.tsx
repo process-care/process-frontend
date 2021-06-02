@@ -14,7 +14,13 @@ export const Footer: React.FC<Props> = ({
   hideRequired,
 }) => {
   return (
-    <Box w="100%" position="sticky" bottom="0" backgroundColor="white" pb="10">
+    <Box
+      w="100%"
+      position="sticky"
+      bottom="0"
+      backgroundColor="white"
+      pb="10"
+      borderTop="1px solid">
       {!hideRequired && (
         <Switch p="20px 0" label="Réponse obligatoire" id="required" />
       )}

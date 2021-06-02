@@ -156,6 +156,7 @@ export const PageForm: React.FC = () => {
                             id: condition_id,
                             condition_type: "page",
                             referer_entity_id: selected_page.id,
+                            step: 1,
                           })
                         )
                       }>

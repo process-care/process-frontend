@@ -3,7 +3,7 @@ import * as Yup from "yup";
 export const CommonFieldsSchema = Yup.object().shape({
   label: Yup.string()
     .min(2, "Texte trop court (2min)")
-    .max(50, "Texte trop long (50max)")
+    .max(200, "Texte trop long (200max)")
     .required("Ce champs est requis"),
 
   internal_title: Yup.string()

@@ -16,6 +16,7 @@ export default interface IInput {
   placeholder?: string;
   help_text?: string;
   internal_title?: string;
+  internal_description?: string;
   min_length?: string;
   max_length?: string;
   units?: string;

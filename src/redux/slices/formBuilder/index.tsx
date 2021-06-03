@@ -6,8 +6,9 @@ import IFormPage from "interfaces/form/page";
 import { v4 as uuidv4 } from "uuid";
 import ICondition from "interfaces/form/condition";
 import IOperator from "interfaces/form/operator";
+import { formMock } from "mocks/form";
 
-interface FormBuilder {
+export interface FormBuilder {
   inputs: IInput[];
   selected_input: IInput;
   pages: IFormPage[];
@@ -61,6 +62,9 @@ export const formBuilderSlice = createSlice({
   name: "formBuilder",
   initialState,
   reducers: {
+    //Mock
+    mockForm: () => formMock,
+
     // Inputs
     addInput: (state, action: PayloadAction<IInput>) => {
       state.inputs.push(action.payload);
@@ -165,6 +169,7 @@ export const {
   addCondition,
   selectCondition,
   updateCondition,
+  mockForm,
 } = formBuilderSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type

@@ -64,7 +64,6 @@ export const formBuilderSlice = createSlice({
   reducers: {
     //Mock
     mockForm: () => formMock,
-
     // Inputs
     addInput: (state, action: PayloadAction<IInput>) => {
       state.inputs.push(action.payload);

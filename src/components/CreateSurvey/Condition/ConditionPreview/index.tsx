@@ -5,6 +5,7 @@ import { Step_1 } from "components/CreateSurvey/Condition/ConditionPreview/Steps
 import { useAppSelector, useAppDispatch } from "redux/hooks";
 import {
   addCondition,
+  getPageInCurrentCondition,
   getSelectedConditionData,
   selectCondition,
   updateCondition,
@@ -15,8 +16,9 @@ import { v4 as uuidv4 } from "uuid";
 
 export const ConditionPreview: React.FC = () => {
   const selected_condition = useAppSelector(getSelectedConditionData);
+  const currentConditionPage = useAppSelector(getPageInCurrentCondition);
+
   const dispatch = useAppDispatch();
-  const { selected_page } = useAppSelector((state) => state.formBuilder);
 
   const condition_id = uuidv4();
 
@@ -79,7 +81,7 @@ export const ConditionPreview: React.FC = () => {
               Retour
             </Button>
           )}
-          {selected_condition?.step === 3 ? (
+          {selected_condition?.step === 3 && currentConditionPage ? (
             <Button
               variant="roundedBlue"
               isDisabled={checkStepValidation()}
@@ -88,7 +90,7 @@ export const ConditionPreview: React.FC = () => {
                   addCondition({
                     id: condition_id,
                     condition_type: "page",
-                    referer_entity_id: selected_page.id,
+                    referer_entity_id: currentConditionPage?.id,
                     step: 1,
                     group: 1,
                   })

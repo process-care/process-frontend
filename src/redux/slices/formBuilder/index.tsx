@@ -207,7 +207,7 @@ export const getPageInCurrentCondition = (
     .shift();
 };
 
-export const getConditionData = (state: RootState): ICondition[] | undefined =>
+export const getConditionData = (state: RootState): ICondition[] | [] =>
   state.formBuilder.conditions.filter(
     (condition) =>
       condition.referer_entity_id ===

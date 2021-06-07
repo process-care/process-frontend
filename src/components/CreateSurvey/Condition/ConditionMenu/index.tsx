@@ -29,7 +29,7 @@ export const ConditionMenu: React.FC = () => {
       <Text fontSize="16px" fontWeight="bold">
         {currentConditionPage?.name}
       </Text>
-      <Group conditions={conditions} groups={groups} />
+      <Group conditions={conditions} groups={groups} last_group={last_group} />
       {currentConditionPage && (
         <Box>
           <Button

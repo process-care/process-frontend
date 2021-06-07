@@ -8,17 +8,17 @@ import { useAppDispatch } from "redux/hooks";
 import ICondition from "interfaces/form/condition";
 
 interface Props {
-  currentCondition: ICondition;
+  selectedCondition: ICondition;
 }
 
-export const Step_3: React.FC<Props> = ({ currentCondition }) => {
+export const Step_3: React.FC<Props> = ({ selectedCondition }) => {
   const dispatch = useAppDispatch();
 
   return (
     <Container w="90%" maxW="unset">
       <Formik
         validateOnBlur={false}
-        initialValues={{ target_value: currentCondition.target_value }}
+        initialValues={{ target_value: selectedCondition.target_value }}
         onSubmit={(data, { setSubmitting, validateForm }) => {
           validateForm(data);
           setSubmitting(true);
@@ -27,10 +27,9 @@ export const Step_3: React.FC<Props> = ({ currentCondition }) => {
           const onChange = (event: React.FormEvent<HTMLFormElement>) => {
             const target = event.target as HTMLFormElement;
             if (target !== null) {
-              console.log(target.value);
               dispatch(
                 updateCondition({
-                  id: currentCondition.id,
+                  id: selectedCondition.id,
                   data: {
                     target_value: target.value,
                   },

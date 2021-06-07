@@ -47,7 +47,11 @@ export const CreateForm: React.FC<IRoute> = () => {
               p={0}
               alignItems="center">
               <div className="background__grid">
-                {selected_condition ? <ConditionPreview /> : <InputsPreview />}
+                {selected_condition.id !== "" ? (
+                  <ConditionPreview />
+                ) : (
+                  <InputsPreview />
+                )}
               </div>
             </Container>
           </Box>

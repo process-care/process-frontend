@@ -3,35 +3,50 @@ import React from "react";
 import { Box, Button, ButtonGroup, Container } from "@chakra-ui/react";
 import { Step_1 } from "components/CreateSurvey/Condition/ConditionPreview/Steps/Step_1";
 import { useAppSelector, useAppDispatch } from "redux/hooks";
-import { getConditionData, updateCondition } from "redux/slices/formBuilder";
+import {
+  addCondition,
+  getSelectedConditionData,
+  selectCondition,
+  updateCondition,
+} from "redux/slices/formBuilder";
 import { Step_2 } from "./Steps/Step_2";
 import { Step_3 } from "./Steps/Step_3";
+import { v4 as uuidv4 } from "uuid";
 
 export const ConditionPreview: React.FC = () => {
-  const currentCondition = useAppSelector(getConditionData);
+  const selected_condition = useAppSelector(getSelectedConditionData);
   const dispatch = useAppDispatch();
+  const { selected_page } = useAppSelector((state) => state.formBuilder);
+
+  const condition_id = uuidv4();
+
+  console.log("selected_condition", selected_condition);
+
   const checkStepValidation = () => {
-    if (currentCondition?.step === 1 && !!currentCondition?.selected_question) {
+    if (
+      selected_condition?.step === 1 &&
+      !!selected_condition?.selected_question
+    ) {
       return false;
     }
-    if (currentCondition?.step === 2 && !!currentCondition?.operator) {
+    if (selected_condition?.step === 2 && !!selected_condition?.operator) {
       return false;
     }
-    if (currentCondition?.step === 3 && !!currentCondition?.target_value) {
+    if (selected_condition?.step === 3 && !!selected_condition?.target_value) {
       return false;
     } else return true;
   };
 
   const renderStep = () => {
-    switch (currentCondition?.step) {
+    switch (selected_condition?.step) {
       case 1:
-        return <Step_1 currentCondition={currentCondition} />;
+        return <Step_1 selectedCondition={selected_condition} />;
         break;
       case 2:
-        return <Step_2 currentCondition={currentCondition} />;
+        return <Step_2 selectedCondition={selected_condition} />;
         break;
       case 3:
-        return <Step_3 currentCondition={currentCondition} />;
+        return <Step_3 selectedCondition={selected_condition} />;
         break;
 
       default:
@@ -45,17 +60,17 @@ export const ConditionPreview: React.FC = () => {
 
       <Box pos="absolute" bottom="110px" left="0" right="0" w="100%">
         <ButtonGroup justifyContent="space-between" w="30%">
-          {currentCondition?.step !== 1 && (
+          {selected_condition?.step !== 1 && (
             <Button
               variant="link"
               onClick={() =>
                 dispatch(
                   updateCondition({
-                    id: currentCondition?.id,
+                    id: selected_condition?.id,
                     data: {
                       step:
-                        currentCondition?.step !== undefined
-                          ? currentCondition.step - 1
+                        selected_condition?.step !== undefined
+                          ? selected_condition.step - 1
                           : 1,
                     },
                   })
@@ -64,26 +79,44 @@ export const ConditionPreview: React.FC = () => {
               Retour
             </Button>
           )}
-          <Button
-            variant="roundedBlue"
-            isDisabled={checkStepValidation()}
-            onClick={() =>
-              dispatch(
-                updateCondition({
-                  id: currentCondition?.id,
-                  data: {
-                    step:
-                      currentCondition?.step !== undefined
-                        ? currentCondition.step + 1
-                        : 1,
-                  },
-                })
-              )
-            }>
-            {currentCondition?.step === 3
-              ? "Ajouter une condition au groupe"
-              : "Suivant"}
-          </Button>
+          {selected_condition?.step === 3 ? (
+            <Button
+              variant="roundedBlue"
+              isDisabled={checkStepValidation()}
+              onClick={() => {
+                dispatch(
+                  addCondition({
+                    id: condition_id,
+                    condition_type: "page",
+                    referer_entity_id: selected_page.id,
+                    step: 1,
+                    group: 1,
+                  })
+                );
+                dispatch(selectCondition({ id: condition_id }));
+              }}>
+              Ajouter une condition au groupe
+            </Button>
+          ) : (
+            <Button
+              variant="roundedBlue"
+              isDisabled={checkStepValidation()}
+              onClick={() =>
+                dispatch(
+                  updateCondition({
+                    id: selected_condition?.id,
+                    data: {
+                      step:
+                        selected_condition?.step !== undefined
+                          ? selected_condition.step + 1
+                          : 1,
+                    },
+                  })
+                )
+              }>
+              Suivant
+            </Button>
+          )}
         </ButtonGroup>
       </Box>
     </Container>

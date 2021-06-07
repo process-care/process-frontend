@@ -5,5 +5,5 @@ export default interface IFormPage {
   short_name: string;
   id: string;
   is_locked: boolean;
-  condition: ICondition[];
+  condition: ICondition["id"][];
 }

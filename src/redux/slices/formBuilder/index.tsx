@@ -14,7 +14,9 @@ export interface FormBuilder {
   pages: IFormPage[];
   selected_page: IFormPage;
   conditions: ICondition[];
-  selected_condition: ICondition | null;
+  selected_condition: {
+    id: string;
+  };
   is_editing: boolean;
   is_collapse_view: boolean;
 }
@@ -30,6 +32,9 @@ interface UpdateCondition {
   data: {
     [index: string]: IInput | number | IOperator;
   } | null;
+}
+interface SelectCondition {
+  id: string;
 }
 
 const initialFirstPage = {
@@ -53,7 +58,9 @@ const initialState: FormBuilder = {
   pages: [initialFirstPage],
   selected_page: initialFirstPage,
   conditions: [],
-  selected_condition: null,
+  selected_condition: {
+    id: "",
+  },
   is_editing: false,
   is_collapse_view: false,
 };
@@ -130,12 +137,11 @@ export const formBuilderSlice = createSlice({
     // Condition
     addCondition: (state, action: PayloadAction<ICondition>) => {
       // add condition & select it & and add it to selected page.
-      const { referer_entity_id } = action.payload;
+      const { referer_entity_id, id } = action.payload;
       const { conditions, pages } = state;
       const index = pages.findIndex((item) => referer_entity_id === item.id);
       conditions.push(action.payload);
-      state.selected_condition = action.payload;
-      pages[index].condition.push(action.payload);
+      pages[index].condition.push(id);
     },
     updateCondition: (state, action: PayloadAction<UpdateCondition>) => {
       const { id, data } = action.payload;
@@ -144,11 +150,11 @@ export const formBuilderSlice = createSlice({
         state.conditions[current] = { ...state.conditions[current], ...data };
       }
     },
-    selectCondition: (state, action: PayloadAction<ICondition | null>) => {
-      if (action.payload === null) {
-        state.selected_condition = null;
+    selectCondition: (state, action: PayloadAction<SelectCondition>) => {
+      if (action.payload.id === "") {
+        state.selected_condition = { id: "" };
       }
-      state.selected_condition = action.payload;
+      state.selected_condition.id = action.payload.id;
     },
   },
 });
@@ -184,21 +190,28 @@ export const selectConditonInCurrentPage = (state: RootState): ICondition[] =>
       condition.referer_entity_id === state.formBuilder.selected_page.id
   );
 
+export const getSelectedConditionData = (
+  state: RootState
+): ICondition | undefined =>
+  state.formBuilder.conditions.find(
+    (selected) => selected.id === state.formBuilder.selected_condition.id
+  );
+
 export const getPageInCurrentCondition = (
   state: RootState
-): IFormPage | undefined =>
-  state.formBuilder.pages
+): IFormPage | undefined => {
+  return state.formBuilder.pages
     .filter(
-      (page) =>
-        page.id === state.formBuilder.selected_condition?.referer_entity_id
+      (page) => page.id === getSelectedConditionData(state)?.referer_entity_id
     )
     .shift();
+};
 
-export const getConditionData = (state: RootState): ICondition | undefined =>
-  state.formBuilder.conditions
-    .filter(
-      (condition) => condition.id === state.formBuilder.selected_condition?.id
-    )
-    .shift();
+export const getConditionData = (state: RootState): ICondition[] | undefined =>
+  state.formBuilder.conditions.filter(
+    (condition) =>
+      condition.referer_entity_id ===
+      getSelectedConditionData(state)?.referer_entity_id
+  );
 
 export default formBuilderSlice.reducer;

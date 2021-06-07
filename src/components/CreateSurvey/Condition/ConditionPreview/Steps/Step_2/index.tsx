@@ -7,23 +7,23 @@ import { updateCondition } from "redux/slices/formBuilder";
 import ICondition from "interfaces/form/condition";
 
 interface Props {
-  currentCondition: ICondition;
+  selectedCondition: ICondition;
 }
 
-export const Step_2: React.FC<Props> = ({ currentCondition }) => {
+export const Step_2: React.FC<Props> = ({ selectedCondition }) => {
   const dispatch = useAppDispatch();
   return (
     <Container w="90%" maxW="unset" d="flex" h="100%" justifyContent="center">
       <Flex flexWrap="wrap" w="100%" justifyContent="center" mt={"200"} h="0">
         {operators.map(({ id, name }) => {
-          const isSelected = id === currentCondition?.operator?.id;
+          const isSelected = id === selectedCondition.operator?.id;
 
           return (
             <Button
               onClick={() =>
                 dispatch(
                   updateCondition({
-                    id: currentCondition?.id,
+                    id: selectedCondition.id,
                     data: { operator: { id, name } },
                   })
                 )

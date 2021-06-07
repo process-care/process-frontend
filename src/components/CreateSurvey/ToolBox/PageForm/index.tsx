@@ -23,7 +23,9 @@ import { v4 as uuidv4 } from "uuid";
 
 export const PageForm: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { selected_page, pages } = useAppSelector((state) => state.formBuilder);
+  const { selected_page, pages, selected_condition } = useAppSelector(
+    (state) => state.formBuilder
+  );
   const condtions = useAppSelector(selectConditonInCurrentPage);
   const isFirstPage =
     pages.findIndex((page) => page.id === selected_page.id) === 0;
@@ -150,23 +152,31 @@ export const PageForm: React.FC = () => {
                     <Button
                       variant="link"
                       color="brand.blue"
-                      onClick={() =>
+                      onClick={() => {
                         dispatch(
                           addCondition({
                             id: condition_id,
                             condition_type: "page",
                             referer_entity_id: selected_page.id,
                             step: 1,
+                            group: 1,
                           })
-                        )
-                      }>
+                        );
+                        dispatch(
+                          selectCondition({
+                            id: condition_id,
+                          })
+                        );
+                      }}>
                       {t.add_condition}
                     </Button>
                   ) : (
                     <Button
                       variant="link"
                       color="brand.blue"
-                      onClick={() => dispatch(selectCondition(condtions[0]))}>
+                      onClick={() =>
+                        dispatch(selectCondition({ id: selected_condition.id }))
+                      }>
                       {t.edit_condition}
                     </Button>
                   )}

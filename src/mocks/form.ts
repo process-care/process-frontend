@@ -181,7 +181,9 @@ export const formMock: FormBuilder = {
     short_name: "P1",
   },
   conditions: [],
-  selected_condition: null,
+  selected_condition: {
+    id: "",
+  },
   is_editing: false,
   is_collapse_view: false,
 };

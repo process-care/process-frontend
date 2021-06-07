@@ -10,24 +10,22 @@ import IInput from "interfaces/form/input";
 import ICondition from "interfaces/form/condition";
 
 interface Props {
-  currentCondition: ICondition;
+  selectedCondition: ICondition;
 }
 
-export const Step_1: React.FC<Props> = ({ currentCondition }) => {
-  const { selected_page, selected_condition } = useAppSelector(
-    (state) => state.formBuilder
-  );
+export const Step_1: React.FC<Props> = ({ selectedCondition }) => {
+  const { selected_page } = useAppSelector((state) => state.formBuilder);
   const inputs = useAppSelector(selectInputsInCurrentPage);
   const dispatch = useAppDispatch();
 
   const renderCard = (input: IInput) => {
-    const isSelected = input.id === currentCondition?.selected_question?.id;
+    const isSelected = input.id === selectedCondition.selected_question?.id;
     return (
       <Box
         onClick={() =>
           dispatch(
             updateCondition({
-              id: selected_condition?.id,
+              id: selectedCondition.id,
               data: {
                 selected_question: input,
               },

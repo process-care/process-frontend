@@ -9,4 +9,5 @@ export default interface ICondition {
   operator?: IOperator;
   target_value?: string | number;
   step?: 1 | 2 | 3;
+  group: number;
 }

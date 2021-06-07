@@ -87,7 +87,8 @@ export const ConditionPreview: React.FC = () => {
           )}
           {selected_condition?.step === 3 && currentConditionPage ? (
             <Button
-              variant="roundedBlue"
+              variant="link"
+              color="brand.blue"
               isDisabled={checkStepValidation()}
               onClick={() => {
                 dispatch(

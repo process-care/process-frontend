@@ -1,11 +1,14 @@
 import React from "react";
 import { Formik, Form } from "formik";
 
-import { Box, Container } from "@chakra-ui/react";
+import { Box, Container, Text, Flex } from "@chakra-ui/react";
 import { Input } from "components/Fields";
 import { updateCondition } from "redux/slices/formBuilder";
 import { useAppDispatch } from "redux/hooks";
 import ICondition from "interfaces/form/condition";
+
+import { ReactComponent as Submit } from "./../../assets/submit.svg";
+import { ReactComponent as Check } from "./../../assets/check.svg";
 
 interface Props {
   selectedCondition: ICondition;
@@ -13,6 +16,7 @@ interface Props {
 
 export const Step_3: React.FC<Props> = ({ selectedCondition }) => {
   const dispatch = useAppDispatch();
+  const [isValid, setIsValid] = React.useState(false);
 
   return (
     <Container w="90%" maxW="unset">
@@ -23,7 +27,7 @@ export const Step_3: React.FC<Props> = ({ selectedCondition }) => {
           validateForm(data);
           setSubmitting(true);
         }}>
-        {() => {
+        {({ values }) => {
           const onChange = (event: React.FormEvent<HTMLFormElement>) => {
             const target = event.target as HTMLFormElement;
             if (target !== null) {
@@ -37,6 +41,7 @@ export const Step_3: React.FC<Props> = ({ selectedCondition }) => {
               );
             }
           };
+          const isNotEmpty = values.target_value !== "";
           return (
             <Form onChange={(event) => onChange(event)}>
               <Box d="flex" w="50%" mx="auto" alignItems="center" pt="100">
@@ -46,7 +51,35 @@ export const Step_3: React.FC<Props> = ({ selectedCondition }) => {
                   label="Indiquer la valeur numérique"
                   placeholder="Ex 5"
                 />
+                <Box
+                  pt={6}
+                  ml={5}
+                  _hover={{
+                    cursor: "pointer",
+                    opacity: 0.7,
+                    transition: "all 400ms",
+                  }}>
+                  {isNotEmpty && (
+                    <Submit
+                      onClick={() => {
+                        setIsValid(true);
+                      }}
+                    />
+                  )}
+                </Box>
               </Box>
+              {isValid && isNotEmpty && (
+                <Flex
+                  alignItems="center"
+                  justifyContent="flex-end"
+                  w="50%"
+                  mx="auto">
+                  <Check />
+                  <Text fontSize="14px" color="brand.green" ml={2}>
+                    Votre condition est enregistrée !
+                  </Text>
+                </Flex>
+              )}
             </Form>
           );
         }}

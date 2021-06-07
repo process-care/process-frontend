@@ -13,6 +13,7 @@ const theme = extendTheme({
       "gray.100": "#F6F6F6",
       "gray.200": "#9E9E9E",
       line: "#E5E5E5",
+      green: "#3EA919",
     },
   },
   fontSizes: {

@@ -5,6 +5,7 @@ import { Step_1 } from "components/CreateSurvey/Condition/ConditionPreview/Steps
 import { useAppSelector, useAppDispatch } from "redux/hooks";
 import {
   addCondition,
+  getConditionData,
   getPageInCurrentCondition,
   getSelectedConditionData,
   selectCondition,
@@ -13,6 +14,7 @@ import {
 import { Step_2 } from "./Steps/Step_2";
 import { Step_3 } from "./Steps/Step_3";
 import { v4 as uuidv4 } from "uuid";
+import ICondition from "interfaces/form/condition";
 
 export const ConditionPreview: React.FC = () => {
   const selected_condition = useAppSelector(getSelectedConditionData);
@@ -21,8 +23,10 @@ export const ConditionPreview: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const condition_id = uuidv4();
+  const conditions = useAppSelector(getConditionData);
 
-  console.log("selected_condition", selected_condition);
+  const groups = conditions.map((c: ICondition) => c.group);
+  const last_group = Math.max(...groups);
 
   const checkStepValidation = () => {
     if (
@@ -92,7 +96,7 @@ export const ConditionPreview: React.FC = () => {
                     condition_type: "page",
                     referer_entity_id: currentConditionPage?.id,
                     step: 1,
-                    group: 1,
+                    group: last_group,
                   })
                 );
                 dispatch(selectCondition({ id: condition_id }));

@@ -174,11 +174,11 @@ export const formMock: FormBuilder = {
     page_id: "",
   },
   selected_page: {
-    name: "Première page de la recherche B2716",
-    id: "page-bcc2b551-642d-44da-94bf-478444805d25",
+    name: "Deuxième page de la recherche B2716",
+    id: "page-f7a1f940-f68c-4c86-9d87-3449c2317d5a",
     is_locked: false,
     condition: [],
-    short_name: "P1",
+    short_name: "P2",
   },
   conditions: [],
   selected_condition: {

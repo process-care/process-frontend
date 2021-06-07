@@ -3,47 +3,81 @@ import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import ICondition from "interfaces/form/condition";
 import { renderOperator } from "./utils";
 import { Separator } from "../Separator";
+import { ReactComponent as Delete } from "./../assets/delete.svg";
+import { useAppDispatch } from "redux/hooks";
+import { addCondition, selectCondition } from "redux/slices/formBuilder";
+import { v4 as uuidv4 } from "uuid";
+import IFormPage from "interfaces/form/page";
 
 interface Props {
   conditions: ICondition[] | [];
   groups: number[];
   last_group: number;
+  currentConditionPage: IFormPage | undefined;
 }
 
-export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
+export const Group: React.FC<Props> = ({
+  conditions,
+  groups,
+  last_group,
+  currentConditionPage,
+}) => {
+  const dispatch = useAppDispatch();
+  const condition_id = uuidv4();
+
   const clean_groups = groups.filter(
     (item, index) => groups.indexOf(item) === index
   );
+
+  if (currentConditionPage === undefined) {
+    return <p>Error</p>;
+  }
+
   return (
     <Box p={4} h="100%">
       {clean_groups.map((el: number) => {
         return (
           <Box mt={10}>
-            <Text mt={4} fontSize="12px">
-              OU
-            </Text>
+            <Flex alignItems="center" justifyContent="space-around" w="100%">
+              <Box
+                w="100%"
+                fontSize="10px"
+                backgroundColor="brand.gray.100"
+                p={2}
+                textAlign="left"
+                textTransform="uppercase"
+                mr={2}>
+                Groupe condition {el}
+              </Box>
+              <Delete />
+            </Flex>
 
-            <Box
-              w="90%"
-              fontSize="10px"
-              backgroundColor="brand.gray.100"
-              p={2}
-              textAlign="left"
-              textTransform="uppercase"
-              mb={2}>
-              Groupe condition {el}
-            </Box>
             {conditions?.map((condition: ICondition, index: number) => {
               const isLast = index === conditions.length - 1;
               if (condition.group === el) {
                 return (
                   <Box textAlign="left" key={condition.id} py={1}>
-                    <Text fontSize="10" color="brand.gray.200">
-                      Si la question
-                    </Text>
-                    <Text fontSize="14" fontWeight="bold" color="black">
-                      {condition.selected_question?.label}
-                    </Text>
+                    {condition.selected_question?.label && (
+                      <>
+                        <Text fontSize="10" color="brand.gray.200">
+                          Si la question
+                        </Text>
+
+                        <Flex alignItems="flex-start">
+                          <Text fontSize="14" fontWeight="bold" color="black">
+                            {condition.selected_question?.label}
+                          </Text>
+                          <Button
+                            variant="link"
+                            color="brand.blue"
+                            fontSize="10"
+                            pt={1}>
+                            Edit
+                          </Button>
+                        </Flex>
+                      </>
+                    )}
+
                     {condition.operator?.id && (
                       <Flex>
                         <Text
@@ -70,10 +104,27 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
                         </Box>
                       </Flex>
                     )}
-                    <Separator value="ET" isLast={isLast} />
+                    {condition.target_value && (
+                      <Separator value="ET" isLast={isLast} />
+                    )}
                     <Flex justifyContent="flex-end">
                       {isLast && (
-                        <Button variant="link" opacity={0.2} fontSize="10">
+                        <Button
+                          variant="link"
+                          opacity={0.2}
+                          fontSize="10"
+                          onClick={() => {
+                            dispatch(
+                              addCondition({
+                                id: condition_id,
+                                condition_type: "page",
+                                referer_entity_id: currentConditionPage?.id,
+                                step: 1,
+                                group: last_group,
+                              })
+                            );
+                            dispatch(selectCondition({ id: condition_id }));
+                          }}>
                           Ajouter une condtion
                         </Button>
                       )}
@@ -84,7 +135,22 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
             })}
             <Separator value="OU" isLast={last_group === el} />
             <Flex justifyContent="flex-end">
-              <Button variant="link" opacity={0.2} fontSize="10">
+              <Button
+                variant="link"
+                opacity={0.2}
+                fontSize="10"
+                onClick={() => {
+                  dispatch(
+                    addCondition({
+                      id: condition_id,
+                      condition_type: "page",
+                      referer_entity_id: currentConditionPage?.id,
+                      step: 1,
+                      group: last_group + 1,
+                    })
+                  );
+                  dispatch(selectCondition({ id: condition_id }));
+                }}>
                 Ajouter un groupe
               </Button>
             </Flex>

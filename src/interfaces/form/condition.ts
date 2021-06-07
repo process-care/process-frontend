@@ -2,7 +2,7 @@ import IInput from "./input";
 import IOperator from "./operator";
 
 export default interface ICondition {
-  id: string | undefined;
+  id: string;
   condition_type: "page" | "input";
   referer_entity_id: string;
   selected_question?: IInput;
@@ -10,4 +10,5 @@ export default interface ICondition {
   target_value?: string | number;
   step?: 1 | 2 | 3;
   group: number;
+  is_valid: boolean;
 }

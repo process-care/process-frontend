@@ -54,18 +54,23 @@ export const Step_3: React.FC<Props> = ({ selectedCondition }) => {
                 <Box
                   pt={6}
                   ml={5}
+                  onClick={() => {
+                    dispatch(
+                      updateCondition({
+                        id: selectedCondition.id,
+                        data: {
+                          is_valid: true,
+                        },
+                      })
+                    );
+                    setIsValid(true);
+                  }}
                   _hover={{
                     cursor: "pointer",
                     opacity: 0.7,
                     transition: "all 400ms",
                   }}>
-                  {isNotEmpty && (
-                    <Submit
-                      onClick={() => {
-                        setIsValid(true);
-                      }}
-                    />
-                  )}
+                  {isNotEmpty && <Submit />}
                 </Box>
               </Box>
               {isValid && isNotEmpty && (

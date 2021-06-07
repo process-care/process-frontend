@@ -13,6 +13,7 @@ import ICondition from "interfaces/form/condition";
 
 export const ConditionMenu: React.FC = () => {
   const currentConditionPage = useAppSelector(getPageInCurrentCondition);
+
   const dispatch = useAppDispatch();
   const conditions = useAppSelector(getConditionData);
   const groups = conditions.map((c: ICondition) => c.group);

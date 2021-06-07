@@ -160,6 +160,7 @@ export const PageForm: React.FC = () => {
                             referer_entity_id: selected_page.id,
                             step: 1,
                             group: 1,
+                            is_valid: false,
                           })
                         );
                         dispatch(

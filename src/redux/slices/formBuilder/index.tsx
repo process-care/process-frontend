@@ -30,11 +30,15 @@ interface Update {
 interface UpdateCondition {
   id: string | undefined;
   data: {
-    [index: string]: IInput | number | IOperator;
+    [index: string]: IInput | number | boolean | IOperator;
   } | null;
 }
 interface SelectCondition {
   id: string;
+}
+
+interface RemoveGroup {
+  group_id: number;
 }
 
 const initialFirstPage = {
@@ -154,7 +158,23 @@ export const formBuilderSlice = createSlice({
       if (action.payload.id === "") {
         state.selected_condition = { id: "" };
       }
+      console.log(action.payload);
       state.selected_condition.id = action.payload.id;
+    },
+    removeConditionGroup: (state, action: PayloadAction<RemoveGroup>) => {
+      const { group_id } = action.payload;
+
+      const new_conditions = state.conditions.filter(
+        (condition) => condition.group !== group_id
+      );
+      const reset_selected_condition = new_conditions.find(
+        (c) => c.id === state.selected_condition.id
+      );
+      console.log("reset", new_conditions);
+      state.conditions = new_conditions;
+      if (reset_selected_condition) {
+        state.selected_condition.id = "";
+      }
     },
   },
 });
@@ -175,6 +195,7 @@ export const {
   selectCondition,
   updateCondition,
   mockForm,
+  removeConditionGroup,
 } = formBuilderSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type

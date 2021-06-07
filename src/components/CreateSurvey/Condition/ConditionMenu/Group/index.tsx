@@ -4,8 +4,14 @@ import ICondition from "interfaces/form/condition";
 import { renderOperator } from "./utils";
 import { Separator } from "../Separator";
 import { ReactComponent as Delete } from "./../assets/delete.svg";
-import { useAppDispatch } from "redux/hooks";
-import { addCondition, selectCondition } from "redux/slices/formBuilder";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
+import {
+  addCondition,
+  getSelectedConditionData,
+  removeConditionGroup,
+  selectCondition,
+  updateCondition,
+} from "redux/slices/formBuilder";
 import { v4 as uuidv4 } from "uuid";
 import IFormPage from "interfaces/form/page";
 
@@ -24,6 +30,7 @@ export const Group: React.FC<Props> = ({
 }) => {
   const dispatch = useAppDispatch();
   const condition_id = uuidv4();
+  const selected_condition = useAppSelector(getSelectedConditionData);
 
   const clean_groups = groups.filter(
     (item, index) => groups.indexOf(item) === index
@@ -35,7 +42,7 @@ export const Group: React.FC<Props> = ({
 
   return (
     <Box p={4} h="100%">
-      {clean_groups.map((el: number) => {
+      {clean_groups.map((group_id: number) => {
         return (
           <Box mt={10}>
             <Flex alignItems="center" justifyContent="space-around" w="100%">
@@ -47,36 +54,91 @@ export const Group: React.FC<Props> = ({
                 textAlign="left"
                 textTransform="uppercase"
                 mr={2}>
-                Groupe condition {el}
+                Groupe condition {group_id}
               </Box>
-              <Delete />
+              <Button
+                onClick={() => {
+                  dispatch(
+                    removeConditionGroup({
+                      group_id,
+                    })
+                  );
+                }}
+                variant="link"
+                color="brand.blue"
+                fontSize="10"
+                pt="2px">
+                <Delete />
+              </Button>
             </Flex>
 
             {conditions?.map((condition: ICondition, index: number) => {
               const isLast = index === conditions.length - 1;
-              if (condition.group === el) {
+              if (condition.group === group_id) {
                 return (
                   <Box textAlign="left" key={condition.id} py={1}>
-                    {condition.selected_question?.label && (
-                      <>
-                        <Text fontSize="10" color="brand.gray.200">
-                          Si la question
-                        </Text>
-
-                        <Flex alignItems="flex-start">
-                          <Text fontSize="14" fontWeight="bold" color="black">
-                            {condition.selected_question?.label}
+                    {condition.selected_question?.label &&
+                      selected_condition !== undefined && (
+                        <>
+                          <Text fontSize="10" color="brand.gray.200">
+                            Si la question
                           </Text>
-                          <Button
-                            variant="link"
-                            color="brand.blue"
-                            fontSize="10"
-                            pt={1}>
-                            Edit
-                          </Button>
-                        </Flex>
-                      </>
-                    )}
+
+                          <Flex
+                            alignItems="flex-start"
+                            justifyContent="space-between">
+                            <Flex alignItems="flex-start">
+                              <Text
+                                fontSize="14"
+                                fontWeight="bold"
+                                color="black">
+                                {condition.selected_question?.label}
+                              </Text>
+                              <Button
+                                d="flex"
+                                onClick={() => {
+                                  dispatch(
+                                    updateCondition({
+                                      id: selected_condition?.id,
+                                      data: {
+                                        step: 1,
+                                      },
+                                    })
+                                  );
+                                  dispatch(
+                                    selectCondition({ id: condition.id })
+                                  );
+                                }}
+                                variant="link"
+                                color="brand.blue"
+                                fontSize="10"
+                                pt={1}
+                                justifyContent="flex-end">
+                                Edit
+                              </Button>
+                            </Flex>
+
+                            <Button
+                              onClick={() => {
+                                dispatch(
+                                  updateCondition({
+                                    id: selected_condition?.id,
+                                    data: {
+                                      step: 1,
+                                    },
+                                  })
+                                );
+                                dispatch(selectCondition({ id: condition.id }));
+                              }}
+                              variant="link"
+                              color="brand.blue"
+                              fontSize="10"
+                              pt="2px">
+                              <Delete />
+                            </Button>
+                          </Flex>
+                        </>
+                      )}
 
                     {condition.operator?.id && (
                       <Flex>
@@ -121,6 +183,7 @@ export const Group: React.FC<Props> = ({
                                 referer_entity_id: currentConditionPage?.id,
                                 step: 1,
                                 group: last_group,
+                                is_valid: false,
                               })
                             );
                             dispatch(selectCondition({ id: condition_id }));
@@ -133,7 +196,7 @@ export const Group: React.FC<Props> = ({
                 );
               }
             })}
-            <Separator value="OU" isLast={last_group === el} />
+            <Separator value="OU" isLast={last_group === group_id} />
             <Flex justifyContent="flex-end">
               <Button
                 variant="link"
@@ -147,6 +210,7 @@ export const Group: React.FC<Props> = ({
                       referer_entity_id: currentConditionPage?.id,
                       step: 1,
                       group: last_group + 1,
+                      is_valid: false,
                     })
                   );
                   dispatch(selectCondition({ id: condition_id }));

@@ -28,6 +28,8 @@ export const ConditionPreview: React.FC = () => {
   const groups = conditions.map((c: ICondition) => c.group);
   const last_group = Math.max(...groups);
 
+  console.log(selected_condition);
+
   const checkStepValidation = () => {
     if (
       selected_condition?.step === 1 &&
@@ -98,6 +100,7 @@ export const ConditionPreview: React.FC = () => {
                     referer_entity_id: currentConditionPage?.id,
                     step: 1,
                     group: last_group,
+                    is_valid: false,
                   })
                 );
                 dispatch(selectCondition({ id: condition_id }));

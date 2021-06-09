@@ -174,7 +174,10 @@ export const formBuilderSlice = createSlice({
       // remove from condition
       conditions.splice(index, 1);
 
-      // Reset selected condition if === id
+      //  Si on delete la condition selectionnée
+      //  Soit on selectionne une condition d'un autre groupe de la même page
+      //  Si il n'y en a pas on reset la condition séléctionnée, le tiroir se ferme.
+
       if (state.selected_condition.id === id) {
         if (conditionsInSameGroup.length === 1) {
           state.selected_condition.id = "";
@@ -185,26 +188,33 @@ export const formBuilderSlice = createSlice({
     },
     removeConditionGroup: (state, action: PayloadAction<RemoveGroup>) => {
       const { id } = action.payload;
-      // conditions we keep (different of the deleted group_id)
-      const new_conditions = state.conditions.filter(
-        (condition) => condition.group.id !== id
+      const currentGrouptoRemove = state.conditions.filter(
+        (c) => c.group.id === id
       );
-      const reset_selected_condition = !new_conditions.find(
-        (c) => c.id === state.selected_condition.id
+      state.conditions = state.conditions.filter(
+        (c) => currentGrouptoRemove.indexOf(c) < 0
       );
 
-      // if selected condtion is not in the new condition group -
-      // reset it if new condtion is empty or select  the first one.
-      if (reset_selected_condition) {
-        if (new_conditions.length === 0) {
+      //  Si on delete la condition selectionnée
+      //  Soit on selectionne une condition d'un autre groupe de la même page
+      //  Si il n'y en a pas on reset la condition séléctionnée, le tiroir se ferme.
+
+      const selectedConditionIsRemoving = currentGrouptoRemove.find(
+        (c) => c.id === state.selected_condition.id
+      );
+      const currentPageHasOtherConditions = state.conditions.find(
+        (c) => c.referer_entity_id === currentGrouptoRemove[0].referer_entity_id
+      );
+      const otherConditionToSelect = state.conditions.filter(
+        (c) => c.referer_entity_id === currentGrouptoRemove[0].referer_entity_id
+      )[0]?.id;
+      if (selectedConditionIsRemoving) {
+        if (currentPageHasOtherConditions) {
+          state.selected_condition.id = otherConditionToSelect;
+        } else {
           state.selected_condition.id = "";
-        } else if (new_conditions.filter((c) => c.group.id === id)[0]) {
-          state.selected_condition.id = new_conditions.filter(
-            (c) => c.group.id === id
-          )[0].id;
         }
       }
-      state.conditions = new_conditions;
     },
   },
 });

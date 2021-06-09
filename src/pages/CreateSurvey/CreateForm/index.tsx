@@ -18,7 +18,9 @@ import { RightPart } from "components/Layout/RightPart";
 
 export const CreateForm: React.FC<IRoute> = () => {
   const isOpen = useAppSelector((state) => state.application.drawer_is_open);
-  const { selected_condition } = useAppSelector((state) => state.formBuilder);
+  const { selected_condition, selected_page } = useAppSelector(
+    (state) => state.formBuilder
+  );
 
   return (
     <Box h="100vh" overflow="hidden">
@@ -56,7 +58,10 @@ export const CreateForm: React.FC<IRoute> = () => {
             </Container>
           </Box>
         </Box>
-        <RightPart selected_condition={selected_condition} />
+        <RightPart
+          selected_condition={selected_condition}
+          selected_page={selected_page}
+        />
       </Box>
     </Box>
   );

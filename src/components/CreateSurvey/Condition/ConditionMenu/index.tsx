@@ -25,8 +25,6 @@ export const ConditionMenu: React.FC = () => {
     return <p>Error page</p>;
   }
 
-  console.log(conditions, groups);
-
   return (
     <Box p={4} h="100%">
       <Text fontSize="14px" textTransform="uppercase">

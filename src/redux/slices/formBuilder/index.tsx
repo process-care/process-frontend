@@ -164,17 +164,24 @@ export const formBuilderSlice = createSlice({
     removeConditionGroup: (state, action: PayloadAction<RemoveGroup>) => {
       const { group_id } = action.payload;
 
+      // conditions we keep (different of the deleted group_id)
       const new_conditions = state.conditions.filter(
         (condition) => condition.group !== group_id
       );
-      const reset_selected_condition = new_conditions.find(
+      const reset_selected_condition = !new_conditions.find(
         (c) => c.id === state.selected_condition.id
       );
-      console.log("reset", new_conditions);
-      state.conditions = new_conditions;
+
+      // if selected condtion is not in the new condition group -
+      // reset it if new condtion is empty or select  the first one.
       if (reset_selected_condition) {
-        state.selected_condition.id = "";
+        if (new_conditions === []) {
+          state.selected_condition.id = "";
+        }
+        state.selected_condition.id = new_conditions[0].id;
       }
+
+      state.conditions = new_conditions;
     },
   },
 });

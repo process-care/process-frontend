@@ -20,7 +20,7 @@ export const ConditionMenu: React.FC = () => {
   const last_group = Math.max(...groups);
 
   if (currentConditionPage === undefined) {
-    return <p>Error</p>;
+    return <p>Error page</p>;
   }
 
   return (

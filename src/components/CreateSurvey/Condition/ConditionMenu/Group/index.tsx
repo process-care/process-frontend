@@ -40,7 +40,6 @@ export const Group: React.FC<Props> = ({
   if (currentConditionPage === undefined) {
     return <p>Error</p>;
   }
-  console.log(clean_groups);
   return (
     <Box p={4} h="100%">
       {clean_groups.map(({ name, id }) => {

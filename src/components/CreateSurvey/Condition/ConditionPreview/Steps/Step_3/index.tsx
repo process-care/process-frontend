@@ -17,7 +17,6 @@ interface Props {
 export const Step_3: React.FC<Props> = ({ selectedCondition }) => {
   const dispatch = useAppDispatch();
   const [isValid, setIsValid] = React.useState(false);
-  console.log(selectedCondition);
   return (
     <Container w="90%" maxW="unset">
       <Formik

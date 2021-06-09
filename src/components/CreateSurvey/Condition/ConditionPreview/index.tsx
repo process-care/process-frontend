@@ -25,6 +25,8 @@ export const ConditionPreview: React.FC = () => {
   const condition_id = uuidv4();
   const conditions = useAppSelector(getConditionData);
 
+  console.log("c", conditions, selected_condition);
+
   const groups = conditions.map((c: ICondition) => c.group);
   const last_group = Math.max(...groups);
 

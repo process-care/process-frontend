@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "redux/hooks";
 import {
   addCondition,
   getSelectedConditionData,
+  removeCondition,
   removeConditionGroup,
   selectCondition,
   updateCondition,
@@ -121,14 +122,10 @@ export const Group: React.FC<Props> = ({
                             <Button
                               onClick={() => {
                                 dispatch(
-                                  updateCondition({
-                                    id: selected_condition?.id,
-                                    data: {
-                                      step: 1,
-                                    },
+                                  removeCondition({
+                                    id: condition.id,
                                   })
                                 );
-                                dispatch(selectCondition({ id: condition.id }));
                               }}
                               variant="link"
                               color="brand.blue"

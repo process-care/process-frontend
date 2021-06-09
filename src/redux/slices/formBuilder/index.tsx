@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "redux/store";
 import IInput from "interfaces/form/input";
 import IFormPage from "interfaces/form/page";
-
 import { v4 as uuidv4 } from "uuid";
 import ICondition from "interfaces/form/condition";
 import IOperator from "interfaces/form/operator";
@@ -158,12 +157,32 @@ export const formBuilderSlice = createSlice({
       if (action.payload.id === "") {
         state.selected_condition = { id: "" };
       }
-      console.log(action.payload);
       state.selected_condition.id = action.payload.id;
+    },
+    removeCondition: (state, action: PayloadAction<SelectCondition>) => {
+      const { id } = action.payload;
+      const { conditions } = state;
+      const currentConditionGroup = state.conditions.find(
+        (c) => c.id === id
+      )?.group;
+      const conditionsInSameGroup = state.conditions.filter(
+        (c) => c.group === currentConditionGroup
+      );
+      const index = conditions.findIndex((item) => id === item.id);
+      // remove from condition
+      conditions.splice(index, 1);
+
+      // Reset selected condition if === id
+      if (state.selected_condition.id === id) {
+        if (conditionsInSameGroup.length === 1) {
+          state.selected_condition.id = "";
+        } else if (conditionsInSameGroup[0].id) {
+          state.selected_condition.id = conditionsInSameGroup[0].id;
+        } else return;
+      }
     },
     removeConditionGroup: (state, action: PayloadAction<RemoveGroup>) => {
       const { group_id } = action.payload;
-
       // conditions we keep (different of the deleted group_id)
       const new_conditions = state.conditions.filter(
         (condition) => condition.group !== group_id
@@ -175,12 +194,12 @@ export const formBuilderSlice = createSlice({
       // if selected condtion is not in the new condition group -
       // reset it if new condtion is empty or select  the first one.
       if (reset_selected_condition) {
-        if (new_conditions === []) {
+        if (new_conditions.length === 0) {
           state.selected_condition.id = "";
+        } else if (new_conditions[0]) {
+          state.selected_condition.id = new_conditions[0].id;
         }
-        state.selected_condition.id = new_conditions[0].id;
       }
-
       state.conditions = new_conditions;
     },
   },
@@ -201,6 +220,7 @@ export const {
   addCondition,
   selectCondition,
   updateCondition,
+  removeCondition,
   mockForm,
   removeConditionGroup,
 } = formBuilderSlice.actions;
@@ -222,7 +242,7 @@ export const getSelectedConditionData = (
   state: RootState
 ): ICondition | undefined =>
   state.formBuilder.conditions.find(
-    (selected) => selected.id === state.formBuilder.selected_condition.id
+    (condition) => condition.id === state.formBuilder.selected_condition.id
   );
 
 export const getPageInCurrentCondition = (

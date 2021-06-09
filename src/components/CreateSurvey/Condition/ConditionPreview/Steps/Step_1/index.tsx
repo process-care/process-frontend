@@ -13,10 +13,23 @@ interface Props {
   selectedCondition: ICondition;
 }
 
+const authorizedInputTypes = [
+  "select",
+  "slider",
+  "number-input",
+  "radio",
+  "checkbox",
+  "date-picker",
+];
+
 export const Step_1: React.FC<Props> = ({ selectedCondition }) => {
   const { selected_page } = useAppSelector((state) => state.formBuilder);
   const inputs = useAppSelector(selectInputsInCurrentPage);
   const dispatch = useAppDispatch();
+
+  const authorizedInputs = inputs.filter((i) =>
+    authorizedInputTypes.includes(i.input_type)
+  );
 
   const renderCard = (input: IInput) => {
     const isSelected = input.id === selectedCondition.selected_question?.id;
@@ -65,8 +78,7 @@ export const Step_1: React.FC<Props> = ({ selectedCondition }) => {
       <Text fontSize="14px" mt={5} mb={10} textTransform="uppercase">
         {selected_page.name} - Condition vue
       </Text>
-
-      {inputs.map((input) => renderCard(input))}
+      {authorizedInputs.map((input) => renderCard(input))}
     </Container>
   );
 };

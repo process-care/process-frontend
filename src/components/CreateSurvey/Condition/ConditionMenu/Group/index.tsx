@@ -99,15 +99,15 @@ export const Group: React.FC<Props> = ({
                                 d="flex"
                                 onClick={() => {
                                   dispatch(
+                                    selectCondition({ id: condition.id })
+                                  );
+                                  dispatch(
                                     updateCondition({
-                                      id: selected_condition?.id,
+                                      id: condition.id,
                                       data: {
                                         step: 1,
                                       },
                                     })
-                                  );
-                                  dispatch(
-                                    selectCondition({ id: condition.id })
                                   );
                                 }}
                                 variant="link"

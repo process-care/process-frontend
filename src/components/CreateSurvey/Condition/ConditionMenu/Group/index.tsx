@@ -34,13 +34,13 @@ export const Group: React.FC<Props> = ({
   const selected_condition = useAppSelector(getSelectedConditionData);
 
   const clean_groups = groups.filter(
-    (item, index) => groups.indexOf(item) === index
+    (v, i, a) => a.findIndex((t) => t.id === v.id) === i
   );
 
   if (currentConditionPage === undefined) {
     return <p>Error</p>;
   }
-
+  console.log(clean_groups);
   return (
     <Box p={4} h="100%">
       {clean_groups.map(({ name, id }) => {
@@ -180,8 +180,8 @@ export const Group: React.FC<Props> = ({
                                 referer_entity_id: currentConditionPage?.id,
                                 step: 1,
                                 group: {
-                                  id: uuidv4(),
-                                  name: last_group,
+                                  id,
+                                  name,
                                 },
                                 is_valid: false,
                               })

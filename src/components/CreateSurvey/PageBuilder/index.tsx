@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from "uuid";
 import { ReactComponent as Locked } from "./assets/locked.svg";
 import { ReactComponent as Delete } from "./assets/delete.svg";
 import { ReactComponent as Condition } from "./assets/condition.svg";
+import { getConditionsByPage } from "utils/conditions";
 
 const PageBuilder: React.FC = () => {
   const { pages, selected_page } = useAppSelector((state) => state.formBuilder);
@@ -44,6 +45,8 @@ const PageBuilder: React.FC = () => {
           <Box mb={4} w="100%" key={page.id}>
             <Flex alignItems="center" position="relative">
               <Box position="absolute" right="16px" bottom="35px">
+                {/* {getConditionsByPage(page.id).length > 0 ? <Condition /> : ""} */}
+                <p>{getConditionsByPage(page.id).length}</p>
                 {page.condition.length > 0 ? <Condition /> : ""}
               </Box>
               <Box

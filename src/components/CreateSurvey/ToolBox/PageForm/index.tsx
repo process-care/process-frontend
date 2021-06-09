@@ -20,12 +20,11 @@ import { Switch, Textarea } from "components/Fields";
 import IInput from "interfaces/form/input";
 import { RemovingConfirmation } from "./Status";
 import { v4 as uuidv4 } from "uuid";
+import { getConditionsByPage } from "utils/conditions";
 
 export const PageForm: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { selected_page, pages, selected_condition } = useAppSelector(
-    (state) => state.formBuilder
-  );
+  const { selected_page, pages } = useAppSelector((state) => state.formBuilder);
   const condtions = useAppSelector(selectConditonInCurrentPage);
   const isFirstPage =
     pages.findIndex((page) => page.id === selected_page.id) === 0;
@@ -159,7 +158,10 @@ export const PageForm: React.FC = () => {
                             condition_type: "page",
                             referer_entity_id: selected_page.id,
                             step: 1,
-                            group: 1,
+                            group: {
+                              id: uuidv4(),
+                              name: 1,
+                            },
                             is_valid: false,
                           })
                         );
@@ -176,7 +178,11 @@ export const PageForm: React.FC = () => {
                       variant="link"
                       color="brand.blue"
                       onClick={() =>
-                        dispatch(selectCondition({ id: selected_condition.id }))
+                        dispatch(
+                          selectCondition({
+                            id: getConditionsByPage(selected_page.id)[0].id,
+                          })
+                        )
                       }>
                       {t.edit_condition}
                     </Button>

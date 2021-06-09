@@ -17,11 +17,15 @@ export const ConditionMenu: React.FC = () => {
   const dispatch = useAppDispatch();
   const conditions = useAppSelector(getConditionData);
   const groups = conditions.map((c: ICondition) => c.group);
-  const last_group = Math.max(...groups);
+  const last_group = Math.max(
+    ...conditions.map((c: ICondition) => c.group.name)
+  );
 
   if (currentConditionPage === undefined) {
     return <p>Error page</p>;
   }
+
+  console.log(conditions, groups);
 
   return (
     <Box p={4} h="100%">
@@ -40,6 +44,7 @@ export const ConditionMenu: React.FC = () => {
       <Box pos="sticky" bottom="0">
         <Footer
           hideRequired
+          onSubmit={() => dispatch(selectCondition({ id: "" }))}
           onCancel={() => dispatch(selectCondition({ id: "" }))}
         />
       </Box>

@@ -18,7 +18,7 @@ import IFormPage from "interfaces/form/page";
 
 interface Props {
   conditions: ICondition[] | [];
-  groups: number[];
+  groups: { id: string | number; name: number }[];
   last_group: number;
   currentConditionPage: IFormPage | undefined;
 }
@@ -43,7 +43,7 @@ export const Group: React.FC<Props> = ({
 
   return (
     <Box p={4} h="100%">
-      {clean_groups.map((group_id: number) => {
+      {clean_groups.map(({ name, id }) => {
         return (
           <Box mt={10}>
             <Flex alignItems="center" justifyContent="space-around" w="100%">
@@ -55,13 +55,13 @@ export const Group: React.FC<Props> = ({
                 textAlign="left"
                 textTransform="uppercase"
                 mr={2}>
-                Groupe condition {group_id}
+                Groupe condition {name}
               </Box>
               <Button
                 onClick={() => {
                   dispatch(
                     removeConditionGroup({
-                      group_id,
+                      id,
                     })
                   );
                 }}
@@ -75,7 +75,7 @@ export const Group: React.FC<Props> = ({
 
             {conditions?.map((condition: ICondition, index: number) => {
               const isLast = index === conditions.length - 1;
-              if (condition.group === group_id) {
+              if (condition.group.id === id) {
                 return (
                   <Box textAlign="left" key={condition.id} py={1}>
                     {condition.selected_question?.label &&
@@ -179,7 +179,10 @@ export const Group: React.FC<Props> = ({
                                 condition_type: "page",
                                 referer_entity_id: currentConditionPage?.id,
                                 step: 1,
-                                group: last_group,
+                                group: {
+                                  id: uuidv4(),
+                                  name: last_group,
+                                },
                                 is_valid: false,
                               })
                             );
@@ -193,7 +196,7 @@ export const Group: React.FC<Props> = ({
                 );
               }
             })}
-            <Separator value="OU" isLast={last_group === group_id} />
+            <Separator value="OU" isLast={last_group === id} />
             <Flex justifyContent="flex-end">
               <Button
                 variant="link"
@@ -206,7 +209,10 @@ export const Group: React.FC<Props> = ({
                       condition_type: "page",
                       referer_entity_id: currentConditionPage?.id,
                       step: 1,
-                      group: last_group + 1,
+                      group: {
+                        id: uuidv4(),
+                        name: last_group + 1,
+                      },
                       is_valid: false,
                     })
                   );

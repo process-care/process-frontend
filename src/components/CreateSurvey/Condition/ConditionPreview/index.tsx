@@ -19,18 +19,11 @@ import ICondition from "interfaces/form/condition";
 export const ConditionPreview: React.FC = () => {
   const selected_condition = useAppSelector(getSelectedConditionData);
   const currentConditionPage = useAppSelector(getPageInCurrentCondition);
-
   const dispatch = useAppDispatch();
-
   const condition_id = uuidv4();
   const conditions = useAppSelector(getConditionData);
-
-  console.log("c", conditions, selected_condition);
-
-  const groups = conditions.map((c: ICondition) => c.group);
+  const groups = conditions.map((c: ICondition) => c.group.name);
   const last_group = Math.max(...groups);
-
-  console.log(selected_condition);
 
   const checkStepValidation = () => {
     if (
@@ -101,7 +94,10 @@ export const ConditionPreview: React.FC = () => {
                     condition_type: "page",
                     referer_entity_id: currentConditionPage?.id,
                     step: 1,
-                    group: last_group,
+                    group: {
+                      id: uuidv4(),
+                      name: last_group,
+                    },
                     is_valid: false,
                   })
                 );

@@ -4,6 +4,7 @@ import React from "react";
 
 interface Props {
   onCancel: () => void;
+  onSubmit: () => void;
   disabled?: boolean;
   hideRequired?: boolean;
 }
@@ -12,6 +13,7 @@ export const Footer: React.FC<Props> = ({
   onCancel,
   disabled,
   hideRequired,
+  onSubmit,
 }) => {
   return (
     <Box
@@ -30,7 +32,11 @@ export const Footer: React.FC<Props> = ({
         w="75%"
         mx="auto"
         pt={2}>
-        <Button type="submit" variant="rounded" disabled={disabled}>
+        <Button
+          type="submit"
+          variant="rounded"
+          disabled={disabled}
+          onClick={() => onSubmit()}>
           Valider
         </Button>
         <Button variant="link" onClick={() => onCancel()} type="button">

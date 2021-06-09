@@ -11,6 +11,18 @@ export const getConditionsByGroup = (
   if (group_id) {
     return store
       .getState()
-      .formBuilder.conditions.filter((c) => c.group === group_id);
+      .formBuilder.conditions.filter((c) => c.group.name === group_id);
+  } else return [];
+};
+
+export const getConditionsByPage = (
+  referer_entity_id: string | undefined
+): ICondition[] | [] => {
+  if (referer_entity_id) {
+    return store
+      .getState()
+      .formBuilder.conditions.filter(
+        (c) => c.referer_entity_id === referer_entity_id
+      );
   } else return [];
 };

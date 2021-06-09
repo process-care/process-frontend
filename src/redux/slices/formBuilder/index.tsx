@@ -37,7 +37,7 @@ interface SelectCondition {
 }
 
 interface RemoveGroup {
-  group_id: number;
+  id: number | string;
 }
 
 const initialFirstPage = {
@@ -166,7 +166,9 @@ export const formBuilderSlice = createSlice({
         (c) => c.id === id
       )?.group;
       const conditionsInSameGroup = state.conditions.filter(
-        (c) => c.group === currentConditionGroup
+        (c) =>
+          c.group === currentConditionGroup &&
+          c.referer_entity_id === state.selected_page.id
       );
       const index = conditions.findIndex((item) => id === item.id);
       // remove from condition
@@ -182,10 +184,10 @@ export const formBuilderSlice = createSlice({
       }
     },
     removeConditionGroup: (state, action: PayloadAction<RemoveGroup>) => {
-      const { group_id } = action.payload;
+      const { id } = action.payload;
       // conditions we keep (different of the deleted group_id)
       const new_conditions = state.conditions.filter(
-        (condition) => condition.group !== group_id
+        (condition) => condition.group.id !== id
       );
       const reset_selected_condition = !new_conditions.find(
         (c) => c.id === state.selected_condition.id
@@ -196,8 +198,10 @@ export const formBuilderSlice = createSlice({
       if (reset_selected_condition) {
         if (new_conditions.length === 0) {
           state.selected_condition.id = "";
-        } else if (new_conditions[0]) {
-          state.selected_condition.id = new_conditions[0].id;
+        } else if (new_conditions.filter((c) => c.group.id === id)[0]) {
+          state.selected_condition.id = new_conditions.filter(
+            (c) => c.group.id === id
+          )[0].id;
         }
       }
       state.conditions = new_conditions;

@@ -15,6 +15,7 @@ import { Step_2 } from "./Steps/Step_2";
 import { Step_3 } from "./Steps/Step_3";
 import { v4 as uuidv4 } from "uuid";
 import ICondition from "interfaces/form/condition";
+import { StepCounter } from "./Steps/StepCounter";
 
 export const ConditionPreview: React.FC = () => {
   const selected_condition = useAppSelector(getSelectedConditionData);
@@ -59,6 +60,10 @@ export const ConditionPreview: React.FC = () => {
 
   return (
     <Container w="90%" maxW="unset" h="100%" pos="relative">
+      <StepCounter
+        selectedCondition={selected_condition}
+        isDisabled={checkStepValidation()}
+      />
       <Box h="100%">{renderStep()}</Box>
 
       <Box pos="absolute" bottom="110px" left="0" right="0" w="100%">

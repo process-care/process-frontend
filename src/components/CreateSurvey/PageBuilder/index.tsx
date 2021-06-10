@@ -47,9 +47,12 @@ const PageBuilder: React.FC = () => {
       </Button>
       {pages.map((page, i) => {
         const isSelected = selected_page.id === page.id;
+
+        // Hide current page and page after when we make condition page.
         const isInactive =
           selectedCondtion?.condition_type === "page" &&
-          pages.findIndex((p) => p.id === selectedCondtion?.referer_entity_id) <
+          pages.findIndex((p) => p.id === selectedCondtion?.referer_entity_id) -
+            1 <
             i;
 
         return (

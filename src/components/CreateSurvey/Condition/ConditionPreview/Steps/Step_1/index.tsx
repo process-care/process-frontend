@@ -51,9 +51,9 @@ export const Step_1: React.FC<Props> = ({ selectedCondition }) => {
         backgroundColor={isSelected ? "brand.blue" : "white"}
         color={isSelected ? "white" : "black"}>
         <Flex justifyContent="space-between" alignItems="center">
-          <Text>{input.label}</Text>
+          <Text variant="titleParaLight">{input.label}</Text>
           <Flex alignItems="center">
-            <Text fontSize="12" color="brand.gray.200">
+            <Text variant="xsMedium" color="brand.gray.200">
               {input.internal_title}
             </Text>
             <Text fontSize="12" color="black" ml={4}>

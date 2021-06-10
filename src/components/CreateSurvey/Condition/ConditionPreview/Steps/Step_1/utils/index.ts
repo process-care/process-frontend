@@ -4,5 +4,4 @@ export const authorizedInputTypes: string[] = [
   "number-input",
   "radio",
   "checkbox",
-  "date-picker",
 ];

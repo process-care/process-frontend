@@ -197,9 +197,70 @@ const theme = extendTheme({
     },
     Text: {
       variants: {
-        label: () => ({
-          fontSize: "14px",
-          fontWeight: "bold",
+        xxs: () => ({
+          fontWeight: 300,
+          fontSize: 10,
+          lineHeight: 13,
+        }),
+        xs: () => ({
+          fontWeight: 300,
+          fontSize: 12,
+          lineHeight: 15.6,
+        }),
+        xsRegular: () => ({
+          fontWeight: 400,
+          fontSize: 12,
+          lineHeight: 18,
+        }),
+        xsMedium: () => ({
+          fontWeight: 500,
+          fontSize: 12,
+          lineHeight: 15.6,
+        }),
+        currentLight: () => ({
+          fontWeight: 300,
+          fontSize: 14,
+          lineHeight: 21.2,
+        }),
+        current: () => ({
+          fontWeight: 400,
+          fontSize: 14,
+          lineHeight: 21.2,
+        }),
+        currentBold: () => ({
+          fontWeight: 700,
+          fontSize: 14,
+          lineHeight: 18.2,
+        }),
+        smallTitle: () => ({
+          fontWeight: 300,
+          fontSize: 18,
+          lineHeight: 23.4,
+        }),
+        titleParaLight: () => ({
+          fontWeight: 300,
+          fontSize: 20,
+          lineHeight: 26,
+        }),
+        baseline: () => ({
+          fontWeight: 300,
+          fontSize: 25,
+          lineHeight: 32.5,
+        }),
+        xl: () => ({
+          fontWeight: 300,
+          fontSize: 35,
+          lineHeight: 45.5,
+        }),
+        statsDashboard: () => ({
+          fontWeight: 300,
+          fontSize: 55,
+          lineHeight: 71.5,
+        }),
+        xxl: () => ({
+          fontWeight: 300,
+          fontSize: 75,
+          lineHeight: 97.5,
         }),
       },
     },

@@ -8,19 +8,11 @@ import {
 } from "redux/slices/formBuilder";
 import IInput from "interfaces/form/input";
 import ICondition from "interfaces/form/condition";
+import { authorizedInputTypes } from "./utils";
 
 interface Props {
   selectedCondition: ICondition;
 }
-
-const authorizedInputTypes = [
-  "select",
-  "slider",
-  "number-input",
-  "radio",
-  "checkbox",
-  "date-picker",
-];
 
 export const Step_1: React.FC<Props> = ({ selectedCondition }) => {
   const { selected_page } = useAppSelector((state) => state.formBuilder);

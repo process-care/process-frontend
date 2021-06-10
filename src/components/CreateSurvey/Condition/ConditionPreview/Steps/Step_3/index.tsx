@@ -29,7 +29,19 @@ export const Step_3: React.FC<Props> = ({ selectedCondition }) => {
         {({ values }) => {
           const onChange = (event: React.FormEvent<HTMLFormElement>) => {
             const target = event.target as HTMLFormElement;
+
             if (target !== null) {
+              if (target.value === "") {
+                setIsValid(false);
+                dispatch(
+                  updateCondition({
+                    id: selectedCondition.id,
+                    data: {
+                      is_valid: false,
+                    },
+                  })
+                );
+              }
               dispatch(
                 updateCondition({
                   id: selectedCondition.id,
@@ -41,6 +53,7 @@ export const Step_3: React.FC<Props> = ({ selectedCondition }) => {
             }
           };
           const isNotEmpty = values.target_value !== "";
+
           return (
             <Form onChange={(event) => onChange(event)}>
               <Box d="flex" w="50%" mx="auto" alignItems="center" pt="100">
@@ -49,6 +62,7 @@ export const Step_3: React.FC<Props> = ({ selectedCondition }) => {
                   type="number"
                   label="Indiquer la valeur numérique"
                   placeholder="Ex 5"
+                  isRequired
                 />
                 <Box
                   pt={6}
@@ -62,7 +76,9 @@ export const Step_3: React.FC<Props> = ({ selectedCondition }) => {
                         },
                       })
                     );
-                    setIsValid(true);
+                    if (values.target_value) {
+                      setIsValid(true);
+                    }
                   }}
                   _hover={{
                     cursor: "pointer",

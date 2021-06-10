@@ -7,6 +7,7 @@ import {
   getPageInCurrentCondition,
   selectCondition,
   getConditionData,
+  getSelectedConditionData,
 } from "redux/slices/formBuilder";
 import { Group } from "./Group";
 import ICondition from "interfaces/form/condition";
@@ -15,6 +16,8 @@ export const ConditionMenu: React.FC = () => {
   const currentConditionPage = useAppSelector(getPageInCurrentCondition);
 
   const dispatch = useAppDispatch();
+  const selected_condition = useAppSelector(getSelectedConditionData);
+
   const conditions = useAppSelector(getConditionData);
   const groups = conditions.map((c: ICondition) => c.group);
   const last_group = Math.max(
@@ -24,6 +27,7 @@ export const ConditionMenu: React.FC = () => {
   if (currentConditionPage === undefined) {
     return <p>Error page</p>;
   }
+  const isDisabled = !selected_condition?.is_valid;
 
   return (
     <Box p={4} h="100%">
@@ -41,6 +45,7 @@ export const ConditionMenu: React.FC = () => {
       />
       <Box pos="sticky" bottom="0">
         <Footer
+          disabled={isDisabled}
           hideRequired
           onSubmit={() => dispatch(selectCondition({ id: "" }))}
           onCancel={() => dispatch(selectCondition({ id: "" }))}

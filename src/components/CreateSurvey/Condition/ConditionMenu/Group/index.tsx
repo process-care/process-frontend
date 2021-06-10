@@ -40,6 +40,9 @@ export const Group: React.FC<Props> = ({
   if (currentConditionPage === undefined) {
     return <p>Error</p>;
   }
+
+  const isDisabled = !selected_condition?.is_valid;
+
   return (
     <Box p={4} h="100%">
       {clean_groups.map(({ name, id }) => {
@@ -96,6 +99,7 @@ export const Group: React.FC<Props> = ({
                               </Text>
                               <Button
                                 d="flex"
+                                isDisabled={isDisabled}
                                 onClick={() => {
                                   dispatch(
                                     selectCondition({ id: condition.id })
@@ -168,6 +172,7 @@ export const Group: React.FC<Props> = ({
                     <Flex justifyContent="flex-end">
                       {isLast && (
                         <Button
+                          isDisabled={isDisabled}
                           variant="link"
                           opacity={0.2}
                           fontSize="10"
@@ -198,6 +203,7 @@ export const Group: React.FC<Props> = ({
             <Separator value="OU" isLast={last_group === id} />
             <Flex justifyContent="flex-end">
               <Button
+                isDisabled={isDisabled}
                 variant="link"
                 opacity={0.2}
                 fontSize="10"

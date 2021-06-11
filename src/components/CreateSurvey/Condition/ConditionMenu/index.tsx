@@ -37,12 +37,19 @@ export const ConditionMenu: React.FC = () => {
       <Text fontSize="16px" fontWeight="bold">
         {currentConditionPage?.name}
       </Text>
+      {!selected_condition?.is_valid && (
+        <Text variant="xs" mt={5} textAlign="left" color="brand.gray.200">
+          Merci de finaliser la condition en cours pour modifier les autres
+          conditions
+        </Text>
+      )}
       <Group
         conditions={conditions}
         groups={groups}
         last_group={last_group}
         currentConditionPage={currentConditionPage}
       />
+
       <Box pos="sticky" bottom="0">
         <Footer
           disabled={isDisabled}

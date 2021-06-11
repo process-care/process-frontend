@@ -7,6 +7,7 @@ import { ReactComponent as Delete } from "./../assets/delete.svg";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import {
   addCondition,
+  getInputsOrder,
   getSelectedConditionData,
   removeCondition,
   removeConditionGroup,
@@ -30,6 +31,7 @@ export const Group: React.FC<Props> = ({
   currentConditionPage,
 }) => {
   const dispatch = useAppDispatch();
+  const inputOrder = useAppSelector(getInputsOrder);
   const condition_id = uuidv4();
   const selected_condition = useAppSelector(getSelectedConditionData);
 
@@ -43,6 +45,7 @@ export const Group: React.FC<Props> = ({
 
   const isDisabled = !selected_condition?.is_valid;
 
+  console.log(inputOrder);
   return (
     <Box p={4} h="100%">
       {clean_groups.map(({ name, id }) => {

@@ -276,4 +276,14 @@ export const getConditionData = (state: RootState): ICondition[] | [] =>
       getSelectedConditionData(state)?.referer_entity_id
   );
 
+export const getInputsOrder = (state: RootState): string[] => {
+  const list: string[] = [];
+  state.formBuilder.inputs.map((i) => {
+    if (i.id) {
+      list.push(i.id);
+    }
+  });
+  return list;
+};
+
 export default formBuilderSlice.reducer;

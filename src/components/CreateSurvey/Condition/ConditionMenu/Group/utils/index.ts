@@ -1,5 +1,6 @@
 import IOperator from "interfaces/form/operator";
 
+// TODO replace string by SVG orperator.
 export const renderOperator = (
   operators: IOperator["id"] | undefined
 ): string | undefined => {

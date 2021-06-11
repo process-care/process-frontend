@@ -1,48 +1,40 @@
-import { ButtonGroup, Button, Box } from "@chakra-ui/react";
-import { Switch } from "components/Fields";
+import { ButtonGroup, Button, Center } from "@chakra-ui/react";
 import React from "react";
+import t from "static/global.json";
 
 interface Props {
   onCancel: () => void;
   onSubmit: () => void;
   disabled?: boolean;
-  hideRequired?: boolean;
 }
 
-export const Footer: React.FC<Props> = ({
-  onCancel,
-  disabled,
-  hideRequired,
-  onSubmit,
-}) => {
+export const Footer: React.FC<Props> = ({ onCancel, disabled, onSubmit }) => {
   return (
-    <Box
+    <Center
       w="100%"
-      position="sticky"
+      position="absolute"
       bottom="0"
       backgroundColor="white"
-      pb="10"
-      borderTop="1px solid">
-      {!hideRequired && (
-        <Switch p="20px 0" label="Réponse obligatoire" id="required" />
-      )}
+      borderTop="1px solid"
+      p={1}
+      pb={3}>
       <ButtonGroup
         d="flex"
         justifyContent="space-between"
         w="75%"
         mx="auto"
         pt={2}>
+        <Button variant="link" onClick={() => onCancel()} type="button">
+          {t.cancel}
+        </Button>
         <Button
           type="submit"
           variant="rounded"
           disabled={disabled}
           onClick={() => onSubmit()}>
-          Valider
-        </Button>
-        <Button variant="link" onClick={() => onCancel()} type="button">
-          Annuler
+          {t.validate}
         </Button>
       </ButtonGroup>
-    </Box>
+    </Center>
   );
 };

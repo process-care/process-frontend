@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 
@@ -13,6 +13,8 @@ import {
   setIsEditing,
 } from "redux/slices/formBuilder";
 import { toogleDrawer } from "redux/slices/application";
+import { Switch } from "components/Fields";
+import { getInputIndex } from "utils/formBuilder/input";
 
 const InputForm: React.FC = () => {
   const selectedInput = useAppSelector(
@@ -91,14 +93,32 @@ const InputForm: React.FC = () => {
               fontSize="30"
               flexDirection="column"
               px={10}>
-              <Text fontSize="lg">
-                Créer un champ {selectedInput.input_type}
-              </Text>
-              <hr />
-              {renderFormTemplate(selectedInput)}
+              <Flex
+                borderBottom="1px solid"
+                borderColor="black"
+                justifyContent="space-between"
+                w="100%"
+                pt={5}
+                pb={1}
+                mb={4}
+                alignItems="start">
+                <Box>
+                  <Text variant="xs">{getInputIndex(selectedInput.id)}</Text>
+                  <Text variant="xs">{selectedInput.input_type}</Text>
+                </Box>
+
+                {selectedInput.input_type !== "wysiwyg" && (
+                  <Flex flexDirection="column">
+                    <Switch label="" id="required" size="sm" />
+                    <Text variant="xsMedium">Réponse obligatoire</Text>
+                  </Flex>
+                )}
+              </Flex>
+
+              <Box mb={8}>{renderFormTemplate(selectedInput)}</Box>
+
               <Footer
                 onSubmit={() => console.log("submit")}
-                hideRequired={selectedInput.input_type === "wysiwyg"}
                 disabled={!isValid || isSubmitting}
                 onCancel={() => onCancel()}
               />

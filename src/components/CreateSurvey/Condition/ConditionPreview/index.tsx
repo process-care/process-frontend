@@ -1,7 +1,6 @@
 import React from "react";
 
 import { Box, Button, ButtonGroup, Container } from "@chakra-ui/react";
-import { Step_1 } from "components/CreateSurvey/Condition/ConditionPreview/Steps/Step_1";
 import { useAppSelector, useAppDispatch } from "redux/hooks";
 import {
   addCondition,
@@ -11,11 +10,13 @@ import {
   selectCondition,
   updateCondition,
 } from "redux/slices/formBuilder";
+import { Step_1 } from "components/CreateSurvey/Condition/ConditionPreview/Steps/Step_1";
 import { Step_2 } from "./Steps/Step_2";
 import { Step_3 } from "./Steps/Step_3";
 import { v4 as uuidv4 } from "uuid";
 import ICondition from "interfaces/form/condition";
 import { StepCounter } from "./Steps/StepCounter";
+import { checkStepValidation } from "./Steps/utils";
 
 export const ConditionPreview: React.FC = () => {
   const selected_condition = useAppSelector(getSelectedConditionData);
@@ -25,21 +26,6 @@ export const ConditionPreview: React.FC = () => {
   const conditions = useAppSelector(getConditionData);
   const groups = conditions.map((c: ICondition) => c.group.name);
   const last_group = Math.max(...groups);
-
-  const checkStepValidation = () => {
-    if (
-      selected_condition?.step === 1 &&
-      !!selected_condition?.selected_question
-    ) {
-      return false;
-    }
-    if (selected_condition?.step === 2 && !!selected_condition?.operator) {
-      return false;
-    }
-    if (selected_condition?.step === 3 && !!selected_condition?.is_valid) {
-      return false;
-    } else return true;
-  };
 
   const renderStep = () => {
     switch (selected_condition?.step) {
@@ -62,7 +48,7 @@ export const ConditionPreview: React.FC = () => {
     <Container w="90%" maxW="unset" h="100%" pos="relative">
       <StepCounter
         selectedCondition={selected_condition}
-        isDisabled={checkStepValidation()}
+        isDisabled={checkStepValidation(selected_condition)}
       />
       <Box h="100%">{renderStep()}</Box>
 
@@ -91,7 +77,7 @@ export const ConditionPreview: React.FC = () => {
             <Button
               variant="link"
               color="brand.blue"
-              isDisabled={checkStepValidation()}
+              isDisabled={checkStepValidation(selected_condition)}
               onClick={() => {
                 dispatch(
                   addCondition({
@@ -113,7 +99,7 @@ export const ConditionPreview: React.FC = () => {
           ) : (
             <Button
               variant="roundedBlue"
-              isDisabled={checkStepValidation()}
+              isDisabled={checkStepValidation(selected_condition)}
               onClick={() =>
                 dispatch(
                   updateCondition({

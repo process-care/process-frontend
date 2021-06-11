@@ -6,6 +6,7 @@ import { Input } from "components/Fields";
 import { updateCondition } from "redux/slices/formBuilder";
 import { useAppDispatch } from "redux/hooks";
 import ICondition from "interfaces/form/condition";
+import t from "static/condition.json";
 
 import { ReactComponent as Submit } from "./../../assets/submit.svg";
 import { ReactComponent as Check } from "./../../assets/check.svg";
@@ -29,7 +30,6 @@ export const Step_3: React.FC<Props> = ({ selectedCondition }) => {
         {({ values }) => {
           const onChange = (event: React.FormEvent<HTMLFormElement>) => {
             const target = event.target as HTMLFormElement;
-
             if (target !== null) {
               if (target.value === "") {
                 setIsValid(false);
@@ -96,7 +96,7 @@ export const Step_3: React.FC<Props> = ({ selectedCondition }) => {
                   mx="auto">
                   <Check />
                   <Text fontSize="14px" color="brand.green" ml={2}>
-                    Votre condition est enregistrée !
+                    {t.success}
                   </Text>
                 </Flex>
               )}

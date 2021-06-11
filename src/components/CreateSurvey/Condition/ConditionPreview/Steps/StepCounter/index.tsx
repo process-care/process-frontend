@@ -4,10 +4,13 @@ import React from "react";
 import { Circle } from "@chakra-ui/react";
 import { useAppDispatch } from "redux/hooks";
 import { updateCondition } from "redux/slices/formBuilder";
+
+import t from "static/condition.json";
+
 const steps = [
-  { title: "Sélectionnez une question" },
-  { title: "Sélectionnez un opérateur" },
-  { title: "Séléctionnez une réponse" },
+  { title: t.steps[0] },
+  { title: t.steps[1] },
+  { title: t.steps[2] },
 ];
 
 interface Props {

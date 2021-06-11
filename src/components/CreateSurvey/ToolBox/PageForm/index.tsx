@@ -18,7 +18,7 @@ import ToolBox from "../InputsButton";
 import { Formik, Form } from "formik";
 import { Switch, Textarea } from "components/Fields";
 import IInput from "interfaces/form/input";
-import { RemovingConfirmation } from "./Status";
+import { RemovingConfirmation } from "./../../RemovingConfirmation";
 import { v4 as uuidv4 } from "uuid";
 import { getConditionsByPage } from "utils/formBuilder/conditions";
 
@@ -70,6 +70,8 @@ export const PageForm: React.FC = () => {
   if (isRemoving) {
     return (
       <RemovingConfirmation
+        height="100%"
+        content={t.remove_page}
         confirm={() => {
           dispatch(removePage(selected_page));
           setRemoving(false);

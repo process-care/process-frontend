@@ -1,20 +1,24 @@
 import { Button, ButtonGroup, Center, Text } from "@chakra-ui/react";
 import React from "react";
 
+import t from "static/global.json";
+
 interface Props {
   confirm: () => void;
   close: () => void;
   content: string;
+  height?: string;
 }
 
 export const RemovingConfirmation: React.FC<Props> = ({
   confirm,
   close,
   content,
+  height,
 }) => {
   return (
     <Center
-      mt={4}
+      h={height}
       pos="relative"
       backgroundColor="black"
       py="130px"
@@ -30,10 +34,10 @@ export const RemovingConfirmation: React.FC<Props> = ({
         justifyContent="space-around"
         w="100%">
         <Button variant="link" color="white" onClick={() => close()}>
-          Annuler
+          {t.cancel}
         </Button>
         <Button variant="rounded" onClick={() => confirm()}>
-          Valider
+          {t.validate}
         </Button>
       </ButtonGroup>
     </Center>

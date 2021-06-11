@@ -1,9 +1,4 @@
 import React from "react";
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import ICondition from "interfaces/form/condition";
-import { renderOperator } from "./utils";
-import { Separator } from "../Separator";
-import { ReactComponent as Delete } from "./../assets/delete.svg";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import {
   addCondition,
@@ -14,8 +9,16 @@ import {
   updateCondition,
 } from "redux/slices/formBuilder";
 import { v4 as uuidv4 } from "uuid";
+
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import ICondition from "interfaces/form/condition";
+import { renderOperator } from "./utils";
+import { Separator } from "../Separator";
+import { ReactComponent as Delete } from "./../assets/delete.svg";
+
 import IFormPage from "interfaces/form/page";
-import { RemovingConfirmation } from "../Status";
+import { RemovingConfirmation } from "../../../RemovingConfirmation";
+import t from "static/condition.json";
 
 interface Props {
   conditions: ICondition[] | [];
@@ -24,7 +27,7 @@ interface Props {
   currentConditionPage: IFormPage | undefined;
 }
 interface State {
-  type: "condition" | "group" | "";
+  type: "condition" | "group" | null;
 }
 
 export const Group: React.FC<Props> = ({
@@ -40,7 +43,7 @@ export const Group: React.FC<Props> = ({
     (v, i, a) => a.findIndex((t) => t.id === v.id) === i
   );
   const isDisabled = !selected_condition?.is_valid;
-  const [isRemoving, setRemoving] = React.useState<State>({ type: "" });
+  const [isRemoving, setRemoving] = React.useState<State>({ type: null });
 
   if (currentConditionPage === undefined) {
     return <p>Error</p>;
@@ -52,7 +55,7 @@ export const Group: React.FC<Props> = ({
         if (isRemoving.type === "group") {
           return (
             <RemovingConfirmation
-              content="Voulez-vous supprimer ce groupe et ses conditions?"
+              content={t.removing_group_confirmation}
               confirm={() =>
                 dispatch(
                   removeConditionGroup({
@@ -60,7 +63,7 @@ export const Group: React.FC<Props> = ({
                   })
                 )
               }
-              close={() => setRemoving({ type: "" })}
+              close={() => setRemoving({ type: null })}
             />
           );
         }
@@ -75,7 +78,7 @@ export const Group: React.FC<Props> = ({
                 textAlign="left"
                 textTransform="uppercase"
                 mr={2}>
-                Groupe condition {name}
+                {t.group_condition} {name}
               </Box>
               <Button
                 onClick={() => {
@@ -95,7 +98,7 @@ export const Group: React.FC<Props> = ({
               if (isRemoving.type === "condition") {
                 return (
                   <RemovingConfirmation
-                    content="Voulez-vous supprimer cette condition ?"
+                    content={t.removing_condition_confirmation}
                     confirm={() =>
                       dispatch(
                         removeCondition({
@@ -103,7 +106,7 @@ export const Group: React.FC<Props> = ({
                         })
                       )
                     }
-                    close={() => setRemoving({ type: "" })}
+                    close={() => setRemoving({ type: null })}
                   />
                 );
               }
@@ -186,7 +189,7 @@ export const Group: React.FC<Props> = ({
                           </Text>
                           <Box ml={2}>
                             <Text mt={2} fontSize="10" color="brand.gray.200">
-                              la réponse
+                              {t.response}
                             </Text>
                             <Text fontSize="14" color="black">
                               {condition.target_value}
@@ -220,7 +223,7 @@ export const Group: React.FC<Props> = ({
                               );
                               dispatch(selectCondition({ id: condition_id }));
                             }}>
-                            Ajouter une condtion
+                            {t.add_condition}
                           </Button>
                         )}
                       </Flex>
@@ -252,7 +255,7 @@ export const Group: React.FC<Props> = ({
                   );
                   dispatch(selectCondition({ id: condition_id }));
                 }}>
-                Ajouter un groupe
+                {t.add_group}
               </Button>
             </Flex>
           </Box>

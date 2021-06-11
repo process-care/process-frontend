@@ -1,12 +1,4 @@
-import {
-  Drawer,
-  DrawerBody,
-  DrawerContent,
-  DrawerHeader,
-  // DrawerOverlay,
-  Box,
-  Portal,
-} from "@chakra-ui/react";
+import { Drawer, DrawerBody, DrawerContent, Portal } from "@chakra-ui/react";
 
 import React, { ReactChild } from "react";
 
@@ -14,16 +6,13 @@ interface Props {
   content: ReactChild;
   buttonVariant?: string;
   padding?: string;
-  headerTitle?: string;
-  headerSubtitle?: string;
   onOverlayClick?: () => void;
   isOpen: boolean;
   size?: string;
 }
 const CustomDrawer: React.FC<Props> = ({
   content,
-  headerTitle,
-  headerSubtitle,
+
   isOpen,
   onOverlayClick,
   size,
@@ -42,14 +31,7 @@ const CustomDrawer: React.FC<Props> = ({
           isCentered
           onOverlayClick={onOverlayClick}
           {...props}>
-          {/* <DrawerOverlay /> */}
           <DrawerContent background="white">
-            <DrawerHeader textAlign="center" pt="20px" pb="5px" color="black">
-              <p>{headerTitle}</p>
-              <Box fontSize="0.6em" as="span">
-                {headerSubtitle}
-              </Box>
-            </DrawerHeader>
             <DrawerBody p="0 10px">{content}</DrawerBody>
           </DrawerContent>
         </Drawer>

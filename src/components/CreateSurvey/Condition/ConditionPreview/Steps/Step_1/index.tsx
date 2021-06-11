@@ -18,7 +18,6 @@ export const Step_1: React.FC<Props> = ({ selectedCondition }) => {
   const { selected_page } = useAppSelector((state) => state.formBuilder);
   const inputs = useAppSelector(selectInputsInCurrentPage);
   const dispatch = useAppDispatch();
-
   const authorizedInputs = inputs.filter((i) =>
     authorizedInputTypes.includes(i.input_type)
   );

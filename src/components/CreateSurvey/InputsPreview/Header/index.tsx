@@ -2,6 +2,7 @@ import { Button, ButtonGroup, Flex } from "@chakra-ui/react";
 import React from "react";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { removeAllInputs, toggleCollapseView } from "redux/slices/formBuilder";
+import t from "static/input.json";
 
 export const Header: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -12,18 +13,15 @@ export const Header: React.FC = () => {
     <Flex justifyContent="space-between" w="100%" alignItems="center" my="50px">
       <ButtonGroup>
         <Button variant="rounded" mr={5}>
-          Vérifier
+          {t.verify}
         </Button>
         <Button
           variant="link"
           fontSize="10px"
-          onClick={() => dispatch(removeAllInputs())}
-        >
-          Supprimer toutes les question
+          onClick={() => dispatch(removeAllInputs())}>
+          {t.delete_all_inputs}
         </Button>
       </ButtonGroup>
-      {/* <Text fontSize="12px">TITRE DE LA PAGE</Text> */}
-
       <ButtonGroup>
         <Button variant="ghost" onClick={() => dispatch(toggleCollapseView())}>
           {isCollapse ? "-" : "="}

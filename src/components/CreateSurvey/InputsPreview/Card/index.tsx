@@ -22,8 +22,9 @@ import {
 import { ReactComponent as Delete } from "./assets/delete.svg";
 import { ReactComponent as Edit } from "./assets/edit.svg";
 
-import { RemovingConfirmation } from "./Status";
+import { RemovingConfirmation } from "./../../RemovingConfirmation";
 import { toogleDrawer } from "redux/slices/application";
+import t from "static/input.json";
 
 interface CardProps {
   input: IInput;
@@ -115,45 +116,50 @@ const Card: React.FC<CardProps> = ({ input, index, moveCard }) => {
         w="100%"
         opacity={opacity}
         data-handler-id={handlerId}>
-        <Container variant="inputContainer">
+        <Container variant="inputContainer" padding={isRemoving ? 0 : 4}>
           <Box color={color}>
-            <Box mt="-26px">
-              {
-                <Badge
-                  mb={7}
-                  minW="120px"
-                  float="right"
-                  borderRadius="50px"
-                  px={5}
-                  py={1}
-                  bgColor="black"
-                  border="1px"
-                  color="white"
-                  fontSize="7px">
-                  {input.name}
-                </Badge>
-              }
-              {input.internal_title && (
-                <Badge
-                  minW="120px"
-                  float="right"
-                  borderRadius="50px"
-                  px={5}
-                  py={1}
-                  border="1px"
-                  bgColor="white"
-                  borderColor="black"
-                  color="black"
-                  fontSize="7px"
-                  mr={3}>
-                  {input.internal_title}
-                </Badge>
-              )}
-            </Box>
-            <Box style={{ clear: "both" }} />
+            {!isRemoving && (
+              <>
+                <Box mt="-26px">
+                  {
+                    <Badge
+                      mb={7}
+                      minW="120px"
+                      float="right"
+                      borderRadius="50px"
+                      px={5}
+                      py={1}
+                      bgColor="black"
+                      border="1px"
+                      color="white"
+                      fontSize="7px">
+                      {input.name}
+                    </Badge>
+                  }
+                  {input.internal_title && (
+                    <Badge
+                      minW="120px"
+                      float="right"
+                      borderRadius="50px"
+                      px={5}
+                      py={1}
+                      border="1px"
+                      bgColor="white"
+                      borderColor="black"
+                      color="black"
+                      fontSize="7px"
+                      mr={3}>
+                      {input.internal_title}
+                    </Badge>
+                  )}
+                </Box>
+                <Box style={{ clear: "both" }} />
+              </>
+            )}
 
             {isRemoving && (
               <RemovingConfirmation
+                content={t.removing_confirmation}
                 confirm={() => dispatch(removeInput(input))}
                 close={() => setRemoving(false)}
               />

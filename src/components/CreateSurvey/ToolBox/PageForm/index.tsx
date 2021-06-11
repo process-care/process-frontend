@@ -25,7 +25,7 @@ import { getConditionsByPage } from "utils/formBuilder/conditions";
 export const PageForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const { selected_page, pages } = useAppSelector((state) => state.formBuilder);
-  const condtions = useAppSelector(selectConditonInCurrentPage);
+  const conditions = useAppSelector(selectConditonInCurrentPage);
   const isFirstPage =
     pages.findIndex((page) => page.id === selected_page.id) === 0;
 
@@ -147,7 +147,7 @@ export const PageForm: React.FC = () => {
                   w="100%"
                   justifyContent="space-between"
                   mt={5}>
-                  {condtions.length === 0 ? (
+                  {conditions.length === 0 ? (
                     <Button
                       variant="link"
                       color="brand.blue"
@@ -171,7 +171,7 @@ export const PageForm: React.FC = () => {
                           })
                         );
                       }}>
-                      {t.add_condition}
+                      {t.add_condition_page}
                     </Button>
                   ) : (
                     <Button

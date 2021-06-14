@@ -8,16 +8,6 @@ import { updateCondition } from "redux/slices/formBuilder";
 export const renderInput = (
   selectedCondition: ICondition
 ): React.ReactElement => {
-  const Input = () => (
-    <Textarea
-      rows="small"
-      id="target_value"
-      label="Indiquer la valeur numérique"
-      placeholder="Ex 5"
-      isRequired
-    />
-  );
-
   const Options = () => {
     const dispatch = useAppDispatch();
 
@@ -57,10 +47,26 @@ export const renderInput = (
       return <Options />;
       break;
     case "slider":
-      return <Input />;
+      return (
+        <Textarea
+          rows="small"
+          id="target_value"
+          label="Indiquer la valeur numérique"
+          placeholder="Ex 5"
+          isRequired
+        />
+      );
       break;
     case "number-input":
-      return <Input />;
+      return (
+        <Textarea
+          rows="small"
+          id="target_value"
+          label="Indiquer la valeur numérique"
+          placeholder="Ex 5"
+          isRequired
+        />
+      );
       break;
 
     case "radio":
@@ -71,7 +77,15 @@ export const renderInput = (
       break;
 
     default:
-      return <Input />;
+      return (
+        <Textarea
+          rows="small"
+          id="target_value"
+          label="Indiquer la valeur numérique"
+          placeholder="Ex 5"
+          isRequired
+        />
+      );
       break;
   }
 };

@@ -260,7 +260,10 @@ export const Group: React.FC<Props> = ({
                   dispatch(
                     addCondition({
                       id: condition_id,
-                      condition_type: "page",
+                      condition_type:
+                        selected_condition?.condition_type !== undefined
+                          ? selected_condition.condition_type
+                          : "page",
                       referer_entity_id:
                         currentReferer?.id !== undefined
                           ? currentReferer.id

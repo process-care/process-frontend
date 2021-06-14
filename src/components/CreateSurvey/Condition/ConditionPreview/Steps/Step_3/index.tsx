@@ -41,15 +41,15 @@ export const Step_3: React.FC<Props> = ({ selectedCondition }) => {
                     },
                   })
                 );
-              }
-              dispatch(
-                updateCondition({
-                  id: selectedCondition.id,
-                  data: {
-                    target_value: target.value,
-                  },
-                })
-              );
+              } else
+                dispatch(
+                  updateCondition({
+                    id: selectedCondition.id,
+                    data: {
+                      target_value: target.value,
+                    },
+                  })
+                );
             }
           };
           const isNotEmpty =

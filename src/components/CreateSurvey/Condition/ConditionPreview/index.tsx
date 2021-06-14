@@ -53,25 +53,25 @@ export const ConditionPreview: React.FC = () => {
 
       <Box pos="absolute" bottom="110px" left="0" right="0" w="100%">
         <ButtonGroup justifyContent="space-between" w="70%">
-          {selected_condition?.step !== 1 && (
-            <Button
-              variant="link"
-              onClick={() =>
-                dispatch(
-                  updateCondition({
-                    id: selected_condition?.id,
-                    data: {
-                      step:
-                        selected_condition?.step !== undefined
-                          ? selected_condition.step - 1
-                          : 1,
-                    },
-                  })
-                )
-              }>
-              Retour
-            </Button>
-          )}
+          <Button
+            visibility={selected_condition?.step !== 1 ? "visible" : "hidden"}
+            variant="link"
+            onClick={() =>
+              dispatch(
+                updateCondition({
+                  id: selected_condition?.id,
+                  data: {
+                    step:
+                      selected_condition?.step !== undefined
+                        ? selected_condition.step - 1
+                        : 1,
+                  },
+                })
+              )
+            }>
+            Retour
+          </Button>
+
           {selected_condition?.step === 3 && currentConditionReferer ? (
             <Button
               variant="link"

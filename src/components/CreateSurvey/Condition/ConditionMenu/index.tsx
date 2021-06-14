@@ -25,6 +25,7 @@ export const ConditionMenu: React.FC = () => {
   );
   const isConditionTypePage = selected_condition?.condition_type === "page";
 
+  console.log(currentReferer);
   if (currentReferer === undefined) {
     return <p>{t.error}</p>;
   }

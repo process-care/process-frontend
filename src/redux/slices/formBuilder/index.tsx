@@ -29,7 +29,7 @@ interface Update {
 interface UpdateCondition {
   id: string | undefined;
   data: {
-    [index: string]: IInput | number | boolean | IOperator;
+    [index: string]: IInput | number | boolean | IOperator | string;
   } | null;
 }
 interface SelectCondition {
@@ -259,9 +259,7 @@ export const getSelectedConditionData = (
     (condition) => condition.id === state.formBuilder.selected_condition.id
   );
 
-export const getRefererIdInCurrentCondition = (
-  state: RootState
-): IInput | undefined | IFormPage | any => {
+export const getRefererIdInCurrentCondition = (state: RootState): any => {
   const selected_condition = getSelectedConditionData(state);
   if (selected_condition?.condition_type === "page") {
     return state.formBuilder.pages

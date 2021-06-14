@@ -4,7 +4,6 @@ import { Box, Button, ButtonGroup, Container } from "@chakra-ui/react";
 import { useAppSelector, useAppDispatch } from "redux/hooks";
 import {
   addCondition,
-  getConditionData,
   getRefererIdInCurrentCondition,
   getSelectedConditionData,
   selectCondition,
@@ -14,7 +13,6 @@ import { Step_1 } from "components/CreateSurvey/Condition/ConditionPreview/Steps
 import { Step_2 } from "./Steps/Step_2";
 import { Step_3 } from "./Steps/Step_3";
 import { v4 as uuidv4 } from "uuid";
-import ICondition from "interfaces/form/condition";
 import { StepCounter } from "./Steps/StepCounter";
 import { checkStepValidation } from "./Steps/utils";
 
@@ -25,9 +23,6 @@ export const ConditionPreview: React.FC = () => {
   );
   const dispatch = useAppDispatch();
   const condition_id = uuidv4();
-  const conditions = useAppSelector(getConditionData);
-  const groups = conditions.map((c: ICondition) => c.group.name);
-  const last_group = Math.max(...groups);
 
   const renderStep = () => {
     switch (selected_condition?.step) {
@@ -52,10 +47,12 @@ export const ConditionPreview: React.FC = () => {
         selectedCondition={selected_condition}
         isDisabled={checkStepValidation(selected_condition)}
       />
-      <Box h="100%">{renderStep()}</Box>
+      <Box h="100%" pt={10} w="100%">
+        {renderStep()}
+      </Box>
 
       <Box pos="absolute" bottom="110px" left="0" right="0" w="100%">
-        <ButtonGroup justifyContent="space-between" w="30%">
+        <ButtonGroup justifyContent="space-between" w="70%">
           {selected_condition?.step !== 1 && (
             <Button
               variant="link"

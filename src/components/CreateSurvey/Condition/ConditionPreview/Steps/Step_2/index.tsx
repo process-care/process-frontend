@@ -14,7 +14,7 @@ export const Step_2: React.FC<Props> = ({ selectedCondition }) => {
   const dispatch = useAppDispatch();
   return (
     <Container w="90%" maxW="unset" d="flex" h="100%" justifyContent="center">
-      <Flex flexWrap="wrap" w="100%" justifyContent="center" mt={"200"} h="0">
+      <Flex flexWrap="wrap" w="100%" justifyContent="center" h="0">
         {operators.map(({ id, name }) => {
           const isSelected = id === selectedCondition.operator?.id;
 

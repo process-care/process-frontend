@@ -2,7 +2,6 @@ import React from "react";
 import { Formik, Form } from "formik";
 
 import { Box, Container, Text, Flex } from "@chakra-ui/react";
-import { Input } from "components/Fields";
 import { updateCondition } from "redux/slices/formBuilder";
 import { useAppDispatch } from "redux/hooks";
 import ICondition from "interfaces/form/condition";
@@ -10,6 +9,7 @@ import { t } from "static/condition";
 
 import { ReactComponent as Submit } from "./../../assets/submit.svg";
 import { ReactComponent as Check } from "./../../assets/check.svg";
+import { renderInput } from "./utils";
 
 interface Props {
   selectedCondition: ICondition;
@@ -57,14 +57,8 @@ export const Step_3: React.FC<Props> = ({ selectedCondition }) => {
 
           return (
             <Form onChange={(event) => onChange(event)}>
-              <Box d="flex" w="50%" mx="auto" alignItems="center" pt="100">
-                <Input
-                  name="target_value"
-                  type="number"
-                  label="Indiquer la valeur numérique"
-                  placeholder="Ex 5"
-                  isRequired
-                />
+              <Box d="flex" mx="auto" alignItems="center">
+                {renderInput(selectedCondition)}
                 <Box
                   pt={6}
                   ml={5}

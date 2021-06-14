@@ -35,7 +35,7 @@ export const ConditionMenu: React.FC = () => {
         {isConditionTypePage ? t.show_page : t.show_input}
       </Text>
       <Text variant="xsMedium">
-        {isConditionTypePage ? currentReferer?.name : currentReferer.label}
+        {isConditionTypePage ? currentReferer?.name : currentReferer?.label}
       </Text>
       {isDisabled && (
         <Text variant="xs" mt={5} textAlign="left" color="brand.gray.200">

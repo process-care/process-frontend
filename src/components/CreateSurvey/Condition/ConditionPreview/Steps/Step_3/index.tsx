@@ -52,8 +52,10 @@ export const Step_3: React.FC<Props> = ({ selectedCondition }) => {
               );
             }
           };
-          const isNotEmpty = values.target_value !== "";
+          const isNotEmpty =
+            values.target_value !== "" && values.target_value !== undefined;
 
+          console.log("isNotEmpty", isNotEmpty);
           return (
             <Form onChange={(event) => onChange(event)}>
               <Box d="flex" w="50%" mx="auto" alignItems="center" pt="100">

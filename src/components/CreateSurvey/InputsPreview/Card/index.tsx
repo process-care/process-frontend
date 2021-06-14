@@ -26,7 +26,7 @@ import { ReactComponent as Condition } from "./assets/condition.svg";
 import { RemovingConfirmation } from "./../../RemovingConfirmation";
 import { toogleDrawer } from "redux/slices/application";
 import { t } from "static/input";
-import { getConditionsByRefererId } from "utils/formBuilder/condition";
+import { hadValidCondition } from "utils/formBuilder/condition";
 
 interface CardProps {
   input: IInput;
@@ -183,7 +183,7 @@ const Card: React.FC<CardProps> = ({ input, index, moveCard }) => {
         right="-16px"
         _hover={{ cursor: "pointer", opacity: "0.7", transition: "all 400ms" }}>
         <Edit />
-        {getConditionsByRefererId(input.id).length > 0 ? <Condition /> : ""}
+        {hadValidCondition(input.id).length > 0 ? <Condition /> : ""}
       </Box>
     </Flex>
   );

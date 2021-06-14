@@ -10,7 +10,7 @@ import { ReactComponent as Delete } from "./assets/delete.svg";
 import { ReactComponent as Condition } from "./assets/condition.svg";
 import {
   getConditionById,
-  getConditionsByRefererId,
+  hadValidCondition,
 } from "utils/formBuilder/condition";
 import { isInactive } from "./utils";
 
@@ -56,11 +56,7 @@ const PageBuilder: React.FC = () => {
             }>
             <Flex alignItems="center" position="relative">
               <Box position="absolute" right="16px" bottom="35px">
-                {getConditionsByRefererId(page.id).length > 0 ? (
-                  <Condition />
-                ) : (
-                  ""
-                )}
+                {hadValidCondition(page.id).length > 0 ? <Condition /> : ""}
               </Box>
               <Box
                 onClick={() => dispatch(selectPage(page))}

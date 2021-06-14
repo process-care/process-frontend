@@ -84,15 +84,18 @@ export const ConditionPreview: React.FC = () => {
                 dispatch(
                   addCondition({
                     id: condition_id,
-                    condition_type: "page",
+                    condition_type:
+                      selected_condition?.condition_type !== undefined
+                        ? selected_condition.condition_type
+                        : "page",
                     referer_entity_id:
                       currentConditionReferer?.id !== undefined
                         ? currentConditionReferer?.id
                         : "",
                     step: 1,
                     group: {
-                      id: uuidv4(),
-                      name: last_group,
+                      id: selected_condition.group.id,
+                      name: selected_condition.group.name,
                     },
                     is_valid: false,
                   })

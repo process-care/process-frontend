@@ -29,6 +29,7 @@ interface Props {
 }
 interface State {
   type: "condition" | "group" | null;
+  id: string | number;
 }
 
 export const Group: React.FC<Props> = ({
@@ -44,7 +45,10 @@ export const Group: React.FC<Props> = ({
     (v, i, a) => a.findIndex((t) => t.id === v.id) === i
   );
   const isDisabled = !selected_condition?.is_valid;
-  const [isRemoving, setRemoving] = React.useState<State>({ type: null });
+  const [isRemoving, setRemoving] = React.useState<State>({
+    type: null,
+    id: "",
+  });
 
   if (currentReferer === undefined) {
     return <p>Error</p>;
@@ -53,7 +57,7 @@ export const Group: React.FC<Props> = ({
   return (
     <Box p={4} h="100%">
       {clean_groups.map(({ name, id }) => {
-        if (isRemoving.type === "group") {
+        if (isRemoving.type === "group" && isRemoving.id === id) {
           return (
             <RemovingConfirmation
               content={t.removing_group_confirmation}
@@ -64,7 +68,7 @@ export const Group: React.FC<Props> = ({
                   })
                 )
               }
-              close={() => setRemoving({ type: null })}
+              close={() => setRemoving({ type: null, id: "" })}
             />
           );
         }
@@ -83,7 +87,7 @@ export const Group: React.FC<Props> = ({
               </Box>
               <Button
                 onClick={() => {
-                  setRemoving({ type: "group" });
+                  setRemoving({ type: "group", id });
                 }}
                 variant="link"
                 color="brand.blue"
@@ -96,23 +100,25 @@ export const Group: React.FC<Props> = ({
             {conditions?.map((condition: ICondition, index: number) => {
               const isLast = index === conditions.length - 1;
 
-              if (isRemoving.type === "condition") {
-                return (
-                  <RemovingConfirmation
-                    content={t.removing_condition_confirmation}
-                    confirm={() =>
-                      dispatch(
-                        removeCondition({
-                          id: condition.id,
-                        })
-                      )
-                    }
-                    close={() => setRemoving({ type: null })}
-                  />
-                );
-              }
-
               if (condition.group.id === id) {
+                if (
+                  isRemoving.type === "condition" &&
+                  isRemoving.id === condition.id
+                ) {
+                  return (
+                    <RemovingConfirmation
+                      content={t.removing_condition_confirmation}
+                      confirm={() =>
+                        dispatch(
+                          removeCondition({
+                            id: condition.id,
+                          })
+                        )
+                      }
+                      close={() => setRemoving({ type: null, id: "" })}
+                    />
+                  );
+                }
                 return (
                   <>
                     <Box textAlign="left" key={condition.id} py={1}>
@@ -160,7 +166,10 @@ export const Group: React.FC<Props> = ({
 
                               <Button
                                 onClick={() => {
-                                  setRemoving({ type: "condition" });
+                                  setRemoving({
+                                    type: "condition",
+                                    id: condition.id,
+                                  });
                                 }}
                                 variant="link"
                                 color="brand.blue"
@@ -212,7 +221,11 @@ export const Group: React.FC<Props> = ({
                               dispatch(
                                 addCondition({
                                   id: condition_id,
-                                  condition_type: "page",
+                                  condition_type:
+                                    selected_condition?.condition_type !==
+                                    undefined
+                                      ? selected_condition.condition_type
+                                      : "page",
                                   referer_entity_id:
                                     currentReferer?.id !== undefined
                                       ? currentReferer.id

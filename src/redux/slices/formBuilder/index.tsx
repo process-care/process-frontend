@@ -168,14 +168,10 @@ export const formBuilderSlice = createSlice({
     removeCondition: (state, action: PayloadAction<SelectCondition>) => {
       const { id } = action.payload;
       const { conditions } = state;
-      const currentConditionGroup = state.conditions.find(
-        (c) => c.id === id
-      )?.group;
-      const conditionsInSameGroup = state.conditions.filter(
-        (c) =>
-          c.group === currentConditionGroup &&
-          c.referer_entity_id === state.selected_page.id
-      );
+      const currentGroup = state.conditions.find((c) => c.id === id)?.group.id;
+      const conditionsInSameGroup = state.conditions
+        .filter((c) => c.group.id === currentGroup)
+        .filter((c) => c.id !== id);
       const index = conditions.findIndex((item) => id === item.id);
       // remove from condition
       conditions.splice(index, 1);
@@ -185,11 +181,9 @@ export const formBuilderSlice = createSlice({
       //  Si il n'y en a pas on reset la condition séléctionnée, le tiroir se ferme.
 
       if (state.selected_condition.id === id) {
-        if (conditionsInSameGroup.length === 1) {
-          state.selected_condition.id = "";
-        } else if (conditionsInSameGroup[0].id) {
-          state.selected_condition.id = conditionsInSameGroup[0].id;
-        } else return;
+        if (conditionsInSameGroup[0]?.id) {
+          state.selected_condition.id = conditionsInSameGroup[0]?.id;
+        } else state.selected_condition.id = "";
       }
     },
     removeConditionGroup: (state, action: PayloadAction<RemoveGroup>) => {

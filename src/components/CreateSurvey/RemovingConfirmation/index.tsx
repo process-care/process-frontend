@@ -1,7 +1,7 @@
 import { Button, ButtonGroup, Center, Text } from "@chakra-ui/react";
 import React from "react";
 
-import t from "static/global.json";
+import { t } from "static/global";
 
 interface Props {
   confirm: () => void;

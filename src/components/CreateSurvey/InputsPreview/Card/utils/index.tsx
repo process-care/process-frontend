@@ -13,7 +13,7 @@ import IInput from "interfaces/form/input";
 import React from "react";
 import { useAppSelector } from "redux/hooks";
 
-import t from "static/input.json";
+import { t } from "static/input";
 
 interface Options {
   value: string | undefined;

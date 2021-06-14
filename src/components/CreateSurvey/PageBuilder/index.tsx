@@ -10,16 +10,15 @@ import { ReactComponent as Delete } from "./assets/delete.svg";
 import { ReactComponent as Condition } from "./assets/condition.svg";
 import {
   getConditionById,
-  getConditionsByPage,
-} from "utils/formBuilder/conditions";
+  getConditionsByRefererId,
+} from "utils/formBuilder/condition";
+import { isInactive } from "./utils";
 
 const PageBuilder: React.FC = () => {
   const { pages, selected_page, selected_condition } = useAppSelector(
     (state) => state.formBuilder
   );
-
-  const selectedCondtion = getConditionById(selected_condition.id);
-
+  const selectedCondition = getConditionById(selected_condition.id);
   const id = uuidv4();
   const dispatch = useAppDispatch();
 
@@ -47,23 +46,21 @@ const PageBuilder: React.FC = () => {
       </Button>
       {pages.map((page, i) => {
         const isSelected = selected_page.id === page.id;
-
-        // Hide current page and page after when we make condition page.
-        const isInactive =
-          selectedCondtion?.condition_type === "page" &&
-          pages.findIndex((p) => p.id === selectedCondtion?.referer_entity_id) -
-            1 <
-            i;
-
         return (
           <Box
             mb={4}
             w="100%"
             key={page.id}
-            visibility={isInactive ? "hidden" : "visible"}>
+            visibility={
+              isInactive(selectedCondition, pages, i) ? "hidden" : "visible"
+            }>
             <Flex alignItems="center" position="relative">
               <Box position="absolute" right="16px" bottom="35px">
-                {getConditionsByPage(page.id).length > 0 ? <Condition /> : ""}
+                {getConditionsByRefererId(page.id).length > 0 ? (
+                  <Condition />
+                ) : (
+                  ""
+                )}
               </Box>
               <Box
                 onClick={() => dispatch(selectPage(page))}

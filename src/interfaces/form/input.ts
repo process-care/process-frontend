@@ -1,3 +1,5 @@
+import ICondition from "./condition";
+
 export default interface IInput {
   input_type:
     | "input"
@@ -33,4 +35,5 @@ export default interface IInput {
   page_id?: string;
   wysiwyg?: string | undefined;
   freeclassification_responses_count?: string;
+  condition?: ICondition["id"][];
 }

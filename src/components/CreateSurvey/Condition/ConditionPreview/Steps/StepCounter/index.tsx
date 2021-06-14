@@ -5,7 +5,7 @@ import { Circle } from "@chakra-ui/react";
 import { useAppDispatch } from "redux/hooks";
 import { updateCondition } from "redux/slices/formBuilder";
 
-import t from "static/condition.json";
+import { t } from "static/condition";
 
 const steps = [
   { title: t.steps[0] },

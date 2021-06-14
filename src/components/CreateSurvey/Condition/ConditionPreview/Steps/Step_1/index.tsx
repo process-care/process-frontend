@@ -9,19 +9,23 @@ import {
 import IInput from "interfaces/form/input";
 import ICondition from "interfaces/form/condition";
 import { authorizedInputTypes } from "./utils";
+import { t } from "static/input";
 
 interface Props {
   selectedCondition: ICondition;
 }
 
 export const Step_1: React.FC<Props> = ({ selectedCondition }) => {
-  const { selected_page } = useAppSelector((state) => state.formBuilder);
+  const { selected_page, selected_input } = useAppSelector(
+    (state) => state.formBuilder
+  );
   const inputs = useAppSelector(selectInputsInCurrentPage);
   const dispatch = useAppDispatch();
-  const authorizedInputs = inputs.filter((i) =>
-    authorizedInputTypes.includes(i.input_type)
-  );
-
+  // Remove all types who can't be conditionable, remove the selected input.
+  const authorizedInputs = inputs
+    .filter((i) => authorizedInputTypes.includes(i.input_type))
+    .filter((i) => i.id !== selected_input.id);
+  const isEmpty = authorizedInputs.length === 0;
   const renderCard = (input: IInput) => {
     const isSelected = input.id === selectedCondition.selected_question?.id;
     return (
@@ -69,6 +73,7 @@ export const Step_1: React.FC<Props> = ({ selectedCondition }) => {
       <Text fontSize="14px" mt={5} mb={10} textTransform="uppercase">
         {selected_page.name} - Condition vue
       </Text>
+      {isEmpty && <Text variant="xs">{t.no_results}</Text>}
       {authorizedInputs.map((input) => renderCard(input))}
     </Container>
   );

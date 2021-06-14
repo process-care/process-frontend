@@ -5,7 +5,7 @@ import { useAppSelector, useAppDispatch } from "redux/hooks";
 import {
   addCondition,
   getConditionData,
-  getPageInCurrentCondition,
+  getRefererIdInCurrentCondition,
   getSelectedConditionData,
   selectCondition,
   updateCondition,
@@ -20,7 +20,9 @@ import { checkStepValidation } from "./Steps/utils";
 
 export const ConditionPreview: React.FC = () => {
   const selected_condition = useAppSelector(getSelectedConditionData);
-  const currentConditionPage = useAppSelector(getPageInCurrentCondition);
+  const currentConditionReferer = useAppSelector(
+    getRefererIdInCurrentCondition
+  );
   const dispatch = useAppDispatch();
   const condition_id = uuidv4();
   const conditions = useAppSelector(getConditionData);
@@ -73,7 +75,7 @@ export const ConditionPreview: React.FC = () => {
               Retour
             </Button>
           )}
-          {selected_condition?.step === 3 && currentConditionPage ? (
+          {selected_condition?.step === 3 && currentConditionReferer ? (
             <Button
               variant="link"
               color="brand.blue"
@@ -83,7 +85,10 @@ export const ConditionPreview: React.FC = () => {
                   addCondition({
                     id: condition_id,
                     condition_type: "page",
-                    referer_entity_id: currentConditionPage?.id,
+                    referer_entity_id:
+                      currentConditionReferer?.id !== undefined
+                        ? currentConditionReferer?.id
+                        : "",
                     step: 1,
                     group: {
                       id: uuidv4(),

@@ -18,13 +18,14 @@ import { ReactComponent as Delete } from "./../assets/delete.svg";
 
 import IFormPage from "interfaces/form/page";
 import { RemovingConfirmation } from "../../../RemovingConfirmation";
-import t from "static/condition.json";
+import { t } from "static/condition";
+import IInput from "interfaces/form/input";
 
 interface Props {
   conditions: ICondition[] | [];
   groups: { id: string | number; name: number }[];
   last_group: number;
-  currentConditionPage: IFormPage | undefined;
+  currentReferer: IFormPage | IInput | undefined;
 }
 interface State {
   type: "condition" | "group" | null;
@@ -34,7 +35,7 @@ export const Group: React.FC<Props> = ({
   conditions,
   groups,
   last_group,
-  currentConditionPage,
+  currentReferer,
 }) => {
   const dispatch = useAppDispatch();
   const condition_id = uuidv4();
@@ -45,7 +46,7 @@ export const Group: React.FC<Props> = ({
   const isDisabled = !selected_condition?.is_valid;
   const [isRemoving, setRemoving] = React.useState<State>({ type: null });
 
-  if (currentConditionPage === undefined) {
+  if (currentReferer === undefined) {
     return <p>Error</p>;
   }
 
@@ -212,7 +213,10 @@ export const Group: React.FC<Props> = ({
                                 addCondition({
                                   id: condition_id,
                                   condition_type: "page",
-                                  referer_entity_id: currentConditionPage?.id,
+                                  referer_entity_id:
+                                    currentReferer?.id !== undefined
+                                      ? currentReferer.id
+                                      : "",
                                   step: 1,
                                   group: {
                                     id,
@@ -244,7 +248,10 @@ export const Group: React.FC<Props> = ({
                     addCondition({
                       id: condition_id,
                       condition_type: "page",
-                      referer_entity_id: currentConditionPage?.id,
+                      referer_entity_id:
+                        currentReferer?.id !== undefined
+                          ? currentReferer.id
+                          : "",
                       step: 1,
                       group: {
                         id: uuidv4(),

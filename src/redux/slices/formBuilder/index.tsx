@@ -57,6 +57,7 @@ const initialState: FormBuilder = {
     internal_title: "",
     name: "",
     page_id: "",
+    condition: [],
   },
   pages: [initialFirstPage],
   selected_page: initialFirstPage,
@@ -141,10 +142,15 @@ export const formBuilderSlice = createSlice({
     addCondition: (state, action: PayloadAction<ICondition>) => {
       // add condition & select it & and add it to selected page.
       const { referer_entity_id, id } = action.payload;
-      const { conditions, pages } = state;
-      const index = pages.findIndex((item) => referer_entity_id === item.id);
+      const { conditions, pages, inputs } = state;
+      let index = pages.findIndex((item) => referer_entity_id === item.id);
+
       conditions.push(action.payload);
-      pages[index].condition.push(id);
+      // if condition is related to input
+      if (index === undefined) {
+        index = inputs.findIndex((item) => referer_entity_id === item.id);
+        inputs[index]?.condition?.push(id);
+      } else pages[index]?.condition.push(id);
     },
     updateCondition: (state, action: PayloadAction<UpdateCondition>) => {
       const { id, data } = action.payload;
@@ -259,14 +265,19 @@ export const getSelectedConditionData = (
     (condition) => condition.id === state.formBuilder.selected_condition.id
   );
 
-export const getPageInCurrentCondition = (
+export const getRefererIdInCurrentCondition = (
   state: RootState
-): IFormPage | undefined => {
-  return state.formBuilder.pages
-    .filter(
-      (page) => page.id === getSelectedConditionData(state)?.referer_entity_id
-    )
-    .shift();
+): IInput | undefined | IFormPage | any => {
+  const selected_condition = getSelectedConditionData(state);
+  if (selected_condition?.condition_type === "page") {
+    return state.formBuilder.pages
+      .filter((page) => page.id === selected_condition?.referer_entity_id)
+      .shift();
+  } else {
+    return state.formBuilder.inputs
+      .filter((i) => i.id === selected_condition?.referer_entity_id)
+      .shift();
+  }
 };
 
 export const getConditionData = (state: RootState): ICondition[] | [] =>

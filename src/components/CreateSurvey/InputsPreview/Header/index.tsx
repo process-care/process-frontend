@@ -2,7 +2,7 @@ import { Button, ButtonGroup, Flex } from "@chakra-ui/react";
 import React from "react";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { removeAllInputs, toggleCollapseView } from "redux/slices/formBuilder";
-import t from "static/input.json";
+import { t } from "static/input";
 
 export const Header: React.FC = () => {
   const dispatch = useAppDispatch();

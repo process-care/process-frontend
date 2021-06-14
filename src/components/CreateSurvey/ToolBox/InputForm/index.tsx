@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 
@@ -11,12 +11,20 @@ import {
   updateInput,
   removeInput,
   setIsEditing,
+  addCondition,
+  selectCondition,
 } from "redux/slices/formBuilder";
 import { toogleDrawer } from "redux/slices/application";
 import { Switch } from "components/Fields";
 import { getInputIndex } from "utils/formBuilder/input";
+import { v4 as uuidv4 } from "uuid";
+import { t } from "static/condition";
+import { getConditionsByRefererId } from "utils/formBuilder/condition";
 
 const InputForm: React.FC = () => {
+  const condition_id = uuidv4();
+  const { selected_input } = useAppSelector((state) => state.formBuilder);
+
   const selectedInput = useAppSelector(
     (state) => state.formBuilder.selected_input
   );
@@ -116,6 +124,60 @@ const InputForm: React.FC = () => {
               </Flex>
 
               <Box mb={8}>{renderFormTemplate(selectedInput)}</Box>
+
+              <Flex
+                alignItems="center"
+                w="100%"
+                justifyContent="space-between"
+                mt={5}
+                pb="100px">
+                {getConditionsByRefererId(selected_input.id).length === 0 ? (
+                  <Button
+                    variant="link"
+                    color="brand.blue"
+                    onClick={() => {
+                      dispatch(
+                        addCondition({
+                          id: condition_id,
+                          condition_type: "input",
+                          referer_entity_id:
+                            selected_input.id !== undefined
+                              ? selected_input.id
+                              : "",
+                          step: 1,
+                          group: {
+                            id: uuidv4(),
+                            name: 1,
+                          },
+                          is_valid: false,
+                        })
+                      );
+
+                      dispatch(
+                        selectCondition({
+                          id: condition_id,
+                        })
+                      );
+                      dispatch(toogleDrawer());
+                    }}>
+                    {t.add_condition}
+                  </Button>
+                ) : (
+                  <Button
+                    variant="link"
+                    color="brand.blue"
+                    onClick={() => {
+                      dispatch(
+                        selectCondition({
+                          id: getConditionsByRefererId(selected_input.id)[0].id,
+                        })
+                      );
+                      dispatch(toogleDrawer());
+                    }}>
+                    {t.edit_condition}
+                  </Button>
+                )}
+              </Flex>
 
               <Footer
                 onSubmit={() => console.log("submit")}

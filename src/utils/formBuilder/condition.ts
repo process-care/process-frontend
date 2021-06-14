@@ -15,7 +15,7 @@ export const getConditionsByGroup = (
   } else return [];
 };
 
-export const getConditionsByPage = (
+export const getConditionsByRefererId = (
   referer_entity_id: string | undefined
 ): ICondition[] | [] => {
   if (referer_entity_id) {

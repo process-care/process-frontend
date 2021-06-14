@@ -2,10 +2,10 @@ import { Box, Text } from "@chakra-ui/react";
 import { Footer } from "components/CreateSurvey/ToolBox/InputForm/Template/Footer";
 import React from "react";
 import { useAppSelector, useAppDispatch } from "redux/hooks";
-import t from "static/condition.json";
+import { t } from "static/condition";
 
 import {
-  getPageInCurrentCondition,
+  getRefererIdInCurrentCondition,
   selectCondition,
   getConditionData,
   getSelectedConditionData,
@@ -14,28 +14,30 @@ import { Group } from "./Group";
 import ICondition from "interfaces/form/condition";
 
 export const ConditionMenu: React.FC = () => {
-  const currentConditionPage = useAppSelector(getPageInCurrentCondition);
+  const currentReferer = useAppSelector(getRefererIdInCurrentCondition);
   const dispatch = useAppDispatch();
   const selected_condition = useAppSelector(getSelectedConditionData);
   const conditions = useAppSelector(getConditionData);
   const isDisabled = !selected_condition?.is_valid;
-
   const groups = conditions.map((c: ICondition) => c.group);
   const last_group = Math.max(
     ...conditions.map((c: ICondition) => c.group.name)
   );
+  const isConditionTypePage = selected_condition?.condition_type === "page";
 
-  if (currentConditionPage === undefined) {
+  if (currentReferer === undefined) {
     return <p>{t.error}</p>;
   }
 
   return (
     <Box p={4} h="100%">
       <Text variant="current" textTransform="uppercase">
-        {t.show_page}
+        {isConditionTypePage ? t.show_page : t.show_input}
       </Text>
-      <Text variant="xsMedium">{currentConditionPage?.name}</Text>
-      {!selected_condition?.is_valid && (
+      <Text variant="xsMedium">
+        {isConditionTypePage ? currentReferer?.name : currentReferer.label}
+      </Text>
+      {isDisabled && (
         <Text variant="xs" mt={5} textAlign="left" color="brand.gray.200">
           {t.cant_edit}
         </Text>
@@ -44,7 +46,7 @@ export const ConditionMenu: React.FC = () => {
         conditions={conditions}
         groups={groups}
         last_group={last_group}
-        currentConditionPage={currentConditionPage}
+        currentReferer={currentReferer}
       />
 
       <Box pos="sticky" bottom="0">

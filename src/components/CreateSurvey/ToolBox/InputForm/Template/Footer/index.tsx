@@ -1,6 +1,6 @@
 import { ButtonGroup, Button, Center } from "@chakra-ui/react";
 import React from "react";
-import t from "static/global.json";
+import { t } from "static/global";
 
 interface Props {
   onCancel: () => void;

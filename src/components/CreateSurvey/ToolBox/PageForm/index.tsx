@@ -20,7 +20,7 @@ import { Switch, Textarea } from "components/Fields";
 import IInput from "interfaces/form/input";
 import { RemovingConfirmation } from "./../../RemovingConfirmation";
 import { v4 as uuidv4 } from "uuid";
-import { getConditionsByPage } from "utils/formBuilder/conditions";
+import { getConditionsByRefererId } from "utils/formBuilder/condition";
 
 export const PageForm: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -182,7 +182,8 @@ export const PageForm: React.FC = () => {
                       onClick={() =>
                         dispatch(
                           selectCondition({
-                            id: getConditionsByPage(selected_page.id)[0].id,
+                            id: getConditionsByRefererId(selected_page.id)[0]
+                              .id,
                           })
                         )
                       }>

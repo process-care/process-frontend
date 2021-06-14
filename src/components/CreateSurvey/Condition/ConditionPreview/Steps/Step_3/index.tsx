@@ -6,7 +6,7 @@ import { Input } from "components/Fields";
 import { updateCondition } from "redux/slices/formBuilder";
 import { useAppDispatch } from "redux/hooks";
 import ICondition from "interfaces/form/condition";
-import t from "static/condition.json";
+import { t } from "static/condition";
 
 import { ReactComponent as Submit } from "./../../assets/submit.svg";
 import { ReactComponent as Check } from "./../../assets/check.svg";

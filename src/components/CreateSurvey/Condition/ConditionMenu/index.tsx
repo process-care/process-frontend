@@ -31,26 +31,28 @@ export const ConditionMenu: React.FC = () => {
   }
 
   return (
-    <Box p={4} h="100%">
-      <Text variant="current" textTransform="uppercase">
-        {isConditionTypePage ? t.show_page : t.show_input}
-      </Text>
-      <Text variant="xsMedium">
-        {isConditionTypePage ? currentReferer?.name : currentReferer?.label}
-      </Text>
-      {isDisabled && (
-        <Text variant="xs" mt={5} textAlign="left" color="brand.gray.200">
-          {t.cant_edit}
+    <Box h="100%" pos="relative">
+      <Box px={4} pt={4} mb="100px">
+        <Text variant="current" textTransform="uppercase">
+          {isConditionTypePage ? t.show_page : t.show_input}
         </Text>
-      )}
-      <Group
-        conditions={conditions}
-        groups={groups}
-        last_group={last_group}
-        currentReferer={currentReferer}
-      />
+        <Text variant="xsMedium">
+          {isConditionTypePage ? currentReferer?.name : currentReferer?.label}
+        </Text>
+        {isDisabled && (
+          <Text variant="xs" mt={5} textAlign="left" color="brand.gray.200">
+            {t.cant_edit}
+          </Text>
+        )}
+        <Group
+          conditions={conditions}
+          groups={groups}
+          last_group={last_group}
+          currentReferer={currentReferer}
+        />
+      </Box>
 
-      <Box pos="sticky" bottom="0">
+      <Box pos="sticky" bottom="0px" top="0px" borderTop="1px solid">
         <Footer
           disabled={isDisabled}
           onSubmit={() => dispatch(selectCondition({ id: "" }))}

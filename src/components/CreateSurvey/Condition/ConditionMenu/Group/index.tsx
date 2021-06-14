@@ -55,7 +55,7 @@ export const Group: React.FC<Props> = ({
   }
 
   return (
-    <Box p={4} h="100%">
+    <Box h="100%">
       {clean_groups.map(({ name, id }) => {
         if (isRemoving.type === "group" && isRemoving.id === id) {
           return (
@@ -73,7 +73,7 @@ export const Group: React.FC<Props> = ({
           );
         }
         return (
-          <Box mt={10}>
+          <Box mt={5}>
             <Flex alignItems="center" justifyContent="space-around" w="100%">
               <Box
                 w="100%"
@@ -211,38 +211,36 @@ export const Group: React.FC<Props> = ({
                         <Separator value="ET" isLast={isLast} />
                       )}
                       <Flex justifyContent="flex-end">
-                        {isLast && (
-                          <Button
-                            isDisabled={isDisabled}
-                            variant="link"
-                            opacity={0.2}
-                            fontSize="10"
-                            onClick={() => {
-                              dispatch(
-                                addCondition({
-                                  id: condition_id,
-                                  condition_type:
-                                    selected_condition?.condition_type !==
-                                    undefined
-                                      ? selected_condition.condition_type
-                                      : "page",
-                                  referer_entity_id:
-                                    currentReferer?.id !== undefined
-                                      ? currentReferer.id
-                                      : "",
-                                  step: 1,
-                                  group: {
-                                    id,
-                                    name,
-                                  },
-                                  is_valid: false,
-                                })
-                              );
-                              dispatch(selectCondition({ id: condition_id }));
-                            }}>
-                            {t.add_condition}
-                          </Button>
-                        )}
+                        <Button
+                          isDisabled={isDisabled}
+                          variant="link"
+                          opacity={0.2}
+                          fontSize="10"
+                          onClick={() => {
+                            dispatch(
+                              addCondition({
+                                id: condition_id,
+                                condition_type:
+                                  selected_condition?.condition_type !==
+                                  undefined
+                                    ? selected_condition.condition_type
+                                    : "page",
+                                referer_entity_id:
+                                  currentReferer?.id !== undefined
+                                    ? currentReferer.id
+                                    : "",
+                                step: 1,
+                                group: {
+                                  id,
+                                  name,
+                                },
+                                is_valid: false,
+                              })
+                            );
+                            dispatch(selectCondition({ id: condition_id }));
+                          }}>
+                          {t.add_condition}
+                        </Button>
                       </Flex>
                     </Box>
                   </>

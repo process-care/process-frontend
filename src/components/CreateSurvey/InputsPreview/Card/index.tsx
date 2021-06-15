@@ -27,6 +27,7 @@ import { RemovingConfirmation } from "./../../RemovingConfirmation";
 import { toogleDrawer } from "redux/slices/application";
 import { t } from "static/input";
 import { hadValidCondition } from "utils/formBuilder/condition";
+import { SvgHover } from "components/SvgHover";
 
 interface CardProps {
   input: IInput;
@@ -105,12 +106,10 @@ const Card: React.FC<CardProps> = ({ input, index, moveCard }) => {
 
   return (
     <Flex w="100%" alignItems="center" position="relative">
-      <Box
-        onClick={() => setRemoving(true)}
-        position="sticky"
-        left="-16px"
-        _hover={{ cursor: "pointer", opacity: "0.7", transition: "all 400ms" }}>
-        <Delete />
+      <Box onClick={() => setRemoving(true)} position="sticky" left="-16px">
+        <SvgHover>
+          <Delete />
+        </SvgHover>
       </Box>
 
       <Box
@@ -179,12 +178,10 @@ const Card: React.FC<CardProps> = ({ input, index, moveCard }) => {
           </Box>
         </Container>
       </Box>
-      <Box
-        onClick={() => handleEdit()}
-        position="absolute"
-        right="-16px"
-        _hover={{ cursor: "pointer", opacity: "0.7", transition: "all 400ms" }}>
-        <Edit />
+      <Box onClick={() => handleEdit()} position="absolute" right="-16px">
+        <SvgHover target="circle">
+          <Edit />
+        </SvgHover>
         {hadValidCondition(input.id).length > 0 ? <Condition /> : ""}
       </Box>
     </Flex>

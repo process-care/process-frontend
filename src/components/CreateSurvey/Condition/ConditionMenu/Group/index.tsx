@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import ICondition from "interfaces/form/condition";
-import { renderOperator } from "./utils";
+
 import { Separator } from "../Separator";
 import { ReactComponent as Delete } from "./../assets/delete.svg";
 
@@ -31,6 +31,8 @@ interface State {
   type: "condition" | "group" | null;
   id: string | number;
 }
+
+import { Operator } from "./Operator";
 
 export const Group: React.FC<Props> = ({
   conditions,
@@ -183,20 +185,8 @@ export const Group: React.FC<Props> = ({
 
                       {condition.operator?.id && (
                         <Flex>
-                          <Text
-                            h="8"
-                            w="fit-content"
-                            minW="25px"
-                            mt={2}
-                            fontSize="10"
-                            color="white"
-                            fontWeight="bold"
-                            backgroundColor="black"
-                            borderRadius="4"
-                            textAlign="center"
-                            p="2">
-                            {renderOperator(condition.operator?.id)}
-                          </Text>
+                          <Operator condition={condition} />
+
                           <Box ml={2}>
                             <Text mt={2} fontSize="10" color="brand.gray.200">
                               {t.response}

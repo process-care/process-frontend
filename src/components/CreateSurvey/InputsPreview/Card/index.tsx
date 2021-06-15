@@ -102,15 +102,17 @@ const Card: React.FC<CardProps> = ({ input, index, moveCard }) => {
     dispatch(selectInput(input));
     dispatch(toogleDrawer());
   };
+
   return (
     <Flex w="100%" alignItems="center" position="relative">
       <Box
         onClick={() => setRemoving(true)}
-        position="absolute"
+        position="sticky"
         left="-16px"
         _hover={{ cursor: "pointer", opacity: "0.7", transition: "all 400ms" }}>
         <Delete />
       </Box>
+
       <Box
         _hover={{ cursor: "grab" }}
         ref={ref}

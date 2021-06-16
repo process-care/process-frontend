@@ -184,14 +184,14 @@ export const Group: React.FC<Props> = ({
                         )}
 
                       {condition.operator?.id && (
-                        <Flex>
+                        <Flex alignItems="center">
                           <Operator condition={condition} />
 
                           <Box ml={2}>
                             <Text mt={2} fontSize="10" color="brand.gray.200">
                               {t.response}
                             </Text>
-                            <Text fontSize="14" color="black">
+                            <Text fontSize="14" color="black" mb={2}>
                               {condition.target_value}
                             </Text>
                           </Box>

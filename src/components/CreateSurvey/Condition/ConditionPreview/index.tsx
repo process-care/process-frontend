@@ -47,7 +47,7 @@ export const ConditionPreview: React.FC = () => {
         selectedCondition={selected_condition}
         isDisabled={checkStepValidation(selected_condition)}
       />
-      <Box h="100%" pt={10} w="100%">
+      <Box h="100%" pt={10} w="100%" d="flex" justifyContent="center">
         {renderStep()}
       </Box>
 

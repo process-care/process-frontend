@@ -1,6 +1,17 @@
 import IOperator from "interfaces/form/operator";
+export const operatorsForMultiple: IOperator[] = [
+  {
+    id: "equal",
+    name: "Egal à",
+  },
+  {
+    id: "different",
+    name: "Différent de",
+  },
+];
 
 export const operators: IOperator[] = [
+  ...operatorsForMultiple,
   {
     id: "equal_or_inferior",
     name: "Egal ou inférieur à",
@@ -9,10 +20,7 @@ export const operators: IOperator[] = [
     id: "equal_or_superior",
     name: "Egal ou supérieur à",
   },
-  {
-    id: "equal",
-    name: "Egal à",
-  },
+
   {
     id: "superior",
     name: "Supérieur à",
@@ -20,9 +28,5 @@ export const operators: IOperator[] = [
   {
     id: "inferior",
     name: "Inférieur à",
-  },
-  {
-    id: "different",
-    name: "Différent de",
   },
 ];

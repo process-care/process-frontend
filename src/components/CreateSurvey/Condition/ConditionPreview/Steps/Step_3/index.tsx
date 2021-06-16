@@ -10,6 +10,7 @@ import { t } from "static/condition";
 import { ReactComponent as Submit } from "./../../assets/submit.svg";
 import { ReactComponent as Check } from "./../../assets/check.svg";
 import { renderInput } from "./utils";
+import { checkIfMultiple } from "utils/formBuilder/input";
 
 interface Props {
   selectedCondition: ICondition;
@@ -17,7 +18,7 @@ interface Props {
 
 export const Step_3: React.FC<Props> = ({ selectedCondition }) => {
   const dispatch = useAppDispatch();
-  const [isValid, setIsValid] = React.useState(false);
+
   return (
     <Container w="90%" maxW="unset">
       <Formik
@@ -32,7 +33,6 @@ export const Step_3: React.FC<Props> = ({ selectedCondition }) => {
             const target = event.target as HTMLFormElement;
             if (target !== null) {
               if (target.value === "") {
-                setIsValid(false);
                 dispatch(
                   updateCondition({
                     id: selectedCondition.id,
@@ -52,9 +52,11 @@ export const Step_3: React.FC<Props> = ({ selectedCondition }) => {
                 );
             }
           };
-          const isNotEmpty =
-            values.target_value !== "" && values.target_value !== undefined;
+          const isNotEmpty = checkIfMultiple(selectedCondition)
+            ? true
+            : values.target_value !== "" && values.target_value !== undefined;
 
+          console.log(isNotEmpty);
           return (
             <Form onChange={(event) => onChange(event)}>
               <Box d="flex" mx="auto" alignItems="center">
@@ -63,16 +65,15 @@ export const Step_3: React.FC<Props> = ({ selectedCondition }) => {
                   pt={6}
                   ml={5}
                   onClick={() => {
-                    dispatch(
-                      updateCondition({
-                        id: selectedCondition.id,
-                        data: {
-                          is_valid: true,
-                        },
-                      })
-                    );
                     if (values.target_value) {
-                      setIsValid(true);
+                      dispatch(
+                        updateCondition({
+                          id: selectedCondition.id,
+                          data: {
+                            is_valid: true,
+                          },
+                        })
+                      );
                     }
                   }}
                   _hover={{
@@ -80,14 +81,17 @@ export const Step_3: React.FC<Props> = ({ selectedCondition }) => {
                     opacity: 0.7,
                     transition: "all 400ms",
                   }}>
-                  {isNotEmpty && <Submit />}
+                  {isNotEmpty && !checkIfMultiple(selectedCondition) && (
+                    <Submit />
+                  )}
                 </Box>
               </Box>
-              {isValid && isNotEmpty && (
+              {selectedCondition.is_valid && isNotEmpty && (
                 <Flex
                   alignItems="center"
                   justifyContent="flex-end"
-                  w="50%"
+                  mt="2"
+                  w="100%"
                   mx="auto">
                   <Check />
                   <Text fontSize="14px" color="brand.green" ml={2}>

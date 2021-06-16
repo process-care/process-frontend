@@ -67,7 +67,8 @@ const InputsPreview: React.FC = () => {
         d="flex"
         flexDirection="column"
         alignItems="center"
-        h="100%"
+        h="90%"
+        pb={10}
         overflowY="auto">
         <Formik
           initialValues={{}}

@@ -18,7 +18,7 @@ export const renderInput = (
       return <p>Erreur, pas de réponses</p>;
     } else {
       return (
-        <ul>
+        <ul style={{ width: "100%" }}>
           {options.map((option) => (
             <InputBox
               isSelected={selectedCondition.target_value === option}

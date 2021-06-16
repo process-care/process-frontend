@@ -1,8 +1,9 @@
 import React from "react";
-import { Button, ButtonGroup } from "@chakra-ui/react";
+import { Box, Button, ButtonGroup } from "@chakra-ui/react";
 import { inputs } from "constants/inputs";
 import { v4 as uuidv4 } from "uuid";
 import IInput from "interfaces/form/input";
+import { InputIcon } from "components/CreateSurvey/InputIcon";
 
 interface Props {
   onSelect: (
@@ -21,9 +22,14 @@ const ToolBox: React.FC<Props> = ({ onSelect }) => {
         return (
           <Button
             flex="40%"
+            d="flex"
+            justifyContent="flex-start"
             variant="box"
             whiteSpace="normal"
+            textAlign="left"
             key={i}
+            py="30px"
+            pl={3}
             onClick={() =>
               onSelect(
                 input_type,
@@ -32,6 +38,9 @@ const ToolBox: React.FC<Props> = ({ onSelect }) => {
                 `${input_type}-${id}`
               )
             }>
+            <Box mr={2}>
+              <InputIcon input_type={input_type} />
+            </Box>
             {name}
           </Button>
         );

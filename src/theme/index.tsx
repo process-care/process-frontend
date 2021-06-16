@@ -112,22 +112,29 @@ const theme = extendTheme({
         }),
         box: (props) => ({
           border: "1px solid",
-          borderColor: "#black",
-          textTransform: "uppercase",
+          borderColor: "black",
           borderRadius: "4px",
-          fontSize: "12px",
-          lineHeight: "16px",
+          fontSize: "14px",
+          lineHeight: "18px",
           padding: 8,
           margin: 2,
-          fontWeight: "normal",
+          fontWeight: 300,
           color: props.isSelected ? "white" : "black",
-
           backgroundColor: props.isSelected ? "brand.blue" : "white",
           _active: {
             backgroundColor: "brand.blue",
           },
           _hover: {
-            bg: "gray.200",
+            borderColor: "brand.blue",
+            color: "brand.blue",
+            svg: {
+              fill: "brand.blue",
+              stoke: "brand.blue",
+              path: {
+                fill: "brand.blue",
+                stoke: "brand.blue",
+              },
+            },
           },
         }),
         rounded: () => ({

@@ -20,6 +20,7 @@ import { getInputIndex } from "utils/formBuilder/input";
 import { v4 as uuidv4 } from "uuid";
 import { t } from "static/condition";
 import { getConditionsByRefererId } from "utils/formBuilder/condition";
+import { InputIcon } from "components/CreateSurvey/InputIcon";
 
 const InputForm: React.FC = () => {
   const condition_id = uuidv4();
@@ -110,10 +111,16 @@ const InputForm: React.FC = () => {
                 pb={1}
                 mb={4}
                 alignItems="start">
-                <Box>
-                  <Text variant="xs">{getInputIndex(selectedInput.id)}</Text>
-                  <Text variant="xs">{selectedInput.input_type}</Text>
-                </Box>
+                <Flex alignItems="center">
+                  <InputIcon input_type={selectedInput.input_type} />
+
+                  <Box ml={2}>
+                    <Text variant="xsMedium">
+                      {getInputIndex(selectedInput.id)}
+                    </Text>
+                    <Text variant="xs">{selectedInput.name}</Text>
+                  </Box>
+                </Flex>
 
                 {selectedInput.input_type !== "wysiwyg" && (
                   <Flex flexDirection="column">

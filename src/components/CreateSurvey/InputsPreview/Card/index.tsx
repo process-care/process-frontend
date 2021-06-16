@@ -3,7 +3,7 @@ import {
   Box,
   useColorModeValue,
   Container,
-  Badge,
+  Text,
   Flex,
 } from "@chakra-ui/react";
 import { useDrag, useDrop, DropTargetMonitor } from "react-dnd";
@@ -28,6 +28,7 @@ import { toogleDrawer } from "redux/slices/application";
 import { t } from "static/input";
 import { hadValidCondition } from "utils/formBuilder/condition";
 import { SvgHover } from "components/SvgHover";
+import { InputIcon } from "components/CreateSurvey/InputIcon";
 
 interface CardProps {
   input: IInput;
@@ -122,42 +123,12 @@ const Card: React.FC<CardProps> = ({ input, index, moveCard }) => {
         <Container variant="inputContainer" padding={isRemoving ? 0 : 4}>
           <Box color={color}>
             {!isRemoving && (
-              <>
-                <Box mt="-26px">
-                  {
-                    <Badge
-                      mb={7}
-                      minW="120px"
-                      float="right"
-                      borderRadius="50px"
-                      px={5}
-                      py={1}
-                      bgColor="black"
-                      border="1px"
-                      color="white"
-                      fontSize="7px">
-                      {input.name}
-                    </Badge>
-                  }
-                  {input.internal_title && (
-                    <Badge
-                      minW="120px"
-                      float="right"
-                      borderRadius="50px"
-                      px={5}
-                      py={1}
-                      border="1px"
-                      bgColor="white"
-                      borderColor="black"
-                      color="black"
-                      fontSize="7px"
-                      mr={3}>
-                      {input.internal_title}
-                    </Badge>
-                  )}
+              <Flex w="100%" justifyContent="space-between" pb={4}>
+                <Text variant="xsMedium">{input.internal_title}</Text>
+                <Box>
+                  <InputIcon input_type={input.input_type} />
                 </Box>
-                <Box style={{ clear: "both" }} />
-              </>
+              </Flex>
             )}
 
             {isRemoving && (

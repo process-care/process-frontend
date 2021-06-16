@@ -121,18 +121,37 @@ const theme = extendTheme({
           fontWeight: 300,
           color: props.isSelected ? "white" : "black",
           backgroundColor: props.isSelected ? "brand.blue" : "white",
-          _active: {
-            backgroundColor: "brand.blue",
-          },
+
           _hover: {
             borderColor: "brand.blue",
             color: "brand.blue",
             svg: {
+              rect: {
+                stroke: "brand.blue",
+                fill: "transparent",
+              },
+              circle: {
+                stroke: "brand.blue",
+                fill: "transparent",
+              },
               fill: "brand.blue",
               stoke: "brand.blue",
+              line: {
+                stroke: "brand.blue",
+              },
               path: {
                 fill: "brand.blue",
-                stoke: "brand.blue",
+                stroke: "brand.blue",
+                line: {
+                  stroke: "brand.blue",
+                },
+              },
+            },
+            path: {
+              fill: "brand.blue",
+              stroke: "brand.blue",
+              line: {
+                stroke: "brand.blue",
               },
             },
           },

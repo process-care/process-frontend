@@ -10,11 +10,13 @@ export const Header: React.FC = () => {
     (state) => state.formBuilder.is_collapse_view
   );
   return (
-    <Flex justifyContent="space-between" w="100%" alignItems="center" my="50px">
+    <Flex
+      justifyContent="space-between"
+      w="100%"
+      alignItems="center"
+      my="50px"
+      pl="50px">
       <ButtonGroup>
-        <Button variant="rounded" mr={5}>
-          {t.verify}
-        </Button>
         <Button
           variant="link"
           fontSize="10px"

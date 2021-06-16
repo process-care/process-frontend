@@ -165,8 +165,8 @@ const theme = extendTheme({
           fontWeight: "bold",
           fontSize: "12px",
           _hover: {
-            bg: "gray.800",
-            color: "black",
+            bg: "gray.700",
+            color: "white",
           },
         }),
         roundedBlue: () => ({

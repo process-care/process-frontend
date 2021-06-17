@@ -28,6 +28,7 @@ export const Step_1: React.FC<Props> = ({ selectedCondition }) => {
   const currentInputIndex = getInputIndex(selectedCondition.referer_entity_id);
   const inputsBeforeCurrent = inputsOrder.slice(0, currentInputIndex);
 
+  console.log(inputsOrder)
   // Remove all types who can't be conditionable, remove the selected input, remove input after the selected one.
   const authorizedInputs = inputs
     .filter((i) => i.id && inputsBeforeCurrent.includes(i.id))

@@ -8,6 +8,7 @@ import IOperator from "interfaces/form/operator";
 import { formMock } from "mocks/form";
 
 export interface FormBuilder {
+  input_order: IInput["id"][],
   inputs: IInput[];
   selected_input: IInput;
   pages: IFormPage[];
@@ -52,6 +53,7 @@ const initialFirstPage = {
 // Define the initial state using that type
 const initialState: FormBuilder = {
   inputs: [],
+  input_order: [],
   selected_input: {
     id: "",
     input_type: "text-area",
@@ -68,7 +70,7 @@ const initialState: FormBuilder = {
   },
   is_editing: false,
   is_collapse_view: false,
-  is_removing:""
+  is_removing: ""
 };
 
 export const formBuilderSlice = createSlice({
@@ -84,11 +86,14 @@ export const formBuilderSlice = createSlice({
     selectInput: (state, action: PayloadAction<IInput>) => {
       state.selected_input = action.payload;
     },
+    updateInputsOrder: (state, action: PayloadAction<IInput["id"][]>) => {
+      state.input_order = action.payload;
+    },
     setIsEditing: (state, action: PayloadAction<boolean>) => {
       state.is_editing = action.payload;
     },
-     setIsRemoving: (state, action: PayloadAction<ICondition["id"]>) => {
-       console.log(action.payload)
+    setIsRemoving: (state, action: PayloadAction<ICondition["id"]>) => {
+      console.log(action.payload)
       state.is_removing = action.payload;
     },
     updateInput: (state, action: PayloadAction<Update>) => {
@@ -230,6 +235,7 @@ export const {
   removeAllInputs,
   removeInput,
   updateInput,
+  updateInputsOrder,
   selectInput,
   setIsEditing,
   setIsRemoving,

@@ -43,7 +43,7 @@ export const CreateForm: React.FC<IRoute> = () => {
               <PageBuilder />
             </Container>
 
-            <Container variant="createformColumn" w="94%" alignItems="center">
+            <Container variant="createformColumn" w="94%" alignItems="center" p="0">
               <div className="background__grid">
                 {selected_condition.id !== "" ? (
                   <ConditionPreview />

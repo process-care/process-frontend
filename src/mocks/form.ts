@@ -24,23 +24,8 @@ export const formMock: FormBuilder = {
       short_name: "P3",
     },
   ],
+  input_order: ["text-area-1a55f31a-38a1-4e37-a31f-f8f122141bf", "text-area-cc997b41-bae9-4965-9472-1acf9540225d", "select-8d6b931f-c2db-42c1-9b56-3dbc1cbff3a8", "radio-332a5e97-8596-4dbc-a79b-96d77b4ddc6e", "date-picker-8d705caa-e037-4c2c-add6-4ad82f0c50fc", "date-picker-11fddd60-bfab-4337-8c96-fe9366e1aa1f", "number-input-bb3379ec-69fc-4bf9-ba66-b971d952b9ad", "checkbox-75f5d57c-4de9-46bb-8b2e-6f22dcd5e887"],
   inputs: [
-    {
-      type: "text",
-      name: "Question texte",
-      label: "Quel est votre nom de naissance ?",
-      help_text: "",
-      internal_title: "text-area-1a55f31a-38a1-4e37-a31f-f8f442c341bf",
-      internal_description: "",
-      required: false,
-      placeholder: "Votre nom de naissance :",
-      min_length: "",
-      max_length: "",
-      rows: "small",
-      input_type: "text-area",
-      id: "text-area-1a55f31a-38a1-4e37-a31f-f8f442c341bf",
-      page_id: "page-bcc2b551-642d-44da-94bf-478444805d25",
-    },
     {
       type: "text",
       name: "Question texte",
@@ -186,5 +171,5 @@ export const formMock: FormBuilder = {
   },
   is_editing: false,
   is_collapse_view: false,
-  is_removing:""
+  is_removing: ""
 };

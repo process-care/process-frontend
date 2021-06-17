@@ -7,7 +7,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { useDrag, useDrop, DropTargetMonitor } from "react-dnd";
-import { useAppDispatch,useAppSelector } from "redux/hooks";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 import { ItemTypes } from "./itemTypes";
 import { XYCoord } from "dnd-core";
@@ -135,7 +135,7 @@ const Card: React.FC<CardProps> = ({ input, index, moveCard }) => {
 
             {isRemoving && (
               <RemovingConfirmation
-                content={t.removing_confirmation}
+                content={`${t.removing_confirmation} ${input.label} ?`}
                 confirm={() => dispatch(removeInput(input))}
                 close={() => dispatch(setIsRemoving(""))}
               />

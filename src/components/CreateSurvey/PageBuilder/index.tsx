@@ -2,7 +2,7 @@ import { Button } from "@chakra-ui/button";
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import React from "react";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
-import { addPage, removePage, selectPage } from "redux/slices/formBuilder";
+import { addPage, selectPage, setIsRemoving } from "redux/slices/formBuilder";
 import { v4 as uuidv4 } from "uuid";
 
 import { ReactComponent as Locked } from "./assets/locked.svg";
@@ -81,7 +81,10 @@ const PageBuilder: React.FC = () => {
               {i !== 0 && (
                 <Box
                   _hover={{ cursor: "pointer" }}
-                  onClick={() => dispatch(removePage(page))}>
+                  onClick={() => {
+                    dispatch(selectPage(page))
+                    dispatch(setIsRemoving(page.id))
+                  }}>
                   <Delete />
                 </Box>
               )}

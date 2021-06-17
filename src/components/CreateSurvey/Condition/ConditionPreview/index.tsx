@@ -47,11 +47,11 @@ export const ConditionPreview: React.FC = () => {
         selectedCondition={selected_condition}
         isDisabled={checkStepValidation(selected_condition)}
       />
-      <Box h="100%" pt={10} w="100%" d="flex" justifyContent="center">
+      <Box h="80%" pt={10} w="100%" d="flex" justifyContent="center">
         {renderStep()}
       </Box>
 
-      <Box pos="absolute" bottom="110px" left="0" right="0" w="100%">
+      <Box pos="relative" bottom="110px" left="0" right="0" w="100%">
         <ButtonGroup justifyContent="space-between" w="70%">
           <Button
             visibility={selected_condition?.step !== 1 ? "visible" : "hidden"}

@@ -73,6 +73,7 @@ const InputsPreview: React.FC = () => {
   const Container: React.FC<ContainerProps> = ({ children, isDraggingOver }) => {
     return (
       <Box
+
         w="100%"
         d="flex"
         flexDirection="column"
@@ -129,7 +130,7 @@ const InputsPreview: React.FC = () => {
                 } else return
 
               })}
-              {/* {cards.map((input: IInput, i: number) => renderCard(input, i))} */}
+
               {provided.placeholder}
             </Box>
 

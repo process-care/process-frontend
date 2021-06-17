@@ -56,10 +56,9 @@ export const Step_3: React.FC<Props> = ({ selectedCondition }) => {
             ? true
             : values.target_value !== "" && values.target_value !== undefined;
 
-          console.log(isNotEmpty);
           return (
-            <Form onChange={(event) => onChange(event)}>
-              <Box d="flex" mx="auto" alignItems="center">
+            <Form onChange={(event) => onChange(event)} style={{ width: "100%" }}>
+              <Box d="flex" mx="auto" alignItems="center" w="100%">
                 {renderInput(selectedCondition)}
                 <Box
                   pt={6}

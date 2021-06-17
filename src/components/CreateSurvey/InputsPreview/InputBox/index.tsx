@@ -1,4 +1,5 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
+import { InputIcon } from "components/CreateSurvey/InputIcon";
 import IInput from "interfaces/form/input";
 import React from "react";
 
@@ -38,16 +39,16 @@ export const InputBox: React.FC<Props> = ({
           <Text variant="titleParaLight">{option}</Text>
         </Flex>
       )}
-      {!isOptionMode && (
+      {!isOptionMode && input && (
         <Flex justifyContent="space-between" alignItems="center">
           <Text variant="titleParaLight">{input?.label}</Text>
           <Flex alignItems="center">
             <Text variant="xsMedium" color="brand.gray.200">
               {input?.internal_title}
             </Text>
-            <Text fontSize="12" color="black" ml={4}>
-              {input?.input_type}
-            </Text>
+            <Box>
+              <InputIcon input_type={input.input_type} />
+            </Box>
           </Flex>
         </Flex>
       )}

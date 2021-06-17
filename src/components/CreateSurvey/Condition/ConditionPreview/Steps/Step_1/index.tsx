@@ -3,7 +3,6 @@ import React from "react";
 import { Container, Text } from "@chakra-ui/react";
 import { useAppSelector, useAppDispatch } from "redux/hooks";
 import {
-  getInputsOrder,
   selectInputsInCurrentPage,
   updateCondition,
 } from "redux/slices/formBuilder";
@@ -19,21 +18,23 @@ interface Props {
 }
 
 export const Step_1: React.FC<Props> = ({ selectedCondition }) => {
-  const { selected_page, selected_input } = useAppSelector(
+  const { selected_input, input_order } = useAppSelector(
     (state) => state.formBuilder
   );
-  const inputsOrder = useAppSelector(getInputsOrder);
+
   const inputs = useAppSelector(selectInputsInCurrentPage);
   const dispatch = useAppDispatch();
   const currentInputIndex = getInputIndex(selectedCondition.referer_entity_id);
-  const inputsBeforeCurrent = inputsOrder.slice(0, currentInputIndex);
+  const inputsBeforeCurrent = input_order.slice(0, currentInputIndex);
 
-  console.log(inputsOrder)
+
   // Remove all types who can't be conditionable, remove the selected input, remove input after the selected one.
   const authorizedInputs = inputs
-    .filter((i) => i.id && inputsBeforeCurrent.includes(i.id))
     .filter((i) => authorizedInputTypes.includes(i.input_type))
-    .filter((i) => i.id !== selected_input.id);
+    .filter((i) => i.id !== selected_input.id)
+    .filter((i) => i.id && inputsBeforeCurrent.includes(i.id))
+
+
 
   const isEmpty = authorizedInputs.length === 0;
   const renderCard = (input: IInput) => {
@@ -57,16 +58,20 @@ export const Step_1: React.FC<Props> = ({ selectedCondition }) => {
   };
 
   return (
-    <Container w="90%" maxW="unset">
-      <Text fontSize="14px" mt={5} mb={10} textTransform="uppercase">
-        {selected_page.name} - Condition vue
-      </Text>
+    <Container w="100%" maxW="unset" p={0}>
+
       {isEmpty && <Text variant="xs">{t.no_results}</Text>}
-      <Text textAlign="left" variant="current" color="brand.gray.200">
+      <Text textAlign="left" variant="xs" mt={-5} color="brand.gray.200">
         {t.help}
       </Text>
+      {input_order.map((inputId) => {
+        const current = authorizedInputs.find(c => c.id === inputId)
+        if (current !== undefined) {
+          return renderCard(current)
+        } else return
 
-      {authorizedInputs.map((input) => renderCard(input))}
+      })}
+
     </Container>
   );
 };

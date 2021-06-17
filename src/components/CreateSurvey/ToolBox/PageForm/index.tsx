@@ -9,11 +9,12 @@ import {
   selectCondition,
   selectConditonInCurrentPage,
   selectInput,
+  selectPage,
   setIsRemoving,
   updatePage,
 } from "redux/slices/formBuilder";
 import { toogleDrawer } from "redux/slices/application";
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { t } from "static/survey";
 import ToolBox from "../InputsButton";
 import { Formik, Form } from "formik";
@@ -22,6 +23,10 @@ import IInput from "interfaces/form/input";
 import { RemovingConfirmation } from "./../../RemovingConfirmation";
 import { v4 as uuidv4 } from "uuid";
 import { getConditionsByRefererId } from "utils/formBuilder/condition";
+import { SvgHover } from "components/SvgHover";
+
+import { ReactComponent as Trash } from "assets/trash.svg";
+
 
 export const PageForm: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -74,6 +79,7 @@ export const PageForm: React.FC = () => {
         content={`${t.remove_page} ${selected_page.name} ?`}
         confirm={() => {
           dispatch(removePage(selected_page));
+          dispatch(selectPage(pages[0]))
           dispatch(setIsRemoving(""));
         }}
         close={() => dispatch(setIsRemoving(""))
@@ -99,27 +105,32 @@ export const PageForm: React.FC = () => {
               onChange={(event) => onChange(event)}
               style={{ width: "100%" }}>
               <Flex w="100%" justifyContent="space-between">
-                <Switch
-                  size="sm"
-                  id="is_locked"
-                  label={
-                    selected_page.is_locked
-                      ? "🔒 Page non modifiable"
-                      : "🔓  Page modifiable"
-                  }
-                />
                 {!isFirstPage ? (
-                  <Button
-                    variant="ghost"
-                    fontSize="13px"
+                  <Box
                     onClick={() => {
                       dispatch(setIsRemoving(selected_page.id));
                     }}>
-                    🗑
-                  </Button>
+                    <SvgHover>
+                      <Trash />
+                    </SvgHover>
+                  </Box>
                 ) : (
                   <Box mt={10} />
                 )}
+                <Box d="flex" flexDirection="column" pt='14px' justifyContent="flex-end">
+
+                  <Box position="absolute" right="-10px" top="30px">
+                    <Switch
+                      size="sm"
+                      id="is_locked"
+                      label=""
+                    />
+                  </Box>
+
+                  <Text variant="xxs" mt="1" >
+                    Page non modifiable
+                  </Text>
+                </Box>
               </Flex>
 
               <Box pt={10}>

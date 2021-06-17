@@ -13,6 +13,7 @@ import {
   setIsEditing,
   addCondition,
   selectCondition,
+  setIsRemoving,
 } from "redux/slices/formBuilder";
 import { toogleDrawer } from "redux/slices/application";
 import { Switch } from "components/Fields";
@@ -190,6 +191,10 @@ const InputForm: React.FC = () => {
                 onSubmit={() => console.log("submit")}
                 disabled={!isValid || isSubmitting}
                 onCancel={() => onCancel()}
+                onDelete={() => {
+                  dispatch(setIsRemoving(selected_input.id))
+                  dispatch(toogleDrawer())
+                }}
               />
             </Flex>
           </Form>

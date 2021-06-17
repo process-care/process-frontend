@@ -13,7 +13,7 @@ export default interface IInput {
     | "date-picker"
     | "free-classification";
   name: string;
-  id?: string;
+  id: string;
   label?: string;
   placeholder?: string;
   help_text?: string;

@@ -18,6 +18,7 @@ export interface FormBuilder {
   };
   is_editing: boolean;
   is_collapse_view: boolean;
+  is_removing: ICondition["id"]
 }
 interface Update {
   id: string | undefined;
@@ -67,6 +68,7 @@ const initialState: FormBuilder = {
   },
   is_editing: false,
   is_collapse_view: false,
+  is_removing:""
 };
 
 export const formBuilderSlice = createSlice({
@@ -84,6 +86,10 @@ export const formBuilderSlice = createSlice({
     },
     setIsEditing: (state, action: PayloadAction<boolean>) => {
       state.is_editing = action.payload;
+    },
+     setIsRemoving: (state, action: PayloadAction<ICondition["id"]>) => {
+       console.log(action.payload)
+      state.is_removing = action.payload;
     },
     updateInput: (state, action: PayloadAction<Update>) => {
       const { id, data } = action.payload;
@@ -226,6 +232,7 @@ export const {
   updateInput,
   selectInput,
   setIsEditing,
+  setIsRemoving,
   toggleCollapseView,
   addPage,
   removePage,

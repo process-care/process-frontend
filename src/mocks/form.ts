@@ -186,4 +186,5 @@ export const formMock: FormBuilder = {
   },
   is_editing: false,
   is_collapse_view: false,
+  is_removing:""
 };

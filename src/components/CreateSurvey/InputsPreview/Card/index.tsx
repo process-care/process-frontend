@@ -7,7 +7,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { useDrag, useDrop, DropTargetMonitor } from "react-dnd";
-import { useAppDispatch } from "redux/hooks";
+import { useAppDispatch,useAppSelector } from "redux/hooks";
 
 import { ItemTypes } from "./itemTypes";
 import { XYCoord } from "dnd-core";
@@ -17,6 +17,7 @@ import {
   removeInput,
   selectInput,
   setIsEditing,
+  setIsRemoving,
 } from "redux/slices/formBuilder";
 
 import { ReactComponent as Delete } from "./assets/delete.svg";
@@ -42,9 +43,10 @@ interface DragItem {
 }
 
 const Card: React.FC<CardProps> = ({ input, index, moveCard }) => {
-  const [isRemoving, setRemoving] = React.useState(false);
+  // const [isRemoving, setRemoving] = React.useState(false);
   const dispatch = useAppDispatch();
-
+  const { is_removing } = useAppSelector(state => state.formBuilder)
+  const isRemoving = is_removing === input.id
   const ref = React.useRef<HTMLDivElement>(null);
   const color = useColorModeValue("gray.800", "gray.900");
 
@@ -107,7 +109,7 @@ const Card: React.FC<CardProps> = ({ input, index, moveCard }) => {
 
   return (
     <Flex w="100%" alignItems="center" position="relative">
-      <Box onClick={() => setRemoving(true)} position="sticky" left="-16px">
+      <Box onClick={() => dispatch(setIsRemoving(input.id))} position="sticky" left="-16px">
         <SvgHover>
           <Delete />
         </SvgHover>
@@ -135,7 +137,7 @@ const Card: React.FC<CardProps> = ({ input, index, moveCard }) => {
               <RemovingConfirmation
                 content={t.removing_confirmation}
                 confirm={() => dispatch(removeInput(input))}
-                close={() => setRemoving(false)}
+                close={() => dispatch(setIsRemoving(""))}
               />
             )}
 

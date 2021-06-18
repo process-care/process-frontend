@@ -17,7 +17,7 @@ export const Menu: React.FC = () => {
       <NavLink to="/dashboard">
         <Flex ml="50px" alignItems="center">
           <Back />
-          <Text fontSize="12px" ml={2} mr="105px">
+          <Text fontSize="12px" ml={2} mr="30px">
             Dashboard
           </Text>
         </Flex>

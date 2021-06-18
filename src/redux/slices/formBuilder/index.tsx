@@ -82,6 +82,12 @@ export const formBuilderSlice = createSlice({
     // Inputs
     addInput: (state, action: PayloadAction<IInput>) => {
       state.inputs.push(action.payload);
+      // Insert the new input in good position (last of the selected page).
+      const { id } = state.selected_page
+      const inputsInSamePage = state.inputs.filter(i => i.page_id === id)
+      const previousId = inputsInSamePage[inputsInSamePage.length - 2].id
+      const previousIdx = state.input_order.findIndex(id => id === previousId)
+      state.input_order.splice(previousIdx + 1, 0, action.payload.id)
     },
     selectInput: (state, action: PayloadAction<IInput>) => {
       state.selected_input = action.payload;
@@ -115,9 +121,10 @@ export const formBuilderSlice = createSlice({
     },
     removeInput: (state, action: PayloadAction<IInput>) => {
       const { id } = action.payload;
-      const { inputs } = state;
+      const { inputs, input_order } = state;
       const index = inputs.findIndex((item) => id === item.id);
       inputs.splice(index, 1);
+      input_order.splice(index, 1)
     },
     removeAllInputs: (state) => {
       state.inputs = [];

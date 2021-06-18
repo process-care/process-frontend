@@ -16,6 +16,8 @@ export const Layout: React.FC<Props> = ({ children }) => {
     switch (pathname) {
       case "/create-survey/create-form":
         return null;
+      case "/create-survey/create-landing":
+        return null;
 
       default:
         return <MainMenu />;

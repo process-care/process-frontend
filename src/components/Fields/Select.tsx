@@ -81,7 +81,6 @@ export const CustomSelect: React.FC<Props> = ({
         <>
           <Select
             styles={customStyles}
-
             id={id}
             isRequired={isRequired}
             placeholder={placeholder}

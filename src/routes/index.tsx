@@ -8,6 +8,8 @@ import { Dashboard } from "pages/Dashboard";
 import { Landing } from "pages/Landing";
 import { Portail } from "pages/Portail";
 import { Survey } from "pages/Survey";
+import { CreateLanding } from "pages/CreateSurvey/CreateLanding";
+
 
 const routes: IRoute[] = [
   {
@@ -20,6 +22,12 @@ const routes: IRoute[] = [
     name: "Création d'enquète",
     path: "/create-survey",
     component: <CreateSurvey />,
+    exact: true,
+  },
+  {
+    name: "Création de landing page",
+    path: "/create-survey/create-landing",
+    component: <CreateLanding />,
     exact: true,
   },
   {

@@ -1,3 +1,8 @@
+body{
+width: 100%;
+overflow-x: hidden;
+}
+
 .background__grid {
   height: 100%;
   width: 100%;

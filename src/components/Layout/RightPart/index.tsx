@@ -3,10 +3,10 @@ import React from "react";
 import { Container } from "@chakra-ui/react";
 import { ConditionMenu } from "components/CreateSurvey/Condition/ConditionMenu";
 import { PageForm } from "components/CreateSurvey/ToolBox/PageForm";
-import IFormPage from "interfaces/form/page";
+import IPage from "interfaces/form/page";
 
 interface Props {
-  selected_page: IFormPage;
+  selected_page: IPage;
   selected_condition: {
     id: string;
   };

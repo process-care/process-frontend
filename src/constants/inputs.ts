@@ -1,51 +1,51 @@
-import IInput from "interfaces/form/input";
+import IQuestion from "interfaces/form/question";
 
-export const inputs: IInput[] = [
+export const inputs: IQuestion[] = [
   {
     input_type: "wysiwyg",
     name: "Wysiwyg",
-    id:""
+    id: ""
   },
   {
     input_type: "text-area",
     name: "Question texte",
-    id:""
+    id: ""
   },
   {
     input_type: "select",
     name: "Questions liste déroulante",
-    id:""
+    id: ""
   },
   {
     input_type: "slider",
     name: "Question curseur",
-    id:""
+    id: ""
   },
   {
     input_type: "number-input",
     name: "Question nombre",
-    id:""
+    id: ""
   },
 
   {
     input_type: "radio",
     name: "Question bouton radio",
-    id:""
+    id: ""
   },
   {
     input_type: "checkbox",
     name: "Question case à cocher",
-    id:""
+    id: ""
   },
 
   {
     input_type: "date-picker",
     name: "Question date",
-    id:""
+    id: ""
   },
   {
     input_type: "free-classification",
     name: "Question free democratic classification",
-    id:""
+    id: ""
   },
 ];

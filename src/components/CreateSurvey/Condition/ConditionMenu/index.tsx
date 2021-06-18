@@ -23,7 +23,7 @@ export const ConditionMenu: React.FC = () => {
   const last_group = Math.max(
     ...conditions.map((c: ICondition) => c.group.name)
   );
-  const isConditionTypePage = selected_condition?.condition_type === "page";
+  const isConditionTypePage = selected_condition?.type === "page";
 
   console.log(currentReferer);
   if (currentReferer === undefined) {

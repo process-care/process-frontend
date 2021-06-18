@@ -32,6 +32,7 @@ const PageBuilder: React.FC = () => {
         condition: [],
         is_locked: false,
         short_name: `P${pages.length + 1}`,
+        survey_id: `survey-${id}`
       })
     );
   };

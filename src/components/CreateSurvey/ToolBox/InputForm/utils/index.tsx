@@ -1,4 +1,4 @@
-import IInput from "interfaces/form/input";
+import IQuestion from "interfaces/form/question";
 import React from "react";
 import {
   TextareaFields,
@@ -19,7 +19,7 @@ import {
   WysiwygSchema,
 } from "../ValidationSchemas";
 
-export const renderFormTemplate = (input: IInput): React.ReactNode => {
+export const renderFormTemplate = (input: IQuestion): React.ReactNode => {
   switch (input.input_type) {
     case "input":
       return <InputFields />;
@@ -57,7 +57,7 @@ export const renderFormTemplate = (input: IInput): React.ReactNode => {
 };
 
 export const renderFormValidationSchema = (
-  input: IInput
+  input: IQuestion
 ): React.ReactFragment => {
   switch (input.input_type) {
     case "input":

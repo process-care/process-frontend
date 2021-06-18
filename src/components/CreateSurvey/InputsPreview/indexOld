@@ -5,7 +5,7 @@
 // import { ItemTypes } from "./Card/itemTypes";
 
 // import update from "immutability-helper";
-// import IInput from "interfaces/form/input";
+// import IQuestion from "interfaces/form/input";
 // import { useAppSelector } from "redux/hooks";
 
 // import { Formik, Form } from "formik";
@@ -45,7 +45,7 @@
 //     [cards]
 //   );
 
-//   const renderCard = (input: IInput, index: number) => {
+//   const renderCard = (input: IQuestion, index: number) => {
 //     return (
 //       <Card key={input.id} input={input} index={index} moveCard={moveCard} />
 //     );

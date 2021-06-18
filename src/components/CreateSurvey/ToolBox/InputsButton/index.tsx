@@ -2,12 +2,12 @@ import React from "react";
 import { Box, Button, ButtonGroup } from "@chakra-ui/react";
 import { inputs } from "constants/inputs";
 import { v4 as uuidv4 } from "uuid";
-import IInput from "interfaces/form/input";
+import IQuestion from "interfaces/form/question";
 import { InputIcon } from "components/CreateSurvey/InputIcon";
 
 interface Props {
   onSelect: (
-    type: IInput["input_type"],
+    type: IQuestion["input_type"],
     name: string,
     id: string,
     internal_title: string | undefined

@@ -19,7 +19,7 @@ import { t } from "static/survey";
 import ToolBox from "../InputsButton";
 import { Formik, Form } from "formik";
 import { Switch, Textarea } from "components/Fields";
-import IInput from "interfaces/form/input";
+import IQuestion from "interfaces/form/question";
 import { RemovingConfirmation } from "./../../RemovingConfirmation";
 import { v4 as uuidv4 } from "uuid";
 import { getConditionsByRefererId } from "utils/formBuilder/condition";
@@ -38,7 +38,7 @@ export const PageForm: React.FC = () => {
   const condition_id = uuidv4();
 
   const handleSelect = (
-    input_type: IInput["input_type"],
+    input_type: IQuestion["input_type"],
     name: string,
     id: string,
     internal_title: string | undefined
@@ -170,8 +170,8 @@ export const PageForm: React.FC = () => {
                           dispatch(
                             addCondition({
                               id: condition_id,
-                              condition_type: "page",
-                              referer_entity_id: selected_page.id,
+                              type: "page",
+                              referer_id: selected_page.id,
                               step: 1,
                               group: {
                                 id: uuidv4(),

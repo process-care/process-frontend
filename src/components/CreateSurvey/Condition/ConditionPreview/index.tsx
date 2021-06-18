@@ -81,11 +81,11 @@ export const ConditionPreview: React.FC = () => {
                 dispatch(
                   addCondition({
                     id: condition_id,
-                    condition_type:
-                      selected_condition?.condition_type !== undefined
-                        ? selected_condition.condition_type
+                    type:
+                      selected_condition?.type !== undefined
+                        ? selected_condition.type
                         : "page",
-                    referer_entity_id:
+                    referer_id:
                       currentConditionReferer?.id !== undefined
                         ? currentConditionReferer?.id
                         : "",

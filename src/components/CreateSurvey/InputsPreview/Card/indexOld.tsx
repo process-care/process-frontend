@@ -12,7 +12,7 @@ import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { ItemTypes } from "./itemTypes";
 import { XYCoord } from "dnd-core";
 import { renderInput } from "./utils";
-import IInput from "interfaces/form/input";
+import IQuestion from "interfaces/form/question";
 import {
   removeInput,
   selectInput,
@@ -32,7 +32,7 @@ import { SvgHover } from "components/SvgHover";
 import { InputIcon } from "components/CreateSurvey/InputIcon";
 
 interface CardProps {
-  input: IInput;
+  input: IQuestion;
   index: number;
   moveCard?: (dragIndex: number, hoverIndex: number) => void;
 }

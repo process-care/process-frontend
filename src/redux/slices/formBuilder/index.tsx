@@ -1,18 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "redux/store";
-import IInput from "interfaces/form/input";
-import IFormPage from "interfaces/form/page";
+import IQuestion from "interfaces/form/question";
+import IPage from "interfaces/form/page";
 import { v4 as uuidv4 } from "uuid";
 import ICondition from "interfaces/form/condition";
 import IOperator from "interfaces/form/operator";
 import { formMock } from "mocks/form";
 
 export interface FormBuilder {
-  input_order: IInput["id"][],
-  inputs: IInput[];
-  selected_input: IInput;
-  pages: IFormPage[];
-  selected_page: IFormPage;
+  input_order: IQuestion["id"][],
+  inputs: IQuestion[];
+  selected_input: IQuestion;
+  pages: IPage[];
+  selected_page: IPage;
   conditions: ICondition[];
   selected_condition: {
     id: string;
@@ -31,7 +31,7 @@ interface Update {
 interface UpdateCondition {
   id: string | undefined;
   data: {
-    [index: string]: IInput | number | boolean | IOperator | string;
+    [index: string]: IQuestion | number | boolean | IOperator | string;
   } | null;
 }
 interface SelectCondition {
@@ -42,12 +42,13 @@ interface RemoveGroup {
   id: number | string;
 }
 
-const initialFirstPage = {
+const initialFirstPage: IPage = {
   name: "Page 1",
   id: `page-${uuidv4()}`,
   is_locked: false,
   condition: [],
   short_name: "P1",
+  survey_id: `survey-${uuidv4()}`
 };
 
 // Define the initial state using that type
@@ -80,7 +81,7 @@ export const formBuilderSlice = createSlice({
     //Mock
     mockForm: () => formMock,
     // Inputs
-    addInput: (state, action: PayloadAction<IInput>) => {
+    addInput: (state, action: PayloadAction<IQuestion>) => {
       state.inputs.push(action.payload);
       // Insert the new input in good position (last of the selected page).
       const { id } = state.selected_page
@@ -89,10 +90,10 @@ export const formBuilderSlice = createSlice({
       const previousIdx = state.input_order.findIndex(id => id === previousId)
       state.input_order.splice(previousIdx + 1, 0, action.payload.id)
     },
-    selectInput: (state, action: PayloadAction<IInput>) => {
+    selectInput: (state, action: PayloadAction<IQuestion>) => {
       state.selected_input = action.payload;
     },
-    updateInputsOrder: (state, action: PayloadAction<IInput["id"][]>) => {
+    updateInputsOrder: (state, action: PayloadAction<IQuestion["id"][]>) => {
       state.input_order = action.payload;
     },
     setIsEditing: (state, action: PayloadAction<boolean>) => {
@@ -119,7 +120,7 @@ export const formBuilderSlice = createSlice({
         }
       }
     },
-    removeInput: (state, action: PayloadAction<IInput>) => {
+    removeInput: (state, action: PayloadAction<IQuestion>) => {
       const { id } = action.payload;
       const { inputs, input_order } = state;
       const index = inputs.findIndex((item) => id === item.id);
@@ -133,10 +134,10 @@ export const formBuilderSlice = createSlice({
       state.is_collapse_view = !state.is_collapse_view;
     },
     // PageForm
-    addPage: (state, action: PayloadAction<IFormPage>) => {
+    addPage: (state, action: PayloadAction<IPage>) => {
       state.pages.push(action.payload);
     },
-    selectPage: (state, action: PayloadAction<IFormPage>) => {
+    selectPage: (state, action: PayloadAction<IPage>) => {
       state.selected_page = action.payload;
     },
 
@@ -148,7 +149,7 @@ export const formBuilderSlice = createSlice({
         state.selected_page = { ...state.selected_page, ...data };
       }
     },
-    removePage: (state, action: PayloadAction<IFormPage>) => {
+    removePage: (state, action: PayloadAction<IPage>) => {
       const { id } = action.payload;
       const { pages } = state;
       const index = pages.findIndex((item) => id === item.id);
@@ -159,14 +160,14 @@ export const formBuilderSlice = createSlice({
     // Condition
     addCondition: (state, action: PayloadAction<ICondition>) => {
       // add condition & select it & and add it to selected page.
-      const { referer_entity_id, id } = action.payload;
+      const { referer_id, id } = action.payload;
       const { conditions, pages, inputs } = state;
-      let index = pages.findIndex((item) => referer_entity_id === item.id);
+      let index = pages.findIndex((item) => referer_id === item.id);
 
       conditions.push(action.payload);
       // if condition is related to input
       if (index === undefined) {
-        index = inputs.findIndex((item) => referer_entity_id === item.id);
+        index = inputs.findIndex((item) => referer_id === item.id);
         inputs[index]?.condition?.push(id);
       } else pages[index]?.condition.push(id);
     },
@@ -221,10 +222,10 @@ export const formBuilderSlice = createSlice({
         (c) => c.id === state.selected_condition.id
       );
       const currentPageHasOtherConditions = state.conditions.find(
-        (c) => c.referer_entity_id === currentGrouptoRemove[0].referer_entity_id
+        (c) => c.referer_id === currentGrouptoRemove[0].referer_id
       );
       const otherConditionToSelect = state.conditions.filter(
-        (c) => c.referer_entity_id === currentGrouptoRemove[0].referer_entity_id
+        (c) => c.referer_id === currentGrouptoRemove[0].referer_id
       )[0]?.id;
       if (selectedConditionIsRemoving) {
         if (currentPageHasOtherConditions) {
@@ -261,7 +262,7 @@ export const {
 
 // Other code such as selectors can use the imported `RootState` type
 
-export const selectInputsInCurrentPage = (state: RootState): IInput[] =>
+export const selectInputsInCurrentPage = (state: RootState): IQuestion[] =>
   state.formBuilder.inputs.filter(
     (input) => input.page_id === state.formBuilder.selected_page.id
   );
@@ -269,7 +270,7 @@ export const selectInputsInCurrentPage = (state: RootState): IInput[] =>
 export const selectConditonInCurrentPage = (state: RootState): ICondition[] =>
   state.formBuilder.conditions.filter(
     (condition) =>
-      condition.referer_entity_id === state.formBuilder.selected_page.id
+      condition.referer_id === state.formBuilder.selected_page.id
   );
 
 export const getSelectedConditionData = (
@@ -281,13 +282,13 @@ export const getSelectedConditionData = (
 
 export const getRefererIdInCurrentCondition = (state: RootState): any => {
   const selected_condition = getSelectedConditionData(state);
-  if (selected_condition?.condition_type === "page") {
+  if (selected_condition?.type === "page") {
     return state.formBuilder.pages
-      .filter((page) => page.id === selected_condition?.referer_entity_id)
+      .filter((page) => page.id === selected_condition?.referer_id)
       .shift();
   } else {
     return state.formBuilder.inputs
-      .filter((i) => i.id === selected_condition?.referer_entity_id)
+      .filter((i) => i.id === selected_condition?.referer_id)
       .shift();
   }
 };
@@ -295,8 +296,8 @@ export const getRefererIdInCurrentCondition = (state: RootState): any => {
 export const getConditionData = (state: RootState): ICondition[] | [] =>
   state.formBuilder.conditions.filter(
     (condition) =>
-      condition.referer_entity_id ===
-      getSelectedConditionData(state)?.referer_entity_id
+      condition.referer_id ===
+      getSelectedConditionData(state)?.referer_id
   );
 
 

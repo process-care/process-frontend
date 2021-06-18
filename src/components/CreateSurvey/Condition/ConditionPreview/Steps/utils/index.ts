@@ -1,11 +1,14 @@
 import ICondition from "interfaces/form/condition";
+import { getInputById } from "utils/formBuilder/input";
 
 export const checkStepValidation = (
   selected_condition: ICondition | undefined
 ): boolean => {
+  const target_question = getInputById(selected_condition?.target_id)
+
   if (
     selected_condition?.step === 1 &&
-    !!selected_condition?.selected_question
+    !!target_question
   ) {
     return false;
   }

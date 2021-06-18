@@ -147,8 +147,8 @@ const InputForm: React.FC = () => {
                       dispatch(
                         addCondition({
                           id: condition_id,
-                          condition_type: "input",
-                          referer_entity_id:
+                          type: "input",
+                          referer_id:
                             selected_input.id !== undefined
                               ? selected_input.id
                               : "",

@@ -22,7 +22,7 @@ export const getConditionsByRefererId = (
     return store
       .getState()
       .formBuilder.conditions.filter(
-        (c) => c.referer_entity_id === referer_entity_id
+        (c) => c.referer_id === referer_entity_id
       );
   } else return [];
 };
@@ -34,7 +34,7 @@ export const hadValidCondition = (
     return store
       .getState()
       .formBuilder.conditions.filter(
-        (c) => c.referer_entity_id === referer_entity_id
+        (c) => c.referer_id === referer_entity_id
       )
       .filter((c) => c.is_valid);
   } else return [];

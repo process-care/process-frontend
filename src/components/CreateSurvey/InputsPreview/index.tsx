@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import Card from "./Card";
 
-import IInput from "interfaces/form/input";
+import IQuestion from "interfaces/form/question";
 import { useAppSelector, useAppDispatch } from "redux/hooks";
 
 import { Formik, Form } from "formik";
@@ -34,7 +34,7 @@ const InputsPreview: React.FC = () => {
   }, [inputs]);
 
 
-  const renderCard = (input: IInput, index: number) => {
+  const renderCard = (input: IQuestion, index: number) => {
     return (
       <Card key={input.id} input={input} index={index} />
     );

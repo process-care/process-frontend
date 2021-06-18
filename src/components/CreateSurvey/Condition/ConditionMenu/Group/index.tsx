@@ -16,16 +16,16 @@ import ICondition from "interfaces/form/condition";
 import { Separator } from "../Separator";
 import { ReactComponent as Delete } from "./../assets/delete.svg";
 
-import IFormPage from "interfaces/form/page";
+import IPage from "interfaces/form/page";
 import { RemovingConfirmation } from "../../../RemovingConfirmation";
 import { t } from "static/condition";
-import IInput from "interfaces/form/input";
+import IQuestion from "interfaces/form/question";
 
 interface Props {
   conditions: ICondition[] | [];
   groups: { id: string | number; name: number }[];
   last_group: number;
-  currentReferer: IFormPage | IInput | undefined;
+  currentReferer: IPage | IQuestion | undefined;
 }
 interface State {
   type: "condition" | "group" | null;
@@ -33,6 +33,7 @@ interface State {
 }
 
 import { Operator } from "./Operator";
+import { getInputById } from "utils/formBuilder/input";
 
 export const Group: React.FC<Props> = ({
   conditions,
@@ -101,6 +102,7 @@ export const Group: React.FC<Props> = ({
 
             {conditions?.map((condition: ICondition, index: number) => {
               const isLast = index === conditions.length - 1;
+              const target_question = getInputById(condition.target_id)
 
               if (condition.group.id === id) {
                 if (
@@ -124,7 +126,7 @@ export const Group: React.FC<Props> = ({
                 return (
                   <>
                     <Box textAlign="left" key={condition.id} py={1}>
-                      {condition.selected_question?.label &&
+                      {target_question?.label &&
                         selected_condition !== undefined && (
                           <>
                             <Text fontSize="10" color="brand.gray.200">
@@ -139,7 +141,7 @@ export const Group: React.FC<Props> = ({
                                   fontSize="14"
                                   fontWeight="bold"
                                   color="black">
-                                  {condition.selected_question?.label}
+                                  {target_question?.label}
                                 </Text>
                                 <Button
                                   d="flex"
@@ -210,12 +212,12 @@ export const Group: React.FC<Props> = ({
                             dispatch(
                               addCondition({
                                 id: condition_id,
-                                condition_type:
-                                  selected_condition?.condition_type !==
-                                  undefined
-                                    ? selected_condition.condition_type
+                                type:
+                                  selected_condition?.type !==
+                                    undefined
+                                    ? selected_condition.type
                                     : "page",
-                                referer_entity_id:
+                                referer_id:
                                   currentReferer?.id !== undefined
                                     ? currentReferer.id
                                     : "",
@@ -248,11 +250,11 @@ export const Group: React.FC<Props> = ({
                   dispatch(
                     addCondition({
                       id: condition_id,
-                      condition_type:
-                        selected_condition?.condition_type !== undefined
-                          ? selected_condition.condition_type
+                      type:
+                        selected_condition?.type !== undefined
+                          ? selected_condition.type
                           : "page",
-                      referer_entity_id:
+                      referer_id:
                         currentReferer?.id !== undefined
                           ? currentReferer.id
                           : "",

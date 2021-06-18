@@ -6,12 +6,12 @@ import {
   selectInputsInCurrentPage,
   updateCondition,
 } from "redux/slices/formBuilder";
-import IInput from "interfaces/form/input";
+import IQuestion from "interfaces/form/question";
 import ICondition from "interfaces/form/condition";
 import { authorizedInputTypes } from "./utils";
 import { t } from "static/input";
 import { InputBox } from "components/CreateSurvey/InputsPreview/InputBox";
-import { getInputIndex } from "utils/formBuilder/input";
+import { getInputById, getInputIndex } from "utils/formBuilder/input";
 
 interface Props {
   selectedCondition: ICondition;
@@ -24,7 +24,7 @@ export const Step_1: React.FC<Props> = ({ selectedCondition }) => {
 
   const inputs = useAppSelector(selectInputsInCurrentPage);
   const dispatch = useAppDispatch();
-  const currentInputIndex = getInputIndex(selectedCondition.referer_entity_id);
+  const currentInputIndex = getInputIndex(selectedCondition.referer_id);
   const inputsBeforeCurrent = input_order.slice(0, currentInputIndex);
 
 
@@ -37,8 +37,9 @@ export const Step_1: React.FC<Props> = ({ selectedCondition }) => {
 
 
   const isEmpty = authorizedInputs.length === 0;
-  const renderCard = (input: IInput) => {
-    const isSelected = input.id === selectedCondition.selected_question?.id;
+  const renderCard = (input: IQuestion) => {
+    const target_question = getInputById(selectedCondition.target_id)
+    const isSelected = input.id === target_question?.id;
     return (
       <InputBox
         isSelected={isSelected}
@@ -48,7 +49,7 @@ export const Step_1: React.FC<Props> = ({ selectedCondition }) => {
             updateCondition({
               id: selectedCondition.id,
               data: {
-                selected_question: input,
+                target_id: input.id,
               },
             })
           )

@@ -1,11 +1,11 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { InputIcon } from "components/CreateSurvey/InputIcon";
-import IInput from "interfaces/form/input";
+import IQuestion from "interfaces/form/question";
 import React from "react";
 
 interface Props {
   onClick: () => void;
-  input?: IInput;
+  input?: IQuestion;
   isSelected?: boolean;
   isOptionMode?: boolean;
   option?: string;

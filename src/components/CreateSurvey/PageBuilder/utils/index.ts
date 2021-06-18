@@ -1,5 +1,5 @@
 import ICondition from "interfaces/form/condition";
-import IFormPage from "interfaces/form/page";
+import IPage from "interfaces/form/page";
 import { getInputById } from "utils/formBuilder/input";
 import { getPageById } from "utils/formBuilder/page";
 
@@ -8,14 +8,14 @@ import { getPageById } from "utils/formBuilder/page";
 
 export const isInactive = (
   selectedCondition: ICondition | undefined,
-  pages: IFormPage[],
+  pages: IPage[],
   i: number
 ): boolean => {
   if (selectedCondition !== undefined) {
-    if (selectedCondition?.condition_type === "page") {
+    if (selectedCondition?.type === "page") {
       return (
-        pages.findIndex((p) => p.id === selectedCondition?.referer_entity_id) -
-          1 <
+        pages.findIndex((p) => p.id === selectedCondition?.referer_id) -
+        1 <
         i
       );
     } else {
@@ -24,7 +24,7 @@ export const isInactive = (
           (p) =>
             p.id ===
             getPageById(
-              getInputById(selectedCondition?.referer_entity_id)?.page_id
+              getInputById(selectedCondition?.referer_id)?.page_id
             )?.id
         ) < i
       );

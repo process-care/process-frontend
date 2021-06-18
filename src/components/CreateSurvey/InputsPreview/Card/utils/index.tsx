@@ -9,7 +9,7 @@ import {
   Datepicker,
   Textarea,
 } from "components/Fields";
-import IInput from "interfaces/form/input";
+import IQuestion from "interfaces/form/question";
 import React from "react";
 import { useAppSelector } from "redux/hooks";
 
@@ -20,7 +20,7 @@ interface Options {
   label: string | undefined;
 }
 
-export const renderInput = (input: IInput): React.ReactNode => {
+export const renderInput = (input: IQuestion): React.ReactNode => {
   const isCollapsed = useAppSelector(
     (state) => state.formBuilder.is_collapse_view
   );

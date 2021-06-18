@@ -4,16 +4,18 @@ import ICondition from "interfaces/form/condition";
 import React from "react";
 import { useAppDispatch } from "redux/hooks";
 import { updateCondition } from "redux/slices/formBuilder";
+import { getInputById } from "utils/formBuilder/input";
 
 export const renderInput = (
   selectedCondition: ICondition
 ): React.ReactElement => {
+  const target_question = getInputById(selectedCondition.target_id)
   const Options = () => {
     const dispatch = useAppDispatch();
 
     const options =
-      selectedCondition.selected_question?.options !== undefined &&
-      Object.values(selectedCondition.selected_question?.options);
+      target_question?.options !== undefined &&
+      Object.values(target_question?.options);
     if (!options) {
       return <p>Erreur, pas de réponses</p>;
     } else {
@@ -42,7 +44,7 @@ export const renderInput = (
     }
   };
 
-  switch (selectedCondition.selected_question?.input_type) {
+  switch (target_question?.input_type) {
     case "select":
       return <Options />;
       break;

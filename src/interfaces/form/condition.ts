@@ -1,17 +1,18 @@
-import IInput from "./input";
+import IQuestion from "./question";
 import IOperator from "./operator";
+import IPage from "./page";
 
 export default interface ICondition {
   id: string;
-  condition_type: "page" | "input";
-  referer_entity_id: string;
-  selected_question?: IInput;
-  operator?: IOperator;
+  type: "page" | "input";
+  referer_id: IPage["id"] | ICondition["id"];
+  target_id?: IQuestion["id"];
   target_value?: string | number;
-  step?: 1 | 2 | 3;
+  operator?: IOperator;
   group: {
     id: string | number;
     name: number;
   };
+  step?: 1 | 2 | 3;
   is_valid: boolean;
 }

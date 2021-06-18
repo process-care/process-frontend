@@ -1,10 +1,10 @@
 import { Box } from "@chakra-ui/react";
 import { SvgHover } from "components/SvgHover";
-import IInput from "interfaces/form/input";
+import IQuestion from "interfaces/form/question";
 import React from "react";
 
 interface Props {
-  input_type: IInput["input_type"];
+  input_type: IQuestion["input_type"];
 }
 
 import { ReactComponent as Checkbox } from "./assets/checkbox.svg";
@@ -19,7 +19,7 @@ import { ReactComponent as Wysiwyg } from "./assets/wysiwyg.svg";
 
 // TODO replace string by SVG orperator.
 export const renderInput = (
-  input_type: IInput["input_type"]
+  input_type: IQuestion["input_type"]
 ): React.ReactElement => {
   switch (input_type) {
     case "checkbox":

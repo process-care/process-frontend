@@ -214,7 +214,7 @@ const theme = extendTheme({
           bg: props.colorMode === "dark" ? "gray.200" : "white",
           color: props.colorMode === "dark" ? "white" : "gray.800",
           height: "100vh",
-          overflow: "scroll",
+          overflow: "auto",
           marginBottom: "100px",
           display: "flex",
           justifyContent: "center",

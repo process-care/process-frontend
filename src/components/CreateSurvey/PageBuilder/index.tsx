@@ -48,7 +48,7 @@ const PageBuilder: React.FC = () => {
     >
 
 
-      <Box h="80%" overflowY="scroll" w="100%">
+      <Box h="80%" overflowY="auto" w="100%">
 
         {pages.map((page, i) => {
           const isSelected = selected_page.id === page.id;

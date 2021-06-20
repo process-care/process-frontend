@@ -221,6 +221,16 @@ const theme = extendTheme({
           maxWidth: "unset",
           minWidth: "unset",
         }),
+        rightPart: {
+          justifyContent: "flex-start",
+          p: 0,
+          flexDirection: "column",
+          borderLeft: "1px",
+          variant: "createformColumn",
+          minW: "300px",
+          overflowY: "auto",
+          w: "32%",
+        }
       },
     },
     Text: {

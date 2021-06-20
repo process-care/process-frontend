@@ -1,19 +1,19 @@
 import { Box, Container } from "@chakra-ui/react";
 import React from "react";
 
-import InputsPreview from "components/CreateSurvey/InputsPreview";
+import InputsPreview from "components/CreateSurvey/CreateForm/InputsPreview";
 
 import IRoute from "interfaces/route";
 
 import Drawer from "components/Drawer";
-import InputForm from "components/CreateSurvey/ToolBox/InputForm";
-import PageBuilder from "components/CreateSurvey/PageBuilder";
+import InputForm from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm";
+import PageBuilder from "components/CreateSurvey/CreateForm/PageBuilder";
 
 import { useAppSelector } from "redux/hooks";
 
 import { Menu } from "components/Menu/CreateForm";
 
-import { ConditionPreview } from "components/CreateSurvey/Condition/ConditionPreview";
+import { ConditionPreview } from "components/CreateSurvey/CreateForm/Condition/ConditionPreview";
 import { RightPart } from "components/Layout/RightPart";
 
 export const CreateForm: React.FC<IRoute> = () => {

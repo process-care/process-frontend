@@ -24,7 +24,7 @@ export const Menu: React.FC = () => {
         </Flex>
       </NavLink>
 
-      <Text fontSize="12px" textTransform="uppercase">{survey_id}</Text>
+      <Text fontSize="12px" textTransform="uppercase" isTruncated maxWidth="100px">{survey_id}</Text>
       <Box pos="absolute" right="10px">
         <Button variant="roundedTransparent" mr={5}>
           {t.save}

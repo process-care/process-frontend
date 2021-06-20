@@ -23,6 +23,26 @@ overflow-x: hidden;
       rgba(234, 234, 234, 1) 80px
     );
 }
+.background__grid--black {
+  height: 100%;
+  width: 100%;
+  background-size: auto auto;
+  background-color: black;
+  background-image: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 80px,
+      rgba(234, 234, 234, 1) 81px,
+      rgba(234, 234, 234, 1) 81px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 80px,
+      rgba(234, 234, 234, 1) 81px,
+      rgba(234, 234, 234, 1) 80px
+    );
+}
 
 .chakra-form__required-indicator {
   color: black !important;

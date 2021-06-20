@@ -230,6 +230,7 @@ const theme = extendTheme({
           minW: "300px",
           overflowY: "auto",
           w: "32%",
+          height: "100vh"
         }
       },
     },

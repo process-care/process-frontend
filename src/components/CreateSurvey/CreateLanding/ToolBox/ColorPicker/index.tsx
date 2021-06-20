@@ -19,11 +19,12 @@ import { ReactComponent as COLOR_12 } from "./../assets/L.svg";
 const Border: React.FC = ({ children }) => {
     return (
         <Box
+            d="flex"
+            flex="1 0 11%"
             border="1px solid"
             borderRadius="3px"
             borderColor="transparent"
             p="3px"
-
             _hover={{ border: "1px solid gray", borderRadius: "100%", padding: "3px", cursor: "pointer" }}>
             {children}
         </Box>
@@ -32,35 +33,21 @@ const Border: React.FC = ({ children }) => {
 
 
 export const ColorPicker: React.FC = () => {
+    const colors = [COLOR_1, COLOR_2, COLOR_3, COLOR_4, COLOR_5, COLOR_6, COLOR_7, COLOR_8, COLOR_9, COLOR_10, COLOR_11, COLOR_12];
     return (
         <Box w="100%">
-            <Flex w="100%" justifyContent="space-between" mt='4'>
-                <Border>
-                    <COLOR_1 />
+            <Flex w="100%" justifyContent="space-between" mt='4' flexWrap="wrap">
+                {colors.map((el, i) => {
+                    const Component = colors[i]
+                    return (
+                        <Border key="el">
+                            <Component />
+                        </Border>
+                    )
+                })}
 
-                </Border>
-                <Border><COLOR_2 /></Border>
-                <Border>
-                    <COLOR_3 />
-                </Border>
-                <Border>
-                    <COLOR_4 />
-                </Border>
-                <Border>
-                    <COLOR_5 />
-                </Border>
-                <Border>
-                    <COLOR_6 />
-                </Border>
             </Flex>
-            <Flex w="100%" justifyContent="space-between" mt='4'>
-                <COLOR_7 />
-                <COLOR_8 />
-                <COLOR_9 />
-                <COLOR_10 />
-                <COLOR_11 />
-                <COLOR_12 />
-            </Flex>
+
         </Box>
     )
 }

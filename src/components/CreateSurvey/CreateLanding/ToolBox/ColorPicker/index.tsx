@@ -20,7 +20,7 @@ const Border: React.FC = ({ children }) => {
     return (
         <Box
             d="flex"
-            flex="1 0 11%"
+            flex="1 0 15%"
             border="1px solid"
             borderRadius="3px"
             borderColor="transparent"

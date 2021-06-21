@@ -1,4 +1,4 @@
-import { Box, Container, Text } from "@chakra-ui/react";
+import { Box, Circle, Container, Text, Flex, Button } from "@chakra-ui/react";
 import React from "react";
 
 import IRoute from "interfaces/route";
@@ -25,7 +25,16 @@ export const CreateLanding: React.FC<IRoute> = () => {
             h="100%">
             <Container variant="createformColumn" w="100%" h="100%" overflow="scroll" alignItems="center" p="0">
               <div className="background__grid--black">
-                <Box h="1200px" backgroundColor="white" w="80%" mx="auto" mt="100px" pt='50px'>
+                <Box h="1200px" backgroundColor="white" w="80%" mx="auto" mt="100px" >
+                  <Flex justifyContent="space-between" p="5" alignItems="center">
+                    <Circle size="40px" bg="brand.gray.200" color="white"></Circle>
+                    <Text variant="currentLight" textTransform="uppercase">Titre de l'étude</Text>
+                    <Button variant="rounded" backgroundColor="#FF7A00" color="white">
+                      Participer à l'étude
+                    </Button>
+                  </Flex>
+
+
                   <Box backgroundColor="#FFB800" py="70px" color="white" textAlign="left" px="10%">
                     <Text variant="xl">
                       Etude portant sur la dépression curabitur blandit tempus porttitor.

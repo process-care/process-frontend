@@ -42,7 +42,7 @@ export const LandingForm: React.FC = () => {
                         <Container variant="hr" my={10} />
 
                         <Wysiwyg id="landing_content" />
-                        <UploadFile label={t.image_cta} />
+                        <UploadFile label={t.image_cta} id="image_cover" />
                         <Button variant="roundedTransparent" mt={4}>
                             {t.image_cta}
                         </Button>

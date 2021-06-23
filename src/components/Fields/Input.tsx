@@ -25,6 +25,7 @@ interface Props {
   style?: React.CSSProperties | undefined;
   isRequired?: boolean;
   isCollapsed?: boolean;
+  ref?: any
 }
 
 export const CustomInput: React.FC<Props> = ({
@@ -39,6 +40,7 @@ export const CustomInput: React.FC<Props> = ({
   style,
   isRequired,
   isCollapsed,
+  ref,
 }) => {
   const [field, meta] = useField(name);
   return (
@@ -54,6 +56,7 @@ export const CustomInput: React.FC<Props> = ({
         <>
           <InputGroup size="sm">
             <Input
+              ref={ref}
               backgroundColor="white"
               borderRadius="7px"
               type={type}

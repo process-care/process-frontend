@@ -1,6 +1,7 @@
 import { Box, Button, Text, Container } from "@chakra-ui/react";
 import { Footer } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer";
 import { Textarea } from "components/Fields";
+import { UploadFile } from "components/Fields/Uploadfile";
 import { Wysiwyg } from "components/Fields/Wysiwyg";
 import { Formik, Form } from "formik";
 import React from "react"
@@ -26,7 +27,7 @@ export const LandingForm: React.FC = () => {
             validateOnBlur={false}
             initialValues={{}}
             enableReinitialize
-            onSubmit={(data, { setSubmitting, validateForm }) => {
+            onSubmit={(data, { setSubmitting, validateForm },) => {
                 validateForm(data);
                 setSubmitting(true);
 
@@ -41,11 +42,13 @@ export const LandingForm: React.FC = () => {
                         <Container variant="hr" my={10} />
 
                         <Wysiwyg id="landing_content" />
+                        <UploadFile label={t.image_cta} />
                         <Button variant="roundedTransparent" mt={4}>
                             {t.image_cta}
                         </Button>
                         <Textarea id="video_url" rows="small" placeholder={t.video_url_placeholder} label={t.video_url_label} />
                         <Container variant="hr" my={10} />
+
                         <Textarea id="member" rows="small" placeholder={t.member_placeholder} label={t.team_label} />
                         <Textarea id="member" rows="small" placeholder={t.member_placeholder_2} label={t.team_label} />
 

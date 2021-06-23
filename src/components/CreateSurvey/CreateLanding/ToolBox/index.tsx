@@ -29,8 +29,6 @@ export const ToolBox: React.FC = () => {
                 </Text>
                 <ColorPicker />
                 <LandingForm />
-
-
             </Box>
 
         </Container>

@@ -1,4 +1,4 @@
-import { Box, Button, Text } from "@chakra-ui/react";
+import { Box, Button, Text, Container } from "@chakra-ui/react";
 import { Footer } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer";
 import { Textarea } from "components/Fields";
 import { Wysiwyg } from "components/Fields/Wysiwyg";
@@ -38,13 +38,14 @@ export const LandingForm: React.FC = () => {
                         style={{ width: "100%", marginTop: "33px" }}>
                         <Textarea id="title" rows="small" placeholder={t.title_input} label={t.title_input} helpText={t.title_helptext} />
                         <Textarea id="subtitle" rows="small" placeholder={t.subtitle_input} label={t.subtitle_input} helpText={t.subtitle_helptext} />
-                        <Box borderTop="1px solid" borderColor="brand.line" w="100%" h="1px" my={10} />
+                        <Container variant="hr" my={10} />
+
                         <Wysiwyg id="landing_content" />
                         <Button variant="roundedTransparent" mt={4}>
                             {t.image_cta}
                         </Button>
                         <Textarea id="video_url" rows="small" placeholder={t.video_url_placeholder} label={t.video_url_label} />
-                        <Box borderTop="1px solid" borderColor="brand.line" w="100%" h="1px" my={10} />
+                        <Container variant="hr" my={10} />
                         <Textarea id="member" rows="small" placeholder={t.member_placeholder} label={t.team_label} />
                         <Textarea id="member" rows="small" placeholder={t.member_placeholder_2} label={t.team_label} />
 
@@ -55,11 +56,13 @@ export const LandingForm: React.FC = () => {
                         <Button variant="roundedTransparent" mt={4}>
                             {t.image_cta}
                         </Button>
-                        <Box borderTop="1px solid" borderColor="brand.line" w="100%" h="1px" my={10} />
+                        <Container variant="hr" my={10} />
+
                         <Text variant="currentBold">
                             {t.logos_label}
                         </Text>
-                        <Box borderTop="1px solid" borderColor="brand.line" w="100%" h="1px" my={10} />
+                        <Container variant="hr" my={10} />
+
 
                         <Text variant="currentBold">
                             {t.see_more_cta}

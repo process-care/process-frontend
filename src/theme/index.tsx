@@ -210,6 +210,9 @@ const theme = extendTheme({
             cursor: "grab",
           },
         }),
+        hr: () => ({
+          borderTop: "1px solid", borderColor: "brand.line", width: "100%", height: "1px"
+        }),
         createformColumn: (props) => ({
           bg: props.colorMode === "dark" ? "gray.200" : "white",
           color: props.colorMode === "dark" ? "white" : "gray.800",

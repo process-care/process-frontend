@@ -8,9 +8,9 @@ import { Team } from "./Team"
 const mock = {
     members: [
         { name: "Jean P.", job: "Chercheur universitaire" },
-        { name: "Jean P.", job: "Chercheur universitaire" },
-        { name: "Jean P.", job: "Chercheur universitaire" },
-        { name: "Jean P.", job: "Chercheur universitaire" }
+        { name: "Jean C.", job: "Chercheur universitaire" },
+        { name: "Jean F.", job: "Chercheur universitaire" },
+        { name: "Jean Z.", job: "Chercheur universitaire" }
     ]
 }
 
@@ -24,7 +24,6 @@ export const Preview: React.FC = () => {
             <Team members={mock.members} />
             <Container variant="hr" my={10} />
             <Footer />
-
         </Box>
     )
 }

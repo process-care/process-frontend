@@ -13,7 +13,8 @@ import { ReactComponent as COLOR_9 } from "./../assets/I.svg";
 import { ReactComponent as COLOR_10 } from "./../assets/J.svg";
 import { ReactComponent as COLOR_11 } from "./../assets/K.svg";
 import { ReactComponent as COLOR_12 } from "./../assets/L.svg";
-
+import { colors } from "./utils";
+import { useFormikContext } from "formik";
 
 
 const Border: React.FC = ({ children }) => {
@@ -25,7 +26,8 @@ const Border: React.FC = ({ children }) => {
             borderRadius="3px"
             borderColor="transparent"
             p="3px"
-            _hover={{ border: "1px solid gray", borderRadius: "100%", padding: "3px", cursor: "pointer" }}>
+            maxW="43px"
+            _hover={{ border: "1px solid gray", maxWidth: "43px", borderRadius: "100%", padding: "3px", cursor: "pointer" }}>
             {children}
         </Box>
     )
@@ -33,15 +35,17 @@ const Border: React.FC = ({ children }) => {
 
 
 export const ColorPicker: React.FC = () => {
-    const colors = [COLOR_1, COLOR_2, COLOR_3, COLOR_4, COLOR_5, COLOR_6, COLOR_7, COLOR_8, COLOR_9, COLOR_10, COLOR_11, COLOR_12];
+    const { setFieldValue } = useFormikContext();
+
+    const list = [COLOR_1, COLOR_2, COLOR_3, COLOR_4, COLOR_5, COLOR_6, COLOR_7, COLOR_8, COLOR_9, COLOR_10, COLOR_11, COLOR_12];
     return (
         <Box w="100%">
-            <Flex w="100%" justifyContent="space-between" mt='4' flexWrap="wrap">
-                {colors.map((el, i) => {
-                    const Component = colors[i]
+            <Flex w="100%" justifyContent="flex-start" mt='4' flexWrap="wrap">
+                {list.map((el, i) => {
+                    const Component = list[i]
                     return (
-                        <Border key="el">
-                            <Component />
+                        <Border key={i} >
+                            <Component onClick={() => setFieldValue("color_theme", colors[i])} />
                         </Border>
                     )
                 })}

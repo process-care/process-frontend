@@ -7,6 +7,7 @@ import { Formik, Form } from "formik";
 import React from "react"
 import { t } from "static/createLanding"
 import { ColorPicker } from "../ColorPicker";
+import { initialValues } from "./utils/initialValues";
 
 export const LandingForm: React.FC = () => {
     const onChange = (event: React.FormEvent<HTMLFormElement>) => {
@@ -26,7 +27,7 @@ export const LandingForm: React.FC = () => {
     return (
         <Formik
             validateOnBlur={false}
-            initialValues={{}}
+            initialValues={initialValues}
             enableReinitialize
             onSubmit={(data, { setSubmitting, validateForm },) => {
                 validateForm(data);
@@ -44,8 +45,6 @@ export const LandingForm: React.FC = () => {
                                 {t.label_logo}
                             </Text>
                             <UploadFile label={t.logo_cta} id="logo" helpText={t.logo_helptext} />
-
-
                             <Text variant="currentBold" mt={9}>
                                 {t.theme_label}
                             </Text>
@@ -64,7 +63,7 @@ export const LandingForm: React.FC = () => {
                             </Text>
                             <Textarea id="member" rows="small" placeholder={t.member_placeholder} label="" />
                             <Textarea id="member" rows="small" placeholder={t.member_placeholder_2} label="" />
-                            <UploadFile label={t.photo_member_cta} id="photo_member_cta" helpText={t.image_helptext} />
+                            <UploadFile label={t.photo_member_cta} id="photo_member" helpText={t.image_helptext} />
                             <Container variant="hr" my={10} />
                             <Text variant="currentBold">
                                 {t.logos_label}

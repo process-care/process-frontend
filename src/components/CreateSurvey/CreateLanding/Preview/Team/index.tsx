@@ -26,7 +26,7 @@ export const Team: React.FC<MemberList> = ({ members }) => {
                 L'équipe
             </Text>
             <Flex w="80%" marginX="auto" justify="space-around" mt={20}>
-                {members.map(({ name, job }) => <Member name={name} job={job} />
+                {members.map(({ name, job }) => <Member key={name} name={name} job={job} />
                 )}
             </Flex>
 

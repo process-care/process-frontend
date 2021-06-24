@@ -14,11 +14,7 @@ export const ToolBox: React.FC = () => {
             <Text variant="titleParaLight" mt="20px" pb="18px" borderBottom="1px solid" borderColor="black" >
                 {t.title}
             </Text>
-
-
             <LandingForm />
-
-
         </Container>
     )
 }

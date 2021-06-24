@@ -6,6 +6,7 @@ import { Wysiwyg } from "components/Fields/Wysiwyg";
 import { Formik, Form } from "formik";
 import React from "react"
 import { t } from "static/createLanding"
+import { ColorPicker } from "../ColorPicker";
 
 export const LandingForm: React.FC = () => {
     const onChange = (event: React.FormEvent<HTMLFormElement>) => {
@@ -34,53 +35,55 @@ export const LandingForm: React.FC = () => {
             }}>
             {() => {
                 return (
-                    <Form
-                        onChange={(event) => onChange(event)}
-                        style={{ width: "100%", marginTop: "33px" }}>
-                        <Textarea id="title" rows="small" placeholder={t.title_input} label={t.title_input} helpText={t.title_helptext} />
-                        <Textarea id="subtitle" rows="small" placeholder={t.subtitle_input} label={t.subtitle_input} helpText={t.subtitle_helptext} />
-                        <Container variant="hr" my={10} />
+                    <Box p={4} d="flex" alignItems="flex-start" flexDirection="column" textAlign="left">
+                        <Form
+                            onChange={(event) => onChange(event)}
+                            style={{ width: "100%" }}>
 
-                        <Wysiwyg id="landing_content" />
-                        <UploadFile label={t.image_cta} id="image_cover" />
-                        <Button variant="roundedTransparent" mt={4}>
-                            {t.image_cta}
-                        </Button>
-                        <Textarea id="video_url" rows="small" placeholder={t.video_url_placeholder} label={t.video_url_label} />
-                        <Container variant="hr" my={10} />
-
-                        <Textarea id="member" rows="small" placeholder={t.member_placeholder} label={t.team_label} />
-                        <Textarea id="member" rows="small" placeholder={t.member_placeholder_2} label={t.team_label} />
-
-                        <Text variant="currentBold">
-                            {t.image_cta}
-                        </Text>
-
-                        <Button variant="roundedTransparent" mt={4}>
-                            {t.image_cta}
-                        </Button>
-                        <Container variant="hr" my={10} />
-
-                        <Text variant="currentBold">
-                            {t.logos_label}
-                        </Text>
-                        <Container variant="hr" my={10} />
+                            <Text variant="currentBold">
+                                {t.label_logo}
+                            </Text>
+                            <UploadFile label={t.logo_cta} id="logo" helpText={t.logo_helptext} />
 
 
-                        <Text variant="currentBold">
-                            {t.see_more_cta}
-                        </Text>
+                            <Text variant="currentBold" mt={9}>
+                                {t.theme_label}
+                            </Text>
+                            <ColorPicker />
+                            <Textarea id="title" rows="small" placeholder={t.title_input} label={t.title_input} helpText={t.title_helptext} />
+                            <Textarea id="subtitle" rows="small" placeholder={t.subtitle_input} label={t.subtitle_input} helpText={t.subtitle_helptext} />
+                            <Container variant="hr" my={10} />
 
-                        <Button variant="roundedTransparent" mt={4}>
-                            {t.logo_cta}
-                        </Button>
-                        <Box mb="100"></Box>
-                        <Footer
-                            onCancel={() => console.log("")}
-                            onSubmit={() => console.log("")}
-                            onDelete={() => console.log("")}
-                        />
-                    </Form>
+                            <Wysiwyg id="landing_content" />
+                            <UploadFile label={t.image_cta} id="image_cover" helpText={t.image_helptext} />
+
+                            <Textarea id="video_url" rows="small" placeholder={t.video_url_placeholder} label={t.video_url_label} />
+                            <Container variant="hr" my={10} />
+                            <Text variant="currentBold" mt={9}>
+                                {t.team_label}
+                            </Text>
+                            <Textarea id="member" rows="small" placeholder={t.member_placeholder} label="" />
+                            <Textarea id="member" rows="small" placeholder={t.member_placeholder_2} label="" />
+                            <UploadFile label={t.photo_member_cta} id="photo_member_cta" helpText={t.image_helptext} />
+                            <Container variant="hr" my={10} />
+                            <Text variant="currentBold">
+                                {t.logos_label}
+                            </Text>
+                            <UploadFile label={t.logos_cta} id="photo_member_cta" helpText={t.image_helptext} />
+                            <Container variant="hr" my={10} />
+                            <Text variant="currentBold">
+                                {t.see_more_cta}
+                            </Text>
+                            <Button variant="roundedTransparent" mt={4}>
+                                {t.see_more_cta}
+                            </Button>
+                            <Footer
+                                onCancel={() => console.log("")}
+                                onSubmit={() => console.log("")}
+                                onDelete={() => console.log("")}
+                            />
+                        </Form>
+                    </Box>
                 )
             }}
         </Formik>

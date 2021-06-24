@@ -5,22 +5,24 @@ import { UploadFile } from "components/Fields/Uploadfile";
 import { Wysiwyg } from "components/Fields/Wysiwyg";
 import { Formik, Form } from "formik";
 import React from "react"
+import { updateLanding } from "redux/slices/landingBuilder";
 import { t } from "static/createLanding"
 import { ColorPicker } from "../ColorPicker";
 import { initialValues } from "./utils/initialValues";
+import { useDispatch } from "react-redux";
 
 export const LandingForm: React.FC = () => {
+    const dispatch = useDispatch()
     const onChange = (event: React.FormEvent<HTMLFormElement>) => {
         const target = event.target as HTMLFormElement;
         if (target !== null) {
-            // dispatch(
-            //     updatePage({
-            //         id: selected_page.id,
-            //         data: {
-            //             [target.id]: target.checked ? target.checked : target.value,
-            //         },
-            //     })
-            // );
+            dispatch(
+                updateLanding({
+                    data: {
+                        [target.id]: target.value,
+                    },
+                })
+            );
         }
 
     };
@@ -34,7 +36,29 @@ export const LandingForm: React.FC = () => {
                 setSubmitting(true);
 
             }}>
-            {() => {
+            {({ values }) => {
+                console.log(values)
+                // Handle wysiwyg change
+                React.useEffect(() => {
+                    dispatch(
+                        updateLanding({
+                            data: {
+                                wysiwyg: values.wysiwyg,
+                            },
+                        })
+                    );
+                }, [values.wysiwyg]);
+
+                // Handle colors change
+                React.useEffect(() => {
+                    dispatch(
+                        updateLanding({
+                            data: {
+                                color_theme: values.color_theme,
+                            },
+                        })
+                    );
+                }, [values.color_theme]);
                 return (
                     <Box p={4} d="flex" alignItems="flex-start" flexDirection="column" textAlign="left">
                         <Form
@@ -49,8 +73,8 @@ export const LandingForm: React.FC = () => {
                                 {t.theme_label}
                             </Text>
                             <ColorPicker />
-                            <Textarea id="title" rows="small" placeholder={t.title_input} label={t.title_input} helpText={t.title_helptext} />
-                            <Textarea id="subtitle" rows="small" placeholder={t.subtitle_input} label={t.subtitle_input} helpText={t.subtitle_helptext} />
+                            <Textarea id="title" rows="medium" placeholder={t.title_input} label={t.title_input} helpText={t.title_helptext} />
+                            <Textarea id="subtitle" rows="large" placeholder={t.subtitle_input} label={t.subtitle_input} helpText={t.subtitle_helptext} />
                             <Container variant="hr" my={10} />
 
                             <Wysiwyg id="landing_content" />

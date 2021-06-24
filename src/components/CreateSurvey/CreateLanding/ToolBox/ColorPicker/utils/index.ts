@@ -1,9 +1,7 @@
-interface C {
-    base: string,
-    button: string
-}
+import { IColors } from "interfaces/landing";
 
-export const colors: C[] = [{
+
+export const colors: IColors[] = [{
     base: "#000000", button: "#0084FF"
 },
 {

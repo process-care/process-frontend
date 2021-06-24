@@ -1,8 +1,7 @@
 import React from "react"
-import { Container, Text, Box, Button } from "@chakra-ui/react"
+import { Container, Text } from "@chakra-ui/react"
 
 import { t } from "static/createLanding"
-import { ColorPicker } from "./ColorPicker"
 import { LandingForm } from "./Form"
 
 

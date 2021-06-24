@@ -15,7 +15,9 @@ export const LandingForm: React.FC = () => {
     const dispatch = useDispatch()
     const onChange = (event: React.FormEvent<HTMLFormElement>) => {
         const target = event.target as HTMLFormElement;
-        if (target !== null) {
+        if (target.type === "file") {
+            return false
+        } else if (target !== null) {
             dispatch(
                 updateLanding({
                     data: {
@@ -37,7 +39,6 @@ export const LandingForm: React.FC = () => {
 
             }}>
             {({ values }) => {
-                console.log(values)
                 // Handle wysiwyg change
                 React.useEffect(() => {
                     dispatch(

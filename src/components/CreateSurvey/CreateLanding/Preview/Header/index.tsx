@@ -1,15 +1,17 @@
 import React from "react"
-import { Button, Circle, Flex, Text } from "@chakra-ui/react"
-import { IColors } from "interfaces/landing"
+import { Button, Flex, Text } from "@chakra-ui/react"
+import { IColors, ILanding } from "interfaces/landing"
 
 interface Props {
-    theme: IColors
+    theme: IColors,
+    logo: ILanding["logo"],
 }
 
-export const Header: React.FC<Props> = ({ theme }) => {
+
+export const Header: React.FC<Props> = ({ theme, logo }) => {
     return (
         <Flex justifyContent="space-between" p="5" alignItems="center">
-            <Circle size="40px" bg="brand.gray.200" color="white"></Circle>
+            {logo !== "" && <img src={logo} alt="Logo" style={{ maxHeight: "40px" }} />}
             <Text variant="currentLight" textTransform="uppercase">Recherche sur l'euphorie</Text>
             <Button variant="rounded" backgroundColor={theme.button} color="white">
                 Participer à l'étude

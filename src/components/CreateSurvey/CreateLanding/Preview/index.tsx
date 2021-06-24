@@ -20,7 +20,7 @@ export const Preview: React.FC = () => {
     const { color_theme } = data
     return (
         <Box h="fit-content" backgroundColor="white" w="80%" mx="auto" mt="100px" >
-            <Header theme={color_theme} />
+            <Header theme={color_theme} logo={data.logo} />
             <Content data={data} theme={color_theme} />
             <Container variant="hr" my={10} />
             <Team members={mock.members} />

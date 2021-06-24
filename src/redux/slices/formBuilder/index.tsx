@@ -103,7 +103,6 @@ export const formBuilderSlice = createSlice({
       state.is_editing = action.payload;
     },
     setIsRemoving: (state, action: PayloadAction<ICondition["id"]>) => {
-      console.log(action.payload)
       state.is_removing = action.payload;
     },
     updateInput: (state, action: PayloadAction<Update>) => {

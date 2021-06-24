@@ -6,10 +6,10 @@ export interface IColors {
 export interface ILanding {
     id: string,
     color_theme: IColors,
-    image_cover: {},
-    logo: {},
+    image_cover: string,
+    logo: string,
     member: string,
-    photo_member: {},
+    photo_member: string,
     subtitle: string,
     title: string,
     video_url: string,

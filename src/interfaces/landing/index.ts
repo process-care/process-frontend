@@ -5,12 +5,18 @@ export interface IColors {
   button: string;
 }
 
+export interface IMember {
+  name: string;
+  job: string;
+  //   image: string;
+}
+
 export interface ILanding {
   id: string;
   color_theme: IColors;
   image_cover: string;
   logo: string;
-  members: string;
+  members: [] | any;
   subtitle: string;
   title: string;
   video_url: string;

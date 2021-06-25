@@ -10,6 +10,7 @@ import { t } from "static/createLanding";
 import { ColorPicker } from "../ColorPicker";
 import { initialValues } from "./utils/initialValues";
 import { useDispatch } from "react-redux";
+import { RepeatableFields } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/RepeatableFields";
 
 export const LandingForm: React.FC = () => {
   const dispatch = useDispatch();
@@ -96,7 +97,6 @@ export const LandingForm: React.FC = () => {
                 helpText={t.subtitle_helptext}
               />
               <Container variant="hr" my={10} />
-
               <Wysiwyg id="landing_content" />
               <UploadFile
                 label={t.image_cta}
@@ -104,7 +104,6 @@ export const LandingForm: React.FC = () => {
                 helpText={t.image_helptext}
                 isDisabled={values.video_url !== ""}
               />
-
               <Textarea
                 id="video_url"
                 rows="small"
@@ -116,7 +115,7 @@ export const LandingForm: React.FC = () => {
               <Text variant="currentBold" mt={9}>
                 {t.team_label}
               </Text>
-
+              <RepeatableFields name="members" />
               <Container variant="hr" my={10} />
               <Text variant="currentBold">{t.logos_label}</Text>
               <UploadFile

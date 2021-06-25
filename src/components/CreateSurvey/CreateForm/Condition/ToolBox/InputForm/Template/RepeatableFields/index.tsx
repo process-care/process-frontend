@@ -3,6 +3,7 @@ import { FieldArray, useField, useFormikContext } from "formik";
 import { Textarea } from "components/Fields";
 import { Flex, Box, Button, Text } from "@chakra-ui/react";
 import { useAppSelector } from "redux/hooks";
+import { UploadFile } from "components/Fields/Uploadfile";
 
 interface Props {
   name: string;
@@ -19,7 +20,7 @@ export const RepeatableFields: React.FC<Props> = ({ name }) => {
     // Populate options field on edit.
     if (isEditing) {
       fields.map((el: string, index: number) => {
-        setFieldValue(`option_${index}`, el);
+        setFieldValue(`members_${index}`, el);
       });
     }
   }, [fields.length]);
@@ -34,17 +35,31 @@ export const RepeatableFields: React.FC<Props> = ({ name }) => {
               fields.map((_: string, index: number) => (
                 <Box key={index} w="100%">
                   <Flex w="100%">
-                    <Textarea
-                      id={`option_${index}`}
-                      label={`Réponse ${index}`}
-                      placeholder={
-                        isEditing ? fields[index] : `Réponse ${index}`
-                      }
-                      rows="small"
-                      isRequired
-                      isCollapsed={false}
-                      {...field}
-                    />
+                    <Box>
+                      <Textarea
+                        id={`member.name_${index}`}
+                        label="Nom"
+                        placeholder="Renseigner le nom"
+                        rows="small"
+                        isRequired
+                        isCollapsed={false}
+                        {...field}
+                      />
+                      <Textarea
+                        id={`member.job_${index}`}
+                        label="Job"
+                        placeholder="Renseigner l'emploi"
+                        rows="small"
+                        isRequired
+                        isCollapsed={false}
+                        {...field}
+                      />
+                      <UploadFile
+                        label="Ajouter une photo"
+                        id={`member.image_${index}`}
+                      />
+                    </Box>
+
                     <Flex ml={3} mt={8}>
                       <Button
                         type="button"

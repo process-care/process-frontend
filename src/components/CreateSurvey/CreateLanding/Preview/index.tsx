@@ -5,14 +5,6 @@ import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { Team } from "./Team";
 import { useAppSelector } from "redux/hooks";
-const mock = {
-  members: [
-    { name: "Jean P.", job: "Chercheur universitaire" },
-    { name: "Jean C.", job: "Chercheur universitaire" },
-    { name: "Jean F.", job: "Chercheur universitaire" },
-    { name: "Jean Z.", job: "Chercheur universitaire" },
-  ],
-};
 
 export const Preview: React.FC = () => {
   const data = useAppSelector((state) => state.landingBuilder.landing);
@@ -22,7 +14,7 @@ export const Preview: React.FC = () => {
       <Header theme={color_theme} logo={data.logo} />
       <Content data={data} theme={color_theme} />
       <Container variant="hr" my={10} />
-      <Team members={mock.members} />
+      <Team members={data.members} />
       <Container variant="hr" my={10} />
       <Footer data={data} />
     </Box>

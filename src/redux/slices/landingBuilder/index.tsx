@@ -25,7 +25,17 @@ export const landingBuilderSlice = createSlice({
     updateLanding: (state, action: PayloadAction<Update>) => {
       const { data } = action.payload;
       if (data) {
-        state.landing = { ...state.landing, ...data };
+        for (const [key, value] of Object.entries(data)) {
+          if (key.includes("members")) {
+            state.landing.members = {
+              ...state.landing.members,
+              [key]: value,
+            };
+
+            return;
+          }
+          state.landing = { ...state.landing, ...data };
+        }
       }
     },
   },

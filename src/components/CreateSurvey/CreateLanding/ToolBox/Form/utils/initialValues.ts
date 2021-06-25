@@ -6,7 +6,7 @@ export const initialValues: ILanding = {
   color_theme: colors[0],
   image_cover: "",
   logo: "",
-  members: "",
+  members: [],
   subtitle: "",
   title: "",
   video_url: "",

@@ -1,6 +1,7 @@
 import React from "react"
 import { Box, Text, Flex } from "@chakra-ui/react"
 import { IColors, ILanding } from "interfaces/landing"
+import { Video } from "components/Video"
 
 
 interface Props {
@@ -11,7 +12,7 @@ interface Props {
 const placeholder = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit."
 
 export const Content: React.FC<Props> = ({ data, theme }) => {
-    const had_image = data.image_cover !== ""
+    const had_media = data.image_cover !== "" || data.video_url !== ""
     return (
         <Box>
             <Box backgroundColor={theme.base} py="70px" color="white" textAlign="left" px="10%">
@@ -22,11 +23,13 @@ export const Content: React.FC<Props> = ({ data, theme }) => {
                     {data.subtitle || `Sous titre à remplacer. ${placeholder}`}
                 </Text>
             </Box>
+
             <Flex p={10}>
-                {had_image && <Box>
-                    <img src={data.image_cover} style={{ maxWidth: "400px", width: "400px" }} alt="" />
+                {had_media && <Box>
+                    <Video url={data.video_url} />
+                    {/* <img src={data.image_cover} style={{ maxWidth: "400px", width: "400px" }} alt="" /> */}
                 </Box>}
-                <Text textAlign="left" w={had_image ? '50%' : "100%"} pl={10} variant="xxs" dangerouslySetInnerHTML={{ __html: data.wysiwyg || placeholder }}></Text>
+                <Text textAlign="left" w={had_media ? '50%' : "60%"} m={had_media ? "inherit" : "auto"} pl={10} variant="xxs" dangerouslySetInnerHTML={{ __html: data.wysiwyg || placeholder }}></Text>
             </Flex>
         </Box>
 

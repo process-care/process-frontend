@@ -13,8 +13,14 @@ export const CreateLanding: React.FC<IRoute> = () => {
   return (
     <Box overflow="auto">
       <Box d="flex" justifyContent="space-around" w="100%" overflow="hidden">
-        <Box w="100%" >
-          <Box pos="sticky" top="0px">
+        <Box w="100%" pos="relative">
+          <Box position="fixed"
+            top="0"
+            w="75.8%"
+            backgroundColor="white"
+            zIndex="10"
+            borderRight="1px solid black"
+          >
             <Menu />
 
           </Box>
@@ -24,9 +30,9 @@ export const CreateLanding: React.FC<IRoute> = () => {
             overflow="hidden"
             w="100%"
             h="100%">
-            <Container variant="createformColumn" w="100%" h="100%" overflow="scroll" alignItems="center" p="0">
+            <Container variant="createformColumn" w="100%" h="100%" alignItems="center" p="0" d="flex">
               <div className="background__grid--black">
-                <Preview/>
+                <Preview />
               </div>
             </Container>
           </Box>

@@ -7,14 +7,17 @@ import { ReactComponent as Back } from "./assets/back.svg";
 import { t } from "static/input";
 export const Menu: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { survey_id } = useAppSelector(state => state.formBuilder.selected_page)
+  const { survey_id } = useAppSelector(state => state.formBuilder.selected_page);
+
   return (
     <Flex
       pos="relative"
       p={5}
       borderBottom="1px"
       justifyContent="flex-start"
-      alignItems="center">
+      alignItems="center"
+
+    >
       <NavLink to="/dashboard">
         <Flex ml="50px" alignItems="center">
           <Back />

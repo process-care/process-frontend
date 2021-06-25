@@ -3,7 +3,6 @@ import formBuilder from "redux/slices/formBuilder";
 import application from "redux/slices/application";
 import landingBuilder from "redux/slices/landingBuilder";
 
-
 export const store = configureStore({
   reducer: {
     formBuilder,

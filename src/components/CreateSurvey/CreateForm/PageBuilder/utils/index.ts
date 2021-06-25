@@ -14,18 +14,15 @@ export const isInactive = (
   if (selectedCondition !== undefined) {
     if (selectedCondition?.type === "page") {
       return (
-        pages.findIndex((p) => p.id === selectedCondition?.referer_id) -
-        1 <
-        i
+        pages.findIndex((p) => p.id === selectedCondition?.referer_id) - 1 < i
       );
     } else {
       return (
         pages.findIndex(
           (p) =>
             p.id ===
-            getPageById(
-              getInputById(selectedCondition?.referer_id)?.page_id
-            )?.id
+            getPageById(getInputById(selectedCondition?.referer_id)?.page_id)
+              ?.id
         ) < i
       );
     }

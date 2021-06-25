@@ -16,7 +16,7 @@ import {
   setIsEditing,
   setIsRemoving,
 } from "redux/slices/formBuilder";
-import { Draggable } from 'react-beautiful-dnd';
+import { Draggable } from "react-beautiful-dnd";
 
 import { ReactComponent as Delete } from "./assets/delete.svg";
 import { ReactComponent as Edit } from "./assets/edit.svg";
@@ -34,12 +34,10 @@ interface CardProps {
   index: number;
 }
 
-
-
 const Card: React.FC<CardProps> = ({ input, index }) => {
   const dispatch = useAppDispatch();
-  const { is_removing } = useAppSelector(state => state.formBuilder)
-  const isRemoving = is_removing === input.id
+  const { is_removing } = useAppSelector((state) => state.formBuilder);
+  const isRemoving = is_removing === input.id;
   const color = useColorModeValue("gray.800", "gray.900");
 
   const handleEdit = () => {
@@ -49,23 +47,28 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
   };
 
   return (
-    <Draggable draggableId={input.id} index={index} >
+    <Draggable draggableId={input.id} index={index}>
       {(provided, snapshot) => (
-        <Flex w="100%" alignItems="center" position="relative"
+        <Flex
+          w="100%"
+          alignItems="center"
+          position="relative"
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
-          isDragging={snapshot.isDragging}>
-          <Box onClick={() => dispatch(setIsRemoving(input.id))} position="sticky" left="-16px">
+          isDragging={snapshot.isDragging}
+        >
+          <Box
+            onClick={() => dispatch(setIsRemoving(input.id))}
+            position="sticky"
+            left="-16px"
+          >
             <SvgHover>
               <Delete />
             </SvgHover>
           </Box>
 
-          <Box
-            _hover={{ cursor: "grab" }}
-            key={input.id}
-            w="100%">
+          <Box _hover={{ cursor: "grab" }} key={input.id} w="100%">
             <Container variant="inputContainer" padding={isRemoving ? 0 : 4}>
               <Box color={color}>
                 {!isRemoving && (
@@ -89,7 +92,8 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
                   position="relative"
                   top="-7px"
                   mb="10px"
-                  display={isRemoving ? "none" : ""}>
+                  display={isRemoving ? "none" : ""}
+                >
                   {renderInput(input)}
                 </Box>
               </Box>
@@ -104,7 +108,6 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
         </Flex>
       )}
     </Draggable>
-
   );
 };
 

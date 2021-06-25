@@ -32,7 +32,7 @@ const PageBuilder: React.FC = () => {
         condition: [],
         is_locked: false,
         short_name: `P${pages.length + 1}`,
-        survey_id: `survey-${id}`
+        survey_id: `survey-${id}`,
       })
     );
   };
@@ -46,10 +46,7 @@ const PageBuilder: React.FC = () => {
       width="100%"
       position="relative"
     >
-
-
       <Box h="80%" overflowY="auto" w="100%">
-
         {pages.map((page, i) => {
           const isSelected = selected_page.id === page.id;
           return (
@@ -59,7 +56,8 @@ const PageBuilder: React.FC = () => {
               key={page.id}
               visibility={
                 isInactive(selectedCondition, pages, i) ? "hidden" : "visible"
-              }>
+              }
+            >
               <Flex alignItems="center" position="relative">
                 <Box position="absolute" right="16px" bottom="35px">
                   {hadValidCondition(page.id).length > 0 ? <Condition /> : ""}
@@ -75,7 +73,8 @@ const PageBuilder: React.FC = () => {
                   key={page.id}
                   py={4}
                   px={3}
-                  _hover={{ cursor: "pointer" }}>
+                  _hover={{ cursor: "pointer" }}
+                >
                   {page.is_locked ? (
                     <Box mx="auto">
                       <Locked />
@@ -88,9 +87,10 @@ const PageBuilder: React.FC = () => {
                   <Box
                     _hover={{ cursor: "pointer" }}
                     onClick={() => {
-                      dispatch(selectPage(page))
-                      dispatch(setIsRemoving(page.id))
-                    }}>
+                      dispatch(selectPage(page));
+                      dispatch(setIsRemoving(page.id));
+                    }}
+                  >
                     <Delete />
                   </Box>
                 )}
@@ -99,14 +99,14 @@ const PageBuilder: React.FC = () => {
                 mt={1}
                 color="blue.500"
                 fontSize="10"
-                fontWeight={isSelected ? "bold" : ""}>
+                fontWeight={isSelected ? "bold" : ""}
+              >
                 {page.name}
               </Text>
             </Box>
           );
         })}
       </Box>
-
 
       <Box onClick={() => handlePage()} pos="absolute" bottom="80px">
         <SvgHover>

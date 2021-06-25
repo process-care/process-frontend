@@ -31,7 +31,8 @@ export const SvgHover: React.FC<Props> = ({
                 ...style,
               },
             }
-      }>
+      }
+    >
       {children}
     </Box>
   );

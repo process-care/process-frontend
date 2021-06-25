@@ -10,7 +10,6 @@ import { Portail } from "pages/Portail";
 import { Survey } from "pages/Survey";
 import { CreateLanding } from "pages/CreateSurvey/CreateLanding";
 
-
 const routes: IRoute[] = [
   {
     name: "Connexion / Inscription",

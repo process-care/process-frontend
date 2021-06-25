@@ -3,7 +3,6 @@ import { SvgHover } from "components/SvgHover";
 import React from "react";
 import { t } from "static/global";
 
-
 import { ReactComponent as Trash } from "assets/trash.svg";
 
 interface Props {
@@ -13,9 +12,12 @@ interface Props {
   onDelete?: () => void;
 }
 
-
-
-export const Footer: React.FC<Props> = ({ onCancel, disabled, onSubmit, onDelete }) => {
+export const Footer: React.FC<Props> = ({
+  onCancel,
+  disabled,
+  onSubmit,
+  onDelete,
+}) => {
   return (
     <Center
       w="100%"
@@ -24,7 +26,8 @@ export const Footer: React.FC<Props> = ({ onCancel, disabled, onSubmit, onDelete
       backgroundColor="white"
       borderTop="1px solid"
       p={1}
-      pb={3}>
+      pb={3}
+    >
       <Box w="70%" pl={4}>
         <SvgHover>
           <Trash onClick={() => !!onDelete && onDelete()} />
@@ -36,7 +39,8 @@ export const Footer: React.FC<Props> = ({ onCancel, disabled, onSubmit, onDelete
         justifyContent="space-between"
         w="75%"
         mx="auto"
-        pt={2}>
+        pt={2}
+      >
         <Button variant="link" onClick={() => onCancel()} type="button">
           {t.cancel}
         </Button>
@@ -44,7 +48,8 @@ export const Footer: React.FC<Props> = ({ onCancel, disabled, onSubmit, onDelete
           type="submit"
           variant="rounded"
           disabled={disabled}
-          onClick={() => onSubmit()}>
+          onClick={() => onSubmit()}
+        >
           {t.validate}
         </Button>
       </ButtonGroup>

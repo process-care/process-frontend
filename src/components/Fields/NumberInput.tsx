@@ -48,7 +48,8 @@ export const CustomNumberInput: React.FC<Props> = ({
       id={name}
       textAlign="left"
       style={style}
-      isInvalid={!!meta.error}>
+      isInvalid={!!meta.error}
+    >
       <FormLabel>{label}</FormLabel>
       {!isCollapsed && (
         <>
@@ -59,7 +60,8 @@ export const CustomNumberInput: React.FC<Props> = ({
               max={max}
               precision={precision}
               allowMouseWheel
-              w="100%">
+              w="100%"
+            >
               <NumberInputField placeholder={placeholder} {...field} />
             </NumberInput>
             {inputRightAddon && <InputRightAddon children={inputRightAddon} />}

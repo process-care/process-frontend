@@ -85,7 +85,8 @@ export const Group: React.FC<Props> = ({
                 p={2}
                 textAlign="left"
                 textTransform="uppercase"
-                mr={2}>
+                mr={2}
+              >
                 {t.group_condition} {name}
               </Box>
               <Button
@@ -95,14 +96,15 @@ export const Group: React.FC<Props> = ({
                 variant="link"
                 color="brand.blue"
                 fontSize="10"
-                pt="2px">
+                pt="2px"
+              >
                 <Delete />
               </Button>
             </Flex>
 
             {conditions?.map((condition: ICondition, index: number) => {
               const isLast = index === conditions.length - 1;
-              const target_question = getInputById(condition.target_id)
+              const target_question = getInputById(condition.target_id);
 
               if (condition.group.id === id) {
                 if (
@@ -135,12 +137,14 @@ export const Group: React.FC<Props> = ({
 
                             <Flex
                               alignItems="flex-start"
-                              justifyContent="space-between">
+                              justifyContent="space-between"
+                            >
                               <Flex alignItems="flex-start">
                                 <Text
                                   fontSize="14"
                                   fontWeight="bold"
-                                  color="black">
+                                  color="black"
+                                >
                                   {target_question?.label}
                                 </Text>
                                 <Button
@@ -163,7 +167,8 @@ export const Group: React.FC<Props> = ({
                                   color="brand.blue"
                                   fontSize="10"
                                   pt={1}
-                                  justifyContent="flex-end">
+                                  justifyContent="flex-end"
+                                >
                                   Edit
                                 </Button>
                               </Flex>
@@ -178,7 +183,8 @@ export const Group: React.FC<Props> = ({
                                 variant="link"
                                 color="brand.blue"
                                 fontSize="10"
-                                pt="2px">
+                                pt="2px"
+                              >
                                 <Delete />
                               </Button>
                             </Flex>
@@ -213,8 +219,7 @@ export const Group: React.FC<Props> = ({
                               addCondition({
                                 id: condition_id,
                                 type:
-                                  selected_condition?.type !==
-                                    undefined
+                                  selected_condition?.type !== undefined
                                     ? selected_condition.type
                                     : "page",
                                 referer_id:
@@ -230,7 +235,8 @@ export const Group: React.FC<Props> = ({
                               })
                             );
                             dispatch(selectCondition({ id: condition_id }));
-                          }}>
+                          }}
+                        >
                           {t.add_condition}
                         </Button>
                       </Flex>
@@ -267,7 +273,8 @@ export const Group: React.FC<Props> = ({
                     })
                   );
                   dispatch(selectCondition({ id: condition_id }));
-                }}>
+                }}
+              >
                 {t.add_group}
               </Button>
             </Flex>

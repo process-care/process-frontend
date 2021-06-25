@@ -50,7 +50,8 @@ const InputForm: React.FC = () => {
         validateForm(data);
         setSubmitting(true);
         dispatch(toogleDrawer());
-      }}>
+      }}
+    >
       {({ isValid, isSubmitting, values }) => {
         const onChange = (event: React.FormEvent<HTMLFormElement>) => {
           const target = event.target as HTMLFormElement;
@@ -102,7 +103,8 @@ const InputForm: React.FC = () => {
               justifyContent="center"
               fontSize="30"
               flexDirection="column"
-              px={10}>
+              px={10}
+            >
               <Flex
                 borderBottom="1px solid"
                 borderColor="black"
@@ -111,7 +113,8 @@ const InputForm: React.FC = () => {
                 pt={5}
                 pb={1}
                 mb={4}
-                alignItems="start">
+                alignItems="start"
+              >
                 <Flex alignItems="center">
                   <InputIcon input_type={selectedInput.input_type} />
 
@@ -138,7 +141,8 @@ const InputForm: React.FC = () => {
                 w="100%"
                 justifyContent="space-between"
                 mt={5}
-                pb="100px">
+                pb="100px"
+              >
                 {getConditionsByRefererId(selected_input.id).length === 0 ? (
                   <Button
                     variant="link"
@@ -167,7 +171,8 @@ const InputForm: React.FC = () => {
                         })
                       );
                       dispatch(toogleDrawer());
-                    }}>
+                    }}
+                  >
                     {t.add_condition}
                   </Button>
                 ) : (
@@ -181,7 +186,8 @@ const InputForm: React.FC = () => {
                         })
                       );
                       dispatch(toogleDrawer());
-                    }}>
+                    }}
+                  >
                     {t.edit_condition}
                   </Button>
                 )}
@@ -192,8 +198,8 @@ const InputForm: React.FC = () => {
                 disabled={!isValid || isSubmitting}
                 onCancel={() => onCancel()}
                 onDelete={() => {
-                  dispatch(setIsRemoving(selected_input.id))
-                  dispatch(toogleDrawer())
+                  dispatch(setIsRemoving(selected_input.id));
+                  dispatch(toogleDrawer());
                 }}
               />
             </Flex>

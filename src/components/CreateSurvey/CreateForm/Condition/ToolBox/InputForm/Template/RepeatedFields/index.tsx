@@ -4,13 +4,16 @@ import { Textarea } from "components/Fields";
 import { Flex, Box, Button, Text } from "@chakra-ui/react";
 import { useAppSelector } from "redux/hooks";
 
-export const RepeatedFields: React.FC = () => {
-  const name = "options";
+interface Props {
+  name: string;
+}
+
+export const RepeatedFields: React.FC<Props> = ({ name }) => {
   const [field, meta] = useField(name);
   const { setFieldValue } = useFormikContext();
   const isEditing = useAppSelector((state) => state.formBuilder.is_editing);
 
-  const fields = isEditing ? Object.values(field.value) : field.value;
+  const fields = field.value;
 
   React.useEffect(() => {
     // Populate options field on edit.
@@ -48,7 +51,8 @@ export const RepeatedFields: React.FC = () => {
                         onClick={() => {
                           arrayHelpers.remove(index);
                           setFieldValue(index.toString(), undefined);
-                        }}>
+                        }}
+                      >
                         -
                       </Button>
                       {(index + 1 === field.value.length ||
@@ -57,7 +61,8 @@ export const RepeatedFields: React.FC = () => {
                           ml={3}
                           type="button"
                           onClick={() => arrayHelpers.push("")}
-                          variant="solid">
+                          variant="solid"
+                        >
                           +
                         </Button>
                       )}
@@ -73,7 +78,8 @@ export const RepeatedFields: React.FC = () => {
                 <Button
                   onClick={() => arrayHelpers.push("")}
                   variant="rounded"
-                  type="button">
+                  type="button"
+                >
                   Ajouter une réponse
                 </Button>
                 <Text mt={1} fontSize="10px" color="red">

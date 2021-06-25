@@ -1,4 +1,3 @@
-
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 // import type { RootState } from "redux/store";
 import { IColors, ILanding } from "interfaces/landing";
@@ -6,7 +5,7 @@ import { initialValues } from "components/CreateSurvey/CreateLanding/ToolBox/For
 import { IBase64 } from "components/Fields/Uploadfile";
 
 export interface LandingBuilder {
-  landing: ILanding
+  landing: ILanding;
 }
 
 interface Update {
@@ -15,9 +14,8 @@ interface Update {
   };
 }
 
-
 const initialState: LandingBuilder = {
-  landing: initialValues
+  landing: initialValues,
 };
 
 export const landingBuilderSlice = createSlice({
@@ -27,17 +25,12 @@ export const landingBuilderSlice = createSlice({
     updateLanding: (state, action: PayloadAction<Update>) => {
       const { data } = action.payload;
       if (data) {
-        state.landing = { ...state.landing, ...data }
+        state.landing = { ...state.landing, ...data };
       }
     },
   },
 });
 
-export const {
-  updateLanding
-} = landingBuilderSlice.actions;
-
-
-
+export const { updateLanding } = landingBuilderSlice.actions;
 
 export default landingBuilderSlice.reducer;

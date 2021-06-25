@@ -27,14 +27,15 @@ import { SvgHover } from "components/SvgHover";
 
 import { ReactComponent as Trash } from "assets/trash.svg";
 
-
 export const PageForm: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { selected_page, pages, is_removing } = useAppSelector((state) => state.formBuilder);
+  const { selected_page, pages, is_removing } = useAppSelector(
+    (state) => state.formBuilder
+  );
   const conditions = useAppSelector(selectConditonInCurrentPage);
   const isFirstPage =
     pages.findIndex((page) => page.id === selected_page.id) === 0;
-  const isRemoving = is_removing === selected_page.id
+  const isRemoving = is_removing === selected_page.id;
   const condition_id = uuidv4();
 
   const handleSelect = (
@@ -79,11 +80,10 @@ export const PageForm: React.FC = () => {
         content={`${t.remove_page} ${selected_page.name} ?`}
         confirm={() => {
           dispatch(removePage(selected_page));
-          dispatch(selectPage(pages[0]))
+          dispatch(selectPage(pages[0]));
           dispatch(setIsRemoving(""));
         }}
-        close={() => dispatch(setIsRemoving(""))
-        }
+        close={() => dispatch(setIsRemoving(""))}
       />
     );
   }
@@ -98,18 +98,21 @@ export const PageForm: React.FC = () => {
           validateForm(data);
           setSubmitting(true);
           dispatch(toogleDrawer());
-        }}>
+        }}
+      >
         {() => {
           return (
             <Form
               onChange={(event) => onChange(event)}
-              style={{ width: "100%" }}>
+              style={{ width: "100%" }}
+            >
               <Flex w="100%" justifyContent="space-between">
                 {!isFirstPage ? (
                   <Box
                     onClick={() => {
                       dispatch(setIsRemoving(selected_page.id));
-                    }}>
+                    }}
+                  >
                     <SvgHover>
                       <Trash />
                     </SvgHover>
@@ -117,17 +120,17 @@ export const PageForm: React.FC = () => {
                 ) : (
                   <Box mt={10} />
                 )}
-                <Box d="flex" flexDirection="column" pt='14px' justifyContent="flex-end">
-
+                <Box
+                  d="flex"
+                  flexDirection="column"
+                  pt="14px"
+                  justifyContent="flex-end"
+                >
                   <Box position="absolute" right="-10px" top="30px">
-                    <Switch
-                      size="sm"
-                      id="is_locked"
-                      label=""
-                    />
+                    <Switch size="sm" id="is_locked" label="" />
                   </Box>
 
-                  <Text variant="xxs" mt="1" >
+                  <Text variant="xxs" mt="1">
                     Page non modifiable
                   </Text>
                 </Box>
@@ -155,61 +158,62 @@ export const PageForm: React.FC = () => {
                 />
               </Box>
 
-              {
-                !isFirstPage && (
-                  <Flex
-                    alignItems="center"
-                    w="100%"
-                    justifyContent="space-between"
-                    mt={5}>
-                    {conditions.length === 0 ? (
-                      <Button
-                        variant="link"
-                        color="brand.blue"
-                        onClick={() => {
-                          dispatch(
-                            addCondition({
-                              id: condition_id,
-                              type: "page",
-                              referer_id: selected_page.id,
-                              step: 1,
-                              group: {
-                                id: uuidv4(),
-                                name: 1,
-                              },
-                              is_valid: false,
-                            })
-                          );
-                          dispatch(
-                            selectCondition({
-                              id: condition_id,
-                            })
-                          );
-                        }}>
-                        {t.add_condition_page}
-                      </Button>
-                    ) : (
-                      <Button
-                        variant="link"
-                        color="brand.blue"
-                        onClick={() =>
-                          dispatch(
-                            selectCondition({
-                              id: getConditionsByRefererId(selected_page.id)[0]
-                                .id,
-                            })
-                          )
-                        }>
-                        {t.edit_condition}
-                      </Button>
-                    )}
-                  </Flex>
-                )
-              }
+              {!isFirstPage && (
+                <Flex
+                  alignItems="center"
+                  w="100%"
+                  justifyContent="space-between"
+                  mt={5}
+                >
+                  {conditions.length === 0 ? (
+                    <Button
+                      variant="link"
+                      color="brand.blue"
+                      onClick={() => {
+                        dispatch(
+                          addCondition({
+                            id: condition_id,
+                            type: "page",
+                            referer_id: selected_page.id,
+                            step: 1,
+                            group: {
+                              id: uuidv4(),
+                              name: 1,
+                            },
+                            is_valid: false,
+                          })
+                        );
+                        dispatch(
+                          selectCondition({
+                            id: condition_id,
+                          })
+                        );
+                      }}
+                    >
+                      {t.add_condition_page}
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="link"
+                      color="brand.blue"
+                      onClick={() =>
+                        dispatch(
+                          selectCondition({
+                            id: getConditionsByRefererId(selected_page.id)[0]
+                              .id,
+                          })
+                        )
+                      }
+                    >
+                      {t.edit_condition}
+                    </Button>
+                  )}
+                </Flex>
+              )}
             </Form>
           );
         }}
       </Formik>
-    </Box >
+    </Box>
   );
 };

@@ -13,7 +13,8 @@ export const RemovingConfirmation: React.FC<Props> = ({ confirm, close }) => {
       h="100%"
       alignItems="center"
       flexDirection="column"
-      justifyContent="center">
+      justifyContent="center"
+    >
       <Text fontSize="25px" color="white" mb={10}>
         Voulez-vous supprimer cette page ?
       </Text>
@@ -21,7 +22,8 @@ export const RemovingConfirmation: React.FC<Props> = ({ confirm, close }) => {
         color="white"
         w="100%"
         d="flex"
-        justifyContent="space-around">
+        justifyContent="space-around"
+      >
         <Button variant="link" color="white" onClick={() => close()}>
           Annuler
         </Button>

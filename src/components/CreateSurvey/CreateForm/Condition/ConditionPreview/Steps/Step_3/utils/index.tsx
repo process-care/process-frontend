@@ -9,7 +9,7 @@ import { getInputById } from "utils/formBuilder/input";
 export const renderInput = (
   selectedCondition: ICondition
 ): React.ReactElement => {
-  const target_question = getInputById(selectedCondition.target_id)
+  const target_question = getInputById(selectedCondition.target_id);
   const Options = () => {
     const dispatch = useAppDispatch();
 

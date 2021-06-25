@@ -16,7 +16,8 @@ const MainMenu: React.FC = () => {
         w="80%"
         m="0 auto"
         fontSize="13"
-        h="fit-content">
+        h="fit-content"
+      >
         {routes.map(({ name, path }) => {
           return (
             <NavLink
@@ -25,7 +26,8 @@ const MainMenu: React.FC = () => {
               exact
               activeStyle={{
                 fontStyle: "italic",
-              }}>
+              }}
+            >
               {name}
             </NavLink>
           );

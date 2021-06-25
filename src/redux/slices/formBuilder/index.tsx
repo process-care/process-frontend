@@ -8,7 +8,7 @@ import IOperator from "interfaces/form/operator";
 import { formMock } from "mocks/form";
 
 export interface FormBuilder {
-  input_order: IQuestion["id"][],
+  input_order: IQuestion["id"][];
   inputs: IQuestion[];
   selected_input: IQuestion;
   pages: IPage[];
@@ -19,7 +19,7 @@ export interface FormBuilder {
   };
   is_editing: boolean;
   is_collapse_view: boolean;
-  is_removing: ICondition["id"]
+  is_removing: ICondition["id"];
 }
 interface Update {
   id: string | undefined;
@@ -48,7 +48,7 @@ const initialFirstPage: IPage = {
   is_locked: false,
   condition: [],
   short_name: "P1",
-  survey_id: `survey-${uuidv4()}`
+  survey_id: `survey-${uuidv4()}`,
 };
 
 // Define the initial state using that type
@@ -71,7 +71,7 @@ const initialState: FormBuilder = {
   },
   is_editing: false,
   is_collapse_view: false,
-  is_removing: ""
+  is_removing: "",
 };
 
 export const formBuilderSlice = createSlice({
@@ -84,14 +84,15 @@ export const formBuilderSlice = createSlice({
     addInput: (state, action: PayloadAction<IQuestion>) => {
       state.inputs.push(action.payload);
       // Insert the new input in good position (last of the selected page).
-      const { id } = state.selected_page
-      const inputsInSamePage = state.inputs.filter(i => i.page_id === id)
-      const previousId = inputsInSamePage[inputsInSamePage.length - 2]?.id
-      const previousIdx = state.input_order.findIndex(id => id === previousId)
+      const { id } = state.selected_page;
+      const inputsInSamePage = state.inputs.filter((i) => i.page_id === id);
+      const previousId = inputsInSamePage[inputsInSamePage.length - 2]?.id;
+      const previousIdx = state.input_order.findIndex(
+        (id) => id === previousId
+      );
       if (previousIdx !== undefined) {
-        state.input_order.splice(previousIdx + 1, 0, action.payload.id)
-      } else state.input_order.push(action.payload.id)
-
+        state.input_order.splice(previousIdx + 1, 0, action.payload.id);
+      } else state.input_order.push(action.payload.id);
     },
     selectInput: (state, action: PayloadAction<IQuestion>) => {
       state.selected_input = action.payload;
@@ -127,7 +128,7 @@ export const formBuilderSlice = createSlice({
       const { inputs, input_order } = state;
       const index = inputs.findIndex((item) => id === item.id);
       inputs.splice(index, 1);
-      input_order.splice(index, 1)
+      input_order.splice(index, 1);
     },
     removeAllInputs: (state) => {
       state.inputs = [];
@@ -271,8 +272,7 @@ export const selectInputsInCurrentPage = (state: RootState): IQuestion[] =>
 
 export const selectConditonInCurrentPage = (state: RootState): ICondition[] =>
   state.formBuilder.conditions.filter(
-    (condition) =>
-      condition.referer_id === state.formBuilder.selected_page.id
+    (condition) => condition.referer_id === state.formBuilder.selected_page.id
   );
 
 export const getSelectedConditionData = (
@@ -298,12 +298,7 @@ export const getRefererIdInCurrentCondition = (state: RootState): any => {
 export const getConditionData = (state: RootState): ICondition[] | [] =>
   state.formBuilder.conditions.filter(
     (condition) =>
-      condition.referer_id ===
-      getSelectedConditionData(state)?.referer_id
+      condition.referer_id === getSelectedConditionData(state)?.referer_id
   );
 
-
 export default formBuilderSlice.reducer;
-
-
-

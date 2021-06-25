@@ -45,7 +45,8 @@ export const StepCounter: React.FC<Props> = ({
               }
               flexDirection="column"
               justifyContent="center"
-              alignItems="center">
+              alignItems="center"
+            >
               <Circle
                 _hover={{
                   backgroundColor: "brand.blue",
@@ -55,7 +56,8 @@ export const StepCounter: React.FC<Props> = ({
                 size="24px"
                 borderColor={isDone ? "brand.blue" : "black"}
                 color={isDone ? "brand.blue" : "black"}
-                border="1px solid">
+                border="1px solid"
+              >
                 <Text variant="xxs">{`0${i + 1}`}</Text>
               </Circle>
               <Text variant="xxs" maxW="100px">

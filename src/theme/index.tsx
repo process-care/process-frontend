@@ -211,7 +211,10 @@ const theme = extendTheme({
           },
         }),
         hr: () => ({
-          borderTop: "1px solid", borderColor: "brand.line", width: "100%", height: "1px"
+          borderTop: "1px solid",
+          borderColor: "brand.line",
+          width: "100%",
+          height: "1px",
         }),
         createformColumn: (props) => ({
           bg: props.colorMode === "dark" ? "gray.200" : "white",
@@ -233,8 +236,8 @@ const theme = extendTheme({
           minW: "300px",
           overflowY: "auto",
           w: "32%",
-          height: "100vh"
-        }
+          height: "100vh",
+        },
       },
     },
     Text: {

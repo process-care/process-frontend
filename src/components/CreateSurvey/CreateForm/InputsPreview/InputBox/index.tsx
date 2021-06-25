@@ -33,7 +33,8 @@ export const InputBox: React.FC<Props> = ({
       textAlign="left"
       mt={10}
       backgroundColor={isSelected ? "brand.blue" : "white"}
-      color={isSelected ? "white" : "black"}>
+      color={isSelected ? "white" : "black"}
+    >
       {isOptionMode && (
         <Flex justifyContent="space-between" alignItems="center">
           <Text variant="titleParaLight">{option}</Text>

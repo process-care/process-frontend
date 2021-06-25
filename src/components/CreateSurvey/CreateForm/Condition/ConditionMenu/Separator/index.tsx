@@ -20,7 +20,8 @@ export const Separator: React.FC<Props> = ({ isLast, value }) => {
         color={value === "OU" ? "white" : "black"}
         backgroundColor={value === "OU" ? "black" : "transparent"}
         borderColor="black"
-        p={value === "OU" ? "5px" : "2px"}>
+        p={value === "OU" ? "5px" : "2px"}
+      >
         {value}
       </Text>
       <Box borderTop="1px solid" w="45%" borderColor="brand.line" />

@@ -25,7 +25,7 @@ interface Props {
   style?: React.CSSProperties | undefined;
   isRequired?: boolean;
   isCollapsed?: boolean;
-  ref?: any
+  ref?: any;
 }
 
 export const CustomInput: React.FC<Props> = ({
@@ -49,7 +49,8 @@ export const CustomInput: React.FC<Props> = ({
       id={name}
       textAlign="left"
       style={style}
-      isInvalid={!!meta.error}>
+      isInvalid={!!meta.error}
+    >
       <FormLabel>{label}</FormLabel>
 
       {!isCollapsed && (

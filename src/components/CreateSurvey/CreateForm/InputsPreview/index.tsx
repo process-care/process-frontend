@@ -7,7 +7,10 @@ import { useAppSelector, useAppDispatch } from "redux/hooks";
 
 import { Formik, Form } from "formik";
 import { Header } from "./Header";
-import { selectInputsInCurrentPage, updateInputsOrder } from "redux/slices/formBuilder";
+import {
+  selectInputsInCurrentPage,
+  updateInputsOrder,
+} from "redux/slices/formBuilder";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 export interface Item {
@@ -24,33 +27,30 @@ export interface ContainerProps {
 }
 
 const InputsPreview: React.FC = () => {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const inputs = useAppSelector(selectInputsInCurrentPage);
-  const { selected_page, input_order } = useAppSelector((state) => state.formBuilder);
+  const { selected_page, input_order } = useAppSelector(
+    (state) => state.formBuilder
+  );
   const [cards, setCards] = React.useState(inputs);
 
   React.useEffect(() => {
     setCards(inputs);
   }, [inputs]);
 
-
   const renderCard = (input: IQuestion, index: number) => {
-    return (
-      <Card key={input.id} input={input} index={index} />
-    );
+    return <Card key={input.id} input={input} index={index} />;
   };
 
-
   const onDragStart = () => {
-    console.log("")
-  }
+    console.log("");
+  };
 
   const onDragUpdate = () => {
-    console.log("")
+    console.log("");
   };
 
   const onDragEnd = (result: any) => {
-
     const { destination, source, draggableId } = result;
     if (!destination) {
       return;
@@ -66,14 +66,15 @@ const InputsPreview: React.FC = () => {
     const new_input_order = Array.from(input_order);
     new_input_order.splice(source.index, 1);
     new_input_order.splice(destination.index, 0, draggableId);
-    dispatch(updateInputsOrder(new_input_order))
+    dispatch(updateInputsOrder(new_input_order));
   };
 
-
-  const Container: React.FC<ContainerProps> = ({ children, isDraggingOver }) => {
+  const Container: React.FC<ContainerProps> = ({
+    children,
+    isDraggingOver,
+  }) => {
     return (
       <Box
-
         w="100%"
         d="flex"
         flexDirection="column"
@@ -81,12 +82,14 @@ const InputsPreview: React.FC = () => {
         h="90%"
         pb={10}
         backgroundColor={isDraggingOver ? "brand.gray.100" : "transparent"}
-        overflowY="auto">
+        overflowY="auto"
+      >
         <Formik
           initialValues={{}}
           onSubmit={(data) => {
             console.log("DATA :", data);
-          }}>
+          }}
+        >
           {() => {
             return (
               <Form style={{ width: "100%" }}>
@@ -95,7 +98,8 @@ const InputsPreview: React.FC = () => {
                   justifyContent="center"
                   fontSize="30"
                   flexDirection="column"
-                  px={10}>
+                  px={10}
+                >
                   {children}
                 </Flex>
               </Form>
@@ -107,11 +111,11 @@ const InputsPreview: React.FC = () => {
   };
 
   return (
-
-
-    <DragDropContext onDragStart={() => onDragStart()}
+    <DragDropContext
+      onDragStart={() => onDragStart()}
       onDragUpdate={() => onDragUpdate()}
-      onDragEnd={(result) => onDragEnd(result)}>
+      onDragEnd={(result) => onDragEnd(result)}
+    >
       <Droppable droppableId={selected_page.id}>
         {(provided, snapshot) => (
           <Container isDraggingOver={snapshot.isDraggingOver}>
@@ -120,26 +124,25 @@ const InputsPreview: React.FC = () => {
             </Text>
             {cards.length > 0 && <Header />}
 
-            <Box w="100%" ref={provided.innerRef}
+            <Box
+              w="100%"
+              ref={provided.innerRef}
               {...provided.droppableProps}
-              isDraggingOver={snapshot.isDraggingOver}>
+              isDraggingOver={snapshot.isDraggingOver}
+            >
               {input_order.map((inputId, i) => {
-                const current = cards.find(c => c.id === inputId)
+                const current = cards.find((c) => c.id === inputId);
                 if (current !== undefined) {
-                  return renderCard(current, i)
-                } else return
-
+                  return renderCard(current, i);
+                } else return;
               })}
 
               {provided.placeholder}
             </Box>
-
-
           </Container>
         )}
       </Droppable>
     </DragDropContext>
-
   );
 };
 

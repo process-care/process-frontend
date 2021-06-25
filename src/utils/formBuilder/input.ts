@@ -15,7 +15,7 @@ export const getInputById = (id: string | undefined): IQuestion | undefined => {
 
 export const checkIfMultiple = (selectedCondition: ICondition): boolean => {
   const multipleInput: string[] = ["checkbox", "radio", "select"];
-  const target_question = getInputById(selectedCondition.target_id)
+  const target_question = getInputById(selectedCondition.target_id);
 
   const input_type =
     target_question?.input_type !== undefined

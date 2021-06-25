@@ -36,7 +36,7 @@ export const CustomTextarea: React.FC<Props> = ({
   m,
   p,
   isCollapsed,
-  isDisabled
+  isDisabled,
 }) => {
   const [field, meta] = useField(id);
   return (
@@ -46,8 +46,11 @@ export const CustomTextarea: React.FC<Props> = ({
       textAlign="left"
       m={m}
       p={p}
-      isInvalid={!!meta.error}>
-      <FormLabel htmlFor={id} opacity={isDisabled ? "0.5" : '1'}>{label}</FormLabel>
+      isInvalid={!!meta.error}
+    >
+      <FormLabel htmlFor={id} opacity={isDisabled ? "0.5" : "1"}>
+        {label}
+      </FormLabel>
       {!isCollapsed && (
         <>
           <Textarea
@@ -67,7 +70,8 @@ export const CustomTextarea: React.FC<Props> = ({
             mt={-1}
             lineHeight={1.4}
             fontSize="xs"
-            color="gray.400">
+            color="gray.400"
+          >
             {helpText}
           </FormHelperText>
         </>

@@ -45,8 +45,8 @@ interface DragItem {
 const Card: React.FC<CardProps> = ({ input, index, moveCard }) => {
   // const [isRemoving, setRemoving] = React.useState(false);
   const dispatch = useAppDispatch();
-  const { is_removing } = useAppSelector(state => state.formBuilder)
-  const isRemoving = is_removing === input.id
+  const { is_removing } = useAppSelector((state) => state.formBuilder);
+  const isRemoving = is_removing === input.id;
   const ref = React.useRef<HTMLDivElement>(null);
   const color = useColorModeValue("gray.800", "gray.900");
 
@@ -109,7 +109,11 @@ const Card: React.FC<CardProps> = ({ input, index, moveCard }) => {
 
   return (
     <Flex w="100%" alignItems="center" position="relative">
-      <Box onClick={() => dispatch(setIsRemoving(input.id))} position="sticky" left="-16px">
+      <Box
+        onClick={() => dispatch(setIsRemoving(input.id))}
+        position="sticky"
+        left="-16px"
+      >
         <SvgHover>
           <Delete />
         </SvgHover>
@@ -121,7 +125,8 @@ const Card: React.FC<CardProps> = ({ input, index, moveCard }) => {
         key={input.id}
         w="100%"
         opacity={opacity}
-        data-handler-id={handlerId}>
+        data-handler-id={handlerId}
+      >
         <Container variant="inputContainer" padding={isRemoving ? 0 : 4}>
           <Box color={color}>
             {!isRemoving && (
@@ -145,7 +150,8 @@ const Card: React.FC<CardProps> = ({ input, index, moveCard }) => {
               position="relative"
               top="-7px"
               mb="10px"
-              display={isRemoving ? "none" : ""}>
+              display={isRemoving ? "none" : ""}
+            >
               {renderInput(input)}
             </Box>
           </Box>

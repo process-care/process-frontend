@@ -26,7 +26,8 @@ export const Step_2: React.FC<Props> = ({ selectedCondition }) => {
       justifyContent="center"
       h="0"
       alignItems="center"
-      pt="10%">
+      pt="10%"
+    >
       {authorizedOperators().map(({ id, name }) => {
         const isSelected = id === selectedCondition.operator?.id;
 
@@ -44,7 +45,8 @@ export const Step_2: React.FC<Props> = ({ selectedCondition }) => {
             variant="box"
             minW="200px"
             isSelected={isSelected}
-            _hover={{ borderColor: "brand.blue", color: "brand.blue" }}>
+            _hover={{ borderColor: "brand.blue", color: "brand.blue" }}
+          >
             {name}
           </Button>
         );

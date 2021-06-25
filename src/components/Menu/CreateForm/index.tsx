@@ -7,7 +7,9 @@ import { ReactComponent as Back } from "./assets/back.svg";
 import { t } from "static/input";
 export const Menu: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { survey_id } = useAppSelector(state => state.formBuilder.selected_page);
+  const { survey_id } = useAppSelector(
+    (state) => state.formBuilder.selected_page
+  );
 
   return (
     <Flex
@@ -16,7 +18,6 @@ export const Menu: React.FC = () => {
       borderBottom="1px"
       justifyContent="flex-start"
       alignItems="center"
-
     >
       <NavLink to="/dashboard">
         <Flex ml="50px" alignItems="center">
@@ -27,7 +28,14 @@ export const Menu: React.FC = () => {
         </Flex>
       </NavLink>
 
-      <Text fontSize="12px" textTransform="uppercase" isTruncated maxWidth="100px">{survey_id}</Text>
+      <Text
+        fontSize="12px"
+        textTransform="uppercase"
+        isTruncated
+        maxWidth="100px"
+      >
+        {survey_id}
+      </Text>
       <Box pos="absolute" right="10px">
         <Button variant="roundedTransparent" mr={5}>
           {t.save}

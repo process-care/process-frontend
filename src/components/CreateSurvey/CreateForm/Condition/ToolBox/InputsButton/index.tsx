@@ -37,7 +37,8 @@ const ToolBox: React.FC<Props> = ({ onSelect }) => {
                 `${input_type}-${id}`,
                 `${input_type}-${id}`
               )
-            }>
+            }
+          >
             <Box mr={2}>
               <InputIcon input_type={input_type} />
             </Box>

@@ -27,18 +27,15 @@ export const Step_1: React.FC<Props> = ({ selectedCondition }) => {
   const currentInputIndex = getInputIndex(selectedCondition.referer_id);
   const inputsBeforeCurrent = input_order.slice(0, currentInputIndex);
 
-
   // Remove all types who can't be conditionable, remove the selected input, remove input after the selected one.
   const authorizedInputs = inputs
     .filter((i) => authorizedInputTypes.includes(i.input_type))
     .filter((i) => i.id !== selected_input.id)
-    .filter((i) => i.id && inputsBeforeCurrent.includes(i.id))
-
-
+    .filter((i) => i.id && inputsBeforeCurrent.includes(i.id));
 
   const isEmpty = authorizedInputs.length === 0;
   const renderCard = (input: IQuestion) => {
-    const target_question = getInputById(selectedCondition.target_id)
+    const target_question = getInputById(selectedCondition.target_id);
     const isSelected = input.id === target_question?.id;
     return (
       <InputBox
@@ -60,19 +57,16 @@ export const Step_1: React.FC<Props> = ({ selectedCondition }) => {
 
   return (
     <Container w="100%" maxW="unset" p={0}>
-
       {isEmpty && <Text variant="xs">{t.no_results}</Text>}
       <Text textAlign="left" variant="xs" mt={-5} color="brand.gray.200">
         {t.help}
       </Text>
       {input_order.map((inputId) => {
-        const current = authorizedInputs.find(c => c.id === inputId)
+        const current = authorizedInputs.find((c) => c.id === inputId);
         if (current !== undefined) {
-          return renderCard(current)
-        } else return
-
+          return renderCard(current);
+        } else return;
       })}
-
     </Container>
   );
 };

@@ -25,14 +25,16 @@ export const RemovingConfirmation: React.FC<Props> = ({
       px="10px"
       d="flex"
       flexDirection="column"
-      color="white">
+      color="white"
+    >
       <Text variant="smallTitle">{content}</Text>
       <ButtonGroup
         pos="absolute"
         bottom="10px"
         d="flex"
         justifyContent="space-around"
-        w="100%">
+        w="100%"
+      >
         <Button variant="link" color="white" onClick={() => close()}>
           {t.cancel}
         </Button>

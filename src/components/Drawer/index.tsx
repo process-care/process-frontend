@@ -30,7 +30,8 @@ const CustomDrawer: React.FC<Props> = ({
           motionPreset="scale"
           isCentered
           onOverlayClick={onOverlayClick}
-          {...props}>
+          {...props}
+        >
           <DrawerContent background="white">
             <DrawerBody p="0 10px">{content}</DrawerBody>
           </DrawerContent>

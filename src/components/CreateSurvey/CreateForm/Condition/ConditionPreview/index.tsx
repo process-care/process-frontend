@@ -68,7 +68,8 @@ export const ConditionPreview: React.FC = () => {
                   },
                 })
               )
-            }>
+            }
+          >
             Retour
           </Button>
 
@@ -98,7 +99,8 @@ export const ConditionPreview: React.FC = () => {
                   })
                 );
                 dispatch(selectCondition({ id: condition_id }));
-              }}>
+              }}
+            >
               Ajouter une condition au groupe
             </Button>
           ) : (
@@ -117,7 +119,8 @@ export const ConditionPreview: React.FC = () => {
                     },
                   })
                 )
-              }>
+              }
+            >
               Suivant
             </Button>
           )}

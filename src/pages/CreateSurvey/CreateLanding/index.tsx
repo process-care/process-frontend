@@ -6,15 +6,13 @@ import { Menu } from "components/Menu/CreateForm";
 import { ToolBox } from "components/CreateSurvey/CreateLanding/ToolBox";
 import { Preview } from "components/CreateSurvey/CreateLanding/Preview";
 
-
 export const CreateLanding: React.FC<IRoute> = () => {
-
-
   return (
     <Box overflow="auto">
       <Box d="flex" justifyContent="space-around" w="100%" overflow="hidden">
         <Box w="100%" pos="relative">
-          <Box position="fixed"
+          <Box
+            position="fixed"
             top="0"
             w="75.8%"
             backgroundColor="white"
@@ -29,8 +27,16 @@ export const CreateLanding: React.FC<IRoute> = () => {
             justifyContent="space-around"
             overflow="hidden"
             w="100%"
-            h="100%">
-            <Container variant="createformColumn" w="100%" h="100%" alignItems="center" p="0" d="flex">
+            h="100%"
+          >
+            <Container
+              variant="createformColumn"
+              w="100%"
+              h="100%"
+              alignItems="center"
+              p="0"
+              d="flex"
+            >
               <div className="background__grid--black">
                 <Preview />
               </div>

@@ -15,12 +15,14 @@ export const Header: React.FC = () => {
       w="100%"
       alignItems="center"
       my="50px"
-      pl="50px">
+      pl="50px"
+    >
       <ButtonGroup>
         <Button
           variant="link"
           fontSize="10px"
-          onClick={() => dispatch(removeAllInputs())}>
+          onClick={() => dispatch(removeAllInputs())}
+        >
           {t.delete_all_inputs}
         </Button>
       </ButtonGroup>

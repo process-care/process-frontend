@@ -1,12 +1,10 @@
-import React from "react"
-import ReactPlayer from 'react-player'
+import React from "react";
+import ReactPlayer from "react-player";
 
 interface Props {
-    url: string;
+  url: string;
 }
 
 export const Video: React.FC<Props> = ({ url }) => {
-    return (
-        <ReactPlayer url={url} width="100%" />
-    )
-}
+  return <ReactPlayer url={url} width="100%" />;
+};

@@ -70,14 +70,16 @@ export const CustomSlider: React.FC<Props> = ({
       isRequired={isRequired}
       id="email"
       textAlign="left"
-      h={vertical ? "700px" : "fit-content"}>
+      h={vertical ? "700px" : "fit-content"}
+    >
       <FormLabel>{label}</FormLabel>
       {!isCollapsed && (
         <>
           <Flex
             flexDirection={vertical ? "row" : "column"}
             h={vertical ? "85%" : ""}
-            m={vertical ? "30px 0 0 30px" : ""}>
+            m={vertical ? "30px 0 0 30px" : ""}
+          >
             <Range
               reverse={reverse}
               dots
@@ -94,7 +96,8 @@ export const CustomSlider: React.FC<Props> = ({
               w="100%"
               h="100%"
               justifyContent="space-between"
-              flexDirection={vertical ? "column" : "row"}>
+              flexDirection={vertical ? "column" : "row"}
+            >
               <Text fontSize="10px" ml="-5px">
                 {reverse || vertical ? max : min}
               </Text>

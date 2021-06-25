@@ -38,7 +38,8 @@ export const CustomSwitch: React.FC<Props> = ({
       p={p}
       m={m}
       d="flex"
-      alignItems="center">
+      alignItems="center"
+    >
       <Switch
         size={size}
         aria-labelledby={id}

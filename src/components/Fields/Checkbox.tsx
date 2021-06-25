@@ -45,7 +45,8 @@ export const CustomCheckbox: React.FC<Props> = ({
                       id={id}
                       name={label}
                       key={value}
-                      isRequired={isRequired}>
+                      isRequired={isRequired}
+                    >
                       {label}
                     </Checkbox>
                   );

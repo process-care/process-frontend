@@ -27,7 +27,8 @@ export const Step_3: React.FC<Props> = ({ selectedCondition }) => {
         onSubmit={(data, { setSubmitting, validateForm }) => {
           validateForm(data);
           setSubmitting(true);
-        }}>
+        }}
+      >
         {({ values }) => {
           const onChange = (event: React.FormEvent<HTMLFormElement>) => {
             const target = event.target as HTMLFormElement;
@@ -57,7 +58,10 @@ export const Step_3: React.FC<Props> = ({ selectedCondition }) => {
             : values.target_value !== "" && values.target_value !== undefined;
 
           return (
-            <Form onChange={(event) => onChange(event)} style={{ width: "100%" }}>
+            <Form
+              onChange={(event) => onChange(event)}
+              style={{ width: "100%" }}
+            >
               <Box d="flex" mx="auto" alignItems="center" w="100%">
                 {renderInput(selectedCondition)}
                 <Box
@@ -79,7 +83,8 @@ export const Step_3: React.FC<Props> = ({ selectedCondition }) => {
                     cursor: "pointer",
                     opacity: 0.7,
                     transition: "all 400ms",
-                  }}>
+                  }}
+                >
                   {isNotEmpty && !checkIfMultiple(selectedCondition) && (
                     <Submit />
                   )}
@@ -91,7 +96,8 @@ export const Step_3: React.FC<Props> = ({ selectedCondition }) => {
                   justifyContent="flex-end"
                   mt="2"
                   w="100%"
-                  mx="auto">
+                  mx="auto"
+                >
                   <Check />
                   <Text fontSize="14px" color="brand.green" ml={2}>
                     {t.success}

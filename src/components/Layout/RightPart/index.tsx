@@ -14,8 +14,7 @@ interface Props {
 
 export const RightPart: React.FC<Props> = ({ selected_condition }) => {
   return (
-    <Container
-      variant="rightPart">
+    <Container variant="rightPart">
       {selected_condition.id !== "" ? <ConditionMenu /> : <PageForm />}
     </Container>
   );

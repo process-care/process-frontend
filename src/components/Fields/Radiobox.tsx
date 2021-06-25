@@ -50,7 +50,8 @@ export const CustomRadioBox: React.FC<Props> = ({
                       name={value}
                       value={value}
                       key={value}
-                      isRequired={isRequired}>
+                      isRequired={isRequired}
+                    >
                       {label}
                     </Radio>
                   );

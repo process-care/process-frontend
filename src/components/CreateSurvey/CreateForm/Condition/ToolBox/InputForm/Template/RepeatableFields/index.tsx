@@ -3,16 +3,17 @@ import { FieldArray, useField, useFormikContext } from "formik";
 import { Textarea } from "components/Fields";
 import { Flex, Box, Button, Text } from "@chakra-ui/react";
 import { useAppSelector } from "redux/hooks";
+
 interface Props {
   name: string;
 }
 
-export const RepeatedFields: React.FC<Props> = ({ name }) => {
+export const RepeatableFields: React.FC<Props> = ({ name }) => {
   const [field, meta] = useField(name);
   const { setFieldValue } = useFormikContext();
   const isEditing = useAppSelector((state) => state.formBuilder.is_editing);
 
-  const fields = isEditing ? Object.values(field.value) : field.value;
+  const fields = field.value;
 
   React.useEffect(() => {
     // Populate options field on edit.

@@ -1,5 +1,5 @@
 import React from "react"
-import Iframe from 'react-iframe'
+import ReactPlayer from 'react-player'
 
 interface Props {
     url: string;
@@ -7,11 +7,6 @@ interface Props {
 
 export const Video: React.FC<Props> = ({ url }) => {
     return (
-        <Iframe url={url}
-            width="450px"
-            height="450px"
-            id="myId"
-            className="myClassname"
-            position="relative" />
+        <ReactPlayer url={url} width="100%" />
     )
 }

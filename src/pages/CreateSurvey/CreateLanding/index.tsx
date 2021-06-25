@@ -22,9 +22,9 @@ export const CreateLanding: React.FC<IRoute> = () => {
             borderRight="1px solid black"
           >
             <Menu />
-
           </Box>
           <Box
+            mt="60px"
             d="flex"
             justifyContent="space-around"
             overflow="hidden"

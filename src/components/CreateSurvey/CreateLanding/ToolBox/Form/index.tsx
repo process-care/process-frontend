@@ -93,7 +93,7 @@ export const LandingForm: React.FC = () => {
                             <Text variant="currentBold">
                                 {t.logos_label}
                             </Text>
-                            <UploadFile label={t.logos_cta} id="photo_member_cta" helpText={t.image_helptext} />
+                            <UploadFile label={t.logos_cta} id="partner_logos" helpText={t.image_helptext} multiple />
                             <Container variant="hr" my={10} />
                             <Text variant="currentBold">
                                 {t.see_more_cta}

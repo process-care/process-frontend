@@ -13,13 +13,20 @@ interface Props {
     id: string,
     helpText?: string,
     isDisabled?: boolean,
+    multiple?: boolean
 }
 
-export const UploadFile: React.FC<Props> = ({ label, id, helpText, isDisabled }) => {
+export interface IBase64 {
+    base64: string,
+    name: string | undefined
+}
+
+export const UploadFile: React.FC<Props> = ({ label, id, helpText, isDisabled, multiple }) => {
     const dispatch = useDispatch()
     const hiddenFileInput = React.useRef<HTMLInputElement>(null);
-    const [fileName, setFileName] = React.useState("")
-    const [, meta,] = useField(id);
+    const [field, meta,] = useField(id);
+
+    const [fileName, setFileName] = React.useState<any>([])
     const { setFieldValue } = useFormikContext()
 
 
@@ -27,28 +34,63 @@ export const UploadFile: React.FC<Props> = ({ label, id, helpText, isDisabled })
     const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const data = event.currentTarget.files && event.currentTarget.files[0]
         if (data) {
-            setFileName(data.name)
-            const base64: any = await toBase64(data).then((data: string) => data)
-            setFieldValue(id, base64)
-            dispatch(updateLanding({
-                data: {
-                    [id]: base64,
-                },
-            }))
+            if (multiple) {
+                const fileList = event.currentTarget.files && event.currentTarget.files;
+                if (fileList) {
+                    const { length } = fileList;
+                    const arr: any = [];
+                    const arrBase64: IBase64[] = []
+                    for (let index = 0; index < length; index++) {
+                        const name = fileList.item(index)?.name
+                        arr.push(name);
+                        const base64 = await toBase64(fileList.item(index)).then((data: string) => data);
+                        arrBase64.push({ base64, name })
+                    }
+                    setFileName([...fileName, ...arr])
+                    const new_data = field.value.length > 0 ? [...field.value, ...arrBase64,] : arrBase64
+                    setFieldValue(id, new_data);
+                    dispatch(updateLanding({
+                        data: {
+                            [id]: new_data,
 
+                        },
+                    }))
+                }
+            }
+            else {
+                setFileName([...fileName, data.name])
+                const base64: any = await toBase64(data).then((data: string) => data)
+                setFieldValue(id, base64)
+                dispatch(updateLanding({
+                    data: {
+                        [id]: [{ base64, name: data.name }],
+                    },
+                }))
+            }
         }
     }
 
-    const handleDelete = () => {
-        setFieldValue(id, "")
+    const handleDelete = (name?: string,) => {
+        const form_values: IBase64[] = [...field.value]
+        const filtered_values = form_values.filter(v => v.name !== name)
+
+        if (multiple) {
+            const filtered_names = fileName.filter((l: string) => l !== name)
+            setFileName(filtered_names)
+            setFieldValue(id, filtered_values)
+
+        } else {
+            setFieldValue(id, "")
+            setFileName([])
+        }
+
         dispatch(updateLanding({
             data: {
-                [id]: "",
+                [id]: multiple ? filtered_values : "",
             },
         }))
-        setFileName("")
-    }
 
+    }
     return (
         <FormControl my={4}>
             <Flex alignItems="center" justifyContent="space-between" >
@@ -56,13 +98,28 @@ export const UploadFile: React.FC<Props> = ({ label, id, helpText, isDisabled })
                     {label}
                 </Button>
                 <Box d="none">
-                    <input type="file" placeholder="upload" ref={hiddenFileInput} onChange={(event) => handleChange(event)} />
+                    <input type="file" placeholder="upload" ref={hiddenFileInput} onChange={(event) => handleChange(event)} accept=".png,.jpeg" multiple={multiple} />
                 </Box>
-                <Text variant="xsMedium">{fileName}</Text>
-                {fileName && <SvgHover>
+                {!multiple && <Flex >
+                    {fileName.map((name: string) => <Text key={name} variant="xsMedium" isTruncated maxWidth="150px">{name}</Text>)}
+                </Flex>}
+                {fileName.length > 0 && !multiple && <SvgHover>
                     <Delete onClick={() => handleDelete()} />
                 </SvgHover>}
+
             </Flex>
+            {multiple && <Flex flexDirection="column" mt={2}>
+                {fileName.map((name: string) => {
+                    return (
+                        <Flex key={name}>
+                            <Text my={1} variant="xsMedium" isTruncated maxWidth="150px">{name}</Text>
+                            {fileName.length > 0 && <SvgHover>
+                                <Delete onClick={() => handleDelete(name)} />
+                            </SvgHover>}
+                        </Flex>
+                    )
+                })}
+            </Flex>}
             <FormErrorMessage mt={1} justifyContent="flex-end" fontSize="10px">
                 {meta.error}
             </FormErrorMessage>

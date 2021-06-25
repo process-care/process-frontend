@@ -25,7 +25,7 @@ export const Preview: React.FC = () => {
             <Container variant="hr" my={10} />
             <Team members={mock.members} />
             <Container variant="hr" my={10} />
-            <Footer />
+            <Footer data={data} />
         </Box>
     )
 }

@@ -3,13 +3,15 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 // import type { RootState } from "redux/store";
 import { IColors, ILanding } from "interfaces/landing";
 import { initialValues } from "components/CreateSurvey/CreateLanding/ToolBox/Form/utils/initialValues";
+import { IBase64 } from "components/Fields/Uploadfile";
 
 export interface LandingBuilder {
   landing: ILanding
 }
+
 interface Update {
   data: {
-    [index: string]: string | IColors;
+    [index: string]: string | IColors | IBase64[];
   };
 }
 

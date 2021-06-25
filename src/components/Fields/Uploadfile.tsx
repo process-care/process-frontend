@@ -11,10 +11,11 @@ import { toBase64 } from "components/CreateSurvey/CreateLanding/ToolBox/Form/uti
 interface Props {
     label: string,
     id: string,
-    helpText?: string
+    helpText?: string,
+    isDisabled?: boolean,
 }
 
-export const UploadFile: React.FC<Props> = ({ label, id, helpText }) => {
+export const UploadFile: React.FC<Props> = ({ label, id, helpText, isDisabled }) => {
     const dispatch = useDispatch()
     const hiddenFileInput = React.useRef<HTMLInputElement>(null);
     const [fileName, setFileName] = React.useState("")
@@ -39,6 +40,7 @@ export const UploadFile: React.FC<Props> = ({ label, id, helpText }) => {
     }
 
     const handleDelete = () => {
+        setFieldValue(id, "")
         dispatch(updateLanding({
             data: {
                 [id]: "",
@@ -50,7 +52,7 @@ export const UploadFile: React.FC<Props> = ({ label, id, helpText }) => {
     return (
         <FormControl my={4}>
             <Flex alignItems="center" justifyContent="space-between" >
-                <Button variant="roundedTransparent" onClick={() => hiddenFileInput.current !== null && hiddenFileInput.current.click()}>
+                <Button variant="roundedTransparent" onClick={() => hiddenFileInput.current !== null && hiddenFileInput.current.click()} isDisabled={isDisabled}>
                     {label}
                 </Button>
                 <Box d="none">

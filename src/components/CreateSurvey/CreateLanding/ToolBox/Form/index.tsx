@@ -79,9 +79,9 @@ export const LandingForm: React.FC = () => {
                             <Container variant="hr" my={10} />
 
                             <Wysiwyg id="landing_content" />
-                            <UploadFile label={t.image_cta} id="image_cover" helpText={t.image_helptext} />
+                            <UploadFile label={t.image_cta} id="image_cover" helpText={t.image_helptext} isDisabled={values.video_url !== ""} />
 
-                            <Textarea id="video_url" rows="small" placeholder={t.video_url_placeholder} label={t.video_url_label} />
+                            <Textarea id="video_url" rows="small" placeholder={t.video_url_placeholder} label={t.video_url_label} isDisabled={values.image_cover !== ""} />
                             <Container variant="hr" my={10} />
                             <Text variant="currentBold" mt={9}>
                                 {t.team_label}

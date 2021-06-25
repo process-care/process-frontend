@@ -22,6 +22,7 @@ interface Props {
   m?: string | number;
   p?: string | number;
   isCollapsed?: boolean;
+  isDisabled?: boolean;
 }
 export const CustomTextarea: React.FC<Props> = ({
   label,
@@ -35,6 +36,7 @@ export const CustomTextarea: React.FC<Props> = ({
   m,
   p,
   isCollapsed,
+  isDisabled
 }) => {
   const [field, meta] = useField(id);
   return (
@@ -45,10 +47,11 @@ export const CustomTextarea: React.FC<Props> = ({
       m={m}
       p={p}
       isInvalid={!!meta.error}>
-      <FormLabel htmlFor={id}>{label}</FormLabel>
+      <FormLabel htmlFor={id} opacity={isDisabled ? "0.5" : '1'}>{label}</FormLabel>
       {!isCollapsed && (
         <>
           <Textarea
+            isDisabled={isDisabled}
             id={id}
             style={{ resize: "none" }}
             rows={getRows(rows)}

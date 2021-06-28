@@ -5,6 +5,7 @@ export const t = {
   image_cta: "Importez une image",
   photo_member_cta: "Importez une photo",
   image_helptext: "Jpeg, png, ...",
+  add_image: "Intégrer une image",
   video_url_label: "Intégrer une video",
   team_label: "Membre de l'équipe",
   member_placeholder: "Nom, prénom",

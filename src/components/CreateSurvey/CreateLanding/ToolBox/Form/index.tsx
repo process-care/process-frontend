@@ -1,5 +1,5 @@
 import { Box, Button, Text, Container, Flex } from "@chakra-ui/react";
-import { Footer } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer";
+import { Footer } from "./../Footer";
 import { Textarea } from "components/Fields";
 import { UploadFile } from "components/Fields/Uploadfile";
 import { Wysiwyg } from "components/Fields/Wysiwyg";
@@ -77,6 +77,7 @@ export const LandingForm: React.FC = () => {
         }, [values.color_theme]);
         return (
           <Box
+            pos="relative"
             mt="80px"
             p={4}
             d="flex"
@@ -117,6 +118,8 @@ export const LandingForm: React.FC = () => {
                 {t.content_label}
               </Text>
               <Wysiwyg id="landing_content" simpleMode />
+              <Container variant="hr" my={10} />
+              <Text variant="currentBold">{t.add_image}</Text>
               <UploadFile
                 label={t.image_cta}
                 id="image_cover"
@@ -133,7 +136,16 @@ export const LandingForm: React.FC = () => {
                 />
                 <Box mt={7} ml={4}>
                   <SvgHover>
-                    <Delete onClick={() => setFieldValue("video_url", "")} />
+                    <Delete
+                      onClick={() => {
+                        dispatch(
+                          updateLanding({
+                            data: { video_url: "" },
+                          })
+                        );
+                        setFieldValue("video_url", "");
+                      }}
+                    />
                   </SvgHover>
                 </Box>
               </Flex>
@@ -153,13 +165,12 @@ export const LandingForm: React.FC = () => {
               />
               <Container variant="hr" my={10} />
               <Text variant="currentBold">{t.see_more_cta}</Text>
-              <Button variant="roundedTransparent" mt={4}>
+              <Button variant="roundedTransparent" mt={4} mb="100px">
                 {t.see_more_cta}
               </Button>
               <Footer
                 onCancel={() => console.log("")}
                 onSubmit={() => console.log("")}
-                onDelete={() => console.log("")}
               />
             </Form>
           </Box>

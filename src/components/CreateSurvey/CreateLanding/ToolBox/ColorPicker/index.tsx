@@ -57,7 +57,7 @@ export const ColorPicker: React.FC = () => {
     COLOR_12,
   ];
   return (
-    <Box w="100%">
+    <Box w="100%" mb={6}>
       <Flex w="100%" justifyContent="flex-start" mt="4" flexWrap="wrap">
         {list.map((el, i) => {
           const Component = list[i];

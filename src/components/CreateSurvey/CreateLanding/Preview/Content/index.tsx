@@ -20,6 +20,8 @@ export const Content: React.FC<Props> = ({ data, theme }) => {
   const had_video = data.video_url !== "";
   const had_image = data.image_cover[0]?.base64 !== undefined;
 
+  console.log("had_video", had_video, data.video_url);
+
   return (
     <Box>
       <Box

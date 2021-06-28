@@ -13,7 +13,6 @@ export const RepeatableFields: React.FC<Props> = ({ name }) => {
   const [field, meta] = useField(name);
   const { setFieldValue } = useFormikContext();
   const isEditing = useAppSelector((state) => state.formBuilder.is_editing);
-
   const fields = field.value;
 
   return (
@@ -85,8 +84,9 @@ export const RepeatableFields: React.FC<Props> = ({ name }) => {
                   onClick={() => arrayHelpers.push("")}
                   variant="rounded"
                   type="button"
+                  mt={4}
                 >
-                  Ajouter une réponse
+                  Ajouter un membre de l'équipe
                 </Button>
                 <Text mt={1} fontSize="10px" color="red">
                   {meta.error}

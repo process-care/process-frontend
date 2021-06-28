@@ -37,7 +37,7 @@ export const RepeatableFields: React.FC<Props> = ({ name }) => {
                   <Flex w="100%">
                     <Box>
                       <Textarea
-                        id={`member.name_${index}`}
+                        id={`members.name_${index}`}
                         label="Nom"
                         placeholder="Renseigner le nom"
                         rows="small"
@@ -46,7 +46,7 @@ export const RepeatableFields: React.FC<Props> = ({ name }) => {
                         {...field}
                       />
                       <Textarea
-                        id={`member.job_${index}`}
+                        id={`members.job_${index}`}
                         label="Job"
                         placeholder="Renseigner l'emploi"
                         rows="small"
@@ -56,7 +56,7 @@ export const RepeatableFields: React.FC<Props> = ({ name }) => {
                       />
                       <UploadFile
                         label="Ajouter une photo"
-                        id={`member.image_${index}`}
+                        id={`members.image_${index}`}
                       />
                     </Box>
 

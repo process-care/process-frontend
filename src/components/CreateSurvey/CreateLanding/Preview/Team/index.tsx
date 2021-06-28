@@ -14,45 +14,30 @@ export interface MemberList {
 //   ],
 // };
 
-// const Member: React.FC<MemberList["members"]> = (member, i) => {
-//   return (
-//     <Box>
-//       <Circle size="xl" name="Dan Abrahmov" />
-//       <Text variant="currentLight" textTransform="uppercase" mt={7}>
-//         {member.name}
-//       </Text>
-//       <Text variant="xsRegular" mt={2}>
-//         {member.job}
-//       </Text>
-//     </Box>
-//   );
-// };
+const Member: React.FC<MemberList["members"]> = (member) => {
+  console.log(member.member);
+  return (
+    <Flex>
+      {/* <img src={member.member[3].base64} alt="" /> */}
+      <Text variant="currentLight" textTransform="uppercase" mt={7}>
+        {member.member[1]}
+      </Text>
+      <Text variant="xsRegular" mt={2}>
+        {member.member[2]}
+      </Text>
+    </Flex>
+  );
+};
 
 export const Team: React.FC<MemberList> = ({ members }) => {
-  // const format = () => {
-  //   for (const [key, value] of Object.entries(members)) {
-  //     const regex = /\d+/g;
-  //     const group = key.match(regex);
-  //     if (group) {
-  //       return {
-  //         [group[0]]: {
-  //           [key]: value,
-  //         },
-  //       };
-  //     }
-  //   }
-  // };
-
-  console.log(Object.entries(members).map((em) => em[0]));
-
   return (
     <Box>
       <Text variant="xl">L'équipe</Text>
       <Flex w="80%" marginX="auto" justify="space-around" mt={20}>
         <p>ppal</p>
-        {/* {members.map((member,i) => (
-          <Member key={name} member={member} i={i} />
-        ))} */}
+        {Object.entries(members).map((member: any, i: number) => (
+          <Member key={i} member={member} i={i} />
+        ))}
       </Flex>
     </Box>
   );

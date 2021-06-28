@@ -39,6 +39,7 @@ export const LandingForm: React.FC = () => {
       }}
     >
       {({ values }) => {
+        console.log(values);
         // Handle wysiwyg change
         React.useEffect(() => {
           dispatch(
@@ -49,6 +50,17 @@ export const LandingForm: React.FC = () => {
             })
           );
         }, [values.wysiwyg]);
+
+        // Handle wysiwyg change
+        React.useEffect(() => {
+          dispatch(
+            updateLanding({
+              data: {
+                members: values.members,
+              },
+            })
+          );
+        }, [values.members]);
 
         // Handle colors change
         React.useEffect(() => {

@@ -8,7 +8,7 @@ export interface IColors {
 export interface IMember {
   name: string;
   job: string;
-  //   image: string;
+  image: IBase64["base64"];
 }
 
 export interface ILanding {

@@ -1,31 +1,21 @@
 import { Box, Text, Flex } from "@chakra-ui/react";
+import { IMember } from "interfaces/landing";
 import React from "react";
 
 export interface MemberList {
-  members: any;
+  members: IMember[];
 }
 
-// const mock = {
-//   members: [
-//     { name: "Jean P.", job: "Chercheur universitaire" },
-//     { name: "Jean C.", job: "Chercheur universitaire" },
-//     { name: "Jean F.", job: "Chercheur universitaire" },
-//     { name: "Jean Z.", job: "Chercheur universitaire" },
-//   ],
-// };
-
-const Member: React.FC<MemberList["members"]> = (member) => {
-  console.log(member.member);
+const Member: React.FC<IMember> = ({ job, name, image }) => {
   return (
-    <Flex>
-      plaf
-      {/* <img src={member.member[3].base64} alt="" />
+    <Flex flexDirection="column" mr={6}>
+      <img src={image} alt={name} style={{ maxWidth: "120px" }} />
       <Text variant="currentLight" textTransform="uppercase" mt={7}>
-        {member.member[1]}
+        {name}
       </Text>
       <Text variant="xsRegular" mt={2}>
-        {member.member[2]}
-      </Text> */}
+        {job}
+      </Text>
     </Flex>
   );
 };
@@ -34,10 +24,9 @@ export const Team: React.FC<MemberList> = ({ members }) => {
   return (
     <Box>
       <Text variant="xl">L'équipe</Text>
-      <Flex w="80%" marginX="auto" justify="space-around" mt={20}>
-        <p>ppal</p>
-        {Object.entries(members).map((member: any, i: number) => (
-          <Member key={i} member={member} i={i} />
+      <Flex w="80%" marginX="auto" justify="flex-start" mt={20}>
+        {members.map(({ job, name, image }: any, i: number) => (
+          <Member key={i} job={job} name={name} image={image} />
         ))}
       </Flex>
     </Box>

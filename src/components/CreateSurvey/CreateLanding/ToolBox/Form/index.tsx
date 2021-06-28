@@ -1,4 +1,4 @@
-import { Box, Button, Text, Container } from "@chakra-ui/react";
+import { Box, Button, Text, Container, Flex } from "@chakra-ui/react";
 import { Footer } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer";
 import { Textarea } from "components/Fields";
 import { UploadFile } from "components/Fields/Uploadfile";
@@ -11,6 +11,9 @@ import { ColorPicker } from "../ColorPicker";
 import { initialValues } from "./utils/initialValues";
 import { useDispatch } from "react-redux";
 import { RepeatableFields } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/RepeatableFields";
+import { SvgHover } from "components/SvgHover";
+
+import { ReactComponent as Delete } from "assets/delete.svg";
 
 export const LandingForm: React.FC = () => {
   const dispatch = useDispatch();
@@ -38,7 +41,7 @@ export const LandingForm: React.FC = () => {
         setSubmitting(true);
       }}
     >
-      {({ values }) => {
+      {({ values, setFieldValue }) => {
         console.log(values);
         // Handle wysiwyg change
         React.useEffect(() => {
@@ -74,6 +77,7 @@ export const LandingForm: React.FC = () => {
         }, [values.color_theme]);
         return (
           <Box
+            mt="80px"
             p={4}
             d="flex"
             alignItems="flex-start"
@@ -116,13 +120,21 @@ export const LandingForm: React.FC = () => {
                 helpText={t.image_helptext}
                 isDisabled={values.video_url !== ""}
               />
-              <Textarea
-                id="video_url"
-                rows="small"
-                placeholder={t.video_url_placeholder}
-                label={t.video_url_label}
-                isDisabled={values.image_cover !== ""}
-              />
+              <Flex alignItems="center">
+                <Textarea
+                  id="video_url"
+                  rows="small"
+                  placeholder={t.video_url_placeholder}
+                  label={t.video_url_label}
+                  isDisabled={values.image_cover[0]?.base64 !== undefined}
+                />
+                <Box mt={7} ml={4}>
+                  <SvgHover>
+                    <Delete onClick={() => setFieldValue("video_url", "")} />
+                  </SvgHover>
+                </Box>
+              </Flex>
+
               <Container variant="hr" my={10} />
               <Text variant="currentBold" mt={9}>
                 {t.team_label}

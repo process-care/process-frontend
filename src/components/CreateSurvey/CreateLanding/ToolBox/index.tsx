@@ -9,10 +9,15 @@ export const ToolBox: React.FC = () => {
     <Container variant="rightPart" height="100%">
       <Text
         variant="titleParaLight"
-        mt="20px"
-        pb="18px"
+        pb="19px"
+        pt="19px"
         borderBottom="1px solid"
         borderColor="black"
+        position="fixed"
+        top="0"
+        w="24.2%"
+        backgroundColor="white"
+        zIndex="3"
       >
         {t.title}
       </Text>

@@ -15,9 +15,10 @@ const big_placeholder =
   "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et. <br/> <br/> quo velit tenetur labore at reprehenderit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.<br/> <br/> Blanditiis et, quo velit tenetur labore at reprehenderit.";
 
 export const Content: React.FC<Props> = ({ data, theme }) => {
-  const had_media = data.image_cover !== "" || data.video_url !== "";
+  const had_media =
+    data.image_cover[0]?.base64 !== undefined || data.video_url !== "";
   const had_video = data.video_url !== "";
-  const had_image = data.image_cover !== "";
+  const had_image = data.image_cover[0]?.base64 !== undefined;
 
   return (
     <Box>
@@ -40,7 +41,7 @@ export const Content: React.FC<Props> = ({ data, theme }) => {
             {had_video && <Video url={data.video_url} />}
             {had_image && (
               <img
-                src={data.image_cover}
+                src={data.image_cover[0]?.base64}
                 style={{ maxWidth: "400px", width: "400px" }}
                 alt=""
               />

@@ -21,4 +21,5 @@ export const t = {
   subtitle_helptext: "100 signes max",
   cta_participate: "Je participe",
   cta_show_more: "En savoir plus",
+  credits: "Ce site a été crée avec Process",
 };

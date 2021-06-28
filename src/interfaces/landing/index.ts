@@ -14,9 +14,9 @@ export interface IMember {
 export interface ILanding {
   id: string;
   color_theme: IColors;
-  image_cover: string;
-  logo: string;
-  members: [] | any;
+  image_cover: IBase64[];
+  logo: IBase64[];
+  members: IMember[];
   subtitle: string;
   title: string;
   video_url: string;

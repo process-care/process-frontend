@@ -1,4 +1,4 @@
-import { Box, Text, Flex } from "@chakra-ui/react";
+import { Box, Text, Flex, Container } from "@chakra-ui/react";
 import { IMember } from "interfaces/landing";
 import React from "react";
 
@@ -22,7 +22,8 @@ const Member: React.FC<IMember> = ({ job, name, image }) => {
 
 export const Team: React.FC<MemberList> = ({ members }) => {
   return (
-    <Box>
+    <Box pb={10}>
+      <Container variant="hr" maxW="unset" mb={5} />
       <Text variant="xl">L'équipe</Text>
       <Flex w="80%" marginX="auto" justify="flex-start" mt={20}>
         {members.map(({ job, name, image }: any, i: number) => (

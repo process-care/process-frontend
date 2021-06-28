@@ -113,7 +113,10 @@ export const LandingForm: React.FC = () => {
                 helpText={t.subtitle_helptext}
               />
               <Container variant="hr" my={10} />
-              <Wysiwyg id="landing_content" />
+              <Text variant="currentBold" mt={9} mb={2}>
+                {t.content_label}
+              </Text>
+              <Wysiwyg id="landing_content" simpleMode />
               <UploadFile
                 label={t.image_cta}
                 id="image_cover"

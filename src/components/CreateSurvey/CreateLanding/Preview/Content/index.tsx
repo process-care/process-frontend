@@ -64,7 +64,13 @@ export const Content: React.FC<Props> = ({ data, theme }) => {
             <Button variant="rounded" backgroundColor={theme.button}>
               {t.cta_participate}
             </Button>
-            <Button variant="rounded" backgroundColor={theme.button}>
+            <Button
+              variant="rounded"
+              color={theme.button}
+              border={`1px solid ${theme.button}`}
+              backgroundColor="transparent"
+              _hover={{ backgroundColor: theme.button, color: "white" }}
+            >
               {t.cta_show_more}
             </Button>
           </Flex>

@@ -15,6 +15,7 @@ export const t = {
   video_url_placeholder: "(copier ici le lien de votre vidéo)",
   logo_helptext: "png, svg max 100 ko format 60x60px",
   theme_label: "Thèmes",
+  content_label: "Editer le texte de présentation",
   title_input: "Titre de l'étude",
   title_helptext: "50 signes max",
   subtitle_input: "Sous-titre de l'étude",

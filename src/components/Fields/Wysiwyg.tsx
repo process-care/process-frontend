@@ -5,9 +5,10 @@ import { FormControl } from "@chakra-ui/react";
 
 interface Props {
   id: string;
+  simpleMode?: boolean;
 }
 
-export const Wysiwyg: React.FC<Props> = ({ id }) => {
+export const Wysiwyg: React.FC<Props> = ({ id, simpleMode }) => {
   const editor = React.useRef(null);
   const { setFieldValue, values } = useFormikContext();
 
@@ -33,6 +34,9 @@ export const Wysiwyg: React.FC<Props> = ({ id }) => {
             language: "fr",
             toolbarButtonSize: "small",
             removeButtons: [
+              simpleMode ? "image" : "",
+              simpleMode ? "brush" : "",
+              simpleMode ? "paragraph" : "",
               "source",
               "fullsize",
               "about",

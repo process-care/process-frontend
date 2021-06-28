@@ -29,7 +29,7 @@ export const landingBuilderSlice = createSlice({
           if (key.includes("members")) {
             state.landing.members = {
               ...state.landing.members,
-              [key]: value,
+              [key.split("].")[1]]: value,
             };
 
             return;

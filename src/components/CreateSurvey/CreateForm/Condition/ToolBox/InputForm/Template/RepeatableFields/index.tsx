@@ -16,19 +16,10 @@ export const RepeatableFields: React.FC<Props> = ({ name }) => {
 
   const fields = field.value;
 
-  React.useEffect(() => {
-    // Populate options field on edit.
-    if (isEditing) {
-      fields.map((el: string, index: number) => {
-        setFieldValue(`members_${index}`, el);
-      });
-    }
-  }, [fields.length]);
-
   return (
     <Box w="100%">
       <FieldArray
-        name={name}
+        name="members"
         render={(arrayHelpers) => (
           <Box w="100%">
             {fields?.length > 0 ? (
@@ -37,7 +28,7 @@ export const RepeatableFields: React.FC<Props> = ({ name }) => {
                   <Flex w="100%">
                     <Box>
                       <Textarea
-                        id={`members.name_${index}`}
+                        id={`members[${index}].name`}
                         label="Nom"
                         placeholder="Renseigner le nom"
                         rows="small"
@@ -46,7 +37,7 @@ export const RepeatableFields: React.FC<Props> = ({ name }) => {
                         {...field}
                       />
                       <Textarea
-                        id={`members.job_${index}`}
+                        id={`members[${index}].job`}
                         label="Job"
                         placeholder="Renseigner l'emploi"
                         rows="small"
@@ -56,7 +47,7 @@ export const RepeatableFields: React.FC<Props> = ({ name }) => {
                       />
                       <UploadFile
                         label="Ajouter une photo"
-                        id={`members.image_${index}`}
+                        id={`members[${index}].image`}
                       />
                     </Box>
 

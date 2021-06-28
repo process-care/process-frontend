@@ -18,13 +18,14 @@ const Member: React.FC<MemberList["members"]> = (member) => {
   console.log(member.member);
   return (
     <Flex>
-      {/* <img src={member.member[3].base64} alt="" /> */}
+      plaf
+      {/* <img src={member.member[3].base64} alt="" />
       <Text variant="currentLight" textTransform="uppercase" mt={7}>
         {member.member[1]}
       </Text>
       <Text variant="xsRegular" mt={2}>
         {member.member[2]}
-      </Text>
+      </Text> */}
     </Flex>
   );
 };

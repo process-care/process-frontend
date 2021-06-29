@@ -14,8 +14,10 @@ import { RepeatableFields } from "components/CreateSurvey/CreateForm/Condition/T
 import { SvgHover } from "components/SvgHover";
 
 import { ReactComponent as Delete } from "assets/delete.svg";
+import { goTop } from "utils/application/scrollTo";
 
 export const LandingForm: React.FC = () => {
+  const [isAboutMode, setIsAboutMode] = React.useState(false);
   const dispatch = useDispatch();
   const onChange = (event: React.FormEvent<HTMLFormElement>) => {
     const target = event.target as HTMLFormElement;
@@ -75,6 +77,27 @@ export const LandingForm: React.FC = () => {
             })
           );
         }, [values.color_theme]);
+        if (isAboutMode) {
+          return (
+            <Box
+              w="90%"
+              mx="auto"
+              mt="100px"
+              h="100%"
+              sx={{
+                ".jodit-workplace": {
+                  height: "60vh !important",
+                },
+              }}
+            >
+              <Wysiwyg id="about" />
+              <Footer
+                onCancel={() => setIsAboutMode(false)}
+                onSubmit={() => console.log("")}
+              />
+            </Box>
+          );
+        }
         return (
           <Box
             pos="relative"
@@ -165,7 +188,15 @@ export const LandingForm: React.FC = () => {
               />
               <Container variant="hr" my={10} />
               <Text variant="currentBold">{t.see_more_cta}</Text>
-              <Button variant="roundedTransparent" mt={4} mb="100px">
+              <Button
+                variant="roundedTransparent"
+                mt={4}
+                mb="100px"
+                onClick={() => {
+                  goTop();
+                  setIsAboutMode(true);
+                }}
+              >
                 {t.see_more_cta}
               </Button>
               <Footer

@@ -4,6 +4,8 @@ import { Textarea } from "components/Fields";
 import { Flex, Box, Button, Text } from "@chakra-ui/react";
 import { useAppSelector } from "redux/hooks";
 import { UploadFile } from "components/Fields/Uploadfile";
+import { ReactComponent as Delete } from "assets/delete.svg";
+import { SvgHover } from "components/SvgHover";
 
 interface Props {
   name: string;
@@ -24,8 +26,8 @@ export const RepeatableFields: React.FC<Props> = ({ name }) => {
             {fields?.length > 0 ? (
               fields.map((_: string, index: number) => (
                 <Box key={index} w="100%">
-                  <Flex w="100%">
-                    <Box>
+                  <Flex w="100%" alignItems="flex-start">
+                    <Box w="70%">
                       <Textarea
                         id={`members[${index}].name`}
                         label="Nom"
@@ -50,25 +52,26 @@ export const RepeatableFields: React.FC<Props> = ({ name }) => {
                       />
                     </Box>
 
-                    <Flex ml={3} mt={8}>
-                      <Button
-                        type="button"
-                        onClick={() => {
-                          arrayHelpers.remove(index);
-                          setFieldValue(index.toString(), undefined);
-                        }}
-                      >
-                        -
-                      </Button>
+                    <Flex ml={3} mt={8} alignItems="center">
+                      <SvgHover>
+                        <Delete
+                          onClick={() => {
+                            arrayHelpers.remove(index);
+                            setFieldValue(index.toString(), undefined);
+                          }}
+                        />
+                      </SvgHover>
+
                       {(index + 1 === field.value.length ||
                         (index + 1 !== 1 && isEditing)) && (
                         <Button
                           ml={3}
                           type="button"
                           onClick={() => arrayHelpers.push("")}
-                          variant="solid"
+                          variant="link"
+                          color="brand.blue"
                         >
-                          +
+                          Ajouter
                         </Button>
                       )}
                     </Flex>

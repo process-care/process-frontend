@@ -1,9 +1,7 @@
-import { ButtonGroup, Button, Center, Box } from "@chakra-ui/react";
-import { SvgHover } from "components/SvgHover";
+import { ButtonGroup, Button, Box } from "@chakra-ui/react";
+
 import React from "react";
 import { t } from "static/global";
-
-import { ReactComponent as Trash } from "assets/trash.svg";
 
 interface Props {
   onCancel: () => void;

@@ -6,7 +6,7 @@ import { LandingForm } from "./Form";
 
 export const ToolBox: React.FC = () => {
   return (
-    <Container variant="rightPart" height="100%">
+    <Container variant="rightPart" height="100%" w="100%">
       <Text
         variant="titleParaLight"
         pb="19px"

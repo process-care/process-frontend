@@ -1,4 +1,4 @@
-export const goTop = () => {
+export const goTop: () => void = () => {
   window.scrollTo({
     top: 0,
     left: 0,

@@ -1,11 +1,4 @@
-import {
-  Box,
-  Collapse,
-  Container,
-  Fade,
-  Slide,
-  SlideFade,
-} from "@chakra-ui/react";
+import { Box, Collapse, Container } from "@chakra-ui/react";
 import React from "react";
 
 import IRoute from "interfaces/route";

@@ -1,15 +1,17 @@
 import { Box, Button, Text, Container, Flex } from "@chakra-ui/react";
-import { Footer } from "./../Footer";
+import { Footer } from "../Footer";
 import { Textarea } from "components/Fields";
 import { UploadFile } from "components/Fields/Uploadfile";
 import { Wysiwyg } from "components/Fields/Wysiwyg";
 import { Formik, Form } from "formik";
 import React from "react";
 import { updateLanding } from "redux/slices/landingBuilder";
+import { editAboutPage } from "redux/slices/aboutBuilder";
+
 import { t } from "static/createLanding";
 import { ColorPicker } from "../ColorPicker";
-import { initialValues } from "./utils/initialValues";
-import { useDispatch } from "react-redux";
+import { initialValuesLanding } from "./utils/initialValues";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { RepeatableFields } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/RepeatableFields";
 import { SvgHover } from "components/SvgHover";
 
@@ -17,8 +19,9 @@ import { ReactComponent as Delete } from "assets/delete.svg";
 import { goTop } from "utils/application/scrollTo";
 
 export const LandingForm: React.FC = () => {
-  const [isAboutMode, setIsAboutMode] = React.useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+  const { landing } = useAppSelector((state) => state.landingBuilder);
+
   const onChange = (event: React.FormEvent<HTMLFormElement>) => {
     const target = event.target as HTMLFormElement;
     if (target.type === "file") {
@@ -36,7 +39,7 @@ export const LandingForm: React.FC = () => {
   return (
     <Formik
       validateOnBlur={false}
-      initialValues={initialValues}
+      initialValues={landing || initialValuesLanding}
       enableReinitialize
       onSubmit={(data, { setSubmitting, validateForm }) => {
         validateForm(data);
@@ -77,27 +80,7 @@ export const LandingForm: React.FC = () => {
             })
           );
         }, [values.color_theme]);
-        if (isAboutMode) {
-          return (
-            <Box
-              w="90%"
-              mx="auto"
-              mt="100px"
-              h="100%"
-              sx={{
-                ".jodit-workplace": {
-                  height: "60vh !important",
-                },
-              }}
-            >
-              <Wysiwyg id="about" />
-              <Footer
-                onCancel={() => setIsAboutMode(false)}
-                onSubmit={() => console.log("")}
-              />
-            </Box>
-          );
-        }
+
         return (
           <Box
             pos="relative"
@@ -194,7 +177,7 @@ export const LandingForm: React.FC = () => {
                 mb="100px"
                 onClick={() => {
                   goTop();
-                  setIsAboutMode(true);
+                  dispatch(editAboutPage());
                 }}
               >
                 {t.see_more_cta}

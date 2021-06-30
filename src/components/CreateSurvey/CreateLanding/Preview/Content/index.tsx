@@ -57,7 +57,7 @@ export const Content: React.FC<Props> = ({ data, theme }) => {
         >
           <Text
             textAlign="left"
-            variant="xxs"
+            variant="current"
             dangerouslySetInnerHTML={{
               __html: data.wysiwyg || big_placeholder,
             }}

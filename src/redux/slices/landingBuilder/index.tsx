@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 // import type { RootState } from "redux/store";
 import { IColors, ILanding, IMember } from "interfaces/landing";
-import { initialValues } from "components/CreateSurvey/CreateLanding/ToolBox/Form/utils/initialValues";
+import { initialValuesLanding } from "components/CreateSurvey/CreateLanding/ToolBox/Form/utils/initialValues";
 import { IBase64 } from "components/Fields/Uploadfile";
 
 export interface LandingBuilder {
@@ -15,7 +15,7 @@ interface Update {
 }
 
 const initialState: LandingBuilder = {
-  landing: initialValues,
+  landing: initialValuesLanding,
 };
 
 export const landingBuilderSlice = createSlice({

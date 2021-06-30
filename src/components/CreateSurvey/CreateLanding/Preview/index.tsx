@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import React from "react";
 import { Content } from "./Content";
 import { Footer } from "./Footer";
@@ -8,8 +8,35 @@ import { useAppSelector } from "redux/hooks";
 
 export const Preview: React.FC = () => {
   const data = useAppSelector((state) => state.landingBuilder.landing);
+  const { content } = useAppSelector((state) => state.aboutBuilder);
+  const big_placeholder =
+    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et. <br/> <br/> quo velit tenetur labore at reprehenderit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.<br/> <br/> Blanditiis et, quo velit tenetur labore at reprehenderit.";
+
+  const { is_editing_about_page } = useAppSelector(
+    (state) => state.aboutBuilder
+  );
   const { color_theme, members } = data;
   const had_members = members.length > 0;
+  if (is_editing_about_page) {
+    return (
+      <Box
+        h="fit-content"
+        backgroundColor="white"
+        w="80%"
+        mx="auto"
+        mt="100px"
+        p={10}
+      >
+        <Text
+          textAlign="left"
+          variant="current"
+          dangerouslySetInnerHTML={{
+            __html: content || big_placeholder,
+          }}
+        ></Text>
+      </Box>
+    );
+  }
   return (
     <Box h="fit-content" backgroundColor="white" w="80%" mx="auto" mt="100px">
       <Header theme={color_theme} logo={data.logo} />

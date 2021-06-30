@@ -2,9 +2,14 @@ import React from "react";
 import { Container, Text } from "@chakra-ui/react";
 
 import { t } from "static/createLanding";
-import { LandingForm } from "./Form";
+import { LandingForm } from "./Form/landingForm";
+import { useAppSelector } from "redux/hooks";
+import { AboutForm } from "./Form/aboutForm";
 
 export const ToolBox: React.FC = () => {
+  const { is_editing_about_page } = useAppSelector(
+    (state) => state.aboutBuilder
+  );
   return (
     <Container variant="rightPart" height="100%" w="100%">
       <Text
@@ -21,7 +26,7 @@ export const ToolBox: React.FC = () => {
       >
         {t.title}
       </Text>
-      <LandingForm />
+      {is_editing_about_page ? <AboutForm /> : <LandingForm />}
     </Container>
   );
 };

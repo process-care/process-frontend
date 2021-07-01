@@ -21,7 +21,7 @@ export const Wysiwyg: React.FC<Props> = ({ id, simpleMode }) => {
             setFieldValue("wysiwyg", newContent);
           }}
           config={{
-            tabIndex: -1,
+            tabIndex: 10,
             namespace: id,
             allowTabNavigation: true,
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -39,6 +39,7 @@ export const Wysiwyg: React.FC<Props> = ({ id, simpleMode }) => {
             buttonsSM: [
               "bold",
               "italic",
+
               "underline",
               "link",
               "indent",
@@ -46,6 +47,7 @@ export const Wysiwyg: React.FC<Props> = ({ id, simpleMode }) => {
               "ol",
               simpleMode ? "" : "image",
               "fullSize",
+              "fontSize",
             ],
           }}
           ref={editor}

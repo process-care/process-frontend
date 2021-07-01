@@ -47,7 +47,7 @@ body {
 .chakra-form__required-indicator {
   color: black !important;
 }
-
+/* 
 .jodit-ui-group_group_search,
 .jodit-ui-group_group_history,
 .jodit-ui-group_group_script,
@@ -71,4 +71,4 @@ body {
 
 .jodit-container:not(.jodit_inline) {
   margin-top: 50px;
-}
+} */

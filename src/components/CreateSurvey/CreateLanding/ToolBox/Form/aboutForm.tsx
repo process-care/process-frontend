@@ -34,7 +34,7 @@ export const AboutForm: React.FC = () => {
           <Box
             w="90%"
             mx="auto"
-            mt="100px"
+            mt="130px"
             h="100%"
             sx={{
               ".jodit-workplace": {

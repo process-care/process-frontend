@@ -46,8 +46,16 @@ export const Wysiwyg: React.FC<Props> = ({ id, simpleMode }) => {
               "ul",
               "ol",
               !simpleMode ? "image" : "",
-              // "fullSize",
-              // "fontSize",
+            ],
+            buttonsXS: [
+              "bold",
+              "italic",
+              "underline",
+              "link",
+              "indent",
+              "ul",
+              "ol",
+              !simpleMode ? "image" : "",
             ],
           }}
           ref={editor}

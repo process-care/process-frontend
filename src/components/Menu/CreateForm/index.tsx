@@ -6,18 +6,27 @@ import { mockForm } from "redux/slices/formBuilder";
 import { ReactComponent as Back } from "./assets/back.svg";
 import { t } from "static/input";
 import { tooglePreview } from "redux/slices/application";
+import { useGetSurveyQuery } from "api/survey";
+import { Loader } from "components/Spinner";
 
 interface Props {
   isLanding?: boolean;
 }
 
 export const Menu: React.FC<Props> = ({ isLanding }) => {
-  const { preview_mode } = useAppSelector((state) => state.application);
-
-  const dispatch = useAppDispatch();
-  const { survey_id } = useAppSelector(
-    (state) => state.formBuilder.selected_page
+  const { data, isLoading, error } = useGetSurveyQuery(
+    "60ddd61f120575001567acc5"
   );
+  const { preview_mode } = useAppSelector((state) => state.application);
+  const dispatch = useAppDispatch();
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (error) {
+    return <p>{error.message}</p>;
+  }
 
   return (
     <>
@@ -59,9 +68,9 @@ export const Menu: React.FC<Props> = ({ isLanding }) => {
             fontSize="12px"
             textTransform="uppercase"
             isTruncated
-            maxWidth="100px"
+            maxWidth="250px"
           >
-            {survey_id}
+            {data?.survey.description}
           </Text>
           <Box pos="absolute" right="10px">
             <Button variant="roundedTransparent" mr={5}>

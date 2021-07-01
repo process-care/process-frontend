@@ -1,6 +1,6 @@
 import React from "react";
 
-import IRoute from "interfaces/routes";
+import IRoute from "interfaces/routes/routes";
 import { Authentification } from "pages/Authentification";
 import { CreateSurvey } from "pages/CreateSurvey";
 import { CreateForm } from "pages/CreateSurvey/CreateForm";

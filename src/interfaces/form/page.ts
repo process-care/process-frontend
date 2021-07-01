@@ -1,4 +1,5 @@
 import ICondition from "./condition";
+import IQuestion from "./question";
 
 export default interface IPage {
   id: string;
@@ -6,5 +7,5 @@ export default interface IPage {
   short_name: string;
   survey_id: string;
   is_locked: boolean;
-  condition: ICondition["id"][];
+  conditions: ICondition["id"][];
 }

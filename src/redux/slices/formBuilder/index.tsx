@@ -46,7 +46,7 @@ const initialFirstPage: IPage = {
   name: "Page 1",
   id: `page-${uuidv4()}`,
   is_locked: false,
-  condition: [],
+  conditions: [],
   short_name: "P1",
   survey_id: `survey-${uuidv4()}`,
 };
@@ -172,7 +172,7 @@ export const formBuilderSlice = createSlice({
       if (index === undefined) {
         index = inputs.findIndex((item) => referer_id === item.id);
         inputs[index]?.condition?.push(id);
-      } else pages[index]?.condition.push(id);
+      } else pages[index]?.conditions.push(id);
     },
     updateCondition: (state, action: PayloadAction<UpdateCondition>) => {
       const { id, data } = action.payload;

@@ -1,7 +1,7 @@
 import { Box, Collapse, Container } from "@chakra-ui/react";
 import React from "react";
 
-import IRoute from "interfaces/route";
+import IRoute from "interfaces/routes/route";
 import { Menu } from "components/Menu/CreateForm";
 import { ToolBox } from "components/CreateSurvey/CreateLanding/ToolBox";
 import { Preview } from "components/CreateSurvey/CreateLanding/Preview";

@@ -15,9 +15,14 @@ import {
 } from "utils/formBuilder/condition";
 import { isInactive } from "./utils";
 import { SvgHover } from "components/SvgHover";
+import IPage from "interfaces/form/page";
 
-const PageBuilder: React.FC = () => {
-  const { pages, selected_page, selected_condition } = useAppSelector(
+interface Props {
+  pages: IPage[];
+}
+
+const PageBuilder: React.FC<Props> = ({ pages }) => {
+  const { selected_page, selected_condition } = useAppSelector(
     (state) => state.formBuilder
   );
   const selectedCondition = getConditionById(selected_condition.id);
@@ -29,14 +34,13 @@ const PageBuilder: React.FC = () => {
       addPage({
         name: `Page ${pages.length + 1}`,
         id: `page-${id}`,
-        condition: [],
+        conditions: [],
         is_locked: false,
         short_name: `P${pages.length + 1}`,
         survey_id: `survey-${id}`,
       })
     );
   };
-
   return (
     <Flex
       flexDirection="column"

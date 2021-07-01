@@ -12,6 +12,9 @@ import {
   updateInputsOrder,
 } from "redux/slices/formBuilder";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { useGetQuestionsInSelectedPageQuery } from "api/questions";
+import { Loader } from "components/Spinner";
+import { useGetSurveyQuery } from "api/survey";
 
 export interface Item {
   id: number;
@@ -29,14 +32,19 @@ export interface ContainerProps {
 const InputsPreview: React.FC = () => {
   const dispatch = useAppDispatch();
   const inputs = useAppSelector(selectInputsInCurrentPage);
-  const { selected_page, input_order } = useAppSelector(
-    (state) => state.formBuilder
+  const { selected_page } = useAppSelector((state) => state.formBuilder);
+  const { data, isLoading, error } = useGetQuestionsInSelectedPageQuery(
+    "60ddc3c86dd4b000150998b4"
   );
-  const [cards, setCards] = React.useState(inputs);
+  const { data: survey } = useGetSurveyQuery("60ddd61f120575001567acc5");
+
+  const input_order = survey?.survey.order;
+  console.log(survey);
+  const [cards, setCards] = React.useState(data?.questions);
 
   React.useEffect(() => {
-    setCards(inputs);
-  }, [inputs]);
+    setCards(data?.questions);
+  }, [data?.questions]);
 
   const renderCard = (input: IQuestion, index: number) => {
     return <Card key={input.id} input={input} index={index} />;
@@ -63,10 +71,12 @@ const InputsPreview: React.FC = () => {
       return;
     }
 
-    const new_input_order = Array.from(input_order);
-    new_input_order.splice(source.index, 1);
-    new_input_order.splice(destination.index, 0, draggableId);
-    dispatch(updateInputsOrder(new_input_order));
+    if (input_order) {
+      const new_input_order = Array.from(input_order);
+      new_input_order.splice(source.index, 1);
+      new_input_order.splice(destination.index, 0, draggableId);
+      dispatch(updateInputsOrder(new_input_order));
+    }
   };
 
   const Container: React.FC<ContainerProps> = ({
@@ -109,6 +119,11 @@ const InputsPreview: React.FC = () => {
       </Box>
     );
   };
+
+  if (isLoading || cards === undefined || input_order === undefined) {
+    return <Loader />;
+  }
+  console.log(cards, input_order);
 
   return (
     <DragDropContext

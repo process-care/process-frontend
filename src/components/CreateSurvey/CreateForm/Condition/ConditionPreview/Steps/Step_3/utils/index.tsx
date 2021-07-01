@@ -44,7 +44,7 @@ export const renderInput = (
     }
   };
 
-  switch (target_question?.input_type) {
+  switch (target_question?.type) {
     case "select":
       return <Options />;
       break;

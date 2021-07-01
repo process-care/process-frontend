@@ -4,7 +4,7 @@ import IQuestion from "interfaces/form/question";
 import React from "react";
 
 interface Props {
-  input_type: IQuestion["input_type"];
+  type: IQuestion["type"];
 }
 
 import { ReactComponent as Checkbox } from "./assets/checkbox.svg";
@@ -18,10 +18,8 @@ import { ReactComponent as TextArea } from "./assets/text-area.svg";
 import { ReactComponent as Wysiwyg } from "./assets/wysiwyg.svg";
 
 // TODO replace string by SVG orperator.
-export const renderInput = (
-  input_type: IQuestion["input_type"]
-): React.ReactElement => {
-  switch (input_type) {
+export const renderInput = (type: IQuestion["type"]): React.ReactElement => {
+  switch (type) {
     case "checkbox":
       return <Checkbox />;
       break;
@@ -56,10 +54,10 @@ export const renderInput = (
   }
 };
 
-export const InputIcon: React.FC<Props> = ({ input_type }) => {
+export const InputIcon: React.FC<Props> = ({ type }) => {
   return (
     <Box>
-      <SvgHover>{renderInput(input_type)}</SvgHover>
+      <SvgHover>{renderInput(type)}</SvgHover>
     </Box>
   );
 };

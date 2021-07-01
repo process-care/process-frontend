@@ -1,7 +1,7 @@
 import ICondition from "./condition";
 
 export default interface IQuestion {
-  input_type:
+  type:
     | "input"
     | "wysiwyg"
     | "text-area"
@@ -30,7 +30,6 @@ export default interface IQuestion {
   step?: string;
   rows?: "small" | "medium" | "large" | undefined;
   required?: boolean;
-  type?: "text" | "number" | undefined;
   default_value?: string | undefined;
   page_id?: string;
   wysiwyg?: string | undefined;

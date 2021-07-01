@@ -29,7 +29,7 @@ export const Step_1: React.FC<Props> = ({ selectedCondition }) => {
 
   // Remove all types who can't be conditionable, remove the selected input, remove input after the selected one.
   const authorizedInputs = inputs
-    .filter((i) => authorizedInputTypes.includes(i.input_type))
+    .filter((i) => authorizedInputTypes.includes(i.type))
     .filter((i) => i.id !== selected_input.id)
     .filter((i) => i.id && inputsBeforeCurrent.includes(i.id));
 

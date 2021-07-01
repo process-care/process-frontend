@@ -17,11 +17,9 @@ export const checkIfMultiple = (selectedCondition: ICondition): boolean => {
   const multipleInput: string[] = ["checkbox", "radio", "select"];
   const target_question = getInputById(selectedCondition.target_id);
 
-  const input_type =
-    target_question?.input_type !== undefined
-      ? target_question?.input_type
-      : "text-area";
-  if (multipleInput.includes(input_type)) {
+  const type =
+    target_question?.type !== undefined ? target_question?.type : "text-area";
+  if (multipleInput.includes(type)) {
     return true;
   } else return false;
 };

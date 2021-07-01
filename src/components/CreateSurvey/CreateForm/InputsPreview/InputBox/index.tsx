@@ -48,7 +48,7 @@ export const InputBox: React.FC<Props> = ({
               {input?.internal_title}
             </Text>
             <Box>
-              <InputIcon input_type={input.input_type} />
+              <InputIcon type={input.type} />
             </Box>
           </Flex>
         </Flex>

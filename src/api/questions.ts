@@ -1,6 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { gql } from "graphql-request";
-import ISurvey from "interfaces/survey";
 import { graphqlBaseQuery } from "api/preset";
 import IQuestion from "interfaces/form/question";
 

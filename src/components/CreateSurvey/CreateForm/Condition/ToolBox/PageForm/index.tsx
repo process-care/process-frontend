@@ -39,15 +39,15 @@ export const PageForm: React.FC = () => {
   const condition_id = uuidv4();
 
   const handleSelect = (
-    input_type: IQuestion["input_type"],
+    type: IQuestion["type"],
     name: string,
     id: string,
     internal_title: string | undefined
   ) => {
     if (id) {
       const data = {
-        ...fields[input_type],
-        input_type,
+        ...fields[type],
+        type,
         name,
         id,
         internal_title,
@@ -152,8 +152,8 @@ export const PageForm: React.FC = () => {
                   helpText="40 signes maximum"
                 />
                 <ToolBox
-                  onSelect={(input_type, name, id, internal_title) =>
-                    handleSelect(input_type, name, id, internal_title)
+                  onSelect={(type, name, id, internal_title) =>
+                    handleSelect(type, name, id, internal_title)
                   }
                 />
               </Box>

@@ -33,7 +33,7 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
       return arr;
     }
   };
-  switch (input.input_type) {
+  switch (input.type) {
     case "input":
       return (
         <>

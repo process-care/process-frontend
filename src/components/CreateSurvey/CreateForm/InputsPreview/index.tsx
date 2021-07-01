@@ -7,13 +7,12 @@ import { useAppSelector, useAppDispatch } from "redux/hooks";
 
 import { Formik, Form } from "formik";
 import { Header } from "./Header";
-import {
-  selectInputsInCurrentPage,
-  updateInputsOrder,
-} from "redux/slices/formBuilder";
+import { updateInputsOrder } from "redux/slices/formBuilder";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { useGetQuestionsInSelectedPageQuery } from "api/questions";
 import { Loader } from "components/Spinner";
+import { Error } from "components/Error";
+
 import { useGetSurveyQuery } from "api/survey";
 
 export interface Item {
@@ -31,7 +30,6 @@ export interface ContainerProps {
 
 const InputsPreview: React.FC = () => {
   const dispatch = useAppDispatch();
-  const inputs = useAppSelector(selectInputsInCurrentPage);
   const { selected_page } = useAppSelector((state) => state.formBuilder);
   const { data, isLoading, error } = useGetQuestionsInSelectedPageQuery(
     "60ddc3c86dd4b000150998b4"
@@ -78,6 +76,7 @@ const InputsPreview: React.FC = () => {
       dispatch(updateInputsOrder(new_input_order));
     }
   };
+  console.log(input_order);
 
   const Container: React.FC<ContainerProps> = ({
     children,
@@ -123,8 +122,10 @@ const InputsPreview: React.FC = () => {
   if (isLoading || cards === undefined || input_order === undefined) {
     return <Loader />;
   }
-  console.log(cards, input_order);
 
+  if (error) {
+    return <Error error={error} />;
+  }
   return (
     <DragDropContext
       onDragStart={() => onDragStart()}

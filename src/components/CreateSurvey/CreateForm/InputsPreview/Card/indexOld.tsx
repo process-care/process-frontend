@@ -133,7 +133,7 @@ const Card: React.FC<CardProps> = ({ input, index, moveCard }) => {
               <Flex w="100%" justifyContent="space-between" pb={4}>
                 <Text variant="xsMedium">{input.internal_title}</Text>
                 <Box>
-                  <InputIcon input_type={input.input_type} />
+                  <InputIcon type={input.type} />
                 </Box>
               </Flex>
             )}

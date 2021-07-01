@@ -7,7 +7,7 @@ import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
 
 interface Props {
   onSelect: (
-    type: IQuestion["input_type"],
+    type: IQuestion["type"],
     name: string,
     id: string,
     internal_title: string | undefined
@@ -18,7 +18,7 @@ const ToolBox: React.FC<Props> = ({ onSelect }) => {
   const id = uuidv4();
   return (
     <ButtonGroup d="flex" spacing="2" w="100%" flexWrap="wrap">
-      {inputs.map(({ input_type, name }, i) => {
+      {inputs.map(({ type, name }, i) => {
         return (
           <Button
             flex="40%"
@@ -31,16 +31,11 @@ const ToolBox: React.FC<Props> = ({ onSelect }) => {
             py="30px"
             pl={3}
             onClick={() =>
-              onSelect(
-                input_type,
-                name,
-                `${input_type}-${id}`,
-                `${input_type}-${id}`
-              )
+              onSelect(type, name, `${type}-${id}`, `${type}-${id}`)
             }
           >
             <Box mr={2}>
-              <InputIcon input_type={input_type} />
+              <InputIcon type={type} />
             </Box>
             {name}
           </Button>

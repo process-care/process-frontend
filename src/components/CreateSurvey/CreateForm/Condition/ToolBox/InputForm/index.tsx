@@ -39,13 +39,13 @@ const InputForm: React.FC = () => {
     dispatch(setIsEditing(false));
   };
 
-  const { input_type } = selectedInput;
+  const { type } = selectedInput;
 
   return (
     <Formik
       validateOnBlur={false}
       validationSchema={renderFormValidationSchema(selectedInput)}
-      initialValues={selectedInput ? selectedInput : fields[input_type]}
+      initialValues={selectedInput ? selectedInput : fields[type]}
       onSubmit={(data, { setSubmitting, validateForm }) => {
         validateForm(data);
         setSubmitting(true);
@@ -116,7 +116,7 @@ const InputForm: React.FC = () => {
                 alignItems="start"
               >
                 <Flex alignItems="center">
-                  <InputIcon input_type={selectedInput.input_type} />
+                  <InputIcon type={selectedInput.type} />
 
                   <Box ml={2}>
                     <Text variant="xsMedium">
@@ -126,7 +126,7 @@ const InputForm: React.FC = () => {
                   </Box>
                 </Flex>
 
-                {selectedInput.input_type !== "wysiwyg" && (
+                {selectedInput.type !== "wysiwyg" && (
                   <Flex flexDirection="column">
                     <Switch label="" id="required" size="sm" />
                     <Text variant="xsMedium">Réponse obligatoire</Text>

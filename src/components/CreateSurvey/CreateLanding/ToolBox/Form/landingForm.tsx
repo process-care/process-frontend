@@ -17,11 +17,22 @@ import { SvgHover } from "components/SvgHover";
 
 import { ReactComponent as Delete } from "assets/delete.svg";
 import { goTop } from "utils/application/scrollTo";
+import { useHistory } from "react-router-dom";
 
 export const LandingForm: React.FC = () => {
   const dispatch = useAppDispatch();
+  const history = useHistory();
+
   const { landing } = useAppSelector((state) => state.landingBuilder);
 
+  const handleSubmit = () => {
+    history.push("/");
+  };
+
+  const handleCancel = () => {
+    history.push("/");
+  };
+  console.log(landing);
   const onChange = (event: React.FormEvent<HTMLFormElement>) => {
     const target = event.target as HTMLFormElement;
     if (target.type === "file") {
@@ -36,10 +47,12 @@ export const LandingForm: React.FC = () => {
       );
     }
   };
+
   return (
     <Formik
       validateOnBlur={false}
-      initialValues={landing || initialValuesLanding}
+      // initialValues={landing || initialValuesLanding}
+      initialValues={initialValuesLanding}
       enableReinitialize
       onSubmit={(data, { setSubmitting, validateForm }) => {
         validateForm(data);
@@ -47,7 +60,6 @@ export const LandingForm: React.FC = () => {
       }}
     >
       {({ values, setFieldValue }) => {
-        console.log(values);
         // Handle wysiwyg change
         React.useEffect(() => {
           dispatch(
@@ -183,8 +195,8 @@ export const LandingForm: React.FC = () => {
                 {t.see_more_cta}
               </Button>
               <Footer
-                onCancel={() => console.log("")}
-                onSubmit={() => console.log("")}
+                onCancel={() => handleCancel()}
+                onSubmit={() => handleSubmit()}
               />
             </Form>
           </Box>

@@ -6,14 +6,19 @@ import { Formik } from "formik";
 import React from "react";
 import { updateLanding } from "redux/slices/aboutBuilder";
 import { editAboutPage } from "redux/slices/aboutBuilder";
-
+import { useHistory } from "react-router-dom";
 import { initialValuesAbout } from "./utils/initialValues";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 export const AboutForm: React.FC = () => {
+  const history = useHistory();
   const { content } = useAppSelector((state) => state.aboutBuilder);
   const dispatch = useAppDispatch();
 
+  const handleSubmit = () => {
+    history.push("/create-survey/create-landing");
+    dispatch(editAboutPage());
+  };
   return (
     <Formik
       validateOnBlur={false}
@@ -45,7 +50,7 @@ export const AboutForm: React.FC = () => {
             <Wysiwyg id="about" />
             <Footer
               onCancel={() => dispatch(editAboutPage())}
-              onSubmit={() => console.log("")}
+              onSubmit={() => handleSubmit()}
             />
           </Box>
         );

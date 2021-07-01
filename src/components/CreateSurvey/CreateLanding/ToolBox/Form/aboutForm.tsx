@@ -40,7 +40,7 @@ export const AboutForm: React.FC = () => {
             w="90%"
             mx="auto"
             mt="130px"
-            h="100%"
+            h="80%"
             sx={{
               ".jodit-workplace": {
                 height: "60vh !important",

@@ -12,7 +12,13 @@ export const CreateLanding: React.FC<IRoute> = () => {
 
   return (
     <Box overflow="auto">
-      <Box d="flex" justifyContent="space-around" w="100%" overflow="hidden">
+      <Box
+        d="flex"
+        justifyContent="space-around"
+        w="100%"
+        overflow="hidden"
+        h="100%"
+      >
         <Box w="100%" pos="relative">
           <Box
             position="fixed"

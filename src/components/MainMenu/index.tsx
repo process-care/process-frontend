@@ -1,7 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { Box, Flex } from "@chakra-ui/react";
-import { ColorModeSwitcher } from "ColorModeSwitcher";
 
 import routes from "routes";
 
@@ -32,9 +31,6 @@ const MainMenu: React.FC = () => {
             </NavLink>
           );
         })}
-      </Box>
-      <Box>
-        <ColorModeSwitcher p="30px 30px 10px 0" />
       </Box>
     </Flex>
   );

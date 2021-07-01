@@ -1,4 +1,4 @@
-import { Box, Text, Flex, Container } from "@chakra-ui/react";
+import { Box, Text, Flex, Container, Image } from "@chakra-ui/react";
 import { IMember } from "interfaces/landing";
 import React from "react";
 
@@ -9,7 +9,8 @@ export interface MemberList {
 const Member: React.FC<IMember> = ({ job, name, image }) => {
   return (
     <Flex flexDirection="column" mr={6}>
-      <img src={image} alt={name} style={{ maxWidth: "120px" }} />
+      <Image borderRadius="full" boxSize="150px" src={image} alt={name} />
+
       <Text variant="currentLight" textTransform="uppercase" mt={7}>
         {name}
       </Text>

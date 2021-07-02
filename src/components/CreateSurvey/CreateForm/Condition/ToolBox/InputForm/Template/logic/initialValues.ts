@@ -31,7 +31,7 @@ export const fields: { [type: string]: Record<string, unknown> } = {
     ...inputFieldsInitialValues,
     units: "",
   },
-  "text-area": {
+  text_area: {
     ...commonFieldsInitialValues,
     ...inputFieldsInitialValues,
     rows: [],

@@ -7,7 +7,7 @@ export const inputs: IQuestion[] = [
     id: "",
   },
   {
-    type: "text-area",
+    type: "text_area",
     name: "Question texte",
     id: "",
   },

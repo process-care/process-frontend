@@ -39,7 +39,7 @@ export const renderFormTemplate = (input: IQuestion): React.ReactNode => {
     case "slider":
       return <SliderFields />;
       break;
-    case "text-area":
+    case "text_area":
       return <TextareaFields />;
       break;
     case "date_picker":
@@ -78,7 +78,7 @@ export const renderFormValidationSchema = (
     case "slider":
       return SliderSchema;
       break;
-    case "text-area":
+    case "text_area":
       return CommonFieldsSchema;
       break;
     case "date_picker":

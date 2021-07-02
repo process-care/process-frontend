@@ -57,7 +57,7 @@ const initialState: FormBuilder = {
   input_order: [],
   selected_input: {
     id: "",
-    type: "text-area",
+    type: "text_area",
     internal_title: "",
     name: "",
     page: "",

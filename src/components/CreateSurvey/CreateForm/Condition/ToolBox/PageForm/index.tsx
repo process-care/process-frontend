@@ -24,11 +24,12 @@ import { RemovingConfirmation } from "../../../RemovingConfirmation";
 import { v4 as uuidv4 } from "uuid";
 import { getConditionsByRefererId } from "utils/formBuilder/condition";
 import { SvgHover } from "components/SvgHover";
-
+import { useAddQuestionMutation } from "api/questions";
 import { ReactComponent as Trash } from "assets/trash.svg";
 
 export const PageForm: React.FC = () => {
   const dispatch = useAppDispatch();
+  const [addQuestion] = useAddQuestionMutation();
   const { selected_page, pages, is_removing } = useAppSelector(
     (state) => state.formBuilder
   );
@@ -55,6 +56,8 @@ export const PageForm: React.FC = () => {
       };
       dispatch(selectInput(data));
       dispatch(addInput(data));
+      addQuestion({ type, internal_title, page: selected_page.id });
+
       dispatch(toogleDrawer());
     }
   };

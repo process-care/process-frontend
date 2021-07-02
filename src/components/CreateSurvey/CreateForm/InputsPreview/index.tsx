@@ -46,7 +46,7 @@ const InputsPreview: React.FC = () => {
     setCards(data?.questions);
   }, [data?.questions]);
 
-  console.log(data, survey, input_order);
+  console.log(data?.questions);
 
   const renderCard = (input: IQuestion, index: number) => {
     return <Card key={input.id} input={input} index={index} />;
@@ -149,11 +149,15 @@ const InputsPreview: React.FC = () => {
               {...provided.droppableProps}
               isDraggingOver={snapshot.isDraggingOver}
             >
-              {input_order.map((inputId: string, i: number) => {
+              {/* {input_order.map((inputId: string, i: number) => {
                 const current = cards.find((c) => c.id === inputId);
                 if (current !== undefined) {
                   return renderCard(current, i);
                 } else return;
+              })} */}
+
+              {cards.map((input: IQuestion, i: number) => {
+                return renderCard(input, i);
               })}
 
               {provided.placeholder}

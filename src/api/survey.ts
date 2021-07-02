@@ -12,6 +12,7 @@ export interface GetSurveyResponse {
 export const surveyApi = createApi({
   reducerPath: "surveyApi",
   baseQuery: graphqlBaseQuery(),
+  tagTypes: ["Questions"],
   endpoints: (builder) => ({
     getSurvey: builder.query<GetSurveyResponse, string | undefined>({
       query: (id) => ({
@@ -34,7 +35,6 @@ export const surveyApi = createApi({
             }
           }
         `,
-
         variables: {
           id,
         },

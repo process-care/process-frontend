@@ -4,7 +4,7 @@ export default interface IQuestion {
   type:
     | "input"
     | "wysiwyg"
-    | "text-area"
+    | "text_area"
     | "select"
     | "slider"
     | "number_input"

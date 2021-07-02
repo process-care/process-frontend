@@ -18,7 +18,7 @@ export const checkIfMultiple = (selectedCondition: ICondition): boolean => {
   const target_question = getInputById(selectedCondition.target_id);
 
   const type =
-    target_question?.type !== undefined ? target_question?.type : "text-area";
+    target_question?.type !== undefined ? target_question?.type : "text_area";
   if (multipleInput.includes(type)) {
     return true;
   } else return false;

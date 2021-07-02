@@ -22,8 +22,10 @@ import { v4 as uuidv4 } from "uuid";
 import { t } from "static/condition";
 import { getConditionsByRefererId } from "utils/formBuilder/condition";
 import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
+import { useUpdateQuestionMutation } from "api/questions";
 
 const InputForm: React.FC = () => {
+  const [updateQuestion] = useUpdateQuestionMutation();
   const condition_id = uuidv4();
   const { selected_input } = useAppSelector((state) => state.formBuilder);
 
@@ -64,6 +66,10 @@ const InputForm: React.FC = () => {
                 },
               })
             );
+            updateQuestion({
+              id: selectedInput.id,
+              [target.id]: target.value,
+            });
           }
         };
 

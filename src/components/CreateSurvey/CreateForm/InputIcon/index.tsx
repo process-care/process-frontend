@@ -41,7 +41,7 @@ export const renderInput = (type: IQuestion["type"]): React.ReactElement => {
     case "select":
       return <Select />;
       break;
-    case "text-area":
+    case "text_area":
       return <TextArea />;
       break;
     case "wysiwyg":

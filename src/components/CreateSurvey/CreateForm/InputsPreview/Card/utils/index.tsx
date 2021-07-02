@@ -118,7 +118,7 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
         />
       );
       break;
-    case "text-area":
+    case "text_area":
       return (
         <Textarea
           isCollapsed={isCollapsed}

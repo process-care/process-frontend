@@ -16,6 +16,8 @@ export interface IAddQ {
 export const questionsApi = createApi({
   reducerPath: "questionsApi",
   baseQuery: graphqlBaseQuery(),
+  tagTypes: ["Questions"],
+  refetchOnMountOrArgChange: true,
   endpoints: (builder) => ({
     getQuestionsInSelectedPage: builder.query<
       GetQuestionsResponse,
@@ -30,6 +32,7 @@ export const questionsApi = createApi({
               placeholder
               internal_description
               internal_title
+              help_text
               type
               type_name
               answers
@@ -50,15 +53,25 @@ export const questionsApi = createApi({
     addQuestion: builder.mutation<IAddQ, Partial<IAddQ>>({
       query: ({ type, internal_title, page }) => ({
         document: gql`
-          query AddQuestion($type: String!, $internal_title:String!,$page:ID!) {
-            createQuestion(input: { data: { type: $type internal_title: $internal_title,page:$page } }) 
-            {
+          mutation AddQuestion(
+            $type: ENUM_QUESTION_TYPE!
+            $internal_title: String!
+            $page: ID!
+          ) {
+            createQuestion(
+              input: {
+                data: {
+                  type: $type
+                  internal_title: $internal_title
+                  page: $page
+                }
+              }
+            ) {
               question {
-              id
+                id
               }
             }
           }
-      }
         `,
         variables: {
           type,
@@ -66,8 +79,48 @@ export const questionsApi = createApi({
           page,
         },
       }),
+      invalidatesTags: ["Questions"],
+    }),
+    updateQuestion: builder.mutation<IQuestion, Partial<IQuestion>>({
+      query: ({ id, ...args }) => ({
+        document: gql`
+          mutation updateQuestion($id: ID!, $args: editQuestionInput) {
+            updateQuestion(input: { where: { id: $id }, data: $args }) {
+              question {
+                label
+              }
+            }
+          }
+        `,
+        variables: {
+          id,
+          args,
+        },
+      }),
+      invalidatesTags: ["Questions"],
+      async onQueryStarted({ id, ...patch }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          questionsApi.util.updateQueryData(
+            "getQuestionsInSelectedPage",
+            id,
+            (draft) => {
+              console.log(draft);
+              Object.assign(draft, patch);
+            }
+          )
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
     }),
   }),
 });
 
-export const { useGetQuestionsInSelectedPageQuery } = questionsApi;
+export const {
+  useGetQuestionsInSelectedPageQuery,
+  useAddQuestionMutation,
+  useUpdateQuestionMutation,
+} = questionsApi;

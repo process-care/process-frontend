@@ -8,7 +8,7 @@ const AllProviders = ({ children }: { children?: React.ReactNode }) => (
 
 const customRender = (
   ui: React.ReactElement,
-  options?: RenderOptions
-): unknown => render(ui, { wrapper: AllProviders, ...options });
+  answers?: RenderOptions
+): unknown => render(ui, { wrapper: AllProviders, ...answers });
 
 export { customRender as render };

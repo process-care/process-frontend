@@ -27,6 +27,7 @@ export const questionsApi = createApi({
               internal_title
               type
               type_name
+              answers
               conditions {
                 id
               }

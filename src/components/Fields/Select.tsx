@@ -14,7 +14,7 @@ interface Props {
   id: string;
   placeholder: string;
   helpText?: string;
-  options: Options[] | undefined;
+  answers: Options[] | undefined;
   isRequired?: boolean;
   isMulti?: boolean;
   isCollapsed?: boolean;
@@ -67,7 +67,7 @@ export const CustomSelect: React.FC<Props> = ({
   placeholder,
   isRequired,
   id,
-  options,
+  answers,
 
   isCollapsed,
 }): ReactElement => {
@@ -85,7 +85,7 @@ export const CustomSelect: React.FC<Props> = ({
             isRequired={isRequired}
             placeholder={placeholder}
             noOptionsMessage={() => t.not_found}
-            options={options}
+            answers={answers}
             onChange={(value) => setFieldValue(field.name, value.value)}
             defaultValue={field.value}
           />

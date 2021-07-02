@@ -25,9 +25,9 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
     (state) => state.formBuilder.is_collapse_view
   );
   const formatOptions = (): Options[] | undefined => {
-    if (input.options) {
+    if (input.answers) {
       const arr = [];
-      for (const [, value] of Object.entries(input.options)) {
+      for (const [, value] of Object.entries(input.answers)) {
         arr.push({ value, label: value });
       }
       return arr;
@@ -96,7 +96,7 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
           id={input.id || "select"}
           label={input.label || t.label}
           placeholder={input.placeholder || t.placeholder}
-          options={formatOptions()}
+          answers={formatOptions()}
           helpText={input.help_text || t.help_text}
         />
       );

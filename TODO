@@ -1,8 +1,8 @@
 REFACTO :
 
 DRAG AND DROP
-Refacto Affichage des options quand on édite.
-Refacto options pour ne pas avoir differents types (objet ou array).
+Refacto Affichage des answers quand on édite.
+Refacto answers pour ne pas avoir differents types (objet ou array).
 Uniformiser les id et name des inputs
 
 

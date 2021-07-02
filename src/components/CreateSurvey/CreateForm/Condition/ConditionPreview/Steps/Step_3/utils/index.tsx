@@ -13,15 +13,15 @@ export const renderInput = (
   const Options = () => {
     const dispatch = useAppDispatch();
 
-    const options =
-      target_question?.options !== undefined &&
-      Object.values(target_question?.options);
-    if (!options) {
+    const answers =
+      target_question?.answers !== undefined &&
+      Object.values(target_question?.answers);
+    if (!answers) {
       return <p>Erreur, pas de réponses</p>;
     } else {
       return (
         <ul style={{ width: "100%" }}>
-          {options.map((option) => (
+          {answers.map((option) => (
             <InputBox
               isSelected={selectedCondition.target_value === option}
               isOptionMode

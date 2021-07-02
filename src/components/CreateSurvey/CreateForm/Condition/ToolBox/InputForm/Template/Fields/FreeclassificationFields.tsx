@@ -21,7 +21,7 @@ export const FreeclassificationFields: React.FC = () => {
         id="freeclassification_responses_count"
         label="Nombre de réponses à proposer"
         placeholder="Choisissez les réponses"
-        options={[
+        answers={[
           { label: "3 réponses", value: "3" },
           { label: "4 réponses", value: "4" },
           { label: "5 réponses", value: "5" },

@@ -115,7 +115,9 @@ export const formBuilderSlice = createSlice({
           if (key.includes("option")) {
             state.inputs[current] = {
               ...state.inputs[current],
-              options: { ...state.inputs[current].options, ...data },
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              answers: { ...state.inputs[current].answers, ...data },
             };
             return;
           }

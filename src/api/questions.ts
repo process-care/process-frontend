@@ -98,23 +98,6 @@ export const questionsApi = createApi({
         },
       }),
       invalidatesTags: ["Questions"],
-      async onQueryStarted({ id, ...patch }, { dispatch, queryFulfilled }) {
-        const patchResult = dispatch(
-          questionsApi.util.updateQueryData(
-            "getQuestionsInSelectedPage",
-            id,
-            (draft) => {
-              console.log(draft);
-              Object.assign(draft, patch);
-            }
-          )
-        );
-        try {
-          await queryFulfilled;
-        } catch {
-          patchResult.undo();
-        }
-      },
     }),
   }),
 });

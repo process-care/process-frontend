@@ -2,20 +2,18 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import { gql } from "graphql-request";
 import ISurvey from "interfaces/survey";
 import { graphqlBaseQuery } from "api/preset";
-
-const baseUrl: string = process.env.REACT_APP_API_URL ?? "whatever default";
+import IQuestion from "interfaces/form/question";
+import IPage from "interfaces/form/page";
 
 export interface GetSurveyResponse {
-  survey: ISurvey;
+  survey: ISurvey & IQuestion & IPage;
 }
 
 export const surveyApi = createApi({
   reducerPath: "surveyApi",
-  baseQuery: graphqlBaseQuery({
-    baseUrl,
-  }),
+  baseQuery: graphqlBaseQuery(),
   endpoints: (builder) => ({
-    getSurvey: builder.query<GetSurveyResponse, string>({
+    getSurvey: builder.query<GetSurveyResponse, string | undefined>({
       query: (id) => ({
         document: gql`
           query GetSurvey($id: ID!) {
@@ -28,6 +26,10 @@ export const surveyApi = createApi({
                 name
                 short_name
                 is_locked
+                questions {
+                  id
+                  label
+                }
               }
             }
           }

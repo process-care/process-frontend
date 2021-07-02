@@ -22,7 +22,7 @@ export const inputs: IQuestion[] = [
     id: "",
   },
   {
-    type: "number-input",
+    type: "number_input",
     name: "Question nombre",
     id: "",
   },
@@ -39,12 +39,12 @@ export const inputs: IQuestion[] = [
   },
 
   {
-    type: "date-picker",
+    type: "date_picker",
     name: "Question date",
     id: "",
   },
   {
-    type: "free-classification",
+    type: "free_classification",
     name: "Question free democratic classification",
     id: "",
   },

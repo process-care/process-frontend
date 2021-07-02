@@ -26,13 +26,13 @@ export const renderInput = (type: IQuestion["type"]): React.ReactElement => {
     case "slider":
       return <Cursor />;
       break;
-    case "date-picker":
+    case "date_picker":
       return <DatePicker />;
       break;
-    case "free-classification":
+    case "free_classification":
       return <FreeClassification />;
       break;
-    case "number-input":
+    case "number_input":
       return <InputNumber />;
       break;
     case "radio":

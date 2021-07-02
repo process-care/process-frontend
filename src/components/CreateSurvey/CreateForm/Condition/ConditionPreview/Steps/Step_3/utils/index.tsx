@@ -59,7 +59,7 @@ export const renderInput = (
         />
       );
       break;
-    case "number-input":
+    case "number_input":
       return (
         <Textarea
           rows="small"

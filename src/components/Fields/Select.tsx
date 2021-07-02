@@ -73,7 +73,6 @@ export const CustomSelect: React.FC<Props> = ({
 }): ReactElement => {
   const [field, ,] = useField(id);
   const { setFieldValue } = useFormikContext();
-
   return (
     <FormControl id={id} textAlign="left">
       <FormLabel>{label}</FormLabel>
@@ -85,8 +84,8 @@ export const CustomSelect: React.FC<Props> = ({
             isRequired={isRequired}
             placeholder={placeholder}
             noOptionsMessage={() => t.not_found}
-            answers={answers}
-            onChange={(value) => setFieldValue(field.name, value.value)}
+            options={answers}
+            onChange={(value) => setFieldValue(field.name, value?.value)}
             defaultValue={field.value}
           />
           <FormHelperText fontSize="xs">{helpText}</FormHelperText>

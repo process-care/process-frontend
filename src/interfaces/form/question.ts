@@ -7,11 +7,11 @@ export default interface IQuestion {
     | "text-area"
     | "select"
     | "slider"
-    | "number-input"
+    | "number_input"
     | "radio"
     | "checkbox"
-    | "date-picker"
-    | "free-classification";
+    | "date_picker"
+    | "free_classification";
   name: string;
   id: string;
   label?: string;

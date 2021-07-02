@@ -51,7 +51,7 @@ const PageBuilder: React.FC<Props> = ({ pages }) => {
       position="relative"
     >
       <Box h="80%" overflowY="auto" w="100%">
-        {pages.map((page, i) => {
+        {pages?.map((page, i) => {
           const isSelected = selected_page.id === page.id;
           return (
             <Box

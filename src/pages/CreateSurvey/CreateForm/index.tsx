@@ -21,7 +21,7 @@ import { Error } from "components/Error";
 
 export const CreateForm: React.FC<IRoute> = () => {
   const { data, isLoading, error } = useGetSurveyQuery(
-    "60ddd61f120575001567acc5"
+    process.env.REACT_APP_CURRENT_SURVEY_ID!
   );
   const isOpen = useAppSelector((state) => state.application.drawer_is_open);
   const { selected_condition, selected_page } = useAppSelector(
@@ -35,14 +35,13 @@ export const CreateForm: React.FC<IRoute> = () => {
     return <Error error={error} />;
   }
 
-  if (!data) {
+  if (!data?.survey) {
     return <div>No Survey</div>;
   }
 
   return (
     <Box h="100vh" overflow="hidden">
       <Drawer isOpen={isOpen} size="md" content={<InputForm />} />
-
       <Box d="flex" justifyContent="space-around" w="100%" overflow="hidden">
         <Box w="100%">
           <Menu />

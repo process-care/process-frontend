@@ -3,22 +3,21 @@ import { gql } from "graphql-request";
 import { graphqlBaseQuery } from "api/preset";
 import IQuestion from "interfaces/form/question";
 
-const baseUrl: string = process.env.REACT_APP_API_URL ?? "whatever default";
-
 export interface GetQuestionsResponse {
-  questions: IQuestion[];
+  questions: IQuestion[] | undefined;
 }
 
 export const questionsApi = createApi({
   reducerPath: "questionsApi",
-  baseQuery: graphqlBaseQuery({
-    baseUrl,
-  }),
+  baseQuery: graphqlBaseQuery(),
   endpoints: (builder) => ({
-    getQuestionsInSelectedPage: builder.query<GetQuestionsResponse, string>({
+    getQuestionsInSelectedPage: builder.query<
+      GetQuestionsResponse,
+      string | undefined
+    >({
       query: (id) => ({
         document: gql`
-          query GetQuestion($id: ID!) {
+          query GetQuestion($id: ID) {
             questions(where: { page: { id: $id } }) {
               id
               label

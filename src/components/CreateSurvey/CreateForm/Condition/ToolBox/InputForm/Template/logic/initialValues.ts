@@ -26,7 +26,7 @@ export const fields: { [type: string]: Record<string, unknown> } = {
     ...inputFieldsInitialValues,
     units: "",
   },
-  "number-input": {
+  number_input: {
     ...commonFieldsInitialValues,
     ...inputFieldsInitialValues,
     units: "",
@@ -36,7 +36,7 @@ export const fields: { [type: string]: Record<string, unknown> } = {
     ...inputFieldsInitialValues,
     rows: [],
   },
-  "free-classification": {
+  free_classification: {
     ...commonFieldsInitialValues,
     ...inputFieldsInitialValues,
     rows: [],
@@ -61,7 +61,7 @@ export const fields: { [type: string]: Record<string, unknown> } = {
     step: undefined,
     default_value: undefined,
   },
-  "date-picker": {
+  date_picker: {
     ...multipleInputFieldsInitialValues,
   },
   wysiwyg: {

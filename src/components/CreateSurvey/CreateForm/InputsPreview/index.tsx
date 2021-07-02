@@ -4,6 +4,7 @@ import Card from "./Card";
 
 import IQuestion from "interfaces/form/question";
 import { useAppSelector, useAppDispatch } from "redux/hooks";
+import { skipToken } from "@reduxjs/toolkit/query/react";
 
 import { Formik, Form } from "formik";
 import { Header } from "./Header";
@@ -31,18 +32,21 @@ export interface ContainerProps {
 const InputsPreview: React.FC = () => {
   const dispatch = useAppDispatch();
   const { selected_page } = useAppSelector((state) => state.formBuilder);
-  const { data, isLoading, error } = useGetQuestionsInSelectedPageQuery(
-    "60ddc3c86dd4b000150998b4"
-  );
-  const { data: survey } = useGetSurveyQuery("60ddd61f120575001567acc5");
 
-  const input_order = survey?.survey.order;
-  console.log(survey);
+  const { data: survey } = useGetSurveyQuery(
+    process.env.REACT_APP_CURRENT_SURVEY_ID!
+  );
+  const { data, isLoading, error } = useGetQuestionsInSelectedPageQuery(
+    selected_page.id ?? skipToken
+  );
+  const input_order = survey?.survey?.order;
   const [cards, setCards] = React.useState(data?.questions);
 
   React.useEffect(() => {
     setCards(data?.questions);
   }, [data?.questions]);
+
+  console.log(data, survey, input_order);
 
   const renderCard = (input: IQuestion, index: number) => {
     return <Card key={input.id} input={input} index={index} />;
@@ -70,13 +74,12 @@ const InputsPreview: React.FC = () => {
     }
 
     if (input_order) {
-      const new_input_order = Array.from(input_order);
+      const new_input_order: string[] = Array.from(input_order);
       new_input_order.splice(source.index, 1);
       new_input_order.splice(destination.index, 0, draggableId);
       dispatch(updateInputsOrder(new_input_order));
     }
   };
-  console.log(input_order);
 
   const Container: React.FC<ContainerProps> = ({
     children,
@@ -146,7 +149,7 @@ const InputsPreview: React.FC = () => {
               {...provided.droppableProps}
               isDraggingOver={snapshot.isDraggingOver}
             >
-              {input_order.map((inputId, i) => {
+              {input_order.map((inputId: string, i: number) => {
                 const current = cards.find((c) => c.id === inputId);
                 if (current !== undefined) {
                   return renderCard(current, i);

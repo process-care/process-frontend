@@ -52,7 +52,7 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
         </>
       );
       break;
-    case "number-input":
+    case "number_input":
       return (
         <NumberInput
           isCollapsed={isCollapsed}
@@ -131,7 +131,7 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
         />
       );
       break;
-    case "date-picker":
+    case "date_picker":
       return (
         <Datepicker
           isCollapsed={isCollapsed}
@@ -153,12 +153,12 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
           }}
         />
       );
-    case "free-classification":
+    case "free_classification":
       return (
         <Textarea
           isCollapsed={isCollapsed}
           isRequired={input.required}
-          id={input.id || "free-classification"}
+          id={input.id || "free_classification"}
           rows={input.rows}
           label={input.label || t.label}
           placeholder={input.placeholder || t.placeholder}

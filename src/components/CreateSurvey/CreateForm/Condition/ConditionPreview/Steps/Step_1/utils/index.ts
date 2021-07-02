@@ -1,7 +1,7 @@
 export const authorizedInputTypes: string[] = [
   "select",
   "slider",
-  "number-input",
+  "number_input",
   "radio",
   "checkbox",
 ];

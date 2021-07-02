@@ -24,7 +24,7 @@ export const renderFormTemplate = (input: IQuestion): React.ReactNode => {
     case "input":
       return <InputFields />;
       break;
-    case "number-input":
+    case "number_input":
       return <NumberInputFields />;
       break;
     case "checkbox":
@@ -42,12 +42,12 @@ export const renderFormTemplate = (input: IQuestion): React.ReactNode => {
     case "text-area":
       return <TextareaFields />;
       break;
-    case "date-picker":
+    case "date_picker":
       return <DatepickerFields />;
       break;
     case "wysiwyg":
       return <WysiwygFields />;
-    case "free-classification":
+    case "free_classification":
       return <FreeclassificationFields />;
 
     default:
@@ -63,7 +63,7 @@ export const renderFormValidationSchema = (
     case "input":
       return CommonFieldsSchema;
       break;
-    case "number-input":
+    case "number_input":
       return CommonFieldsSchema;
       break;
     case "checkbox":
@@ -81,7 +81,7 @@ export const renderFormValidationSchema = (
     case "text-area":
       return CommonFieldsSchema;
       break;
-    case "date-picker":
+    case "date_picker":
       return CommonFieldsSchema;
       break;
     case "wysiwyg":

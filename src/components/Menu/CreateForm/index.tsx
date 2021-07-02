@@ -15,7 +15,7 @@ interface Props {
 
 export const Menu: React.FC<Props> = ({ isLanding }) => {
   const { data, isLoading, error } = useGetSurveyQuery(
-    "60ddd61f120575001567acc5"
+    process.env.REACT_APP_CURRENT_SURVEY_ID!
   );
   const { preview_mode } = useAppSelector((state) => state.application);
   const dispatch = useAppDispatch();
@@ -70,7 +70,7 @@ export const Menu: React.FC<Props> = ({ isLanding }) => {
             isTruncated
             maxWidth="250px"
           >
-            {data?.survey.description}
+            {data?.survey?.description}
           </Text>
           <Box pos="absolute" right="10px">
             <Button variant="roundedTransparent" mr={5}>

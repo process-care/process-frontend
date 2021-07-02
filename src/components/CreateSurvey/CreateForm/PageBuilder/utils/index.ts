@@ -21,8 +21,7 @@ export const isInactive = (
         pages.findIndex(
           (p) =>
             p.id ===
-            getPageById(getInputById(selectedCondition?.referer_id)?.page_id)
-              ?.id
+            getPageById(getInputById(selectedCondition?.referer_id)?.page)?.id
         ) < i
       );
     }

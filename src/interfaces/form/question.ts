@@ -31,7 +31,7 @@ export default interface IQuestion {
   rows?: "small" | "medium" | "large" | undefined;
   required?: boolean;
   default_value?: string | undefined;
-  page_id?: string;
+  page?: string;
   wysiwyg?: string | undefined;
   freeclassification_responses_count?: string;
   condition?: ICondition["id"][];

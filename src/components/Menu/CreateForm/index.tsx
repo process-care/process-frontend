@@ -2,7 +2,6 @@ import { Flex, Text, Button, Box, Collapse } from "@chakra-ui/react";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
-import { mockForm } from "redux/slices/formBuilder";
 import { ReactComponent as Back } from "./assets/back.svg";
 import { t } from "static/input";
 import { tooglePreview } from "redux/slices/application";
@@ -99,10 +98,6 @@ export const Menu: React.FC<Props> = ({ isLanding }) => {
                 {t.verify}
               </Button>
             )}
-
-            <Button variant="link" onClick={() => dispatch(mockForm())}>
-              Mock
-            </Button>
           </Box>
         </Flex>
       </Collapse>

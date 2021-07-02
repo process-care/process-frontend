@@ -51,7 +51,7 @@ export const PageForm: React.FC = () => {
         name,
         id,
         internal_title,
-        page_id: selected_page.id,
+        page: selected_page.id,
       };
       dispatch(selectInput(data));
       dispatch(addInput(data));

@@ -7,6 +7,12 @@ export interface GetQuestionsResponse {
   questions: IQuestion[] | undefined;
 }
 
+export interface IAddQ {
+  type: IQuestion["type"];
+  internal_title: IQuestion["internal_title"];
+  page: IQuestion["page"];
+}
+
 export const questionsApi = createApi({
   reducerPath: "questionsApi",
   baseQuery: graphqlBaseQuery(),
@@ -38,6 +44,26 @@ export const questionsApi = createApi({
         `,
         variables: {
           id,
+        },
+      }),
+    }),
+    addQuestion: builder.mutation<IAddQ, Partial<IAddQ>>({
+      query: ({ type, internal_title, page }) => ({
+        document: gql`
+          query AddQuestion($type: String!, $internal_title:String!,$page:ID!) {
+            createQuestion(input: { data: { type: $type internal_title: $internal_title,page:$page } }) 
+            {
+              question {
+              id
+              }
+            }
+          }
+      }
+        `,
+        variables: {
+          type,
+          internal_title,
+          page,
         },
       }),
     }),

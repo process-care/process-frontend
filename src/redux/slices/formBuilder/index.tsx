@@ -60,7 +60,7 @@ const initialState: FormBuilder = {
     type: "text-area",
     internal_title: "",
     name: "",
-    page_id: "",
+    page: "",
     condition: [],
   },
   pages: [initialFirstPage],
@@ -85,7 +85,7 @@ export const formBuilderSlice = createSlice({
       state.inputs.push(action.payload);
       // Insert the new input in good position (last of the selected page).
       const { id } = state.selected_page;
-      const inputsInSamePage = state.inputs.filter((i) => i.page_id === id);
+      const inputsInSamePage = state.inputs.filter((i) => i.page === id);
       const previousId = inputsInSamePage[inputsInSamePage.length - 2]?.id;
       const previousIdx = state.input_order.findIndex(
         (id) => id === previousId
@@ -269,7 +269,7 @@ export const {
 
 export const selectInputsInCurrentPage = (state: RootState): IQuestion[] =>
   state.formBuilder.inputs.filter(
-    (input) => input.page_id === state.formBuilder.selected_page.id
+    (input) => input.page === state.formBuilder.selected_page.id
   );
 
 export const selectConditonInCurrentPage = (state: RootState): ICondition[] =>

@@ -1,18 +1,18 @@
 import React from "react";
 import IRoute from "interfaces/routes/route";
-import { useGetQuestions, useAddQuestion } from "queries/call";
+import { useGetQuestions, useAddQuestion, useAddPage } from "queries/call";
 import { useMutation } from "react-query";
 import { Button } from "@chakra-ui/react";
-import { queryClient } from "App";
+import IQuestion from "interfaces/form/question";
+import IPage from "interfaces/form/page";
 
 export const Authentification: React.FC<IRoute> = () => {
   const { data } = useGetQuestions();
-  const addQuestion = useMutation(useAddQuestion, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("getQuestions");
-    },
-  });
 
+  const addQuestion = useMutation((values: Partial<IQuestion>) =>
+    useAddQuestion(values)
+  );
+  const addPage = useMutation((values: Partial<IPage>) => useAddPage(values));
   return (
     <div>
       {data?.questions.map((d: any) => (
@@ -23,10 +23,27 @@ export const Authentification: React.FC<IRoute> = () => {
       ))}
       <Button
         onClick={() => {
-          addQuestion.mutate();
+          addQuestion.mutate({
+            label: "super label ",
+            internal_title: "de ouf de ouf",
+            placeholder: "dsds",
+            help_text: "dsd",
+            answers: ["oui", "non"],
+            required: true,
+          });
         }}
       >
-        Add
+        Add Question
+      </Button>
+      <Button
+        onClick={() => {
+          addPage.mutate({
+            name: "Ma super page",
+            short_name: "M1",
+          });
+        }}
+      >
+        Add Page
       </Button>
     </div>
   );

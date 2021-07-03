@@ -8,38 +8,45 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { store } from "redux/store";
 import { Provider } from "react-redux";
+import { ReactQueryDevtools } from "react-query/devtools";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 import "index.css";
 
+export const queryClient = new QueryClient();
+
 const App: React.FC = () => {
   return (
-    <Provider store={store}>
-      <ColorModeScript />
-      <ChakraProvider theme={theme}>
-        <CSSReset />
-        <DndProvider backend={HTML5Backend}>
-          <BrowserRouter>
-            <Layout>
-              <Switch>
-                {routes.map(({ name, path, exact, component }) => {
-                  return (
-                    <Route
-                      key={name}
-                      path={path}
-                      exact={exact}
-                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                      // @ts-ignore
-                      component={() => component}
-                      strict
-                    />
-                  );
-                })}
-              </Switch>
-            </Layout>
-          </BrowserRouter>
-        </DndProvider>
-      </ChakraProvider>
-    </Provider>
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store}>
+        <ColorModeScript />
+        <ChakraProvider theme={theme}>
+          <CSSReset />
+          <DndProvider backend={HTML5Backend}>
+            <BrowserRouter>
+              <Layout>
+                <Switch>
+                  {routes.map(({ name, path, exact, component }) => {
+                    return (
+                      <Route
+                        key={name}
+                        path={path}
+                        exact={exact}
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
+                        component={() => component}
+                        strict
+                      />
+                    );
+                  })}
+                </Switch>
+              </Layout>
+            </BrowserRouter>
+          </DndProvider>
+        </ChakraProvider>
+      </Provider>
+      <ReactQueryDevtools initialIsOpen />
+    </QueryClientProvider>
   );
 };
 

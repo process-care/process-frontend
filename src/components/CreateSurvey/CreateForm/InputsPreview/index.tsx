@@ -46,8 +46,6 @@ const InputsPreview: React.FC = () => {
     setCards(data?.questions);
   }, [data?.questions]);
 
-  console.log(data?.questions);
-
   const renderCard = (input: IQuestion, index: number) => {
     return <Card key={input.id} input={input} index={index} />;
   };

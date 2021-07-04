@@ -24,3 +24,15 @@ export const getSurveyById = gql`
     }
   }
 `;
+
+// order
+
+export const UPDATE_ORDER = gql`
+  mutation updateOrder($id: ID!, $new_order: JSON) {
+    updateSurvey(input: { where: { id: $id }, data: { order: $new_order } }) {
+      survey {
+        order
+      }
+    }
+  }
+`;

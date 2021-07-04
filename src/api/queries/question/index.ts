@@ -36,12 +36,10 @@ export const addQuestion = gql`
   }
 `;
 
-export const addPage = gql`
-  mutation addPage($values: PageInput) {
-    createPage(input: { data: $values }) {
-      page {
-        name
-        short_name
+export const deleteQuestion = gql`
+  mutation deleteQuestion($question_id: ID!) {
+    deleteQuestion(input: { where: { id: $question_id } }) {
+      question {
         id
       }
     }

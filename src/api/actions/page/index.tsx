@@ -1,5 +1,5 @@
 import { request } from "graphql-request";
-import { addPage } from "api/queries";
+import { addPage } from "api/queries/page";
 
 import IPage from "interfaces/form/page";
 

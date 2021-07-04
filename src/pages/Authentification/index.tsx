@@ -1,18 +1,28 @@
 import React from "react";
 import IRoute from "interfaces/routes/route";
-import { useGetQuestions, useAddQuestion, useAddPage } from "queries/call";
-import { useMutation } from "react-query";
+import { useGetQuestions, useAddQuestion } from "api/actions/question";
+import { useAddPage } from "api/actions/page";
+
+import { useMutation, useQuery } from "react-query";
 import { Button } from "@chakra-ui/react";
 import IQuestion from "interfaces/form/question";
 import IPage from "interfaces/form/page";
+import { useGetSurveyById } from "api/actions/survey";
 
 export const Authentification: React.FC<IRoute> = () => {
+  const [id] = React.useState("60deee11434ccc09b71924c6");
   const { data } = useGetQuestions();
+
+  const { data: survey } = useQuery(["getSurveyById", id], () =>
+    useGetSurveyById(id)
+  );
 
   const addQuestion = useMutation((values: Partial<IQuestion>) =>
     useAddQuestion(values)
   );
   const addPage = useMutation((values: Partial<IPage>) => useAddPage(values));
+
+  console.log("SURVEY", survey);
   return (
     <div>
       {data?.questions.map((d: any) => (

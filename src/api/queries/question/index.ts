@@ -1,22 +1,16 @@
 import { gql } from "graphql-request";
 
 export const GET_QUESTIONS = gql`
-  {
-    questions {
-      id
+  query getQuestions($page_id: ID!) {
+    questions(where: { page: $page_id }) {
       label
-      placeholder
-      internal_description
-      internal_title
+      id
       type
-      type_name
-      conditions {
-        id
-      }
-      page {
-        id
-        short_name
-      }
+      answers
+      placeholder
+      help_text
+      answers
+      required
     }
   }
 `;

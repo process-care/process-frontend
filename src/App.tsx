@@ -45,7 +45,7 @@ const App: React.FC = () => {
           </DndProvider>
         </ChakraProvider>
       </Provider>
-      <ReactQueryDevtools initialIsOpen />
+      <ReactQueryDevtools position="bottom-right" />
     </QueryClientProvider>
   );
 };

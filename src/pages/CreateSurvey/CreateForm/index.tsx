@@ -24,11 +24,8 @@ export const CreateForm: React.FC<IRoute> = () => {
   const { data, isLoading, error } = getSurvey({ id: dev_survey });
 
   const isOpen = useAppSelector((state) => state.application.drawer_is_open);
-  const { selected_condition, selected_page } = useAppSelector(
-    (state) => state.formBuilder
-  );
+  const { selected_condition } = useAppSelector((state) => state.formBuilder);
 
-  console.log(data);
   if (isLoading) {
     return <Loader />;
   }
@@ -72,10 +69,7 @@ export const CreateForm: React.FC<IRoute> = () => {
                 {selected_condition.id !== "" ? (
                   <ConditionPreview />
                 ) : (
-                  <InputsPreview
-                    questions={data?.survey.questions}
-                    order={data?.survey.order}
-                  />
+                  <InputsPreview order={data?.survey.order} />
                 )}
               </div>
             </Container>
@@ -83,7 +77,7 @@ export const CreateForm: React.FC<IRoute> = () => {
         </Box>
         <RightPart
           selected_condition={selected_condition}
-          selected_page={selected_page}
+          survey={data?.survey}
         />
       </Box>
     </Box>

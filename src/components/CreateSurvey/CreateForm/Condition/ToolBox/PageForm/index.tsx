@@ -1,10 +1,9 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 
-import { fields } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/logic/initialValues";
+// import { fields } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/logic/initialValues";
 import {
   addCondition,
-  addInput,
   selectCondition,
   selectConditonInCurrentPage,
   selectInput,
@@ -24,19 +23,40 @@ import { getConditionsByRefererId } from "utils/formBuilder/condition";
 import { SvgHover } from "components/SvgHover";
 import { ReactComponent as Trash } from "assets/trash.svg";
 import { useDeletePage, useUpdatePage } from "api/actions/page";
+import ISurvey from "interfaces/survey";
+import { useAddQuestion } from "api/actions/question";
 
-export const PageForm: React.FC = () => {
+interface Props {
+  survey: ISurvey;
+}
+
+export const PageForm: React.FC<Props> = ({ survey }) => {
   const dispatch = useAppDispatch();
   const { mutate: deletePage } = useDeletePage();
   const { mutate: updatePage } = useUpdatePage();
+  const { mutate: addQuestion, data } = useAddQuestion();
+  const new_question_id = data?.createQuestion.question.id;
 
-  const { selected_page, pages, is_removing } = useAppSelector(
+  const { pages } = survey;
+  const { selected_page, is_removing } = useAppSelector(
     (state) => state.formBuilder
   );
+
+  // Wait for create id to select input.
+  React.useEffect(() => {
+    if (new_question_id !== undefined) {
+      dispatch(selectInput(new_question_id));
+    }
+  }, [new_question_id]);
+
+  // TO REFACTO
   const conditions = useAppSelector(selectConditonInCurrentPage);
-  const isFirstPage =
-    pages.findIndex((page) => page.id === selected_page.id) === 0;
+
+  const isNotFirstPage =
+    pages.findIndex((page) => page.id === selected_page.id) > 0;
+
   const isRemoving = is_removing === selected_page.id;
+
   const condition_id = uuidv4();
 
   const handleSelect = (
@@ -46,18 +66,16 @@ export const PageForm: React.FC = () => {
     internal_title: string | undefined
   ) => {
     if (id) {
-      const data = {
-        ...fields[type],
-        type,
-        name,
-        id,
-        internal_title,
-        page: selected_page.id,
-      };
-      dispatch(selectInput(data));
-      dispatch(addInput(data));
-      // addQuestion({ type, internal_title, page: selected_page.id });
+      // const datas = {
+      //   ...fields[type],
+      //   type,
+      //   name,
+      //   id,
+      //   internal_title,
+      //   page: selected_page.id,
+      // };
 
+      addQuestion({ type, internal_title, page: selected_page.id });
       dispatch(toogleDrawer());
     }
   };
@@ -109,7 +127,7 @@ export const PageForm: React.FC = () => {
               style={{ width: "100%" }}
             >
               <Flex w="100%" justifyContent="space-between">
-                {!isFirstPage ? (
+                {isNotFirstPage ? (
                   <Box
                     onClick={() => {
                       dispatch(setIsRemoving(selected_page.id));
@@ -160,7 +178,7 @@ export const PageForm: React.FC = () => {
                 />
               </Box>
 
-              {!isFirstPage && (
+              {isNotFirstPage && (
                 <Flex
                   alignItems="center"
                   w="100%"

@@ -25,15 +25,6 @@ export const GET_SURVEY = gql`
         name
         short_name
         is_locked
-        questions {
-          label
-          id
-          type
-          answers
-          placeholder
-          help_text
-          answers
-        }
       }
     }
   }

@@ -22,12 +22,12 @@ import { v4 as uuidv4 } from "uuid";
 import { t } from "static/condition";
 import { getConditionsByRefererId } from "utils/formBuilder/condition";
 import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
-import { useUpdateQuestionMutation } from "api/questions";
+import { useUpdateQuestion } from "api/actions/question";
 
 const InputForm: React.FC = () => {
-  const [updateQuestion] = useUpdateQuestionMutation();
   const condition_id = uuidv4();
   const { selected_input } = useAppSelector((state) => state.formBuilder);
+  const { mutate: updateQuestion } = useUpdateQuestion();
 
   const selectedInput = useAppSelector(
     (state) => state.formBuilder.selected_input
@@ -58,17 +58,19 @@ const InputForm: React.FC = () => {
         const onChange = (event: React.FormEvent<HTMLFormElement>) => {
           const target = event.target as HTMLFormElement;
           if (target !== null) {
-            dispatch(
-              updateInput({
-                id: selectedInput.id,
-                data: {
-                  [target.id]: target.value ? target.value : target.checked,
-                },
-              })
-            );
+            // dispatch(
+            //   updateInput({
+            //     id: selectedInput.id,
+            //     data: {
+            //       [target.id]: target.value ? target.value : target.checked,
+            //     },
+            //   })
+            // );
             updateQuestion({
-              id: selectedInput.id,
-              [target.id]: target.value,
+              id: selectedInput,
+              data: {
+                [target.id]: target.value,
+              },
             });
           }
         };

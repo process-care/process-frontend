@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "redux/store";
 import IQuestion from "interfaces/form/question";
 import IPage from "interfaces/form/page";
-import { v4 as uuidv4 } from "uuid";
 import ICondition from "interfaces/form/condition";
 import IOperator from "interfaces/form/operator";
 import { formMock } from "mocks/form";
@@ -41,14 +40,15 @@ interface SelectCondition {
 interface RemoveGroup {
   id: number | string;
 }
-
+const dev_survey = "60e2e9107fa4044c102a881a";
+const dev_page = "60e314a77d077079f5a9b80d";
 const initialFirstPage: IPage = {
   name: "Page 1",
-  id: `page-${uuidv4()}`,
+  id: dev_page,
   is_locked: false,
   conditions: [],
   short_name: "P1",
-  survey_id: `survey-${uuidv4()}`,
+  survey_id: dev_survey,
 };
 
 // Define the initial state using that type

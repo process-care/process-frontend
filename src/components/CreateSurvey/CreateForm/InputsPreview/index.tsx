@@ -7,10 +7,11 @@ import { useAppSelector } from "redux/hooks";
 
 import { Formik, Form } from "formik";
 import { Header } from "./Header";
-// import { updateInputsOrder } from "redux/slices/formBuilder";
+
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-// import { Loader } from "components/Spinner";
-// import { Error } from "components/Error";
+import { useGetQuestions } from "api/actions/question";
+import { Loader } from "components/Spinner";
+import { Error } from "components/Error";
 
 export interface Item {
   id: number;
@@ -26,22 +27,20 @@ export interface ContainerProps {
 }
 
 interface Props {
-  questions: IQuestion[];
   order: IQuestion["id"][];
 }
 
-const InputsPreview: React.FC<Props> = ({ questions, order }) => {
-  console.log(questions, order);
-  // const dispatch = useAppDispatch();
-  const { selected_page, inputs } = useAppSelector(
-    (state) => state.formBuilder
-  );
+const InputsPreview: React.FC<Props> = ({ order }) => {
+  console.log(order);
+  const { selected_page } = useAppSelector((state) => state.formBuilder);
+  const {
+    data: questions,
+    isLoading,
+    error,
+  } = useGetQuestions({ page_id: selected_page.id });
 
-  const [cards, setCards] = React.useState(inputs);
-
-  React.useEffect(() => {
-    setCards(inputs);
-  }, [inputs.length]);
+  console.log(questions, status);
+  const cards = questions?.questions;
 
   const renderCard = (input: IQuestion, index: number) => {
     return <Card key={input.id} input={input} index={index} />;
@@ -123,9 +122,16 @@ const InputsPreview: React.FC<Props> = ({ questions, order }) => {
   //   return <Loader />;
   // }
 
-  // if (error) {
-  //   return <Error error={error} />;
-  // }
+  if (isLoading) {
+    return <Loader />;
+  }
+  if (error) {
+    return <Error error={error} />;
+  }
+
+  if (!questions?.questions) {
+    return <div>No Questions ...</div>;
+  }
   return (
     <DragDropContext
       onDragStart={() => onDragStart()}
@@ -138,7 +144,7 @@ const InputsPreview: React.FC<Props> = ({ questions, order }) => {
             <Text fontSize="14px" mt={3} textTransform="uppercase">
               {selected_page.name}
             </Text>
-            {cards.length > 0 && <Header />}
+            {cards?.length > 0 && <Header />}
 
             <Box
               w="100%"
@@ -153,7 +159,7 @@ const InputsPreview: React.FC<Props> = ({ questions, order }) => {
                 } else return;
               })} */}
 
-              {cards.map((input: IQuestion, i: number) => {
+              {cards?.map((input: IQuestion, i: number) => {
                 return renderCard(input, i);
               })}
 

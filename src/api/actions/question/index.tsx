@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from "react-query";
 import { request } from "graphql-request";
+
 import {
   GET_QUESTION,
   ADD_QUESTION,
@@ -18,30 +19,32 @@ export const getQuestion: any = ({ id }: { id: string }) => {
   });
 };
 
-export const getQuestions: any = () => {
-  return useQuery("getQuestions", async () => {
-    return await request(process.env.REACT_APP_API_URL_DEV!, GET_QUESTIONS);
+export const useGetQuestions: any = ({ page_id }: { page_id: string }) => {
+  return useQuery(["getQuestions", page_id], async () => {
+    return await request(process.env.REACT_APP_API_URL_DEV!, GET_QUESTIONS, {
+      page_id,
+    });
   });
 };
 
-export const addQuestion: any = () =>
+export const useAddQuestion: any = () =>
   useMutation(
     async (new_question: IQuestion) =>
       await request(process.env.REACT_APP_API_URL_DEV!, ADD_QUESTION, {
         new_question,
       }),
-    getSurveyOptimisticUpdate("getSurvey")
     // TO DO Update Order
+    getSurveyOptimisticUpdate("getQuestions")
   );
 
-export const updateQuestion: any = () =>
+export const useUpdateQuestion: any = () =>
   useMutation(
     async ({ id, data }: { id: string; data: IQuestion }) =>
       await request(process.env.REACT_APP_API_URL_DEV!, UPDATE_QUESTION, {
         id,
         data,
       }),
-    getSurveyOptimisticUpdate("getSurvey")
+    getSurveyOptimisticUpdate("getQuestions")
   );
 
 export const deleteQuestion: any = () =>

@@ -5,13 +5,11 @@ import { fields } from "components/CreateSurvey/CreateForm/Condition/ToolBox/Inp
 import {
   addCondition,
   addInput,
-  removePage,
   selectCondition,
   selectConditonInCurrentPage,
   selectInput,
   selectPage,
   setIsRemoving,
-  updatePage,
 } from "redux/slices/formBuilder";
 import { toogleDrawer } from "redux/slices/application";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
@@ -24,12 +22,14 @@ import { RemovingConfirmation } from "../../../RemovingConfirmation";
 import { v4 as uuidv4 } from "uuid";
 import { getConditionsByRefererId } from "utils/formBuilder/condition";
 import { SvgHover } from "components/SvgHover";
-import { useAddQuestionMutation } from "api/questions";
 import { ReactComponent as Trash } from "assets/trash.svg";
+import { useDeletePage, useUpdatePage } from "api/actions/page";
 
 export const PageForm: React.FC = () => {
   const dispatch = useAppDispatch();
-  const [addQuestion] = useAddQuestionMutation();
+  const { mutate: deletePage } = useDeletePage();
+  const { mutate: updatePage } = useUpdatePage();
+
   const { selected_page, pages, is_removing } = useAppSelector(
     (state) => state.formBuilder
   );
@@ -56,7 +56,7 @@ export const PageForm: React.FC = () => {
       };
       dispatch(selectInput(data));
       dispatch(addInput(data));
-      addQuestion({ type, internal_title, page: selected_page.id });
+      // addQuestion({ type, internal_title, page: selected_page.id });
 
       dispatch(toogleDrawer());
     }
@@ -65,14 +65,13 @@ export const PageForm: React.FC = () => {
   const onChange = (event: React.FormEvent<HTMLFormElement>) => {
     const target = event.target as HTMLFormElement;
     if (target !== null) {
-      dispatch(
-        updatePage({
-          id: selected_page.id,
-          data: {
-            [target.id]: target.checked ? target.checked : target.value,
-          },
-        })
-      );
+      updatePage({
+        id: selected_page.id,
+        data: {
+          [target.id]:
+            target.checked !== undefined ? target.checked : target.value,
+        },
+      });
     }
   };
 
@@ -82,7 +81,7 @@ export const PageForm: React.FC = () => {
         height="100%"
         content={`${t.remove_page} ${selected_page.name} ?`}
         confirm={() => {
-          dispatch(removePage(selected_page));
+          deletePage(selected_page.id);
           dispatch(selectPage(pages[0]));
           dispatch(setIsRemoving(""));
         }}

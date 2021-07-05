@@ -14,7 +14,7 @@ export const useAddPage: any = () =>
     getSurveyOptimisticUpdate("getSurvey")
   );
 
-export const updatePage: any = () =>
+export const useUpdatePage: any = () =>
   useMutation(
     async ({ id, data }: { id: string; data: Partial<IPage> }) =>
       await request(process.env.REACT_APP_API_URL_DEV!, UPDATE_PAGE, {
@@ -24,7 +24,7 @@ export const updatePage: any = () =>
     getSurveyOptimisticUpdate("getSurvey")
   );
 
-export const deletePage: any = () =>
+export const useDeletePage: any = () =>
   useMutation(
     async (id: IPage["id"]) =>
       await request(process.env.REACT_APP_API_URL_DEV!, DELETE_PAGE, {

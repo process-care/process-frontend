@@ -24,6 +24,7 @@ export const GET_SURVEY = gql`
         id
         name
         short_name
+        is_locked
         questions {
           label
           id

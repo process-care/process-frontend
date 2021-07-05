@@ -38,14 +38,6 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
       short_name: `P${pages.length + 1}`,
       survey: survey.id,
     });
-    // addPage({
-    //   name: `Page ${pages.length + 1}`,
-    //   id: `page-${id}`,
-    //   conditions: [],
-    //   is_locked: false,
-    //   short_name: `P${pages.length + 1}`,
-    //   survey_id: `survey-${id}`,
-    // })
   };
   return (
     <Flex

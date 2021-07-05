@@ -1,8 +1,7 @@
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import React from "react";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
-import { addPage, selectPage, setIsRemoving } from "redux/slices/formBuilder";
-import { v4 as uuidv4 } from "uuid";
+import { selectPage, setIsRemoving } from "redux/slices/formBuilder";
 
 import { ReactComponent as Locked } from "./assets/locked.svg";
 import { ReactComponent as Delete } from "./assets/delete.svg";
@@ -15,31 +14,38 @@ import {
 } from "utils/formBuilder/condition";
 import { isInactive } from "./utils";
 import { SvgHover } from "components/SvgHover";
-import IPage from "interfaces/form/page";
+import { useAddPage } from "api/actions/page";
+import ISurvey from "interfaces/survey";
 
 interface Props {
-  pages: IPage[];
+  survey: ISurvey;
 }
 
-const PageBuilder: React.FC<Props> = ({ pages }) => {
+const PageBuilder: React.FC<Props> = ({ survey }) => {
   const { selected_page, selected_condition } = useAppSelector(
     (state) => state.formBuilder
   );
   const selectedCondition = getConditionById(selected_condition.id);
-  const id = uuidv4();
   const dispatch = useAppDispatch();
+  const { mutate: addPage } = useAddPage();
+
+  const { pages } = survey;
 
   const handlePage = () => {
-    dispatch(
-      addPage({
-        name: `Page ${pages.length + 1}`,
-        id: `page-${id}`,
-        conditions: [],
-        is_locked: false,
-        short_name: `P${pages.length + 1}`,
-        survey_id: `survey-${id}`,
-      })
-    );
+    addPage({
+      name: `Page ${pages.length + 1}`,
+      is_locked: false,
+      short_name: `P${pages.length + 1}`,
+      survey: survey.id,
+    });
+    // addPage({
+    //   name: `Page ${pages.length + 1}`,
+    //   id: `page-${id}`,
+    //   conditions: [],
+    //   is_locked: false,
+    //   short_name: `P${pages.length + 1}`,
+    //   survey_id: `survey-${id}`,
+    // })
   };
   return (
     <Flex

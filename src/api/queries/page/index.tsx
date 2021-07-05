@@ -1,6 +1,6 @@
 import { gql } from "graphql-request";
 
-export const addPage = gql`
+export const ADD_PAGE = gql`
   mutation addPage($values: PageInput) {
     createPage(input: { data: $values }) {
       page {
@@ -12,23 +12,25 @@ export const addPage = gql`
   }
 `;
 
-// A voir si on utilise la query du survey.
+export const UPDATE_PAGE = gql`
+  mutation updatePage($id: ID!, $data: editPageInput) {
+    updatePage(input: { where: { id: $id }, data: $data }) {
+      page {
+        id
+        name
+        short_name
+        survey {
+          id
+        }
+      }
+    }
+  }
+`;
 
-export const getPages = gql`
-  query getPages {
-    pages {
-      id
-      short_name
-      name
-      is_locked
-      description
-      statics {
-        id
-      }
-      survey {
-        id
-      }
-      conditioned_by {
+export const DELETE_PAGE = gql`
+  mutation deletePage($id: ID!) {
+    deletePage(input: { where: { id: $id } }) {
+      page {
         id
       }
     }

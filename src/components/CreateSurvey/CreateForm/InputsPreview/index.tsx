@@ -3,18 +3,14 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 import Card from "./Card";
 
 import IQuestion from "interfaces/form/question";
-import { useAppSelector, useAppDispatch } from "redux/hooks";
-import { skipToken } from "@reduxjs/toolkit/query/react";
+import { useAppSelector } from "redux/hooks";
 
 import { Formik, Form } from "formik";
 import { Header } from "./Header";
-import { updateInputsOrder } from "redux/slices/formBuilder";
+// import { updateInputsOrder } from "redux/slices/formBuilder";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import { useGetQuestionsInSelectedPageQuery } from "api/questions";
-import { Loader } from "components/Spinner";
-import { Error } from "components/Error";
-
-import { useGetSurveyQuery } from "api/survey";
+// import { Loader } from "components/Spinner";
+// import { Error } from "components/Error";
 
 export interface Item {
   id: number;
@@ -29,22 +25,23 @@ export interface ContainerProps {
   isDraggingOver: boolean;
 }
 
-const InputsPreview: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const { selected_page } = useAppSelector((state) => state.formBuilder);
+interface Props {
+  questions: IQuestion[];
+  order: IQuestion["id"][];
+}
 
-  const { data: survey } = useGetSurveyQuery(
-    process.env.REACT_APP_CURRENT_SURVEY_ID!
+const InputsPreview: React.FC<Props> = ({ questions, order }) => {
+  console.log(questions, order);
+  // const dispatch = useAppDispatch();
+  const { selected_page, inputs } = useAppSelector(
+    (state) => state.formBuilder
   );
-  const { data, isLoading, error } = useGetQuestionsInSelectedPageQuery(
-    selected_page.id ?? skipToken
-  );
-  const input_order = survey?.survey?.order;
-  const [cards, setCards] = React.useState(data?.questions);
+
+  const [cards, setCards] = React.useState(inputs);
 
   React.useEffect(() => {
-    setCards(data?.questions);
-  }, [data?.questions]);
+    setCards(inputs);
+  }, [inputs.length]);
 
   const renderCard = (input: IQuestion, index: number) => {
     return <Card key={input.id} input={input} index={index} />;
@@ -59,7 +56,9 @@ const InputsPreview: React.FC = () => {
   };
 
   const onDragEnd = (result: any) => {
-    const { destination, source, draggableId } = result;
+    // const { destination, source, draggableId } = result;
+    const { destination, source } = result;
+
     if (!destination) {
       return;
     }
@@ -71,12 +70,12 @@ const InputsPreview: React.FC = () => {
       return;
     }
 
-    if (input_order) {
-      const new_input_order: string[] = Array.from(input_order);
-      new_input_order.splice(source.index, 1);
-      new_input_order.splice(destination.index, 0, draggableId);
-      dispatch(updateInputsOrder(new_input_order));
-    }
+    //   if (input_order) {
+    //     const new_input_order: string[] = Array.from(input_order);
+    //     new_input_order.splice(source.index, 1);
+    //     new_input_order.splice(destination.index, 0, draggableId);
+    //     dispatch(updateInputsOrder(new_input_order));
+    //   }
   };
 
   const Container: React.FC<ContainerProps> = ({
@@ -120,13 +119,13 @@ const InputsPreview: React.FC = () => {
     );
   };
 
-  if (isLoading || cards === undefined || input_order === undefined) {
-    return <Loader />;
-  }
+  // if (isLoading || cards === undefined || input_order === undefined) {
+  //   return <Loader />;
+  // }
 
-  if (error) {
-    return <Error error={error} />;
-  }
+  // if (error) {
+  //   return <Error error={error} />;
+  // }
   return (
     <DragDropContext
       onDragStart={() => onDragStart()}

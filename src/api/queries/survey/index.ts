@@ -1,7 +1,18 @@
 import { gql } from "graphql-request";
 
-export const GET_SURVEY_BY_ID = gql`
-  query getSurveyById($id: ID!) {
+export const ADD_SURVEY = gql`
+  mutation addSurvey($new_survey: SurveyInput) {
+    createSurvey(input: { data: $new_survey }) {
+      survey {
+        id
+        description
+      }
+    }
+  }
+`;
+
+export const GET_SURVEY = gql`
+  query getSurvey($id: ID!) {
     survey(id: $id) {
       id
       description
@@ -11,6 +22,8 @@ export const GET_SURVEY_BY_ID = gql`
       }
       pages {
         id
+        name
+        short_name
         questions {
           label
           id
@@ -25,8 +38,17 @@ export const GET_SURVEY_BY_ID = gql`
   }
 `;
 
-// order
+export const DELETE_SURVEY = gql`
+  mutation deleteSurvey($id: ID!) {
+    deleteSurvey(input: { where: { id: $id } }) {
+      survey {
+        id
+      }
+    }
+  }
+`;
 
+// order
 export const UPDATE_ORDER = gql`
   mutation updateOrder($id: ID!, $new_order: JSON) {
     updateSurvey(input: { where: { id: $id }, data: { order: $new_order } }) {

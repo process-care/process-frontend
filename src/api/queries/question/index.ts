@@ -21,31 +21,6 @@ export const GET_QUESTIONS = gql`
   }
 `;
 
-export const GET_SURVEY_BY_ID = gql`
-  query getSurveyById($id: ID!) {
-    survey(id: $id) {
-      id
-      description
-      order
-      questions {
-        label
-      }
-      pages {
-        id
-        questions {
-          label
-          id
-          type
-          answers
-          placeholder
-          help_text
-          answers
-        }
-      }
-    }
-  }
-`;
-
 export const GET_QUESTION = gql`
   query getQuestion($id: ID!) {
     question(id: $id) {
@@ -86,8 +61,8 @@ export const UPDATE_QUESTION = gql`
 `;
 
 export const DELETE_QUESTION = gql`
-  mutation deleteQuestion($question_id: ID!) {
-    deleteQuestion(input: { where: { id: $question_id } }) {
+  mutation deleteQuestion($id: ID!) {
+    deleteQuestion(input: { where: { id: $id } }) {
       question {
         id
       }

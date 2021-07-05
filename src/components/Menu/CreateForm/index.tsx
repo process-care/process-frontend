@@ -5,17 +5,16 @@ import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { ReactComponent as Back } from "./assets/back.svg";
 import { t } from "static/input";
 import { tooglePreview } from "redux/slices/application";
-import { useGetSurveyQuery } from "api/survey";
 import { Loader } from "components/Spinner";
+import { getSurvey } from "api/actions/survey";
 
 interface Props {
   isLanding?: boolean;
 }
 
 export const Menu: React.FC<Props> = ({ isLanding }) => {
-  const { data, isLoading, error } = useGetSurveyQuery(
-    process.env.REACT_APP_CURRENT_SURVEY_ID!
-  );
+  const dev_survey = "60e2e9107fa4044c102a881a";
+  const { data, isLoading, error } = getSurvey({ id: dev_survey });
   const { preview_mode } = useAppSelector((state) => state.application);
   const dispatch = useAppDispatch();
 

@@ -12,22 +12,23 @@ import PageBuilder from "components/CreateSurvey/CreateForm/PageBuilder";
 import { useAppSelector } from "redux/hooks";
 
 import { Menu } from "components/Menu/CreateForm";
-import { useGetSurveyQuery } from "api/survey";
 
 import { ConditionPreview } from "components/CreateSurvey/CreateForm/Condition/ConditionPreview";
 import { RightPart } from "components/Layout/RightPart";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
+import { getSurvey } from "api/actions/survey";
 
 export const CreateForm: React.FC<IRoute> = () => {
-  const { data, isLoading, error } = useGetSurveyQuery(
-    process.env.REACT_APP_CURRENT_SURVEY_ID!
-  );
+  const dev_survey = "60e2e9107fa4044c102a881a";
+  const { data, isLoading, error } = getSurvey({ id: dev_survey });
+
   const isOpen = useAppSelector((state) => state.application.drawer_is_open);
   const { selected_condition, selected_page } = useAppSelector(
     (state) => state.formBuilder
   );
 
+  console.log(data);
   if (isLoading) {
     return <Loader />;
   }
@@ -58,7 +59,7 @@ export const CreateForm: React.FC<IRoute> = () => {
               borderRight="1px"
               borderColor="gray.200"
             >
-              <PageBuilder pages={data.survey.pages} />
+              <PageBuilder survey={data?.survey} />
             </Container>
 
             <Container
@@ -71,7 +72,10 @@ export const CreateForm: React.FC<IRoute> = () => {
                 {selected_condition.id !== "" ? (
                   <ConditionPreview />
                 ) : (
-                  <InputsPreview />
+                  <InputsPreview
+                    questions={data?.survey.questions}
+                    order={data?.survey.order}
+                  />
                 )}
               </div>
             </Container>

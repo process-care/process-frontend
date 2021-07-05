@@ -1,6 +1,6 @@
 import { gql } from "graphql-request";
 
-export const getSurveyById = gql`
+export const GET_SURVEY_BY_ID = gql`
   query getSurveyById($id: ID!) {
     survey(id: $id) {
       id

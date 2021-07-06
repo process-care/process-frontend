@@ -3,7 +3,7 @@ import { ADD_PAGE, UPDATE_PAGE, DELETE_PAGE } from "api/queries/page";
 
 import IPage from "interfaces/form/page";
 import { useMutation } from "react-query";
-import { getSurveyOptimisticUpdate } from "api/optimisiticUpdate";
+import { optimisticUpdate } from "api/optimisiticUpdate";
 
 export const useAddPage: any = () =>
   useMutation(
@@ -11,7 +11,7 @@ export const useAddPage: any = () =>
       await request(process.env.REACT_APP_API_URL_DEV!, ADD_PAGE, {
         values,
       }),
-    getSurveyOptimisticUpdate("getSurvey")
+    optimisticUpdate("getSurvey")
   );
 
 export const useUpdatePage: any = () =>
@@ -21,7 +21,7 @@ export const useUpdatePage: any = () =>
         id,
         data,
       }),
-    getSurveyOptimisticUpdate("getSurvey")
+    optimisticUpdate("getSurvey")
   );
 
 export const useDeletePage: any = () =>
@@ -30,5 +30,5 @@ export const useDeletePage: any = () =>
       await request(process.env.REACT_APP_API_URL_DEV!, DELETE_PAGE, {
         id,
       }),
-    getSurveyOptimisticUpdate("getSurvey")
+    optimisticUpdate("getSurvey")
   );

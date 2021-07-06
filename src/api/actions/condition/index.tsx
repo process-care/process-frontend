@@ -6,7 +6,7 @@ import {
   DELETE_CONDITION,
 } from "api/queries/condition";
 
-import { getSurveyOptimisticUpdate } from "api/optimisiticUpdate";
+import { optimisticUpdate } from "api/optimisiticUpdate";
 import ICondition from "interfaces/form/condition";
 
 export const addCondition: any = () =>
@@ -15,7 +15,7 @@ export const addCondition: any = () =>
       await request(process.env.REACT_APP_API_URL_DEV!, ADD_CONDITION, {
         new_condition,
       }),
-    getSurveyOptimisticUpdate("getSurvey")
+    optimisticUpdate("getSurvey")
   );
 
 export const updateCondition: any = () =>
@@ -25,7 +25,7 @@ export const updateCondition: any = () =>
         id,
         data,
       }),
-    getSurveyOptimisticUpdate("getSurvey")
+    optimisticUpdate("getSurvey")
   );
 
 export const deleteCondition: any = () =>
@@ -34,5 +34,5 @@ export const deleteCondition: any = () =>
       await request(process.env.REACT_APP_API_URL_DEV!, DELETE_CONDITION, {
         id,
       }),
-    getSurveyOptimisticUpdate("getSurvey")
+    optimisticUpdate("getSurvey")
   );

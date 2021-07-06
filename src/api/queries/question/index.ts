@@ -2,7 +2,7 @@ import { gql } from "graphql-request";
 
 export const GET_QUESTIONS = gql`
   query getQuestions($page_id: ID!) {
-    questions(where: { page: $page_id }) {
+    questions(where: { page: $page_id }, limit: 10) {
       label
       id
       type
@@ -11,6 +11,7 @@ export const GET_QUESTIONS = gql`
       help_text
       answers
       required
+      internal_title
     }
   }
 `;
@@ -26,6 +27,7 @@ export const GET_QUESTION = gql`
       help_text
       answers
       required
+      internal_title
     }
   }
 `;

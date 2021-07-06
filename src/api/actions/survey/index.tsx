@@ -2,7 +2,7 @@ import { request } from "graphql-request";
 import { GET_SURVEY, DELETE_SURVEY, ADD_SURVEY } from "api/queries/survey";
 import { UPDATE_ORDER } from "api/queries/survey";
 import { useMutation, useQuery } from "react-query";
-import { getSurveyOptimisticUpdate } from "api/optimisiticUpdate";
+import { optimisticUpdate } from "api/optimisiticUpdate";
 import ISurvey from "interfaces/survey";
 
 export const addSurvey: any = () =>
@@ -11,7 +11,7 @@ export const addSurvey: any = () =>
       await request(process.env.REACT_APP_API_URL_DEV!, ADD_SURVEY, {
         new_survey,
       }),
-    getSurveyOptimisticUpdate("getSurvey")
+    optimisticUpdate("getSurvey")
   );
 
 export const getSurvey: any = ({ id }: { id: string }) =>
@@ -27,7 +27,7 @@ export const deleteSurvey: any = () =>
       await request(process.env.REACT_APP_API_URL_DEV!, DELETE_SURVEY, {
         id,
       }),
-    getSurveyOptimisticUpdate("getSurvey")
+    optimisticUpdate("getSurvey")
   );
 
 // order.
@@ -38,5 +38,5 @@ export const updateOrder: any = () =>
         id,
         new_order,
       }),
-    getSurveyOptimisticUpdate("getSurvey")
+    optimisticUpdate("getSurvey")
   );

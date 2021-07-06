@@ -1,30 +1,50 @@
 import { queryClient } from "App";
-import IQuestion from "interfaces/form/question";
 
-export const getSurveyOptimisticUpdate: any = (queryToUpdate: string) => {
+export const optimisticUpdate: any = (queryToUpdate: string) => {
   return {
-    onMutate: async () => {
+    onMutate: async (data: any) => {
       await queryClient.cancelQueries(queryToUpdate);
 
-      const previousQuestions = queryClient.getQueryData(queryToUpdate);
+      const previousData = queryClient.getQueryData(queryToUpdate);
 
-      if (previousQuestions) {
-        queryClient.setQueryData(queryToUpdate, (old: any) => [
-          ...old,
-          previousQuestions,
-        ]);
-      }
+      queryClient.setQueryData(queryToUpdate, () => {
+        // [...old, data];
+        [data];
+      });
 
-      return { previousQuestions };
+      return { previousData };
     },
     onError: (context: any) => {
-      queryClient.setQueryData<IQuestion[]>(
-        queryToUpdate,
-        context.previousQuestions
-      );
+      queryClient.setQueryData(queryToUpdate, context.previousData);
     },
     onSettled: () => {
       queryClient.invalidateQueries(queryToUpdate);
+    },
+  };
+};
+
+export const optimisticItemUpdate: any = (
+  queryToUpdate: string,
+  id: string,
+  data: any
+) => {
+  return {
+    onMutate: async () => {
+      await queryClient.cancelQueries([queryToUpdate, id]);
+
+      const previousData = queryClient.getQueryData([queryToUpdate, id]);
+      queryClient.setQueryData([queryToUpdate, id], data);
+
+      return { previousData, data };
+    },
+    onError: (context: any) => {
+      queryClient.setQueryData(
+        [queryToUpdate, context.id],
+        context.previousData
+      );
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries([queryToUpdate, id]);
     },
   };
 };

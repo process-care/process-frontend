@@ -36,7 +36,6 @@ export const CreateForm: React.FC<IRoute> = () => {
   if (!data?.survey) {
     return <div>No Survey</div>;
   }
-
   return (
     <Box h="100vh" overflow="hidden">
       <Drawer isOpen={isOpen} size="md" content={<InputForm />} />

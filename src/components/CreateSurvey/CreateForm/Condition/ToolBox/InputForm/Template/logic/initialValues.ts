@@ -4,7 +4,6 @@ const commonFieldsInitialValues = {
   label: "",
   help_text: "",
   internal_title: "",
-  internal_description: "",
   required: false,
 };
 

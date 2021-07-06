@@ -32,9 +32,9 @@ interface Props {
 
 export const PageForm: React.FC<Props> = ({ survey }) => {
   const dispatch = useAppDispatch();
-  const { mutate: deletePage } = useDeletePage();
-  const { mutate: updatePage } = useUpdatePage();
-  const { mutate: addQuestion, data } = useAddQuestion();
+  const { mutate: deletePage } = useDeletePage("deletePage");
+  const { mutate: updatePage } = useUpdatePage("updatePage");
+  const { mutate: addQuestion, data } = useAddQuestion("addQuestion");
   const new_question_id = data?.createQuestion.question.id;
 
   const { pages } = survey;

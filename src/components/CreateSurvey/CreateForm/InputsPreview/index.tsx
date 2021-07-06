@@ -39,7 +39,6 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
     error,
   } = useGetQuestions({ page_id: selected_page.id });
 
-  console.log(questions, status);
   const cards = questions?.questions;
 
   const renderCard = (input: IQuestion, index: number) => {
@@ -123,7 +122,11 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
   // }
 
   if (isLoading) {
-    return <Loader />;
+    return (
+      <Box pt="400px">
+        <Loader />
+      </Box>
+    );
   }
   if (error) {
     return <Error error={error} />;

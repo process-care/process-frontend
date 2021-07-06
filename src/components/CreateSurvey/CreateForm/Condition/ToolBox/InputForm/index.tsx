@@ -3,6 +3,7 @@ import React from "react";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
+import { debounce } from "lodash";
 
 import { Footer } from "./Template/Footer";
 import { renderFormTemplate, renderFormValidationSchema } from "./utils";
@@ -27,7 +28,7 @@ import { useUpdateQuestion } from "api/actions/question";
 const InputForm: React.FC = () => {
   const condition_id = uuidv4();
   const { selected_input } = useAppSelector((state) => state.formBuilder);
-  const { mutate: updateQuestion } = useUpdateQuestion();
+  const { mutate: updateQuestion } = useUpdateQuestion("updateQuestion");
 
   const selectedInput = useAppSelector(
     (state) => state.formBuilder.selected_input
@@ -42,7 +43,6 @@ const InputForm: React.FC = () => {
   };
 
   const { type } = selectedInput;
-
   return (
     <Formik
       validateOnBlur={false}
@@ -58,16 +58,8 @@ const InputForm: React.FC = () => {
         const onChange = (event: React.FormEvent<HTMLFormElement>) => {
           const target = event.target as HTMLFormElement;
           if (target !== null) {
-            // dispatch(
-            //   updateInput({
-            //     id: selectedInput.id,
-            //     data: {
-            //       [target.id]: target.value ? target.value : target.checked,
-            //     },
-            //   })
-            // );
             updateQuestion({
-              id: selectedInput,
+              id: selectedInput.id,
               data: {
                 [target.id]: target.value,
               },
@@ -105,7 +97,9 @@ const InputForm: React.FC = () => {
         }, [values.freeclassification_responses_count]);
 
         return (
-          <Form onChange={(event) => onChange(event)}>
+          // On Blur bcp plus performant mais moins réactif ..
+          //   <Form onBlur={debounce((event) => onChange(event), 1000)}>
+          <Form onChange={debounce((event) => onChange(event), 1000)}>
             <Flex
               alignItems="center"
               justifyContent="center"

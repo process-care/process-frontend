@@ -1,6 +1,5 @@
 import { useMutation, useQuery } from "react-query";
 import { request } from "graphql-request";
-
 import {
   GET_QUESTION,
   ADD_QUESTION,
@@ -9,7 +8,7 @@ import {
   UPDATE_QUESTION,
 } from "api/queries/question";
 import IQuestion from "interfaces/form/question";
-import { getSurveyOptimisticUpdate } from "api/optimisiticUpdate";
+import { optimisticUpdate } from "api/optimisiticUpdate";
 
 export const getQuestion: any = ({ id }: { id: string }) => {
   return useQuery(["getQuestion", id], async () => {
@@ -27,32 +26,34 @@ export const useGetQuestions: any = ({ page_id }: { page_id: string }) => {
   });
 };
 
-export const useAddQuestion: any = () =>
+export const useAddQuestion: any = (new_question: IQuestion) =>
   useMutation(
     async (new_question: IQuestion) =>
       await request(process.env.REACT_APP_API_URL_DEV!, ADD_QUESTION, {
         new_question,
       }),
     // TO DO Update Order
-    getSurveyOptimisticUpdate("getQuestions")
+    // Check si plus performant (en passant l'id de get questions ci dessous - met ça flash.)
+    // optimisticUpdate(["getQuestions", "60e314a77d077079f5a9b80d"], new_question)
+    optimisticUpdate(["getQuestions"], new_question)
   );
 
-export const useUpdateQuestion: any = () =>
+export const useUpdateQuestion: any = (id: string, data: IQuestion) =>
   useMutation(
     async ({ id, data }: { id: string; data: IQuestion }) =>
-      await request(process.env.REACT_APP_API_URL_DEV!, UPDATE_QUESTION, {
+      request(process.env.REACT_APP_API_URL_DEV!, UPDATE_QUESTION, {
         id,
         data,
       }),
-    getSurveyOptimisticUpdate("getQuestions")
+    optimisticUpdate("getQuestions", data)
   );
 
-export const deleteQuestion: any = () =>
+export const deleteQuestion: any = ({ id }: { id: string }) =>
   useMutation(
     async (id: IQuestion["id"]) =>
       await request(process.env.REACT_APP_API_URL_DEV!, DELETE_QUESTION, {
         id,
       }),
-    getSurveyOptimisticUpdate("getSurvey")
+    optimisticUpdate("getQuestions", id)
     // TO DO Update Order
   );

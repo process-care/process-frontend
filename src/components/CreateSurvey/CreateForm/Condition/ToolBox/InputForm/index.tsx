@@ -23,12 +23,13 @@ import { v4 as uuidv4 } from "uuid";
 import { t } from "static/condition";
 import { getConditionsByRefererId } from "utils/formBuilder/condition";
 import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
-import { useUpdateQuestion } from "api/actions/question";
+import { useDeleteQuestion, useUpdateQuestion } from "api/actions/question";
 
 const InputForm: React.FC = () => {
   const condition_id = uuidv4();
   const { selected_input } = useAppSelector((state) => state.formBuilder);
   const { mutate: updateQuestion } = useUpdateQuestion("updateQuestion");
+  const { mutate: deleteQuestion } = useDeleteQuestion("deleteQuestion");
 
   const selectedInput = useAppSelector(
     (state) => state.formBuilder.selected_input
@@ -37,7 +38,7 @@ const InputForm: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const onCancel = () => {
-    if (!isEditing) dispatch(removeInput(selectedInput));
+    if (!isEditing) deleteQuestion(selectedInput.id);
     dispatch(toogleDrawer());
     dispatch(setIsEditing(false));
   };

@@ -28,6 +28,7 @@ import { t } from "static/input";
 import { hadValidCondition } from "utils/formBuilder/condition";
 import { SvgHover } from "components/SvgHover";
 import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
+import { useDeleteQuestion } from "api/actions/question";
 
 interface CardProps {
   input: IQuestion;
@@ -38,6 +39,8 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
   const dispatch = useAppDispatch();
   const { is_removing } = useAppSelector((state) => state.formBuilder);
   const isRemoving = is_removing === input.id;
+  const { mutate: deleteQuestion } = useDeleteQuestion("deleteQuestion");
+
   const color = useColorModeValue("gray.800", "gray.900");
 
   const handleEdit = () => {
@@ -83,7 +86,7 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
                 {isRemoving && (
                   <RemovingConfirmation
                     content={`${t.removing_confirmation} ${input.label} ?`}
-                    confirm={() => dispatch(removeInput(input))}
+                    confirm={() => deleteQuestion(input.id)}
                     close={() => dispatch(setIsRemoving(""))}
                   />
                 )}

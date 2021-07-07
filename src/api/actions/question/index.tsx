@@ -48,7 +48,7 @@ export const useUpdateQuestion: any = (id: string, data: IQuestion) =>
     optimisticUpdate("getQuestions", data)
   );
 
-export const deleteQuestion: any = ({ id }: { id: string }) =>
+export const useDeleteQuestion: any = ({ id }: { id: string }) =>
   useMutation(
     async (id: IQuestion["id"]) =>
       await request(process.env.REACT_APP_API_URL_DEV!, DELETE_QUESTION, {

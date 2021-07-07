@@ -15,10 +15,13 @@ export const addSurvey: any = () =>
   );
 
 export const getSurvey: any = ({ id }: { id: string }) =>
-  useQuery(["getSurvey", id], () =>
-    request(process.env.REACT_APP_API_URL_DEV!, GET_SURVEY, {
-      id,
-    })
+  useQuery(
+    ["getSurvey", id],
+    () =>
+      request(process.env.REACT_APP_API_URL_DEV!, GET_SURVEY, {
+        id,
+      }),
+    { enabled: !!id }
   );
 
 export const deleteSurvey: any = () =>

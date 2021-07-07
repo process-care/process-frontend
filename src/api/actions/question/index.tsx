@@ -11,19 +11,27 @@ import IQuestion from "interfaces/form/question";
 import { optimisticUpdate } from "api/optimisiticUpdate";
 
 export const getQuestion: any = ({ id }: { id: string }) => {
-  return useQuery(["getQuestion", id], async () => {
-    return await request(process.env.REACT_APP_API_URL_DEV!, GET_QUESTION, {
-      id,
-    });
-  });
+  return useQuery(
+    ["getQuestion", id],
+    async () => {
+      return await request(process.env.REACT_APP_API_URL_DEV!, GET_QUESTION, {
+        id,
+      });
+    },
+    { enabled: !!id }
+  );
 };
 
 export const useGetQuestions: any = ({ page_id }: { page_id: string }) => {
-  return useQuery(["getQuestions", page_id], async () => {
-    return await request(process.env.REACT_APP_API_URL_DEV!, GET_QUESTIONS, {
-      page_id,
-    });
-  });
+  return useQuery(
+    ["getQuestions", page_id],
+    async () => {
+      return await request(process.env.REACT_APP_API_URL_DEV!, GET_QUESTIONS, {
+        page_id,
+      });
+    },
+    { enabled: !!page_id }
+  );
 };
 
 export const useAddQuestion: any = (new_question: IQuestion) =>

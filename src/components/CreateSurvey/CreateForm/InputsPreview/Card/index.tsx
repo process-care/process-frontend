@@ -11,7 +11,6 @@ import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { renderInput } from "./utils";
 import IQuestion from "interfaces/form/question";
 import {
-  removeInput,
   selectInput,
   setIsEditing,
   setIsRemoving,
@@ -51,7 +50,8 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
 
   return (
     <Draggable draggableId={input.id} index={index}>
-      {(provided, snapshot) => (
+      {/* {(provided, snapshot) => ( */}
+      {(provided) => (
         <Flex
           w="100%"
           alignItems="center"

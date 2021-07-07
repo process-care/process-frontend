@@ -37,7 +37,6 @@ export const ADD_QUESTION = gql`
     createQuestion(input: { data: $new_question }) {
       question {
         id
-        label
         type
         page {
           id
@@ -51,10 +50,8 @@ export const UPDATE_QUESTION = gql`
   mutation updateQuestion($id: ID!, $data: editQuestionInput) {
     updateQuestion(input: { where: { id: $id }, data: $data }) {
       question {
-        label
         id
         type
-        placeholder
         internal_title
       }
     }

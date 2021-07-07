@@ -10,7 +10,6 @@ import { renderFormTemplate, renderFormValidationSchema } from "./utils";
 import { fields } from "./Template/logic/initialValues";
 import {
   updateInput,
-  removeInput,
   setIsEditing,
   addCondition,
   selectCondition,

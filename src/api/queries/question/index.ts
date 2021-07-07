@@ -28,6 +28,9 @@ export const GET_QUESTION = gql`
       answers
       required
       internal_title
+      conditions {
+        id
+      }
     }
   }
 `;

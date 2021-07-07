@@ -3,7 +3,6 @@ import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 // import { fields } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/logic/initialValues";
 import {
-  addCondition,
   selectCondition,
   selectConditonInCurrentPage,
   selectInput,
@@ -25,6 +24,7 @@ import { ReactComponent as Trash } from "assets/trash.svg";
 import { useDeletePage, useUpdatePage } from "api/actions/page";
 import ISurvey from "interfaces/survey";
 import { useAddQuestion, useUpdateQuestion } from "api/actions/question";
+import { useAddCondition } from "api/actions/condition";
 
 interface Props {
   survey: ISurvey;
@@ -36,6 +36,7 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
   const { mutate: updatePage } = useUpdatePage("updatePage");
   const { mutateAsync: addQuestion } = useAddQuestion("addQuestion");
   const { mutateAsync: updateQuestion } = useUpdateQuestion("updateQuestion");
+  const { mutateAsync: addCondition } = useAddCondition("addCondition");
 
   const { pages } = survey;
   const { selected_page, is_removing } = useAppSelector(
@@ -49,8 +50,6 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
     pages.findIndex((page) => page.id === selected_page.id) > 0;
 
   const isRemoving = is_removing === selected_page.id;
-
-  const condition_id = uuidv4();
 
   const handleSelect = (
     type: IQuestion["type"],
@@ -113,9 +112,6 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
     );
   }
 
-  // if (new_question_id === undefined) {
-  //   return <p>no id</p>;
-  // }
   return (
     <Box p={4}>
       <Formik
@@ -198,23 +194,19 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
                       variant="link"
                       color="brand.blue"
                       onClick={() => {
-                        dispatch(
-                          addCondition({
-                            id: condition_id,
-                            type: "page",
-                            referer_id: selected_page.id,
-                            step: 1,
-                            group: {
-                              id: uuidv4(),
-                              name: 1,
-                            },
-                            is_valid: false,
-                          })
-                        );
-                        dispatch(
-                          selectCondition({
-                            id: condition_id,
-                          })
+                        addCondition({
+                          type: "page",
+                          referer_page: selected_page.id,
+                          step: 1,
+                          group: {
+                            id: uuidv4(),
+                            name: 1,
+                          },
+                          is_valid: false,
+                        }).then((data: any) =>
+                          dispatch(
+                            selectCondition(data.createCondition.condition)
+                          )
                         );
                       }}
                     >

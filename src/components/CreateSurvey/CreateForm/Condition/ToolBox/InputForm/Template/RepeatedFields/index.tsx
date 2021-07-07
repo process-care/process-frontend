@@ -12,16 +12,16 @@ export const RepeatedFields: React.FC<Props> = ({ name }) => {
   const { setFieldValue } = useFormikContext();
   const isEditing = useAppSelector((state) => state.formBuilder.is_editing);
 
-  const fields = isEditing ? Object.values(field.value) : field.value;
+  const fields = field.value;
 
-  React.useEffect(() => {
-    // Populate answers field on edit.
-    if (isEditing) {
-      fields.map((el: string, index: number) => {
-        setFieldValue(`option[${index}]`, el);
-      });
-    }
-  }, [fields.length]);
+  // React.useEffect(() => {
+  //   // Populate answers field on edit.
+  //   if (isEditing) {
+  //     fields.map((el: string, index: number) => {
+  //       setFieldValue(`option[${index}]`, el);
+  //     });
+  //   }
+  // }, [fields.length]);
 
   return (
     <Box w="100%">

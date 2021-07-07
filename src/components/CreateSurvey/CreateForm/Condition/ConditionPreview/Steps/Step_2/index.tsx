@@ -2,20 +2,20 @@ import React from "react";
 
 import { Button, Flex } from "@chakra-ui/react";
 import { operators, operatorsForMultiple } from "constants/operators";
-import { useAppDispatch } from "redux/hooks";
-import { updateCondition } from "redux/slices/formBuilder";
 import ICondition from "interfaces/form/condition";
 import { checkIfMultiple } from "utils/formBuilder/input";
+import { useUpdateCondition } from "api/actions/condition";
 
 interface Props {
-  selectedCondition: ICondition;
+  currentCondition: Partial<ICondition>;
 }
 
-export const Step_2: React.FC<Props> = ({ selectedCondition }) => {
-  const dispatch = useAppDispatch();
-
+export const Step_2: React.FC<Props> = ({ currentCondition }) => {
+  const { mutateAsync: updateCondition } = useUpdateCondition(
+    currentCondition?.id
+  );
   const authorizedOperators = () => {
-    if (checkIfMultiple(selectedCondition)) {
+    if (checkIfMultiple(currentCondition)) {
       return operatorsForMultiple;
     } else return operators;
   };
@@ -29,17 +29,17 @@ export const Step_2: React.FC<Props> = ({ selectedCondition }) => {
       pt="10%"
     >
       {authorizedOperators().map(({ id, name }) => {
-        const isSelected = id === selectedCondition.operator?.id;
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const isSelected = id === currentCondition.operator;
 
         return (
           <Button
             onClick={() =>
-              dispatch(
-                updateCondition({
-                  id: selectedCondition.id,
-                  data: { operator: { id, name } },
-                })
-              )
+              updateCondition({
+                id: currentCondition.id,
+                data: { operator: id },
+              })
             }
             key={id}
             variant="box"

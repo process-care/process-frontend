@@ -1,18 +1,17 @@
+import { useUpdateCondition } from "api/actions/condition";
 import { InputBox } from "components/CreateSurvey/CreateForm/InputsPreview/InputBox";
 import { Textarea } from "components/Fields";
 import ICondition from "interfaces/form/condition";
 import React from "react";
-import { useAppDispatch } from "redux/hooks";
-import { updateCondition } from "redux/slices/formBuilder";
-import { getInputById } from "utils/formBuilder/input";
 
 export const renderInput = (
-  selectedCondition: ICondition
+  currentCondition: Partial<ICondition>
 ): React.ReactElement => {
-  const target_question = getInputById(selectedCondition.target_id);
+  const { mutateAsync: updateCondition } = useUpdateCondition(
+    currentCondition?.id
+  );
+  const target_question = currentCondition.target;
   const Options = () => {
-    const dispatch = useAppDispatch();
-
     const answers =
       target_question?.answers !== undefined &&
       Object.values(target_question?.answers);
@@ -23,19 +22,17 @@ export const renderInput = (
         <ul style={{ width: "100%" }}>
           {answers.map((option) => (
             <InputBox
-              isSelected={selectedCondition.target_value === option}
+              isSelected={currentCondition.target_value === option}
               isOptionMode
               option={option}
               onClick={() =>
-                dispatch(
-                  updateCondition({
-                    id: selectedCondition.id,
-                    data: {
-                      target_value: option !== undefined ? option : "",
-                      is_valid: true,
-                    },
-                  })
-                )
+                updateCondition({
+                  id: currentCondition.id,
+                  data: {
+                    target_value: option !== undefined ? option : "",
+                    is_valid: true,
+                  },
+                })
               }
             />
           ))}

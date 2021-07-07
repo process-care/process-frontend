@@ -13,11 +13,7 @@ export interface FormBuilder {
   pages: IPage[];
   selected_page: IPage | Record<string, any>;
   conditions: ICondition[];
-  selected_condition:
-    | {
-        id: string;
-      }
-    | Record<string, any>;
+  selected_condition: ICondition | Record<string, any>;
   is_editing: boolean;
   is_collapse_view: boolean;
   is_removing: ICondition["id"];
@@ -37,6 +33,7 @@ interface UpdateCondition {
 }
 interface SelectCondition {
   id: string;
+  type?: string;
 }
 
 interface RemoveGroup {
@@ -169,11 +166,14 @@ export const formBuilderSlice = createSlice({
         state.conditions[current] = { ...state.conditions[current], ...data };
       }
     },
-    selectCondition: (state, action: PayloadAction<SelectCondition>) => {
+    selectCondition: (
+      state,
+      action: PayloadAction<SelectCondition | Record<string, any>>
+    ) => {
       if (action.payload.id === "") {
         state.selected_condition = { id: "" };
       }
-      state.selected_condition.id = action.payload.id;
+      state.selected_condition = action.payload;
     },
     removeCondition: (state, action: PayloadAction<SelectCondition>) => {
       const { id } = action.payload;

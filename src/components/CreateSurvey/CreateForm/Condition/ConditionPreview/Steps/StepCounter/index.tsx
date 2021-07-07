@@ -2,10 +2,9 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 import ICondition from "interfaces/form/condition";
 import React from "react";
 import { Circle } from "@chakra-ui/react";
-import { useAppDispatch } from "redux/hooks";
-import { updateCondition } from "redux/slices/formBuilder";
 
 import { t } from "static/condition";
+import { useUpdateCondition } from "api/actions/condition";
 
 const steps = [
   { title: t.steps[0] },
@@ -14,34 +13,34 @@ const steps = [
 ];
 
 interface Props {
-  selectedCondition: ICondition | undefined;
+  currentCondition: ICondition | undefined;
   isDisabled: boolean;
 }
 
 export const StepCounter: React.FC<Props> = ({
-  selectedCondition,
+  currentCondition,
   isDisabled,
 }) => {
-  const dispatch = useAppDispatch();
+  const { mutateAsync: updateCondition } = useUpdateCondition(
+    currentCondition?.id
+  );
   return (
     <Flex justifyContent="center" mt={4} w="50%" mx="auto">
       {steps.map((_, i) => {
         const isDone =
-          selectedCondition?.step !== undefined &&
-          selectedCondition?.step >= i + 1;
+          currentCondition?.step !== undefined &&
+          currentCondition?.step >= i + 1;
         return (
           <Flex w="40%" key={i}>
             <Flex
               onClick={() =>
                 !isDisabled &&
-                dispatch(
-                  updateCondition({
-                    id: selectedCondition?.id,
-                    data: {
-                      step: i + 1,
-                    },
-                  })
-                )
+                updateCondition({
+                  id: currentCondition?.id,
+                  data: {
+                    step: i + 1,
+                  },
+                })
               }
               flexDirection="column"
               justifyContent="center"

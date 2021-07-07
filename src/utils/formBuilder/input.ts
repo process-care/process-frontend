@@ -13,12 +13,13 @@ export const getInputById = (id: string | undefined): IQuestion | undefined => {
     .shift();
 };
 
-export const checkIfMultiple = (selectedCondition: ICondition): boolean => {
+export const checkIfMultiple = (
+  currentCondition: Partial<ICondition>
+): boolean => {
   const multipleInput: string[] = ["checkbox", "radio", "select"];
-  const target_question = getInputById(selectedCondition.target_id);
 
   const type =
-    target_question?.type !== undefined ? target_question?.type : "text_area";
+    currentCondition?.type !== undefined ? currentCondition?.type : "text_area";
   if (multipleInput.includes(type)) {
     return true;
   } else return false;

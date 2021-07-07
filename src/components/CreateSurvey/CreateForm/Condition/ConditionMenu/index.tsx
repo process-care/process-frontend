@@ -4,29 +4,38 @@ import React from "react";
 import { useAppSelector, useAppDispatch } from "redux/hooks";
 import { t } from "static/condition";
 
-import {
-  getRefererIdInCurrentCondition,
-  selectCondition,
-  getConditionData,
-  getSelectedConditionData,
-} from "redux/slices/formBuilder";
+import { selectCondition } from "redux/slices/formBuilder";
 import { Group } from "./Group";
 import ICondition from "interfaces/form/condition";
+import { useGetConditions } from "api/actions/condition";
+import { Loader } from "components/Spinner";
+import { Error } from "components/Error";
 
 export const ConditionMenu: React.FC = () => {
-  const currentReferer = useAppSelector(getRefererIdInCurrentCondition);
   const dispatch = useAppDispatch();
-  const selected_condition = useAppSelector(getSelectedConditionData);
-  const conditions = useAppSelector(getConditionData);
+  const { selected_condition } = useAppSelector((state) => state.formBuilder);
+  const { data, isLoading, error } = useGetConditions({
+    id: selected_condition?.referer_page?.id,
+    type: selected_condition.type,
+  });
+
   const isDisabled = !selected_condition?.is_valid;
-  const groups = conditions.map((c: ICondition) => c.group);
-  const last_group = Math.max(
-    ...conditions.map((c: ICondition) => c.group.name)
-  );
+  const groups = data?.conditions.map((c: ICondition) => c.group);
+  // const last_group = Math.max(
+  //   ...data?.conditions.map((c: ICondition) => c.group.name)
+  // );
+  const last_group = 1;
   const isConditionTypePage = selected_condition?.type === "page";
 
-  if (currentReferer === undefined) {
-    return <p>{t.error}</p>;
+  if (isLoading) {
+    return (
+      <Box pt="400px">
+        <Loader />
+      </Box>
+    );
+  }
+  if (error) {
+    return <Error error={error} />;
   }
 
   return (
@@ -35,27 +44,26 @@ export const ConditionMenu: React.FC = () => {
         <Text variant="current" textTransform="uppercase">
           {isConditionTypePage ? t.show_page : t.show_input}
         </Text>
-        <Text variant="xsMedium">
+        {/* <Text variant="xsMedium">
           {isConditionTypePage ? currentReferer?.name : currentReferer?.label}
-        </Text>
+        </Text> */}
         {isDisabled && (
           <Text variant="xs" mt={5} textAlign="left" color="brand.gray.200">
             {t.cant_edit}
           </Text>
         )}
         <Group
-          conditions={conditions}
+          conditions={data?.conditions}
           groups={groups}
           last_group={last_group}
-          currentReferer={currentReferer}
         />
       </Box>
 
       <Box pos="sticky" bottom="0px" top="0px" borderTop="1px solid">
         <Footer
           disabled={isDisabled}
-          onSubmit={() => dispatch(selectCondition({ id: "" }))}
-          onCancel={() => dispatch(selectCondition({ id: "" }))}
+          onSubmit={() => dispatch(selectCondition({}))}
+          onCancel={() => dispatch(selectCondition({}))}
         />
       </Box>
     </Box>

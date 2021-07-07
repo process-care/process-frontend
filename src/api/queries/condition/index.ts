@@ -5,27 +5,70 @@ export const GET_CONDITION = gql`
     condition(id: $id) {
       id
       operator
-      target_page {
+      is_valid
+      group
+      step
+      referer_page {
         id
+        name
+      }
+      target {
+        id
+        answers
       }
       target_value
-      target_question {
+      referer_question {
         id
+        label
       }
     }
   }
 `;
+
+export const GET_CONDITIONS: any = (type: string) => {
+  const target = type === "page" ? "referer_page" : "referer_question";
+  return gql`
+    query getConditions($id: ID!) {
+      conditions(where: { ${target}: $id }) {
+        id
+        operator
+        is_valid
+        group
+        step
+        target {
+          id
+          answers
+        }
+        referer_page {
+          id
+          name
+        }
+        target_value
+        referer_question {
+          id
+          label
+        }
+      }
+    }
+  `;
+};
 
 export const ADD_CONDITION = gql`
   mutation addcondition($new_condition: ConditionInput) {
     createCondition(input: { data: $new_condition }) {
       condition {
         id
-        group
-        operator
-        target_value
-        referer {
+        type
+        referer_page {
           id
+          name
+        }
+        step
+
+        target_value
+        referer_question {
+          id
+          label
         }
       }
     }
@@ -36,7 +79,22 @@ export const UPDATE_CONDITION = gql`
   mutation updatecondition($id: ID!, $data: editConditionInput) {
     updateCondition(input: { where: { id: $id }, data: $data }) {
       condition {
-        label
+        id
+        type
+        referer_page {
+          id
+          name
+        }
+        step
+        target {
+          id
+          answers
+        }
+        target_value
+        referer_question {
+          id
+          label
+        }
       }
     }
   }

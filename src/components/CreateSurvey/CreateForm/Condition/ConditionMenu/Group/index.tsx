@@ -16,16 +16,13 @@ import ICondition from "interfaces/form/condition";
 import { Separator } from "../Separator";
 import { ReactComponent as Delete } from "./../assets/delete.svg";
 
-import IPage from "interfaces/form/page";
 import { RemovingConfirmation } from "../../../RemovingConfirmation";
 import { t } from "static/condition";
-import IQuestion from "interfaces/form/question";
 
 interface Props {
   conditions: ICondition[] | [];
   groups: { id: string | number; name: number }[];
   last_group: number;
-  currentReferer: IPage | IQuestion | undefined;
 }
 interface State {
   type: "condition" | "group" | null;
@@ -35,12 +32,7 @@ interface State {
 import { Operator } from "./Operator";
 import { getInputById } from "utils/formBuilder/input";
 
-export const Group: React.FC<Props> = ({
-  conditions,
-  groups,
-  last_group,
-  currentReferer,
-}) => {
+export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
   const dispatch = useAppDispatch();
   const condition_id = uuidv4();
   const selected_condition = useAppSelector(getSelectedConditionData);
@@ -53,16 +45,13 @@ export const Group: React.FC<Props> = ({
     id: "",
   });
 
-  if (currentReferer === undefined) {
-    return <p>Error</p>;
-  }
-
   return (
     <Box h="100%">
       {clean_groups.map(({ name, id }) => {
         if (isRemoving.type === "group" && isRemoving.id === id) {
           return (
             <RemovingConfirmation
+              key={id}
               content={t.removing_group_confirmation}
               confirm={() =>
                 dispatch(
@@ -76,7 +65,7 @@ export const Group: React.FC<Props> = ({
           );
         }
         return (
-          <Box mt={5}>
+          <Box mt={5} key={id}>
             <Flex alignItems="center" justifyContent="space-around" w="100%">
               <Box
                 w="100%"
@@ -104,7 +93,7 @@ export const Group: React.FC<Props> = ({
 
             {conditions?.map((condition: ICondition, index: number) => {
               const isLast = index === conditions.length - 1;
-              const target_question = getInputById(condition.target_id);
+              const target_question = getInputById(condition.target?.id);
 
               if (condition.group.id === id) {
                 if (
@@ -113,6 +102,7 @@ export const Group: React.FC<Props> = ({
                 ) {
                   return (
                     <RemovingConfirmation
+                      key={condition.id}
                       content={t.removing_condition_confirmation}
                       confirm={() =>
                         dispatch(
@@ -222,10 +212,7 @@ export const Group: React.FC<Props> = ({
                                   selected_condition?.type !== undefined
                                     ? selected_condition.type
                                     : "page",
-                                referer_id:
-                                  currentReferer?.id !== undefined
-                                    ? currentReferer.id
-                                    : "",
+
                                 step: 1,
                                 group: {
                                   id,
@@ -260,10 +247,6 @@ export const Group: React.FC<Props> = ({
                         selected_condition?.type !== undefined
                           ? selected_condition.type
                           : "page",
-                      referer_id:
-                        currentReferer?.id !== undefined
-                          ? currentReferer.id
-                          : "",
                       step: 1,
                       group: {
                         id: uuidv4(),

@@ -5,8 +5,10 @@ import IPage from "./page";
 export default interface ICondition {
   id: string;
   type: "page" | "input";
-  referer_id: IPage["id"] | ICondition["id"];
-  target_id?: IQuestion["id"];
+  referer_page?: IPage;
+  referer_question?: IQuestion;
+  referer_id?: IPage["id"] | ICondition["id"];
+  target?: IQuestion;
   target_value?: string | number;
   operator?: IOperator;
   group: {

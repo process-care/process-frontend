@@ -1,13 +1,11 @@
 import React from "react";
 
-import { Box, Button, ButtonGroup, Container } from "@chakra-ui/react";
+import { Box, Button, ButtonGroup, Container, Text } from "@chakra-ui/react";
 import { useAppSelector, useAppDispatch } from "redux/hooks";
 import {
   addCondition,
   getRefererIdInCurrentCondition,
-  getSelectedConditionData,
   selectCondition,
-  updateCondition,
 } from "redux/slices/formBuilder";
 import { Step_1 } from "components/CreateSurvey/CreateForm/Condition/ConditionPreview/Steps/Step_1";
 import { Step_2 } from "./Steps/Step_2";
@@ -15,25 +13,32 @@ import { Step_3 } from "./Steps/Step_3";
 import { v4 as uuidv4 } from "uuid";
 import { StepCounter } from "./Steps/StepCounter";
 import { checkStepValidation } from "./Steps/utils";
+import { useGetCondition, useUpdateCondition } from "api/actions/condition";
 
 export const ConditionPreview: React.FC = () => {
-  const selected_condition = useAppSelector(getSelectedConditionData);
+  const { selected_condition } = useAppSelector((state) => state.formBuilder);
+  const { data: current_condition } = useGetCondition(selected_condition.id);
+  const { mutateAsync: updateCondition } = useUpdateCondition(
+    current_condition?.condition?.id
+  );
   const currentConditionReferer = useAppSelector(
     getRefererIdInCurrentCondition
   );
+
+  console.log("Current condition", current_condition);
   const dispatch = useAppDispatch();
   const condition_id = uuidv4();
 
   const renderStep = () => {
-    switch (selected_condition?.step) {
+    switch (current_condition?.condition?.step) {
       case 1:
-        return <Step_1 selectedCondition={selected_condition} />;
+        return <Step_1 currentCondition={current_condition?.condition} />;
         break;
       case 2:
-        return <Step_2 selectedCondition={selected_condition} />;
+        return <Step_2 currentCondition={current_condition?.condition} />;
         break;
       case 3:
-        return <Step_3 selectedCondition={selected_condition} />;
+        return <Step_3 currentCondition={current_condition?.condition} />;
         break;
 
       default:
@@ -44,9 +49,10 @@ export const ConditionPreview: React.FC = () => {
   return (
     <Container w="90%" maxW="unset" h="100%" pos="relative">
       <StepCounter
-        selectedCondition={selected_condition}
-        isDisabled={checkStepValidation(selected_condition)}
+        currentCondition={current_condition?.condition}
+        isDisabled={checkStepValidation(current_condition?.condition)}
       />
+      <Text>{current_condition?.target?.id}</Text>
       <Box h="80%" pt={10} w="100%" d="flex" justifyContent="center">
         {renderStep()}
       </Box>
@@ -54,20 +60,17 @@ export const ConditionPreview: React.FC = () => {
       <Box pos="relative" bottom="110px" left="0" right="0" w="100%">
         <ButtonGroup justifyContent="space-between" w="70%">
           <Button
-            visibility={selected_condition?.step !== 1 ? "visible" : "hidden"}
+            visibility={
+              current_condition?.condition?.step !== 1 ? "visible" : "hidden"
+            }
             variant="link"
             onClick={() =>
-              dispatch(
-                updateCondition({
-                  id: selected_condition?.id,
-                  data: {
-                    step:
-                      selected_condition?.step !== undefined
-                        ? selected_condition.step - 1
-                        : 1,
-                  },
-                })
-              )
+              updateCondition({
+                id: current_condition?.condition?.id,
+                data: {
+                  step: current_condition?.condition.step - 1,
+                },
+              })
             }
           >
             Retour
@@ -77,15 +80,12 @@ export const ConditionPreview: React.FC = () => {
             <Button
               variant="link"
               color="brand.blue"
-              isDisabled={checkStepValidation(selected_condition)}
+              isDisabled={checkStepValidation(current_condition?.condition)}
               onClick={() => {
                 dispatch(
                   addCondition({
                     id: condition_id,
-                    type:
-                      selected_condition?.type !== undefined
-                        ? selected_condition.type
-                        : "page",
+                    type: current_condition?.condition.type,
                     referer_id:
                       currentConditionReferer?.id !== undefined
                         ? currentConditionReferer?.id
@@ -105,20 +105,18 @@ export const ConditionPreview: React.FC = () => {
             </Button>
           ) : (
             <Button
+              visibility={
+                current_condition?.condition?.step !== 3 ? "visible" : "hidden"
+              }
               variant="roundedBlue"
-              isDisabled={checkStepValidation(selected_condition)}
+              isDisabled={checkStepValidation(current_condition?.condition)}
               onClick={() =>
-                dispatch(
-                  updateCondition({
-                    id: selected_condition?.id,
-                    data: {
-                      step:
-                        selected_condition?.step !== undefined
-                          ? selected_condition.step + 1
-                          : 1,
-                    },
-                  })
-                )
+                updateCondition({
+                  id: current_condition?.condition?.id,
+                  data: {
+                    step: current_condition?.condition.step + 1,
+                  },
+                })
               }
             >
               Suivant

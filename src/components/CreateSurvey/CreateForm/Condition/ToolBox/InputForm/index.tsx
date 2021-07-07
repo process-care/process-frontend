@@ -34,6 +34,8 @@ const InputForm: React.FC = () => {
   const selectedInput = useAppSelector(
     (state) => state.formBuilder.selected_input
   );
+  const { type } = selectedInput;
+
   const isEditing = useAppSelector((state) => state.formBuilder.is_editing);
   const dispatch = useAppDispatch();
 
@@ -43,7 +45,6 @@ const InputForm: React.FC = () => {
     dispatch(setIsEditing(false));
   };
 
-  const { type } = selectedInput;
   return (
     <Formik
       validateOnBlur={false}
@@ -120,7 +121,6 @@ const InputForm: React.FC = () => {
               >
                 <Flex alignItems="center">
                   <InputIcon type={selectedInput.type} />
-
                   <Box ml={2}>
                     <Text variant="xsMedium">
                       {getInputIndex(selectedInput.id)}
@@ -128,7 +128,6 @@ const InputForm: React.FC = () => {
                     <Text variant="xs">{selectedInput.name}</Text>
                   </Box>
                 </Flex>
-
                 {selectedInput.type !== "wysiwyg" && (
                   <Flex flexDirection="column">
                     <Switch label="" id="required" size="sm" />

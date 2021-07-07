@@ -24,7 +24,7 @@ import { SvgHover } from "components/SvgHover";
 import { ReactComponent as Trash } from "assets/trash.svg";
 import { useDeletePage, useUpdatePage } from "api/actions/page";
 import ISurvey from "interfaces/survey";
-import { useAddQuestion } from "api/actions/question";
+import { useAddQuestion, useUpdateQuestion } from "api/actions/question";
 
 interface Props {
   survey: ISurvey;
@@ -35,6 +35,7 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
   const { mutate: deletePage } = useDeletePage("deletePage");
   const { mutate: updatePage } = useUpdatePage("updatePage");
   const { mutateAsync: addQuestion } = useAddQuestion("addQuestion");
+  const { mutateAsync: updateQuestion } = useUpdateQuestion("updateQuestion");
 
   const { pages } = survey;
   const { selected_page, is_removing } = useAppSelector(
@@ -68,9 +69,19 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
       // };
 
       addQuestion({ type, internal_title, page: selected_page.id }).then(
-        (data: any) => dispatch(selectInput(data.createQuestion.question))
+        (data: any) => {
+          const new_question = data.createQuestion.question;
+          updateQuestion({
+            id: new_question.id,
+            data: {
+              internal_title: `${new_question.type}-${new_question.id}`,
+            },
+          }).then((data: any) => {
+            dispatch(selectInput(data.updateQuestion.question));
+            dispatch(toogleDrawer());
+          });
+        }
       );
-      dispatch(toogleDrawer());
     }
   };
 

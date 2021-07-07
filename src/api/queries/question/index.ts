@@ -38,6 +38,7 @@ export const ADD_QUESTION = gql`
       question {
         id
         label
+        type
         page {
           id
         }
@@ -51,6 +52,10 @@ export const UPDATE_QUESTION = gql`
     updateQuestion(input: { where: { id: $id }, data: $data }) {
       question {
         label
+        id
+        type
+        placeholder
+        internal_title
       }
     }
   }

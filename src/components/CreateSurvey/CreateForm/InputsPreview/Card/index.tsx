@@ -85,7 +85,7 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
 
                 {isRemoving && (
                   <RemovingConfirmation
-                    content={`${t.removing_confirmation} ${input.label} ?`}
+                    content={`${t.removing_confirmation} ${input.internal_title} ?`}
                     confirm={() => deleteQuestion(input.id)}
                     close={() => dispatch(setIsRemoving(""))}
                   />

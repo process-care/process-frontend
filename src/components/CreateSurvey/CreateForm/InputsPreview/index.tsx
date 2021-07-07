@@ -30,8 +30,7 @@ interface Props {
   order: IQuestion["id"][];
 }
 
-const InputsPreview: React.FC<Props> = ({ order }) => {
-  console.log(order);
+const InputsPreview: React.FC<Props> = () => {
   const { selected_page } = useAppSelector((state) => state.formBuilder);
   const {
     data: questions,

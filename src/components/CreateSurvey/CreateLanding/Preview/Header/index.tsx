@@ -8,8 +8,6 @@ interface Props {
 }
 
 export const Header: React.FC<Props> = ({ theme, logo }) => {
-  console.log(logo[0]?.base64);
-
   return (
     <Flex justifyContent="space-between" p="5" alignItems="center">
       {logo[0]?.base64 !== undefined && (

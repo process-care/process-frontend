@@ -19,7 +19,9 @@ import {
   WysiwygSchema,
 } from "../ValidationSchemas";
 
-export const renderFormTemplate = (input: IQuestion): React.ReactNode => {
+export const renderFormTemplate = (
+  input: IQuestion | Record<string, any>
+): React.ReactNode => {
   switch (input.type) {
     case "input":
       return <InputFields />;
@@ -57,7 +59,7 @@ export const renderFormTemplate = (input: IQuestion): React.ReactNode => {
 };
 
 export const renderFormValidationSchema = (
-  input: IQuestion
+  input: IQuestion | Record<string, any>
 ): React.ReactFragment => {
   switch (input.type) {
     case "input":

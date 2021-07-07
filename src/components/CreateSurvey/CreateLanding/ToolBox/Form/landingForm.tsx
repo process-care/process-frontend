@@ -11,7 +11,7 @@ import { editAboutPage } from "redux/slices/aboutBuilder";
 import { t } from "static/createLanding";
 import { ColorPicker } from "../ColorPicker";
 import { initialValuesLanding } from "./utils/initialValues";
-import { useAppDispatch, useAppSelector } from "redux/hooks";
+import { useAppDispatch } from "redux/hooks";
 import { RepeatableFields } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/RepeatableFields";
 import { SvgHover } from "components/SvgHover";
 
@@ -23,8 +23,6 @@ export const LandingForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const history = useHistory();
 
-  const { landing } = useAppSelector((state) => state.landingBuilder);
-
   const handleSubmit = () => {
     history.push("/");
   };
@@ -32,7 +30,6 @@ export const LandingForm: React.FC = () => {
   const handleCancel = () => {
     history.push("/");
   };
-  console.log(landing);
   const onChange = (event: React.FormEvent<HTMLFormElement>) => {
     const target = event.target as HTMLFormElement;
     if (target.type === "file") {

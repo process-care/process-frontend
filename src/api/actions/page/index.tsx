@@ -5,13 +5,14 @@ import IPage from "interfaces/form/page";
 import { useMutation } from "react-query";
 import { optimisticUpdate } from "api/optimisiticUpdate";
 
-export const useAddPage: any = () =>
+export const useAddPage: any = (values: Partial<IPage>) =>
   useMutation(
     async (values: Partial<IPage>) =>
       await request(process.env.REACT_APP_API_URL_DEV!, ADD_PAGE, {
         values,
       }),
-    optimisticUpdate("getSurvey")
+
+    optimisticUpdate("getSurvey", values)
   );
 
 export const useUpdatePage: any = () =>

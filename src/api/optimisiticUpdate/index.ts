@@ -17,6 +17,7 @@ export const optimisticUpdate: any = (queryToUpdate: string) => {
     onError: (context: any) => {
       queryClient.setQueryData(queryToUpdate, context.previousData);
     },
+    onSuccess: (data: any) => data,
     onSettled: () => {
       queryClient.invalidateQueries(queryToUpdate);
     },

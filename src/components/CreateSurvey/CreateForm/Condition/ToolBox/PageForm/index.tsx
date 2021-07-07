@@ -34,20 +34,12 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
   const dispatch = useAppDispatch();
   const { mutate: deletePage } = useDeletePage("deletePage");
   const { mutate: updatePage } = useUpdatePage("updatePage");
-  const { mutate: addQuestion, data } = useAddQuestion("addQuestion");
-  const new_question_id = data?.createQuestion.question.id;
+  const { mutateAsync: addQuestion } = useAddQuestion("addQuestion");
 
   const { pages } = survey;
   const { selected_page, is_removing } = useAppSelector(
     (state) => state.formBuilder
   );
-
-  // Wait for create id to select input.
-  React.useEffect(() => {
-    if (new_question_id !== undefined) {
-      dispatch(selectInput(new_question_id));
-    }
-  }, [new_question_id]);
 
   // TO REFACTO
   const conditions = useAppSelector(selectConditonInCurrentPage);
@@ -75,7 +67,9 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
       //   page: selected_page.id,
       // };
 
-      addQuestion({ type, internal_title, page: selected_page.id });
+      addQuestion({ type, internal_title, page: selected_page.id }).then(
+        (data: any) => dispatch(selectInput(data.createQuestion.question))
+      );
       dispatch(toogleDrawer());
     }
   };
@@ -108,6 +102,9 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
     );
   }
 
+  // if (new_question_id === undefined) {
+  //   return <p>no id</p>;
+  // }
   return (
     <Box p={4}>
       <Formik

@@ -27,9 +27,16 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
   );
   const selectedCondition = getConditionById(selected_condition.id);
   const dispatch = useAppDispatch();
-  const { mutate: addPage } = useAddPage();
+  const { mutateAsync: addPage } = useAddPage();
 
   const { pages } = survey;
+
+  // Select firts page if selected_page is empty.
+  React.useEffect(() => {
+    if (!selected_page.id && pages.length > 0) {
+      dispatch(selectPage(pages[0]));
+    }
+  }, [pages]);
 
   const handlePage = () => {
     addPage({
@@ -37,8 +44,9 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
       is_locked: false,
       short_name: `P${pages.length + 1}`,
       survey: survey.id,
-    });
+    }).then((data: any) => dispatch(selectPage(data.createPage.page)));
   };
+
   return (
     <Flex
       flexDirection="column"

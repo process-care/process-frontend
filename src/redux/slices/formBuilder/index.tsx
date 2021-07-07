@@ -9,13 +9,15 @@ import { formMock } from "mocks/form";
 export interface FormBuilder {
   input_order: IQuestion["id"][];
   inputs: IQuestion[];
-  selected_input: IQuestion;
+  selected_input: IQuestion | Record<string, any>;
   pages: IPage[];
-  selected_page: IPage;
+  selected_page: IPage | Record<string, any>;
   conditions: ICondition[];
-  selected_condition: {
-    id: string;
-  };
+  selected_condition:
+    | {
+        id: string;
+      }
+    | Record<string, any>;
   is_editing: boolean;
   is_collapse_view: boolean;
   is_removing: ICondition["id"];
@@ -40,35 +42,16 @@ interface SelectCondition {
 interface RemoveGroup {
   id: number | string;
 }
-const dev_survey = "60e2e9107fa4044c102a881a";
-const dev_page = "60e314a77d077079f5a9b80d";
-const initialFirstPage: IPage = {
-  name: "Page 1",
-  id: dev_page,
-  is_locked: false,
-  conditions: [],
-  short_name: "P1",
-  survey_id: dev_survey,
-};
 
 // Define the initial state using that type
 const initialState: FormBuilder = {
   inputs: [],
   input_order: [],
-  selected_input: {
-    id: "",
-    type: "text_area",
-    internal_title: "",
-    name: "",
-    page: "",
-    condition: [],
-  },
-  pages: [initialFirstPage],
-  selected_page: initialFirstPage,
+  selected_input: {},
+  pages: [],
+  selected_page: {},
   conditions: [],
-  selected_condition: {
-    id: "",
-  },
+  selected_condition: {},
   is_editing: false,
   is_collapse_view: false,
   is_removing: "",
@@ -125,7 +108,10 @@ export const formBuilderSlice = createSlice({
         }
       }
     },
-    removeInput: (state, action: PayloadAction<IQuestion>) => {
+    removeInput: (
+      state,
+      action: PayloadAction<IQuestion | Record<string, any>>
+    ) => {
       const { id } = action.payload;
       const { inputs, input_order } = state;
       const index = inputs.findIndex((item) => id === item.id);

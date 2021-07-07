@@ -65,7 +65,7 @@ export const CreateForm: React.FC<IRoute> = () => {
               p="0"
             >
               <div className="background__grid">
-                {selected_condition.id !== "" ? (
+                {selected_condition.id !== undefined ? (
                   <ConditionPreview />
                 ) : (
                   <InputsPreview order={data?.survey.order} />

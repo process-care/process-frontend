@@ -36,7 +36,6 @@ export const Authentification: React.FC<IRoute> = () => {
   // const { data: survey } = getSurvey({ id });
   // const { data: questions } = useGetQuestions();
 
-  // console.log(survey?.survey?.pages);
   return (
     <div>
       Authentification

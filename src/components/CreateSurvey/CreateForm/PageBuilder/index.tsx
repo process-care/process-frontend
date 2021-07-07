@@ -27,11 +27,11 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
   );
   const selectedCondition = getConditionById(selected_condition.id);
   const dispatch = useAppDispatch();
-  const { mutateAsync: addPage } = useAddPage();
+  const { mutateAsync: addPage, isLoading } = useAddPage();
 
   const { pages } = survey;
 
-  // Select firts page if selected_page is empty.
+  // Select first page if selected_page is empty.
   React.useEffect(() => {
     if (!selected_page.id && pages.length > 0) {
       dispatch(selectPage(pages[0]));
@@ -39,12 +39,13 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
   }, [pages]);
 
   const handlePage = () => {
-    addPage({
-      name: `Page ${pages.length + 1}`,
-      is_locked: false,
-      short_name: `P${pages.length + 1}`,
-      survey: survey.id,
-    }).then((data: any) => dispatch(selectPage(data.createPage.page)));
+    !isLoading &&
+      addPage({
+        name: `Page ${pages.length + 1}`,
+        is_locked: false,
+        short_name: `P${pages.length + 1}`,
+        survey: survey.id,
+      }).then((data: any) => dispatch(selectPage(data.createPage.page)));
   };
 
   return (

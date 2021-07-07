@@ -152,7 +152,7 @@ const InputsPreview: React.FC<Props> = () => {
               w="100%"
               ref={provided.innerRef}
               {...provided.droppableProps}
-              isDraggingOver={snapshot.isDraggingOver}
+              // isDraggingOver={snapshot.isDraggingOver}
             >
               {/* {input_order.map((inputId: string, i: number) => {
                 const current = cards.find((c) => c.id === inputId);

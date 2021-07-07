@@ -59,7 +59,7 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
-          isDragging={snapshot.isDragging}
+          // isDragging={snapshot.isDragging}
         >
           <Box
             onClick={() => dispatch(setIsRemoving(input.id))}

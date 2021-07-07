@@ -30,7 +30,7 @@ export const StepCounter: React.FC<Props> = ({
           selectedCondition?.step !== undefined &&
           selectedCondition?.step >= i + 1;
         return (
-          <Flex w="40%">
+          <Flex w="40%" key={i}>
             <Flex
               onClick={() =>
                 !isDisabled &&

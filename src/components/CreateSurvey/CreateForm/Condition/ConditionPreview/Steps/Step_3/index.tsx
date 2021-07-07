@@ -32,7 +32,7 @@ export const Step_3: React.FC<Props> = ({ currentCondition }) => {
         }}
       >
         {({ values }) => {
-          const onBlur = (event: React.FormEvent<HTMLFormElement>) => {
+          const onChange = (event: React.FormEvent<HTMLFormElement>) => {
             const target = event.target as HTMLFormElement;
             if (target !== null) {
               if (target.value === "") {
@@ -58,7 +58,10 @@ export const Step_3: React.FC<Props> = ({ currentCondition }) => {
             : values.target_value !== "" && values.target_value !== undefined;
 
           return (
-            <Form onBlur={(event) => onBlur(event)} style={{ width: "100%" }}>
+            <Form
+              onChange={(event) => onChange(event)}
+              style={{ width: "100%" }}
+            >
               <Box d="flex" mx="auto" alignItems="center" w="100%">
                 {renderInput(currentCondition)}
                 <Box

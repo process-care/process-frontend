@@ -64,7 +64,9 @@ export const useUpdateCondition: any = (
         id,
         data,
       }),
-    optimisticItemUpdate("getCondition", id, data)
+
+    // optimisticItemUpdate("getCondition, getConditions", id, data)
+    optimisticUpdate("getConditions")
   );
 
 export const deleteCondition: any = () =>

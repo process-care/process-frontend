@@ -16,8 +16,9 @@ import { ReactComponent as Superior } from "./../assets/superior.svg";
 
 // TODO replace string by SVG orperator.
 export const renderOperator = (
-  operators: IOperator["id"] | undefined
+  operators: ICondition["operator"] | undefined
 ): React.ReactElement | string | undefined => {
+  console.log(operators);
   switch (operators) {
     case "different":
       return <Different />;
@@ -45,5 +46,5 @@ export const renderOperator = (
 };
 
 export const Operator: React.FC<Props> = ({ condition }) => {
-  return <Box>{renderOperator(condition.operator?.id)}</Box>;
+  return <Box>{renderOperator(condition.operator)}</Box>;
 };

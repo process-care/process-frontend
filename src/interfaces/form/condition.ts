@@ -10,7 +10,13 @@ export default interface ICondition {
   referer_id?: IPage["id"] | ICondition["id"];
   target?: IQuestion;
   target_value?: string | number;
-  operator?: IOperator;
+  operator?:
+    | "equal_or_superior"
+    | "equal_or_inferior"
+    | "equal"
+    | "superior"
+    | "inferior"
+    | "different";
   group: {
     id: string | number;
     name: number;

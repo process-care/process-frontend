@@ -8,13 +8,17 @@ export const GET_CONDITION = gql`
       is_valid
       group
       step
+      type
       referer_page {
         id
         name
       }
+      group
       target {
         id
         answers
+        label
+        type
       }
       target_value
       referer_question {
@@ -35,10 +39,12 @@ export const GET_CONDITIONS: any = (type: string) => {
         is_valid
         group
         step
+        type
         target {
           id
           answers
         }
+          group 
         referer_page {
           id
           name
@@ -64,7 +70,8 @@ export const ADD_CONDITION = gql`
           name
         }
         step
-
+        operator
+        group
         target_value
         referer_question {
           id
@@ -85,6 +92,8 @@ export const UPDATE_CONDITION = gql`
           id
           name
         }
+        operator
+        group
         step
         target {
           id

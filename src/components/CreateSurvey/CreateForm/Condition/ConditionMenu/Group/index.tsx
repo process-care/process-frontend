@@ -30,16 +30,24 @@ interface State {
 }
 
 import { Operator } from "./Operator";
-import { getInputById } from "utils/formBuilder/input";
+import { useGetConditions } from "api/actions/condition";
 
 export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
   const dispatch = useAppDispatch();
   const condition_id = uuidv4();
-  const selected_condition = useAppSelector(getSelectedConditionData);
+  const { selected_condition } = useAppSelector((state) => state.formBuilder);
+  const { data, isLoading, error } = useGetConditions({
+    id: selected_condition?.referer_page?.id,
+    type: selected_condition.type,
+  });
+
+  const current_condition = data?.conditions.find(
+    (c: ICondition) => c.id === selected_condition.id
+  );
   const clean_groups = groups.filter(
     (v, i, a) => a.findIndex((t) => t.id === v.id) === i
   );
-  const isDisabled = !selected_condition?.is_valid;
+  const isDisabled = !current_condition?.is_valid;
   const [isRemoving, setRemoving] = React.useState<State>({
     type: null,
     id: "",
@@ -64,6 +72,7 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
             />
           );
         }
+
         return (
           <Box mt={5} key={id}>
             <Flex alignItems="center" justifyContent="space-around" w="100%">
@@ -93,7 +102,7 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
 
             {conditions?.map((condition: ICondition, index: number) => {
               const isLast = index === conditions.length - 1;
-              const target_question = getInputById(condition.target?.id);
+              const target_question = current_condition?.target;
 
               if (condition.group.id === id) {
                 if (
@@ -119,7 +128,7 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
                   <>
                     <Box textAlign="left" key={condition.id} py={1}>
                       {target_question?.label &&
-                        selected_condition !== undefined && (
+                        current_condition !== undefined && (
                           <>
                             <Text fontSize="10" color="brand.gray.200">
                               Si la question
@@ -181,7 +190,7 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
                           </>
                         )}
 
-                      {condition.operator?.id && (
+                      {condition.operator !== undefined && (
                         <Flex alignItems="center">
                           <Operator condition={condition} />
 

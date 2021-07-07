@@ -42,7 +42,6 @@ export const Step_1: React.FC<Props> = ({ currentCondition }) => {
   const renderCard = (input: IQuestion) => {
     // const target_question = getInputById(selected_condition.target_id);
     const isSelected = input.id === currentCondition?.target?.id;
-    console.log(input.id, currentCondition);
     return (
       <InputBox
         key={input.id}

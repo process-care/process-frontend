@@ -21,11 +21,13 @@ export const ConditionMenu: React.FC = () => {
 
   const isDisabled = !selected_condition?.is_valid;
   const groups = data?.conditions.map((c: ICondition) => c.group);
-  // const last_group = Math.max(
-  //   ...data?.conditions.map((c: ICondition) => c.group.name)
-  // );
-  const last_group = 1;
-  const isConditionTypePage = selected_condition?.type === "page";
+
+  const last_group =
+    data?.conditions.length > 0
+      ? Math.max(...data?.conditions.map((c: ICondition) => c.group.name))
+      : 1;
+
+  const isConditionTypePage = data?.conditions[0]?.type === "page";
 
   if (isLoading) {
     return (
@@ -37,6 +39,7 @@ export const ConditionMenu: React.FC = () => {
   if (error) {
     return <Error error={error} />;
   }
+  console.log(groups, last_group);
 
   return (
     <Box h="100%" pos="relative">
@@ -44,9 +47,11 @@ export const ConditionMenu: React.FC = () => {
         <Text variant="current" textTransform="uppercase">
           {isConditionTypePage ? t.show_page : t.show_input}
         </Text>
-        {/* <Text variant="xsMedium">
-          {isConditionTypePage ? currentReferer?.name : currentReferer?.label}
-        </Text> */}
+        <Text variant="xsMedium">
+          {isConditionTypePage
+            ? data?.conditions[0]?.referer_page?.name
+            : data?.conditions[0]?.referer_page?.label}
+        </Text>
         {isDisabled && (
           <Text variant="xs" mt={5} textAlign="left" color="brand.gray.200">
             {t.cant_edit}

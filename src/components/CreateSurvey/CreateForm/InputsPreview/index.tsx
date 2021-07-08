@@ -38,7 +38,6 @@ const InputsPreview: React.FC<Props> = () => {
     error,
   } = useGetQuestions({ page_id: selected_page.id });
 
-  console.log(questions);
   const renderCard = (input: IQuestion, index: number) => {
     return <Card key={input.id} input={input} index={index} />;
   };

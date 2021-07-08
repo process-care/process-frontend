@@ -10,7 +10,7 @@ import {
 import IQuestion from "interfaces/form/question";
 import { optimisticUpdate } from "api/optimisiticUpdate";
 
-export const getQuestion: any = ({ id }: { id: string }) => {
+export const useGetQuestion: any = ({ id }: { id: string }) => {
   return useQuery(
     ["getQuestion", id],
     async () => {

@@ -19,28 +19,28 @@ import { Switch } from "components/Fields";
 import { getInputIndex } from "utils/formBuilder/input";
 import { v4 as uuidv4 } from "uuid";
 import { t } from "static/condition";
-import { getConditionsByRefererId } from "utils/formBuilder/condition";
 import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
-import { useDeleteQuestion, useUpdateQuestion } from "api/actions/question";
+import {
+  useDeleteQuestion,
+  useGetQuestion,
+  useUpdateQuestion,
+} from "api/actions/question";
 import { useAddCondition } from "api/actions/condition";
 
 const InputForm: React.FC = () => {
-  const condition_id = uuidv4();
   const { selected_input } = useAppSelector((state) => state.formBuilder);
   const { mutate: updateQuestion } = useUpdateQuestion("updateQuestion");
   const { mutate: deleteQuestion } = useDeleteQuestion("deleteQuestion");
   const { mutateAsync: addCondition } = useAddCondition("addCondition");
+  const { data: currentQuestion } = useGetQuestion({ id: selected_input.id });
 
-  const selectedInput = useAppSelector(
-    (state) => state.formBuilder.selected_input
-  );
-  const { type } = selectedInput;
+  const { type } = selected_input;
 
   const isEditing = useAppSelector((state) => state.formBuilder.is_editing);
   const dispatch = useAppDispatch();
 
   const onCancel = () => {
-    if (!isEditing) deleteQuestion(selectedInput.id);
+    if (!isEditing) deleteQuestion(selected_input.id);
     dispatch(toogleDrawer());
     dispatch(setIsEditing(false));
   };
@@ -48,8 +48,8 @@ const InputForm: React.FC = () => {
   return (
     <Formik
       validateOnBlur={false}
-      validationSchema={renderFormValidationSchema(selectedInput)}
-      initialValues={selectedInput ? selectedInput : fields[type]}
+      validationSchema={renderFormValidationSchema(selected_input)}
+      initialValues={selected_input ? selected_input : fields[type]}
       onSubmit={(data, { setSubmitting, validateForm }) => {
         validateForm(data);
         setSubmitting(true);
@@ -61,7 +61,7 @@ const InputForm: React.FC = () => {
           const target = event.target as HTMLFormElement;
           if (target !== null) {
             updateQuestion({
-              id: selectedInput.id,
+              id: selected_input.id,
               data: {
                 [target.id]: target.value,
               },
@@ -73,7 +73,7 @@ const InputForm: React.FC = () => {
         React.useEffect(() => {
           dispatch(
             updateInput({
-              id: selectedInput.id,
+              id: selected_input.id,
               data: {
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
@@ -87,7 +87,7 @@ const InputForm: React.FC = () => {
         React.useEffect(() => {
           dispatch(
             updateInput({
-              id: selectedInput.id,
+              id: selected_input.id,
               data: {
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
@@ -99,8 +99,6 @@ const InputForm: React.FC = () => {
         }, [values.freeclassification_responses_count]);
 
         return (
-          // On Blur bcp plus performant mais moins réactif ..
-          //   <Form onBlur={debounce((event) => onChange(event), 1000)}>
           <Form onChange={debounce((event) => onChange(event), 1000)}>
             <Flex
               alignItems="center"
@@ -120,15 +118,15 @@ const InputForm: React.FC = () => {
                 alignItems="start"
               >
                 <Flex alignItems="center">
-                  <InputIcon type={selectedInput.type} />
+                  <InputIcon type={selected_input.type} />
                   <Box ml={2}>
                     <Text variant="xsMedium">
-                      {getInputIndex(selectedInput.id)}
+                      {getInputIndex(selected_input.id)}
                     </Text>
-                    <Text variant="xs">{selectedInput.name}</Text>
+                    <Text variant="xs">{selected_input.name}</Text>
                   </Box>
                 </Flex>
-                {selectedInput.type !== "wysiwyg" && (
+                {selected_input.type !== "wysiwyg" && (
                   <Flex flexDirection="column">
                     <Switch label="" id="required" size="sm" />
                     <Text variant="xsMedium">Réponse obligatoire</Text>
@@ -136,7 +134,7 @@ const InputForm: React.FC = () => {
                 )}
               </Flex>
 
-              <Box mb={8}>{renderFormTemplate(selectedInput)}</Box>
+              <Box mb={8}>{renderFormTemplate(selected_input)}</Box>
 
               <Flex
                 alignItems="center"
@@ -145,18 +143,14 @@ const InputForm: React.FC = () => {
                 mt={5}
                 pb="100px"
               >
-                {getConditionsByRefererId(selected_input.id).length === 0 ? (
+                {currentQuestion?.question?.conditions.length === 0 ? (
                   <Button
                     variant="link"
                     color="brand.blue"
                     onClick={() => {
                       addCondition({
-                        id: condition_id,
                         type: "input",
-                        referer_id:
-                          selected_input.id !== undefined
-                            ? selected_input.id
-                            : "",
+                        referer_question: selected_input.id,
                         step: 1,
                         group: {
                           id: uuidv4(),
@@ -165,7 +159,7 @@ const InputForm: React.FC = () => {
                         is_valid: false,
                       }).then((data: any) => {
                         dispatch(
-                          selectCondition(data.createCondtion.condition)
+                          selectCondition(data.createCondition.condition)
                         );
                         dispatch(toogleDrawer());
                       });
@@ -179,9 +173,7 @@ const InputForm: React.FC = () => {
                     color="brand.blue"
                     onClick={() => {
                       dispatch(
-                        selectCondition({
-                          id: getConditionsByRefererId(selected_input.id)[0].id,
-                        })
+                        selectCondition(currentQuestion?.question.conditions[0])
                       );
                       dispatch(toogleDrawer());
                     }}

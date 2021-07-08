@@ -18,7 +18,10 @@ import ICondition from "interfaces/form/condition";
 export const ConditionPreview: React.FC = () => {
   const { selected_condition } = useAppSelector((state) => state.formBuilder);
   const { data } = useGetConditions({
-    id: selected_condition?.referer_page?.id,
+    id:
+      selected_condition.type === "page"
+        ? selected_condition?.referer_page?.id
+        : selected_condition?.referer_question?.id,
     type: selected_condition.type,
   });
 
@@ -36,6 +39,8 @@ export const ConditionPreview: React.FC = () => {
   const is_page_type = current_condition?.type === "page";
 
   const dispatch = useAppDispatch();
+
+  console.log("data", data);
 
   const renderStep = () => {
     switch (current_condition?.step) {

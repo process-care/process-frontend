@@ -14,6 +14,13 @@ export const GET_QUESTIONS = gql`
       internal_title
       conditions {
         id
+        referer_page {
+          id
+        }
+        referer_question {
+          id
+        }
+        type
       }
     }
   }
@@ -33,6 +40,13 @@ export const GET_QUESTION = gql`
       internal_title
       conditions {
         id
+        referer_page {
+          id
+        }
+        referer_question {
+          id
+        }
+        type
       }
     }
   }

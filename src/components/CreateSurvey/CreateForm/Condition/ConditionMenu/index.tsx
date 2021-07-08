@@ -15,7 +15,10 @@ export const ConditionMenu: React.FC = () => {
   const dispatch = useAppDispatch();
   const { selected_condition } = useAppSelector((state) => state.formBuilder);
   const { data, isLoading, error } = useGetConditions({
-    id: selected_condition?.referer_page?.id,
+    id:
+      selected_condition.type === "page"
+        ? selected_condition?.referer_page?.id
+        : selected_condition?.referer_question?.id,
     type: selected_condition.type,
   });
 

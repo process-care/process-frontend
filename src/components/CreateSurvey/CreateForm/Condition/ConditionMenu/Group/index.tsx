@@ -37,7 +37,10 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
   const dispatch = useAppDispatch();
   const { selected_condition } = useAppSelector((state) => state.formBuilder);
   const { data } = useGetConditions({
-    id: selected_condition?.referer_page?.id,
+    id:
+      selected_condition.type === "page"
+        ? selected_condition?.referer_page?.id
+        : selected_condition?.referer_question?.id,
     type: selected_condition.type,
   });
   const { mutateAsync: deleteCondition } = useDeleteCondition();

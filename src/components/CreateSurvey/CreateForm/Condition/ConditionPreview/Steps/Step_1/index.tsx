@@ -37,10 +37,14 @@ export const Step_1: React.FC<Props> = ({ currentCondition }) => {
 
   const currentInputIndex = refererType;
   const inputOrder = survey?.survey.order;
-  console.log(currentInputIndex);
 
   const inputsBeforeCurrent = inputOrder.slice(0, currentInputIndex);
-
+  console.log(
+    currentCondition,
+    currentInputIndex,
+    inputsBeforeCurrent,
+    inputOrder
+  );
   // Remove all types who can't be conditionable, remove the selected input, remove input after the selected one.
   const authorizedInputs = data.questions
     .filter((i: IQuestion) => authorizedInputTypes.includes(i.type))
@@ -69,8 +73,6 @@ export const Step_1: React.FC<Props> = ({ currentCondition }) => {
     );
   };
 
-  console.log("questions list", data);
-
   return (
     <Container w="100%" maxW="unset" p={0}>
       {!isEmpty && (
@@ -86,16 +88,13 @@ export const Step_1: React.FC<Props> = ({ currentCondition }) => {
 
       {/* TO DO ORDER */}
 
-      {/* {input_order.map((inputId) => {
+      {inputOrder.map((inputId: string) => {
         const current = authorizedInputs.find(
           (c: IQuestion) => c.id === inputId
         );
         if (current !== undefined) {
           return renderCard(current);
         } else return;
-      })} */}
-      {authorizedInputs.map((input: IQuestion) => {
-        return renderCard(input);
       })}
     </Container>
   );

@@ -75,7 +75,9 @@ export const ConditionMenu: React.FC = () => {
           disabled={isDisabled}
           onSubmit={() => dispatch(selectCondition({}))}
           onCancel={() => {
-            deleteCondition(current_condition.id);
+            if (!current_condition.is_valid) {
+              deleteCondition(current_condition.id);
+            }
             dispatch(selectCondition({}));
           }}
         />

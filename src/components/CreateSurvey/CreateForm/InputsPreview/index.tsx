@@ -168,15 +168,10 @@ const InputsPreview: React.FC<Props> = () => {
                 const current = questions?.questions?.find(
                   (c: any) => c.id === inputId
                 );
-                console.log(current, questions.questions, current_order);
                 if (current !== undefined) {
                   return renderCard(current, i);
                 } else return;
               })}
-
-              {/* {questions?.questions?.map((input: IQuestion, i: number) => {
-                return renderCard(input, i);
-              })} */}
 
               {provided.placeholder}
             </Box>

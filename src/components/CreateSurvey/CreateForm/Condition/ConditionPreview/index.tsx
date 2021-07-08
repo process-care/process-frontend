@@ -40,8 +40,6 @@ export const ConditionPreview: React.FC = () => {
 
   const dispatch = useAppDispatch();
 
-  console.log("data", data);
-
   const renderStep = () => {
     switch (current_condition?.step) {
       case 1:

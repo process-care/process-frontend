@@ -41,5 +41,5 @@ export const useUpdateOrder: any = ({ new_order }: { new_order: string[] }) =>
         id,
         new_order,
       }),
-    optimisticUpdate(["getSurvey"], new_order)
+    optimisticUpdate(["getSurvey", "getQuestions"], new_order)
   );

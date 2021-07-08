@@ -51,7 +51,7 @@ export const formMock: FormBuilder = {
       rows: "small",
       type: "text_area",
       id: "text_area-1a55f31a-38a1-4e37-a31f-f8f122141bf",
-      page: "page-bcc2b551-642d-44da-94bf-478444805d25",
+      page: { id: "page-bcc2b551-642d-44da-94bf-478444805d25" },
     },
     {
       name: "Question texte",
@@ -66,7 +66,7 @@ export const formMock: FormBuilder = {
       rows: "small",
       type: "text_area",
       id: "text_area-cc997b41-bae9-4965-9472-1acf9540225d",
-      page: "page-bcc2b551-642d-44da-94bf-478444805d25",
+      page: { id: "page-bcc2b551-642d-44da-94bf-478444805d25" },
     },
     {
       name: "Questions liste déroulante",
@@ -78,7 +78,7 @@ export const formMock: FormBuilder = {
       answers: ["pomme", "bannane", "orange"],
       type: "select",
       id: "select-8d6b931f-c2db-42c1-9b56-3dbc1cbff3a8",
-      page: "page-bcc2b551-642d-44da-94bf-478444805d25",
+      page: { id: "page-bcc2b551-642d-44da-94bf-478444805d25" },
     },
     {
       name: "Question bouton radio",
@@ -90,7 +90,7 @@ export const formMock: FormBuilder = {
       answers: ["oui", "non"],
       type: "radio",
       id: "radio-332a5e97-8596-4dbc-a79b-96d77b4ddc6e",
-      page: "page-bcc2b551-642d-44da-94bf-478444805d25",
+      page: { id: "page-bcc2b551-642d-44da-94bf-478444805d25" },
     },
     {
       name: "Question date",
@@ -101,7 +101,7 @@ export const formMock: FormBuilder = {
       required: false,
       type: "date_picker",
       id: "date_picker-8d705caa-e037-4c2c-add6-4ad82f0c50fc",
-      page: "page-f7a1f940-f68c-4c86-9d87-3449c2317d5a",
+      page: { id: "page-f7a1f940-f68c-4c86-9d87-3449c2317d5a" },
     },
     {
       name: "Question date",
@@ -113,7 +113,7 @@ export const formMock: FormBuilder = {
       answers: undefined,
       type: "date_picker",
       id: "date_picker-11fddd60-bfab-4337-8c96-fe9366e1aa1f",
-      page: "page-f7a1f940-f68c-4c86-9d87-3449c2317d5a",
+      page: { id: "page-f7a1f940-f68c-4c86-9d87-3449c2317d5a" },
     },
     {
       name: "Question nombre",
@@ -128,7 +128,7 @@ export const formMock: FormBuilder = {
       units: "enfants",
       type: "number_input",
       id: "number_input-bb3379ec-69fc-4bf9-ba66-b971d952b9ad",
-      page: "page-f7a1f940-f68c-4c86-9d87-3449c2317d5a",
+      page: { id: "page-f7a1f940-f68c-4c86-9d87-3449c2317d5a" },
     },
     {
       name: "Question case à cocher",
@@ -140,7 +140,7 @@ export const formMock: FormBuilder = {
       answers: ["Maison", "Appartement", "Chateau", "Caravane"],
       type: "checkbox",
       id: "checkbox-75f5d57c-4de9-46bb-8b2e-6f22dcd5e887",
-      page: "page-9fd74940-a9a3-40cd-b56b-d03eceab788f",
+      page: { id: "page-9fd74940-a9a3-40cd-b56b-d03eceab788f" },
     },
   ],
   selected_input: {

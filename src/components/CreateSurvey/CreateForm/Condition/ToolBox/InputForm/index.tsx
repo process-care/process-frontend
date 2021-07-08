@@ -11,7 +11,6 @@ import { fields } from "./Template/logic/initialValues";
 import {
   updateInput,
   setIsEditing,
-  addCondition,
   selectCondition,
   setIsRemoving,
 } from "redux/slices/formBuilder";
@@ -23,12 +22,14 @@ import { t } from "static/condition";
 import { getConditionsByRefererId } from "utils/formBuilder/condition";
 import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
 import { useDeleteQuestion, useUpdateQuestion } from "api/actions/question";
+import { useAddCondition } from "api/actions/condition";
 
 const InputForm: React.FC = () => {
   const condition_id = uuidv4();
   const { selected_input } = useAppSelector((state) => state.formBuilder);
   const { mutate: updateQuestion } = useUpdateQuestion("updateQuestion");
   const { mutate: deleteQuestion } = useDeleteQuestion("deleteQuestion");
+  const { mutateAsync: addCondition } = useAddCondition("addCondition");
 
   const selectedInput = useAppSelector(
     (state) => state.formBuilder.selected_input
@@ -149,29 +150,25 @@ const InputForm: React.FC = () => {
                     variant="link"
                     color="brand.blue"
                     onClick={() => {
-                      dispatch(
-                        addCondition({
-                          id: condition_id,
-                          type: "input",
-                          referer_id:
-                            selected_input.id !== undefined
-                              ? selected_input.id
-                              : "",
-                          step: 1,
-                          group: {
-                            id: uuidv4(),
-                            name: 1,
-                          },
-                          is_valid: false,
-                        })
-                      );
-
-                      dispatch(
-                        selectCondition({
-                          id: condition_id,
-                        })
-                      );
-                      dispatch(toogleDrawer());
+                      addCondition({
+                        id: condition_id,
+                        type: "input",
+                        referer_id:
+                          selected_input.id !== undefined
+                            ? selected_input.id
+                            : "",
+                        step: 1,
+                        group: {
+                          id: uuidv4(),
+                          name: 1,
+                        },
+                        is_valid: false,
+                      }).then((data: any) => {
+                        dispatch(
+                          selectCondition(data.createCondtion.condition)
+                        );
+                        dispatch(toogleDrawer());
+                      });
                     }}
                   >
                     {t.add_condition}

@@ -38,8 +38,7 @@ const InputsPreview: React.FC<Props> = () => {
     error,
   } = useGetQuestions({ page_id: selected_page.id });
 
-  const cards = questions?.questions;
-
+  console.log(questions);
   const renderCard = (input: IQuestion, index: number) => {
     return <Card key={input.id} input={input} index={index} />;
   };
@@ -146,7 +145,7 @@ const InputsPreview: React.FC<Props> = () => {
             <Text fontSize="14px" mt={3} textTransform="uppercase">
               {selected_page.name}
             </Text>
-            {cards?.length > 0 && <Header />}
+            {questions?.questions?.length > 0 && <Header />}
 
             <Box
               w="100%"
@@ -161,7 +160,7 @@ const InputsPreview: React.FC<Props> = () => {
                 } else return;
               })} */}
 
-              {cards?.map((input: IQuestion, i: number) => {
+              {questions?.questions?.map((input: IQuestion, i: number) => {
                 return renderCard(input, i);
               })}
 

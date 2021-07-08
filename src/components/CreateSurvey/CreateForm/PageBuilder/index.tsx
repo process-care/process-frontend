@@ -8,10 +8,6 @@ import { ReactComponent as Delete } from "./assets/delete.svg";
 import { ReactComponent as Condition } from "./assets/condition.svg";
 import { ReactComponent as Add } from "./assets/add.svg";
 
-import {
-  getConditionById,
-  hadValidCondition,
-} from "utils/formBuilder/condition";
 import { isInactive } from "./utils";
 import { SvgHover } from "components/SvgHover";
 import { useAddPage } from "api/actions/page";
@@ -25,7 +21,6 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
   const { selected_page, selected_condition } = useAppSelector(
     (state) => state.formBuilder
   );
-  const selectedCondition = getConditionById(selected_condition.id);
   const dispatch = useAppDispatch();
   const { mutateAsync: addPage, isLoading } = useAddPage();
 
@@ -66,12 +61,12 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
               w="100%"
               key={page.id}
               visibility={
-                isInactive(selectedCondition, pages, i) ? "hidden" : "visible"
+                isInactive(selected_condition, pages, i) ? "hidden" : "visible"
               }
             >
               <Flex alignItems="center" position="relative">
                 <Box position="absolute" right="16px" bottom="35px">
-                  {hadValidCondition(page.id).length > 0 ? <Condition /> : ""}
+                  {page.conditions.length > 0 ? <Condition /> : ""}
                 </Box>
                 <Box
                   onClick={() => dispatch(selectPage(page))}

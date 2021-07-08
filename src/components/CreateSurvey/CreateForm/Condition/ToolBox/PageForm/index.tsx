@@ -4,7 +4,6 @@ import { useAppDispatch, useAppSelector } from "redux/hooks";
 // import { fields } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/logic/initialValues";
 import {
   selectCondition,
-  selectConditonInCurrentPage,
   selectInput,
   selectPage,
   setIsRemoving,
@@ -18,13 +17,12 @@ import { Switch, Textarea } from "components/Fields";
 import IQuestion from "interfaces/form/question";
 import { RemovingConfirmation } from "../../../RemovingConfirmation";
 import { v4 as uuidv4 } from "uuid";
-import { getConditionsByRefererId } from "utils/formBuilder/condition";
 import { SvgHover } from "components/SvgHover";
 import { ReactComponent as Trash } from "assets/trash.svg";
 import { useDeletePage, useUpdatePage } from "api/actions/page";
 import ISurvey from "interfaces/survey";
 import { useAddQuestion, useUpdateQuestion } from "api/actions/question";
-import { useAddCondition } from "api/actions/condition";
+import { useAddCondition, useGetConditions } from "api/actions/condition";
 
 interface Props {
   survey: ISurvey;
@@ -32,19 +30,20 @@ interface Props {
 
 export const PageForm: React.FC<Props> = ({ survey }) => {
   const dispatch = useAppDispatch();
+  const { selected_page, is_removing } = useAppSelector(
+    (state) => state.formBuilder
+  );
   const { mutate: deletePage } = useDeletePage("deletePage");
   const { mutate: updatePage } = useUpdatePage("updatePage");
   const { mutateAsync: addQuestion } = useAddQuestion("addQuestion");
   const { mutateAsync: updateQuestion } = useUpdateQuestion("updateQuestion");
   const { mutateAsync: addCondition } = useAddCondition("addCondition");
+  const { data: conditions } = useGetConditions({
+    id: selected_page?.id,
+    type: "page",
+  });
 
   const { pages } = survey;
-  const { selected_page, is_removing } = useAppSelector(
-    (state) => state.formBuilder
-  );
-
-  // TO REFACTO
-  const conditions = useAppSelector(selectConditonInCurrentPage);
 
   const isNotFirstPage =
     pages.findIndex((page) => page.id === selected_page.id) > 0;
@@ -53,35 +52,22 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
 
   const handleSelect = (
     type: IQuestion["type"],
-    name: string,
-    id: string,
     internal_title: string | undefined
   ) => {
-    if (id) {
-      // const datas = {
-      //   ...fields[type],
-      //   type,
-      //   name,
-      //   id,
-      //   internal_title,
-      //   page: selected_page.id,
-      // };
-
-      addQuestion({ type, internal_title, page: selected_page.id }).then(
-        (data: any) => {
-          const new_question = data.createQuestion.question;
-          updateQuestion({
-            id: new_question.id,
-            data: {
-              internal_title: `${new_question.type}-${new_question.id}`,
-            },
-          }).then((data: any) => {
-            dispatch(selectInput(data.updateQuestion.question));
-            dispatch(toogleDrawer());
-          });
-        }
-      );
-    }
+    addQuestion({ type, internal_title, page: selected_page.id }).then(
+      (data: any) => {
+        const new_question = data.createQuestion.question;
+        updateQuestion({
+          id: new_question.id,
+          data: {
+            internal_title: `${new_question.type}-${new_question.id}`,
+          },
+        }).then((data: any) => {
+          dispatch(selectInput(data.updateQuestion.question));
+          dispatch(toogleDrawer());
+        });
+      }
+    );
   };
 
   const onChange = (event: React.FormEvent<HTMLFormElement>) => {
@@ -175,11 +161,7 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
                   placeholder="Page 1"
                   helpText="40 signes maximum"
                 />
-                <ToolBox
-                  onSelect={(type, name, id, internal_title) =>
-                    handleSelect(type, name, id, internal_title)
-                  }
-                />
+                <ToolBox onSelect={(type, name) => handleSelect(type, name)} />
               </Box>
 
               {isNotFirstPage && (
@@ -189,7 +171,7 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
                   justifyContent="space-between"
                   mt={5}
                 >
-                  {conditions.length === 0 ? (
+                  {conditions?.conditions?.length === 0 ? (
                     <Button
                       variant="link"
                       color="brand.blue"
@@ -217,12 +199,7 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
                       variant="link"
                       color="brand.blue"
                       onClick={() =>
-                        dispatch(
-                          selectCondition({
-                            id: getConditionsByRefererId(selected_page.id)[0]
-                              .id,
-                          })
-                        )
+                        dispatch(selectCondition(conditions?.conditions[0]))
                       }
                     >
                       {t.edit_condition}

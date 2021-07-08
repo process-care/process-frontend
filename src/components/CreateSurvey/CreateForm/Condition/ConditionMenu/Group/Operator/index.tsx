@@ -17,7 +17,6 @@ import { ReactComponent as Superior } from "./../assets/superior.svg";
 export const renderOperator = (
   operators: ICondition["operator"] | undefined
 ): React.ReactElement | string | undefined => {
-  console.log(operators);
   switch (operators) {
     case "different":
       return <Different />;

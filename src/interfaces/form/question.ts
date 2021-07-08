@@ -1,4 +1,5 @@
 import ICondition from "./condition";
+import IPage from "./page";
 
 export default interface IQuestion {
   type:
@@ -31,8 +32,8 @@ export default interface IQuestion {
   rows?: "small" | "medium" | "large" | undefined;
   required?: boolean;
   default_value?: string | undefined;
-  page?: string;
+  page?: Partial<IPage>;
   wysiwyg?: string | undefined;
   freeclassification_responses_count?: string;
-  condition?: ICondition["id"][];
+  conditions?: ICondition[];
 }

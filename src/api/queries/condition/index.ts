@@ -24,6 +24,9 @@ export const GET_CONDITION = gql`
       referer_question {
         id
         label
+        page {
+          id
+        }
       }
     }
   }
@@ -43,6 +46,8 @@ export const GET_CONDITIONS: any = (type: string) => {
         target {
           id
           answers
+          label
+          type
         }
           group 
         referer_page {
@@ -53,6 +58,9 @@ export const GET_CONDITIONS: any = (type: string) => {
         referer_question {
           id
           label
+           page {
+            id
+          }
         }
       }
     }
@@ -73,9 +81,18 @@ export const ADD_CONDITION = gql`
         operator
         group
         target_value
+        target {
+          id
+          answers
+          label
+          type
+        }
         referer_question {
           id
           label
+          page {
+            id
+          }
         }
       }
     }
@@ -98,11 +115,17 @@ export const UPDATE_CONDITION = gql`
         target {
           id
           answers
+          label
+          type
         }
+        is_valid
         target_value
         referer_question {
           id
           label
+          page {
+            id
+          }
         }
       }
     }

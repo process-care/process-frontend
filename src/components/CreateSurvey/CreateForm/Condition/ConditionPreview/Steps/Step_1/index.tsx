@@ -59,6 +59,8 @@ export const Step_1: React.FC<Props> = ({ currentCondition }) => {
     );
   };
 
+  console.log("questions list", data);
+
   return (
     <Container w="100%" maxW="unset" p={0}>
       {!isEmpty && (

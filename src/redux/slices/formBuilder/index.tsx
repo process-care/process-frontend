@@ -145,20 +145,7 @@ export const formBuilderSlice = createSlice({
       // reset select page
       state.selected_page = initialState.selected_page;
     },
-    // Condition
-    addCondition: (state, action: PayloadAction<ICondition>) => {
-      // add condition & select it & and add it to selected page.
-      const { referer_id, id } = action.payload;
-      const { conditions, pages, inputs } = state;
-      let index = pages.findIndex((item) => referer_id === item.id);
 
-      conditions.push(action.payload);
-      // if condition is related to input
-      if (index === undefined) {
-        index = inputs.findIndex((item) => referer_id === item.id);
-        inputs[index]?.condition?.push(id);
-      } else pages[index]?.conditions.push(id);
-    },
     updateCondition: (state, action: PayloadAction<UpdateCondition>) => {
       const { id, data } = action.payload;
       if (data) {
@@ -170,9 +157,9 @@ export const formBuilderSlice = createSlice({
       state,
       action: PayloadAction<SelectCondition | Record<string, any>>
     ) => {
-      if (action.payload.id === "") {
-        state.selected_condition = { id: "" };
-      }
+      // if (action.payload.id === "") {
+      //   state.selected_condition = { id: "" };
+      // }
       state.selected_condition = action.payload;
     },
     removeCondition: (state, action: PayloadAction<SelectCondition>) => {
@@ -243,7 +230,6 @@ export const {
   removePage,
   selectPage,
   updatePage,
-  addCondition,
   selectCondition,
   updateCondition,
   removeCondition,

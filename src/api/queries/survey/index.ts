@@ -25,6 +25,9 @@ export const GET_SURVEY = gql`
         name
         short_name
         is_locked
+        conditions {
+          id
+        }
       }
     }
   }

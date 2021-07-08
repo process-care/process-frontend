@@ -12,6 +12,9 @@ export const GET_QUESTIONS = gql`
       answers
       required
       internal_title
+      conditions {
+        id
+      }
     }
   }
 `;

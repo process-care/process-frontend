@@ -24,7 +24,6 @@ import { ReactComponent as Condition } from "./assets/condition.svg";
 import { RemovingConfirmation } from "./../../RemovingConfirmation";
 import { toogleDrawer } from "redux/slices/application";
 import { t } from "static/input";
-import { hadValidCondition } from "utils/formBuilder/condition";
 import { SvgHover } from "components/SvgHover";
 import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
 import { useDeleteQuestion } from "api/actions/question";
@@ -106,7 +105,9 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
             <SvgHover target="circle">
               <Edit />
             </SvgHover>
-            {hadValidCondition(input.id).length > 0 ? <Condition /> : ""}
+
+            {input?.conditions !== undefined &&
+              input?.conditions?.length > 0 && <Condition />}
           </Box>
         </Flex>
       )}

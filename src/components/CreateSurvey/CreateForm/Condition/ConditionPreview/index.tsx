@@ -81,7 +81,7 @@ export const ConditionPreview: React.FC = () => {
             Retour
           </Button>
 
-          {current_condition?.condition?.step === 3 ? (
+          {current_condition?.step === 3 ? (
             <Button
               variant="link"
               color="brand.blue"

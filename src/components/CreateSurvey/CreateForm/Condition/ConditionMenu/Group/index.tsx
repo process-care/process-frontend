@@ -1,11 +1,8 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import {
-  addCondition,
-  removeCondition,
   removeConditionGroup,
   selectCondition,
-  updateCondition,
 } from "redux/slices/formBuilder";
 import { v4 as uuidv4 } from "uuid";
 
@@ -29,32 +26,55 @@ interface State {
 }
 
 import { Operator } from "./Operator";
-import { useGetConditions } from "api/actions/condition";
+import {
+  useAddCondition,
+  useDeleteCondition,
+  useGetConditions,
+  useUpdateCondition,
+} from "api/actions/condition";
 
 export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
   const dispatch = useAppDispatch();
-  const condition_id = uuidv4();
   const { selected_condition } = useAppSelector((state) => state.formBuilder);
   const { data } = useGetConditions({
     id: selected_condition?.referer_page?.id,
     type: selected_condition.type,
   });
+  const { mutateAsync: deleteCondition } = useDeleteCondition();
+  const { mutateAsync: addCondition } = useAddCondition();
 
-  const current_condition = data?.conditions.find(
+  const currentCondition = data?.conditions.find(
     (c: ICondition) => c.id === selected_condition.id
   );
-  const clean_groups = groups.filter(
+  const { mutateAsync: updateCondition } = useUpdateCondition(
+    currentCondition?.id
+  );
+  const clean_groups = groups?.filter(
     (v, i, a) => a.findIndex((t) => t.id === v.id) === i
   );
-  const isDisabled = !current_condition?.is_valid;
+  const isDisabled = !currentCondition?.is_valid;
   const [isRemoving, setRemoving] = React.useState<State>({
     type: null,
     id: "",
   });
+  const is_page_type = currentCondition?.type === "page";
+
+  const handleDelete = (id: string) => {
+    deleteCondition(id).then(() => {
+      // Si on supprime la selected_condition, il faut selectionner la premiere condition s'il y en a une ou reset la selected_condition
+      if (id === selected_condition.id) {
+        if (conditions.length > 1) {
+          dispatch(selectCondition(conditions[0]));
+        } else {
+          dispatch(selectCondition({}));
+        }
+      }
+    });
+  };
 
   return (
     <Box h="100%">
-      {clean_groups.map(({ name, id }) => {
+      {clean_groups?.map(({ name, id }) => {
         if (isRemoving.type === "group" && isRemoving.id === id) {
           return (
             <RemovingConfirmation
@@ -101,7 +121,6 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
 
             {conditions?.map((condition: ICondition, index: number) => {
               const isLast = index === conditions.length - 1;
-              const target_question = current_condition?.target;
 
               if (condition.group.id === id) {
                 if (
@@ -112,13 +131,7 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
                     <RemovingConfirmation
                       key={condition.id}
                       content={t.removing_condition_confirmation}
-                      confirm={() =>
-                        dispatch(
-                          removeCondition({
-                            id: condition.id,
-                          })
-                        )
-                      }
+                      confirm={() => handleDelete(condition.id)}
                       close={() => setRemoving({ type: null, id: "" })}
                     />
                   );
@@ -126,8 +139,8 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
                 return (
                   <>
                     <Box textAlign="left" key={condition.id} py={1}>
-                      {target_question?.label &&
-                        current_condition !== undefined && (
+                      {condition?.target?.label &&
+                        currentCondition !== undefined && (
                           <>
                             <Text fontSize="10" color="brand.gray.200">
                               Si la question
@@ -143,22 +156,23 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
                                   fontWeight="bold"
                                   color="black"
                                 >
-                                  {target_question?.label}
+                                  {condition?.target?.label}
                                 </Text>
                                 <Button
                                   d="flex"
                                   isDisabled={isDisabled}
                                   onClick={() => {
-                                    dispatch(
-                                      selectCondition({ id: condition.id })
-                                    );
-                                    dispatch(
-                                      updateCondition({
-                                        id: condition.id,
-                                        data: {
-                                          step: 1,
-                                        },
-                                      })
+                                    updateCondition({
+                                      id: condition.id,
+                                      data: {
+                                        step: 1,
+                                      },
+                                    }).then((data: any) =>
+                                      dispatch(
+                                        selectCondition(
+                                          data.updateCondition.condition
+                                        )
+                                      )
                                     );
                                   }}
                                   variant="link"
@@ -189,7 +203,7 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
                           </>
                         )}
 
-                      {condition.operator !== undefined && (
+                      {condition.operator !== null && (
                         <Flex alignItems="center">
                           <Operator condition={condition} />
 
@@ -210,26 +224,27 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
                         <Button
                           isDisabled={isDisabled}
                           variant="link"
-                          opacity={0.2}
+                          opacity={0.5}
                           fontSize="10"
                           onClick={() => {
-                            dispatch(
-                              addCondition({
-                                id: condition_id,
-                                type:
-                                  selected_condition?.type !== undefined
-                                    ? selected_condition.type
-                                    : "page",
-
-                                step: 1,
-                                group: {
-                                  id,
-                                  name,
-                                },
-                                is_valid: false,
-                              })
+                            addCondition({
+                              type: condition?.type,
+                              [condition?.type === "page"
+                                ? "referer_page"
+                                : "referer_question"]: is_page_type
+                                ? condition?.referer_page?.id
+                                : condition?.referer_question?.id,
+                              step: 1,
+                              group: {
+                                id: condition?.group.id,
+                                name: condition?.group.name,
+                              },
+                              is_valid: false,
+                            }).then((data: any) =>
+                              dispatch(
+                                selectCondition(data.createCondition.condition)
+                              )
                             );
-                            dispatch(selectCondition({ id: condition_id }));
                           }}
                         >
                           {t.add_condition}
@@ -245,25 +260,25 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
               <Button
                 isDisabled={isDisabled}
                 variant="link"
-                opacity={0.2}
+                opacity={0.5}
                 fontSize="10"
                 onClick={() => {
-                  dispatch(
-                    addCondition({
-                      id: condition_id,
-                      type:
-                        selected_condition?.type !== undefined
-                          ? selected_condition.type
-                          : "page",
-                      step: 1,
-                      group: {
-                        id: uuidv4(),
-                        name: last_group + 1,
-                      },
-                      is_valid: false,
-                    })
+                  addCondition({
+                    type: currentCondition?.type,
+                    step: 1,
+                    [currentCondition?.type === "page"
+                      ? "referer_page"
+                      : "referer_question"]: is_page_type
+                      ? currentCondition?.referer_page?.id
+                      : currentCondition?.referer_question?.id,
+                    group: {
+                      id: uuidv4(),
+                      name: last_group + 1,
+                    },
+                    is_valid: false,
+                  }).then((data: any) =>
+                    dispatch(selectCondition(data.createCondition.condition))
                   );
-                  dispatch(selectCondition({ id: condition_id }));
                 }}
               >
                 {t.add_group}

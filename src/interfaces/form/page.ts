@@ -7,5 +7,5 @@ export default interface IPage {
   short_name: string;
   survey_id: string;
   is_locked: boolean;
-  conditions: ICondition["id"][];
+  conditions: ICondition[];
 }

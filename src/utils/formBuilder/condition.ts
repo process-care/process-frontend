@@ -24,14 +24,3 @@ export const getConditionsByRefererId = (
       .formBuilder.conditions.filter((c) => c.referer_id === referer_entity_id);
   } else return [];
 };
-
-export const hadValidCondition = (
-  referer_entity_id: string | undefined
-): ICondition[] | [] => {
-  if (referer_entity_id) {
-    return store
-      .getState()
-      .formBuilder.conditions.filter((c) => c.referer_id === referer_entity_id)
-      .filter((c) => c.is_valid);
-  } else return [];
-};

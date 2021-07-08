@@ -1,5 +1,5 @@
 import { Box, Text } from "@chakra-ui/react";
-import { Footer } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer";
+import { Footer } from "components/CreateSurvey/CreateLanding/ToolBox/Footer";
 import React from "react";
 import { useAppSelector, useAppDispatch } from "redux/hooks";
 import { t } from "static/condition";
@@ -19,7 +19,11 @@ export const ConditionMenu: React.FC = () => {
     type: selected_condition.type,
   });
 
-  const isDisabled = !selected_condition?.is_valid;
+  const current_condition = data?.conditions.find(
+    (c: ICondition) => c.id === selected_condition.id
+  );
+
+  const isDisabled = !current_condition?.is_valid;
   const groups = data?.conditions.map((c: ICondition) => c.group);
 
   const last_group =
@@ -39,8 +43,6 @@ export const ConditionMenu: React.FC = () => {
   if (error) {
     return <Error error={error} />;
   }
-  console.log(groups, last_group);
-
   return (
     <Box h="100%" pos="relative">
       <Box px={4} pt={4} mb="100px">
@@ -64,7 +66,7 @@ export const ConditionMenu: React.FC = () => {
         />
       </Box>
 
-      <Box pos="sticky" bottom="0px" top="0px" borderTop="1px solid">
+      <Box pos="sticky" bottom="0px" top="0px" w="100%">
         <Footer
           disabled={isDisabled}
           onSubmit={() => dispatch(selectCondition({}))}

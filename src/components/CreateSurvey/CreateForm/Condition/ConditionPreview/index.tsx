@@ -1,20 +1,15 @@
 import React from "react";
 
-import { Box, Button, ButtonGroup, Container, Text } from "@chakra-ui/react";
+import { Box, Button, ButtonGroup, Container } from "@chakra-ui/react";
 import { useAppSelector, useAppDispatch } from "redux/hooks";
-import {
-  getRefererIdInCurrentCondition,
-  selectCondition,
-} from "redux/slices/formBuilder";
+import { selectCondition } from "redux/slices/formBuilder";
 import { Step_1 } from "components/CreateSurvey/CreateForm/Condition/ConditionPreview/Steps/Step_1";
 import { Step_2 } from "./Steps/Step_2";
 import { Step_3 } from "./Steps/Step_3";
-import { v4 as uuidv4 } from "uuid";
 import { StepCounter } from "./Steps/StepCounter";
 import { checkStepValidation } from "./Steps/utils";
 import {
   useAddCondition,
-  useGetCondition,
   useGetConditions,
   useUpdateCondition,
 } from "api/actions/condition";
@@ -22,7 +17,7 @@ import ICondition from "interfaces/form/condition";
 
 export const ConditionPreview: React.FC = () => {
   const { selected_condition } = useAppSelector((state) => state.formBuilder);
-  const { data, isLoading, error } = useGetConditions({
+  const { data } = useGetConditions({
     id: selected_condition?.referer_page?.id,
     type: selected_condition.type,
   });

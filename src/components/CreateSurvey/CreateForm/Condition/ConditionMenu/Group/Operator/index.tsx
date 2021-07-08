@@ -1,6 +1,5 @@
 import { Box } from "@chakra-ui/react";
 import ICondition from "interfaces/form/condition";
-import IOperator from "interfaces/form/operator";
 import React from "react";
 
 interface Props {

@@ -61,10 +61,16 @@ export const Step_1: React.FC<Props> = ({ currentCondition }) => {
 
   return (
     <Container w="100%" maxW="unset" p={0}>
-      {isEmpty && <Text variant="xs">{t.no_results}</Text>}
-      <Text textAlign="left" variant="xs" mt={-5} color="brand.gray.200">
-        {t.help}
-      </Text>
+      {!isEmpty && (
+        <Text textAlign="center" variant="xs" mt={5} color="brand.gray.200">
+          {t.help}
+        </Text>
+      )}
+      {isEmpty && (
+        <Text mt={10} variant="xs">
+          {t.no_results}
+        </Text>
+      )}
 
       {/* TO DO ORDER */}
 

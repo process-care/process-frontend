@@ -8,7 +8,7 @@ import {
   GET_CONDITIONS,
 } from "api/queries/condition";
 
-import { optimisticUpdate, optimisticItemUpdate } from "api/optimisiticUpdate";
+import { optimisticUpdate } from "api/optimisiticUpdate";
 import ICondition from "interfaces/form/condition";
 
 export const useGetCondition: any = (id: string) => {
@@ -54,18 +54,13 @@ export const useAddCondition: any = () =>
     optimisticUpdate("getConditions")
   );
 
-export const useUpdateCondition: any = (
-  id: string,
-  data: Partial<ICondition>
-) =>
+export const useUpdateCondition: any = () =>
   useMutation(
     async ({ id, data }: { id: string; data: ICondition }) =>
       await request(process.env.REACT_APP_API_URL_DEV!, UPDATE_CONDITION, {
         id,
         data,
       }),
-
-    // optimisticItemUpdate("getCondition, getConditions", id, data)
     optimisticUpdate("getConditions")
   );
 

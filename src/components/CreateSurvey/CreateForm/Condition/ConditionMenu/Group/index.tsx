@@ -2,7 +2,6 @@ import React from "react";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import {
   addCondition,
-  getSelectedConditionData,
   removeCondition,
   removeConditionGroup,
   selectCondition,
@@ -36,7 +35,7 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
   const dispatch = useAppDispatch();
   const condition_id = uuidv4();
   const { selected_condition } = useAppSelector((state) => state.formBuilder);
-  const { data, isLoading, error } = useGetConditions({
+  const { data } = useGetConditions({
     id: selected_condition?.referer_page?.id,
     type: selected_condition.type,
   });

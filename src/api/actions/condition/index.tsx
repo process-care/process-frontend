@@ -8,10 +8,7 @@ import {
   GET_CONDITIONS,
 } from "api/queries/condition";
 
-import {
-  optimisticUpdate,
-  multipleOptimisticUpdate,
-} from "api/optimisiticUpdate";
+import { optimisticUpdate } from "api/optimisiticUpdate";
 import ICondition from "interfaces/form/condition";
 
 export const useGetCondition: any = (id: string) => {
@@ -54,7 +51,7 @@ export const useAddCondition: any = () =>
       await request(process.env.REACT_APP_API_URL_DEV!, ADD_CONDITION, {
         new_condition,
       }),
-    multipleOptimisticUpdate(["getConditions", "getSurvey"])
+    optimisticUpdate(["getConditions", "getSurvey"])
   );
 
 export const useUpdateCondition: any = () =>
@@ -64,7 +61,7 @@ export const useUpdateCondition: any = () =>
         id,
         data,
       }),
-    optimisticUpdate("getConditions")
+    optimisticUpdate(["getConditions"])
   );
 
 export const useDeleteCondition: any = () =>
@@ -73,5 +70,5 @@ export const useDeleteCondition: any = () =>
       await request(process.env.REACT_APP_API_URL_DEV!, DELETE_CONDITION, {
         id,
       }),
-    multipleOptimisticUpdate(["getConditions", "getSurvey"])
+    optimisticUpdate(["getConditions", "getSurvey"])
   );

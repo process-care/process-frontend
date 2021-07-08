@@ -11,7 +11,7 @@ export const addSurvey: any = () =>
       await request(process.env.REACT_APP_API_URL_DEV!, ADD_SURVEY, {
         new_survey,
       }),
-    optimisticUpdate("getSurvey")
+    optimisticUpdate(["getSurvey"])
   );
 
 export const getSurvey: any = ({ id }: { id: string }) =>
@@ -30,7 +30,7 @@ export const deleteSurvey: any = () =>
       await request(process.env.REACT_APP_API_URL_DEV!, DELETE_SURVEY, {
         id,
       }),
-    optimisticUpdate("getSurvey")
+    optimisticUpdate(["getSurvey"])
   );
 
 // order.
@@ -41,5 +41,5 @@ export const updateOrder: any = () =>
         id,
         new_order,
       }),
-    optimisticUpdate("getSurvey")
+    optimisticUpdate(["getSurvey"])
   );

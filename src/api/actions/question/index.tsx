@@ -53,7 +53,7 @@ export const useUpdateQuestion: any = (id: string, data: IQuestion) =>
         id,
         data,
       }),
-    optimisticUpdate("getQuestions", data)
+    optimisticUpdate(["getQuestions"], data)
   );
 
 export const useDeleteQuestion: any = ({ id }: { id: string }) =>
@@ -62,6 +62,6 @@ export const useDeleteQuestion: any = ({ id }: { id: string }) =>
       await request(process.env.REACT_APP_API_URL_DEV!, DELETE_QUESTION, {
         id,
       }),
-    optimisticUpdate("getQuestions", id)
+    optimisticUpdate(["getQuestions"], id)
     // TO DO Update Order
   );

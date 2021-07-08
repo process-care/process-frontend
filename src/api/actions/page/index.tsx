@@ -12,7 +12,7 @@ export const useAddPage: any = (values: Partial<IPage>) =>
         values,
       }),
 
-    optimisticUpdate("getSurvey", values)
+    optimisticUpdate(["getSurvey"], values)
   );
 
 export const useUpdatePage: any = () =>
@@ -22,7 +22,7 @@ export const useUpdatePage: any = () =>
         id,
         data,
       }),
-    optimisticUpdate("getSurvey")
+    optimisticUpdate(["getSurvey"])
   );
 
 export const useDeletePage: any = () =>
@@ -31,5 +31,5 @@ export const useDeletePage: any = () =>
       await request(process.env.REACT_APP_API_URL_DEV!, DELETE_PAGE, {
         id,
       }),
-    optimisticUpdate("getSurvey")
+    optimisticUpdate(["getSurvey"])
   );

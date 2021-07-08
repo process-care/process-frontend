@@ -70,5 +70,5 @@ export const useDeleteCondition: any = () =>
       await request(process.env.REACT_APP_API_URL_DEV!, DELETE_CONDITION, {
         id,
       }),
-    optimisticUpdate(["getConditions", "getSurvey"])
+    optimisticUpdate(["getConditions", "getSurvey", "getQuestions"])
   );

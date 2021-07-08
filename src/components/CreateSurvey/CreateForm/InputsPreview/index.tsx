@@ -12,7 +12,7 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { useGetQuestions } from "api/actions/question";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
-import { useGetSurvey } from "api/actions/survey";
+import { useGetSurvey, useUpdateOrder } from "api/actions/survey";
 
 export interface Item {
   id: number;
@@ -40,6 +40,8 @@ const InputsPreview: React.FC<Props> = () => {
   } = useGetQuestions({ page_id: selected_page.id });
   const dev_survey = "60e2e9107fa4044c102a881a";
   const { data: survey } = useGetSurvey({ id: dev_survey });
+  const { mutateAsync: updateOrder } = useUpdateOrder("updateOrder");
+
   const renderCard = (input: IQuestion, index: number) => {
     return (
       <Card
@@ -51,7 +53,7 @@ const InputsPreview: React.FC<Props> = () => {
     );
   };
 
-  console.log(survey?.survey.order);
+  const current_order = survey?.survey.order;
 
   const onDragStart = () => {
     console.log("");
@@ -62,8 +64,7 @@ const InputsPreview: React.FC<Props> = () => {
   };
 
   const onDragEnd = (result: any) => {
-    // const { destination, source, draggableId } = result;
-    const { destination, source } = result;
+    const { destination, source, draggableId } = result;
 
     if (!destination) {
       return;
@@ -76,12 +77,16 @@ const InputsPreview: React.FC<Props> = () => {
       return;
     }
 
-    //   if (input_order) {
-    //     const new_input_order: string[] = Array.from(input_order);
-    //     new_input_order.splice(source.index, 1);
-    //     new_input_order.splice(destination.index, 0, draggableId);
-    //     dispatch(updateInputsOrder(new_input_order));
-    //   }
+    if (current_order) {
+      const new_input_order: string[] = Array.from(current_order);
+      new_input_order.splice(source.index, 1);
+      new_input_order.splice(destination.index, 0, draggableId);
+
+      updateOrder({
+        id: survey?.survey.id,
+        new_order: new_input_order,
+      });
+    }
   };
 
   const Container: React.FC<ContainerProps> = ({
@@ -125,11 +130,7 @@ const InputsPreview: React.FC<Props> = () => {
     );
   };
 
-  // if (isLoading || cards === undefined || input_order === undefined) {
-  //   return <Loader />;
-  // }
-
-  if (isLoading) {
+  if (isLoading || current_order === undefined) {
     return (
       <Box pt="400px">
         <Loader />
@@ -163,16 +164,19 @@ const InputsPreview: React.FC<Props> = () => {
               {...provided.droppableProps}
               // isDraggingOver={snapshot.isDraggingOver}
             >
-              {/* {input_order.map((inputId: string, i: number) => {
-                const current = cards.find((c) => c.id === inputId);
+              {current_order?.map((inputId: string, i: number) => {
+                const current = questions?.questions?.find(
+                  (c: any) => c.id === inputId
+                );
+                console.log(current, questions.questions, current_order);
                 if (current !== undefined) {
                   return renderCard(current, i);
                 } else return;
-              })} */}
-
-              {questions?.questions?.map((input: IQuestion, i: number) => {
-                return renderCard(input, i);
               })}
+
+              {/* {questions?.questions?.map((input: IQuestion, i: number) => {
+                return renderCard(input, i);
+              })} */}
 
               {provided.placeholder}
             </Box>

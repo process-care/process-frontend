@@ -10,6 +10,7 @@ import { t } from "static/input";
 import { InputBox } from "components/CreateSurvey/CreateForm/InputsPreview/InputBox";
 import { useGetQuestions } from "api/actions/question";
 import { useUpdateCondition } from "api/actions/condition";
+import { useGetSurvey } from "api/actions/survey";
 
 interface Props {
   currentCondition: ICondition | undefined;
@@ -26,16 +27,25 @@ export const Step_1: React.FC<Props> = ({ currentCondition }) => {
     page_id: selected_page.id,
   });
 
-  // const currentInputIndex = getInputIndex(selectedCondition.referer_id);
-  //  TO DO ORDER
-  // const inputsBeforeCurrent = input_order.slice(0, currentInputIndex);
+  const dev_survey = "60e2e9107fa4044c102a881a";
+  const { data: survey } = useGetSurvey({ id: dev_survey });
+
+  const refererType =
+    currentCondition?.type === "page"
+      ? currentCondition?.referer_page?.id
+      : currentCondition?.referer_question?.id;
+
+  const currentInputIndex = refererType;
+  const inputOrder = survey?.survey.order;
+  console.log(currentInputIndex);
+
+  const inputsBeforeCurrent = inputOrder.slice(0, currentInputIndex);
 
   // Remove all types who can't be conditionable, remove the selected input, remove input after the selected one.
   const authorizedInputs = data.questions
     .filter((i: IQuestion) => authorizedInputTypes.includes(i.type))
-    .filter((i: IQuestion) => i.id !== selected_input.id);
-  //  TO DO ORDER
-  // .filter((i: IQuestion) => i.id && inputsBeforeCurrent.includes(i.id));
+    .filter((i: IQuestion) => i.id !== selected_input.id)
+    .filter((i: IQuestion) => i.id && inputsBeforeCurrent.includes(i.id));
 
   const isEmpty = authorizedInputs.length === 0;
 

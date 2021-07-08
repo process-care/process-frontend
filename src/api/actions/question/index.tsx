@@ -72,5 +72,4 @@ export const useDeleteQuestion: any = ({ id }: { id: string }) =>
         id,
       }),
     optimisticUpdate(["getQuestions"], id)
-    // TO DO Update Order
   );

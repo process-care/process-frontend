@@ -1,29 +1,5 @@
 import { queryClient } from "App";
 
-// export const optimisticUpdate: any = (queryToUpdate: string) => {
-//   return {
-//     onMutate: async (data: any) => {
-//       await queryClient.cancelQueries(queryToUpdate);
-
-//       const previousData = queryClient.getQueryData(queryToUpdate);
-
-//       queryClient.setQueryData(queryToUpdate, () => {
-//         // [...old, data];
-//         [data];
-//       });
-
-//       return { previousData };
-//     },
-//     onError: (context: any) => {
-//       queryClient.setQueryData(queryToUpdate, context.previousData);
-//     },
-//     onSuccess: (data: any) => data,
-//     onSettled: () => {
-//       queryClient.invalidateQueries(queryToUpdate);
-//     },
-//   };
-// };
-
 export const optimisticUpdate: any = (queriesToUpdate: string[]) => {
   return {
     onMutate: async (data: any) => {
@@ -32,8 +8,7 @@ export const optimisticUpdate: any = (queriesToUpdate: string[]) => {
       const previousData = queryClient.getQueryData(queriesToUpdate[0]);
 
       queryClient.setQueryData(queriesToUpdate[0], () => {
-        // [...old, data];
-        [data];
+        data;
       });
 
       return { previousData };

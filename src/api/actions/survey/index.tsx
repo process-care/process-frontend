@@ -34,12 +34,12 @@ export const deleteSurvey: any = () =>
   );
 
 // order.
-export const useUpdateOrder: any = () =>
+export const useUpdateOrder: any = ({ new_order }: { new_order: string[] }) =>
   useMutation(
     async ({ id, new_order }: { id: string; new_order: string[] }) =>
       await request(process.env.REACT_APP_API_URL_DEV!, UPDATE_ORDER, {
         id,
         new_order,
       }),
-    optimisticUpdate(["getSurvey"])
+    optimisticUpdate(["getSurvey"], new_order)
   );

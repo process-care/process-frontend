@@ -92,16 +92,12 @@ const Card: React.FC<CardProps> = ({ input, index, survey }) => {
                     confirm={() => {
                       deleteQuestion(input.id).then((data: any) => {
                         const deleted_question = data.deleteQuestion.question;
-                        const index = survey?.order.findIndex(
-                          (id: string) => deleted_question.id === id
-                        );
 
                         updateOrder({
                           id: survey?.id,
-                          new_order:
-                            index !== undefined
-                              ? survey?.order.splice(index, 1)
-                              : [],
+                          new_order: survey?.order.filter(
+                            (id) => id !== deleted_question.id
+                          ),
                         });
                       });
                     }}

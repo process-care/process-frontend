@@ -7,7 +7,7 @@ import { t } from "static/condition";
 import { selectCondition } from "redux/slices/formBuilder";
 import { Group } from "./Group";
 import ICondition from "interfaces/form/condition";
-import { useGetConditions } from "api/actions/condition";
+import { useDeleteCondition, useGetConditions } from "api/actions/condition";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 
@@ -21,6 +21,7 @@ export const ConditionMenu: React.FC = () => {
         : selected_condition?.referer_question?.id,
     type: selected_condition.type,
   });
+  const { mutateAsync: deleteCondition } = useDeleteCondition();
 
   const current_condition = data?.conditions.find(
     (c: ICondition) => c.id === selected_condition.id
@@ -73,7 +74,10 @@ export const ConditionMenu: React.FC = () => {
         <Footer
           disabled={isDisabled}
           onSubmit={() => dispatch(selectCondition({}))}
-          onCancel={() => dispatch(selectCondition({}))}
+          onCancel={() => {
+            deleteCondition(current_condition.id);
+            dispatch(selectCondition({}));
+          }}
         />
       </Box>
     </Box>

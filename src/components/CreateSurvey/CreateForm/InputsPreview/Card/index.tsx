@@ -27,17 +27,21 @@ import { t } from "static/input";
 import { SvgHover } from "components/SvgHover";
 import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
 import { useDeleteQuestion } from "api/actions/question";
+import { useUpdateOrder } from "api/actions/survey";
+import ISurvey from "interfaces/survey";
 
 interface CardProps {
   input: IQuestion;
   index: number;
+  survey: ISurvey | undefined;
 }
 
-const Card: React.FC<CardProps> = ({ input, index }) => {
+const Card: React.FC<CardProps> = ({ input, index, survey }) => {
   const dispatch = useAppDispatch();
   const { is_removing } = useAppSelector((state) => state.formBuilder);
   const isRemoving = is_removing === input.id;
-  const { mutate: deleteQuestion } = useDeleteQuestion("deleteQuestion");
+  const { mutateAsync: deleteQuestion } = useDeleteQuestion("deleteQuestion");
+  const { mutateAsync: updateOrder } = useUpdateOrder("updateOrder");
 
   const color = useColorModeValue("gray.800", "gray.900");
 
@@ -85,7 +89,22 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
                 {isRemoving && (
                   <RemovingConfirmation
                     content={`${t.removing_confirmation} ${input.internal_title} ?`}
-                    confirm={() => deleteQuestion(input.id)}
+                    confirm={() => {
+                      deleteQuestion(input.id).then((data: any) => {
+                        const deleted_question = data.deleteQuestion.question;
+                        const index = survey?.order.findIndex(
+                          (id: string) => deleted_question.id === id
+                        );
+
+                        updateOrder({
+                          id: survey?.id,
+                          new_order:
+                            index !== undefined
+                              ? survey?.order.splice(index, 1)
+                              : [],
+                        });
+                      });
+                    }}
                     close={() => dispatch(setIsRemoving(""))}
                   />
                 )}

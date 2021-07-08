@@ -36,13 +36,22 @@ export const useGetQuestions: any = ({ page_id }: { page_id: string }) => {
 
 export const useAddQuestion: any = (new_question: IQuestion) =>
   useMutation(
-    async (new_question: IQuestion) =>
-      await request(process.env.REACT_APP_API_URL_DEV!, ADD_QUESTION, {
-        new_question,
-      }),
-    // TO DO Update Order
-    // Check si plus performant (en passant l'id de get questions ci dessous - met ça flash.)
-    // optimisticUpdate(["getQuestions", "60e314a77d077079f5a9b80d"], new_question)
+    async (new_question: IQuestion) => {
+      const response = await request(
+        process.env.REACT_APP_API_URL_DEV!,
+        ADD_QUESTION,
+        {
+          new_question,
+        }
+      );
+      // TO DO update order here ?
+      // await request(process.env.REACT_APP_API_URL_DEV!, UPDATE_ORDER, {
+      //   id: response.createQuestion.question.id,
+      // });
+
+      return response;
+    },
+
     optimisticUpdate(["getQuestions"], new_question)
   );
 

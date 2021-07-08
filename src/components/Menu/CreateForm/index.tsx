@@ -6,7 +6,7 @@ import { ReactComponent as Back } from "./assets/back.svg";
 import { t } from "static/input";
 import { tooglePreview } from "redux/slices/application";
 import { Loader } from "components/Spinner";
-import { getSurvey } from "api/actions/survey";
+import { useGetSurvey } from "api/actions/survey";
 
 interface Props {
   isLanding?: boolean;
@@ -14,7 +14,7 @@ interface Props {
 
 export const Menu: React.FC<Props> = ({ isLanding }) => {
   const dev_survey = "60e2e9107fa4044c102a881a";
-  const { data, isLoading, error } = getSurvey({ id: dev_survey });
+  const { data, isLoading, error } = useGetSurvey({ id: dev_survey });
   const { preview_mode } = useAppSelector((state) => state.application);
   const dispatch = useAppDispatch();
 

@@ -12,6 +12,7 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { useGetQuestions } from "api/actions/question";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
+import { useGetSurvey } from "api/actions/survey";
 
 export interface Item {
   id: number;
@@ -37,10 +38,20 @@ const InputsPreview: React.FC<Props> = () => {
     isLoading,
     error,
   } = useGetQuestions({ page_id: selected_page.id });
-
+  const dev_survey = "60e2e9107fa4044c102a881a";
+  const { data: survey } = useGetSurvey({ id: dev_survey });
   const renderCard = (input: IQuestion, index: number) => {
-    return <Card key={input.id} input={input} index={index} />;
+    return (
+      <Card
+        key={input.id}
+        input={input}
+        index={index}
+        survey={survey?.survey}
+      />
+    );
   };
+
+  console.log(survey?.survey.order);
 
   const onDragStart = () => {
     console.log("");

@@ -38,7 +38,11 @@ export const CreateForm: React.FC<IRoute> = () => {
   }
   return (
     <Box h="100vh" overflow="hidden">
-      <Drawer isOpen={isOpen} size="md" content={<InputForm />} />
+      <Drawer
+        isOpen={isOpen}
+        size="md"
+        content={<InputForm survey={data?.survey} />}
+      />
       <Box d="flex" justifyContent="space-around" w="100%" overflow="hidden">
         <Box w="100%">
           <Menu />

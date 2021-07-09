@@ -17,14 +17,15 @@ export const GET_SURVEY = gql`
       id
       description
       order
-      questions {
-        label
-      }
+
       pages {
         id
         name
         short_name
         is_locked
+        questions {
+          id
+        }
         conditions {
           id
         }

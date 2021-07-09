@@ -24,6 +24,7 @@ import ISurvey from "interfaces/survey";
 import { useAddQuestion, useUpdateQuestion } from "api/actions/question";
 import { useAddCondition, useGetConditions } from "api/actions/condition";
 import { useUpdateOrder } from "api/actions/survey";
+import { getNewOrder } from "./utils";
 
 interface Props {
   survey: ISurvey;
@@ -61,10 +62,7 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
         const new_question: IQuestion = data.createQuestion.question;
         updateOrder({
           id: survey.id,
-          new_order:
-            survey.order !== null
-              ? [...survey.order, new_question.id]
-              : [new_question.id],
+          new_order: getNewOrder(survey, selected_page, new_question.id),
         });
         updateQuestion({
           id: new_question.id,

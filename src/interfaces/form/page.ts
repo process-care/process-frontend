@@ -8,4 +8,5 @@ export default interface IPage {
   survey_id: string;
   is_locked: boolean;
   conditions: ICondition[];
+  questions?: IQuestion[];
 }

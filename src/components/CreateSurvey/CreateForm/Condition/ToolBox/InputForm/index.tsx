@@ -26,12 +26,20 @@ import {
   useUpdateQuestion,
 } from "api/actions/question";
 import { useAddCondition } from "api/actions/condition";
+import ISurvey from "interfaces/survey";
+import { useUpdateOrder } from "api/actions/survey";
 
-const InputForm: React.FC = () => {
+interface Props {
+  survey: ISurvey;
+}
+
+const InputForm: React.FC<Props> = ({ survey }) => {
   const { selected_input } = useAppSelector((state) => state.formBuilder);
   const { mutate: updateQuestion } = useUpdateQuestion("updateQuestion");
   const { mutate: deleteQuestion } = useDeleteQuestion("deleteQuestion");
   const { mutateAsync: addCondition } = useAddCondition("addCondition");
+  const { mutateAsync: updateOrder } = useUpdateOrder("updateOrder");
+
   const { data: currentQuestion } = useGetQuestion({ id: selected_input.id });
 
   const { type } = selected_input;
@@ -41,6 +49,10 @@ const InputForm: React.FC = () => {
 
   const onCancel = () => {
     if (!isEditing) deleteQuestion(selected_input.id);
+    updateOrder({
+      id: survey.id,
+      new_order: survey?.order.filter((id: string) => id !== selected_input.id),
+    });
     dispatch(toogleDrawer());
     dispatch(setIsEditing(false));
   };

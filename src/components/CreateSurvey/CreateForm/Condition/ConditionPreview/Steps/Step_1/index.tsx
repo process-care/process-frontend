@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Container, Text } from "@chakra-ui/react";
-import { useAppSelector } from "redux/hooks";
+import { useAppSelector, useAppDispatch } from "redux/hooks";
 
 import IQuestion from "interfaces/form/question";
 import ICondition from "interfaces/form/condition";
@@ -11,12 +11,15 @@ import { InputBox } from "components/CreateSurvey/CreateForm/InputsPreview/Input
 import { useGetQuestions } from "api/actions/question";
 import { useUpdateCondition } from "api/actions/condition";
 import { useGetSurvey } from "api/actions/survey";
+import { selectPage } from "redux/slices/formBuilder";
 
 interface Props {
   currentCondition: ICondition | undefined;
 }
 
 export const Step_1: React.FC<Props> = ({ currentCondition }) => {
+  const dispatch = useAppDispatch();
+
   const { mutateAsync: updateCondition } = useUpdateCondition(
     currentCondition?.id
   );
@@ -30,31 +33,36 @@ export const Step_1: React.FC<Props> = ({ currentCondition }) => {
   const dev_survey = "60e2e9107fa4044c102a881a";
   const { data: survey } = useGetSurvey({ id: dev_survey });
 
-  const refererType =
-    currentCondition?.type === "page"
-      ? currentCondition?.referer_page?.id
-      : currentCondition?.referer_question?.id;
+  React.useEffect(() => {
+    // Select first page if we make a condition on page.
+    if (currentCondition?.type === "page") {
+      dispatch(selectPage(survey?.survey.pages[0]));
+    }
+  }, [currentCondition?.type]);
 
-  const currentInputIndex = refererType;
-  const inputOrder = survey?.survey.order;
-
-  const inputsBeforeCurrent = inputOrder.slice(0, currentInputIndex);
-  console.log(
-    currentCondition,
-    currentInputIndex,
-    inputsBeforeCurrent,
-    inputOrder
+  // Si currentCondition.type === "page" alors on affiche les inputs des pages précédantes.
+  // Si currentCondition.type === "input" alors on affiche les inputs précédants l'input referent
+  const inputOrder: string[] = survey?.survey.order;
+  const currentInputIndex = inputOrder.findIndex(
+    (id: string) => id === currentCondition?.referer_question?.id
   );
+  const inputsBeforeCurrent = inputOrder.slice(0, currentInputIndex);
+  console.log(inputsBeforeCurrent);
   // Remove all types who can't be conditionable, remove the selected input, remove input after the selected one.
   const authorizedInputs = data.questions
-    .filter((i: IQuestion) => authorizedInputTypes.includes(i.type))
-    .filter((i: IQuestion) => i.id !== selected_input.id)
-    .filter((i: IQuestion) => i.id && inputsBeforeCurrent.includes(i.id));
+    .filter((q: IQuestion) => authorizedInputTypes.includes(q.type))
+    .filter((q: IQuestion) => q.id !== selected_input.id);
+
+  if (currentCondition?.type === "input") {
+    authorizedInputs.filter((q: IQuestion) =>
+      inputsBeforeCurrent.includes(q.id)
+    );
+    authorizedInputs;
+  }
 
   const isEmpty = authorizedInputs.length === 0;
 
   const renderCard = (input: IQuestion) => {
-    // const target_question = getInputById(selected_condition.target_id);
     const isSelected = input.id === currentCondition?.target?.id;
     return (
       <InputBox

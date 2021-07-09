@@ -21,22 +21,38 @@ export const getNewOrder: any = (
   if (questions && length && length > 0) {
     console.log("had questions");
 
-    const last_id = questions[length - 1].id;
-    const idx = order.findIndex((id: string) => id === last_id);
+    const ids = questions.map((q) => q.id);
+
+    const last_idx = Math.max(
+      ...ids.map((i) => {
+        return order.findIndex((id: string) => id === i);
+      })
+    );
     const new_order = [...order];
-    new_order.splice(idx + 1, 0, new_question_id);
+    new_order.splice(last_idx + 1, 0, new_question_id);
+
     return new_order;
   } else {
     console.log("had no questions");
 
     const previous_questions = pages[current_page_idx - 1]?.questions;
-    const last_question =
-      previous_questions && previous_questions[previous_questions?.length - 1];
-    const idx = survey.order?.findIndex(
-      (id: string) => id === last_question?.id
-    );
-    const new_order = order !== null ? [...order] : [];
-    new_order.splice(idx + 1, 0, new_question_id);
-    return new_order;
+    if (previous_questions === undefined) {
+      console.log("had no previous questions");
+
+      return [new_question_id];
+    } else {
+      console.log("had questions");
+
+      const ids = previous_questions && previous_questions.map((q) => q.id);
+      const last_idx = Math.max(
+        ...ids.map((i) => {
+          return order.findIndex((id: string) => id === i);
+        })
+      );
+
+      const new_order = order !== null ? [...order] : [];
+      new_order.splice(last_idx + 1, 0, new_question_id);
+      return new_order;
+    }
   }
 };

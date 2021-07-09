@@ -20,7 +20,7 @@ import { Error } from "components/Error";
 import { useGetSurvey } from "api/actions/survey";
 
 export const CreateForm: React.FC<IRoute> = () => {
-  const dev_survey = "60e2e9107fa4044c102a881a";
+  const dev_survey = "60e8463984797ac0ac30001e";
   const { data, isLoading, error } = useGetSurvey({ id: dev_survey });
 
   const isOpen = useAppSelector((state) => state.application.drawer_is_open);

@@ -85,7 +85,6 @@ const InputForm: React.FC<Props> = ({ survey }) => {
 
         // Handle repeated fields change
         React.useEffect(() => {
-          console.log("change");
           updateQuestion({
             id: selected_input.id,
             data: {

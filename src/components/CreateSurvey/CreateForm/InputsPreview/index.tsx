@@ -38,7 +38,7 @@ const InputsPreview: React.FC<Props> = () => {
     isLoading,
     error,
   } = useGetQuestions({ page_id: selected_page.id });
-  const dev_survey = "60e8463984797ac0ac30001e";
+  const dev_survey = "60ddd61f120575001567acc5";
   const { data: survey } = useGetSurvey({ id: dev_survey });
   const { mutateAsync: updateOrder } = useUpdateOrder("updateOrder");
 
@@ -54,13 +54,13 @@ const InputsPreview: React.FC<Props> = () => {
   };
 
   const current_order = survey?.survey.order;
-  const onDragStart = () => {
-    console.log("");
-  };
+  // const onDragStart = () => {
+  //   console.log("");
+  // };
 
-  const onDragUpdate = () => {
-    console.log("");
-  };
+  // const onDragUpdate = () => {
+  //   console.log("");
+  // };
 
   const onDragEnd = (result: any) => {
     const { destination, source, draggableId } = result;
@@ -145,8 +145,8 @@ const InputsPreview: React.FC<Props> = () => {
   }
   return (
     <DragDropContext
-      onDragStart={() => onDragStart()}
-      onDragUpdate={() => onDragUpdate()}
+      // onDragStart={() => onDragStart()}
+      // onDragUpdate={() => onDragUpdate()}
       onDragEnd={(result) => onDragEnd(result)}
     >
       <Droppable droppableId={selected_page.id}>

@@ -13,7 +13,7 @@ interface Props {
 }
 
 export const Menu: React.FC<Props> = ({ isLanding }) => {
-  const dev_survey = "60e8463984797ac0ac30001e";
+  const dev_survey = "60ddd61f120575001567acc5";
   const { data, isLoading, error } = useGetSurvey({ id: dev_survey });
   const { preview_mode } = useAppSelector((state) => state.application);
   const dispatch = useAppDispatch();

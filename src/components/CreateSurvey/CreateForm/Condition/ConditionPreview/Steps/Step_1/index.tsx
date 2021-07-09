@@ -30,7 +30,7 @@ export const Step_1: React.FC<Props> = ({ currentCondition }) => {
     page_id: selected_page.id,
   });
 
-  const dev_survey = "60e8463984797ac0ac30001e";
+  const dev_survey = "60ddd61f120575001567acc5";
   const { data: survey } = useGetSurvey({ id: dev_survey });
 
   React.useEffect(() => {

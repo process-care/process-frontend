@@ -48,16 +48,11 @@ const InputForm: React.FC<Props> = ({ survey }) => {
   const dispatch = useAppDispatch();
 
   const onCancel = () => {
-    if (!isEditing) {
-      deleteQuestion(selected_input.id);
-      updateOrder({
-        id: survey.id,
-        new_order: survey?.order.filter(
-          (id: string) => id !== selected_input.id
-        ),
-      });
-    }
-
+    if (!isEditing) deleteQuestion(selected_input.id);
+    updateOrder({
+      id: survey.id,
+      new_order: survey?.order.filter((id: string) => id !== selected_input.id),
+    });
     dispatch(toogleDrawer());
     dispatch(setIsEditing(false));
   };
@@ -77,46 +72,51 @@ const InputForm: React.FC<Props> = ({ survey }) => {
         const onChange = (event: React.FormEvent<HTMLFormElement>) => {
           const target = event.target as HTMLFormElement;
           const is_repeated_fields = target.id.includes("option");
-          console.log(values);
+          if (is_repeated_fields) return false;
           if (target !== null) {
             updateQuestion({
               id: selected_input.id,
               data: {
-                [is_repeated_fields ? "answers" : target.id]: is_repeated_fields
-                  ? [target.value]
-                  : target.value,
+                [target.id]: target.value,
               },
             });
           }
         };
 
+        // Handle repeated fields change
+        React.useEffect(() => {
+          console.log("change");
+          updateQuestion({
+            id: selected_input.id,
+            data: {
+              answers: values.option,
+            },
+          });
+        }, [values.option]);
+
         // Handle wysiwyg change
         React.useEffect(() => {
-          dispatch(
-            updateInput({
-              id: selected_input.id,
-              data: {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                wysiwyg: values.wysiwyg,
-              },
-            })
-          );
+          updateInput({
+            id: selected_input.id,
+            data: {
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              wysiwyg: values.wysiwyg,
+            },
+          });
         }, [values.wysiwyg]);
 
         // Handle select change
         React.useEffect(() => {
-          dispatch(
-            updateInput({
-              id: selected_input.id,
-              data: {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                freeclassification_responses_count:
-                  values.freeclassification_responses_count,
-              },
-            })
-          );
+          updateInput({
+            id: selected_input.id,
+            data: {
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              freeclassification_responses_count:
+                values.freeclassification_responses_count,
+            },
+          });
         }, [values.freeclassification_responses_count]);
 
         return (

@@ -54,7 +54,6 @@ const InputsPreview: React.FC<Props> = () => {
   };
 
   const current_order = survey?.survey.order;
-  console.log(current_order);
   const onDragStart = () => {
     console.log("");
   };

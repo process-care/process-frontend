@@ -47,7 +47,6 @@ export const Step_1: React.FC<Props> = ({ currentCondition }) => {
     (id: string) => id === currentCondition?.referer_question?.id
   );
   const inputsBeforeCurrent = inputOrder.slice(0, currentInputIndex);
-  console.log(inputsBeforeCurrent);
   // Remove all types who can't be conditionable, remove the selected input, remove input after the selected one.
   const authorizedInputs = data.questions
     .filter((q: IQuestion) => authorizedInputTypes.includes(q.type))

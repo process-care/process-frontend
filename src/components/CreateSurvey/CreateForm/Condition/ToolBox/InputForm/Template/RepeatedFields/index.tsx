@@ -14,15 +14,16 @@ export const RepeatedFields: React.FC<Props> = ({ name }) => {
 
   const fields = field.value;
 
-  // React.useEffect(() => {
-  //   // Populate answers field on edit.
-  //   if (isEditing) {
-  //     fields.map((el: string, index: number) => {
-  //       setFieldValue(`option[${index}]`, el);
-  //     });
-  //   }
-  // }, [fields.length]);
+  React.useEffect(() => {
+    // Populate answers field on edit.
+    if (isEditing) {
+      fields.map((value: string, index: number) => {
+        setFieldValue(`option.${index}`, value);
+      });
+    }
+  }, [isEditing]);
 
+  console.log();
   return (
     <Box w="100%">
       <FieldArray
@@ -49,7 +50,7 @@ export const RepeatedFields: React.FC<Props> = ({ name }) => {
                         type="button"
                         onClick={() => {
                           arrayHelpers.remove(index);
-                          setFieldValue(index.toString(), undefined);
+                          setFieldValue(`option.${index}`, undefined);
                         }}
                       >
                         -

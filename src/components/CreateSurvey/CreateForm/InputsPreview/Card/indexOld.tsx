@@ -42,7 +42,6 @@ interface DragItem {
 }
 
 const Card: React.FC<CardProps> = ({ input, index, moveCard }) => {
-  // const [isRemoving, setRemoving] = React.useState(false);
   const dispatch = useAppDispatch();
   const { is_removing } = useAppSelector((state) => state.formBuilder);
   const isRemoving = is_removing === input.id;

@@ -18,10 +18,10 @@ import { RightPart } from "components/Layout/RightPart";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 import { useGetSurvey } from "api/actions/survey";
+import { DEV_SURVEY } from "constants/api";
 
 export const CreateForm: React.FC<IRoute> = () => {
-  const dev_survey = "60ddd61f120575001567acc5";
-  const { data, isLoading, error } = useGetSurvey({ id: dev_survey });
+  const { data, isLoading, error } = useGetSurvey({ id: DEV_SURVEY });
 
   const isOpen = useAppSelector((state) => state.application.drawer_is_open);
   const { selected_condition } = useAppSelector((state) => state.formBuilder);

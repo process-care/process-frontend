@@ -13,6 +13,7 @@ import { useGetQuestions } from "api/actions/question";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 import { useGetSurvey, useUpdateOrder } from "api/actions/survey";
+import { DEV_SURVEY } from "constants/api";
 
 export interface Item {
   id: number;
@@ -38,8 +39,7 @@ const InputsPreview: React.FC<Props> = () => {
     isLoading,
     error,
   } = useGetQuestions({ page_id: selected_page.id });
-  const dev_survey = "60ddd61f120575001567acc5";
-  const { data: survey } = useGetSurvey({ id: dev_survey });
+  const { data: survey } = useGetSurvey({ id: DEV_SURVEY });
   const { mutateAsync: updateOrder } = useUpdateOrder("updateOrder");
 
   const renderCard = (input: IQuestion, index: number) => {

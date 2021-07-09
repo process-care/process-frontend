@@ -12,6 +12,7 @@ import { useGetQuestions } from "api/actions/question";
 import { useUpdateCondition } from "api/actions/condition";
 import { useGetSurvey } from "api/actions/survey";
 import { selectPage } from "redux/slices/formBuilder";
+import { DEV_SURVEY } from "constants/api";
 
 interface Props {
   currentCondition: ICondition | undefined;
@@ -30,8 +31,7 @@ export const Step_1: React.FC<Props> = ({ currentCondition }) => {
     page_id: selected_page.id,
   });
 
-  const dev_survey = "60ddd61f120575001567acc5";
-  const { data: survey } = useGetSurvey({ id: dev_survey });
+  const { data: survey } = useGetSurvey({ id: DEV_SURVEY });
 
   React.useEffect(() => {
     // Select first page if we make a condition on page.

@@ -4,11 +4,12 @@ import { UPDATE_ORDER } from "api/queries/survey";
 import { useMutation, useQuery } from "react-query";
 import { optimisticUpdate } from "api/optimisiticUpdate";
 import ISurvey from "interfaces/survey";
+import { API_URL } from "constants/api";
 
 export const addSurvey: any = () =>
   useMutation(
     async (new_survey: ISurvey) =>
-      await request(process.env.REACT_APP_API_URL_DEV!, ADD_SURVEY, {
+      await request(API_URL, ADD_SURVEY, {
         new_survey,
       }),
     optimisticUpdate(["getSurvey"])
@@ -18,7 +19,7 @@ export const useGetSurvey: any = ({ id }: { id: string }) =>
   useQuery(
     ["getSurvey", id],
     () =>
-      request(process.env.REACT_APP_API_URL_DEV!, GET_SURVEY, {
+      request(API_URL, GET_SURVEY, {
         id,
       }),
     { enabled: !!id }
@@ -27,7 +28,7 @@ export const useGetSurvey: any = ({ id }: { id: string }) =>
 export const deleteSurvey: any = () =>
   useMutation(
     async (id: string) =>
-      await request(process.env.REACT_APP_API_URL_DEV!, DELETE_SURVEY, {
+      await request(API_URL, DELETE_SURVEY, {
         id,
       }),
     optimisticUpdate(["getSurvey"])
@@ -37,7 +38,7 @@ export const deleteSurvey: any = () =>
 export const useUpdateOrder: any = ({ new_order }: { new_order: string[] }) =>
   useMutation(
     async ({ id, new_order }: { id: string; new_order: string[] }) =>
-      await request(process.env.REACT_APP_API_URL_DEV!, UPDATE_ORDER, {
+      await request(API_URL, UPDATE_ORDER, {
         id,
         new_order,
       }),

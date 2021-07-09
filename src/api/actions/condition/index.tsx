@@ -10,12 +10,13 @@ import {
 
 import { optimisticUpdate } from "api/optimisiticUpdate";
 import ICondition from "interfaces/form/condition";
+import { API_URL } from "constants/api";
 
 export const useGetCondition: any = (id: string) => {
   return useQuery(
     ["getCondition", id],
     async () => {
-      return await request(process.env.REACT_APP_API_URL_DEV!, GET_CONDITION, {
+      return await request(API_URL, GET_CONDITION, {
         id,
       });
     },
@@ -33,13 +34,9 @@ export const useGetConditions: any = ({
   return useQuery(
     ["getConditions", { id, type }],
     async () => {
-      return await request(
-        process.env.REACT_APP_API_URL_DEV!,
-        GET_CONDITIONS(type),
-        {
-          id,
-        }
-      );
+      return await request(API_URL, GET_CONDITIONS(type), {
+        id,
+      });
     },
     { enabled: !!id && !!type }
   );
@@ -48,7 +45,7 @@ export const useGetConditions: any = ({
 export const useAddCondition: any = () =>
   useMutation(
     async (new_condition: ICondition) =>
-      await request(process.env.REACT_APP_API_URL_DEV!, ADD_CONDITION, {
+      await request(API_URL, ADD_CONDITION, {
         new_condition,
       }),
     optimisticUpdate(["getConditions", "getSurvey"])
@@ -57,7 +54,7 @@ export const useAddCondition: any = () =>
 export const useUpdateCondition: any = () =>
   useMutation(
     async ({ id, data }: { id: string; data: ICondition }) =>
-      await request(process.env.REACT_APP_API_URL_DEV!, UPDATE_CONDITION, {
+      await request(API_URL, UPDATE_CONDITION, {
         id,
         data,
       }),
@@ -67,7 +64,7 @@ export const useUpdateCondition: any = () =>
 export const useDeleteCondition: any = () =>
   useMutation(
     async (id: ICondition["id"]) =>
-      await request(process.env.REACT_APP_API_URL_DEV!, DELETE_CONDITION, {
+      await request(API_URL, DELETE_CONDITION, {
         id,
       }),
     optimisticUpdate(["getConditions", "getSurvey", "getQuestions"])

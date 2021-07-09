@@ -48,11 +48,16 @@ const InputForm: React.FC<Props> = ({ survey }) => {
   const dispatch = useAppDispatch();
 
   const onCancel = () => {
-    if (!isEditing) deleteQuestion(selected_input.id);
-    updateOrder({
-      id: survey.id,
-      new_order: survey?.order.filter((id: string) => id !== selected_input.id),
-    });
+    if (!isEditing) {
+      deleteQuestion(selected_input.id);
+      updateOrder({
+        id: survey.id,
+        new_order: survey?.order.filter(
+          (id: string) => id !== selected_input.id
+        ),
+      });
+    }
+
     dispatch(toogleDrawer());
     dispatch(setIsEditing(false));
   };
@@ -71,11 +76,15 @@ const InputForm: React.FC<Props> = ({ survey }) => {
       {({ isValid, isSubmitting, values }) => {
         const onChange = (event: React.FormEvent<HTMLFormElement>) => {
           const target = event.target as HTMLFormElement;
+          const is_repeated_fields = target.id.includes("option");
+          console.log(values);
           if (target !== null) {
             updateQuestion({
               id: selected_input.id,
               data: {
-                [target.id]: target.value,
+                [is_repeated_fields ? "answers" : target.id]: is_repeated_fields
+                  ? [target.value]
+                  : target.value,
               },
             });
           }

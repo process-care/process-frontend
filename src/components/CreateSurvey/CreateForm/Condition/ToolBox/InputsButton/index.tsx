@@ -29,6 +29,7 @@ const ToolBox: React.FC<Props> = ({ onSelect }) => {
             textAlign="left"
             key={i}
             py="30px"
+            isDisabled={type === "wysiwyg"}
             pl={3}
             onClick={() =>
               onSelect(type, name, `${type}-${id}`, `${type}-${id}`)

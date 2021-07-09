@@ -68,7 +68,6 @@ export const CustomSelect: React.FC<Props> = ({
   isRequired,
   id,
   answers,
-
   isCollapsed,
 }): ReactElement => {
   const [field, ,] = useField(id);

@@ -1,7 +1,7 @@
 import { Button, ButtonGroup, Flex } from "@chakra-ui/react";
 import React from "react";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
-import { removeAllInputs, toggleCollapseView } from "redux/slices/formBuilder";
+import { toggleCollapseView } from "redux/slices/formBuilder";
 import { t } from "static/input";
 
 export const Header: React.FC = () => {
@@ -21,7 +21,7 @@ export const Header: React.FC = () => {
         <Button
           variant="link"
           fontSize="10px"
-          onClick={() => dispatch(removeAllInputs())}
+          onClick={() => console.log("remove all inputs")}
         >
           {t.delete_all_inputs}
         </Button>

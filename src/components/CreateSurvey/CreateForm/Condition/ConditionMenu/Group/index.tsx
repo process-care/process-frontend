@@ -1,9 +1,6 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
-import {
-  removeConditionGroup,
-  selectCondition,
-} from "redux/slices/formBuilder";
+import { selectCondition } from "redux/slices/formBuilder";
 import { v4 as uuidv4 } from "uuid";
 
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
@@ -84,11 +81,8 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
               key={id}
               content={t.removing_group_confirmation}
               confirm={() =>
-                dispatch(
-                  removeConditionGroup({
-                    id,
-                  })
-                )
+                // Implement group deletion
+                console.log("remove condition group")
               }
               close={() => setRemoving({ type: null, id: "" })}
             />

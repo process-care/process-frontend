@@ -9,14 +9,12 @@ import { Footer } from "./Template/Footer";
 import { renderFormTemplate, renderFormValidationSchema } from "./utils";
 import { fields } from "./Template/logic/initialValues";
 import {
-  updateInput,
   setIsEditing,
   selectCondition,
   setIsRemoving,
 } from "redux/slices/formBuilder";
 import { toogleDrawer } from "redux/slices/application";
 import { Switch } from "components/Fields";
-import { getInputIndex } from "utils/formBuilder/input";
 import { v4 as uuidv4 } from "uuid";
 import { t } from "static/condition";
 import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
@@ -71,8 +69,11 @@ const InputForm: React.FC<Props> = ({ survey }) => {
       {({ isValid, isSubmitting, values }) => {
         const onChange = (event: React.FormEvent<HTMLFormElement>) => {
           const target = event.target as HTMLFormElement;
+
           const is_repeated_fields = target.id.includes("option");
+
           if (is_repeated_fields) return false;
+
           if (target !== null) {
             updateQuestion({
               id: selected_input.id,
@@ -95,11 +96,9 @@ const InputForm: React.FC<Props> = ({ survey }) => {
 
         // Handle wysiwyg change
         React.useEffect(() => {
-          updateInput({
+          updateQuestion({
             id: selected_input.id,
             data: {
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
               wysiwyg: values.wysiwyg,
             },
           });
@@ -107,11 +106,9 @@ const InputForm: React.FC<Props> = ({ survey }) => {
 
         // Handle select change
         React.useEffect(() => {
-          updateInput({
+          updateQuestion({
             id: selected_input.id,
             data: {
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
               freeclassification_responses_count:
                 values.freeclassification_responses_count,
             },
@@ -141,9 +138,11 @@ const InputForm: React.FC<Props> = ({ survey }) => {
                   <InputIcon type={selected_input.type} />
                   <Box ml={2}>
                     <Text variant="xsMedium">
-                      {getInputIndex(selected_input.id)}
+                      {survey.order.findIndex(
+                        (id: string) => id === selected_input.id
+                      ) + 1}
                     </Text>
-                    <Text variant="xs">{selected_input.name}</Text>
+                    <Text variant="xs">Question {selected_input.type}</Text>
                   </Box>
                 </Flex>
                 {selected_input.type !== "wysiwyg" && (

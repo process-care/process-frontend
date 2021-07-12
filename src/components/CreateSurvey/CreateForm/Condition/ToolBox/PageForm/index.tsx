@@ -19,11 +19,17 @@ import { RemovingConfirmation } from "../../../RemovingConfirmation";
 import { v4 as uuidv4 } from "uuid";
 import { SvgHover } from "components/SvgHover";
 import { ReactComponent as Trash } from "assets/trash.svg";
-import { useDeletePage, useUpdatePage } from "api/actions/page";
+import { useDeletePage, useUpdatePage } from "api/actions/formBuider/page";
 import ISurvey from "interfaces/survey";
-import { useAddQuestion, useUpdateQuestion } from "api/actions/question";
-import { useAddCondition, useGetConditions } from "api/actions/condition";
-import { useUpdateOrder } from "api/actions/survey";
+import {
+  useAddQuestion,
+  useUpdateQuestion,
+} from "api/actions/formBuider/question";
+import {
+  useAddCondition,
+  useGetConditions,
+} from "api/actions/formBuider/condition";
+import { useUpdateOrder } from "api/actions/formBuider/survey";
 import { getNewOrder } from "./utils";
 
 interface Props {

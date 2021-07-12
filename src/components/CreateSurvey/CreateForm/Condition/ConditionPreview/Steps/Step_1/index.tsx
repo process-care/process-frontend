@@ -8,9 +8,9 @@ import ICondition from "interfaces/form/condition";
 import { authorizedInputTypes } from "./utils";
 import { t } from "static/input";
 import { InputBox } from "components/CreateSurvey/CreateForm/InputsPreview/InputBox";
-import { useGetQuestions } from "api/actions/question";
-import { useUpdateCondition } from "api/actions/condition";
-import { useGetSurvey } from "api/actions/survey";
+import { useGetQuestions } from "api/actions/formBuider/question";
+import { useUpdateCondition } from "api/actions/formBuider/condition";
+import { useGetSurvey } from "api/actions/formBuider/survey";
 import { selectPage } from "redux/slices/formBuilder";
 import { DEV_SURVEY } from "constants/api";
 
@@ -31,18 +31,18 @@ export const Step_1: React.FC<Props> = ({ currentCondition }) => {
 
   React.useEffect(() => {
     // Select first page if we make a condition on page.
-    if (currentCondition?.type === "page") {
+    if (currentCondition?.type === "page" && survey?.survey.pages[0]) {
       dispatch(selectPage(survey?.survey.pages[0]));
     }
   }, [currentCondition?.type]);
 
   // Si currentCondition.type === "page" alors on affiche les inputs des pages précédantes.
   // Si currentCondition.type === "input" alors on affiche les inputs précédants l'input referent
-  const inputOrder: string[] = survey?.survey.order;
-  const currentInputIndex = inputOrder.findIndex(
+  const inputOrder = survey?.survey.order;
+  const currentInputIndex = inputOrder?.findIndex(
     (id: string) => id === currentCondition?.referer_question?.id
   );
-  const inputsBeforeCurrent = inputOrder.slice(0, currentInputIndex);
+  const inputsBeforeCurrent = inputOrder?.slice(0, currentInputIndex);
   // Remove all types who can't be conditionable, remove the selected input, remove input after the selected one.
   const authorizedInputs = data?.questions
     .filter((q: IQuestion) => authorizedInputTypes.includes(q.type))
@@ -50,7 +50,7 @@ export const Step_1: React.FC<Props> = ({ currentCondition }) => {
 
   if (currentCondition?.type === "input") {
     authorizedInputs?.filter((q: IQuestion) =>
-      inputsBeforeCurrent.includes(q.id)
+      inputsBeforeCurrent?.includes(q.id)
     );
     authorizedInputs;
   }
@@ -89,9 +89,7 @@ export const Step_1: React.FC<Props> = ({ currentCondition }) => {
         </Text>
       )}
 
-      {/* TO DO ORDER */}
-
-      {inputOrder.map((inputId: string) => {
+      {inputOrder?.map((inputId: string) => {
         const current = authorizedInputs?.find(
           (c: IQuestion) => c.id === inputId
         );

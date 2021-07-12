@@ -23,3 +23,7 @@ export interface ILanding {
   wysiwyg: string;
   partner_logos: IBase64[];
 }
+
+export interface ILandingRes {
+  landing: ILanding;
+}

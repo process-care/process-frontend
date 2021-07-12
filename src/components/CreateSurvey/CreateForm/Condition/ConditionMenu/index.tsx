@@ -7,7 +7,10 @@ import { t } from "static/condition";
 import { selectCondition } from "redux/slices/formBuilder";
 import { Group } from "./Group";
 import ICondition from "interfaces/form/condition";
-import { useDeleteCondition, useGetConditions } from "api/actions/condition";
+import {
+  useDeleteCondition,
+  useGetConditions,
+} from "api/actions/formBuider/condition";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 

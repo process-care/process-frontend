@@ -9,8 +9,14 @@ import { editAboutPage } from "redux/slices/aboutBuilder";
 import { useHistory } from "react-router-dom";
 import { initialValuesAbout } from "./utils/initialValues";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
+import { ILanding } from "interfaces/landing";
 
-export const AboutForm: React.FC = () => {
+interface Props {
+  data: ILanding;
+}
+
+export const AboutForm: React.FC<Props> = ({ data }) => {
+  console.log(data);
   const history = useHistory();
   const { content } = useAppSelector((state) => state.aboutBuilder);
   const dispatch = useAppDispatch();

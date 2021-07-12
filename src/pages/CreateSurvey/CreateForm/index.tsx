@@ -17,7 +17,7 @@ import { ConditionPreview } from "components/CreateSurvey/CreateForm/Condition/C
 import { RightPart } from "components/Layout/RightPart";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
-import { useGetSurvey } from "api/actions/survey";
+import { useGetSurvey } from "api/actions/formBuider/survey";
 import { DEV_SURVEY } from "constants/api";
 
 export const CreateForm: React.FC<IRoute> = () => {

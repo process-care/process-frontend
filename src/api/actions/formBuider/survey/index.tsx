@@ -1,9 +1,13 @@
 import { request } from "graphql-request";
-import { GET_SURVEY, DELETE_SURVEY, ADD_SURVEY } from "api/queries/survey";
-import { UPDATE_ORDER } from "api/queries/survey";
-import { useMutation, useQuery } from "react-query";
+import {
+  GET_SURVEY,
+  DELETE_SURVEY,
+  ADD_SURVEY,
+} from "api/queries/formBuilder/survey";
+import { UPDATE_ORDER } from "api/queries/formBuilder/survey";
+import { useMutation, useQuery, UseQueryResult } from "react-query";
 import { optimisticUpdate } from "api/optimisiticUpdate";
-import ISurvey from "interfaces/survey";
+import ISurvey, { ISurveyRes } from "interfaces/survey";
 import { API_URL } from "constants/api";
 
 export const addSurvey: any = () =>
@@ -15,8 +19,8 @@ export const addSurvey: any = () =>
     optimisticUpdate(["getSurvey"])
   );
 
-export const useGetSurvey: any = (id: string) =>
-  useQuery(
+export const useGetSurvey = (id: string): UseQueryResult<ISurveyRes, Error> =>
+  useQuery<ISurveyRes, Error>(
     ["getSurvey", id],
     () =>
       request(API_URL, GET_SURVEY, {

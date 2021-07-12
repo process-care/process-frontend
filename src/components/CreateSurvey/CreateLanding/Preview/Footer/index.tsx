@@ -16,7 +16,7 @@ export const Footer: React.FC<Props> = ({ data }) => {
       <Flex py={10} justifyContent="space-between">
         <Box d="flex" pl={8}>
           {had_logos &&
-            partner_logos.map((logo) => (
+            partner_logos?.map((logo) => (
               <img
                 src={logo.base64}
                 key={uuidv4()}

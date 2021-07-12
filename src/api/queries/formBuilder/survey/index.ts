@@ -17,6 +17,9 @@ export const GET_SURVEY = gql`
       id
       description
       order
+      landing {
+        id
+      }
       pages {
         id
         name

@@ -4,7 +4,7 @@ import React from "react";
 import { Circle } from "@chakra-ui/react";
 
 import { t } from "static/condition";
-import { useUpdateCondition } from "api/actions/condition";
+import { useUpdateCondition } from "api/actions/formBuider/condition";
 
 const steps = [
   { title: t.steps[0] },

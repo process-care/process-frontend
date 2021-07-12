@@ -5,7 +5,6 @@ import { UploadFile } from "components/Fields/Uploadfile";
 import { Wysiwyg } from "components/Fields/Wysiwyg";
 import { Formik, Form } from "formik";
 import React from "react";
-import { updateLanding } from "redux/slices/landingBuilder";
 import { editAboutPage } from "redux/slices/aboutBuilder";
 
 import { t } from "static/createLanding";
@@ -18,9 +17,16 @@ import { SvgHover } from "components/SvgHover";
 import { ReactComponent as Delete } from "assets/delete.svg";
 import { goTop } from "utils/application/scrollTo";
 import { useHistory } from "react-router-dom";
+import { ILanding } from "interfaces/landing";
+import { useUpdateLanding } from "api/actions/Landing";
 
-export const LandingForm: React.FC = () => {
+interface Props {
+  data: ILanding;
+}
+
+export const LandingForm: React.FC<Props> = ({ data }) => {
   const dispatch = useAppDispatch();
+  const { mutateAsync: updateLanding } = useUpdateLanding();
   const history = useHistory();
 
   const handleSubmit = () => {
@@ -35,13 +41,12 @@ export const LandingForm: React.FC = () => {
     if (target.type === "file") {
       return false;
     } else if (target !== null) {
-      dispatch(
-        updateLanding({
-          data: {
-            [target.id]: target.value,
-          },
-        })
-      );
+      updateLanding({
+        id: data.id,
+        data: {
+          [target.id]: target.value,
+        },
+      });
     }
   };
 
@@ -49,7 +54,7 @@ export const LandingForm: React.FC = () => {
     <Formik
       validateOnBlur={false}
       // initialValues={landing || initialValuesLanding}
-      initialValues={initialValuesLanding}
+      initialValues={data || initialValuesLanding}
       enableReinitialize
       onSubmit={(data, { setSubmitting, validateForm }) => {
         validateForm(data);
@@ -59,35 +64,32 @@ export const LandingForm: React.FC = () => {
       {({ values, setFieldValue }) => {
         // Handle wysiwyg change
         React.useEffect(() => {
-          dispatch(
-            updateLanding({
-              data: {
-                wysiwyg: values.wysiwyg,
-              },
-            })
-          );
+          updateLanding({
+            id: data.id,
+            data: {
+              wysiwyg: values.wysiwyg,
+            },
+          });
         }, [values.wysiwyg]);
 
         // Handle wysiwyg change
         React.useEffect(() => {
-          dispatch(
-            updateLanding({
-              data: {
-                members: values.members,
-              },
-            })
-          );
+          updateLanding({
+            id: data.id,
+            data: {
+              members: values.members,
+            },
+          });
         }, [values.members]);
 
         // Handle colors change
         React.useEffect(() => {
-          dispatch(
-            updateLanding({
-              data: {
-                color_theme: values.color_theme,
-              },
-            })
-          );
+          updateLanding({
+            id: data.id,
+            data: {
+              color_theme: values.color_theme,
+            },
+          });
         }, [values.color_theme]);
 
         return (
@@ -153,11 +155,10 @@ export const LandingForm: React.FC = () => {
                   <SvgHover>
                     <Delete
                       onClick={() => {
-                        dispatch(
-                          updateLanding({
-                            data: { video_url: "" },
-                          })
-                        );
+                        updateLanding({
+                          id: data.id,
+                          data: { video_url: "" },
+                        });
                         setFieldValue("video_url", "");
                       }}
                     />

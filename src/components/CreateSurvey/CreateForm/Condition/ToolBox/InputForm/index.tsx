@@ -22,10 +22,10 @@ import {
   useDeleteQuestion,
   useGetQuestion,
   useUpdateQuestion,
-} from "api/actions/question";
-import { useAddCondition } from "api/actions/condition";
+} from "api/actions/formBuider/question";
+import { useAddCondition } from "api/actions/formBuider/condition";
 import ISurvey from "interfaces/survey";
-import { useUpdateOrder } from "api/actions/survey";
+import { useUpdateOrder } from "api/actions/formBuider/survey";
 
 interface Props {
   survey: ISurvey;

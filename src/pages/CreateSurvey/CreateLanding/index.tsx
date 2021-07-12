@@ -6,10 +6,25 @@ import { Menu } from "components/Menu/CreateForm";
 import { ToolBox } from "components/CreateSurvey/CreateLanding/ToolBox";
 import { Preview } from "components/CreateSurvey/CreateLanding/Preview";
 import { useAppSelector } from "redux/hooks";
+import { useGetSurvey } from "api/actions/formBuider/survey";
+import { DEV_SURVEY } from "constants/api";
+import { useGetLanding } from "api/actions/Landing";
+import { Loader } from "components/Spinner";
+import { Error } from "components/Error";
 
 export const CreateLanding: React.FC<IRoute> = () => {
   const { preview_mode } = useAppSelector((state) => state.application);
+  const { data: survey } = useGetSurvey(DEV_SURVEY);
+  const { data, isLoading, error } = useGetLanding(survey?.survey?.landing?.id);
 
+  console.log(data);
+
+  if (isLoading || data?.landing === undefined) {
+    return <Loader />;
+  }
+  if (error) {
+    return <Error error={error.message} />;
+  }
   return (
     <Box overflow="auto">
       <Box
@@ -46,13 +61,13 @@ export const CreateLanding: React.FC<IRoute> = () => {
               d="flex"
             >
               <div className="background__grid--black">
-                <Preview />
+                <Preview data={data.landing} />
               </div>
             </Container>
           </Box>
         </Box>
         <Collapse in={preview_mode !== "landing"} style={{ width: "32%" }}>
-          <ToolBox />
+          <ToolBox data={data.landing} />
         </Collapse>
       </Box>
     </Box>

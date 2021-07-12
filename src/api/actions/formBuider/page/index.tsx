@@ -1,5 +1,9 @@
 import { request } from "graphql-request";
-import { ADD_PAGE, UPDATE_PAGE, DELETE_PAGE } from "api/queries/page";
+import {
+  ADD_PAGE,
+  UPDATE_PAGE,
+  DELETE_PAGE,
+} from "api/queries/formBuilder/page";
 
 import IPage from "interfaces/form/page";
 import { useMutation, UseMutationResult } from "react-query";

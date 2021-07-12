@@ -11,7 +11,7 @@ import {
   GET_QUESTIONS,
   DELETE_QUESTION,
   UPDATE_QUESTION,
-} from "api/queries/question";
+} from "api/queries/formBuilder/question";
 import IQuestion, {
   IQuestionsRes,
   IQuestionRes,

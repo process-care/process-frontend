@@ -4,7 +4,7 @@ import { Button, Flex } from "@chakra-ui/react";
 import { operators, operatorsForMultiple } from "constants/operators";
 import ICondition from "interfaces/form/condition";
 import { checkIfMultiple } from "utils/formBuilder/input";
-import { useUpdateCondition } from "api/actions/condition";
+import { useUpdateCondition } from "api/actions/formBuider/condition";
 
 interface Props {
   currentCondition: Partial<ICondition>;

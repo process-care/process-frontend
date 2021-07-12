@@ -1,4 +1,4 @@
-import { useUpdateCondition } from "api/actions/condition";
+import { useUpdateCondition } from "api/actions/formBuider/condition";
 import { InputBox } from "components/CreateSurvey/CreateForm/InputsPreview/InputBox";
 import { Textarea } from "components/Fields";
 import ICondition from "interfaces/form/condition";

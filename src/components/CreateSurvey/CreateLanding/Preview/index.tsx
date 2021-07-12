@@ -5,9 +5,13 @@ import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { Team } from "./Team";
 import { useAppSelector } from "redux/hooks";
+import { ILanding } from "interfaces/landing";
 
-export const Preview: React.FC = () => {
-  const data = useAppSelector((state) => state.landingBuilder.landing);
+interface Props {
+  data: ILanding;
+}
+
+export const Preview: React.FC<Props> = ({ data }) => {
   const { content } = useAppSelector((state) => state.aboutBuilder);
   const big_placeholder =
     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et. <br/> <br/> quo velit tenetur labore at reprehenderit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.<br/> <br/> Blanditiis et, quo velit tenetur labore at reprehenderit.";
@@ -16,7 +20,7 @@ export const Preview: React.FC = () => {
     (state) => state.aboutBuilder
   );
   const { color_theme, members } = data;
-  const had_members = members.length > 0;
+  const had_members = members?.length > 0;
   if (is_editing_about_page) {
     return (
       <Box

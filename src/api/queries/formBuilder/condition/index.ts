@@ -1,5 +1,5 @@
 import { gql } from "graphql-request";
-import { conditionFragment } from "./../../fragments";
+import { conditionFragment } from "../../../fragments";
 
 export const GET_CONDITION = gql`
   ${conditionFragment}

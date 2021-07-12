@@ -64,3 +64,31 @@ export const questionFragment = gql`
     }
   }
 `;
+export const landingFragment = gql`
+  fragment landingFragment on Landing {
+    id
+    title
+    subtitle
+    wysiwyg
+    Member {
+      name
+      job
+      image {
+        url
+      }
+    }
+    image_cover {
+      url
+    }
+    color_theme
+    video_url
+    logo {
+      url
+      name
+    }
+    partners_logos {
+      name
+      url
+    }
+  }
+`;

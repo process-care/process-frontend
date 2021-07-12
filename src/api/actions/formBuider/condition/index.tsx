@@ -11,7 +11,7 @@ import {
   DELETE_CONDITION,
   GET_CONDITION,
   GET_CONDITIONS,
-} from "api/queries/condition";
+} from "api/queries/formBuilder/condition";
 
 import { optimisticUpdate } from "api/optimisiticUpdate";
 import ICondition, { IConditionRes } from "interfaces/form/condition";

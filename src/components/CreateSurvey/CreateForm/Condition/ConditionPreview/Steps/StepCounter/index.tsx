@@ -21,9 +21,7 @@ export const StepCounter: React.FC<Props> = ({
   currentCondition,
   isDisabled,
 }) => {
-  const { mutateAsync: updateCondition } = useUpdateCondition(
-    currentCondition?.id
-  );
+  const { mutateAsync: updateCondition } = useUpdateCondition();
   return (
     <Flex justifyContent="center" mt={4} w="50%" mx="auto">
       {steps.map((_, i) => {

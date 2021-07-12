@@ -24,3 +24,7 @@ export default interface ICondition {
   step?: 1 | 2 | 3;
   is_valid: boolean;
 }
+
+export interface IConditionRes {
+  conditions: ICondition[];
+}

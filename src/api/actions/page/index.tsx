@@ -2,22 +2,22 @@ import { request } from "graphql-request";
 import { ADD_PAGE, UPDATE_PAGE, DELETE_PAGE } from "api/queries/page";
 
 import IPage from "interfaces/form/page";
-import { useMutation } from "react-query";
+import { useMutation, UseMutationResult } from "react-query";
 import { optimisticUpdate } from "api/optimisiticUpdate";
 import { API_URL } from "constants/api";
 
-export const useAddPage: any = (values: Partial<IPage>) =>
-  useMutation(
+export const useAddPage = (): UseMutationResult<IPage, Error> =>
+  useMutation<IPage, Error, any>(
     async (values: Partial<IPage>) =>
       await request(API_URL, ADD_PAGE, {
         values,
       }),
 
-    optimisticUpdate(["getSurvey"], values)
+    optimisticUpdate(["getSurvey"])
   );
 
-export const useUpdatePage: any = () =>
-  useMutation(
+export const useUpdatePage = (): UseMutationResult<IPage, Error> =>
+  useMutation<IPage, Error, any>(
     async ({ id, data }: { id: string; data: Partial<IPage> }) =>
       await request(API_URL, UPDATE_PAGE, {
         id,
@@ -26,8 +26,8 @@ export const useUpdatePage: any = () =>
     optimisticUpdate(["getSurvey"])
   );
 
-export const useDeletePage: any = () =>
-  useMutation(
+export const useDeletePage = (): UseMutationResult<IPage, Error> =>
+  useMutation<IPage, Error, any>(
     async (id: IPage["id"]) =>
       await request(API_URL, DELETE_PAGE, {
         id,

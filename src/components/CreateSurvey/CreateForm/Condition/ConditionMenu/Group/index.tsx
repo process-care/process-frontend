@@ -13,8 +13,8 @@ import { RemovingConfirmation } from "../../../RemovingConfirmation";
 import { t } from "static/condition";
 
 interface Props {
-  conditions: ICondition[] | [];
-  groups: { id: string | number; name: number }[];
+  conditions: ICondition[] | undefined;
+  groups: { id: string | number; name: number }[] | undefined;
   last_group: number;
 }
 interface State {
@@ -46,9 +46,7 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
   const currentCondition = data?.conditions.find(
     (c: ICondition) => c.id === selected_condition.id
   );
-  const { mutateAsync: updateCondition } = useUpdateCondition(
-    currentCondition?.id
-  );
+  const { mutateAsync: updateCondition } = useUpdateCondition();
   const clean_groups = groups?.filter(
     (v, i, a) => a.findIndex((t) => t.id === v.id) === i
   );
@@ -62,7 +60,7 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
   const handleDelete = (id: string) => {
     deleteCondition(id).then(() => {
       // Si on supprime la selected_condition, il faut selectionner la premiere condition s'il y en a une ou reset la selected_condition
-      if (id === selected_condition.id) {
+      if (id === selected_condition.id && conditions) {
         if (conditions.length > 1) {
           dispatch(selectCondition(conditions[0]));
         } else {

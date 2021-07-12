@@ -33,10 +33,10 @@ interface Props {
 
 const InputForm: React.FC<Props> = ({ survey }) => {
   const { selected_input } = useAppSelector((state) => state.formBuilder);
-  const { mutate: updateQuestion } = useUpdateQuestion("updateQuestion");
-  const { mutate: deleteQuestion } = useDeleteQuestion("deleteQuestion");
-  const { mutateAsync: addCondition } = useAddCondition("addCondition");
-  const { mutateAsync: updateOrder } = useUpdateOrder("updateOrder");
+  const { mutate: updateQuestion } = useUpdateQuestion();
+  const { mutate: deleteQuestion } = useDeleteQuestion();
+  const { mutateAsync: addCondition } = useAddCondition();
+  const { mutateAsync: updateOrder } = useUpdateOrder();
 
   const { data: currentQuestion } = useGetQuestion(selected_input.id);
 
@@ -164,7 +164,7 @@ const InputForm: React.FC<Props> = ({ survey }) => {
                 mt={5}
                 pb="100px"
               >
-                {currentQuestion?.question?.conditions.length === 0 ? (
+                {currentQuestion?.question?.conditions?.length === 0 ? (
                   <Button
                     variant="link"
                     color="brand.blue"
@@ -179,6 +179,7 @@ const InputForm: React.FC<Props> = ({ survey }) => {
                         },
                         is_valid: false,
                       }).then((data: any) => {
+                        console.log(data);
                         dispatch(
                           selectCondition(data.createCondition.condition)
                         );
@@ -194,7 +195,11 @@ const InputForm: React.FC<Props> = ({ survey }) => {
                     color="brand.blue"
                     onClick={() => {
                       dispatch(
-                        selectCondition(currentQuestion?.question.conditions[0])
+                        selectCondition(
+                          currentQuestion?.question?.conditions !== undefined
+                            ? currentQuestion?.question?.conditions[0]
+                            : {}
+                        )
                       );
                       dispatch(toogleDrawer());
                     }}

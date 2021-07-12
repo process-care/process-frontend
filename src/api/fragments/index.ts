@@ -32,13 +32,11 @@ export const conditionFragment = gql`
 
 export const pageFragment = gql`
   fragment pageFragment on Page {
-    page {
+    id
+    name
+    short_name
+    survey {
       id
-      name
-      short_name
-      survey {
-        id
-      }
     }
   }
 `;

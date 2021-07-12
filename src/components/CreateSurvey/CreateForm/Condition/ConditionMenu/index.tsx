@@ -31,13 +31,13 @@ export const ConditionMenu: React.FC = () => {
   const groups = data?.conditions.map((c: ICondition) => c.group);
 
   const last_group =
-    data?.conditions.length > 0
+    data && data?.conditions.length > 0
       ? Math.max(...data?.conditions.map((c: ICondition) => c.group.name))
       : 1;
 
   const isConditionTypePage = data?.conditions[0]?.type === "page";
 
-  if (isLoading) {
+  if (isLoading || current_condition === undefined) {
     return (
       <Box pt="400px">
         <Loader />
@@ -47,6 +47,7 @@ export const ConditionMenu: React.FC = () => {
   if (error) {
     return <Error error={error} />;
   }
+
   return (
     <Box h="100%" pos="relative">
       <Box px={4} pt={4} mb="100px">
@@ -56,7 +57,7 @@ export const ConditionMenu: React.FC = () => {
         <Text variant="xsMedium">
           {isConditionTypePage
             ? data?.conditions[0]?.referer_page?.name
-            : data?.conditions[0]?.referer_page?.label}
+            : data?.conditions[0]?.referer_question?.label}
         </Text>
         {isDisabled && (
           <Text variant="xs" mt={5} textAlign="left" color="brand.gray.200">

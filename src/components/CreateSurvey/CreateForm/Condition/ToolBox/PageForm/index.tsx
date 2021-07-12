@@ -35,12 +35,12 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
   const { selected_page, is_removing } = useAppSelector(
     (state) => state.formBuilder
   );
-  const { mutate: deletePage } = useDeletePage("deletePage");
-  const { mutate: updatePage } = useUpdatePage("updatePage");
-  const { mutateAsync: addQuestion } = useAddQuestion("addQuestion");
-  const { mutateAsync: updateQuestion } = useUpdateQuestion("updateQuestion");
-  const { mutateAsync: addCondition } = useAddCondition("addCondition");
-  const { mutateAsync: updateOrder } = useUpdateOrder("updateOrder");
+  const { mutate: deletePage } = useDeletePage();
+  const { mutate: updatePage } = useUpdatePage();
+  const { mutateAsync: addQuestion } = useAddQuestion();
+  const { mutateAsync: updateQuestion } = useUpdateQuestion();
+  const { mutateAsync: addCondition } = useAddCondition();
+  const { mutateAsync: updateOrder } = useUpdateOrder();
   const { data: conditions } = useGetConditions({
     id: selected_page?.id,
     type: "page",
@@ -206,7 +206,13 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
                       variant="link"
                       color="brand.blue"
                       onClick={() =>
-                        dispatch(selectCondition(conditions?.conditions[0]))
+                        dispatch(
+                          selectCondition(
+                            conditions?.conditions !== undefined
+                              ? conditions?.conditions[0]
+                              : {}
+                          )
+                        )
                       }
                     >
                       {t.edit_condition}

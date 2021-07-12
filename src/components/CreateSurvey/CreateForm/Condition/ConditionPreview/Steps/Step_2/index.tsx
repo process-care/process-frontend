@@ -11,9 +11,7 @@ interface Props {
 }
 
 export const Step_2: React.FC<Props> = ({ currentCondition }) => {
-  const { mutateAsync: updateCondition } = useUpdateCondition(
-    currentCondition?.id
-  );
+  const { mutateAsync: updateCondition } = useUpdateCondition();
   const authorizedOperators = () => {
     if (checkIfMultiple(currentCondition)) {
       return operatorsForMultiple;

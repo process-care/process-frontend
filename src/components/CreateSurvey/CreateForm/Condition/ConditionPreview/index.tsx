@@ -14,6 +14,7 @@ import {
   useUpdateCondition,
 } from "api/actions/condition";
 import ICondition from "interfaces/form/condition";
+import { Loader } from "components/Spinner";
 
 export const ConditionPreview: React.FC = () => {
   const { selected_condition } = useAppSelector((state) => state.formBuilder);
@@ -29,12 +30,8 @@ export const ConditionPreview: React.FC = () => {
     (c: ICondition) => c.id === selected_condition.id
   );
 
-  const { mutateAsync: updateCondition } = useUpdateCondition(
-    current_condition?.condition?.id
-  );
-  const { mutateAsync: addCondition } = useAddCondition(
-    current_condition?.condition?.id
-  );
+  const { mutateAsync: updateCondition } = useUpdateCondition();
+  const { mutateAsync: addCondition } = useAddCondition();
 
   const is_page_type = current_condition?.type === "page";
 
@@ -57,77 +54,83 @@ export const ConditionPreview: React.FC = () => {
     }
   };
 
-  return (
-    <Container w="90%" maxW="unset" h="100%" pos="relative">
-      <StepCounter
-        currentCondition={current_condition?.condition}
-        isDisabled={checkStepValidation(current_condition?.condition)}
-      />
-      <Box h="80%" pt={10} w="100%" d="flex" justifyContent="center">
-        {renderStep()}
-      </Box>
+  if (current_condition === undefined) {
+    return <Loader />;
+  } else
+    return (
+      <Container w="90%" maxW="unset" h="100%" pos="relative">
+        <StepCounter
+          currentCondition={current_condition}
+          isDisabled={checkStepValidation(current_condition)}
+        />
+        <Box h="80%" pt={10} w="100%" d="flex" justifyContent="center">
+          {renderStep()}
+        </Box>
 
-      <Box pos="relative" bottom="110px" left="0" right="0" w="100%">
-        <ButtonGroup justifyContent="space-between" w="70%">
-          <Button
-            visibility={current_condition?.step !== 1 ? "visible" : "hidden"}
-            variant="link"
-            onClick={() =>
-              updateCondition({
-                id: current_condition?.id,
-                data: {
-                  step: current_condition?.step - 1,
-                },
-              })
-            }
-          >
-            Retour
-          </Button>
-
-          {current_condition?.step === 3 ? (
+        <Box pos="relative" bottom="110px" left="0" right="0" w="100%">
+          <ButtonGroup justifyContent="space-between" w="70%">
             <Button
+              visibility={current_condition?.step !== 1 ? "visible" : "hidden"}
               variant="link"
-              color="brand.blue"
-              isDisabled={checkStepValidation(current_condition)}
-              onClick={() => {
-                addCondition({
-                  type: current_condition?.type,
-                  [is_page_type ? "referer_page" : "referer_question"]:
-                    is_page_type
-                      ? current_condition?.referer_page.id
-                      : current_condition?.referer_question.id,
-                  step: 1,
-                  group: {
-                    id: current_condition?.group.id,
-                    name: current_condition?.group.name,
-                  },
-                  is_valid: false,
-                }).then((data: any) =>
-                  dispatch(selectCondition(data.createCondition.condition))
-                );
-              }}
-            >
-              Ajouter une condition au groupe
-            </Button>
-          ) : (
-            <Button
-              visibility={current_condition?.step !== 3 ? "visible" : "hidden"}
-              variant="roundedBlue"
-              isDisabled={checkStepValidation(current_condition)}
               onClick={() =>
                 updateCondition({
                   id: current_condition?.id,
                   data: {
-                    step: current_condition?.step + 1,
+                    step: current_condition.step,
                   },
                 })
               }
             >
-              Suivant
+              Retour
             </Button>
-          )}
-        </ButtonGroup>
-      </Box>
-    </Container>
-  );
+
+            {current_condition.step === 3 ? (
+              <Button
+                variant="link"
+                color="brand.blue"
+                isDisabled={checkStepValidation(current_condition)}
+                onClick={() => {
+                  addCondition({
+                    type: current_condition?.type,
+                    [is_page_type ? "referer_page" : "referer_question"]:
+                      is_page_type
+                        ? current_condition.referer_page?.id
+                        : current_condition.referer_question?.id,
+                    step: 1,
+                    group: {
+                      id: current_condition?.group.id,
+                      name: current_condition?.group.name,
+                    },
+                    is_valid: false,
+                  }).then((data: any) =>
+                    dispatch(selectCondition(data.createCondition.condition))
+                  );
+                }}
+              >
+                Ajouter une condition au groupe
+              </Button>
+            ) : (
+              <Button
+                visibility="hidden"
+                variant="roundedBlue"
+                isDisabled={checkStepValidation(current_condition)}
+                onClick={() =>
+                  updateCondition({
+                    id: current_condition?.id,
+                    data: {
+                      step:
+                        current_condition.step !== undefined
+                          ? current_condition.step + 1
+                          : 1,
+                    },
+                  })
+                }
+              >
+                Suivant
+              </Button>
+            )}
+          </ButtonGroup>
+        </Box>
+      </Container>
+    );
 };

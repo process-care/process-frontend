@@ -7,9 +7,7 @@ import React from "react";
 export const renderInput = (
   currentCondition: Partial<ICondition>
 ): React.ReactElement => {
-  const { mutateAsync: updateCondition } = useUpdateCondition(
-    currentCondition?.id
-  );
+  const { mutateAsync: updateCondition } = useUpdateCondition();
   const target_question = currentCondition.target;
   const Options = () => {
     const answers =

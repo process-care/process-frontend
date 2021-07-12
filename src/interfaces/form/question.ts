@@ -37,3 +37,11 @@ export default interface IQuestion {
   freeclassification_responses_count?: string;
   conditions?: ICondition[];
 }
+
+export interface IQuestionsRes {
+  questions: IQuestion[];
+}
+
+export interface IQuestionRes {
+  question: IQuestion;
+}

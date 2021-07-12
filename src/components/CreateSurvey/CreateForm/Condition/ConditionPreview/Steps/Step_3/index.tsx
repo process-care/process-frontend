@@ -2,7 +2,6 @@ import React from "react";
 import { Formik, Form } from "formik";
 
 import { Box, Container, Text, Flex } from "@chakra-ui/react";
-import { useAppDispatch } from "redux/hooks";
 import ICondition from "interfaces/form/condition";
 import { t } from "static/condition";
 
@@ -17,10 +16,7 @@ interface Props {
 }
 
 export const Step_3: React.FC<Props> = ({ currentCondition }) => {
-  const dispatch = useAppDispatch();
-  const { mutateAsync: updateCondition } = useUpdateCondition(
-    currentCondition?.id
-  );
+  const { mutateAsync: updateCondition } = useUpdateCondition();
   return (
     <Container w="90%" maxW="unset">
       <Formik
@@ -36,14 +32,12 @@ export const Step_3: React.FC<Props> = ({ currentCondition }) => {
             const target = event.target as HTMLFormElement;
             if (target !== null) {
               if (target.value === "") {
-                dispatch(
-                  updateCondition({
-                    id: currentCondition.id,
-                    data: {
-                      is_valid: false,
-                    },
-                  })
-                );
+                updateCondition({
+                  id: currentCondition.id,
+                  data: {
+                    is_valid: false,
+                  },
+                });
               } else
                 updateCondition({
                   id: currentCondition.id,

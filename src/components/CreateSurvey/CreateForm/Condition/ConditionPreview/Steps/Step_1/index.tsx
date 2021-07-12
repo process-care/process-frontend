@@ -21,9 +21,7 @@ interface Props {
 export const Step_1: React.FC<Props> = ({ currentCondition }) => {
   const dispatch = useAppDispatch();
 
-  const { mutateAsync: updateCondition } = useUpdateCondition(
-    currentCondition?.id
-  );
+  const { mutateAsync: updateCondition } = useUpdateCondition();
   const { selected_input, selected_page } = useAppSelector(
     (state) => state.formBuilder
   );
@@ -46,18 +44,18 @@ export const Step_1: React.FC<Props> = ({ currentCondition }) => {
   );
   const inputsBeforeCurrent = inputOrder.slice(0, currentInputIndex);
   // Remove all types who can't be conditionable, remove the selected input, remove input after the selected one.
-  const authorizedInputs = data.questions
+  const authorizedInputs = data?.questions
     .filter((q: IQuestion) => authorizedInputTypes.includes(q.type))
     .filter((q: IQuestion) => q.id !== selected_input.id);
 
   if (currentCondition?.type === "input") {
-    authorizedInputs.filter((q: IQuestion) =>
+    authorizedInputs?.filter((q: IQuestion) =>
       inputsBeforeCurrent.includes(q.id)
     );
     authorizedInputs;
   }
 
-  const isEmpty = authorizedInputs.length === 0;
+  const isEmpty = authorizedInputs?.length === 0;
 
   const renderCard = (input: IQuestion) => {
     const isSelected = input.id === currentCondition?.target?.id;
@@ -94,7 +92,7 @@ export const Step_1: React.FC<Props> = ({ currentCondition }) => {
       {/* TO DO ORDER */}
 
       {inputOrder.map((inputId: string) => {
-        const current = authorizedInputs.find(
+        const current = authorizedInputs?.find(
           (c: IQuestion) => c.id === inputId
         );
         if (current !== undefined) {

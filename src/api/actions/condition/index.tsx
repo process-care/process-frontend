@@ -1,4 +1,9 @@
-import { useMutation, useQuery } from "react-query";
+import {
+  useMutation,
+  UseMutationResult,
+  useQuery,
+  UseQueryResult,
+} from "react-query";
 import { request } from "graphql-request";
 import {
   ADD_CONDITION,
@@ -9,11 +14,13 @@ import {
 } from "api/queries/condition";
 
 import { optimisticUpdate } from "api/optimisiticUpdate";
-import ICondition from "interfaces/form/condition";
+import ICondition, { IConditionRes } from "interfaces/form/condition";
 import { API_URL } from "constants/api";
 
-export const useGetCondition: any = (id: string) => {
-  return useQuery(
+export const useGetCondition = (
+  id: string
+): UseQueryResult<ICondition, Error> => {
+  return useQuery<ICondition, Error>(
     ["getCondition", id],
     async () => {
       return await request(API_URL, GET_CONDITION, {
@@ -24,14 +31,14 @@ export const useGetCondition: any = (id: string) => {
   );
 };
 
-export const useGetConditions: any = ({
+export const useGetConditions = ({
   id,
   type,
 }: {
   id: string;
   type: string;
-}) => {
-  return useQuery(
+}): UseQueryResult<IConditionRes, Error> => {
+  return useQuery<IConditionRes, Error>(
     ["getConditions", { id, type }],
     async () => {
       return await request(API_URL, GET_CONDITIONS(type), {
@@ -42,8 +49,8 @@ export const useGetConditions: any = ({
   );
 };
 
-export const useAddCondition: any = () =>
-  useMutation(
+export const useAddCondition = (): UseMutationResult<ICondition, Error> =>
+  useMutation<ICondition, Error, any>(
     async (new_condition: ICondition) =>
       await request(API_URL, ADD_CONDITION, {
         new_condition,
@@ -51,8 +58,8 @@ export const useAddCondition: any = () =>
     optimisticUpdate(["getConditions", "getSurvey"])
   );
 
-export const useUpdateCondition: any = () =>
-  useMutation(
+export const useUpdateCondition = (): UseMutationResult<ICondition, Error> =>
+  useMutation<ICondition, Error, any>(
     async ({ id, data }: { id: string; data: ICondition }) =>
       await request(API_URL, UPDATE_CONDITION, {
         id,
@@ -61,8 +68,8 @@ export const useUpdateCondition: any = () =>
     optimisticUpdate(["getConditions"])
   );
 
-export const useDeleteCondition: any = () =>
-  useMutation(
+export const useDeleteCondition = (): UseMutationResult<ICondition, Error> =>
+  useMutation<ICondition, Error, any>(
     async (id: ICondition["id"]) =>
       await request(API_URL, DELETE_CONDITION, {
         id,

@@ -1,53 +1,20 @@
 import { gql } from "graphql-request";
+import { questionFragment } from "api/fragments";
 
 export const GET_QUESTIONS = gql`
+  ${questionFragment}
   query getQuestions($page_id: ID!) {
     questions(where: { page: $page_id }, limit: 10) {
-      label
-      id
-      type
-      answers
-      placeholder
-      help_text
-      answers
-      required
-      internal_title
-      conditions {
-        id
-        referer_page {
-          id
-        }
-        referer_question {
-          id
-        }
-        type
-      }
+      ...questionFragment
     }
   }
 `;
 
 export const GET_QUESTION = gql`
+  ${questionFragment}
   query getQuestion($id: ID!) {
     question(id: $id) {
-      label
-      id
-      type
-      answers
-      placeholder
-      help_text
-      answers
-      required
-      internal_title
-      conditions {
-        id
-        referer_page {
-          id
-        }
-        referer_question {
-          id
-        }
-        type
-      }
+      ...questionFragment
     }
   }
 `;

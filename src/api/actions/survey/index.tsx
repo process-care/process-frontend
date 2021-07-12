@@ -15,7 +15,7 @@ export const addSurvey: any = () =>
     optimisticUpdate(["getSurvey"])
   );
 
-export const useGetSurvey: any = ({ id }: { id: string }) =>
+export const useGetSurvey: any = (id: string) =>
   useQuery(
     ["getSurvey", id],
     () =>
@@ -34,8 +34,7 @@ export const deleteSurvey: any = () =>
     optimisticUpdate(["getSurvey"])
   );
 
-// order.
-export const useUpdateOrder: any = ({ new_order }: { new_order: string[] }) =>
+export const useUpdateOrder: any = (new_order: string[]) =>
   useMutation(
     async ({ id, new_order }: { id: string; new_order: string[] }) =>
       await request(API_URL, UPDATE_ORDER, {

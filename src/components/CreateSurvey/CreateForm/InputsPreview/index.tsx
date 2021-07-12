@@ -38,8 +38,8 @@ const InputsPreview: React.FC<Props> = () => {
     data: questions,
     isLoading,
     error,
-  } = useGetQuestions({ page_id: selected_page.id });
-  const { data: survey } = useGetSurvey({ id: DEV_SURVEY });
+  } = useGetQuestions(selected_page.id);
+  const { data: survey } = useGetSurvey(DEV_SURVEY);
   const { mutateAsync: updateOrder } = useUpdateOrder("updateOrder");
 
   const renderCard = (input: IQuestion, index: number) => {

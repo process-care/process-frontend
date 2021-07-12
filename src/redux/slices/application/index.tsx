@@ -9,7 +9,6 @@ interface Application {
   preview_mode: "form" | "landing" | null;
 }
 
-// Define the initial state using that type
 const initialState: Application = {
   drawer_is_open: false,
   preview_mode: null,

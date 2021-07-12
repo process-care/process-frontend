@@ -38,7 +38,7 @@ const InputForm: React.FC<Props> = ({ survey }) => {
   const { mutateAsync: addCondition } = useAddCondition("addCondition");
   const { mutateAsync: updateOrder } = useUpdateOrder("updateOrder");
 
-  const { data: currentQuestion } = useGetQuestion({ id: selected_input.id });
+  const { data: currentQuestion } = useGetQuestion(selected_input.id);
 
   const { type } = selected_input;
 
@@ -54,6 +54,8 @@ const InputForm: React.FC<Props> = ({ survey }) => {
     dispatch(toogleDrawer());
     dispatch(setIsEditing(false));
   };
+
+  console.log(currentQuestion);
 
   return (
     <Formik

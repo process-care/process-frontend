@@ -12,11 +12,6 @@ export interface FormBuilder {
   is_removing: ICondition["id"];
 }
 
-interface SelectCondition {
-  id: string;
-  type?: string;
-}
-
 // Define the initial state using that type
 const initialState: FormBuilder = {
   selected_input: {},
@@ -62,7 +57,7 @@ export const formBuilderSlice = createSlice({
 
     selectCondition: (
       state,
-      action: PayloadAction<SelectCondition | Record<string, any>>
+      action: PayloadAction<ICondition | Record<string, any>>
     ) => {
       state.selected_condition = action.payload;
     },

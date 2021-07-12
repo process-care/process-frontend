@@ -17,7 +17,6 @@ export const GET_SURVEY = gql`
       id
       description
       order
-
       pages {
         id
         name

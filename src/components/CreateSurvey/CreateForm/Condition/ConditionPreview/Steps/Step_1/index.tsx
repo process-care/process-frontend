@@ -27,11 +27,9 @@ export const Step_1: React.FC<Props> = ({ currentCondition }) => {
   const { selected_input, selected_page } = useAppSelector(
     (state) => state.formBuilder
   );
-  const { data } = useGetQuestions({
-    page_id: selected_page.id,
-  });
+  const { data } = useGetQuestions(selected_page.id);
 
-  const { data: survey } = useGetSurvey({ id: DEV_SURVEY });
+  const { data: survey } = useGetSurvey(DEV_SURVEY);
 
   React.useEffect(() => {
     // Select first page if we make a condition on page.

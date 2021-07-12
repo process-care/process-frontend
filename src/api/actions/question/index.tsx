@@ -11,7 +11,7 @@ import IQuestion from "interfaces/form/question";
 import { optimisticUpdate } from "api/optimisiticUpdate";
 import { API_URL } from "constants/api";
 
-export const useGetQuestion: any = ({ id }: { id: string }) => {
+export const useGetQuestion: any = (id: string) => {
   return useQuery(
     ["getQuestion", id],
     async () => {
@@ -23,7 +23,7 @@ export const useGetQuestion: any = ({ id }: { id: string }) => {
   );
 };
 
-export const useGetQuestions: any = ({ page_id }: { page_id: string }) => {
+export const useGetQuestions: any = (page_id: string) => {
   return useQuery(
     ["getQuestions", page_id],
     async () => {
@@ -56,7 +56,7 @@ export const useUpdateQuestion: any = (id: string, data: IQuestion) =>
     optimisticUpdate(["getQuestions"], data)
   );
 
-export const useDeleteQuestion: any = ({ id }: { id: string }) =>
+export const useDeleteQuestion: any = (id: string) =>
   useMutation(
     async (id: IQuestion["id"]) =>
       await request(API_URL, DELETE_QUESTION, {

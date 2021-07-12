@@ -1,33 +1,11 @@
 import { gql } from "graphql-request";
+import { conditionFragment } from "./../../fragments";
 
 export const GET_CONDITION = gql`
+  ${conditionFragment}
   query getCondition($id: ID!) {
     condition(id: $id) {
-      id
-      operator
-      is_valid
-      group
-      step
-      type
-      referer_page {
-        id
-        name
-      }
-      group
-      target {
-        id
-        answers
-        label
-        type
-      }
-      target_value
-      referer_question {
-        id
-        label
-        page {
-          id
-        }
-      }
+      ...conditionFragment
     }
   }
 `;
@@ -35,98 +13,32 @@ export const GET_CONDITION = gql`
 export const GET_CONDITIONS: any = (type: string) => {
   const target = type === "page" ? "referer_page" : "referer_question";
   return gql`
+  ${conditionFragment}
     query getConditions($id: ID!) {
       conditions(where: { ${target}: $id }) {
-        id
-        operator
-        is_valid
-        group
-        step
-        type
-        target {
-          id
-          answers
-          label
-          type
-        }
-          group 
-        referer_page {
-          id
-          name
-        }
-        target_value
-        referer_question {
-          id
-          label
-           page {
-            id
-          }
-        }
+       ...conditionFragment
       }
     }
   `;
 };
 
 export const ADD_CONDITION = gql`
+  ${conditionFragment}
   mutation addcondition($new_condition: ConditionInput) {
     createCondition(input: { data: $new_condition }) {
       condition {
-        id
-        type
-        referer_page {
-          id
-          name
-        }
-        step
-        operator
-        group
-        target_value
-        target {
-          id
-          answers
-          label
-          type
-        }
-        referer_question {
-          id
-          label
-          page {
-            id
-          }
-        }
+        ...conditionFragment
       }
     }
   }
 `;
 
 export const UPDATE_CONDITION = gql`
+  ${conditionFragment}
   mutation updatecondition($id: ID!, $data: editConditionInput) {
     updateCondition(input: { where: { id: $id }, data: $data }) {
       condition {
-        id
-        type
-        referer_page {
-          id
-          name
-        }
-        operator
-        group
-        step
-        target {
-          id
-          answers
-          label
-          type
-        }
-        is_valid
-        target_value
-        referer_question {
-          id
-          label
-          page {
-            id
-          }
-        }
+        ...conditionFragment
       }
     }
   }

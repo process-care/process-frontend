@@ -16,7 +16,7 @@ interface Props {
 export const RightPart: React.FC<Props> = ({ selected_condition, survey }) => {
   return (
     <Container variant="rightPart">
-      {selected_condition.id !== undefined ? (
+      {selected_condition?.id !== undefined ? (
         <ConditionMenu />
       ) : (
         <PageForm survey={survey} />

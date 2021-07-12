@@ -21,7 +21,7 @@ import { useGetSurvey } from "api/actions/survey";
 import { DEV_SURVEY } from "constants/api";
 
 export const CreateForm: React.FC<IRoute> = () => {
-  const { data, isLoading, error } = useGetSurvey({ id: DEV_SURVEY });
+  const { data, isLoading, error } = useGetSurvey(DEV_SURVEY);
 
   const isOpen = useAppSelector((state) => state.application.drawer_is_open);
   const { selected_condition } = useAppSelector((state) => state.formBuilder);
@@ -69,7 +69,7 @@ export const CreateForm: React.FC<IRoute> = () => {
               p="0"
             >
               <div className="background__grid">
-                {selected_condition.id !== undefined ? (
+                {selected_condition?.id !== undefined ? (
                   <ConditionPreview />
                 ) : (
                   <InputsPreview order={data?.survey.order} />

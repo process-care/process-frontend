@@ -79,6 +79,16 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
           updateLanding({
             id: data.id,
             data: {
+              logo: values.logo,
+            },
+          });
+        }, [values.logo]);
+
+        // Handle wysiwyg change
+        React.useEffect(() => {
+          updateLanding({
+            id: data.id,
+            data: {
               members: values.members,
             },
           });

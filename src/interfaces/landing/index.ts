@@ -15,7 +15,7 @@ export interface ILanding {
   id: string;
   color_theme: IColors;
   image_cover: IBase64[];
-  logo: IBase64;
+  logo: string;
   members: IMember[];
   subtitle: string;
   title: string;

@@ -76,7 +76,10 @@ export const ConditionPreview: React.FC = () => {
                 updateCondition({
                   id: current_condition?.id,
                   data: {
-                    step: current_condition.step,
+                    step:
+                      current_condition.step !== undefined
+                        ? current_condition.step - 1
+                        : 1,
                   },
                 })
               }

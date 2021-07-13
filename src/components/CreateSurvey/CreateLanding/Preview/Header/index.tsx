@@ -8,12 +8,11 @@ interface Props {
 }
 
 export const Header: React.FC<Props> = ({ theme, logo }) => {
-  console.log(logo);
   return (
     <Flex justifyContent="space-between" p="5" alignItems="center">
-      {/* {logo !== undefined && (
+      {logo !== null && (
         <img src={logo?.base64} alt="Logo" style={{ maxHeight: "40px" }} />
-      )} */}
+      )}
       <Text variant="currentLight" textTransform="uppercase">
         Recherche sur l'euphorie
       </Text>

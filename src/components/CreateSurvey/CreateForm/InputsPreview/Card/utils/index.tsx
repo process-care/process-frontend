@@ -26,11 +26,9 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
   );
   const formatOptions = (): Options[] | undefined => {
     if (input.answers) {
-      console.log(input.answers);
       const arr = [];
       for (const [, value] of Object.entries(input.answers)) {
         if (value !== null) {
-          console.log(value);
           arr.push({ value, label: value });
         }
       }

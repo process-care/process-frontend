@@ -11,8 +11,6 @@ import React from "react";
 import { useField, useFormikContext } from "formik";
 import { ReactComponent as Delete } from "./assets/delete.svg";
 import { SvgHover } from "components/SvgHover";
-import { useDispatch } from "react-redux";
-import { updateLanding } from "redux/slices/landingBuilder";
 import { toBase64 } from "components/CreateSurvey/CreateLanding/ToolBox/Form/utils";
 
 interface Props {
@@ -21,6 +19,7 @@ interface Props {
   helpText?: string;
   isDisabled?: boolean;
   multiple?: boolean;
+  onChange: (data: Record<string, any>) => void;
 }
 
 export interface IBase64 {
@@ -34,8 +33,8 @@ export const UploadFile: React.FC<Props> = ({
   helpText,
   isDisabled,
   multiple,
+  onChange,
 }) => {
-  const dispatch = useDispatch();
   const hiddenFileInput = React.useRef<HTMLInputElement>(null);
   const [field, meta] = useField(id);
   const [filesName, setFilesName] = React.useState<any>([]);
@@ -62,25 +61,21 @@ export const UploadFile: React.FC<Props> = ({
           const new_data =
             field.value.length > 0 ? [...field.value, ...arrBase64] : arrBase64;
           setFieldValue(id, new_data);
-          dispatch(
-            updateLanding({
-              data: {
-                [id]: new_data,
-              },
-            })
-          );
+          onChange({
+            data: {
+              [id]: new_data,
+            },
+          });
         }
       } else {
         setFilesName([...filesName, data.name]);
         const base64: any = await toBase64(data).then((data: string) => data);
         setFieldValue(id, base64);
-        dispatch(
-          updateLanding({
-            data: {
-              [id]: [{ base64, name: data.name }],
-            },
-          })
-        );
+        onChange({
+          data: {
+            [id]: [{ base64, name: data.name }],
+          },
+        });
       }
     }
   };
@@ -97,14 +92,11 @@ export const UploadFile: React.FC<Props> = ({
       setFieldValue(id, []);
       setFilesName([]);
     }
-
-    dispatch(
-      updateLanding({
-        data: {
-          [id]: multiple ? filtered_values : "",
-        },
-      })
-    );
+    onChange({
+      data: {
+        [id]: multiple ? filtered_values : "",
+      },
+    });
   };
   return (
     <FormControl my={4}>
@@ -123,6 +115,12 @@ export const UploadFile: React.FC<Props> = ({
             type="file"
             placeholder="upload"
             ref={hiddenFileInput}
+            // onChange={(event) => {
+            //   setFieldValue(
+            //     id,
+            //     event.currentTarget.files && event.currentTarget.files[0]
+            //   );
+            // }}
             onChange={(event) => handleChange(event)}
             accept=".png,.jpeg"
             multiple={multiple}

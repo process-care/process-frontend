@@ -55,8 +55,6 @@ const InputForm: React.FC<Props> = ({ survey }) => {
     dispatch(setIsEditing(false));
   };
 
-  console.log(currentQuestion);
-
   return (
     <Formik
       validateOnBlur={false}
@@ -179,7 +177,6 @@ const InputForm: React.FC<Props> = ({ survey }) => {
                         },
                         is_valid: false,
                       }).then((data: any) => {
-                        console.log(data);
                         dispatch(
                           selectCondition(data.createCondition.condition)
                         );

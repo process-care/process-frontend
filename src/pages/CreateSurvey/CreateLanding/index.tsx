@@ -17,8 +17,6 @@ export const CreateLanding: React.FC<IRoute> = () => {
   const { data: survey } = useGetSurvey(DEV_SURVEY);
   const { data, isLoading, error } = useGetLanding(survey?.survey?.landing?.id);
 
-  console.log(data);
-
   if (isLoading || data?.landing === undefined) {
     return <Loader />;
   }

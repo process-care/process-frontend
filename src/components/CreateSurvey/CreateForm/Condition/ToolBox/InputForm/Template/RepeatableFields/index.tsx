@@ -29,7 +29,7 @@ export const RepeatableFields: React.FC<Props> = ({ name }) => {
                   <Flex w="100%" alignItems="flex-start">
                     <Box w="70%">
                       <Textarea
-                        id={`members[${index}].name`}
+                        id={`members.${index}.name`}
                         label="Nom"
                         placeholder="Renseigner le nom"
                         rows="small"
@@ -38,7 +38,7 @@ export const RepeatableFields: React.FC<Props> = ({ name }) => {
                         {...field}
                       />
                       <Textarea
-                        id={`members[${index}].job`}
+                        id={`members.${index}.job`}
                         label="Job"
                         placeholder="Renseigner l'emploi"
                         rows="small"
@@ -47,8 +47,9 @@ export const RepeatableFields: React.FC<Props> = ({ name }) => {
                         {...field}
                       />
                       <UploadFile
+                        onChange={(e) => console.log(e)}
                         label="Ajouter une photo"
-                        id={`members[${index}].image`}
+                        id={`members.${index}.image`}
                       />
                     </Box>
 
@@ -57,7 +58,7 @@ export const RepeatableFields: React.FC<Props> = ({ name }) => {
                         <Delete
                           onClick={() => {
                             arrayHelpers.remove(index);
-                            setFieldValue(index.toString(), undefined);
+                            setFieldValue(`members.${index}`, undefined);
                           }}
                         />
                       </SvgHover>

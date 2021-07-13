@@ -71,4 +71,5 @@ body {
 
 .jodit-container:not(.jodit_inline) {
   margin-top: 50px;
+  font-size: 12px;
 }

@@ -5,7 +5,7 @@ export const initialValuesLanding: ILanding = {
   id: "",
   color_theme: colors[0],
   image_cover: [],
-  logo: [],
+  logo: { base64: "", name: "" },
   members: [],
   subtitle: "",
   title: "",

@@ -38,7 +38,9 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
   };
   const onChange = (event: React.FormEvent<HTMLFormElement>) => {
     const target = event.target as HTMLFormElement;
-    if (target.type === "file") {
+    const is_repeated_fields = target.id.includes("members");
+
+    if (target.type === "file" || is_repeated_fields) {
       return false;
     } else if (target !== null) {
       updateLanding({
@@ -108,6 +110,7 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
             >
               <Text variant="currentBold">{t.label_logo}</Text>
               <UploadFile
+                onChange={(e) => console.log(e)}
                 label={t.logo_cta}
                 id="logo"
                 helpText={t.logo_helptext}
@@ -138,6 +141,7 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
               <Container variant="hr" my={10} />
               <Text variant="currentBold">{t.add_image}</Text>
               <UploadFile
+                onChange={(e) => console.log(e)}
                 label={t.image_cta}
                 id="image_cover"
                 helpText={t.image_helptext}
@@ -149,7 +153,7 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
                   rows="small"
                   placeholder={t.video_url_placeholder}
                   label={t.video_url_label}
-                  isDisabled={values.image_cover[0]?.base64 !== undefined}
+                  isDisabled={values.image_cover !== undefined}
                 />
                 <Box mt={7} ml={4}>
                   <SvgHover>
@@ -174,6 +178,7 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
               <Container variant="hr" my={10} />
               <Text variant="currentBold">{t.logos_label}</Text>
               <UploadFile
+                onChange={(e) => console.log(e)}
                 label={t.logos_cta}
                 id="partner_logos"
                 helpText={t.image_helptext}

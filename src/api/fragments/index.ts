@@ -70,25 +70,11 @@ export const landingFragment = gql`
     title
     subtitle
     wysiwyg
-    Member {
-      name
-      job
-      image {
-        url
-      }
-    }
-    image_cover {
-      url
-    }
+    members
+    image_cover
     color_theme
     video_url
-    logo {
-      url
-      name
-    }
-    partners_logos {
-      name
-      url
-    }
+    logo
+    partners_logos
   }
 `;

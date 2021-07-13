@@ -111,7 +111,6 @@ export const ConditionPreview: React.FC = () => {
               </Button>
             ) : (
               <Button
-                visibility="hidden"
                 variant="roundedBlue"
                 isDisabled={checkStepValidation(current_condition)}
                 onClick={() =>

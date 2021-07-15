@@ -46,11 +46,16 @@ const InputForm: React.FC<Props> = ({ survey }) => {
   const dispatch = useAppDispatch();
 
   const onCancel = () => {
-    if (!isEditing) deleteQuestion(selected_input.id);
-    updateOrder({
-      id: survey.id,
-      new_order: survey?.order.filter((id: string) => id !== selected_input.id),
-    });
+    if (!isEditing) {
+      deleteQuestion(selected_input.id);
+      updateOrder({
+        id: survey.id,
+        new_order: survey?.order.filter(
+          (id: string) => id !== selected_input.id
+        ),
+      });
+    }
+
     dispatch(toogleDrawer());
     dispatch(setIsEditing(false));
   };

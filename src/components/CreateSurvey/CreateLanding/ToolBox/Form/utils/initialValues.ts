@@ -4,7 +4,7 @@ import { colors } from "./../../ColorPicker/utils";
 export const initialValues: ILanding = {
   id: "",
   color_theme: colors[0],
-  image_cover: [],
+  image_cover: "",
   logo: "",
   members: [],
   subtitle: "",

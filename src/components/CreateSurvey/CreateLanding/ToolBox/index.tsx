@@ -13,7 +13,7 @@ interface Props {
 
 export const ToolBox: React.FC<Props> = ({ data }) => {
   const { is_editing_about_page } = useAppSelector(
-    (state) => state.aboutBuilder
+    (state) => state.landingBuilder
   );
   return (
     <Container variant="rightPart" height="100%" w="100%">

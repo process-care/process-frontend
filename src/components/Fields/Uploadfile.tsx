@@ -37,7 +37,7 @@ export const UploadFile: React.FC<Props> = ({
 }) => {
   const hiddenFileInput = React.useRef<HTMLInputElement>(null);
   const [field, meta] = useField(id);
-  const [filesName, setFilesName] = React.useState<any>([]);
+  const [filesName, setFilesName] = React.useState<any>([field.value]);
   const { setFieldValue } = useFormikContext();
 
   const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,7 +89,7 @@ export const UploadFile: React.FC<Props> = ({
       setFilesName(filtered_names);
       setFieldValue(id, filtered_values);
     } else {
-      setFieldValue(id, []);
+      setFieldValue(id, "");
       setFilesName([]);
     }
     onChange({

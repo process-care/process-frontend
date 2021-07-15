@@ -3,13 +3,11 @@ import { configureStore } from "@reduxjs/toolkit";
 import formBuilder from "redux/slices/formBuilder";
 import application from "redux/slices/application";
 import landingBuilder from "redux/slices/landingBuilder";
-import aboutBuilder from "redux/slices/aboutBuilder";
 
 export const store = configureStore({
   reducer: {
     formBuilder,
     landingBuilder,
-    aboutBuilder,
     application,
   },
 });

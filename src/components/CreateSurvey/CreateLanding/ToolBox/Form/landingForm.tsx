@@ -5,7 +5,7 @@ import { UploadFile } from "components/Fields/Uploadfile";
 import { Wysiwyg } from "components/Fields/Wysiwyg";
 import { Formik, Form } from "formik";
 import React from "react";
-import { editAboutPage } from "redux/slices/aboutBuilder";
+import { setEditAboutPage } from "redux/slices/landingBuilder";
 
 import { t } from "static/createLanding";
 import { ColorPicker } from "../ColorPicker";
@@ -74,15 +74,16 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
           });
         }, [values.wysiwyg]);
 
-        // Handle wysiwyg change
         React.useEffect(() => {
+          console.log("fire");
           updateLanding({
             id: data.id,
             data: {
               logo: values.logo,
+              image_cover: values.image_cover,
             },
           });
-        }, [values.logo]);
+        }, [values.logo, values.image_cover]);
 
         // Handle wysiwyg change
         React.useEffect(() => {
@@ -202,7 +203,7 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
                 mb="100px"
                 onClick={() => {
                   goTop();
-                  dispatch(editAboutPage());
+                  dispatch(setEditAboutPage());
                 }}
               >
                 {t.see_more_cta}

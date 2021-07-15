@@ -4,7 +4,7 @@ import { Footer } from "../Footer";
 import { Wysiwyg } from "components/Fields/Wysiwyg";
 import { Formik } from "formik";
 import React from "react";
-import { editAboutPage } from "redux/slices/aboutBuilder";
+import { setEditAboutPage } from "redux/slices/landingBuilder";
 import { useHistory } from "react-router-dom";
 import { initialValues } from "./utils/initialValues";
 import { useAppDispatch } from "redux/hooks";
@@ -23,7 +23,7 @@ export const AboutForm: React.FC<Props> = ({ data }) => {
 
   const handleSubmit = () => {
     history.push("/create-survey/create-landing");
-    dispatch(editAboutPage());
+    dispatch(setEditAboutPage());
   };
   return (
     <Formik
@@ -59,7 +59,7 @@ export const AboutForm: React.FC<Props> = ({ data }) => {
           >
             <Wysiwyg id="about_page" />
             <Footer
-              onCancel={() => dispatch(editAboutPage())}
+              onCancel={() => dispatch(setEditAboutPage())}
               onSubmit={() => handleSubmit()}
             />
           </Box>

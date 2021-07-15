@@ -46,6 +46,7 @@ export const questionFragment = gql`
     label
     id
     type
+    rows
     answers
     placeholder
     help_text

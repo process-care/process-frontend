@@ -12,7 +12,6 @@ interface Props {
 }
 
 export const Preview: React.FC<Props> = ({ data }) => {
-  const { content } = useAppSelector((state) => state.aboutBuilder);
   const big_placeholder =
     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et. <br/> <br/> quo velit tenetur labore at reprehenderit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.<br/> <br/> Blanditiis et, quo velit tenetur labore at reprehenderit.";
 
@@ -35,7 +34,7 @@ export const Preview: React.FC<Props> = ({ data }) => {
           textAlign="left"
           variant="current"
           dangerouslySetInnerHTML={{
-            __html: content || big_placeholder,
+            __html: data.about_page || big_placeholder,
           }}
         ></Text>
       </Box>

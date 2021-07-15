@@ -76,5 +76,6 @@ export const landingFragment = gql`
     video_url
     logo
     partners_logos
+    about_page
   }
 `;

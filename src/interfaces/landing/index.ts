@@ -22,6 +22,7 @@ export interface ILanding {
   video_url: string;
   wysiwyg: string;
   partner_logos: IBase64[];
+  about_page: string;
 }
 
 export interface ILandingRes {

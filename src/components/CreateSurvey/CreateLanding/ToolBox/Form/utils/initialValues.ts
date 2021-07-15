@@ -1,7 +1,7 @@
 import { ILanding } from "interfaces/landing";
 import { colors } from "./../../ColorPicker/utils";
 
-export const initialValuesLanding: ILanding = {
+export const initialValues: ILanding = {
   id: "",
   color_theme: colors[0],
   image_cover: [],
@@ -12,8 +12,5 @@ export const initialValuesLanding: ILanding = {
   video_url: "",
   wysiwyg: "",
   partner_logos: [],
-};
-
-export const initialValuesAbout = {
-  wysiwyg: "",
+  about_page: "",
 };

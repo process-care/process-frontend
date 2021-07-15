@@ -11,14 +11,13 @@ interface Props {
 export const Wysiwyg: React.FC<Props> = ({ id, simpleMode }) => {
   const editor = React.useRef(null);
   const { setFieldValue, values } = useFormikContext();
-
   return React.useMemo(
     () => (
       <FormControl id={id} textAlign="left">
         <JoditEditor
           id={id}
           onChange={(newContent: string) => {
-            setFieldValue("wysiwyg", newContent);
+            setFieldValue(id, newContent);
           }}
           config={{
             tabIndex: -1,
@@ -61,7 +60,7 @@ export const Wysiwyg: React.FC<Props> = ({ id, simpleMode }) => {
           ref={editor}
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          value={values.wysiwyg}
+          value={values[id]}
         />
       </FormControl>
     ),

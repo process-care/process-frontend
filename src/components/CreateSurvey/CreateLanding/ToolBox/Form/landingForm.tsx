@@ -9,7 +9,7 @@ import { editAboutPage } from "redux/slices/aboutBuilder";
 
 import { t } from "static/createLanding";
 import { ColorPicker } from "../ColorPicker";
-import { initialValuesLanding } from "./utils/initialValues";
+import { initialValues } from "./utils/initialValues";
 import { useAppDispatch } from "redux/hooks";
 import { RepeatableFields } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/RepeatableFields";
 import { SvgHover } from "components/SvgHover";
@@ -56,7 +56,7 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
     <Formik
       validateOnBlur={false}
       // initialValues={landing || initialValuesLanding}
-      initialValues={data || initialValuesLanding}
+      initialValues={data || initialValues}
       enableReinitialize
       onSubmit={(data, { setSubmitting, validateForm }) => {
         validateForm(data);

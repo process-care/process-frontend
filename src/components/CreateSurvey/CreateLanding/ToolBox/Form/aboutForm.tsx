@@ -4,21 +4,21 @@ import { Footer } from "../Footer";
 import { Wysiwyg } from "components/Fields/Wysiwyg";
 import { Formik } from "formik";
 import React from "react";
-import { updateLanding } from "redux/slices/aboutBuilder";
 import { editAboutPage } from "redux/slices/aboutBuilder";
 import { useHistory } from "react-router-dom";
-import { initialValuesAbout } from "./utils/initialValues";
-import { useAppDispatch, useAppSelector } from "redux/hooks";
+import { initialValues } from "./utils/initialValues";
+import { useAppDispatch } from "redux/hooks";
 import { ILanding } from "interfaces/landing";
+import { useUpdateLanding } from "api/actions/Landing";
 
 interface Props {
   data: ILanding;
 }
 
 export const AboutForm: React.FC<Props> = ({ data }) => {
-  console.log(data);
+  const { mutateAsync: updateLanding } = useUpdateLanding();
+
   const history = useHistory();
-  const { content } = useAppSelector((state) => state.aboutBuilder);
   const dispatch = useAppDispatch();
 
   const handleSubmit = () => {
@@ -28,7 +28,7 @@ export const AboutForm: React.FC<Props> = ({ data }) => {
   return (
     <Formik
       validateOnBlur={false}
-      initialValues={{ wysiwyg: content } || initialValuesAbout}
+      initialValues={{ about_page: data.about_page } || initialValues}
       enableReinitialize
       onSubmit={(data, { setSubmitting, validateForm }) => {
         validateForm(data);
@@ -36,10 +36,14 @@ export const AboutForm: React.FC<Props> = ({ data }) => {
       }}
     >
       {({ values }) => {
-        // Handle wysiwyg change
         React.useEffect(() => {
-          dispatch(updateLanding(values.wysiwyg));
-        }, [values.wysiwyg]);
+          updateLanding({
+            id: data.id,
+            data: {
+              about_page: values.about_page,
+            },
+          });
+        }, [values.about_page]);
 
         return (
           <Box
@@ -53,7 +57,7 @@ export const AboutForm: React.FC<Props> = ({ data }) => {
               },
             }}
           >
-            <Wysiwyg id="about" />
+            <Wysiwyg id="about_page" />
             <Footer
               onCancel={() => dispatch(editAboutPage())}
               onSubmit={() => handleSubmit()}

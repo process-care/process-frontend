@@ -61,8 +61,9 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
           isRequired={input.required}
           placeholder={input.placeholder || t.placeholder}
           name={input.id || "number_input"}
-          precision={4}
+          precision={0}
           label={input.label || t.label}
+          inputRightAddon={input.units}
           helpText={input.help_text || t.help_text}
         />
       );

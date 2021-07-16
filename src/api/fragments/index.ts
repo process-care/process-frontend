@@ -52,6 +52,7 @@ export const questionFragment = gql`
     help_text
     answers
     required
+    units
     internal_title
     conditions {
       id

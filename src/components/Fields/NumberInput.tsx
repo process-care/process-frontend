@@ -62,7 +62,12 @@ export const CustomNumberInput: React.FC<Props> = ({
               allowMouseWheel
               w="100%"
             >
-              <NumberInputField placeholder={placeholder} {...field} />
+              <NumberInputField
+                placeholder={placeholder}
+                {...field}
+                borderTopRightRadius={inputRightAddon !== null ? "0" : "5px"}
+                borderBottomRightRadius={inputRightAddon !== null ? "0" : "5px"}
+              />
             </NumberInput>
             {inputRightAddon && <InputRightAddon children={inputRightAddon} />}
           </InputGroup>

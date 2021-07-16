@@ -59,8 +59,7 @@ export const CustomTextarea: React.FC<Props> = ({
             style={{ resize: "none" }}
             rows={getRows(rows)}
             placeholder={placeholder}
-            min_length={min_length}
-            max_length={max_length}
+            maxLength={getRows(rows) * 145}
             {...field}
           />
           <FormErrorMessage mt={-2} justifyContent="flex-end" fontSize="10px">

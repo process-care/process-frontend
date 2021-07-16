@@ -14,3 +14,7 @@ export default interface ISurvey {
 export interface ISurveyRes {
   survey: ISurvey;
 }
+
+export interface ISurveysRes {
+  surveys: ISurvey;
+}

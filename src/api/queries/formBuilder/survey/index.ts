@@ -11,6 +11,18 @@ export const ADD_SURVEY = gql`
   }
 `;
 
+// TO FILTER BY USER
+export const GET_SURVEYS = gql`
+  query getSurveys {
+    surveys {
+      id
+      description
+      status
+      createdAt
+    }
+  }
+`;
+
 export const GET_SURVEY = gql`
   query getSurvey($id: ID!) {
     survey(id: $id) {

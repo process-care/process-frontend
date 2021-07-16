@@ -14,8 +14,6 @@ interface Props {
   label: string;
   helpText?: string;
   placeholder: string;
-  min_length?: number;
-  max_length?: number;
   rows: "small" | "medium" | "large" | undefined;
   isRequired?: boolean;
   id: string;
@@ -28,8 +26,6 @@ export const CustomTextarea: React.FC<Props> = ({
   label,
   helpText,
   placeholder,
-  min_length,
-  max_length,
   rows,
   isRequired,
   id,

@@ -1,4 +1,5 @@
-import { Box, Grid } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
+import { DashboardMenu } from "components/Menu/DashboardMenu";
 import React from "react";
 import { useLocation } from "react-router-dom";
 
@@ -18,6 +19,8 @@ export const Layout: React.FC<Props> = ({ children }) => {
         return null;
       case "/create-survey/create-landing":
         return null;
+      case "/dashboard":
+        return <DashboardMenu />;
 
       default:
         return <MainMenu />;
@@ -25,10 +28,8 @@ export const Layout: React.FC<Props> = ({ children }) => {
   };
   return (
     <Box textAlign="center" fontSize="xl">
-      <Grid minH="100vh">
-        {renderMenu()}
-        {children}
-      </Grid>
+      {renderMenu()}
+      {children}
     </Box>
   );
 };

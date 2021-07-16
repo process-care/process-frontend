@@ -22,15 +22,14 @@ export const NumberInputFields: React.FC = () => {
         <NumberInput
           style={{ width: "45%" }}
           label="Nb de charactères min"
-          name="min_length"
+          name="min"
           isCollapsed={false}
           placeholder="Ex:5"
         />
         <NumberInput
           style={{ width: "45%" }}
           label="Nb de charactères max"
-          name="max_length"
-          defaultValue="20"
+          name="max"
           isCollapsed={false}
           placeholder="Ex:5"
         />

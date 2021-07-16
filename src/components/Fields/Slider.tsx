@@ -17,9 +17,9 @@ interface Props {
   id: string;
   helpText?: string;
   defaultValue?: string | undefined;
-  step: string | undefined;
-  min: string | undefined;
-  max: string | undefined;
+  step: number | undefined;
+  min: number | undefined;
+  max: number | undefined;
   vertical?: boolean;
   reverse?: boolean;
   isRequired?: boolean;
@@ -57,11 +57,11 @@ export const CustomSlider: React.FC<Props> = ({
   }, [defaultValue]);
 
   const getMiddleValue = (
-    min: string | undefined,
-    max: string | undefined
+    min: number | undefined,
+    max: number | undefined
   ): number | undefined => {
     if (min !== undefined && max !== undefined) {
-      return (parseInt(min, 10) + parseInt(max, 10)) / 2;
+      return (min + max) / 2;
     } else return;
   };
 
@@ -83,9 +83,9 @@ export const CustomSlider: React.FC<Props> = ({
             <Range
               reverse={reverse}
               dots
-              min={min !== undefined ? parseInt(min, 10) : 0}
-              max={max !== undefined ? parseInt(max, 10) : 10}
-              step={step !== undefined ? parseInt(step, 10) : 1}
+              min={min !== undefined ? min : 0}
+              max={max !== undefined ? max : 10}
+              step={step !== undefined ? step : 1}
               defaultValue={
                 defaultValue !== undefined ? parseInt(defaultValue, 10) : 0
               }

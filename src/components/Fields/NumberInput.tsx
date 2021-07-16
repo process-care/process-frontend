@@ -41,7 +41,6 @@ export const CustomNumberInput: React.FC<Props> = ({
   isCollapsed,
 }) => {
   const [field, meta] = useField(name);
-
   return (
     <FormControl
       isRequired={isRequired}
@@ -55,6 +54,7 @@ export const CustomNumberInput: React.FC<Props> = ({
         <>
           <InputGroup>
             <NumberInput
+              {...field}
               defaultValue={defaultValue}
               min={min}
               max={max}
@@ -64,7 +64,6 @@ export const CustomNumberInput: React.FC<Props> = ({
             >
               <NumberInputField
                 placeholder={placeholder}
-                {...field}
                 borderTopRightRadius={inputRightAddon !== null ? "0" : "5px"}
                 borderBottomRightRadius={inputRightAddon !== null ? "0" : "5px"}
               />

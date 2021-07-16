@@ -53,6 +53,9 @@ export const questionFragment = gql`
     answers
     required
     units
+    max
+    min
+    step
     internal_title
     conditions {
       id

@@ -26,9 +26,9 @@ export default interface IQuestion {
   vertical?: boolean;
   reverse?: boolean;
   answers?: string[];
-  min?: string;
-  max?: string;
-  step?: string;
+  min?: number;
+  max?: number;
+  step?: number;
   rows?: "small" | "medium" | "large" | undefined;
   required?: boolean;
   default_value?: string | undefined;

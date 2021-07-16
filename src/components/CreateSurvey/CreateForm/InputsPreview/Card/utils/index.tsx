@@ -65,6 +65,8 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
           label={input.label || t.label}
           inputRightAddon={input.units}
           helpText={input.help_text || t.help_text}
+          min={input.min}
+          max={input.max}
         />
       );
       break;

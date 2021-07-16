@@ -45,7 +45,6 @@ export const SliderFields: React.FC = () => {
         <Box w="45%">
           <Input
             type="number"
-            isRequired
             label="Valeur par défaut"
             name="default_value"
             isCollapsed={false}

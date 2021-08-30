@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import IRoute from "interfaces/routes/route";
 import { Box, Container, Text } from "@chakra-ui/react";
 
@@ -8,13 +8,28 @@ import { Table } from "components/Table";
 import { useGetSurveys } from "api/actions/formBuider/survey";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
+import { ProjectMenu } from "components/Dashboard/ProjectMenu";
 
 import dayjs from "dayjs";
 
 export const Dashboard: React.FC<IRoute> = () => {
   const { data: surveys, isLoading, error } = useGetSurveys();
 
-  const [currentFilter, setCurrentFilter] = React.useState<string>(
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedSurvey, setSelectedSurvey] = useState<string>();
+
+  const toggleOff = () => {
+    console.log('should be toggling off');
+    setIsOpen(false);
+  };
+
+  const toggleMenu = (surveyId: string) => {
+    console.log('should be toggling to: ', !isOpen);
+    setIsOpen(!isOpen);
+    setSelectedSurvey(surveyId);
+  };
+
+  const [currentFilter, setCurrentFilter] = useState<string>(
     t.filters[0].id
   );
 
@@ -29,6 +44,11 @@ export const Dashboard: React.FC<IRoute> = () => {
             accessor: (d: any) => {
               return dayjs(d.createdAt).format("DD-MM-YYYY");
             },
+          };
+        } else if (accessor === 'total') {
+          return {
+            Header,
+            accessor: (d: any) => d.participations.length,
           };
         } else
           return {
@@ -48,7 +68,7 @@ export const Dashboard: React.FC<IRoute> = () => {
   }
 
   return (
-    <Box h="100%">
+    <Box h="100%" d="flex" justifyContent="space-around" w="100%" overflow="hidden">
       <div className="background__grid">
         <Container textAlign="left" pt="9" maxW="90%">
           <Text variant="xl" mb={7}>
@@ -60,10 +80,11 @@ export const Dashboard: React.FC<IRoute> = () => {
             currentFilter={currentFilter}
           />
           <Box mt={8}>
-            <Table columns={columns} data={data} />
+            <Table columns={columns} data={data} onClick={toggleMenu} />
           </Box>
         </Container>
       </div>
+      <ProjectMenu isOpen={isOpen} surveyId={selectedSurvey} onClose={toggleOff} />
     </Box>
   );
 };

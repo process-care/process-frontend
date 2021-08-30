@@ -10,15 +10,17 @@ interface Props {
   filters: Filter[];
   handleClick: (id: string) => void;
   currentFilter: string;
+  center?: boolean;
 }
 
 export const Filters: React.FC<Props> = ({
   filters,
   handleClick,
   currentFilter,
+  center,
 }) => {
   return (
-    <Flex>
+    <Flex justifyContent={center ? 'center' : undefined}>
       {filters.map(({ label, id }) => {
         const isSelected = currentFilter === id;
 

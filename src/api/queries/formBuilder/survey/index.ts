@@ -18,6 +18,7 @@ export const GET_SURVEYS = gql`
       id
       description
       status
+      participations { id }
       createdAt
     }
   }

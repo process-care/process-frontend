@@ -1,5 +1,11 @@
 import { IBase64 } from "components/Fields/Uploadfile";
 
+export interface Media {
+  id: string;
+  name: string;
+  url: string;
+}
+
 export interface IColors {
   base: string;
   button: string;
@@ -15,6 +21,8 @@ export interface ILanding {
   id: string;
   color_theme: IColors;
   image_cover: string;
+  cover?: Media;
+  partners: Media[];
   logo: string;
   members: IMember[];
   subtitle: string;

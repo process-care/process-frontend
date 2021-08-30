@@ -8,7 +8,6 @@ interface Props {
 }
 
 export const Header: React.FC<Props> = ({ theme, logo }) => {
-  console.log(logo.length);
   return (
     <Flex justifyContent="space-between" p="5" alignItems="center">
       {!!logo && logo.length !== 0 && (

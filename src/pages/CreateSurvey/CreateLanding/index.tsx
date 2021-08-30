@@ -1,5 +1,6 @@
 import { Box, Collapse, Container } from "@chakra-ui/react";
 import React from "react";
+import { useParams } from "react-router-dom";
 
 import IRoute from "interfaces/routes/route";
 import { Menu } from "components/Menu/CreateForm";
@@ -7,22 +8,28 @@ import { ToolBox } from "components/CreateSurvey/CreateLanding/ToolBox";
 import { Preview } from "components/CreateSurvey/CreateLanding/Preview";
 import { useAppSelector } from "redux/hooks";
 import { useGetSurvey } from "api/actions/formBuider/survey";
-import { DEV_SURVEY } from "constants/api";
 import { useGetLanding } from "api/actions/Landing";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 
 export const CreateLanding: React.FC<IRoute> = () => {
+  // FIXME: Yup, these ignore are bad, need to be removed
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const { id: surveyId } = useParams();
   const { preview_mode } = useAppSelector((state) => state.application);
-  const { data: survey } = useGetSurvey(DEV_SURVEY);
+
+  const { data: survey } = useGetSurvey(surveyId);
   const { data, isLoading, error } = useGetLanding(survey?.survey?.landing?.id);
+  
+  if (error) {
+    return <Error error={error.message} />;
+  }
 
   if (isLoading || data?.landing === undefined) {
     return <Loader />;
   }
-  if (error) {
-    return <Error error={error.message} />;
-  }
+
   return (
     <Box overflow="auto">
       <Box

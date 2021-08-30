@@ -10,7 +10,7 @@ export const t = {
   header: [
     { Header: "Status", accessor: "status" },
     { Header: "Date", accessor: "createdAt" },
-    { Header: "Titres", accessor: "description" },
-    { Header: "Nombres de participants", accessor: "total" },
+    { Header: "Titre", accessor: "description" },
+    { Header: "Participants", accessor: "total" },
   ],
 };

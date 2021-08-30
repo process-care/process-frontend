@@ -25,13 +25,13 @@ const routes: IRoute[] = [
   },
   {
     name: "Création de landing page",
-    path: "/create-survey/create-landing",
+    path: "/create-survey/:id/create-landing",
     component: <CreateLanding />,
     exact: true,
   },
   {
     name: "Création du formulaire",
-    path: "/create-survey/create-form",
+    path: "/create-survey/:id/create-form",
     component: <CreateForm />,
     exact: true,
   },
@@ -43,14 +43,14 @@ const routes: IRoute[] = [
   },
   {
     name: "Landing page",
-    path: "/landing",
+    path: "/landing/:id",
     component: <Landing />,
     exact: true,
   },
 
   {
     name: "Survey",
-    path: "/survey",
+    path: "/survey/:id",
     component: <Survey />,
     exact: false,
   },

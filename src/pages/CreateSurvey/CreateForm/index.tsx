@@ -1,5 +1,6 @@
 import { Box, Container } from "@chakra-ui/react";
 import React from "react";
+import { useParams } from "react-router-dom";
 
 import InputsPreview from "components/CreateSurvey/CreateForm/InputsPreview";
 
@@ -18,10 +19,13 @@ import { RightPart } from "components/Layout/RightPart";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 import { useGetSurvey } from "api/actions/formBuider/survey";
-import { DEV_SURVEY } from "constants/api";
 
 export const CreateForm: React.FC<IRoute> = () => {
-  const { data, isLoading, error } = useGetSurvey(DEV_SURVEY);
+  // FIXME: Yup, these ignore are bad, need to be removed
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const { id: surveyId } = useParams();
+  const { data, isLoading, error } = useGetSurvey(surveyId);
 
   const isOpen = useAppSelector((state) => state.application.drawer_is_open);
   const { selected_condition } = useAppSelector((state) => state.formBuilder);
@@ -29,6 +33,7 @@ export const CreateForm: React.FC<IRoute> = () => {
   if (isLoading) {
     return <Loader />;
   }
+  
   if (error) {
     return <Error error={error} />;
   }
@@ -36,6 +41,7 @@ export const CreateForm: React.FC<IRoute> = () => {
   if (!data?.survey) {
     return <div>No Survey</div>;
   }
+
   return (
     <Box h="100vh" overflow="hidden">
       <Drawer

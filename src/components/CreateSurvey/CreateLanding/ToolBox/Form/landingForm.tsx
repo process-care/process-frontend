@@ -2,9 +2,10 @@ import { Box, Button, Text, Container, Flex } from "@chakra-ui/react";
 import { Footer } from "../Footer";
 import { Textarea } from "components/Fields";
 import { UploadFile } from "components/Fields/Uploadfile";
+import { UploadFileRemote } from "components/Fields/UploadFileRemote";
 import { Wysiwyg } from "components/Fields/Wysiwyg";
 import { Formik, Form } from "formik";
-import React from "react";
+import React, { useMemo } from "react";
 import { setEditAboutPage } from "redux/slices/landingBuilder";
 
 import { t } from "static/createLanding";
@@ -36,6 +37,7 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
   const handleCancel = () => {
     history.push("/");
   };
+
   const onChange = (event: React.FormEvent<HTMLFormElement>) => {
     const target = event.target as HTMLFormElement;
     const is_repeated_fields = target.id.includes("members");
@@ -105,6 +107,15 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
           });
         }, [values.color_theme]);
 
+        // Target params for various uploads (cover, partners)
+        const targets = useMemo(() => {
+          const base = { refId: values.id, ref: 'landing' };
+          return {
+            partners: { ...base, field: 'partners' },
+            cover: { ...base, field: 'cover' },
+          };
+        }, [values.id]);
+
         return (
           <Box
             pos="relative"
@@ -126,10 +137,12 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
                 id="logo"
                 helpText={t.logo_helptext}
               />
+
               <Text variant="currentBold" mt={9}>
                 {t.theme_label}
               </Text>
               <ColorPicker />
+
               <Textarea
                 id="title"
                 rows="medium"
@@ -137,6 +150,7 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
                 label={t.title_input}
                 helpText={t.title_helptext}
               />
+
               <Textarea
                 id="subtitle"
                 rows="large"
@@ -144,27 +158,33 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
                 label={t.subtitle_input}
                 helpText={t.subtitle_helptext}
               />
+
               <Container variant="hr" my={10} />
+
               <Text variant="currentBold" mt={9} mb={2}>
                 {t.content_label}
               </Text>
               <Wysiwyg id="landing_content" simpleMode />
+
               <Container variant="hr" my={10} />
+
               <Text variant="currentBold">{t.add_image}</Text>
-              <UploadFile
-                onChange={(e) => console.log(e)}
+              <UploadFileRemote
+                target={targets.cover}
+                content={values.cover}
                 label={t.image_cta}
-                id="image_cover"
                 helpText={t.image_helptext}
-                isDisabled={values.video_url !== ""}
+                isDisabled={Boolean(values.video_url)}
+                onChange={(e) => console.log(e)}
               />
+
               <Flex alignItems="center">
                 <Textarea
                   id="video_url"
                   rows="small"
                   placeholder={t.video_url_placeholder}
                   label={t.video_url_label}
-                  isDisabled={values.image_cover !== undefined}
+                  isDisabled={Boolean(values.image_cover)}
                 />
                 <Box mt={7} ml={4}>
                   <SvgHover>
@@ -182,20 +202,26 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
               </Flex>
 
               <Container variant="hr" my={10} />
+
               <Text variant="currentBold" mt={9}>
                 {t.team_label}
               </Text>
               <RepeatableFields name="members" />
+
               <Container variant="hr" my={10} />
+
               <Text variant="currentBold">{t.logos_label}</Text>
-              <UploadFile
-                onChange={(e) => console.log(e)}
+              <UploadFileRemote
+                target={targets.partners}
+                content={values.partners}
                 label={t.logos_cta}
-                id="partner_logos"
                 helpText={t.image_helptext}
                 multiple
+                onChange={(e) => console.log(e)}
               />
+
               <Container variant="hr" my={10} />
+
               <Text variant="currentBold">{t.see_more_cta}</Text>
               <Button
                 variant="roundedTransparent"
@@ -208,6 +234,7 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
               >
                 {t.see_more_cta}
               </Button>
+              
               <Footer
                 onCancel={() => handleCancel()}
                 onSubmit={() => handleSubmit()}

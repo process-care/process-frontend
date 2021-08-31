@@ -20,6 +20,7 @@ export const Preview: React.FC<Props> = ({ data }) => {
   );
   const { color_theme, members } = data;
   const had_members = members?.length > 0;
+
   if (is_editing_about_page) {
     return (
       <Box
@@ -40,6 +41,7 @@ export const Preview: React.FC<Props> = ({ data }) => {
       </Box>
     );
   }
+  
   return (
     <Box h="fit-content" backgroundColor="white" w="80%" mx="auto" mt="100px">
       <Header theme={color_theme} logo={data.logo} />

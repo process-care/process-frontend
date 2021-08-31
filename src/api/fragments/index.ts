@@ -77,6 +77,8 @@ export const landingFragment = gql`
     wysiwyg
     members
     image_cover
+    cover { id, name, url }
+    partners { id, name, url }
     color_theme
     video_url
     logo

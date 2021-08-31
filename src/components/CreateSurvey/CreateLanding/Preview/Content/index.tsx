@@ -3,6 +3,7 @@ import { Box, Text, Flex, Button } from "@chakra-ui/react";
 import { IColors, ILanding } from "interfaces/landing";
 import { Video } from "components/Video";
 import { t } from "static/createLanding";
+import { API_URL_ROOT } from "constants/api";
 
 interface Props {
   data: ILanding;
@@ -14,10 +15,12 @@ const placeholder =
 const big_placeholder =
   "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et. <br/> <br/> quo velit tenetur labore at reprehenderit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.<br/> <br/> Blanditiis et, quo velit tenetur labore at reprehenderit.";
 
+const imgStyle = { maxWidth: "400px", width: "400px" };
+
 export const Content: React.FC<Props> = ({ data, theme }) => {
-  const had_media = data?.image_cover !== "" || data.video_url !== "";
-  const had_video = data.video_url !== "";
-  const had_image = data?.image_cover !== "";
+  const had_video = Boolean(data.video_url);
+  const had_image = Boolean(data.cover);
+  const had_media = had_video || had_image;
 
   return (
     <Box>
@@ -38,11 +41,11 @@ export const Content: React.FC<Props> = ({ data, theme }) => {
         {had_media && (
           <Box w="100%">
             {had_video && <Video url={data.video_url} />}
-            {had_image && (
+            {data.cover?.url && (
               <img
-                src={data?.image_cover}
-                style={{ maxWidth: "400px", width: "400px" }}
-                alt=""
+                src={`${API_URL_ROOT}${data.cover.url}`}
+                style={imgStyle}
+                alt={data.cover?.name}
               />
             )}
           </Box>

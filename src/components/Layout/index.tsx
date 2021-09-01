@@ -14,15 +14,11 @@ export const Layout: React.FC<Props> = ({ children }) => {
   const { pathname } = location;
 
   const renderMenu = () => {
-    const isSurveyPages = pathname.search("/survey") !== -1;
-    if (isSurveyPages) return;
-    switch (pathname) {
-      case "/dashboard":
-        return <DashboardMenu />;
+    const isSurveyPages = pathname.search("/create/") !== -1;
 
-      default:
-        return <MainMenu />;
-    }
+    if (pathname === "/dashboard") return <DashboardMenu />;
+    else if (isSurveyPages) return null;
+    else return <MainMenu />;
   };
   return (
     <Box textAlign="center" fontSize="xl">

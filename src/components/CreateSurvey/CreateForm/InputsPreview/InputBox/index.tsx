@@ -1,6 +1,6 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
-import IQuestion from "interfaces/form/question";
+import IQuestion from "types/form/question";
 import React from "react";
 
 interface Props {

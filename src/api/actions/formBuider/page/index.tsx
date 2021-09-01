@@ -5,7 +5,7 @@ import {
   DELETE_PAGE,
 } from "api/queries/formBuilder/page";
 
-import IPage from "interfaces/form/page";
+import IPage from "types/form/page";
 import { useMutation, UseMutationResult } from "react-query";
 import { optimisticUpdate } from "api/optimisiticUpdate";
 import { API_URL } from "constants/api";

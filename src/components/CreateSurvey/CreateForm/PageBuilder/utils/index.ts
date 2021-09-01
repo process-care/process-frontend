@@ -1,5 +1,5 @@
-import ICondition from "interfaces/form/condition";
-import IPage from "interfaces/form/page";
+import ICondition from "types/form/condition";
+import IPage from "types/form/page";
 
 // Hide current page and page after when we make condition page.
 // Hide page after current page when we make condition input

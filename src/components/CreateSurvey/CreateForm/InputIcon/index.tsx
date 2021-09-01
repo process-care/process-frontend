@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { SvgHover } from "components/SvgHover";
-import IQuestion from "interfaces/form/question";
+import IQuestion from "types/form/question";
 import React from "react";
 
 interface Props {

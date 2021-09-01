@@ -8,8 +8,8 @@ import { setEditAboutPage } from "redux/slices/landingBuilder";
 import { useHistory } from "react-router-dom";
 import { initialValues } from "./utils/initialValues";
 import { useAppDispatch } from "redux/hooks";
-import { ILanding } from "interfaces/landing";
-import { useUpdateLanding } from "api/actions/Landing";
+import { ILanding } from "types/landing";
+import { useUpdateLanding } from "api/actions/landing";
 
 interface Props {
   data: ILanding;

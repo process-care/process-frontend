@@ -13,7 +13,7 @@ import {
   useGetConditions,
   useUpdateCondition,
 } from "api/actions/formBuider/condition";
-import ICondition from "interfaces/form/condition";
+import ICondition from "types/form/condition";
 import { Loader } from "components/Spinner";
 
 export const ConditionPreview: React.FC = () => {

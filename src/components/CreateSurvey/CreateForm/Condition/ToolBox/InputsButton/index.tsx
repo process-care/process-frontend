@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Button, ButtonGroup } from "@chakra-ui/react";
 import { inputs } from "constants/inputs";
 import { v4 as uuidv4 } from "uuid";
-import IQuestion from "interfaces/form/question";
+import IQuestion from "types/form/question";
 import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
 
 interface Props {

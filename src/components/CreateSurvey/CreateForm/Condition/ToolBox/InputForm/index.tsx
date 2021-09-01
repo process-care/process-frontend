@@ -24,8 +24,8 @@ import {
   useUpdateQuestion,
 } from "api/actions/formBuider/question";
 import { useAddCondition } from "api/actions/formBuider/condition";
-import ISurvey from "interfaces/survey";
-import { useUpdateOrder } from "api/actions/formBuider/survey";
+import ISurvey from "types/survey";
+import { useUpdateOrder } from "api/actions/survey";
 
 interface Props {
   survey: ISurvey;

@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import Card from "./Card";
 
-import IQuestion from "interfaces/form/question";
+import IQuestion from "types/form/question";
 import { useAppSelector } from "redux/hooks";
 
 import { Formik, Form } from "formik";
@@ -12,7 +12,7 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { useGetQuestions } from "api/actions/formBuider/question";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
-import { useGetSurvey, useUpdateOrder } from "api/actions/formBuider/survey";
+import { useGetSurvey, useUpdateOrder } from "api/actions/survey";
 import { DEV_SURVEY } from "constants/api";
 
 export interface Item {

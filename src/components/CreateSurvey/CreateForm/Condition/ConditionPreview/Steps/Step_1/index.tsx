@@ -3,14 +3,14 @@ import React from "react";
 import { Container, Text } from "@chakra-ui/react";
 import { useAppSelector, useAppDispatch } from "redux/hooks";
 
-import IQuestion from "interfaces/form/question";
-import ICondition from "interfaces/form/condition";
+import IQuestion from "types/form/question";
+import ICondition from "types/form/condition";
 import { authorizedInputTypes } from "./utils";
 import { t } from "static/input";
 import { InputBox } from "components/CreateSurvey/CreateForm/InputsPreview/InputBox";
 import { useGetQuestions } from "api/actions/formBuider/question";
 import { useUpdateCondition } from "api/actions/formBuider/condition";
-import { useGetSurvey } from "api/actions/formBuider/survey";
+import { useGetSurvey } from "api/actions/survey";
 import { selectPage } from "redux/slices/formBuilder";
 import { DEV_SURVEY } from "constants/api";
 

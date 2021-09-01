@@ -2,7 +2,7 @@ import React from "react";
 import { Formik, Form } from "formik";
 
 import { Box, Container, Text, Flex } from "@chakra-ui/react";
-import ICondition from "interfaces/form/condition";
+import ICondition from "types/form/condition";
 import { t } from "static/condition";
 
 import { ReactComponent as Submit } from "./../../assets/submit.svg";

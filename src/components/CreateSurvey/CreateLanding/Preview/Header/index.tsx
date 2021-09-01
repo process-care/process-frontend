@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Flex, Text } from "@chakra-ui/react";
-import { IColors } from "interfaces/landing";
+import { IColors } from "types/landing";
 
 interface Props {
   theme: IColors;

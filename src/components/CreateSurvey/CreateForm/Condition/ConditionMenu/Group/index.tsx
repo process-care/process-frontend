@@ -4,7 +4,7 @@ import { selectCondition } from "redux/slices/formBuilder";
 import { v4 as uuidv4 } from "uuid";
 
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import ICondition from "interfaces/form/condition";
+import ICondition from "types/form/condition";
 
 import { Separator } from "../Separator";
 import { ReactComponent as Delete } from "./../assets/delete.svg";

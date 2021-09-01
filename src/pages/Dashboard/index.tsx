@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import IRoute from "interfaces/routes/route";
+import IRoute from "types/routes/route";
 import { Box, Container, Text } from "@chakra-ui/react";
 
 import { t } from "static/dashboard";
 import { Filters } from "components/Dashboard/Filters";
 import { Table } from "components/Table";
-import { useGetSurveys } from "api/actions/formBuider/survey";
+import { useGetSurveys } from "api/actions/survey";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 import { ProjectMenu } from "components/Dashboard/ProjectMenu";
@@ -19,19 +19,17 @@ export const Dashboard: React.FC<IRoute> = () => {
   const [selectedSurvey, setSelectedSurvey] = useState<string>();
 
   const toggleOff = () => {
-    console.log('should be toggling off');
+    console.log("should be toggling off");
     setIsOpen(false);
   };
 
   const toggleMenu = (surveyId: string) => {
-    console.log('should be toggling to: ', !isOpen);
+    console.log("should be toggling to: ", !isOpen);
     setIsOpen(!isOpen);
     setSelectedSurvey(surveyId);
   };
 
-  const [currentFilter, setCurrentFilter] = useState<string>(
-    t.filters[0].id
-  );
+  const [currentFilter, setCurrentFilter] = useState<string>(t.filters[0].id);
 
   const data = React.useMemo(() => surveys?.surveys, [surveys?.surveys]);
 
@@ -45,7 +43,7 @@ export const Dashboard: React.FC<IRoute> = () => {
               return dayjs(d.createdAt).format("DD-MM-YYYY");
             },
           };
-        } else if (accessor === 'total') {
+        } else if (accessor === "total") {
           return {
             Header,
             accessor: (d: any) => d.participations.length,
@@ -68,7 +66,13 @@ export const Dashboard: React.FC<IRoute> = () => {
   }
 
   return (
-    <Box h="100%" d="flex" justifyContent="space-around" w="100%" overflow="hidden">
+    <Box
+      h="100%"
+      d="flex"
+      justifyContent="space-around"
+      w="100%"
+      overflow="hidden"
+    >
       <div className="background__grid">
         <Container textAlign="left" pt="9" maxW="90%">
           <Text variant="xl" mb={7}>
@@ -84,7 +88,11 @@ export const Dashboard: React.FC<IRoute> = () => {
           </Box>
         </Container>
       </div>
-      <ProjectMenu isOpen={isOpen} surveyId={selectedSurvey} onClose={toggleOff} />
+      <ProjectMenu
+        isOpen={isOpen}
+        surveyId={selectedSurvey}
+        onClose={toggleOff}
+      />
     </Box>
   );
 };

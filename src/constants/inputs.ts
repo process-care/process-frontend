@@ -1,4 +1,4 @@
-import IQuestion from "interfaces/form/question";
+import IQuestion from "types/form/question";
 
 export const inputs: IQuestion[] = [
   {

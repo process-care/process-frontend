@@ -18,8 +18,8 @@ import { SvgHover } from "components/SvgHover";
 import { ReactComponent as Delete } from "assets/delete.svg";
 import { goTop } from "utils/application/scrollTo";
 import { useHistory } from "react-router-dom";
-import { ILanding } from "interfaces/landing";
-import { useUpdateLanding } from "api/actions/Landing";
+import { ILanding } from "types/landing";
+import { useUpdateLanding } from "api/actions/landing";
 
 interface Props {
   data: ILanding;
@@ -109,10 +109,10 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
 
         // Target params for various uploads (cover, partners)
         const targets = useMemo(() => {
-          const base = { refId: values.id, ref: 'landing' };
+          const base = { refId: values.id, ref: "landing" };
           return {
-            partners: { ...base, field: 'partners' },
-            cover: { ...base, field: 'cover' },
+            partners: { ...base, field: "partners" },
+            cover: { ...base, field: "cover" },
           };
         }, [values.id]);
 
@@ -234,7 +234,7 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
               >
                 {t.see_more_cta}
               </Button>
-              
+
               <Footer
                 onCancel={() => handleCancel()}
                 onSubmit={() => handleSubmit()}

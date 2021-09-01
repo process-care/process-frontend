@@ -1,13 +1,18 @@
-import { UploadParams, useDeleteFile, useUploadFileMultiple, useUploadFileSingle } from "api/actions";
+import {
+  UploadParams,
+  useDeleteFile,
+  useUploadFileMultiple,
+  useUploadFileSingle,
+} from "api/actions/application";
 import { useState } from "react";
 
 // ---- TYPES
 
 type FileHandlers = {
-  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void,
-  handleDelete: (id: string) => void,
-  error?: string,
-}
+  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleDelete: (id: string) => void;
+  error?: string;
+};
 
 // ---- CUSTOM HOOK
 
@@ -22,10 +27,10 @@ export const useFileHandlers = (
   const { mutateAsync: deleteFile } = useDeleteFile();
 
   // TODO: useCallback on those
-  
+
   const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.currentTarget.files) return;
-    let msg = '';
+    let msg = "";
 
     // TODO: not sure if a try / catch would work here
     try {
@@ -54,5 +59,5 @@ export const useFileHandlers = (
     handleChange,
     handleDelete,
     error,
-  }
+  };
 };

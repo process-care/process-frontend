@@ -10,7 +10,7 @@ import { GET_LANDING, UPDATE_LANDING } from "api/queries/landing";
 
 import { optimisticUpdate } from "api/optimisiticUpdate";
 import { API_URL } from "constants/api";
-import { ILanding, ILandingRes } from "interfaces/landing";
+import { ILanding, ILandingRes } from "types/landing";
 
 export const useUpdateLanding = (): UseMutationResult<ILanding, Error> =>
   useMutation<ILanding, Error, any>(

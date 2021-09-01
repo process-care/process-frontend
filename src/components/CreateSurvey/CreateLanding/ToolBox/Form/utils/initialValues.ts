@@ -1,4 +1,4 @@
-import { ILanding } from "interfaces/landing";
+import { ILanding } from "types/landing";
 import { colors } from "./../../ColorPicker/utils";
 
 export const initialValues: ILanding = {

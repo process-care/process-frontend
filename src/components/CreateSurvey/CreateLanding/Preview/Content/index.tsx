@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Text, Flex, Button } from "@chakra-ui/react";
-import { IColors, ILanding } from "interfaces/landing";
+import { IColors, ILanding } from "types/landing";
 import { Video } from "components/Video";
 import { t } from "static/createLanding";
 import { API_URL_ROOT } from "constants/api";

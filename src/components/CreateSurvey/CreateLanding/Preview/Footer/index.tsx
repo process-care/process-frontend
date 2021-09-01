@@ -1,6 +1,6 @@
 import React from "react";
 import { Flex, Box, Button, Text, Container } from "@chakra-ui/react";
-import { ILanding } from "interfaces/landing";
+import { ILanding } from "types/landing";
 import { t } from "static/createLanding";
 import { API_URL_ROOT } from "constants/api";
 
@@ -16,7 +16,7 @@ export const Footer: React.FC<Props> = ({ data }) => {
       <Container variant="hr" w="100%" maxW="unset" />
       <Flex py={10} justifyContent="space-between">
         <Box d="flex" pl={8}>
-          {partners.map(({id, name, url}) => (
+          {partners.map(({ id, name, url }) => (
             <img
               key={id}
               src={`${API_URL_ROOT}${url}`}

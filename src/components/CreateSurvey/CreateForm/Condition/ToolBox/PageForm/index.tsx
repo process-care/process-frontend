@@ -14,13 +14,13 @@ import { t } from "static/survey";
 import ToolBox from "../InputsButton";
 import { Formik, Form } from "formik";
 import { Switch, Textarea } from "components/Fields";
-import IQuestion from "interfaces/form/question";
+import IQuestion from "types/form/question";
 import { RemovingConfirmation } from "../../../RemovingConfirmation";
 import { v4 as uuidv4 } from "uuid";
 import { SvgHover } from "components/SvgHover";
 import { ReactComponent as Trash } from "assets/trash.svg";
 import { useDeletePage, useUpdatePage } from "api/actions/formBuider/page";
-import ISurvey from "interfaces/survey";
+import ISurvey from "types/survey";
 import {
   useAddQuestion,
   useUpdateQuestion,
@@ -29,7 +29,7 @@ import {
   useAddCondition,
   useGetConditions,
 } from "api/actions/formBuider/condition";
-import { useUpdateOrder } from "api/actions/formBuider/survey";
+import { useUpdateOrder } from "api/actions/survey";
 import { getNewOrder } from "./utils";
 
 interface Props {

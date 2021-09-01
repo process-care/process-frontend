@@ -3,7 +3,7 @@ import React from "react";
 import { Container } from "@chakra-ui/react";
 import { ConditionMenu } from "components/CreateSurvey/CreateForm/Condition/ConditionMenu";
 import { PageForm } from "components/CreateSurvey/CreateForm/Condition/ToolBox/PageForm";
-import ISurvey from "interfaces/survey";
+import ISurvey from "types/survey";
 
 interface Props {
   selected_condition:

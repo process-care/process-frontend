@@ -185,12 +185,12 @@ function useNavigator(surveyId: string) {
 
   // Take you to the landing editor
   const goToLanding = useCallback(() => {
-    history.push(`/create-survey/${surveyId}/create-landing`);
+    history.push(`/survey/${surveyId}/create/landing`);
   }, [surveyId]);
 
   // Take you to the form editor
   const goToForm = useCallback(() => {
-    history.push(`/create-survey/${surveyId}/create-form`);
+    history.push(`/survey/${surveyId}/create/form`);
   }, [surveyId]);
 
   // TODO: Is this really a thing ? Is it supposed to show the uploaded consent file ?

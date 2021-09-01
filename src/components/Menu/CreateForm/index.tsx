@@ -7,14 +7,14 @@ import { t } from "static/input";
 import { tooglePreview } from "redux/slices/application";
 import { Loader } from "components/Spinner";
 import { useGetSurvey } from "api/actions/survey";
-import { DEV_SURVEY } from "constants/api";
 
 interface Props {
   isLanding?: boolean;
+  surveyId: string;
 }
 
-export const Menu: React.FC<Props> = ({ isLanding }) => {
-  const { data, isLoading, error } = useGetSurvey(DEV_SURVEY);
+export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
+  const { data, isLoading, error } = useGetSurvey(surveyId);
   const { preview_mode } = useAppSelector((state) => state.application);
   const dispatch = useAppDispatch();
 

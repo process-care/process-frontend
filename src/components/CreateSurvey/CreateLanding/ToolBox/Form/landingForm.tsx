@@ -77,7 +77,6 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
         }, [values.wysiwyg]);
 
         React.useEffect(() => {
-          console.log("fire");
           updateLanding({
             id: data.id,
             data: {

@@ -6,11 +6,19 @@ import {
 } from "react-query";
 import { request } from "graphql-request";
 
-import { GET_LANDING, UPDATE_LANDING } from "api/queries/landing";
+import { ADD_LANDING, GET_LANDING, UPDATE_LANDING } from "api/queries/landing";
 
 import { optimisticUpdate } from "api/optimisiticUpdate";
 import { API_URL } from "constants/api";
 import { ILanding, ILandingRes } from "types/landing";
+
+export const useAddLanding = (): UseMutationResult<ILanding, Error> =>
+  useMutation<ILanding, Error, any>(
+    async (values: Partial<ILanding>) =>
+      await request(API_URL, ADD_LANDING, {
+        values,
+      })
+  );
 
 export const useUpdateLanding = (): UseMutationResult<ILanding, Error> =>
   useMutation<ILanding, Error, any>(

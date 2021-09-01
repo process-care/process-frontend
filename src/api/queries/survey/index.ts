@@ -5,7 +5,8 @@ export const ADD_SURVEY = gql`
     createSurvey(input: { data: $values }) {
       survey {
         id
-        description
+        title
+        slug
       }
     }
   }

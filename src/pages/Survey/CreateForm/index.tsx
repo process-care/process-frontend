@@ -24,7 +24,7 @@ export const CreateForm: React.FC<IRoute> = () => {
   // FIXME: Yup, these ignore are bad, need to be removed
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  const { id: surveyId } = useParams();
+  const { slug: surveyId } = useParams();
   const { data, isLoading, error } = useGetSurvey(surveyId);
 
   const isOpen = useAppSelector((state) => state.application.drawer_is_open);
@@ -51,7 +51,7 @@ export const CreateForm: React.FC<IRoute> = () => {
       />
       <Box d="flex" justifyContent="space-around" w="100%" overflow="hidden">
         <Box w="100%">
-          <Menu />
+          <Menu surveyId={surveyId} />
           <Box
             d="flex"
             justifyContent="space-around"
@@ -78,7 +78,10 @@ export const CreateForm: React.FC<IRoute> = () => {
                 {selected_condition?.id !== undefined ? (
                   <ConditionPreview />
                 ) : (
-                  <InputsPreview order={data?.survey.order} />
+                  <InputsPreview
+                    order={data?.survey.order}
+                    surveyId={surveyId}
+                  />
                 )}
               </div>
             </Container>

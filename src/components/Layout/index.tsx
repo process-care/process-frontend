@@ -14,11 +14,9 @@ export const Layout: React.FC<Props> = ({ children }) => {
   const { pathname } = location;
 
   const renderMenu = () => {
+    const isSurveyPages = pathname.search("/survey") !== -1;
+    if (isSurveyPages) return;
     switch (pathname) {
-      case "/create-survey/create-form":
-        return null;
-      case "/create-survey/create-landing":
-        return null;
       case "/dashboard":
         return <DashboardMenu />;
 
@@ -33,16 +31,3 @@ export const Layout: React.FC<Props> = ({ children }) => {
     </Box>
   );
 };
-
-// const renderMenu = () => {
-//   const isInSurvey = pathname.search("/survey");
-//   if (isInSurvey) return;
-
-//   switch (pathname) {
-//     case "/dashboard":
-//       return <DashboardMenu />;
-
-//     default:
-//       return <MainMenu />;
-//   }
-// };

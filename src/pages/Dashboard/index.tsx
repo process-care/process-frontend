@@ -19,12 +19,10 @@ export const Dashboard: React.FC<IRoute> = () => {
   const [selectedSurvey, setSelectedSurvey] = useState<string>();
 
   const toggleOff = () => {
-    console.log("should be toggling off");
     setIsOpen(false);
   };
 
   const toggleMenu = (surveyId: string) => {
-    console.log("should be toggling to: ", !isOpen);
     setIsOpen(!isOpen);
     setSelectedSurvey(surveyId);
   };

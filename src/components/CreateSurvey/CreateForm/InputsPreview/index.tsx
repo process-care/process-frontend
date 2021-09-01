@@ -13,7 +13,6 @@ import { useGetQuestions } from "api/actions/formBuider/question";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 import { useGetSurvey, useUpdateOrder } from "api/actions/survey";
-import { DEV_SURVEY } from "constants/api";
 
 export interface Item {
   id: number;
@@ -30,16 +29,17 @@ export interface ContainerProps {
 
 interface Props {
   order: IQuestion["id"][];
+  surveyId: string;
 }
 
-const InputsPreview: React.FC<Props> = () => {
+const InputsPreview: React.FC<Props> = ({ surveyId, order }) => {
   const { selected_page } = useAppSelector((state) => state.formBuilder);
   const {
     data: questions,
     isLoading,
     error,
   } = useGetQuestions(selected_page.id);
-  const { data: survey } = useGetSurvey(DEV_SURVEY);
+  const { data: survey } = useGetSurvey(surveyId);
   const { mutateAsync: updateOrder } = useUpdateOrder("updateOrder");
 
   const renderCard = (input: IQuestion, index: number) => {
@@ -52,15 +52,6 @@ const InputsPreview: React.FC<Props> = () => {
       />
     );
   };
-
-  const current_order = survey?.survey.order;
-  // const onDragStart = () => {
-  //   console.log("");
-  // };
-
-  // const onDragUpdate = () => {
-  //   console.log("");
-  // };
 
   const onDragEnd = (result: any) => {
     const { destination, source, draggableId } = result;
@@ -76,8 +67,8 @@ const InputsPreview: React.FC<Props> = () => {
       return;
     }
 
-    if (current_order) {
-      const new_input_order: string[] = Array.from(current_order);
+    if (order) {
+      const new_input_order: string[] = Array.from(order);
       new_input_order.splice(source.index, 1);
       new_input_order.splice(destination.index, 0, draggableId);
 
@@ -129,7 +120,7 @@ const InputsPreview: React.FC<Props> = () => {
     );
   };
 
-  if (isLoading || current_order === undefined) {
+  if (isLoading || order === undefined) {
     return (
       <Box pt="400px">
         <Loader />
@@ -163,7 +154,7 @@ const InputsPreview: React.FC<Props> = () => {
               {...provided.droppableProps}
               // isDraggingOver={snapshot.isDraggingOver}
             >
-              {current_order?.map((inputId: string, i: number) => {
+              {order?.map((inputId: string, i: number) => {
                 const current = questions?.questions?.find(
                   (c: any) => c.id === inputId
                 );

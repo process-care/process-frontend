@@ -16,7 +16,7 @@ export const CreateLanding: React.FC<IRoute> = () => {
   // FIXME: Yup, these ignore are bad, need to be removed
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  const { id: surveyId } = useParams();
+  const { slug: surveyId } = useParams();
   const { preview_mode } = useAppSelector((state) => state.application);
 
   const { data: survey } = useGetSurvey(surveyId);
@@ -47,7 +47,7 @@ export const CreateLanding: React.FC<IRoute> = () => {
             backgroundColor="white"
             zIndex="10"
           >
-            <Menu isLanding />
+            <Menu isLanding surveyId={surveyId} />
           </Box>
           <Box
             mt={preview_mode !== "landing" ? "60px" : "0"}

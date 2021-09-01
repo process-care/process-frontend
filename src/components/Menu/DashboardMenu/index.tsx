@@ -22,7 +22,7 @@ export const DashboardMenu: React.FC = () => {
       top="0"
       backgroundColor="white"
     >
-      <NavLink to="/">
+      <NavLink to="/portail">
         <Logo />
       </NavLink>
       <Text variant="baseline">{t.menu_title}</Text>

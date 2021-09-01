@@ -4,6 +4,8 @@ import { Box, Flex } from "@chakra-ui/react";
 
 import routes from "routes";
 
+const mainRoutes = ["/connexion", "/survey/create", "/dashboard", "/portail"];
+
 const MainMenu: React.FC = () => {
   return (
     <Flex>
@@ -18,18 +20,19 @@ const MainMenu: React.FC = () => {
         h="fit-content"
       >
         {routes.map(({ name, path }) => {
-          return (
-            <NavLink
-              key={name}
-              to={path}
-              exact
-              activeStyle={{
-                fontStyle: "italic",
-              }}
-            >
-              {name}
-            </NavLink>
-          );
+          if (mainRoutes.includes(path))
+            return (
+              <NavLink
+                key={name}
+                to={path}
+                exact
+                activeStyle={{
+                  fontStyle: "italic",
+                }}
+              >
+                {name}
+              </NavLink>
+            );
         })}
       </Box>
     </Flex>

@@ -1,5 +1,5 @@
 import { Box, Text, Flex, Container, Image } from "@chakra-ui/react";
-import { IMember } from "interfaces/landing";
+import { IMember } from "types/landing";
 import React from "react";
 
 export interface MemberList {

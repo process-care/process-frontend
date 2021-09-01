@@ -1,4 +1,4 @@
-import ISurvey from "interfaces/survey";
+import ISurvey from "types/survey";
 import ICondition from "./condition";
 import IQuestion from "./question";
 

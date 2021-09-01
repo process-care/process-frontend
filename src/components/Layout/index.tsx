@@ -33,3 +33,16 @@ export const Layout: React.FC<Props> = ({ children }) => {
     </Box>
   );
 };
+
+// const renderMenu = () => {
+//   const isInSurvey = pathname.search("/survey");
+//   if (isInSurvey) return;
+
+//   switch (pathname) {
+//     case "/dashboard":
+//       return <DashboardMenu />;
+
+//     default:
+//       return <MainMenu />;
+//   }
+// };

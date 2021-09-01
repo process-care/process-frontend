@@ -1,4 +1,4 @@
-import { IColors } from "interfaces/landing";
+import { IColors } from "types/landing";
 
 export const colors: IColors[] = [
   {

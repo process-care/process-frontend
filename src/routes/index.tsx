@@ -1,37 +1,36 @@
 import React from "react";
 
-import IRoute from "interfaces/routes/routes";
+import IRoute from "types/routes/routes";
 import { Authentification } from "pages/Authentification";
-import { CreateSurvey } from "pages/CreateSurvey";
-import { CreateForm } from "pages/CreateSurvey/CreateForm";
+import { CreateSurvey } from "pages/Survey";
+import { CreateForm } from "pages/Survey/CreateForm";
 import { Dashboard } from "pages/Dashboard";
 import { Landing } from "pages/Landing";
 import { Portail } from "pages/Portail";
-import { Survey } from "pages/Survey";
-import { CreateLanding } from "pages/CreateSurvey/CreateLanding";
+import { CreateLanding } from "pages/Survey/CreateLanding";
 
 const routes: IRoute[] = [
   {
     name: "Connexion / Inscription",
-    path: "/auth",
+    path: "/connexion",
     component: <Authentification />,
     exact: true,
   },
   {
     name: "Création d'enquète",
-    path: "/create-survey",
+    path: "/survey/create",
     component: <CreateSurvey />,
     exact: true,
   },
   {
     name: "Création de landing page",
-    path: "/create-survey/:id/create-landing",
+    path: "/survey/:slug/create/landing",
     component: <CreateLanding />,
     exact: true,
   },
   {
     name: "Création du formulaire",
-    path: "/create-survey/:id/create-form",
+    path: "/survey/:slug/create/form",
     component: <CreateForm />,
     exact: true,
   },
@@ -43,19 +42,12 @@ const routes: IRoute[] = [
   },
   {
     name: "Landing page",
-    path: "/landing/:id",
+    path: "/:slug",
     component: <Landing />,
     exact: true,
   },
-
   {
-    name: "Survey",
-    path: "/survey/:id",
-    component: <Survey />,
-    exact: false,
-  },
-  {
-    name: "Portail",
+    name: "Portail process",
     path: "/",
     component: <Portail />,
     exact: true,

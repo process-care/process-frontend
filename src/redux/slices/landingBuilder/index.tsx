@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 // import type { RootState } from "redux/store";
-import { IColors, ILanding, IMember } from "interfaces/landing";
+import { IColors, ILanding, IMember } from "types/landing";
 import { initialValues } from "components/CreateSurvey/CreateLanding/ToolBox/Form/utils/initialValues";
 import { IBase64 } from "components/Fields/Uploadfile";
 

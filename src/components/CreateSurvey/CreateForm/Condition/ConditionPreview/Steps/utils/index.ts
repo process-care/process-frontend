@@ -1,4 +1,4 @@
-import ICondition from "interfaces/form/condition";
+import ICondition from "types/form/condition";
 
 export const checkStepValidation = (
   current_condition: ICondition | undefined

@@ -1,4 +1,4 @@
-import IOperator from "interfaces/form/operator";
+import IOperator from "types/form/operator";
 export const operatorsForMultiple: IOperator[] = [
   {
     id: "equal",

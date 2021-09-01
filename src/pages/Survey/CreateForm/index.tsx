@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 
 import InputsPreview from "components/CreateSurvey/CreateForm/InputsPreview";
 
-import IRoute from "interfaces/routes/route";
+import IRoute from "types/routes/route";
 
 import Drawer from "components/Drawer";
 import InputForm from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm";
@@ -18,7 +18,7 @@ import { ConditionPreview } from "components/CreateSurvey/CreateForm/Condition/C
 import { RightPart } from "components/Layout/RightPart";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
-import { useGetSurvey } from "api/actions/formBuider/survey";
+import { useGetSurvey } from "api/actions/survey";
 
 export const CreateForm: React.FC<IRoute> = () => {
   // FIXME: Yup, these ignore are bad, need to be removed
@@ -33,7 +33,7 @@ export const CreateForm: React.FC<IRoute> = () => {
   if (isLoading) {
     return <Loader />;
   }
-  
+
   if (error) {
     return <Error error={error} />;
   }

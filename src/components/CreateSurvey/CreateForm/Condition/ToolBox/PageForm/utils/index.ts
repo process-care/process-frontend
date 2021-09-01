@@ -1,5 +1,5 @@
-import IPage from "interfaces/form/page";
-import ISurvey from "interfaces/survey";
+import IPage from "types/form/page";
+import ISurvey from "types/survey";
 
 // If inputs exist on current page Get the index of the last question in the current page and push the new question after it.
 // If no input on this page Get the index of the last question in previous page and push the new question after it.

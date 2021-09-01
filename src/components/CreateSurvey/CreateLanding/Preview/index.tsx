@@ -5,7 +5,7 @@ import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { Team } from "./Team";
 import { useAppSelector } from "redux/hooks";
-import { ILanding } from "interfaces/landing";
+import { ILanding } from "types/landing";
 
 interface Props {
   data: ILanding;
@@ -41,7 +41,7 @@ export const Preview: React.FC<Props> = ({ data }) => {
       </Box>
     );
   }
-  
+
   return (
     <Box h="fit-content" backgroundColor="white" w="80%" mx="auto" mt="100px">
       <Header theme={color_theme} logo={data.logo} />

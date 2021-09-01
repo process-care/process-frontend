@@ -9,7 +9,7 @@ import {
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 import { renderInput } from "./utils";
-import IQuestion from "interfaces/form/question";
+import IQuestion from "types/form/question";
 import {
   selectInput,
   setIsEditing,
@@ -27,8 +27,8 @@ import { t } from "static/input";
 import { SvgHover } from "components/SvgHover";
 import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
 import { useDeleteQuestion } from "api/actions/formBuider/question";
-import { useUpdateOrder } from "api/actions/formBuider/survey";
-import ISurvey from "interfaces/survey";
+import { useUpdateOrder } from "api/actions/survey";
+import ISurvey from "types/survey";
 
 interface CardProps {
   input: IQuestion;

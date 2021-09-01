@@ -14,7 +14,7 @@ import {
 } from "api/queries/formBuilder/condition";
 
 import { optimisticUpdate } from "api/optimisiticUpdate";
-import ICondition, { IConditionRes } from "interfaces/form/condition";
+import ICondition, { IConditionRes } from "types/form/condition";
 import { API_URL } from "constants/api";
 
 export const useGetCondition = (

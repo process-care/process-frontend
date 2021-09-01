@@ -2,13 +2,13 @@ import { Box, Collapse, Container } from "@chakra-ui/react";
 import React from "react";
 import { useParams } from "react-router-dom";
 
-import IRoute from "interfaces/routes/route";
+import IRoute from "types/routes/route";
 import { Menu } from "components/Menu/CreateForm";
 import { ToolBox } from "components/CreateSurvey/CreateLanding/ToolBox";
 import { Preview } from "components/CreateSurvey/CreateLanding/Preview";
 import { useAppSelector } from "redux/hooks";
-import { useGetSurvey } from "api/actions/formBuider/survey";
-import { useGetLanding } from "api/actions/Landing";
+import { useGetSurvey } from "api/actions/survey";
+import { useGetLanding } from "api/actions/landing";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 
@@ -21,7 +21,7 @@ export const CreateLanding: React.FC<IRoute> = () => {
 
   const { data: survey } = useGetSurvey(surveyId);
   const { data, isLoading, error } = useGetLanding(survey?.survey?.landing?.id);
-  
+
   if (error) {
     return <Error error={error.message} />;
   }

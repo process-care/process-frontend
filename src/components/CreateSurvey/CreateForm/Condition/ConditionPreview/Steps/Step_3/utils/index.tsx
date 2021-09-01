@@ -1,7 +1,7 @@
 import { useUpdateCondition } from "api/actions/formBuider/condition";
 import { InputBox } from "components/CreateSurvey/CreateForm/InputsPreview/InputBox";
 import { Textarea } from "components/Fields";
-import ICondition from "interfaces/form/condition";
+import ICondition from "types/form/condition";
 import React from "react";
 
 export const renderInput = (

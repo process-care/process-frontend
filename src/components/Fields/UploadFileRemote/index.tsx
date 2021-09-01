@@ -11,7 +11,7 @@ import React, { useCallback } from "react";
 import { ReactComponent as Delete } from "../assets/delete.svg";
 import { SvgHover } from "components/SvgHover";
 import { useFileHandlers } from "./hooks";
-import { UploadParams } from "api/actions";
+import { UploadParams } from "api/actions/application";
 
 // ---- TYPES
 
@@ -26,12 +26,12 @@ interface BaseProps {
 type SingleContent = BaseProps & {
   multiple: true;
   content?: Content[];
-}
+};
 
 type MultipleContent = BaseProps & {
   multiple?: false;
   content?: Content;
-}
+};
 
 type Props = SingleContent | MultipleContent;
 
@@ -54,7 +54,11 @@ export const UploadFileRemote: React.FC<Props> = (props: Props) => {
   const { target, multiple, onChange, isDisabled, label, helpText } = props;
 
   const hiddenFileInput = React.useRef<HTMLInputElement>(null);
-  const { handleChange, handleDelete, error } = useFileHandlers(target, multiple, onChange);
+  const { handleChange, handleDelete, error } = useFileHandlers(
+    target,
+    multiple,
+    onChange
+  );
 
   return (
     <FormControl my={4}>
@@ -119,13 +123,13 @@ export const UploadFileRemote: React.FC<Props> = (props: Props) => {
 // ---- HELPERS
 
 interface DeleteButtonProps {
-  id: string,
-  handleDelete: (id: string) => void
+  id: string;
+  handleDelete: (id: string) => void;
 }
 
 const DeleteButton: React.FC<DeleteButtonProps> = ({
   id,
-  handleDelete
+  handleDelete,
 }: DeleteButtonProps) => {
   const callDelete = useCallback(() => {
     handleDelete(id);
@@ -136,4 +140,4 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({
       <Delete onClick={callDelete} />
     </SvgHover>
   );
-}
+};

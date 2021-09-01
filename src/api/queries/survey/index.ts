@@ -1,8 +1,8 @@
 import { gql } from "graphql-request";
 
 export const ADD_SURVEY = gql`
-  mutation addSurvey($new_survey: SurveyInput) {
-    createSurvey(input: { data: $new_survey }) {
+  mutation addSurvey($description: SurveyInput) {
+    createSurvey(input: { data: $description }) {
       survey {
         id
         description
@@ -11,14 +11,16 @@ export const ADD_SURVEY = gql`
   }
 `;
 
-// TO FILTER BY USER
+// TO DO FILTER BY USER
 export const GET_SURVEYS = gql`
   query getSurveys {
     surveys {
       id
       description
       status
-      participations { id }
+      participations {
+        id
+      }
       createdAt
     }
   }

@@ -1,6 +1,6 @@
-import IPage from "interfaces/form/page";
-import IQuestion from "interfaces/form/question";
-import { ILanding } from "interfaces/landing";
+import IPage from "types/form/page";
+import IQuestion from "types/form/question";
+import { ILanding } from "types/landing";
 
 export default interface ISurvey {
   id: string;

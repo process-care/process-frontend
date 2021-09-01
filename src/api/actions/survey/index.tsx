@@ -4,18 +4,26 @@ import {
   GET_SURVEYS,
   DELETE_SURVEY,
   ADD_SURVEY,
-} from "api/queries/formBuilder/survey";
-import { UPDATE_ORDER } from "api/queries/formBuilder/survey";
-import { useMutation, useQuery, UseQueryResult } from "react-query";
+} from "api/queries/survey";
+import { UPDATE_ORDER } from "api/queries/survey";
+import {
+  useMutation,
+  UseMutationResult,
+  useQuery,
+  UseQueryResult,
+} from "react-query";
 import { optimisticUpdate } from "api/optimisiticUpdate";
-import ISurvey, { ISurveyRes, ISurveysRes } from "interfaces/survey";
+import ISurvey, { ISurveyRes, ISurveysRes } from "types/survey";
 import { API_URL } from "constants/api";
 
-export const addSurvey: any = () =>
-  useMutation(
-    async (new_survey: ISurvey) =>
+export const useAddSurvey: any = (): UseMutationResult<
+  Partial<ISurvey>,
+  Error
+> =>
+  useMutation<ISurvey, Error, any>(
+    async (description: ISurvey) =>
       await request(API_URL, ADD_SURVEY, {
-        new_survey,
+        description,
       }),
     optimisticUpdate(["getSurvey"])
   );

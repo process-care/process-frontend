@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import IQuestion from "interfaces/form/question";
-import IPage from "interfaces/form/page";
-import ICondition from "interfaces/form/condition";
+import IQuestion from "types/form/question";
+import IPage from "types/form/page";
+import ICondition from "types/form/condition";
 
 export interface FormBuilder {
   selected_input: IQuestion | Record<string, any>;

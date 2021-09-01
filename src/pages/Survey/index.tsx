@@ -1,6 +1,5 @@
 import React from "react";
-import IRoute from "interfaces/routes/route";
+import IRoute from "types/routes/route";
+import { CreateSurveyForm } from "components/CreateSurvey";
 
-export const Survey: React.FC<IRoute> = () => {
-  return <div>Survey</div>;
-};
+export const CreateSurvey: React.FC<IRoute> = () => <CreateSurveyForm />;

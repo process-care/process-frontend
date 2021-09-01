@@ -9,7 +9,7 @@ import {
   Datepicker,
   Textarea,
 } from "components/Fields";
-import IQuestion from "interfaces/form/question";
+import IQuestion from "types/form/question";
 import React from "react";
 import { useAppSelector } from "redux/hooks";
 

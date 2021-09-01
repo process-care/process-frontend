@@ -1,5 +1,5 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import ICondition from "interfaces/form/condition";
+import ICondition from "types/form/condition";
 import React from "react";
 import { Circle } from "@chakra-ui/react";
 

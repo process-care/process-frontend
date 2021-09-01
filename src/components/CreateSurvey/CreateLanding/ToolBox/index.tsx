@@ -5,7 +5,7 @@ import { t } from "static/createLanding";
 import { LandingForm } from "./Form/landingForm";
 import { useAppSelector } from "redux/hooks";
 import { AboutForm } from "./Form/aboutForm";
-import { ILanding } from "interfaces/landing";
+import { ILanding } from "types/landing";
 
 interface Props {
   data: ILanding;

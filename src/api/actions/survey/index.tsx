@@ -16,15 +16,10 @@ import { optimisticUpdate } from "api/optimisiticUpdate";
 import ISurvey, { ISurveyRes, ISurveysRes } from "types/survey";
 import { API_URL } from "constants/api";
 
-export const useAddSurvey: any = (): UseMutationResult<
-  Partial<ISurvey>,
-  Error
-> =>
+export const useAddSurvey: any = (): UseMutationResult<ISurvey, Error> =>
   useMutation<ISurvey, Error, any>(
-    async (description: ISurvey) =>
-      await request(API_URL, ADD_SURVEY, {
-        description,
-      }),
+    async (values: Partial<ISurvey>) =>
+      await request(API_URL, ADD_SURVEY, { values }),
     optimisticUpdate(["getSurvey"])
   );
 

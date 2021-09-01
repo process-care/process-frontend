@@ -9,6 +9,8 @@ export default interface ISurvey {
   description: string;
   pages: IPage[];
   landing?: ILanding;
+  title: string;
+  slug: string;
 }
 
 export interface ISurveyRes {

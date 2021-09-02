@@ -42,7 +42,7 @@ const routes: IRoute[] = [
   },
   {
     name: "Portail process",
-    path: "/portail",
+    path: "/",
     component: <Portail />,
     exact: true,
   },

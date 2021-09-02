@@ -60,6 +60,25 @@ export const GET_SURVEY = gql`
   }
 `;
 
+export const GET_SURVEY_STATS = gql`
+  query getSurveyStats($id: ID!) {
+    surveyStats(id: $id) {
+      title
+      description
+      publishedAt
+      createdAt
+      statistics {
+        day { visits, consented, completed }
+        week { visits, consented, completed }
+        month { visits, consented, completed }
+        semester { visits, consented, completed }
+        year { visits, consented, completed }
+        all { visits, consented, completed }
+      }
+    }
+  }
+`;
+
 export const UPDATE_SURVEY = gql`
   mutation updateSurvey($id: ID!, $data: editSurveyInput) {
     updateSurvey(input: { where: { id: $id }, data: $data }) {

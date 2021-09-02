@@ -1,6 +1,7 @@
 import { request } from "graphql-request";
 import {
   GET_SURVEY,
+  GET_SURVEY_STATS,
   GET_SURVEYS,
   DELETE_SURVEY,
   ADD_SURVEY,
@@ -29,6 +30,16 @@ export const useGetSurvey = (id: string): UseQueryResult<ISurveyRes, Error> =>
     ["getSurvey", id],
     () =>
       request(API_URL, GET_SURVEY, {
+        id,
+      }),
+    { enabled: !!id }
+  );
+
+  export const useGetSurveyStats: any = (id: string) =>
+  useQuery(
+    ["getSurveyStats", id],
+    () =>
+      request(API_URL, GET_SURVEY_STATS, {
         id,
       }),
     { enabled: !!id }

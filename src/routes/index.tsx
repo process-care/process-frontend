@@ -41,15 +41,15 @@ const routes: IRoute[] = [
     exact: true,
   },
   {
-    name: "Landing page",
-    path: "/:slug",
-    component: <Landing />,
-    exact: true,
-  },
-  {
     name: "Portail process",
     path: "/portail",
     component: <Portail />,
+    exact: true,
+  },
+  {
+    name: "Landing page",
+    path: "/survey/:slug",
+    component: <Landing />,
     exact: true,
   },
 ];

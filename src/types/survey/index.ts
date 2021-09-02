@@ -11,6 +11,7 @@ export default interface ISurvey {
   landing?: ILanding;
   title: string;
   slug: string;
+  status: "draft" | "pending" | "closed" | "archived";
 }
 
 export interface ISurveyRes {
@@ -18,5 +19,5 @@ export interface ISurveyRes {
 }
 
 export interface ISurveysRes {
-  surveys: ISurvey;
+  surveys: ISurvey[];
 }

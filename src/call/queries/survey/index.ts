@@ -24,6 +24,10 @@ export const GET_SURVEYS = gql`
       participations {
         id
       }
+      landing {
+        id
+        color_theme
+      }
       createdAt
     }
   }

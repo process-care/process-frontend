@@ -4,7 +4,7 @@ import { Box, Flex } from "@chakra-ui/react";
 
 import routes from "routes";
 
-const mainRoutes = ["/connexion", "/survey/create", "/dashboard", "/portail"];
+const mainRoutes = ["/connexion", "/survey/create", "/dashboard", "/"];
 
 const MainMenu: React.FC = () => {
   return (

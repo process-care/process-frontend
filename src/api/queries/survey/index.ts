@@ -56,6 +56,21 @@ export const GET_SURVEY = gql`
   }
 `;
 
+export const UPDATE_SURVEY = gql`
+  mutation updateSurvey($id: ID!, $data: editSurveyInput) {
+    updateSurvey(input: { where: { id: $id }, data: $data }) {
+      survey {
+        id
+        title
+        slug
+        landing {
+          id
+        }
+      }
+    }
+  }
+`;
+
 export const DELETE_SURVEY = gql`
   mutation deleteSurvey($id: ID!) {
     deleteSurvey(input: { where: { id: $id } }) {

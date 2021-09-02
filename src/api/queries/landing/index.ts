@@ -3,10 +3,10 @@ import { landingFragment } from "api/fragments";
 
 export const ADD_LANDING = gql`
   ${landingFragment}
-  mutation addLanding($values: PageInput) {
-    createLanding(input: { data: $values }) {
-      page {
-        ...pageFragment
+  mutation addLanding($data: LandingInput) {
+    createLanding(input: { data: $data }) {
+      landing {
+        ...landingFragment
       }
     }
   }

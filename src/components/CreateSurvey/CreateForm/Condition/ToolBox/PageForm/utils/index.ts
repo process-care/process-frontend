@@ -15,7 +15,7 @@ export const getNewOrder: any = (
     (page: IPage) => page.id === selected_page.id
   );
 
-  const { questions } = pages[current_page_idx];
+  const questions = pages[current_page_idx]?.questions;
   const length = questions?.length;
 
   if (questions && length && length > 0) {

@@ -68,7 +68,7 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
             isTruncated
             maxWidth="250px"
           >
-            {data?.survey?.description}
+            {data?.survey?.title}
           </Text>
           <Box pos="absolute" right="10px">
             <Button variant="roundedTransparent" mr={5}>

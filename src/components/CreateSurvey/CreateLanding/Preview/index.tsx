@@ -44,7 +44,7 @@ export const Preview: React.FC<Props> = ({ data }) => {
 
   return (
     <Box h="fit-content" backgroundColor="white" w="80%" mx="auto" mt="100px">
-      <Header theme={color_theme} logo={data.logo} />
+      <Header theme={color_theme} logo={data.logo} title={data.title} />
       <Content data={data} theme={color_theme} />
       {had_members && <Team members={data.members} />}
       <Footer data={data} />

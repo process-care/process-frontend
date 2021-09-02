@@ -4,6 +4,7 @@ import {
   GET_SURVEYS,
   DELETE_SURVEY,
   ADD_SURVEY,
+  UPDATE_SURVEY,
 } from "api/queries/survey";
 import { UPDATE_ORDER } from "api/queries/survey";
 import {
@@ -36,6 +37,16 @@ export const useGetSurvey = (id: string): UseQueryResult<ISurveyRes, Error> =>
 export const useGetSurveys = (): UseQueryResult<ISurveysRes, Error> =>
   useQuery<ISurveysRes, Error>("getSurveys", () =>
     request(API_URL, GET_SURVEYS)
+  );
+
+export const useUpdateSurvey = (): UseMutationResult<ISurvey, Error> =>
+  useMutation<ISurvey, Error, any>(
+    async ({ id, data }: { id: string; data: Partial<ISurvey> }) =>
+      await request(API_URL, UPDATE_SURVEY, {
+        id,
+        data,
+      }),
+    optimisticUpdate(["getSurvey"])
   );
 
 export const deleteSurvey: any = () =>

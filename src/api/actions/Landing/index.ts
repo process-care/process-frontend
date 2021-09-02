@@ -14,9 +14,9 @@ import { ILanding, ILandingRes } from "types/landing";
 
 export const useAddLanding = (): UseMutationResult<ILanding, Error> =>
   useMutation<ILanding, Error, any>(
-    async (values: Partial<ILanding>) =>
+    async (data: Partial<ILanding>) =>
       await request(API_URL, ADD_LANDING, {
-        values,
+        data,
       })
   );
 

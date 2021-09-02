@@ -25,7 +25,7 @@ export const Content: React.FC<Props> = ({ data, theme }) => {
   return (
     <Box>
       <Box
-        backgroundColor={theme?.base}
+        backgroundColor={theme?.base || "black"}
         py="70px"
         color="white"
         textAlign="left"
@@ -63,7 +63,10 @@ export const Content: React.FC<Props> = ({ data, theme }) => {
             }}
           ></Text>
           <Flex mt={10} justifyContent="space-between">
-            <Button variant="rounded" backgroundColor={theme?.button}>
+            <Button
+              variant="rounded"
+              backgroundColor={theme?.button || "brand.blue"}
+            >
               {t.cta_participate}
             </Button>
             <Button

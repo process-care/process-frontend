@@ -28,7 +28,7 @@ import {
   useDeleteCondition,
   useGetConditions,
   useUpdateCondition,
-} from "api/actions/formBuider/condition";
+} from "call/actions/formBuider/condition";
 
 export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
   const dispatch = useAppDispatch();

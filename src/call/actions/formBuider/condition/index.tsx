@@ -11,9 +11,9 @@ import {
   DELETE_CONDITION,
   GET_CONDITION,
   GET_CONDITIONS,
-} from "api/queries/formBuilder/condition";
+} from "call/queries/formBuilder/condition";
 
-import { optimisticUpdate } from "api/optimisiticUpdate";
+import { optimisticUpdate } from "call/optimisiticUpdate";
 import ICondition, { IConditionRes } from "types/form/condition";
 import { API_URL } from "constants/api";
 

@@ -5,15 +5,15 @@ import {
   DELETE_SURVEY,
   ADD_SURVEY,
   UPDATE_SURVEY,
-} from "api/queries/survey";
-import { UPDATE_ORDER } from "api/queries/survey";
+} from "call/queries/survey";
+import { UPDATE_ORDER } from "call/queries/survey";
 import {
   useMutation,
   UseMutationResult,
   useQuery,
   UseQueryResult,
 } from "react-query";
-import { optimisticUpdate } from "api/optimisiticUpdate";
+import { optimisticUpdate } from "call/optimisiticUpdate";
 import ISurvey, { ISurveyRes, ISurveysRes } from "types/survey";
 import { API_URL } from "constants/api";
 

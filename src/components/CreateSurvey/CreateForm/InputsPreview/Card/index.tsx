@@ -26,8 +26,8 @@ import { toogleDrawer } from "redux/slices/application";
 import { t } from "static/input";
 import { SvgHover } from "components/SvgHover";
 import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
-import { useDeleteQuestion } from "api/actions/formBuider/question";
-import { useUpdateOrder } from "api/actions/survey";
+import { useDeleteQuestion } from "call/actions/formBuider/question";
+import { useUpdateOrder } from "call/actions/survey";
 import ISurvey from "types/survey";
 
 interface CardProps {

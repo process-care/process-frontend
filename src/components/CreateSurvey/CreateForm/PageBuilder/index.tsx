@@ -10,7 +10,7 @@ import { ReactComponent as Add } from "./assets/add.svg";
 
 import { isInactive } from "./utils";
 import { SvgHover } from "components/SvgHover";
-import { useAddPage } from "api/actions/formBuider/page";
+import { useAddPage } from "call/actions/formBuider/page";
 import ISurvey from "types/survey";
 
 interface Props {

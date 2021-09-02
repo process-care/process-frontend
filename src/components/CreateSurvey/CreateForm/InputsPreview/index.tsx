@@ -9,10 +9,10 @@ import { Formik, Form } from "formik";
 import { Header } from "./Header";
 
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import { useGetQuestions } from "api/actions/formBuider/question";
+import { useGetQuestions } from "call/actions/formBuider/question";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
-import { useGetSurvey, useUpdateOrder } from "api/actions/survey";
+import { useGetSurvey, useUpdateOrder } from "call/actions/survey";
 
 export interface Item {
   id: number;

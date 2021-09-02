@@ -19,7 +19,7 @@ import { ReactComponent as Delete } from "assets/delete.svg";
 import { goTop } from "utils/application/scrollTo";
 import { useHistory } from "react-router-dom";
 import { ILanding } from "types/landing";
-import { useUpdateLanding } from "api/actions/landing";
+import { useUpdateLanding } from "call/actions/landing";
 
 interface Props {
   data: ILanding;

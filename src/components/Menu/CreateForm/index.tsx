@@ -6,7 +6,7 @@ import { ReactComponent as Back } from "./assets/back.svg";
 import { t } from "static/input";
 import { tooglePreview } from "redux/slices/application";
 import { Loader } from "components/Spinner";
-import { useGetSurvey } from "api/actions/survey";
+import { useGetSurvey } from "call/actions/survey";
 
 interface Props {
   isLanding?: boolean;

@@ -9,7 +9,7 @@ import { useHistory } from "react-router-dom";
 import { initialValues } from "./utils/initialValues";
 import { useAppDispatch } from "redux/hooks";
 import { ILanding } from "types/landing";
-import { useUpdateLanding } from "api/actions/landing";
+import { useUpdateLanding } from "call/actions/landing";
 
 interface Props {
   data: ILanding;

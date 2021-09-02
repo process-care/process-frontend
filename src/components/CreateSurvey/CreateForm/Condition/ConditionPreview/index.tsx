@@ -12,7 +12,7 @@ import {
   useAddCondition,
   useGetConditions,
   useUpdateCondition,
-} from "api/actions/formBuider/condition";
+} from "call/actions/formBuider/condition";
 import ICondition from "types/form/condition";
 import { Loader } from "components/Spinner";
 

@@ -18,7 +18,7 @@ import { ConditionPreview } from "components/CreateSurvey/CreateForm/Condition/C
 import { RightPart } from "components/Layout/RightPart";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
-import { useGetSurvey } from "api/actions/survey";
+import { useGetSurvey } from "call/actions/survey";
 
 export const CreateForm: React.FC<IRoute> = () => {
   // FIXME: Yup, these ignore are bad, need to be removed

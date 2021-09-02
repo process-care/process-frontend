@@ -6,9 +6,9 @@ import {
 } from "react-query";
 import { request } from "graphql-request";
 
-import { ADD_LANDING, GET_LANDING, UPDATE_LANDING } from "api/queries/landing";
+import { ADD_LANDING, GET_LANDING, UPDATE_LANDING } from "call/queries/landing";
 
-import { optimisticUpdate } from "api/optimisiticUpdate";
+import { optimisticUpdate } from "call/optimisiticUpdate";
 import { API_URL } from "constants/api";
 import { ILanding, ILandingRes } from "types/landing";
 

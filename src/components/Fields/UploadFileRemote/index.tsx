@@ -11,7 +11,7 @@ import React, { useCallback } from "react";
 import { ReactComponent as Delete } from "../assets/delete.svg";
 import { SvgHover } from "components/SvgHover";
 import { useFileHandlers } from "./hooks";
-import { UploadParams } from "api/actions/application";
+import { UploadParams } from "call/actions/application";
 
 // ---- TYPES
 

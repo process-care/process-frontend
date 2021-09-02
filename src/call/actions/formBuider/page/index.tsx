@@ -3,11 +3,11 @@ import {
   ADD_PAGE,
   UPDATE_PAGE,
   DELETE_PAGE,
-} from "api/queries/formBuilder/page";
+} from "call/queries/formBuilder/page";
 
 import IPage from "types/form/page";
 import { useMutation, UseMutationResult } from "react-query";
-import { optimisticUpdate } from "api/optimisiticUpdate";
+import { optimisticUpdate } from "call/optimisiticUpdate";
 import { API_URL } from "constants/api";
 
 export const useAddPage = (): UseMutationResult<IPage, Error> =>

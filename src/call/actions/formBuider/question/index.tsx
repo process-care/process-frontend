@@ -11,9 +11,9 @@ import {
   GET_QUESTIONS,
   DELETE_QUESTION,
   UPDATE_QUESTION,
-} from "api/queries/formBuilder/question";
+} from "call/queries/formBuilder/question";
 import IQuestion, { IQuestionsRes, IQuestionRes } from "types/form/question";
-import { optimisticUpdate } from "api/optimisiticUpdate";
+import { optimisticUpdate } from "call/optimisiticUpdate";
 import { API_URL } from "constants/api";
 
 export const useGetQuestion = (

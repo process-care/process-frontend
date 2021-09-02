@@ -1,5 +1,5 @@
 import { gql } from "graphql-request";
-import { questionFragment } from "api/fragments";
+import { questionFragment } from "call/fragments";
 
 export const GET_QUESTIONS = gql`
   ${questionFragment}

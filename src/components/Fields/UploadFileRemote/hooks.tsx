@@ -3,7 +3,7 @@ import {
   useDeleteFile,
   useUploadFileMultiple,
   useUploadFileSingle,
-} from "api/actions/application";
+} from "call/actions/application";
 import { useState } from "react";
 
 // ---- TYPES

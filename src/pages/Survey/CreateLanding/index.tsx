@@ -7,8 +7,8 @@ import { Menu } from "components/Menu/CreateForm";
 import { ToolBox } from "components/CreateSurvey/CreateLanding/ToolBox";
 import { Preview } from "components/CreateSurvey/CreateLanding/Preview";
 import { useAppSelector } from "redux/hooks";
-import { useGetSurvey } from "api/actions/survey";
-import { useGetLanding } from "api/actions/landing";
+import { useGetSurvey } from "call/actions/survey";
+import { useGetLanding } from "call/actions/landing";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 

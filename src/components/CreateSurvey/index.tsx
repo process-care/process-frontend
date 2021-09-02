@@ -3,9 +3,9 @@ import { Formik, Form } from "formik";
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { Textarea } from "components/Fields";
 
-import { useAddSurvey, useUpdateSurvey } from "api/actions/survey";
-import { useAddPage } from "api/actions/formBuider/page";
-import { useAddLanding } from "api/actions/landing";
+import { useAddSurvey, useUpdateSurvey } from "call/actions/survey";
+import { useAddPage } from "call/actions/formBuider/page";
+import { useAddLanding } from "call/actions/landing";
 
 import { createSurveySchema } from "./validationSchema";
 import { useHistory } from "react-router-dom";

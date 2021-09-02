@@ -8,9 +8,9 @@ import ICondition from "types/form/condition";
 import { authorizedInputTypes } from "./utils";
 import { t } from "static/input";
 import { InputBox } from "components/CreateSurvey/CreateForm/InputsPreview/InputBox";
-import { useGetQuestions } from "api/actions/formBuider/question";
-import { useUpdateCondition } from "api/actions/formBuider/condition";
-import { useGetSurvey } from "api/actions/survey";
+import { useGetQuestions } from "call/actions/formBuider/question";
+import { useUpdateCondition } from "call/actions/formBuider/condition";
+import { useGetSurvey } from "call/actions/survey";
 import { selectPage } from "redux/slices/formBuilder";
 import { DEV_SURVEY } from "constants/api";
 

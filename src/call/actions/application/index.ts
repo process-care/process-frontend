@@ -1,13 +1,13 @@
 import { request } from "graphql-request";
 
 import { useMutation, UseMutationResult } from "react-query";
-import { optimisticUpdate } from "api/optimisiticUpdate";
+import { optimisticUpdate } from "call/optimisiticUpdate";
 import { API_URL } from "constants/api";
 import {
   DELETE_FILE,
   UPLOAD_FILE_MULTIPLE,
   UPLOAD_FILE_SINGLE,
-} from "api/queries/application";
+} from "call/queries/application";
 
 // ---- TYPES
 

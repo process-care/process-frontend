@@ -1,6 +1,6 @@
 import { gql } from "graphql-request";
 
-import { pageFragment } from "api/fragments";
+import { pageFragment } from "call/fragments";
 
 export const ADD_PAGE = gql`
   ${pageFragment}

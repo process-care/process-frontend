@@ -5,7 +5,7 @@ import { Box, Container, Text } from "@chakra-ui/react";
 import { t } from "static/dashboard";
 import { Filters } from "components/Dashboard/Filters";
 import { Table } from "components/Table";
-import { useGetSurveys } from "api/actions/survey";
+import { useGetSurveys } from "call/actions/survey";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 import { ProjectMenu } from "components/Dashboard/ProjectMenu";

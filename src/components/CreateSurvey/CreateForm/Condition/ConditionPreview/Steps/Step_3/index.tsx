@@ -9,7 +9,7 @@ import { ReactComponent as Submit } from "./../../assets/submit.svg";
 import { ReactComponent as Check } from "./../../assets/check.svg";
 import { renderInput } from "./utils";
 import { checkIfMultiple } from "utils/formBuilder/input";
-import { useUpdateCondition } from "api/actions/formBuider/condition";
+import { useUpdateCondition } from "call/actions/formBuider/condition";
 
 interface Props {
   currentCondition: Partial<ICondition>;

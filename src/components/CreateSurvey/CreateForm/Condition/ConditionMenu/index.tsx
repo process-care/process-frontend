@@ -10,7 +10,7 @@ import ICondition from "types/form/condition";
 import {
   useDeleteCondition,
   useGetConditions,
-} from "api/actions/formBuider/condition";
+} from "call/actions/formBuider/condition";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 

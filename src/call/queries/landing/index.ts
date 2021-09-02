@@ -1,5 +1,5 @@
 import { gql } from "graphql-request";
-import { landingFragment } from "api/fragments";
+import { landingFragment } from "call/fragments";
 
 export const ADD_LANDING = gql`
   ${landingFragment}

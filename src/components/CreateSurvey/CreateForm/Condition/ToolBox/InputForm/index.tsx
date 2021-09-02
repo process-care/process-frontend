@@ -143,7 +143,7 @@ const InputForm: React.FC<Props> = ({ survey }) => {
                   <InputIcon type={selected_input.type} />
                   <Box ml={2}>
                     <Text variant="xsMedium">
-                      {survey.order.findIndex(
+                      {survey?.order?.findIndex(
                         (id: string) => id === selected_input.id
                       ) + 1}
                     </Text>

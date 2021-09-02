@@ -1,6 +1,17 @@
 import { gql } from "graphql-request";
 import { landingFragment } from "api/fragments";
 
+export const ADD_LANDING = gql`
+  ${landingFragment}
+  mutation addLanding($data: LandingInput) {
+    createLanding(input: { data: $data }) {
+      landing {
+        ...landingFragment
+      }
+    }
+  }
+`;
+
 export const GET_LANDING = gql`
   ${landingFragment}
   query getLanding($id: ID!) {

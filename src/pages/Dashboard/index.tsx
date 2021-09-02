@@ -14,6 +14,7 @@ import dayjs from "dayjs";
 
 export const Dashboard: React.FC<IRoute> = () => {
   const { data: surveys, isLoading, error } = useGetSurveys();
+  console.log(surveys);
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedSurvey, setSelectedSurvey] = useState<string>();

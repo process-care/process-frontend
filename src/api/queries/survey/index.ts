@@ -1,11 +1,12 @@
 import { gql } from "graphql-request";
 
 export const ADD_SURVEY = gql`
-  mutation addSurvey($description: SurveyInput) {
-    createSurvey(input: { data: $description }) {
+  mutation addSurvey($values: SurveyInput) {
+    createSurvey(input: { data: $values }) {
       survey {
         id
-        description
+        title
+        slug
       }
     }
   }
@@ -17,6 +18,8 @@ export const GET_SURVEYS = gql`
     surveys {
       id
       description
+      title
+      slug
       status
       participations {
         id
@@ -32,6 +35,8 @@ export const GET_SURVEY = gql`
       id
       description
       order
+      title
+      slug
       landing {
         id
       }
@@ -44,6 +49,21 @@ export const GET_SURVEY = gql`
           id
         }
         conditions {
+          id
+        }
+      }
+    }
+  }
+`;
+
+export const UPDATE_SURVEY = gql`
+  mutation updateSurvey($id: ID!, $data: editSurveyInput) {
+    updateSurvey(input: { where: { id: $id }, data: $data }) {
+      survey {
+        id
+        title
+        slug
+        landing {
           id
         }
       }

@@ -1,33 +1,95 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Formik, Form } from "formik";
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { Textarea } from "components/Fields";
 
-import { useAddSurvey } from "api/actions/survey";
+import { useAddSurvey, useUpdateSurvey } from "api/actions/survey";
+import { useAddPage } from "api/actions/formBuider/page";
+import { useAddLanding } from "api/actions/landing";
+
+import { createSurveySchema } from "./validationSchema";
+import { useHistory } from "react-router-dom";
+
+// STATIC
+
+const t = {
+  createLanding: "Créer une landing",
+  createForm: "Créer un formulaire",
+};
+
+interface Survey {
+  id?: string;
+  title: string;
+  slug?: string;
+  status?: string;
+}
 
 export const CreateSurveyForm: React.FC = () => {
   const { mutateAsync: addSurvey } = useAddSurvey();
+  const { mutateAsync: updateSurvey } = useUpdateSurvey();
 
-  const onChange = (event: React.FormEvent<HTMLFormElement>) => {
-    const target = event.target as HTMLFormElement;
-    console.log(target);
+  const { mutateAsync: addPage } = useAddPage();
+  const { mutateAsync: addLanding } = useAddLanding();
+
+  const [newSurvey, setNewSurvey] = React.useState<
+    Survey | Record<string, any>
+  >({});
+
+  const createSurvey = async (data: Survey) => {
+    const res = await addSurvey({
+      title: data.title,
+      slug: data.title,
+      status: "draft",
+    });
+
+    // create survey first page
+    await addPage({
+      name: `Page 1`,
+      is_locked: false,
+      short_name: `P1`,
+      survey: res.createSurvey.survey.id,
+    });
+
+    // create Landing
+    const landing: Record<string, any> = await addLanding({
+      title: res.createSurvey.survey.title,
+      survey: res.createSurvey.survey.id,
+    });
+
+    // update survey with landing id.
+    await updateSurvey({
+      id: res.createSurvey.survey.id,
+      data: { landing: landing.createLanding.landing.id },
+    });
+
+    setNewSurvey({
+      id: res.createSurvey.survey.id,
+      slug: res.createSurvey.survey.title,
+      title: res.createSurvey.survey.title,
+    });
   };
+
+  if (newSurvey.id) {
+    return <ActionButtons newSurvey={newSurvey} />;
+  }
+
   return (
     <Formik
       validateOnBlur={false}
-      initialValues={{ description: "" }}
+      initialValues={{ title: "" }}
       enableReinitialize
+      validationSchema={createSurveySchema}
       onSubmit={(data, { setSubmitting, validateForm }) => {
         validateForm(data);
         setSubmitting(true);
-        addSurvey(data.description);
+        createSurvey(data);
       }}
     >
-      {() => {
+      {({ isValid, isSubmitting, values }) => {
         return (
           <Box w="100%">
+            <p>{newSurvey.title}</p>
             <Form
-              onChange={(event) => onChange(event)}
               style={{
                 width: "100%",
                 display: "flex",
@@ -42,7 +104,7 @@ export const CreateSurveyForm: React.FC = () => {
                 flexDir="column"
               >
                 <Textarea
-                  id="description"
+                  id="title"
                   rows="small"
                   placeholder="Titre de l'enquête"
                   label="Renseigner le titre de l'enquête"
@@ -53,7 +115,12 @@ export const CreateSurveyForm: React.FC = () => {
                   placeholder="Url de l'enquête"
                   label="Renseigner l'url de l'enquête"
                 /> */}
-                <Button type="submit" isFullWidth mt="80px">
+                <Button
+                  type="submit"
+                  w="50%"
+                  mt="80px"
+                  isDisabled={!isValid || isSubmitting || values.title === ""}
+                >
                   Créer l'enquête !
                 </Button>
               </Flex>
@@ -64,3 +131,48 @@ export const CreateSurveyForm: React.FC = () => {
     </Formik>
   );
 };
+
+interface ActionButtonsProps {
+  newSurvey: Survey | Record<string, any>;
+}
+
+const ActionButtons: React.FC<ActionButtonsProps> = ({ newSurvey }) => {
+  const { id, title } = newSurvey;
+  const { goToLanding, goToForm } = useNavigator(id);
+
+  return (
+    <Box>
+      <p>Enquête : {title}</p>
+
+      <Box pt="80px" d="flex" justifyContent="center" w="100%" my="auto">
+        <Button h="400px" mr="50px" w="40%" onClick={goToLanding}>
+          {t.createLanding}
+        </Button>
+        <Button h="400px" w="40%" onClick={goToForm}>
+          {t.createForm}
+        </Button>
+      </Box>
+    </Box>
+  );
+};
+
+// HOOKS
+
+function useNavigator(surveyId: string) {
+  const history = useHistory();
+
+  // Take you to the landing editor
+  const goToLanding = useCallback(() => {
+    history.push(`/survey/${surveyId}/create/landing`);
+  }, [surveyId]);
+
+  // Take you to the form editor
+  const goToForm = useCallback(() => {
+    history.push(`/survey/${surveyId}/create/form`);
+  }, [surveyId]);
+
+  return {
+    goToLanding,
+    goToForm,
+  };
+}

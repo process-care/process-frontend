@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import IRoute from "types/routes/route";
-import { Box, Container, Text, Center } from "@chakra-ui/react";
-
+import { Box, Container, Text, Center, Flex, Button } from "@chakra-ui/react";
+import { useHistory } from "react-router";
 import { t } from "static/dashboard";
 import { Filters } from "components/Dashboard/Filters";
 import { Table } from "components/Table";
@@ -14,8 +14,7 @@ import dayjs from "dayjs";
 
 export const Dashboard: React.FC<IRoute> = () => {
   const { data: surveys, isLoading, error } = useGetSurveys();
-  console.log(surveys);
-
+  const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedSurvey, setSelectedSurvey] = useState<string>();
 
@@ -31,6 +30,7 @@ export const Dashboard: React.FC<IRoute> = () => {
   const [currentFilter, setCurrentFilter] = useState<string>(t.filters[0].id);
 
   const data = React.useMemo(() => surveys?.surveys, [surveys?.surveys]);
+  const goToCreateSurvey = () => history.push(`/survey/create`);
 
   const columns = React.useMemo(
     () =>
@@ -78,9 +78,15 @@ export const Dashboard: React.FC<IRoute> = () => {
     >
       <div className="background__grid">
         <Container textAlign="left" pt="9" maxW="90%">
-          <Text variant="xl" mb={7}>
-            {t.my_projects}
-          </Text>
+          <Flex justifyContent="space-between" alignItems="center">
+            <Text variant="xl" mb={7}>
+              {t.my_projects}
+            </Text>
+            <Button onClick={goToCreateSurvey} variant="roundedBlue">
+              {t.cta}
+            </Button>
+          </Flex>
+
           <Filters
             filters={t.filters}
             handleClick={(id) => setCurrentFilter(id)}

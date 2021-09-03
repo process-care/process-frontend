@@ -15,7 +15,7 @@ export const Layout: React.FC<Props> = ({ children }) => {
   const { pathname } = location;
 
   const renderMenu = () => {
-    const isSurveyPages = pathname.search("/create/") !== -1;
+    const isSurveyPages = pathname.search("/survey/") !== -1;
 
     if (pathname === "/dashboard") return <SimpleMenu />;
     if (pathname === "/") return <SimpleMenu isPortail />;

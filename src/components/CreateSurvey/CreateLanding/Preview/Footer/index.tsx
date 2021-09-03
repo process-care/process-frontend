@@ -3,6 +3,7 @@ import { Flex, Box, Button, Text, Container } from "@chakra-ui/react";
 import { ILanding } from "types/landing";
 import { t } from "static/createLanding";
 import { API_URL_ROOT } from "constants/api";
+import { NavLink } from "react-router-dom";
 
 interface Props {
   data: ILanding;
@@ -32,9 +33,11 @@ export const Footer: React.FC<Props> = ({ data }) => {
           <Button variant="link">mentions légales</Button>
         </Box>
       </Flex>
-      <Text textAlign="right" variant="xxs" p={4}>
-        {t.credits}
-      </Text>
+      <NavLink to="/">
+        <Text textAlign="right" variant="xxs" p={4}>
+          {t.credits}
+        </Text>
+      </NavLink>
     </>
   );
 };

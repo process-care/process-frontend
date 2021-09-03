@@ -42,5 +42,5 @@ export const Landing: React.FC<IRoute> = () => {
     );
   }
 
-  return <Preview data={landing.landing} />;
+  return <Preview data={landing.landing} isUserView />;
 };

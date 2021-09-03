@@ -9,9 +9,10 @@ import { ILanding } from "types/landing";
 
 interface Props {
   data: ILanding;
+  isUserView?: boolean;
 }
 
-export const Preview: React.FC<Props> = ({ data }) => {
+export const Preview: React.FC<Props> = ({ data, isUserView }) => {
   const big_placeholder =
     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et. <br/> <br/> quo velit tenetur labore at reprehenderit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.<br/> <br/> Blanditiis et, quo velit tenetur labore at reprehenderit.";
 
@@ -41,9 +42,15 @@ export const Preview: React.FC<Props> = ({ data }) => {
       </Box>
     );
   }
-
+  console.log(isUserView);
   return (
-    <Box h="fit-content" backgroundColor="white" w="80%" mx="auto" mt="100px">
+    <Box
+      h="fit-content"
+      backgroundColor="white"
+      w={isUserView ? "100%" : "80%"}
+      mx="auto"
+      mt={isUserView ? "20px" : "100px"}
+    >
       <Header theme={color_theme} logo={data.logo} title={data.title} />
       <Content data={data} theme={color_theme} />
       {had_members && <Team members={data.members} />}

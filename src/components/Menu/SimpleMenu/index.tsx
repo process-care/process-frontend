@@ -5,7 +5,11 @@ import { t } from "static/dashboard";
 import { ReactComponent as Logo } from "assets/logo.svg";
 import { NavLink } from "react-router-dom";
 
-export const DashboardMenu: React.FC = () => {
+interface Props {
+  isPortail?: boolean;
+}
+
+export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
   return (
     <Box
       py={3}
@@ -25,7 +29,7 @@ export const DashboardMenu: React.FC = () => {
       <NavLink to="/">
         <Logo />
       </NavLink>
-      <Text variant="baseline">{t.menu_title}</Text>
+      {!isPortail && <Text variant="baseline">{t.menu_title}</Text>}
       <Avatar
         name="C D"
         w="40px"

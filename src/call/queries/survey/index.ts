@@ -27,6 +27,7 @@ export const GET_SURVEYS = gql`
       landing {
         id
         color_theme
+        subtitle
       }
       createdAt
     }

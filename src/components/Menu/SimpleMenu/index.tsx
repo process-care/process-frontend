@@ -30,15 +30,17 @@ export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
         <Logo />
       </NavLink>
       {!isPortail && <Text variant="baseline">{t.menu_title}</Text>}
-      <Avatar
-        name="C D"
-        w="40px"
-        h="40px"
-        color="white"
-        fontSize="14px"
-        background="linear-gradient(rgba(194, 165, 249, 1),
+      <NavLink to="/dashboard">
+        <Avatar
+          name="C D"
+          w="40px"
+          h="40px"
+          color="white"
+          fontSize="14px"
+          background="linear-gradient(rgba(194, 165, 249, 1),
 rgba(0, 132, 255, 1))"
-      />
+        />
+      </NavLink>
     </Box>
   );
 };

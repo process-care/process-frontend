@@ -15,7 +15,11 @@ import { useHistory } from "react-router-dom";
 const t = {
   createLanding: "Créer une landing",
   createForm: "Créer un formulaire",
+  title: "Enquête :",
+  cta: "Créer l'enquête !",
 };
+
+//  TYPES
 
 interface Survey {
   id?: string;
@@ -24,10 +28,11 @@ interface Survey {
   status?: string;
 }
 
+// COMPONENT
+
 export const CreateSurveyForm: React.FC = () => {
   const { mutateAsync: addSurvey } = useAddSurvey();
   const { mutateAsync: updateSurvey } = useUpdateSurvey();
-
   const { mutateAsync: addPage } = useAddPage();
   const { mutateAsync: addLanding } = useAddLanding();
 
@@ -121,7 +126,7 @@ export const CreateSurveyForm: React.FC = () => {
                   mt="80px"
                   isDisabled={!isValid || isSubmitting || values.title === ""}
                 >
-                  Créer l'enquête !
+                  {t.cta}
                 </Button>
               </Flex>
             </Form>
@@ -142,7 +147,9 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ newSurvey }) => {
 
   return (
     <Box>
-      <p>Enquête : {title}</p>
+      <p>
+        {t.title} {title}
+      </p>
 
       <Box pt="80px" d="flex" justifyContent="center" w="100%" my="auto">
         <Button h="400px" mr="50px" w="40%" onClick={goToLanding}>

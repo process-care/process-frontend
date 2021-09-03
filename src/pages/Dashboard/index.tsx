@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import IRoute from "types/routes/route";
-import { Box, Container, Text } from "@chakra-ui/react";
+import { Box, Container, Text, Center } from "@chakra-ui/react";
 
 import { t } from "static/dashboard";
 import { Filters } from "components/Dashboard/Filters";
@@ -62,6 +62,10 @@ export const Dashboard: React.FC<IRoute> = () => {
 
   if (error) {
     return <Error error={error.message} />;
+  }
+
+  if (data?.length === 0) {
+    return <Center h="100vh">{t.noData}</Center>;
   }
 
   return (

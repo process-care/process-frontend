@@ -1,6 +1,7 @@
 export const t = {
   menu_title: "Tableau de Bord",
   my_projects: "Mes projets",
+  noData: "No surveys in your account",
   filters: [
     { label: "Tout voir", id: "all" },
     { label: "En cours", id: "in_progress" },

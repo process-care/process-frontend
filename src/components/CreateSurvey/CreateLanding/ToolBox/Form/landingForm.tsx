@@ -66,6 +66,7 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
       }}
     >
       {({ values, setFieldValue }) => {
+        console.log(values);
         // Handle wysiwyg change
         React.useEffect(() => {
           updateLanding({
@@ -163,7 +164,7 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
               <Text variant="currentBold" mt={9} mb={2}>
                 {t.content_label}
               </Text>
-              <Wysiwyg id="landing_content" simpleMode />
+              <Wysiwyg id="wysiwyg" simpleMode />
 
               <Container variant="hr" my={10} />
 

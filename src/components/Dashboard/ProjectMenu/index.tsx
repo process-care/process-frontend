@@ -4,15 +4,16 @@ import { Box, Button, Container, Flex, Tooltip, Text } from "@chakra-ui/react";
 import { API_URL_ROOT } from "constants/api";
 import { Filters } from "../Filters";
 import { useHistory } from "react-router-dom";
+import { useGetSurveyStats } from "call/actions/survey";
 
 // ---- STATICS
 
 const filters = [
-  { label: "24 h", id: "24h" },
-  { label: "7 jours", id: "7d" },
-  { label: "1 mois", id: "1m" },
-  { label: "6 mois", id: "6m" },
-  { label: "1 an", id: "1y" },
+  { label: "24 h", id: "day" },
+  { label: "7 jours", id: "week" },
+  { label: "1 mois", id: "month" },
+  { label: "6 mois", id: "semester" },
+  { label: "1 an", id: "year" },
   { label: "Max", id: "all" },
 ];
 
@@ -29,12 +30,16 @@ interface Props {
 export const ProjectMenu: React.FC<Props> = ({ isOpen, surveyId, onClose }) => {
   if (!isOpen || !surveyId) return <></>;
 
-  const { title, description, date, stepsLeft, stats, exportURL } =
+  const { title, description, date, stepsLeft, statistics, exportURL, isLoading } =
     useSurveyData(surveyId);
   const { goToLanding, goToForm, goToConsent } = useNavigator(surveyId);
 
   const [statFilter, setStatFilter] = useState(filters[0].id);
-  const selectedStats = stats[statFilter];
+
+  // We should be doing that much better :/
+  if (isLoading) return <div>Loading...</div>
+
+  const selectedStats = statistics[statFilter];
 
   return (
     // TODO: Use a % + max-width to limit growth on big screens
@@ -148,35 +153,21 @@ export const ProjectMenu: React.FC<Props> = ({ isOpen, surveyId, onClose }) => {
 
 // ---- HOOKS
 
-// TODO: Query backend for accurate data
 function useSurveyData(surveyId: string) {
+  const { data, isLoading } = useGetSurveyStats(surveyId);
   const exportURL = `${API_URL_ROOT}/surveys/${surveyId}/export`;
 
-  const title = "Test";
-  const description = "Lotem ipsum and then some.";
-  const date = new Date();
-
-  const stats: Record<
-    string,
-    { visits: number; consented: number; completed: number }
-  > = {
-    "24h": { visits: 22, consented: 3, completed: 2 },
-    "7d": { visits: 80, consented: 13, completed: 10 },
-    "1m": { visits: 153, consented: 27, completed: 25 },
-    "6m": { visits: 612, consented: 88, completed: 84 },
-    "1y": { visits: 1087, consented: 141, completed: 138 },
-    all: { visits: 1900, consented: 209, completed: 203 },
-  };
-
+  // TODO: compute this ?
   const stepsLeft = 2;
 
   return {
-    title,
-    description,
-    date,
+    title: data?.surveyStats?.title,
+    description: data?.surveyStats?.description,
+    date: new Date(data?.surveyStats?.publishedAt ?? data?.surveyStats?.createdAt),
     stepsLeft,
-    stats,
+    statistics: data?.surveyStats?.statistics,
     exportURL,
+    isLoading,
   };
 }
 

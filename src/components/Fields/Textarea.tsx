@@ -21,6 +21,7 @@ interface Props {
   p?: string | number;
   isCollapsed?: boolean;
   isDisabled?: boolean;
+  appearance?: "light";
 }
 export const CustomTextarea: React.FC<Props> = ({
   label,
@@ -33,8 +34,11 @@ export const CustomTextarea: React.FC<Props> = ({
   p,
   isCollapsed,
   isDisabled,
+  appearance,
 }) => {
   const [field, meta] = useField(id);
+  const isLight = appearance === "light";
+
   return (
     <FormControl
       isRequired={isRequired}
@@ -50,6 +54,12 @@ export const CustomTextarea: React.FC<Props> = ({
       {!isCollapsed && (
         <>
           <Textarea
+            variant={isLight ? "flushed" : "outline"}
+            paddingLeft={isLight ? "0" : "inherit"}
+            backgroundColor={isLight ? "white" : "inherit"}
+            fontSize={isLight ? "16px" : "inherit"}
+            _placeholder={{ color: "#9E9E9E", fontSize: "16px" }}
+            overflow="hidden"
             isDisabled={isDisabled}
             id={id}
             style={{ resize: "none" }}

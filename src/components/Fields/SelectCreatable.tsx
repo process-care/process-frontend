@@ -2,7 +2,7 @@ import React, { ReactElement } from "react";
 import { FormControl, FormHelperText, FormLabel } from "@chakra-ui/react";
 import { t } from "static/survey";
 import { useField, useFormikContext } from "formik";
-import Select from "react-select";
+import CreatableSelect from "react-select/creatable";
 
 interface Options {
   value: string | undefined;
@@ -57,11 +57,11 @@ const customStyles: Record<string, unknown> = {
   }),
   valueContainer: (provided: IProvided) => ({
     ...provided,
-    height: "40px",
+    minHeight: "40px",
   }),
 };
 
-export const CustomSelect: React.FC<Props> = ({
+export const CustomCreatableSelect: React.FC<Props> = ({
   label,
   helpText,
   placeholder,
@@ -73,22 +73,23 @@ export const CustomSelect: React.FC<Props> = ({
 }): ReactElement => {
   const [field, ,] = useField(id);
   const { setFieldValue } = useFormikContext();
+
   return (
     <FormControl id={id} textAlign="left">
       <FormLabel>{label}</FormLabel>
       {!isCollapsed && (
         <>
-          <Select
+          <CreatableSelect
             isMulti={isMulti}
             styles={customStyles}
             id={id}
+            name={id}
             isRequired={isRequired}
             placeholder={placeholder}
             noOptionsMessage={() => t.not_found}
             options={answers}
-            onChange={(value) => setFieldValue(field.name, value?.value)}
+            onChange={(value) => setFieldValue(field.name, value)}
             defaultValue={field.value}
-            value={{ label: field.value, value: field.value }}
           />
           <FormHelperText fontSize="xs">{helpText}</FormHelperText>
         </>

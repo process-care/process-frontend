@@ -1,53 +1,32 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Formik, Form } from "formik";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 
-import { useAddSurvey, useUpdateSurvey } from "call/actions/survey";
-import { useAddPage } from "call/actions/formBuider/page";
-import { useAddLanding } from "call/actions/landing";
-
 import { createSurveySchema } from "../validationSchema";
-import { useHistory } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "redux/hooks";
 
 import {
   initialState,
-  Survey,
   updateSurveyMeta,
   updateSurveyStep,
 } from "redux/slices/surveyBuilder";
 
 import { ReactComponent as Submit } from "./../assets/submit.svg";
-import { renderInputs } from "./utils";
-
-// STATIC
-
-const t = {
-  createLanding: "Créer une landing",
-  createForm: "Créer un formulaire",
-  title: "Enquête :",
-  cta: "Créer l'enquête !",
-};
-
-//  TYPES
+import { checkValidity, renderInputs } from "./utils";
+import { useUpdateSurvey } from "call/actions/survey";
 
 // COMPONENT
 
 export const CreateSurveyForm: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { survey, step } = useAppSelector((state) => state.surveyBuilder);
-
-  const { mutateAsync: addSurvey } = useAddSurvey();
+  const { step, survey } = useAppSelector((state) => state.surveyBuilder);
   const { mutateAsync: updateSurvey } = useUpdateSurvey();
-  const { mutateAsync: addPage } = useAddPage();
-  const { mutateAsync: addLanding } = useAddLanding();
-
-  const [newSurvey, setNewSurvey] = React.useState<
-    Survey["survey"] | Record<string, any>
-  >({});
 
   const handleChange = (event: React.FormEvent<HTMLFormElement>) => {
     const target = event.target as HTMLFormElement;
+    const isSelectedField = target.id.includes("react-select");
+
+    if (isSelectedField) return false;
     dispatch(
       updateSurveyMeta({
         data: {
@@ -55,48 +34,38 @@ export const CreateSurveyForm: React.FC = () => {
         },
       })
     );
-    // const res = await addSurvey({
-    //   title: data.title,
-    //   slug: data.title,
-    //   status: "draft",
-    // });
-    // // create survey first page
-    // await addPage({
-    //   name: `Page 1`,
-    //   is_locked: false,
-    //   short_name: `P1`,
-    //   survey: res.createSurvey.survey.id,
-    // });
-    // // create Landing
-    // const landing: Record<string, any> = await addLanding({
-    //   title: res.createSurvey.survey.title,
-    //   survey: res.createSurvey.survey.id,
-    // });
-    // // update survey with landing id.
-    // await updateSurvey({
-    //   id: res.createSurvey.survey.id,
-    //   data: { landing: landing.createLanding.landing.id },
-    // });
-    // setNewSurvey({
-    //   id: res.createSurvey.survey.id,
-    //   slug: res.createSurvey.survey.title,
-    //   title: res.createSurvey.survey.title,
-    // });
   };
 
   const Navigatebtn = ({
     step,
     previous,
+    values,
+    errors,
   }: {
     step: number;
     previous?: boolean;
+    errors: any;
+    values: any;
   }) => {
     const target = step + (previous ? -1 : +1);
+
+    const handleClick = (target: number) => {
+      dispatch(updateSurveyStep(target));
+      // Update backend
+      console.log(values, survey);
+      delete values.id;
+      updateSurvey({
+        id: survey.id,
+        data: values,
+      });
+    };
+
     return (
       <Box mr="40px">
         <Button
+          disabled={!previous && !checkValidity(step, values, errors)}
           transform={previous ? "rotate(180deg)" : "inherit"}
-          onClick={() => navigateTo(target)}
+          onClick={() => handleClick(target)}
           variant="ghost"
           right="0"
           _hover={{
@@ -111,14 +80,6 @@ export const CreateSurveyForm: React.FC = () => {
     );
   };
 
-  const navigateTo = (step: number) => {
-    dispatch(updateSurveyStep(step));
-  };
-
-  if (newSurvey.id) {
-    return <ActionButtons newSurvey={newSurvey} />;
-  }
-
   return (
     <>
       <Formik
@@ -128,10 +89,9 @@ export const CreateSurveyForm: React.FC = () => {
         onSubmit={(data, { setSubmitting, validateForm }) => {
           validateForm(data);
           setSubmitting(true);
-          // createSurvey(data);
         }}
       >
-        {({ isValid, isSubmitting, values }) => {
+        {({ values, errors }) => {
           useEffect(() => {
             if (values.language) {
               dispatch(
@@ -190,9 +150,16 @@ export const CreateSurveyForm: React.FC = () => {
                     justifyContent="space-between"
                     w="100%"
                   >
-                    {step !== 1 && <Navigatebtn step={step} previous />}
+                    {step !== 1 && (
+                      <Navigatebtn
+                        step={step}
+                        previous
+                        errors={errors}
+                        values={values}
+                      />
+                    )}
                     {renderInputs(step)}
-                    <Navigatebtn step={step} />
+                    <Navigatebtn step={step} errors={errors} values={values} />
                   </Flex>
                 </Flex>
               </Form>
@@ -203,64 +170,3 @@ export const CreateSurveyForm: React.FC = () => {
     </>
   );
 };
-
-// <Button
-//   variant="ghost"
-//   left="0"
-//   _hover={{
-//     backgroundColor: "transparent",
-//     left: "3px",
-//     transition: "all 300ms",
-//   }}
-//   type="submit"
-//   isDisabled={!isValid || isSubmitting || values.title === ""}
-// >
-//   <Submit />
-// </Button>;
-
-interface ActionButtonsProps {
-  newSurvey: Survey["survey"] | Record<string, any>;
-}
-
-const ActionButtons: React.FC<ActionButtonsProps> = ({ newSurvey }) => {
-  const { id, title } = newSurvey;
-  const { goToLanding, goToForm } = useNavigator(id);
-
-  return (
-    <Box>
-      <p>
-        {t.title} {title}
-      </p>
-
-      <Box pt="80px" d="flex" justifyContent="center" w="100%" my="auto">
-        <Button h="400px" mr="50px" w="40%" onClick={goToLanding}>
-          {t.createLanding}
-        </Button>
-        <Button h="400px" w="40%" onClick={goToForm}>
-          {t.createForm}
-        </Button>
-      </Box>
-    </Box>
-  );
-};
-
-// HOOKS
-
-function useNavigator(surveyId: string) {
-  const history = useHistory();
-
-  // Take you to the landing editor
-  const goToLanding = useCallback(() => {
-    history.push(`/survey/${surveyId}/create/landing`);
-  }, [surveyId]);
-
-  // Take you to the form editor
-  const goToForm = useCallback(() => {
-    history.push(`/survey/${surveyId}/create/form`);
-  }, [surveyId]);
-
-  return {
-    goToLanding,
-    goToForm,
-  };
-}

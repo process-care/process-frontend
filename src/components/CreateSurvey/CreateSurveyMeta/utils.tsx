@@ -1,13 +1,9 @@
-import {
-  Box,
-  Flex,
-  HStack,
-  Tag,
-  TagCloseButton,
-  TagLabel,
-} from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { Select, Textarea } from "components/Fields";
 import { CustomCreatableSelect } from "components/Fields/SelectCreatable";
+import { FormikErrors } from "formik";
+import { Survey } from "redux/slices/surveyBuilder";
+import { ActionButtons } from "./ActionButtons";
 
 // TODO : Get the list of all the tags from the backend
 const t = {
@@ -32,7 +28,7 @@ const t = {
   ],
 };
 
-export const renderInputs = (step: number) => {
+export const renderInputs = (step: number): React.ReactElement => {
   switch (step) {
     case 1:
       return (
@@ -45,29 +41,7 @@ export const renderInputs = (step: number) => {
         />
       );
       break;
-
     case 2:
-      return (
-        <Select
-          id="language"
-          placeholder="Langue de l'enquête"
-          label="Renseigner la langue de l'enquête"
-          answers={t.language}
-        />
-      );
-      break;
-    case 3:
-      return (
-        <Textarea
-          appearance="light"
-          id="email"
-          rows="small"
-          placeholder="Email de contact"
-          label="Renseigner l'email de contact"
-        />
-      );
-      break;
-    case 4:
       return (
         <Box
           border="1px solid black"
@@ -82,13 +56,16 @@ export const renderInputs = (step: number) => {
             rows="large"
             placeholder="Description"
             label="Renseigner la description de l'enquête"
+            helpText="250 signes max"
           />
         </Box>
       );
       break;
-    case 5:
+
+    case 3:
       return (
         <CustomCreatableSelect
+          name="keywords"
           id="keywords"
           placeholder="Mots clés publics"
           label="Renseigner les mots clés"
@@ -98,21 +75,72 @@ export const renderInputs = (step: number) => {
         />
       );
       break;
+    case 4:
+      return (
+        <Select
+          id="language"
+          placeholder="Langue de l'enquête"
+          label="Renseigner la langue de l'enquête"
+          answers={t.language}
+        />
+      );
+      break;
+    case 5:
+      return (
+        <Textarea
+          appearance="light"
+          id="email"
+          rows="small"
+          placeholder="Email de contact"
+          label="Renseigner l'email de contact"
+        />
+      );
+      break;
     case 6:
-      return <p>Multiple Btns</p>;
-    // case 6:
-    //   return (
-    //     <CustomCreatableSelect
-    //       id="categories"
-    //       placeholder="Catégories du projet"
-    //       label="Renseigner les catégories"
-    //       helpText="Mots clés servants uniquement à l’organisation du tableau de bord. Séparer les mots avec une virgule."
-    //       answers={t.categories}
-    //       isMulti
-    //     />
-    //   );
+      return (
+        <CustomCreatableSelect
+          name="categories"
+          id="categories"
+          placeholder="Catégories du projet"
+          label="Renseigner les catégories"
+          helpText="Mots clés servants uniquement à l’organisation du tableau de bord. Séparer les mots avec une virgule."
+          answers={t.categories}
+          isMulti
+        />
+      );
+      break;
+
+    case 7:
+      return <ActionButtons />;
     default:
-      return null;
+      return <></>;
       break;
   }
+};
+
+export const checkValidity = (
+  step: number,
+  values: Survey["survey"],
+  errors: FormikErrors<Survey["survey"]>
+): boolean => {
+  const { title, description, keywords, language, email, categories } = values;
+
+  if (step === 1) {
+    return title !== "" && !errors.title;
+  }
+  if (step === 2) {
+    return description !== "" && !errors.description;
+  }
+  if (step === 3 && keywords) {
+    return keywords?.length !== 0 && !errors.keywords;
+  }
+  if (step === 4) {
+    return language !== "" && !errors.language;
+  }
+  if (step === 5) {
+    return email !== "" && !errors.email;
+  }
+  if (step === 6 && categories) {
+    return categories?.length !== 0 && !errors.categories;
+  } else return false;
 };

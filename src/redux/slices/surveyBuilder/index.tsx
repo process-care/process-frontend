@@ -5,8 +5,8 @@ export interface Survey {
     id?: string;
     title?: string;
     language?: string;
-    description?: string;
     email?: string;
+    description?: string;
     keywords?: string[];
     categories?: string[];
   };

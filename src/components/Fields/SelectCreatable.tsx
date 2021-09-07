@@ -18,6 +18,7 @@ interface Props {
   isRequired?: boolean;
   isMulti?: boolean;
   isCollapsed?: boolean;
+  name: string;
 }
 
 interface IProvided {
@@ -69,10 +70,13 @@ export const CustomCreatableSelect: React.FC<Props> = ({
   id,
   answers,
   isCollapsed,
-  isMulti = false,
+  isMulti,
+  name,
 }): ReactElement => {
   const [field, ,] = useField(id);
   const { setFieldValue } = useFormikContext();
+
+  console.log(field);
 
   return (
     <FormControl id={id} textAlign="left">
@@ -80,16 +84,16 @@ export const CustomCreatableSelect: React.FC<Props> = ({
       {!isCollapsed && (
         <>
           <CreatableSelect
-            isMulti={isMulti}
             styles={customStyles}
             id={id}
-            name={id}
+            name={name}
             isRequired={isRequired}
             placeholder={placeholder}
             noOptionsMessage={() => t.not_found}
             options={answers}
             onChange={(value) => setFieldValue(field.name, value)}
             defaultValue={field.value}
+            isMulti={isMulti}
           />
           <FormHelperText fontSize="xs">{helpText}</FormHelperText>
         </>

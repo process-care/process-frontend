@@ -42,7 +42,6 @@ export const Preview: React.FC<Props> = ({ data, isUserView }) => {
       </Box>
     );
   }
-  console.log(data);
   return (
     <Box
       h="fit-content"

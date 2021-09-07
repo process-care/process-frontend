@@ -6,11 +6,7 @@ import { useDispatch } from "react-redux";
 import { t } from "static/dashboard";
 import { Filters } from "components/Dashboard/Filters";
 import { Table } from "components/Table";
-import {
-  useAddSurvey,
-  useGetSurveys,
-  useUpdateSurvey,
-} from "call/actions/survey";
+import { useAddSurvey, useGetSurveys } from "call/actions/survey";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 import { ProjectMenu } from "components/Dashboard/ProjectMenu";
@@ -19,15 +15,12 @@ import dayjs from "dayjs";
 import { v4 as uuidv4 } from "uuid";
 
 import { useAddPage } from "call/actions/formBuider/page";
-import { useAddLanding } from "call/actions/landing";
 import { updateSurveyMeta } from "redux/slices/surveyBuilder";
 
 export const Dashboard: React.FC<IRoute> = () => {
   const { data: surveys, isLoading, error } = useGetSurveys();
   const { mutateAsync: addSurvey } = useAddSurvey();
-  const { mutateAsync: updateSurvey } = useUpdateSurvey();
   const { mutateAsync: addPage } = useAddPage();
-  const { mutateAsync: addLanding } = useAddLanding();
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -62,16 +55,7 @@ export const Dashboard: React.FC<IRoute> = () => {
       short_name: `P1`,
       survey: res.createSurvey.survey.id,
     });
-    // create Landing
-    const landing: Record<string, any> = await addLanding({
-      title: res.createSurvey.survey.title,
-      survey: res.createSurvey.survey.id,
-    });
-    // update survey with landing id.
-    await updateSurvey({
-      id: res.createSurvey.survey.id,
-      data: { landing: landing.createLanding.landing.id },
-    });
+
     // update survey id in redux store.
     dispatch(
       updateSurveyMeta({

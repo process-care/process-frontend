@@ -1,4 +1,6 @@
 import { Box, Button } from "@chakra-ui/react";
+import { useAddLanding } from "call/actions/landing";
+import { useUpdateSurvey } from "call/actions/survey";
 import React, { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { useAppSelector } from "redux/hooks";
@@ -14,7 +16,7 @@ const t = {
 
 export const ActionButtons: React.FC = () => {
   const { survey } = useAppSelector((state) => state.surveyBuilder);
-  const { goToLanding, goToForm } = useNavigator(survey.id);
+  const { goToLanding, goToForm } = useNavigator(survey);
 
   return (
     <Box>
@@ -35,18 +37,30 @@ export const ActionButtons: React.FC = () => {
 
 // HOOKS
 
-function useNavigator(surveyId: Survey["survey"]["id"]) {
+function useNavigator(survey: Survey["survey"]) {
   const history = useHistory();
-
+  const { mutateAsync: updateSurvey } = useUpdateSurvey();
+  const { mutateAsync: addLanding } = useAddLanding();
+  const { id, title } = survey;
   // Take you to the landing editor
-  const goToLanding = useCallback(() => {
-    history.push(`/survey/${surveyId}/create/landing`);
-  }, [surveyId]);
+  const goToLanding = useCallback(async () => {
+    // create Landing
+    const landing: Record<string, any> = await addLanding({
+      title,
+      survey: id,
+    });
+    // update survey with landing id.
+    await updateSurvey({
+      id,
+      data: { landing: landing.createLanding.landing.id },
+    });
+    history.push(`/survey/${id}/create/landing`);
+  }, [id]);
 
   // Take you to the form editor
   const goToForm = useCallback(() => {
-    history.push(`/survey/${surveyId}/create/form`);
-  }, [surveyId]);
+    history.push(`/survey/${id}/create/form`);
+  }, [id]);
 
   return {
     goToLanding,

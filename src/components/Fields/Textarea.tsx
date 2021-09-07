@@ -55,10 +55,13 @@ export const CustomTextarea: React.FC<Props> = ({
         <>
           <Textarea
             variant={isLight ? "flushed" : "outline"}
-            paddingLeft={isLight ? "0" : "inherit"}
+            paddingLeft={isLight ? "0" : "10px"}
             backgroundColor={isLight ? "white" : "inherit"}
-            fontSize={isLight ? "16px" : "inherit"}
-            _placeholder={{ color: "#9E9E9E", fontSize: "16px" }}
+            fontSize={isLight ? "16px" : "12px"}
+            _placeholder={{
+              color: "#9E9E9E",
+              fontSize: isLight ? "16px" : "12px",
+            }}
             overflow="hidden"
             isDisabled={isDisabled}
             id={id}

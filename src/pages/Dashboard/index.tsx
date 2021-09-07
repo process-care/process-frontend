@@ -2,19 +2,35 @@ import React, { useState } from "react";
 import IRoute from "types/routes/route";
 import { Box, Container, Text, Center, Flex, Button } from "@chakra-ui/react";
 import { useHistory } from "react-router";
+import { useDispatch } from "react-redux";
 import { t } from "static/dashboard";
 import { Filters } from "components/Dashboard/Filters";
 import { Table } from "components/Table";
-import { useGetSurveys } from "call/actions/survey";
+import {
+  useAddSurvey,
+  useGetSurveys,
+  useUpdateSurvey,
+} from "call/actions/survey";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 import { ProjectMenu } from "components/Dashboard/ProjectMenu";
 
 import dayjs from "dayjs";
+import { v4 as uuidv4 } from "uuid";
+
+import { useAddPage } from "call/actions/formBuider/page";
+import { useAddLanding } from "call/actions/landing";
+import { updateSurveyMeta } from "redux/slices/surveyBuilder";
 
 export const Dashboard: React.FC<IRoute> = () => {
   const { data: surveys, isLoading, error } = useGetSurveys();
+  const { mutateAsync: addSurvey } = useAddSurvey();
+  const { mutateAsync: updateSurvey } = useUpdateSurvey();
+  const { mutateAsync: addPage } = useAddPage();
+  const { mutateAsync: addLanding } = useAddLanding();
   const history = useHistory();
+  const dispatch = useDispatch();
+
   const [isOpen, setIsOpen] = useState(false);
   const [selectedSurvey, setSelectedSurvey] = useState<string>();
 
@@ -30,7 +46,42 @@ export const Dashboard: React.FC<IRoute> = () => {
   const [currentFilter, setCurrentFilter] = useState<string>(t.filters[0].id);
 
   const data = React.useMemo(() => surveys?.surveys, [surveys?.surveys]);
-  const goToCreateSurvey = () => history.push(`/survey/create`);
+  const uuid = uuidv4();
+
+  const createSurvey = async () => {
+    const res = await addSurvey({
+      // Title will be overide by the user in the next step.
+      title: `temporyTitle-${uuid}`,
+      slug: `temporySlug-${uuid}`,
+      status: "draft",
+    });
+    // create survey first page
+    await addPage({
+      name: `Page 1`,
+      is_locked: false,
+      short_name: `P1`,
+      survey: res.createSurvey.survey.id,
+    });
+    // create Landing
+    const landing: Record<string, any> = await addLanding({
+      title: res.createSurvey.survey.title,
+      survey: res.createSurvey.survey.id,
+    });
+    // update survey with landing id.
+    await updateSurvey({
+      id: res.createSurvey.survey.id,
+      data: { landing: landing.createLanding.landing.id },
+    });
+    // update survey id in redux store.
+    dispatch(
+      updateSurveyMeta({
+        data: {
+          id: res.createSurvey.survey.id,
+        },
+      })
+    );
+    history.push(`/survey/create`);
+  };
 
   const columns = React.useMemo(
     () =>
@@ -82,7 +133,7 @@ export const Dashboard: React.FC<IRoute> = () => {
             <Text variant="xl" mb={7}>
               {t.my_projects}
             </Text>
-            <Button onClick={goToCreateSurvey} variant="roundedBlue">
+            <Button onClick={createSurvey} variant="roundedBlue">
               {t.cta}
             </Button>
           </Flex>

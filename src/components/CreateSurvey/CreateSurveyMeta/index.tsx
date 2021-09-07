@@ -52,7 +52,6 @@ export const CreateSurveyForm: React.FC = () => {
     const handleClick = (target: number) => {
       dispatch(updateSurveyStep(target));
       // Update backend
-      console.log(values, survey);
       delete values.id;
       updateSurvey({
         id: survey.id,

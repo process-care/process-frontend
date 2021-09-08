@@ -5,22 +5,33 @@ import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { createSurveySchema } from "../validationSchema";
 import { useAppSelector, useAppDispatch } from "redux/hooks";
 
-import {
-  initialState,
-  updateSurveyMeta,
-  updateSurveyStep,
-} from "redux/slices/surveyBuilder";
+import { updateSurveyMeta, updateSurveyStep } from "redux/slices/surveyBuilder";
 
 import { ReactComponent as Submit } from "./../assets/submit.svg";
 import { checkValidity, renderInputs } from "./utils";
-import { useUpdateSurvey } from "call/actions/survey";
+import { useUpdateSurvey, useGetSurveyMetadas } from "call/actions/survey";
+
+import { useParams } from "react-router-dom";
 
 // COMPONENT
 
 export const CreateSurveyForm: React.FC = () => {
+  // FIXME: Yup, these ignore are bad, need to be removed
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const { slug: surveyId } = useParams();
+
   const dispatch = useAppDispatch();
   const { step, survey } = useAppSelector((state) => state.surveyBuilder);
   const { mutateAsync: updateSurvey } = useUpdateSurvey();
+  const { data, isLoading } = useGetSurveyMetadas(surveyId);
+
+  useEffect(() => {
+    if (data && !isLoading) {
+      dispatch(updateSurveyMeta({ data: data.survey }));
+    }
+    dispatch(updateSurveyStep(1));
+  }, [isLoading]);
 
   const handleChange = (event: React.FormEvent<HTMLFormElement>) => {
     const target = event.target as HTMLFormElement;
@@ -52,9 +63,8 @@ export const CreateSurveyForm: React.FC = () => {
     const handleClick = (target: number) => {
       dispatch(updateSurveyStep(target));
       // Update backend
-      delete values.id;
       updateSurvey({
-        id: survey.id,
+        id: surveyId,
         data: values,
       });
     };
@@ -82,7 +92,7 @@ export const CreateSurveyForm: React.FC = () => {
   return (
     <>
       <Formik
-        initialValues={initialState.survey}
+        initialValues={survey}
         enableReinitialize
         validationSchema={createSurveySchema}
         onSubmit={(data, { setSubmitting, validateForm }) => {
@@ -149,7 +159,7 @@ export const CreateSurveyForm: React.FC = () => {
                     justifyContent="space-between"
                     w="100%"
                   >
-                    {step !== 1 && (
+                    {step !== 1 && step !== 8 && (
                       <Navigatebtn
                         step={step}
                         previous
@@ -158,7 +168,13 @@ export const CreateSurveyForm: React.FC = () => {
                       />
                     )}
                     {renderInputs(step)}
-                    <Navigatebtn step={step} errors={errors} values={values} />
+                    {step !== 8 && (
+                      <Navigatebtn
+                        step={step}
+                        errors={errors}
+                        values={values}
+                      />
+                    )}
                   </Flex>
                 </Flex>
               </Form>

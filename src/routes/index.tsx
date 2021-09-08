@@ -18,7 +18,7 @@ const routes: IRoute[] = [
   },
   {
     name: "Création d'enquète",
-    path: "/survey/create",
+    path: "/survey/:slug/create/metadatas",
     component: <CreateSurvey />,
     exact: true,
   },

@@ -30,14 +30,22 @@ interface Props {
 export const ProjectMenu: React.FC<Props> = ({ isOpen, surveyId, onClose }) => {
   if (!isOpen || !surveyId) return <></>;
 
-  const { title, description, date, stepsLeft, statistics, exportURL, isLoading } =
-    useSurveyData(surveyId);
-  const { goToLanding, goToForm, goToConsent } = useNavigator(surveyId);
+  const {
+    title,
+    description,
+    date,
+    stepsLeft,
+    statistics,
+    exportURL,
+    isLoading,
+  } = useSurveyData(surveyId);
+  const { goToLanding, goToForm, goToConsent, goToSurveyMetadatas } =
+    useNavigator(surveyId);
 
   const [statFilter, setStatFilter] = useState(filters[0].id);
 
   // We should be doing that much better :/
-  if (isLoading) return <div>Loading...</div>
+  if (isLoading) return <div>Loading...</div>;
 
   const selectedStats = statistics[statFilter];
 
@@ -89,19 +97,25 @@ export const ProjectMenu: React.FC<Props> = ({ isOpen, surveyId, onClose }) => {
           <ActionButton
             top
             right
-            label={"Voir la page d'accueil"}
+            label={"Modifier la page d'accueil"}
             onClick={goToLanding}
           />
           <ActionButton
             top
             right
-            label={"Voir le questionnaire"}
+            label={"Modifier le questionnaire"}
             onClick={goToForm}
           />
           <ActionButton
             top
-            label={"Voir le consentement"}
+            label={"Modifier le consentement"}
             onClick={goToConsent}
+          />
+          <ActionButton
+            top
+            left
+            label={"Modifier les données de l'enquête"}
+            onClick={goToSurveyMetadatas}
           />
         </Flex>
         <Flex>
@@ -163,7 +177,9 @@ function useSurveyData(surveyId: string) {
   return {
     title: data?.surveyStats?.title,
     description: data?.surveyStats?.description,
-    date: new Date(data?.surveyStats?.publishedAt ?? data?.surveyStats?.createdAt),
+    date: new Date(
+      data?.surveyStats?.publishedAt ?? data?.surveyStats?.createdAt
+    ),
     stepsLeft,
     statistics: data?.surveyStats?.statistics,
     exportURL,
@@ -187,10 +203,14 @@ function useNavigator(surveyId: string) {
   // TODO: Is this really a thing ? Is it supposed to show the uploaded consent file ?
   const goToConsent = useCallback(nyi, [surveyId]);
 
+  const goToSurveyMetadatas = useCallback(() => {
+    history.push(`/survey/${surveyId}/create/metadatas`);
+  }, [surveyId]);
   return {
     goToLanding,
     goToForm,
     goToConsent,
+    goToSurveyMetadatas,
   };
 }
 

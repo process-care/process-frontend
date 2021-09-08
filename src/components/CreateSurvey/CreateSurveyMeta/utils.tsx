@@ -43,6 +43,17 @@ export const renderInputs = (step: number): React.ReactElement => {
       break;
     case 2:
       return (
+        <Textarea
+          appearance="light"
+          id="slug"
+          rows="small"
+          placeholder="Url de l'enquête"
+          label="Valider ou modifier l'url de l'enquête"
+        />
+      );
+      break;
+    case 3:
+      return (
         <Box
           border="1px solid black"
           w="100%"
@@ -62,7 +73,7 @@ export const renderInputs = (step: number): React.ReactElement => {
       );
       break;
 
-    case 3:
+    case 4:
       return (
         <CustomCreatableSelect
           name="keywords"
@@ -75,7 +86,7 @@ export const renderInputs = (step: number): React.ReactElement => {
         />
       );
       break;
-    case 4:
+    case 5:
       return (
         <Select
           id="language"
@@ -85,7 +96,7 @@ export const renderInputs = (step: number): React.ReactElement => {
         />
       );
       break;
-    case 5:
+    case 6:
       return (
         <Textarea
           appearance="light"
@@ -96,7 +107,7 @@ export const renderInputs = (step: number): React.ReactElement => {
         />
       );
       break;
-    case 6:
+    case 7:
       return (
         <CustomCreatableSelect
           name="categories"
@@ -110,7 +121,7 @@ export const renderInputs = (step: number): React.ReactElement => {
       );
       break;
 
-    case 7:
+    case 8:
       return <ActionButtons />;
     default:
       return <></>;
@@ -123,24 +134,28 @@ export const checkValidity = (
   values: Survey["survey"],
   errors: FormikErrors<Survey["survey"]>
 ): boolean => {
-  const { title, description, keywords, language, email, categories } = values;
+  const { title, description, keywords, language, email, categories, slug } =
+    values;
 
   if (step === 1) {
     return title !== "" && !errors.title;
   }
   if (step === 2) {
+    return slug !== "" && !errors.slug;
+  }
+  if (step === 3) {
     return description !== "" && !errors.description;
   }
-  if (step === 3 && keywords) {
+  if (step === 4 && keywords) {
     return keywords?.length !== 0 && !errors.keywords;
   }
-  if (step === 4) {
+  if (step === 5) {
     return language !== "" && !errors.language;
   }
-  if (step === 5) {
+  if (step === 6) {
     return email !== "" && !errors.email;
   }
-  if (step === 6 && categories) {
+  if (step === 7 && categories) {
     return categories?.length !== 0 && !errors.categories;
   } else return false;
 };

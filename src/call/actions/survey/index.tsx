@@ -3,6 +3,7 @@ import {
   GET_SURVEY,
   GET_SURVEY_STATS,
   GET_SURVEYS,
+  GET_SURVEY_METADATAS,
   DELETE_SURVEY,
   ADD_SURVEY,
   UPDATE_SURVEY,
@@ -17,6 +18,7 @@ import {
 import { optimisticUpdate } from "call/optimisiticUpdate";
 import ISurvey, { ISurveyRes, ISurveysRes } from "types/survey";
 import { API_URL } from "constants/api";
+import { Survey } from "redux/slices/surveyBuilder";
 
 export const useAddSurvey: any = (): UseMutationResult<ISurvey, Error> =>
   useMutation<ISurvey, Error, any>(
@@ -35,7 +37,19 @@ export const useGetSurvey = (id: string): UseQueryResult<ISurveyRes, Error> =>
     { enabled: !!id }
   );
 
-  export const useGetSurveyStats: any = (id: string) =>
+export const useGetSurveyMetadas = (
+  id: string
+): UseQueryResult<Survey, Error> =>
+  useQuery<Survey, Error>(
+    ["getSurveyMetadas", id],
+    () =>
+      request(API_URL, GET_SURVEY_METADATAS, {
+        id,
+      }),
+    { enabled: !!id }
+  );
+
+export const useGetSurveyStats: any = (id: string) =>
   useQuery(
     ["getSurveyStats", id],
     () =>

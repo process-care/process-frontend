@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import IRoute from "types/routes/route";
 import { Box, Container, Text, Center, Flex, Button } from "@chakra-ui/react";
 import { useHistory } from "react-router";
-import { useDispatch } from "react-redux";
 import { t } from "static/dashboard";
 import { Filters } from "components/Dashboard/Filters";
 import { Table } from "components/Table";
@@ -15,14 +14,12 @@ import dayjs from "dayjs";
 import { v4 as uuidv4 } from "uuid";
 
 import { useAddPage } from "call/actions/formBuider/page";
-import { updateSurveyMeta } from "redux/slices/surveyBuilder";
 
 export const Dashboard: React.FC<IRoute> = () => {
   const { data: surveys, isLoading, error } = useGetSurveys();
   const { mutateAsync: addSurvey } = useAddSurvey();
   const { mutateAsync: addPage } = useAddPage();
   const history = useHistory();
-  const dispatch = useDispatch();
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedSurvey, setSelectedSurvey] = useState<string>();
@@ -56,15 +53,7 @@ export const Dashboard: React.FC<IRoute> = () => {
       survey: res.createSurvey.survey.id,
     });
 
-    // update survey id in redux store.
-    dispatch(
-      updateSurveyMeta({
-        data: {
-          id: res.createSurvey.survey.id,
-        },
-      })
-    );
-    history.push(`/survey/create`);
+    history.push(`/survey/${res.createSurvey.survey.id}/create/metadatas`);
   };
 
   const columns = React.useMemo(

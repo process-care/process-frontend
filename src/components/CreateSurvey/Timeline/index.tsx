@@ -10,34 +10,39 @@ const t = {
   steps: [
     {
       id: "title",
-      label: "Titre du projet",
+      label: "Titre de l'enquête",
       pos: 1,
     },
     {
-      id: "description",
-      label: "Description du projet",
+      id: "slug",
+      label: "Url de l'enquête",
       pos: 2,
+    },
+    {
+      id: "description",
+      label: "Description de l'enquête",
+      pos: 3,
     },
     {
       id: "keywords",
       label: "Mot-clé publics",
-      pos: 3,
+      pos: 4,
     },
 
     {
       id: "language",
-      label: "Langue du projet",
-      pos: 4,
+      label: "Langue de l'enquête",
+      pos: 5,
     },
     {
       id: "email",
       label: "Mail de contact",
-      pos: 5,
+      pos: 6,
     },
     {
       id: "categories",
       label: "Categories du projet",
-      pos: 6,
+      pos: 7,
     },
   ],
 };
@@ -63,7 +68,7 @@ const RenderSteps: React.FC<Props> = ({ survey, step }) => {
 
   const Step = ({ data }: { data: IStep }) => {
     const { id, label, pos } = data;
-    const isCompleted = survey[id]?.length !== 0;
+    const isCompleted = survey[id] !== null;
     const isCurrent = pos === step;
     const value = survey[id];
 
@@ -109,7 +114,7 @@ const RenderSteps: React.FC<Props> = ({ survey, step }) => {
           {typeof value === "string" ? (
             <Text variant="current">{value}</Text>
           ) : (
-            value?.map((item: any, index) => {
+            value?.map((item: any, index: number) => {
               return (
                 <Text variant="current" key={index}>
                   {item.value}

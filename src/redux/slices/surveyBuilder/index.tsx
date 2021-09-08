@@ -1,22 +1,24 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
+import slugify from "slugify";
 export interface Survey {
   survey: {
-    id?: string;
-    title?: string;
+    id: string;
+    slug: string;
+    title: string;
     language?: string;
     email?: string;
     description?: string;
     keywords?: string[];
     categories?: string[];
+    landing?: string;
   };
   step: number;
-  had_consent?: boolean;
+  hadConsent?: boolean;
 }
 
 interface Update {
   data: {
-    [index: string]: string | number | string[];
+    [index: string]: any;
   };
 }
 
@@ -24,6 +26,7 @@ export const initialState: Survey = {
   survey: {
     id: "",
     title: "",
+    slug: "",
     language: "",
     description: "",
     email: "",
@@ -31,7 +34,7 @@ export const initialState: Survey = {
     categories: [],
   },
   step: 1,
-  had_consent: false,
+  hadConsent: false,
 };
 
 export const surveyBuilderSlice = createSlice({
@@ -39,7 +42,20 @@ export const surveyBuilderSlice = createSlice({
   initialState,
   reducers: {
     updateSurveyMeta: (state, action: PayloadAction<Update>) => {
-      state.survey = { ...state.survey, ...action.payload.data };
+      const { data } = action.payload;
+
+      state.survey = { ...state.survey, ...data };
+
+      // auto-generate slug
+      if (data.title) {
+        state.survey.slug = `/${slugify(data.title.toLowerCase(), {
+          strict: true,
+        })}`;
+      }
+      // force slug to begin with a /
+      if (data.slug !== undefined && data?.slug?.charAt(0) !== "/") {
+        state.survey.slug = `/${data.slug}`;
+      }
     },
     updateSurveyStep: (state, action: PayloadAction<number>) => {
       state.step = action.payload;

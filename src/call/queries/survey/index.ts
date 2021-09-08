@@ -42,6 +42,10 @@ export const GET_SURVEY = gql`
       order
       title
       slug
+      language
+      email
+      keywords
+      categories
       landing {
         id
       }
@@ -61,6 +65,24 @@ export const GET_SURVEY = gql`
   }
 `;
 
+export const GET_SURVEY_METADATAS = gql`
+  query getSurvey($id: ID!) {
+    survey(id: $id) {
+      id
+      title
+      description
+      language
+      email
+      keywords
+      categories
+      email
+      landing {
+        id
+      }
+    }
+  }
+`;
+
 export const GET_SURVEY_STATS = gql`
   query getSurveyStats($id: ID!) {
     surveyStats(id: $id) {
@@ -69,12 +91,36 @@ export const GET_SURVEY_STATS = gql`
       publishedAt
       createdAt
       statistics {
-        day { visits, consented, completed }
-        week { visits, consented, completed }
-        month { visits, consented, completed }
-        semester { visits, consented, completed }
-        year { visits, consented, completed }
-        all { visits, consented, completed }
+        day {
+          visits
+          consented
+          completed
+        }
+        week {
+          visits
+          consented
+          completed
+        }
+        month {
+          visits
+          consented
+          completed
+        }
+        semester {
+          visits
+          consented
+          completed
+        }
+        year {
+          visits
+          consented
+          completed
+        }
+        all {
+          visits
+          consented
+          completed
+        }
       }
     }
   }

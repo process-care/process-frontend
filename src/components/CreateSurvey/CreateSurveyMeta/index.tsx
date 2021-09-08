@@ -89,10 +89,23 @@ export const CreateSurveyForm: React.FC = () => {
     );
   };
 
+  // remove unused values
+  const formatInitialValues = () => {
+    return {
+      title: survey.title,
+      slug: survey.slug,
+      email: survey.email,
+      language: survey.language,
+      description: survey.description,
+      keywords: survey.keywords,
+      categories: survey.categories,
+    };
+  };
+
   return (
     <>
       <Formik
-        initialValues={survey}
+        initialValues={formatInitialValues()}
         enableReinitialize
         validationSchema={createSurveySchema}
         onSubmit={(data, { setSubmitting, validateForm }) => {

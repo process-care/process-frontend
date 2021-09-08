@@ -71,7 +71,6 @@ const RenderSteps: React.FC<Props> = ({ survey, step }) => {
     const isCompleted = survey[id] !== null;
     const isCurrent = pos === step;
     const value = survey[id];
-    console.log(survey);
 
     return (
       <Box
@@ -115,7 +114,7 @@ const RenderSteps: React.FC<Props> = ({ survey, step }) => {
           {typeof value === "string" ? (
             <Text variant="current">{value}</Text>
           ) : (
-            value?.map((item: any, index) => {
+            value?.map((item: any, index: number) => {
               return (
                 <Text variant="current" key={index}>
                   {item.value}

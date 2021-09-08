@@ -68,6 +68,7 @@ export const GET_SURVEY = gql`
 export const GET_SURVEY_METADATAS = gql`
   query getSurvey($id: ID!) {
     survey(id: $id) {
+      id
       title
       description
       language
@@ -75,6 +76,9 @@ export const GET_SURVEY_METADATAS = gql`
       keywords
       categories
       email
+      landing {
+        id
+      }
     }
   }
 `;

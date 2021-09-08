@@ -8,6 +8,7 @@ import { Dashboard } from "pages/Dashboard";
 import { Landing } from "pages/Landing";
 import { Portail } from "pages/Portail";
 import { CreateLanding } from "pages/Survey/CreateLanding";
+import { CreateConsent } from "pages/Survey/CreateConsent";
 
 const routes: IRoute[] = [
   {
@@ -26,6 +27,12 @@ const routes: IRoute[] = [
     name: "Création de landing page",
     path: "/survey/:slug/create/landing",
     component: <CreateLanding />,
+    exact: true,
+  },
+  {
+    name: "Création du consentement",
+    path: "/survey/:slug/create/consent",
+    component: <CreateConsent />,
     exact: true,
   },
   {

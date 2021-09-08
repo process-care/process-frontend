@@ -2,15 +2,16 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import slugify from "slugify";
 export interface Survey {
   survey: {
-    slug?: string;
-    title?: string;
+    id: string;
+    slug: string;
+    title: string;
     language?: string;
     email?: string;
     description?: string;
     keywords?: string[];
     categories?: string[];
+    landing?: string;
   };
-  surveyId: string;
   step: number;
   hadConsent?: boolean;
 }
@@ -23,6 +24,7 @@ interface Update {
 
 export const initialState: Survey = {
   survey: {
+    id: "",
     title: "",
     slug: "",
     language: "",
@@ -31,7 +33,6 @@ export const initialState: Survey = {
     keywords: [],
     categories: [],
   },
-  surveyId: "",
   step: 1,
   hadConsent: false,
 };

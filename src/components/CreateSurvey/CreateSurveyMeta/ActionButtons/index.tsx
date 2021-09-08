@@ -9,6 +9,7 @@ import { ReactComponent as Picto } from "./assets/add.svg";
 
 const t = {
   createLanding: "Créer la page d'accueil",
+  editLanding: "Modifier la page d'accueil",
   createForm: "Créer le questionnaire",
   createConsent: "éditer la page de consentement",
   title: "Enquête :",
@@ -16,9 +17,9 @@ const t = {
 };
 
 export const ActionButtons: React.FC = () => {
-  const { survey, surveyId } = useAppSelector((state) => state.surveyBuilder);
-  const { goToLanding, goToForm } = useNavigator(survey, surveyId);
-
+  const { survey } = useAppSelector((state) => state.surveyBuilder);
+  const { goToLanding, goToForm, goToConsent } = useNavigator(survey);
+  const { landing } = survey;
   const Btn = ({
     handleClick,
     label,
@@ -69,9 +70,12 @@ export const ActionButtons: React.FC = () => {
   return (
     <Box>
       <Box pt="80px" d="flex" justifyContent="space-between" w="100%" my="auto">
-        <Btn label={t.createLanding} handleClick={goToLanding} />
+        <Btn
+          label={landing ? t.editLanding : t.createLanding}
+          handleClick={goToLanding}
+        />
         <Btn label={t.createForm} handleClick={goToForm} />
-        <Btn label={t.createConsent} handleClick={goToForm} />
+        <Btn label={t.createConsent} handleClick={goToConsent} />
       </Box>
     </Box>
   );
@@ -79,33 +83,42 @@ export const ActionButtons: React.FC = () => {
 
 // HOOKS
 
-function useNavigator(survey: Survey["survey"], surveyId: string) {
+function useNavigator(survey: Survey["survey"]) {
   const history = useHistory();
   const { mutateAsync: updateSurvey } = useUpdateSurvey();
   const { mutateAsync: addLanding } = useAddLanding();
-  const { title } = survey;
+  const { title, id, landing } = survey;
+
   // Take you to the landing editor
   const goToLanding = useCallback(async () => {
-    // create Landing
-    const landing: Record<string, any> = await addLanding({
-      title,
-      survey: surveyId,
-    });
-    // update survey with landing id.
-    await updateSurvey({
-      surveyId,
-      data: { landing: landing.createLanding.landing.id },
-    });
-    history.push(`/survey/${surveyId}/create/landing`);
-  }, [surveyId]);
+    // If the landing is not created yet, create it
+    if (!landing) {
+      const newLanding: Record<string, any> = await addLanding({
+        title,
+        survey: id,
+      });
+      // update survey with landing id.
+      await updateSurvey({
+        id,
+        data: { landing: newLanding.createLanding.landing.id },
+      });
+    }
+    history.push(`/survey/${id}/create/landing`);
+  }, [id]);
 
   // Take you to the form editor
   const goToForm = useCallback(() => {
-    history.push(`/survey/${surveyId}/create/form`);
-  }, [surveyId]);
+    history.push(`/survey/${id}/create/form`);
+  }, [id]);
+
+  // Take you to the consent page
+  const goToConsent = useCallback(() => {
+    history.push(`/survey/${id}/create/consent`);
+  }, [id]);
 
   return {
     goToLanding,
     goToForm,
+    goToConsent,
   };
 }

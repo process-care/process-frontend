@@ -162,7 +162,7 @@ export const UploadFile: React.FC<Props> = ({
       <FormErrorMessage mt={1} justifyContent="flex-end" fontSize="10px">
         {meta.error}
       </FormErrorMessage>
-      <FormHelperText mt={1} lineHeight={1.4} fontSize="xs" color="gray.400">
+      <FormHelperText mt={2} lineHeight={1.4} fontSize="xs" color="gray.400">
         {helpText}
       </FormHelperText>
     </FormControl>

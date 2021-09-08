@@ -14,6 +14,7 @@ export interface Survey {
   };
   step: number;
   hadConsent?: boolean;
+  consentement?: { id: string; name: ""; url: "" };
 }
 
 interface Update {
@@ -60,10 +61,13 @@ export const surveyBuilderSlice = createSlice({
     updateSurveyStep: (state, action: PayloadAction<number>) => {
       state.step = action.payload;
     },
+    updateConsentMeta: (state, action: PayloadAction<any>) => {
+      state.consentement = action.payload;
+    },
   },
 });
 
-export const { updateSurveyMeta, updateSurveyStep } =
+export const { updateSurveyMeta, updateSurveyStep, updateConsentMeta } =
   surveyBuilderSlice.actions;
 
 export default surveyBuilderSlice.reducer;

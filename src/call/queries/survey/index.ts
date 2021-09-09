@@ -49,6 +49,9 @@ export const GET_SURVEY = gql`
       landing {
         id
       }
+      consentement {
+        url
+      }
       pages {
         id
         name

@@ -21,6 +21,7 @@ interface BaseProps {
   isDisabled?: boolean;
   onChange: (msg: string) => void;
   target: UploadParams;
+  accept: string;
 }
 
 type SingleContent = BaseProps & {
@@ -51,7 +52,8 @@ export const UploadFileRemote: React.FC<Props> = (props: Props) => {
   // Kept in one object: `if (props.multiple && props.content) props.content[0].id` <- WORKS (content is well guessed)
   //
   // We can still destructure the rest for convenience. The object is really just needed for the safe guard guessing.
-  const { target, multiple, onChange, isDisabled, label, helpText } = props;
+  const { target, multiple, onChange, isDisabled, label, helpText, accept } =
+    props;
 
   const hiddenFileInput = React.useRef<HTMLInputElement>(null);
   const { handleChange, handleDelete, error } = useFileHandlers(
@@ -79,7 +81,7 @@ export const UploadFileRemote: React.FC<Props> = (props: Props) => {
             placeholder="upload"
             ref={hiddenFileInput}
             onChange={handleChange}
-            accept=".png,.jpeg"
+            accept={accept}
             multiple={multiple}
           />
         </Box>

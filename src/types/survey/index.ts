@@ -5,7 +5,7 @@ import { ILanding } from "types/landing";
 export default interface ISurvey {
   id: string;
   order: IQuestion["id"][];
-  consentement?: File;
+  consentement?: any;
   description: string;
   pages: IPage[];
   landing?: ILanding;

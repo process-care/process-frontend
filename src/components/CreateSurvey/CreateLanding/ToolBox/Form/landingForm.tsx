@@ -170,6 +170,7 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
 
               <Text variant="currentBold">{t.add_image}</Text>
               <UploadFileRemote
+                accept=".png,.jpeg"
                 target={targets.cover}
                 content={values.cover}
                 label={t.image_cta}
@@ -212,6 +213,7 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
 
               <Text variant="currentBold">{t.logos_label}</Text>
               <UploadFileRemote
+                accept=".png,.jpeg"
                 target={targets.partners}
                 content={values.partners}
                 label={t.logos_cta}

@@ -7,7 +7,7 @@ interface Props {
 
 export const PdfPreview: React.FC<Props> = ({ url }) => {
   const [numPages, setNumPages] = useState(1);
-  const [pageNumber, setPageNumber] = useState(1);
+  const [pageNumber] = useState(1);
 
   const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
     setNumPages(numPages);

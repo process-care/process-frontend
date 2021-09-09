@@ -25,7 +25,7 @@ export const CreateConsent: React.FC = () => {
   const { slug: surveyId } = useParams();
   const { data: survey } = useGetSurvey(surveyId);
   const dispatch = useDispatch();
-
+  const url = survey?.survey?.consentement?.url;
   console.log(survey);
   return (
     <Box d="flex" justifyContent="space-around" w="100%" overflow="hidden">
@@ -33,9 +33,7 @@ export const CreateConsent: React.FC = () => {
         <Menu />
         <div className="background__grid">
           <Center h="80vh">
-            <PdfPreview
-              url={`${API_URL_ROOT}${survey?.survey.consentement.url}`}
-            />
+            {url ? <PdfPreview url={`${API_URL_ROOT}${url}`} /> : ""}
           </Center>
         </div>
       </Box>

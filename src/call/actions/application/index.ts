@@ -36,18 +36,18 @@ export const useUploadFileSingle = (): UseMutationResult<any, Error> =>
   useMutation<any, Error, any>(
     async (params: UploadSingleParams) =>
       await request(API_URL, UPLOAD_FILE_SINGLE, params),
-    optimisticUpdate(["getLanding"])
+    optimisticUpdate(["getLanding", "getSurvey"])
   );
 
 export const useUploadFileMultiple = (): UseMutationResult<any, Error> =>
   useMutation<any, Error, any>(
     async (params: UploadMultipleParams) =>
       await request(API_URL, UPLOAD_FILE_MULTIPLE, params),
-    optimisticUpdate(["getLanding"])
+    optimisticUpdate(["getLanding", "getSurvey"])
   );
 
 export const useDeleteFile = (): UseMutationResult<any, Error> =>
   useMutation<any, Error, any>(
     async (id: string) => await request(API_URL, DELETE_FILE, { id }),
-    optimisticUpdate(["getLanding"])
+    optimisticUpdate(["getLanding", "getSurvey"])
   );

@@ -87,8 +87,8 @@ export const UploadFileRemote: React.FC<Props> = (props: Props) => {
         </Box>
 
         {!props.multiple && props.content && (
-          <Flex>
-            <Text variant="xsMedium" isTruncated maxWidth="150px">
+          <Flex alignItems="center">
+            <Text variant="xsMedium" isTruncated maxWidth="90px">
               {props.content.name}
             </Text>
             <DeleteButton id={props.content.id} handleDelete={handleDelete} />
@@ -115,7 +115,7 @@ export const UploadFileRemote: React.FC<Props> = (props: Props) => {
         {error}
       </FormErrorMessage>
 
-      <FormHelperText mt={1} lineHeight={1.4} fontSize="xs" color="gray.400">
+      <FormHelperText mt={3} lineHeight={1.4} fontSize="xs" color="gray.400">
         {helpText}
       </FormHelperText>
     </FormControl>

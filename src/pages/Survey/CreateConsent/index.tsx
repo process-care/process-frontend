@@ -1,9 +1,9 @@
-import { Box, Center, Container, Text } from "@chakra-ui/react";
+import { Box, Center, Container, Text, Button } from "@chakra-ui/react";
 import React from "react";
 import { Menu } from "components/Menu/CreateSurvey";
 import { Form, Formik } from "formik";
 import { useGetSurvey } from "call/actions/survey";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 
 import { useDispatch } from "react-redux";
 import { updateConsentMeta } from "redux/slices/surveyBuilder";
@@ -15,7 +15,9 @@ import { PdfPreview } from "./PdfPreview";
 const t = {
   label: "Importer un fichier de consentement",
   cta: "Importer votre fichier",
-  format: "Format Pdf",
+  format: "Format .pdf",
+  submit: "Valider la page de consentement",
+  cancel: "Annuler",
 };
 
 export const CreateConsent: React.FC = () => {
@@ -26,15 +28,35 @@ export const CreateConsent: React.FC = () => {
   const { data: survey } = useGetSurvey(surveyId);
   const dispatch = useDispatch();
   const url = survey?.survey?.consentement?.url;
-  console.log(survey);
+  const history = useHistory();
+
+  const goToDashboard = () => {
+    history.push("/dashboard");
+  };
   return (
-    <Box d="flex" justifyContent="space-around" w="100%" overflow="hidden">
+    <Box
+      d="flex"
+      justifyContent="space-around"
+      w="100%"
+      overflow="hidden"
+      h="100vh"
+    >
       <Box w="100%">
         <Menu />
         <div className="background__grid">
-          <Center h="80vh">
-            {url ? <PdfPreview url={`${API_URL_ROOT}${url}`} /> : ""}
-          </Center>
+          <Box
+            h="100%"
+            d="flex"
+            justifyContent="center"
+            overflow="scroll"
+            pt="40px"
+          >
+            {url ? (
+              <PdfPreview url={`${API_URL_ROOT}${url}`} />
+            ) : (
+              <Box w="450px" h="80%" backgroundColor="gray.100" />
+            )}
+          </Box>
         </div>
       </Box>
       <Container variant="rightPart">
@@ -68,22 +90,27 @@ export const CreateConsent: React.FC = () => {
               return (
                 <Form style={{ textAlign: "left", width: "80%" }}>
                   <Text variant="currentBold">{t.label}</Text>
-
                   <UploadFileRemote
                     accept=".pdf,.doc"
                     target={targets.consentement}
                     content={values}
                     label={t.cta}
-                    helpText=""
+                    helpText={t.format}
                     onChange={(e) => console.log(e)}
                   />
 
-                  {/* <UploadFile
-                    onChange={(e) => console.log(e)}
-                    label={t.cta}
-                    id="consentement"
-                    helpText={t.format}
-                  /> */}
+                  <Box pos="fixed" bottom="50px" d="flex" flexDir="column">
+                    <Button
+                      variant="rounded"
+                      backgroundColor="black"
+                      onClick={goToDashboard}
+                    >
+                      {t.submit}
+                    </Button>
+                    <Button variant="link" onClick={goToDashboard} mt="10px">
+                      {t.cancel}
+                    </Button>
+                  </Box>
                 </Form>
               );
             }}

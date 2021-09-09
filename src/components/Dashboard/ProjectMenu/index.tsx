@@ -200,8 +200,9 @@ function useNavigator(surveyId: string) {
     history.push(`/survey/${surveyId}/create/form`);
   }, [surveyId]);
 
-  // TODO: Is this really a thing ? Is it supposed to show the uploaded consent file ?
-  const goToConsent = useCallback(nyi, [surveyId]);
+  const goToConsent = useCallback(() => {
+    history.push(`/survey/${surveyId}/create/consent`);
+  }, [surveyId]);
 
   const goToSurveyMetadatas = useCallback(() => {
     history.push(`/survey/${surveyId}/create/metadatas`);

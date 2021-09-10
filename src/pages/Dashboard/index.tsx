@@ -19,6 +19,7 @@ import { Survey } from "redux/slices/surveyBuilder";
 import { useAppSelector } from "redux/hooks";
 import { toogleDrawer } from "redux/slices/application";
 import { useDispatch } from "react-redux";
+import { ProfilForm } from "components/Dashboard/ProfilForm";
 
 export const Dashboard: React.FC<IRoute> = () => {
   const { data: surveys, isLoading, error } = useGetSurveys();
@@ -94,6 +95,11 @@ export const Dashboard: React.FC<IRoute> = () => {
     dispatch(toogleDrawer());
   };
 
+  const closeDrawer = () => {
+    history.push("/dashboard");
+    handleDrawer();
+  };
+
   React.useEffect(() => {
     if (isProfilPage) {
       handleDrawer();
@@ -123,8 +129,8 @@ export const Dashboard: React.FC<IRoute> = () => {
       <Drawer
         isOpen={isProfilPage && isOpen}
         size="md"
-        content={<p>Mon profil ...</p>}
-        onOverlayClick={handleDrawer}
+        content={<ProfilForm />}
+        onOverlayClick={closeDrawer}
       />
       <div className="background__grid">
         <Container textAlign="left" pt="9" maxW="90%">

@@ -1,10 +1,11 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 
 import { Box, Button, Container, Flex, Tooltip, Text } from "@chakra-ui/react";
 import { API_URL_ROOT } from "constants/api";
 import { Filters } from "../Filters";
-import { useHistory } from "react-router-dom";
 import { useGetSurveyStats } from "call/actions/survey";
+import { useNavigator } from "components/CreateSurvey/hooks";
+import { Survey } from "redux/slices/surveyBuilder";
 
 // ---- STATICS
 
@@ -21,14 +22,18 @@ const filters = [
 
 interface Props {
   isOpen: boolean;
-  surveyId?: string;
+  selectedSurvey?: Survey["survey"] | null;
   onClose: () => void;
 }
 
 // ---- COMPONENT
 
-export const ProjectMenu: React.FC<Props> = ({ isOpen, surveyId, onClose }) => {
-  if (!isOpen || !surveyId) return <></>;
+export const ProjectMenu: React.FC<Props> = ({
+  isOpen,
+  selectedSurvey,
+  onClose,
+}) => {
+  if (!isOpen || !selectedSurvey) return <></>;
 
   const {
     title,
@@ -38,10 +43,9 @@ export const ProjectMenu: React.FC<Props> = ({ isOpen, surveyId, onClose }) => {
     statistics,
     exportURL,
     isLoading,
-  } = useSurveyData(surveyId);
-  const { goToLanding, goToForm, goToConsent, goToSurveyMetadatas } =
-    useNavigator(surveyId);
-
+  } = useSurveyData(selectedSurvey.id);
+  const { gotToLanding, goToForm, goToConsent, goToSurveyMetadatas } =
+    useNavigator(selectedSurvey);
   const [statFilter, setStatFilter] = useState(filters[0].id);
 
   // We should be doing that much better :/
@@ -98,7 +102,7 @@ export const ProjectMenu: React.FC<Props> = ({ isOpen, surveyId, onClose }) => {
             top
             right
             label={"Modifier la page d'accueil"}
-            onClick={goToLanding}
+            onClick={gotToLanding}
           />
           <ActionButton
             top
@@ -184,34 +188,6 @@ function useSurveyData(surveyId: string) {
     statistics: data?.surveyStats?.statistics,
     exportURL,
     isLoading,
-  };
-}
-
-function useNavigator(surveyId: string) {
-  const history = useHistory();
-
-  // Take you to the landing editor
-  const goToLanding = useCallback(() => {
-    history.push(`/survey/${surveyId}/create/landing`);
-  }, [surveyId]);
-
-  // Take you to the form editor
-  const goToForm = useCallback(() => {
-    history.push(`/survey/${surveyId}/create/form`);
-  }, [surveyId]);
-
-  const goToConsent = useCallback(() => {
-    history.push(`/survey/${surveyId}/create/consent`);
-  }, [surveyId]);
-
-  const goToSurveyMetadatas = useCallback(() => {
-    history.push(`/survey/${surveyId}/create/metadatas`);
-  }, [surveyId]);
-  return {
-    goToLanding,
-    goToForm,
-    goToConsent,
-    goToSurveyMetadatas,
   };
 }
 

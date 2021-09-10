@@ -3,7 +3,11 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { ReactComponent as Back } from "./assets/back.svg";
 
-export const Menu: React.FC = () => {
+interface Props {
+  surveyTitle?: string;
+}
+
+export const Menu: React.FC<Props> = ({ surveyTitle }) => {
   return (
     <Flex
       pos="relative"
@@ -20,6 +24,14 @@ export const Menu: React.FC = () => {
           </Text>
         </Flex>
       </NavLink>
+      <Text
+        fontSize="12px"
+        textTransform="uppercase"
+        isTruncated
+        maxWidth="250px"
+      >
+        {surveyTitle}
+      </Text>
     </Flex>
   );
 };

@@ -14,6 +14,7 @@ import dayjs from "dayjs";
 import { v4 as uuidv4 } from "uuid";
 
 import { useAddPage } from "call/actions/formBuider/page";
+import { Survey } from "redux/slices/surveyBuilder";
 
 export const Dashboard: React.FC<IRoute> = () => {
   const { data: surveys, isLoading, error } = useGetSurveys();
@@ -21,16 +22,19 @@ export const Dashboard: React.FC<IRoute> = () => {
   const { mutateAsync: addPage } = useAddPage();
   const history = useHistory();
 
+  console.log(surveys);
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedSurvey, setSelectedSurvey] = useState<string>();
+  const [selectedSurvey, setSelectedSurvey] = useState<Survey["survey"] | null>(
+    null
+  );
 
   const toggleOff = () => {
     setIsOpen(false);
   };
 
-  const toggleMenu = (surveyId: string) => {
+  const toggleMenu = (survey: Survey["survey"]) => {
     setIsOpen(!isOpen);
-    setSelectedSurvey(surveyId);
+    setSelectedSurvey(survey);
   };
 
   const [currentFilter, setCurrentFilter] = useState<string>(t.filters[0].id);
@@ -123,7 +127,7 @@ export const Dashboard: React.FC<IRoute> = () => {
       </div>
       <ProjectMenu
         isOpen={isOpen}
-        surveyId={selectedSurvey}
+        selectedSurvey={selectedSurvey}
         onClose={toggleOff}
       />
     </Box>

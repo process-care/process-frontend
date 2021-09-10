@@ -9,31 +9,37 @@ import { useAddSurvey, useGetSurveys } from "call/actions/survey";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 import { ProjectMenu } from "components/Dashboard/ProjectMenu";
+import Drawer from "components/Drawer";
 
 import dayjs from "dayjs";
 import { v4 as uuidv4 } from "uuid";
 
 import { useAddPage } from "call/actions/formBuider/page";
 import { Survey } from "redux/slices/surveyBuilder";
+import { useAppSelector } from "redux/hooks";
+import { toogleDrawer } from "redux/slices/application";
+import { useDispatch } from "react-redux";
 
 export const Dashboard: React.FC<IRoute> = () => {
   const { data: surveys, isLoading, error } = useGetSurveys();
   const { mutateAsync: addSurvey } = useAddSurvey();
   const { mutateAsync: addPage } = useAddPage();
   const history = useHistory();
+  const { location } = history;
+  const dispatch = useDispatch();
+  const isOpen = useAppSelector((state) => state.application.drawer_is_open);
 
-  console.log(surveys);
-  const [isOpen, setIsOpen] = useState(false);
+  const [menuIsOpen, setMenuIsOpen] = useState(false);
   const [selectedSurvey, setSelectedSurvey] = useState<Survey["survey"] | null>(
     null
   );
 
   const toggleOff = () => {
-    setIsOpen(false);
+    setMenuIsOpen(false);
   };
 
   const toggleMenu = (survey: Survey["survey"]) => {
-    setIsOpen(!isOpen);
+    setMenuIsOpen((prev) => !prev);
     setSelectedSurvey(survey);
   };
 
@@ -96,6 +102,14 @@ export const Dashboard: React.FC<IRoute> = () => {
     return <Center h="100vh">{t.noData}</Center>;
   }
 
+  const handleDrawer = () => {
+    dispatch(toogleDrawer());
+  };
+
+  React.useEffect(() => {
+    if (location.pathname === "/profil") handleDrawer();
+  }, [location.pathname]);
+
   return (
     <Box
       h="100%"
@@ -104,6 +118,12 @@ export const Dashboard: React.FC<IRoute> = () => {
       w="100%"
       overflow="hidden"
     >
+      <Drawer
+        isOpen={isOpen}
+        size="md"
+        content={<p>plaf</p>}
+        onOverlayClick={handleDrawer}
+      />
       <div className="background__grid">
         <Container textAlign="left" pt="9" maxW="90%">
           <Flex justifyContent="space-between" alignItems="center">
@@ -126,7 +146,7 @@ export const Dashboard: React.FC<IRoute> = () => {
         </Container>
       </div>
       <ProjectMenu
-        isOpen={isOpen}
+        menuIsOpen={menuIsOpen}
         selectedSurvey={selectedSurvey}
         onClose={toggleOff}
       />

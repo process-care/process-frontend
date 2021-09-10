@@ -28,7 +28,7 @@ export const Dashboard: React.FC<IRoute> = () => {
   const { location } = history;
   const dispatch = useDispatch();
   const isOpen = useAppSelector((state) => state.application.drawer_is_open);
-
+  const isProfilPage = location.pathname === "/profil";
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const [selectedSurvey, setSelectedSurvey] = useState<Survey["survey"] | null>(
     null
@@ -90,6 +90,16 @@ export const Dashboard: React.FC<IRoute> = () => {
     []
   );
 
+  const handleDrawer = () => {
+    dispatch(toogleDrawer());
+  };
+
+  React.useEffect(() => {
+    if (isProfilPage) {
+      handleDrawer();
+    }
+  }, [isProfilPage]);
+
   if (isLoading || surveys === undefined) {
     return <Loader />;
   }
@@ -102,14 +112,6 @@ export const Dashboard: React.FC<IRoute> = () => {
     return <Center h="100vh">{t.noData}</Center>;
   }
 
-  const handleDrawer = () => {
-    dispatch(toogleDrawer());
-  };
-
-  React.useEffect(() => {
-    if (location.pathname === "/profil") handleDrawer();
-  }, [location.pathname]);
-
   return (
     <Box
       h="100%"
@@ -119,9 +121,9 @@ export const Dashboard: React.FC<IRoute> = () => {
       overflow="hidden"
     >
       <Drawer
-        isOpen={isOpen}
+        isOpen={isProfilPage && isOpen}
         size="md"
-        content={<p>plaf</p>}
+        content={<p>Mon profil ...</p>}
         onOverlayClick={handleDrawer}
       />
       <div className="background__grid">

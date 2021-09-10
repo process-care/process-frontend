@@ -1,10 +1,7 @@
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import { useAddLanding } from "call/actions/landing";
-import { useUpdateSurvey } from "call/actions/survey";
-import React, { useCallback } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigator } from "components/CreateSurvey/hooks";
+import React from "react";
 import { useAppSelector } from "redux/hooks";
-import { Survey } from "redux/slices/surveyBuilder";
 import { ReactComponent as Picto } from "./assets/add.svg";
 
 const t = {
@@ -18,7 +15,7 @@ const t = {
 
 export const ActionButtons: React.FC = () => {
   const { survey } = useAppSelector((state) => state.surveyBuilder);
-  const { goToLanding, goToForm, goToConsent } = useNavigator(survey);
+  const { gotToLanding, goToForm, goToConsent } = useNavigator(survey);
   const { landing } = survey;
   const Btn = ({
     handleClick,
@@ -72,7 +69,7 @@ export const ActionButtons: React.FC = () => {
       <Box pt="80px" d="flex" justifyContent="space-between" w="100%" my="auto">
         <Btn
           label={landing ? t.editLanding : t.createLanding}
-          handleClick={goToLanding}
+          handleClick={gotToLanding}
         />
         <Btn label={t.createForm} handleClick={goToForm} />
         <Btn label={t.createConsent} handleClick={goToConsent} />
@@ -80,45 +77,3 @@ export const ActionButtons: React.FC = () => {
     </Box>
   );
 };
-
-// HOOKS
-
-function useNavigator(survey: Survey["survey"]) {
-  const history = useHistory();
-  const { mutateAsync: updateSurvey } = useUpdateSurvey();
-  const { mutateAsync: addLanding } = useAddLanding();
-  const { title, id, landing } = survey;
-
-  // Take you to the landing editor
-  const goToLanding = useCallback(async () => {
-    // If the landing is not created yet, create it
-    if (!landing) {
-      const newLanding: Record<string, any> = await addLanding({
-        title,
-        survey: id,
-      });
-      // update survey with landing id.
-      await updateSurvey({
-        id,
-        data: { landing: newLanding.createLanding.landing.id },
-      });
-    }
-    history.push(`/survey/${id}/create/landing`);
-  }, [id]);
-
-  // Take you to the form editor
-  const goToForm = useCallback(() => {
-    history.push(`/survey/${id}/create/form`);
-  }, [id]);
-
-  // Take you to the consent page
-  const goToConsent = useCallback(() => {
-    history.push(`/survey/${id}/create/consent`);
-  }, [id]);
-
-  return {
-    goToLanding,
-    goToForm,
-    goToConsent,
-  };
-}

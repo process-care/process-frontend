@@ -42,7 +42,7 @@ export const CreateConsent: React.FC = () => {
       h="100vh"
     >
       <Box w="100%">
-        <Menu />
+        <Menu surveyTitle={survey?.survey.title} />
         <div className="background__grid">
           <Box
             h="100%"

@@ -4,8 +4,8 @@ import { Box, Button, Container, Flex, Tooltip, Text } from "@chakra-ui/react";
 import { API_URL_ROOT } from "constants/api";
 import { Filters } from "../Filters";
 import { useGetSurveyStats } from "call/actions/survey";
-import { useNavigator } from "components/CreateSurvey/hooks";
 import { Survey } from "redux/slices/surveyBuilder";
+import { useNavigator } from "components/CreateSurvey/hooks";
 
 // ---- STATICS
 
@@ -21,7 +21,7 @@ const filters = [
 // ---- TYPES
 
 interface Props {
-  isOpen: boolean;
+  menuIsOpen: boolean;
   selectedSurvey?: Survey["survey"] | null;
   onClose: () => void;
 }
@@ -29,11 +29,11 @@ interface Props {
 // ---- COMPONENT
 
 export const ProjectMenu: React.FC<Props> = ({
-  isOpen,
+  menuIsOpen,
   selectedSurvey,
   onClose,
 }) => {
-  if (!isOpen || !selectedSurvey) return <></>;
+  if (!menuIsOpen || !selectedSurvey) return <></>;
 
   const {
     title,

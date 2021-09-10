@@ -48,6 +48,12 @@ const routes: IRoute[] = [
     exact: true,
   },
   {
+    name: "Profil",
+    path: "/profil",
+    component: <Dashboard />,
+    exact: true,
+  },
+  {
     name: "Portail process",
     path: "/",
     component: <Portail />,

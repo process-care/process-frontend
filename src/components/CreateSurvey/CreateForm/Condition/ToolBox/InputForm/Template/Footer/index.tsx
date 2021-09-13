@@ -10,6 +10,7 @@ interface Props {
   onSubmit: () => void;
   disabled?: boolean;
   onDelete?: () => void;
+  hideDelete?: boolean;
 }
 
 export const Footer: React.FC<Props> = ({
@@ -17,6 +18,7 @@ export const Footer: React.FC<Props> = ({
   disabled,
   onSubmit,
   onDelete,
+  hideDelete,
 }) => {
   return (
     <Center
@@ -28,11 +30,13 @@ export const Footer: React.FC<Props> = ({
       p={1}
       pb={3}
     >
-      <Box w="70%" pl={4}>
-        <SvgHover>
-          <Trash onClick={() => !!onDelete && onDelete()} />
-        </SvgHover>
-      </Box>
+      {!hideDelete && (
+        <Box w="70%" pl={4}>
+          <SvgHover>
+            <Trash onClick={() => !!onDelete && onDelete()} />
+          </SvgHover>
+        </Box>
+      )}
 
       <ButtonGroup
         d="flex"

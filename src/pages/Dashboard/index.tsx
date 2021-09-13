@@ -119,26 +119,23 @@ export const Dashboard: React.FC<IRoute> = () => {
   }
 
   return (
-    <Box
-      h="100%"
-      d="flex"
-      justifyContent="space-around"
-      w="100%"
-      overflow="hidden"
-    >
-      <Drawer
-        isOpen={isProfilPage && isOpen}
-        size="md"
-        content={<ProfilForm />}
-        onOverlayClick={closeDrawer}
-      />
+    <Box d="flex" justifyContent="space-around" w="100%">
+      <Box h="80vh">
+        <Drawer
+          isOpen={isProfilPage && isOpen}
+          size="md"
+          content={<ProfilForm />}
+          onOverlayClick={closeDrawer}
+        />
+      </Box>
+
       <div className="background__grid">
         <Container textAlign="left" pt="9" maxW="90%">
           <Flex justifyContent="space-between" alignItems="center">
             <Text variant="xl" mb={7}>
               {t.my_projects}
             </Text>
-            <Button onClick={createSurvey} variant="roundedBlue">
+            <Button onClick={createSurvey} variant="roundedBlue" zIndex="0">
               {t.cta}
             </Button>
           </Flex>

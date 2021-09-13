@@ -8,6 +8,7 @@ import { toogleDrawer } from "redux/slices/application";
 
 import { Textarea, Input } from "components/Fields";
 import { Footer } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer";
+import { useHistory } from "react-router-dom";
 
 const t = {
   title: "Mon profil",
@@ -16,8 +17,10 @@ const t = {
 
 export const ProfilForm: React.FC = () => {
   const dispatch = useAppDispatch();
+  const history = useHistory();
 
   const onCancel = () => {
+    history.push("/dashboard");
     dispatch(toogleDrawer());
   };
 
@@ -37,7 +40,7 @@ export const ProfilForm: React.FC = () => {
         dispatch(toogleDrawer());
       }}
     >
-      {({ isValid, isSubmitting }) => {
+      {({ isValid, isSubmitting, values }) => {
         const onChange = (event: React.FormEvent<HTMLFormElement>) => {
           const target = event.target as HTMLFormElement;
           if (target !== null) {
@@ -146,7 +149,8 @@ rgba(0, 132, 255, 1))"
                 />
 
                 <Footer
-                  onSubmit={() => console.log("submit")}
+                  hideDelete
+                  onSubmit={() => console.log(values)}
                   disabled={!isValid || isSubmitting}
                   onCancel={() => onCancel()}
                   onDelete={() => {

@@ -16,11 +16,12 @@ export const Layout: React.FC<Props> = ({ children }) => {
 
   const renderMenu = () => {
     const isSurveyPages = pathname.search("/survey/") !== -1;
-    const isSimpleMenu = ["/dashboard", "/connexion", "/profil"];
+    const isAuthPage = ["/connexion", "/inscription"];
+    const isSimpleMenu = ["/dashboard", "/profil"];
 
     if (isSimpleMenu.includes(pathname)) return <SimpleMenu />;
     if (pathname === "/") return <SimpleMenu isPortail />;
-    else if (isSurveyPages) return null;
+    else if (isSurveyPages || isAuthPage) return null;
     else return <MainMenu />;
   };
 

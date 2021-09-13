@@ -193,10 +193,7 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
                           type: "page",
                           referer_page: selected_page.id,
                           step: 1,
-                          group: {
-                            id: uuidv4(),
-                            name: 1,
-                          },
+                          group: uuidv4(),
                           is_valid: false,
                         }).then((data: any) =>
                           dispatch(

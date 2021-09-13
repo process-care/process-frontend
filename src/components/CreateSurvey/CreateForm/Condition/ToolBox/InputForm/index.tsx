@@ -176,10 +176,7 @@ const InputForm: React.FC<Props> = ({ survey }) => {
                         type: "input",
                         referer_question: selected_input.id,
                         step: 1,
-                        group: {
-                          id: uuidv4(),
-                          name: 1,
-                        },
+                        group: uuidv4(),
                         is_valid: false,
                       }).then((data: any) => {
                         dispatch(

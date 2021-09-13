@@ -12,7 +12,7 @@ import { useGetQuestions } from "call/actions/formBuider/question";
 import { useUpdateCondition } from "call/actions/formBuider/condition";
 import { useGetSurvey } from "call/actions/survey";
 import { selectPage } from "redux/slices/formBuilder";
-import { DEV_SURVEY } from "constants/api";
+import { useParams } from "react-router-dom";
 
 interface Props {
   currentCondition: ICondition | undefined;
@@ -20,14 +20,17 @@ interface Props {
 
 export const Step_1: React.FC<Props> = ({ currentCondition }) => {
   const dispatch = useAppDispatch();
-
+  // FIXME: Yup, these ignore are bad, need to be removed
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const { slug: surveyId } = useParams();
   const { mutateAsync: updateCondition } = useUpdateCondition();
   const { selected_input, selected_page } = useAppSelector(
     (state) => state.formBuilder
   );
   const { data } = useGetQuestions(selected_page.id);
 
-  const { data: survey } = useGetSurvey(DEV_SURVEY);
+  const { data: survey } = useGetSurvey(surveyId);
 
   React.useEffect(() => {
     // Select first page if we make a condition on page.
@@ -38,7 +41,7 @@ export const Step_1: React.FC<Props> = ({ currentCondition }) => {
 
   // Si currentCondition.type === "page" alors on affiche les inputs des pages précédantes.
   // Si currentCondition.type === "input" alors on affiche les inputs précédants l'input referent
-  const inputOrder = survey?.survey.order;
+  const inputOrder = survey?.survey?.order;
   const currentInputIndex = inputOrder?.findIndex(
     (id: string) => id === currentCondition?.referer_question?.id
   );
@@ -56,6 +59,7 @@ export const Step_1: React.FC<Props> = ({ currentCondition }) => {
   }
 
   const isEmpty = authorizedInputs?.length === 0;
+  console.log(authorizedInputs, survey);
 
   const renderCard = (input: IQuestion) => {
     const isSelected = input.id === currentCondition?.target?.id;

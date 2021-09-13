@@ -50,6 +50,7 @@ export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
         }}
       >
         <Flex
+          zIndex={1}
           w="300px"
           justifyContent="space-between"
           mr="10px"
@@ -89,6 +90,7 @@ export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
       position="sticky"
       top="0"
       backgroundColor="white"
+      zIndex={1}
     >
       <NavLink to="/">
         <Logo />

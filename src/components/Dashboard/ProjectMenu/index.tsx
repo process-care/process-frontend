@@ -55,7 +55,14 @@ export const ProjectMenu: React.FC<Props> = ({
 
   return (
     // TODO: Use a % + max-width to limit growth on big screens
-    <Container variant="rightPart" w="50%">
+    <Container
+      variant="rightPart"
+      w="50%"
+      h="93vh"
+      overflow="scroll"
+      pos="sticky"
+      top="65px"
+    >
       <Box p={1} d="flex" w="100%" justifyContent="space-between">
         <Tooltip label="Fermer">
           <Button onClick={onClose}>🚪</Button>

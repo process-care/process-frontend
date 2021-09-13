@@ -1,7 +1,7 @@
 import React from "react";
 
 import IRoute from "types/routes/routes";
-import { Authentification } from "pages/Authentification";
+import { Login } from "pages/Auth/Login";
 import { CreateSurvey } from "pages/Survey";
 import { CreateForm } from "pages/Survey/CreateForm";
 import { Dashboard } from "pages/Dashboard";
@@ -9,12 +9,19 @@ import { Landing } from "pages/Landing";
 import { Portail } from "pages/Portail";
 import { CreateLanding } from "pages/Survey/CreateLanding";
 import { CreateConsent } from "pages/Survey/CreateConsent";
+import { Signin } from "pages/Auth/Signin";
 
 const routes: IRoute[] = [
   {
-    name: "Connexion / Inscription",
+    name: "Connexion",
     path: "/connexion",
-    component: <Authentification />,
+    component: <Login />,
+    exact: true,
+  },
+  {
+    name: "Inscription",
+    path: "/inscription",
+    component: <Signin />,
     exact: true,
   },
   {

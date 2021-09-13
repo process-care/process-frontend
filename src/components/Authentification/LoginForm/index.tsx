@@ -4,9 +4,13 @@ import React from "react";
 import { ReactComponent as Logo } from "assets/black_logo.svg";
 import { Form, Formik } from "formik";
 import { Input, Textarea } from "components/Fields";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
+import { useLogin } from "call/actions/auth";
 
 export const LoginForm: React.FC = () => {
+  const { mutateAsync: login, error } = useLogin();
+  const history = useHistory();
+
   return (
     <Box backgroundColor="white" p="110px 50px" w="480px">
       <Box d="flex" justifyContent="center">
@@ -15,10 +19,17 @@ export const LoginForm: React.FC = () => {
 
       <Formik
         validateOnBlur={false}
-        initialValues={{}}
+        initialValues={{ identifier: "dev@dev.com", password: "testtest" }}
         onSubmit={(data, { setSubmitting, validateForm }) => {
           validateForm(data);
           setSubmitting(true);
+          login(data).then((res: any) => {
+            if (res.login.jwt) {
+              localStorage.setItem("token", res.login.jwt);
+              history.push(`/dashboard`);
+            }
+            setSubmitting(false);
+          });
         }}
       >
         {({ isValid, isSubmitting }) => {
@@ -26,12 +37,13 @@ export const LoginForm: React.FC = () => {
             <Form>
               <Box w="100%" pt="90px" textAlign="left">
                 <Flex justifyContent="center" flexDirection="column" w="100%">
+                  {error && <p>{error.name}</p>}
                   <Textarea
                     isCollapsed={false}
                     rows="small"
                     label="Identifiant"
                     placeholder="Renseigner votre identifiant"
-                    id="firstName"
+                    id="identifier"
                     isRequired
                   />
                   <Input
@@ -51,6 +63,7 @@ export const LoginForm: React.FC = () => {
                     </NavLink>
 
                     <Button
+                      type="submit"
                       disabled={!isValid || isSubmitting}
                       variant="roundedBlue"
                     >

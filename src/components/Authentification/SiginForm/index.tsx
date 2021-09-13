@@ -6,12 +6,21 @@ import { CustomRadioBox } from "components/Fields/Radiobox";
 
 import { NavLink } from "react-router-dom";
 import { SuccessPage } from "../SucessPage";
+import { useSignin } from "call/actions/auth";
 
 export const SigninForm: React.FC = () => {
   const [isSuccessPage, seIsSuccessPage] = React.useState<boolean>(false);
+  const { mutateAsync: signin, error } = useSignin();
+  const formatData = (data: any) => {
+    return {
+      email: data.email,
+      password: data.password,
+      username: data.name,
+    };
+  };
 
   if (isSuccessPage) {
-    return <SuccessPage/>;
+    return <SuccessPage />;
   }
   return (
     <Formik
@@ -26,6 +35,12 @@ export const SigninForm: React.FC = () => {
       onSubmit={(data, { setSubmitting, validateForm }) => {
         validateForm(data);
         setSubmitting(true);
+        signin(formatData(data)).then((res: any) => {
+          if (res.login.jwt) {
+            localStorage.setItem("token", res.login.jwt);
+          }
+          setSubmitting(false);
+        });
         seIsSuccessPage(true);
       }}
     >
@@ -46,7 +61,7 @@ export const SigninForm: React.FC = () => {
               w="40%"
             >
               <Text>Création de compte</Text>
-
+              {error && <p>{error.name}</p>}
               <Flex
                 alignItems="center"
                 justifyContent="center"

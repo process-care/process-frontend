@@ -19,7 +19,14 @@ export const LoginForm: React.FC = () => {
 
       <Formik
         validateOnBlur={false}
-        initialValues={{ identifier: "dev@dev.com", password: "testtest" }}
+        initialValues={
+          process.env.NODE_ENV === "development"
+            ? { identifier: "dev@dev.com", password: "testtest" }
+            : {
+                identifier: "process-bot",
+                password: "bot-mangly-WOLVES-canopee",
+              }
+        }
         onSubmit={(data, { setSubmitting, validateForm }) => {
           validateForm(data);
           setSubmitting(true);

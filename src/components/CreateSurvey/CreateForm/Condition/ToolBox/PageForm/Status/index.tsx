@@ -4,9 +4,14 @@ import React from "react";
 interface Props {
   confirm: () => void;
   close: () => void;
+  content: string;
 }
 
-export const RemovingConfirmation: React.FC<Props> = ({ confirm, close }) => {
+export const RemovingConfirmation: React.FC<Props> = ({
+  confirm,
+  close,
+  content,
+}) => {
   return (
     <Flex
       backgroundColor="black"
@@ -16,13 +21,15 @@ export const RemovingConfirmation: React.FC<Props> = ({ confirm, close }) => {
       justifyContent="center"
     >
       <Text fontSize="25px" color="white" mb={10}>
-        Voulez-vous supprimer cette page ?
+        {content}
       </Text>
       <ButtonGroup
         color="white"
         w="100%"
         d="flex"
         justifyContent="space-around"
+        pos="absolute"
+        bottom="30px"
       >
         <Button variant="link" color="white" onClick={() => close()}>
           Annuler

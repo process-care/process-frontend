@@ -3,6 +3,7 @@ import {
   GET_SURVEY,
   GET_SURVEY_STATS,
   GET_SURVEYS,
+  GET_MY_SURVEYS,
   GET_SURVEY_METADATAS,
   DELETE_SURVEY,
   ADD_SURVEY,
@@ -59,8 +60,17 @@ export const useGetSurveyStats: any = (id: string) =>
     { enabled: !!id }
   );
 
+export const useGetMySurveys = (
+  authorId: string
+): UseQueryResult<ISurveysRes, Error> =>
+  useQuery<ISurveysRes, Error, any>(
+    "getSurveys",
+    () => request(API_URL, GET_MY_SURVEYS, { authorId }),
+    { enabled: !!authorId }
+  );
+
 export const useGetSurveys = (): UseQueryResult<ISurveysRes, Error> =>
-  useQuery<ISurveysRes, Error>("getSurveys", () =>
+  useQuery<ISurveysRes, Error>("getMySurveys", () =>
     request(API_URL, GET_SURVEYS)
   );
 

@@ -12,7 +12,27 @@ export const ADD_SURVEY = gql`
   }
 `;
 
-// TO DO FILTER BY USER
+export const GET_MY_SURVEYS = gql`
+  query getSurveys($authorId: ID!) {
+    surveys(where: { author: $authorId }) {
+      id
+      description
+      title
+      slug
+      status
+      participations {
+        id
+      }
+      landing {
+        id
+        color_theme
+        subtitle
+      }
+      createdAt
+    }
+  }
+`;
+
 export const GET_SURVEYS = gql`
   query getSurveys {
     surveys {

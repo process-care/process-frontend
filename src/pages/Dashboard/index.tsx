@@ -1,35 +1,35 @@
 import React, { useState } from "react";
 import IRoute from "types/routes/route";
-import { Box, Container, Text, Center, Flex, Button } from "@chakra-ui/react";
+import { Box, Container, Text, Flex, Button } from "@chakra-ui/react";
 import { useHistory } from "react-router";
 import { t } from "static/dashboard";
 import { Filters } from "components/Dashboard/Filters";
 import { Table } from "components/Table";
-import { useAddSurvey, useGetSurveys } from "call/actions/survey";
+import { useGetSurveys } from "call/actions/survey";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 import { ProjectMenu } from "components/Dashboard/ProjectMenu";
 import Drawer from "components/Drawer";
 
 import dayjs from "dayjs";
-import { v4 as uuidv4 } from "uuid";
 
-import { useAddPage } from "call/actions/formBuider/page";
 import { Survey } from "redux/slices/surveyBuilder";
 import { useAppSelector } from "redux/hooks";
 import { toogleDrawer } from "redux/slices/application";
 import { useDispatch } from "react-redux";
 import { ProfilForm } from "components/Dashboard/ProfilForm";
+import { useCreateSurveyChain } from "./hooks";
 
 export const Dashboard: React.FC<IRoute> = () => {
-  const { data: surveys, isLoading, error } = useGetSurveys();
-  const { mutateAsync: addSurvey } = useAddSurvey();
-  const { mutateAsync: addPage } = useAddPage();
   const history = useHistory();
   const { location } = history;
   const dispatch = useDispatch();
+
+  const { data: surveys, isLoading, error } = useGetSurveys();
+  const { createSurveyChain } = useCreateSurveyChain();
   const isOpen = useAppSelector((state) => state.application.drawer_is_open);
   const isProfilPage = location.pathname === "/profil";
+
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const [selectedSurvey, setSelectedSurvey] = useState<Survey["survey"] | null>(
     null
@@ -46,26 +46,19 @@ export const Dashboard: React.FC<IRoute> = () => {
 
   const [currentFilter, setCurrentFilter] = useState<string>(t.filters[0].id);
 
-  const data = React.useMemo(() => surveys?.surveys, [surveys?.surveys]);
-  const uuid = uuidv4();
-
-  const createSurvey = async () => {
-    const res = await addSurvey({
-      // Title will be overide by the user in the next step.
-      title: `temporyTitle-${uuid}`,
-      slug: `temporySlug-${uuid}`,
-      status: "draft",
-    });
-    // create survey first page
-    await addPage({
-      name: `Page 1`,
-      is_locked: false,
-      short_name: `P1`,
-      survey: res.createSurvey.survey.id,
+  const data = React.useMemo(() => {
+    const orderedList = surveys?.surveys.sort((a, b) => {
+      return dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf();
     });
 
-    history.push(`/survey/${res.createSurvey.survey.id}/create/metadatas`);
-  };
+    if (currentFilter === "all") {
+      return orderedList;
+    } else {
+      return orderedList?.filter((survey) => {
+        return survey.status === currentFilter;
+      });
+    }
+  }, [currentFilter, surveys?.surveys]);
 
   const columns = React.useMemo(
     () =>
@@ -114,10 +107,6 @@ export const Dashboard: React.FC<IRoute> = () => {
     return <Error error={error.message} />;
   }
 
-  if (data?.length === 0) {
-    return <Center h="100vh">{t.noData}</Center>;
-  }
-
   return (
     <Box d="flex" justifyContent="space-around" w="100%">
       <Box h="80vh">
@@ -135,7 +124,11 @@ export const Dashboard: React.FC<IRoute> = () => {
             <Text variant="xl" mb={7}>
               {t.my_projects}
             </Text>
-            <Button onClick={createSurvey} variant="roundedBlue" zIndex="0">
+            <Button
+              onClick={createSurveyChain}
+              variant="roundedBlue"
+              zIndex="0"
+            >
               {t.cta}
             </Button>
           </Flex>

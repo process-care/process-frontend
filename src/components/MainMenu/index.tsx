@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { Box, Flex } from "@chakra-ui/react";
 
-import routes from "routes";
+import { routes } from "routes";
 
 const mainRoutes = ["/connexion", "/survey/create", "/dashboard", "/"];
 

@@ -11,19 +11,7 @@ import { CreateLanding } from "pages/Survey/CreateLanding";
 import { CreateConsent } from "pages/Survey/CreateConsent";
 import { Signin } from "pages/Auth/Signin";
 
-const routes: IRoute[] = [
-  {
-    name: "Connexion",
-    path: "/connexion",
-    component: <Login />,
-    exact: true,
-  },
-  {
-    name: "Inscription",
-    path: "/inscription",
-    component: <Signin />,
-    exact: true,
-  },
+export const protectedRoutes: IRoute[] = [
   {
     name: "Création d'enquète",
     path: "/survey/:slug/create/metadatas",
@@ -60,6 +48,21 @@ const routes: IRoute[] = [
     component: <Dashboard />,
     exact: true,
   },
+];
+
+export const routes: IRoute[] = [
+  {
+    name: "Connexion",
+    path: "/connexion",
+    component: <Login />,
+    exact: true,
+  },
+  {
+    name: "Inscription",
+    path: "/inscription",
+    component: <Signin />,
+    exact: true,
+  },
   {
     name: "Portail process",
     path: "/",
@@ -73,5 +76,3 @@ const routes: IRoute[] = [
     exact: true,
   },
 ];
-
-export default routes;

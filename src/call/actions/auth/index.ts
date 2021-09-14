@@ -23,8 +23,16 @@ export interface Signin {
 }
 
 export interface LoginRes {
-  jwt?: string;
-  errors?: string[];
+  login: {
+    jwt?: string;
+    errors?: string[];
+    user?: {
+      id: string;
+      email: string;
+      username: string;
+      blocked: boolean;
+    };
+  };
 }
 
 export interface SigninRes {

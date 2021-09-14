@@ -11,6 +11,16 @@ export const LoginForm: React.FC = () => {
   const { mutateAsync: login, error } = useLogin();
   const history = useHistory();
 
+  // For dev facilities
+
+  const initialValues =
+    process.env.NODE_ENV === "development"
+      ? { identifier: "dev@dev.com", password: "testtest" }
+      : {
+          identifier: "process-bot",
+          password: "bot-mangly-WOLVES-canopee",
+        };
+
   return (
     <Box backgroundColor="white" p="110px 50px" w="480px">
       <Box d="flex" justifyContent="center">
@@ -19,24 +29,20 @@ export const LoginForm: React.FC = () => {
 
       <Formik
         validateOnBlur={false}
-        initialValues={
-          process.env.NODE_ENV === "development"
-            ? { identifier: "dev@dev.com", password: "testtest" }
-            : {
-                identifier: "process-bot",
-                password: "bot-mangly-WOLVES-canopee",
-              }
-        }
-        onSubmit={(data, { setSubmitting, validateForm }) => {
+        initialValues={initialValues}
+        onSubmit={async (data, { setSubmitting, validateForm }) => {
           validateForm(data);
           setSubmitting(true);
-          login(data).then((res: any) => {
-            if (res.login.jwt) {
-              localStorage.setItem("token", res.login.jwt);
-              history.push(`/dashboard`);
-            }
-            setSubmitting(false);
-          });
+          const loginPromise = await login(data);
+
+          if (loginPromise.login) {
+            localStorage.setItem(
+              "process__user",
+              JSON.stringify(loginPromise.login)
+            );
+            history.push(`/dashboard`);
+          }
+          setSubmitting(false);
         }}
       >
         {({ isValid, isSubmitting }) => {

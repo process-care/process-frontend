@@ -5,6 +5,9 @@ import { t } from "static/dashboard";
 import { ReactComponent as Logo } from "assets/logo.svg";
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useAuth } from "components/Authentification/hooks";
+import { useDispatch } from "react-redux";
+import { toogleDrawer } from "redux/slices/application";
 
 interface Props {
   isPortail?: boolean;
@@ -13,31 +16,46 @@ interface Props {
 interface Item {
   name: string;
   path: string;
+  action?: () => void;
 }
-const items: Item[] = [
-  {
-    name: "Mon profil",
-    path: "/profil",
-  },
-  {
-    name: "Mes enquêtes",
-    path: "/dashboard",
-  },
-  {
-    name: "Déconnexion",
-    path: "/connexion",
-  },
-];
 
 export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
+  const { user } = useAuth();
+  const dispatch = useDispatch();
   const handleClick = () => {
     setIsOpen((prev) => !prev);
   };
+
   const variants = {
     open: { opacity: 1 },
     closed: { opacity: 0 },
   };
+
+  const logout = () => {
+    localStorage.removeItem("process__user");
+  };
+
+  const handleDrawer = () => {
+    dispatch(toogleDrawer());
+  };
+
+  const items: Item[] = [
+    {
+      name: "Mon profil",
+      path: "/profil",
+      action: () => handleDrawer(),
+    },
+    {
+      name: "Mes enquêtes",
+      path: "/dashboard",
+    },
+    {
+      name: "Se déconnecter",
+      path: "/connexion",
+      action: () => logout(),
+    },
+  ];
 
   const SubMenu = () => {
     return (
@@ -57,9 +75,10 @@ export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
           pos="absolute"
           right="80px"
         >
-          {items.map(({ name, path }) => {
+          {items.map(({ name, path, action }) => {
             return (
               <NavLink
+                onClick={action}
                 key={name}
                 to={path}
                 activeStyle={{
@@ -103,7 +122,7 @@ export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
           _hover={{ cursor: "pointer" }}
           onClick={handleClick}
           ml="20px"
-          name="C D"
+          name={user?.username}
           w="40px"
           h="40px"
           color="white"

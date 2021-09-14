@@ -3,6 +3,7 @@ import { Footer } from "components/Footer";
 import { SimpleMenu } from "components/Menu/SimpleMenu";
 import React from "react";
 import { useLocation } from "react-router-dom";
+import { useAuth } from "components/Authentification/hooks";
 
 import MainMenu from "../MainMenu";
 
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export const Layout: React.FC<Props> = ({ children }) => {
+  const { isAuthenticated } = useAuth();
   const location = useLocation();
   const { pathname } = location;
 
@@ -20,7 +22,7 @@ export const Layout: React.FC<Props> = ({ children }) => {
     const isSimpleMenu = ["/dashboard", "/profil"];
 
     if (isSimpleMenu.includes(pathname)) return <SimpleMenu />;
-    if (pathname === "/") return <SimpleMenu isPortail />;
+    if (pathname === "/" && isAuthenticated) return <SimpleMenu isPortail />;
     else if (isSurveyPages || isAuthPage) return null;
     else return <MainMenu />;
   };

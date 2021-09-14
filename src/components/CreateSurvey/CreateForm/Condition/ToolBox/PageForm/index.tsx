@@ -96,16 +96,18 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
     }
   };
 
+  const handleDelete = async () => {
+    deletePage(selected_page.id);
+    dispatch(selectPage(pages[0]));
+    dispatch(setIsRemoving(""));
+  };
+
   if (isRemoving) {
     return (
       <RemovingConfirmation
         height="100%"
         content={`${t.remove_page} ${selected_page.name} ?`}
-        confirm={() => {
-          deletePage(selected_page.id);
-          dispatch(selectPage(pages[0]));
-          dispatch(setIsRemoving(""));
-        }}
+        confirm={() => handleDelete()}
         close={() => dispatch(setIsRemoving(""))}
       />
     );

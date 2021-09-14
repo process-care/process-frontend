@@ -12,6 +12,7 @@ export default interface ISurvey {
   title: string;
   slug: string;
   status: "draft" | "pending" | "closed" | "archived";
+  createdAt: Date;
 }
 
 export interface ISurveyRes {

@@ -5,7 +5,7 @@ import { useHistory } from "react-router";
 import { t } from "static/dashboard";
 import { Filters } from "components/Dashboard/Filters";
 import { Table } from "components/Table";
-import { useGetSurveys } from "call/actions/survey";
+import { useGetMySurveys } from "call/actions/survey";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 import { ProjectMenu } from "components/Dashboard/ProjectMenu";
@@ -19,13 +19,16 @@ import { toogleDrawer } from "redux/slices/application";
 import { useDispatch } from "react-redux";
 import { ProfilForm } from "components/Dashboard/ProfilForm";
 import { useCreateSurveyChain } from "./hooks";
+import { useAuth } from "components/Authentification/hooks";
 
 export const Dashboard: React.FC<IRoute> = () => {
+  const { user } = useAuth();
   const history = useHistory();
   const { location } = history;
   const dispatch = useDispatch();
 
-  const { data: surveys, isLoading, error } = useGetSurveys();
+  const { data: surveys, isLoading, error } = useGetMySurveys(user.id);
+
   const { createSurveyChain } = useCreateSurveyChain();
   const isOpen = useAppSelector((state) => state.application.drawer_is_open);
   const isProfilPage = location.pathname === "/profil";
@@ -101,6 +104,8 @@ export const Dashboard: React.FC<IRoute> = () => {
     return <Error error={error.message} />;
   }
 
+  const surveysLenght = surveys.surveys.length;
+
   return (
     <Box d="flex" justifyContent="space-around" w="100%">
       <Box h="80vh">
@@ -116,7 +121,9 @@ export const Dashboard: React.FC<IRoute> = () => {
         <Container textAlign="left" pt="9" maxW="90%">
           <Flex justifyContent="space-between" alignItems="center">
             <Text variant="xl" mb={7}>
-              {t.my_projects}
+              {surveysLenght > 1
+                ? `Mes ${surveysLenght} enquêtes`
+                : "Mon enquête"}
             </Text>
             <Button
               onClick={createSurveyChain}

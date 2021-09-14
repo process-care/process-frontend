@@ -71,16 +71,16 @@ export const useUpdateSurvey = (): UseMutationResult<ISurvey, Error> =>
         id,
         data,
       }),
-    optimisticUpdate(["getSurvey"])
+    optimisticUpdate(["getSurvey", "getSurveys"])
   );
 
-export const deleteSurvey: any = () =>
-  useMutation(
+export const useDeleteSurvey = (): UseMutationResult<ISurvey, Error> =>
+  useMutation<ISurvey, Error, any>(
     async (id: string) =>
       await request(API_URL, DELETE_SURVEY, {
         id,
       }),
-    optimisticUpdate(["getSurvey"])
+    optimisticUpdate(["getSurveys"])
   );
 
 export const useUpdateOrder: any = (new_order: string[]) =>

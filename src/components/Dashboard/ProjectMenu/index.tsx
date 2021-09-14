@@ -1,11 +1,20 @@
 import React, { useState } from "react";
 
 import { Box, Button, Container, Flex, Tooltip, Text } from "@chakra-ui/react";
+import { ReactComponent as Close } from "./assets/close.svg";
+import { ReactComponent as Trash } from "./assets/trash.svg";
+
 import { API_URL_ROOT } from "constants/api";
 import { Filters } from "../Filters";
-import { useGetSurveyStats } from "call/actions/survey";
+import {
+  useDeleteSurvey,
+  useGetSurveyStats,
+  useUpdateSurvey,
+} from "call/actions/survey";
 import { Survey } from "redux/slices/surveyBuilder";
 import { useNavigator } from "components/CreateSurvey/hooks";
+import { RemovingConfirmation } from "components/CreateSurvey/CreateForm/Condition/ToolBox/PageForm/Status";
+import { Chart } from "../Chart";
 
 // ---- STATICS
 
@@ -34,6 +43,10 @@ export const ProjectMenu: React.FC<Props> = ({
   onClose,
 }) => {
   if (!menuIsOpen || !selectedSurvey) return <></>;
+  const [isRemoving, setIsRemoving] = useState<boolean>(false);
+
+  const { mutateAsync: deleteSurvey } = useDeleteSurvey();
+  const { mutateAsync: udpateSurvey } = useUpdateSurvey();
 
   const {
     title,
@@ -53,6 +66,35 @@ export const ProjectMenu: React.FC<Props> = ({
 
   const selectedStats = statistics[statFilter];
 
+  if (!menuIsOpen || !selectedSurvey) return <></>;
+
+  const handleTrash = () => {
+    setIsRemoving(true);
+  };
+
+  const handleDelete = () => {
+    deleteSurvey(selectedSurvey.id);
+    onClose();
+  };
+
+  const handleArchive = () => {
+    udpateSurvey({
+      id: selectedSurvey.id,
+      data: {
+        status: "archived",
+      },
+    });
+  };
+
+  const handlePublish = () => {
+    udpateSurvey({
+      id: selectedSurvey.id,
+      data: {
+        status: "pending",
+      },
+    });
+  };
+
   return (
     // TODO: Use a % + max-width to limit growth on big screens
     <Container
@@ -63,115 +105,145 @@ export const ProjectMenu: React.FC<Props> = ({
       pos="sticky"
       top="65px"
     >
-      <Box p={1} d="flex" w="100%" justifyContent="space-between">
-        <Tooltip label="Fermer">
-          <Button onClick={onClose}>🚪</Button>
-        </Tooltip>
-        <Box>
-          <Tooltip label="Editer">
-            <Button onClick={nyi}>✏️</Button>
-          </Tooltip>
-          <Tooltip label="Supprimer">
-            <Button onClick={nyi}>☠️</Button>
-          </Tooltip>
-        </Box>
-      </Box>
-
-      <Box p={5} textAlign="left">
-        {stepsLeft > 0 && (
-          <Text variant="xs" textAlign="left" color="red">
-            Il reste {stepsLeft} étapes à finaliser.
-          </Text>
-        )}
-
-        <Text variant="titleParaLight" mt={4} textAlign="left">
-          {title}
-        </Text>
-
-        <Text variant="smallTitle" textAlign="left">
-          {description}
-        </Text>
-
-        <Text variant="xs" mb={5} textAlign="left" color="brand.gray.200">
-          Enquête mise en ligne le {date.toLocaleDateString()}.
-        </Text>
-
-        <a href={exportURL} download>
-          <Button variant="roundedTransparent" size="xs" p={2}>
-            CSV ⇣
-          </Button>
-        </a>
-      </Box>
-
-      <Box mt={4}>
-        <Flex>
-          <ActionButton
-            top
-            right
-            label={"Modifier la page d'accueil"}
-            onClick={gotToLanding}
-          />
-          <ActionButton
-            top
-            right
-            label={"Modifier le questionnaire"}
-            onClick={goToForm}
-          />
-          <ActionButton
-            top
-            label={"Modifier le consentement"}
-            onClick={goToConsent}
-          />
-          <ActionButton
-            top
-            left
-            label={"Modifier les données de l'enquête"}
-            onClick={goToSurveyMetadatas}
-          />
-        </Flex>
-        <Flex>
-          <ActionButton top right bottom label={"Dupliquer"} onClick={nyi} />
-          <ActionButton top right bottom label={"Archiver"} onClick={nyi} />
-          <ActionButton
-            top
-            bottom
-            label={"Archiver & Dupliquer"}
-            onClick={nyi}
-          />
-        </Flex>
-      </Box>
-
-      <Box mt={10}>
-        <Text variant="baseline" textAlign="center" mb={8}>
-          Statistiques
-        </Text>
-
-        <Filters
-          filters={filters}
-          handleClick={setStatFilter}
-          currentFilter={statFilter}
-          center
+      {isRemoving ? (
+        <RemovingConfirmation
+          confirm={handleDelete}
+          close={() => setIsRemoving(false)}
+          content={`Voulez-vous vraiment supprimer le sondage ${selectedSurvey.title}?`}
         />
+      ) : (
+        <Box>
+          <Box p={1} d="flex" w="100%" justifyContent="space-between">
+            <Tooltip label="Fermer">
+              <Button onClick={onClose} variant="link">
+                <Close />
+              </Button>
+            </Tooltip>
+            <Box>
+              <Tooltip label="Supprimer">
+                <Button onClick={handleTrash} variant="link">
+                  <Trash />
+                </Button>
+              </Tooltip>
+            </Box>
+          </Box>
 
-        <Flex mt={5} ml={50} mr={50} justifyContent="space-between">
-          <BigNumber value={selectedStats.visits} label={"visites"} />
-          <BigNumber value={selectedStats.consented} label={"consentis"} />
-          <BigNumber value={selectedStats.completed} label={"terminés"} />
-        </Flex>
+          <Box p={5} textAlign="left">
+            {stepsLeft > 0 && (
+              <Text variant="xs" textAlign="left" color="red">
+                Il reste {stepsLeft} étapes à finaliser.
+              </Text>
+            )}
 
-        <Flex
-          mt={55}
-          ml={50}
-          mr={50}
-          flexDirection="column"
-          alignItems="flex-start"
-        >
-          <div>Progression de la complétion</div>
-          <Tooltip label={"Bibou !"}>
-            <div>📈</div>
-          </Tooltip>
-        </Flex>
-      </Box>
+            <Text variant="titleParaLight" mt={4} textAlign="left">
+              {title}
+            </Text>
+
+            <Text variant="smallTitle" textAlign="left">
+              {description}
+            </Text>
+
+            <Text variant="xs" mb={5} textAlign="left" color="brand.gray.200">
+              Enquête mise en ligne le {date.toLocaleDateString()}.
+            </Text>
+
+            <Flex justifyContent="space-between" alignItems="center">
+              {selectedSurvey.status === "draft" && (
+                <Button variant="roundedBlue" onClick={handlePublish}>
+                  Publier
+                </Button>
+              )}
+              <a href={exportURL} download>
+                <Button variant="roundedTransparent" size="xs" p={2}>
+                  CSV ⇣
+                </Button>
+              </a>
+            </Flex>
+          </Box>
+
+          <Box mt={4}>
+            <Flex>
+              <ActionButton
+                top
+                right
+                label={"Modifier la page d'accueil"}
+                onClick={gotToLanding}
+              />
+              <ActionButton
+                top
+                right
+                label={"Modifier le questionnaire"}
+                onClick={goToForm}
+              />
+              <ActionButton
+                top
+                label={"Modifier le consentement"}
+                onClick={goToConsent}
+              />
+              <ActionButton
+                top
+                left
+                label={"Modifier les données de l'enquête"}
+                onClick={goToSurveyMetadatas}
+              />
+            </Flex>
+            <Flex>
+              <ActionButton
+                top
+                right
+                bottom
+                label={"Dupliquer"}
+                onClick={nyi}
+              />
+              <ActionButton
+                top
+                right
+                bottom
+                label={"Archiver"}
+                onClick={handleArchive}
+              />
+              <ActionButton
+                top
+                bottom
+                label={"Archiver & Dupliquer"}
+                onClick={handleArchive}
+              />
+            </Flex>
+          </Box>
+
+          <Box mt={10}>
+            <Text variant="baseline" textAlign="center" mb={8}>
+              Statistiques
+            </Text>
+
+            <Filters
+              filters={filters}
+              handleClick={setStatFilter}
+              currentFilter={statFilter}
+              center
+            />
+
+            <Flex mt={5} ml={50} mr={50} justifyContent="space-between">
+              <BigNumber value={selectedStats.visits} label={"visites"} />
+              <BigNumber value={selectedStats.consented} label={"consentis"} />
+              <BigNumber value={selectedStats.completed} label={"terminés"} />
+            </Flex>
+
+            <Flex
+              mt={55}
+              ml={50}
+              mr={50}
+              flexDirection="column"
+              alignItems="flex-start"
+            >
+              <div>Progression de la complétion</div>
+              <Tooltip label={"charts !"}>
+                <Chart />
+              </Tooltip>
+            </Flex>
+          </Box>
+        </Box>
+      )}
     </Container>
   );
 };

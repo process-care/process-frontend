@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import slugify from "slugify";
+import IPage from "types/form/page";
+import IQuestion from "types/form/question";
 export interface Survey {
   survey: {
     id: string;
@@ -11,6 +13,10 @@ export interface Survey {
     keywords?: string[];
     categories?: string[];
     landing?: string;
+    order?: IQuestion["id"][];
+    pages?: IPage[];
+    status?: "draft" | "pending" | "closed" | "archived";
+    createdAt?: string;
   };
   step: number;
   hadConsent?: boolean;

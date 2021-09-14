@@ -26,22 +26,22 @@ import { toogleDrawer } from "redux/slices/application";
 import { t } from "static/input";
 import { SvgHover } from "components/SvgHover";
 import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
-import { useDeleteQuestion } from "call/actions/formBuider/question";
-import { useUpdateOrder } from "call/actions/survey";
+
 import ISurvey from "types/survey";
+import { useQuestionChain } from "../../hooks";
 
 interface CardProps {
   input: IQuestion;
   index: number;
-  survey: ISurvey | undefined;
+  survey: ISurvey;
 }
 
 const Card: React.FC<CardProps> = ({ input, index, survey }) => {
   const dispatch = useAppDispatch();
   const { is_removing } = useAppSelector((state) => state.formBuilder);
   const isRemoving = is_removing === input.id;
-  const { mutateAsync: deleteQuestion } = useDeleteQuestion("deleteQuestion");
-  const { mutateAsync: updateOrder } = useUpdateOrder("updateOrder");
+
+  const { deleteQuestionChain } = useQuestionChain(input, survey);
 
   const color = useColorModeValue("gray.800", "gray.900");
 
@@ -49,6 +49,10 @@ const Card: React.FC<CardProps> = ({ input, index, survey }) => {
     dispatch(setIsEditing(true));
     dispatch(selectInput(input));
     dispatch(toogleDrawer());
+  };
+
+  const handleDelete = async () => {
+    deleteQuestionChain();
   };
 
   return (
@@ -89,18 +93,7 @@ const Card: React.FC<CardProps> = ({ input, index, survey }) => {
                 {isRemoving && (
                   <RemovingConfirmation
                     content={`${t.removing_confirmation} ${input.internal_title} ?`}
-                    confirm={() => {
-                      deleteQuestion(input.id).then((data: any) => {
-                        const deleted_question = data.deleteQuestion.question;
-
-                        updateOrder({
-                          id: survey?.id,
-                          new_order: survey?.order.filter(
-                            (id) => id !== deleted_question.id
-                          ),
-                        });
-                      });
-                    }}
+                    confirm={handleDelete}
                     close={() => dispatch(setIsRemoving(""))}
                   />
                 )}

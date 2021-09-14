@@ -57,17 +57,17 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
   });
   const is_page_type = currentCondition?.type === "page";
 
-  const handleDelete = (id: string) => {
-    deleteCondition(id).then(() => {
-      // Si on supprime la selected_condition, il faut selectionner la premiere condition s'il y en a une ou reset la selected_condition
-      if (id === selected_condition.id && conditions) {
-        if (conditions.length > 1) {
-          dispatch(selectCondition(conditions[0]));
-        } else {
-          dispatch(selectCondition({}));
-        }
+  const handleDelete = async (id: string) => {
+    deleteCondition(id);
+
+    // Si on supprime la selected_condition, il faut selectionner la premiere condition s'il y en a une ou reset la selected_condition
+    if (id === selected_condition.id && conditions) {
+      if (conditions.length > 1) {
+        dispatch(selectCondition(conditions[0]));
+      } else {
+        dispatch(selectCondition({}));
       }
-    });
+    }
   };
 
   return (
@@ -78,9 +78,9 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
             <RemovingConfirmation
               key={id}
               content={t.removing_group_confirmation}
-              confirm={() =>
+              confirm={async () =>
                 // Implement group deletion
-                console.log("remove condition group")
+                await console.log("remove condition group")
               }
               close={() => setRemoving({ type: null, id: "" })}
             />

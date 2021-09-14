@@ -36,12 +36,12 @@ export const SigninForm: React.FC = () => {
         validateForm(data);
         setSubmitting(true);
         signin(formatData(data)).then((res: any) => {
-          if (res.login.jwt) {
-            localStorage.setItem("token", res.login.jwt);
+          if (res.register.jwt) {
+            seIsSuccessPage(true);
+            localStorage.setItem("process__user", JSON.stringify(res.register));
           }
           setSubmitting(false);
         });
-        seIsSuccessPage(true);
       }}
     >
       {({ isValid, isSubmitting }) => {

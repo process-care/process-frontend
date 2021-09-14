@@ -93,12 +93,6 @@ export const Dashboard: React.FC<IRoute> = () => {
     handleDrawer();
   };
 
-  React.useEffect(() => {
-    if (isProfilPage) {
-      handleDrawer();
-    }
-  }, [isProfilPage]);
-
   if (isLoading || surveys === undefined) {
     return <Loader />;
   }

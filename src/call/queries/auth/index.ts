@@ -21,8 +21,10 @@ export const SIGNIN = gql`
     ) {
       jwt
       user {
+        id
         username
         email
+        blocked
       }
     }
   }

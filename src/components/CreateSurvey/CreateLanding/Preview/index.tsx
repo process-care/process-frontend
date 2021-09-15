@@ -19,8 +19,11 @@ export const Preview: React.FC<Props> = ({ data, isUserView }) => {
   const { is_editing_about_page } = useAppSelector(
     (state) => state.landingBuilder
   );
+  const { preview_mode } = useAppSelector((state) => state.application);
   const { color_theme, members } = data;
   const had_members = members?.length > 0;
+
+  const isFullView = isUserView || preview_mode === "landing";
 
   if (is_editing_about_page) {
     return (
@@ -44,11 +47,11 @@ export const Preview: React.FC<Props> = ({ data, isUserView }) => {
   }
   return (
     <Box
-      h="fit-content"
+      h={isFullView ? "100%" : "fit-content"}
       backgroundColor="white"
-      w={isUserView ? "100%" : "80%"}
+      w={isFullView ? "100%" : "80%"}
       mx="auto"
-      mt={isUserView ? "0" : "100px"}
+      mt={isFullView ? "0" : "100px"}
     >
       <Header theme={color_theme} logo={data.logo} title={data.title} />
       <Content data={data} theme={color_theme} />

@@ -53,3 +53,13 @@ export const DELETE_CONDITION = gql`
     }
   }
 `;
+
+export const CHECK_SURVEY = gql`
+  query checkSurvey($surveyId: ID!) {
+    checkSurvey(id: $surveyId) {
+      errors {
+        valid
+      }
+    }
+  }
+`;

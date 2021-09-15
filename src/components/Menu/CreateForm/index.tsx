@@ -7,6 +7,7 @@ import { t } from "static/input";
 import { tooglePreview } from "redux/slices/application";
 import { Loader } from "components/Spinner";
 import { useGetSurvey } from "call/actions/survey";
+import { setConditionStatus } from "redux/slices/formBuilder";
 
 interface Props {
   isLanding?: boolean;
@@ -26,13 +27,17 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
     return <p>{error.message}</p>;
   }
 
+  const handleVerify = () => {
+    dispatch(setConditionStatus(surveyId));
+  };
+
   return (
     <>
-      <Collapse in={preview_mode === "landing"} style={{ width: "100%" }}>
+      {preview_mode === "landing" && (
         <Button
           pos="absolute"
-          top={7}
-          left="13%"
+          top="19px"
+          right="10px"
           variant="roundedBlue"
           onClick={() =>
             dispatch(
@@ -44,7 +49,8 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
         >
           Sortir de la previsualisation
         </Button>
-      </Collapse>
+      )}
+
       <Collapse in={preview_mode !== "landing"}>
         <Flex
           pos="relative"
@@ -71,9 +77,9 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
             {data?.survey?.title}
           </Text>
           <Box pos="absolute" right="10px">
-            <Button variant="roundedTransparent" mr={5}>
+            {/* <Button variant="roundedTransparent" mr={5}>
               {t.save}
-            </Button>
+            </Button> */}
             <Button variant="rounded" mr={5}>
               {t.publish}
             </Button>
@@ -93,7 +99,7 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
                 {t.preview}
               </Button>
             ) : (
-              <Button variant="roundedBlue" mr={5}>
+              <Button variant="roundedBlue" mr={5} onClick={handleVerify}>
                 {t.verify}
               </Button>
             )}

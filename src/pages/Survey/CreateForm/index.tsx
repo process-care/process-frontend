@@ -19,6 +19,7 @@ import { RightPart } from "components/Layout/RightPart";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 import { useGetSurvey } from "call/actions/survey";
+import { Banner } from "components/Banner";
 
 export const CreateForm: React.FC<IRoute> = () => {
   // FIXME: Yup, these ignore are bad, need to be removed
@@ -52,6 +53,8 @@ export const CreateForm: React.FC<IRoute> = () => {
       <Box d="flex" justifyContent="space-around" w="100%" overflow="hidden">
         <Box w="100%">
           <Menu surveyId={surveyId} />
+
+          <Banner />
           <Box
             d="flex"
             justifyContent="space-around"

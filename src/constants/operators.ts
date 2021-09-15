@@ -5,7 +5,7 @@ export const operatorsForMultiple: IOperator[] = [
     name: "Egal à",
   },
   {
-    id: "different",
+    id: "not_equal",
     name: "Différent de",
   },
 ];

@@ -15,6 +15,8 @@ import { Survey } from "redux/slices/surveyBuilder";
 import { useNavigator } from "components/CreateSurvey/hooks";
 import { RemovingConfirmation } from "components/CreateSurvey/CreateForm/Condition/ToolBox/PageForm/Status";
 import { Chart } from "../Chart";
+import { renderStatus } from "utils/application/renderStatus";
+import { Loader } from "components/Spinner";
 
 // ---- STATICS
 
@@ -62,11 +64,26 @@ export const ProjectMenu: React.FC<Props> = ({
   const [statFilter, setStatFilter] = useState(filters[0].id);
 
   // We should be doing that much better :/
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) {
+    return (
+      <Container
+        variant="rightPart"
+        w="50%"
+        h="93vh"
+        overflow="scroll"
+        pos="sticky"
+        top="65px"
+      >
+        <Loader />
+      </Container>
+    );
+  }
 
   const selectedStats = statistics[statFilter];
 
-  if (!menuIsOpen || !selectedSurvey) return <></>;
+  if (!menuIsOpen || !selectedSurvey) {
+    return <></>;
+  }
 
   const handleTrash = () => {
     setIsRemoving(true);
@@ -148,10 +165,14 @@ export const ProjectMenu: React.FC<Props> = ({
             </Text>
 
             <Flex justifyContent="space-between" alignItems="center">
-              {selectedSurvey.status === "draft" && (
+              {selectedSurvey.status === "draft" ? (
                 <Button variant="roundedBlue" onClick={handlePublish}>
                   Publier
                 </Button>
+              ) : (
+                <Text variant="xs">
+                  Etat : {renderStatus(selectedSurvey.status)}
+                </Text>
               )}
               <a href={exportURL} download>
                 <Button variant="roundedTransparent" size="xs" p={2}>

@@ -1,6 +1,7 @@
 import { Badge, Button, Circle, Flex, GridItem, Text } from "@chakra-ui/react";
 import React from "react";
 import ISurvey from "types/survey";
+import { renderStatus } from "utils/application/renderStatus";
 
 // STATIC
 
@@ -16,23 +17,6 @@ interface Props {
 // COMPONENT
 
 export const Card: React.FC<Props> = ({ data }) => {
-  const renderStatus = () => {
-    switch (data.status) {
-      case "draft":
-        return "Non publié";
-      case "closed":
-        return "Finalisé";
-      case "archived":
-        return "Archivé";
-      case "pending":
-        return "En cours";
-        break;
-
-      default:
-        break;
-    }
-  };
-
   return (
     <GridItem
       w="100%"
@@ -63,7 +47,7 @@ export const Card: React.FC<Props> = ({ data }) => {
           backgroundColor="transparent"
           border="1px solid black"
         >
-          <Text variant="xxs">{renderStatus()}</Text>
+          <Text variant="xxs">{renderStatus(data.status)}</Text>
         </Badge>
         <Button
           variant="rounded"

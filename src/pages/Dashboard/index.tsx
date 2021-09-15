@@ -43,9 +43,15 @@ export const Dashboard: React.FC<IRoute> = () => {
   };
 
   const toggleMenu = (survey: Survey["survey"]) => {
-    setMenuIsOpen((prev) => !prev);
-    setSelectedSurvey(survey);
+    if (isOpen) {
+      setSelectedSurvey(survey);
+    } else {
+      setSelectedSurvey(survey);
+      setMenuIsOpen(true);
+    }
   };
+
+  console.log(isOpen);
 
   const [currentFilter, setCurrentFilter] = useState<string>(t.filters[0].id);
 

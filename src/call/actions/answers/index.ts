@@ -3,10 +3,10 @@ import {
   UseMutationResult,
   useQuery, UseQueryResult,
 } from "react-query";
-import { request } from "graphql-request";
 
 import { API_URL } from "constants/api";
 import { CREATE_ANSWERS, GET_ANSWERS, UPDATE_ANSWER } from "call/queries/answers";
+import { client } from "..";
 // import { optimisticUpdate } from "call/optimisiticUpdate";
 
 // TYPES
@@ -32,7 +32,7 @@ export const useGetAnswers = (
   return useQuery<AnswersResults, Error>(
     ["participationAnswers", participationId, questionsId],
     async () => {
-      return await request(API_URL, GET_ANSWERS, {
+      return await client.request(GET_ANSWERS, {
         participationId,
         questionsId
       });
@@ -58,7 +58,7 @@ export interface AnswerPayload {
 export const useCreateAnswer = (): UseMutationResult<AnswerCreationResults, Error> =>
   useMutation<AnswerCreationResults, Error, any>(
     async (values: Partial<AnswerPayload>) =>
-      await request(API_URL, CREATE_ANSWERS, {
+      await client.request(CREATE_ANSWERS, {
         data: values,
       }),
     // optimisticUpdate(["getSurvey"])
@@ -81,6 +81,6 @@ export interface UpdateAnswerPayload {
 export const useUpdateAnswer = (): UseMutationResult<AnswerCreationResults, Error> =>
   useMutation<AnswerCreationResults, Error, any>(
     async (payload: UpdateAnswerPayload) =>
-      await request(API_URL, UPDATE_ANSWER, payload),
+      await client.request(UPDATE_ANSWER, payload),
     // optimisticUpdate(["getSurvey"])
   );

@@ -16,7 +16,7 @@ export const useGetPage = (id: string): UseQueryResult<GetPageRes, Error> =>
   useQuery<GetPageRes, Error>(
     ["page", id],
     () =>
-      request(API_URL, GET_PAGE, {
+      client.request(GET_PAGE, {
         id,
       }),
     { enabled: !!id }

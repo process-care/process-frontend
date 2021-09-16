@@ -74,7 +74,7 @@ export const useQuestionEvaluation = (
   return useQuery<QuestionEvaluationResult, Error>(
     ["questionEvaluation", questionId, participationId],
     async () => {
-      return await request(API_URL, GET_QUESTION_EVALUATION, {
+      return await client.request(GET_QUESTION_EVALUATION, {
         questionId,
         participationId,
       });

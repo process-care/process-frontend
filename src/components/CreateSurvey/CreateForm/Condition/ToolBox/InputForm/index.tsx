@@ -84,10 +84,10 @@ const InputForm: React.FC<Props> = ({ survey }) => {
           updateQuestion({
             id: selected_input.id,
             data: {
-              answers: values.option,
+              answers: values.answers,
             },
           });
-        }, [values.option]);
+        }, [values.answers]);
 
         // Handle wysiwyg change
         React.useEffect(() => {

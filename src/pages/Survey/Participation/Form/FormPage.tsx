@@ -60,7 +60,7 @@ export const FormPage: React.FC<Props> = ({
           setSubmitting(true);
         }}
       >
-        {({ values }) => {
+        {() => {
           return (
             <Form>
               {/* Questions */}

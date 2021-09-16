@@ -55,8 +55,8 @@ function useConsentHandlers(slug: string) {
   const [participationId, setParticipationId] = useState<string>();
 
   // Consent
-  const onConsent = useCallback((participationId) => {
-    setParticipationId(participationId);
+  const onConsent = useCallback((newParticipationId) => {
+    setParticipationId(newParticipationId);
     history.push(`/survey/${slug}/participate`)
   }, [slug]);
 

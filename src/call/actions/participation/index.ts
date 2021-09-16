@@ -2,10 +2,8 @@ import {
   useMutation,
   UseMutationResult,
 } from "react-query";
-import { request } from "graphql-request";
-
-import { API_URL } from "constants/api";
 import { CREATE_PARTICIPATION } from "call/queries/participation";
+import { client } from "..";
 
 // ---- TYPES
 
@@ -24,6 +22,6 @@ interface CreateParticipationResults {
 
 export const useCreateParticipation = (): UseMutationResult<CreateParticipationResults, Error> =>
   useMutation<CreateParticipationResults, Error, any>(
-    async (values: CreateParticipationPayload) => await request(API_URL, CREATE_PARTICIPATION, { values })
+    async (values: CreateParticipationPayload) => await client.request(CREATE_PARTICIPATION, { values })
   );
 

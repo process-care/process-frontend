@@ -77,13 +77,6 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
             {data?.survey?.title}
           </Text>
           <Box pos="absolute" right="10px">
-            {/* <Button variant="roundedTransparent" mr={5}>
-              {t.save}
-            </Button> */}
-            <Button variant="rounded" mr={5}>
-              {t.publish}
-            </Button>
-
             {isLanding ? (
               <Button
                 variant="roundedBlue"

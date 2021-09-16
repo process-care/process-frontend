@@ -1,5 +1,4 @@
 import { Box, Button, Text, Container, Flex } from "@chakra-ui/react";
-import { Footer } from "../Footer";
 import { Textarea } from "components/Fields";
 import { UploadFile } from "components/Fields/Uploadfile";
 import { UploadFileRemote } from "components/Fields/UploadFileRemote";
@@ -17,7 +16,6 @@ import { SvgHover } from "components/SvgHover";
 
 import { ReactComponent as Delete } from "assets/delete.svg";
 import { goTop } from "utils/application/scrollTo";
-import { useHistory } from "react-router-dom";
 import { ILanding } from "types/landing";
 import { useUpdateLanding } from "call/actions/landing";
 
@@ -28,15 +26,6 @@ interface Props {
 export const LandingForm: React.FC<Props> = ({ data }) => {
   const dispatch = useAppDispatch();
   const { mutateAsync: updateLanding } = useUpdateLanding();
-  const history = useHistory();
-
-  const handleSubmit = () => {
-    history.push("/");
-  };
-
-  const handleCancel = () => {
-    history.push("/");
-  };
 
   const onChange = (event: React.FormEvent<HTMLFormElement>) => {
     const target = event.target as HTMLFormElement;
@@ -57,7 +46,6 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
   return (
     <Formik
       validateOnBlur={false}
-      // initialValues={landing || initialValuesLanding}
       initialValues={data || initialValues}
       enableReinitialize
       onSubmit={(data, { setSubmitting, validateForm }) => {
@@ -236,11 +224,6 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
               >
                 {t.see_more_cta}
               </Button>
-
-              <Footer
-                onCancel={() => handleCancel()}
-                onSubmit={() => handleSubmit()}
-              />
             </Form>
           </Box>
         );

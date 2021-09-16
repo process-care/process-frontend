@@ -11,7 +11,7 @@ import { ReactComponent as Submit } from "./../assets/submit.svg";
 import { checkValidity, renderInputs } from "./utils";
 import { useUpdateSurvey, useGetSurveyMetadas } from "call/actions/survey";
 
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 
 // COMPONENT
 
@@ -20,7 +20,7 @@ export const CreateSurveyForm: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const { slug: surveyId } = useParams();
-
+  const history = useHistory();
   const dispatch = useAppDispatch();
   const { step, survey } = useAppSelector((state) => state.surveyBuilder);
   const { mutateAsync: updateSurvey } = useUpdateSurvey();
@@ -45,6 +45,10 @@ export const CreateSurveyForm: React.FC = () => {
         },
       })
     );
+  };
+
+  const goToDashboard = () => {
+    history.push("/dashboard");
   };
 
   const Navigatebtn = ({
@@ -181,12 +185,19 @@ export const CreateSurveyForm: React.FC = () => {
                       />
                     )}
                     {renderInputs(step)}
-                    {step !== 8 && (
+                    {step !== 7 && (
                       <Navigatebtn
                         step={step}
                         errors={errors}
                         values={values}
                       />
+                    )}
+                  </Flex>
+                  <Flex mt="50px">
+                    {step === 7 && (
+                      <Button onClick={goToDashboard} variant="rounded">
+                        Valider
+                      </Button>
                     )}
                   </Flex>
                 </Flex>

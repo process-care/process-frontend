@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Flex } from "@chakra-ui/react";
 import { useGetSurvey } from "call/actions/survey";
+import { FormPage } from "./Form/FormPage";
 import IPage from "types/form/page";
 
 // ---- TYPES
@@ -33,7 +34,7 @@ export const ParticipationForm: React.FC<Props> = ({
 
         <Box flexGrow={1}>
           {data.survey.pages.map(page => (
-            <div key={page.id}>{page.id}</div>
+            <FormPage key={page.id} pageId={page.id} participationId={participationId}></FormPage>
           ))}
         </Box>
       </Flex>

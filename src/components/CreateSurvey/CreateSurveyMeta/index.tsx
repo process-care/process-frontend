@@ -4,6 +4,7 @@ import { Box, Button, Flex, Text } from "@chakra-ui/react";
 
 import { createSurveySchema } from "../validationSchema";
 import { useAppSelector, useAppDispatch } from "redux/hooks";
+import { debounce } from "lodash";
 
 import { updateSurveyMeta, updateSurveyStep } from "redux/slices/surveyBuilder";
 
@@ -12,6 +13,7 @@ import { checkValidity, renderInputs } from "./utils";
 import { useUpdateSurvey, useGetSurveyMetadas } from "call/actions/survey";
 
 import { useHistory, useParams } from "react-router-dom";
+import { setAutoSave } from "redux/slices/application";
 
 // COMPONENT
 
@@ -25,6 +27,14 @@ export const CreateSurveyForm: React.FC = () => {
   const { step, survey } = useAppSelector((state) => state.surveyBuilder);
   const { mutateAsync: updateSurvey } = useUpdateSurvey();
   const { data, isLoading } = useGetSurveyMetadas(surveyId);
+
+  const autoSave = () => {
+    dispatch(setAutoSave());
+    setTimeout(() => {
+      dispatch(setAutoSave());
+    }, 2000);
+  };
+  const autoSaveDebounce = debounce(autoSave, 500);
 
   useEffect(() => {
     if (data && !isLoading) {
@@ -158,6 +168,7 @@ export const CreateSurveyForm: React.FC = () => {
               </Text>
               <Form
                 onChange={(event) => handleChange(event)}
+                onBlur={autoSaveDebounce}
                 style={{
                   width: "100%",
                   display: "flex",

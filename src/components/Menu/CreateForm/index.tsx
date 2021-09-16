@@ -1,4 +1,10 @@
-import { Flex, Text, Button, Box, Collapse } from "@chakra-ui/react";
+import {
+  Flex,
+  Text,
+  Button,
+  Collapse,
+  CircularProgress,
+} from "@chakra-ui/react";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
@@ -8,6 +14,7 @@ import { tooglePreview } from "redux/slices/application";
 import { Loader } from "components/Spinner";
 import { useGetSurvey } from "call/actions/survey";
 import { setConditionStatus } from "redux/slices/formBuilder";
+import { CheckIcon } from "@chakra-ui/icons";
 
 interface Props {
   isLanding?: boolean;
@@ -16,7 +23,9 @@ interface Props {
 
 export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
   const { data, isLoading, error } = useGetSurvey(surveyId);
-  const { preview_mode } = useAppSelector((state) => state.application);
+  const { preview_mode, is_saving } = useAppSelector(
+    (state) => state.application
+  );
   const dispatch = useAppDispatch();
 
   if (isLoading) {
@@ -76,7 +85,25 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
           >
             {data?.survey?.title}
           </Text>
-          <Box pos="absolute" right="10px">
+          <Flex pos="absolute" right="10px">
+            {is_saving && (
+              <Text
+                variant="xs"
+                mr="40px"
+                color="brand.green"
+                top="10px"
+                pos="relative"
+              >
+                <CheckIcon mr="7px" />
+                Modification sauvegardée
+                <CircularProgress
+                  ml={2}
+                  isIndeterminate
+                  color="brand.green"
+                  size="2"
+                />
+              </Text>
+            )}
             {isLanding ? (
               <Button
                 variant="roundedBlue"
@@ -92,11 +119,13 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
                 {t.preview}
               </Button>
             ) : (
-              <Button variant="roundedBlue" mr={5} onClick={handleVerify}>
-                {t.verify}
-              </Button>
+              <Flex alignItems="center">
+                <Button variant="roundedBlue" mr={5} onClick={handleVerify}>
+                  {t.verify}
+                </Button>
+              </Flex>
             )}
-          </Box>
+          </Flex>
         </Flex>
       </Collapse>
     </>

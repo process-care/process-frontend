@@ -96,7 +96,19 @@ const InputsPreview: React.FC<Props> = ({ surveyId, order }) => {
         overflowY="auto"
       >
         <Formik
-          initialValues={{}}
+          // initialValues={
+          //   questions?.questions
+          //     ? questions?.questions.map((q) => {
+          //         return {
+          //           [q.id]: "",
+          //         };
+          //       })
+          //     : {}
+          // }
+          initialValues={{
+            "61436550bf35072f83f926f0": "Chat",
+            "614368bdbf35072f83f926f1": "plof",
+          }}
           onSubmit={(data) => {
             console.log("DATA :", data);
           }}

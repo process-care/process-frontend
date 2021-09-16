@@ -8,6 +8,7 @@ import {
   HStack,
   Box,
 } from "@chakra-ui/react";
+import { useField } from "formik";
 
 interface Radios {
   value: string | undefined;
@@ -35,12 +36,14 @@ export const CustomRadioBox: React.FC<Props> = ({
   isRequired,
   isCollapsed,
 }) => {
+  const [field, , helpers] = useField(id);
+  const { setValue } = helpers;
   return (
     <FormControl id={id} textAlign="left" m={m} p={p} isRequired={isRequired}>
       <FormLabel>{label}</FormLabel>
       {!isCollapsed && (
         <>
-          <RadioGroup colorScheme="green">
+          <RadioGroup colorScheme="green" value={field.value}>
             <HStack flexWrap="wrap" spacing={5}>
               {radios ? (
                 radios.map(({ value, label }) => {
@@ -51,6 +54,7 @@ export const CustomRadioBox: React.FC<Props> = ({
                       value={value}
                       key={value}
                       isRequired={isRequired}
+                      onChange={(e) => setValue(e.target.value)}
                     >
                       {label}
                     </Radio>

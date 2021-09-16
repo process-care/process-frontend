@@ -8,6 +8,7 @@ import {
   HStack,
   Box,
 } from "@chakra-ui/react";
+import { useField } from "formik";
 
 interface Checkbox {
   value: string | undefined;
@@ -31,12 +32,14 @@ export const CustomCheckbox: React.FC<Props> = ({
   id,
   isCollapsed,
 }) => {
+  const [field, , helpers] = useField(id);
+  const { setValue } = helpers;
   return (
     <FormControl id={id} textAlign="left" isRequired={isRequired}>
       <FormLabel>{label}</FormLabel>
       {!isCollapsed && (
         <>
-          <CheckboxGroup colorScheme="green">
+          <CheckboxGroup colorScheme="green" value={field.value}>
             <HStack flexWrap="wrap" spacing={5}>
               {checkbox ? (
                 checkbox.map(({ value, label }) => {
@@ -46,6 +49,8 @@ export const CustomCheckbox: React.FC<Props> = ({
                       name={label}
                       key={value}
                       isRequired={isRequired}
+                      onChange={(e) => setValue(e.target.name)}
+                      defaultIsChecked={value === field.value}
                     >
                       {label}
                     </Checkbox>

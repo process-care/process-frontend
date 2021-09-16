@@ -1,13 +1,11 @@
-import { request } from "graphql-request";
-
 import { useMutation, UseMutationResult } from "react-query";
 import { optimisticUpdate } from "call/optimisiticUpdate";
-import { API_URL } from "constants/api";
 import {
   DELETE_FILE,
   UPLOAD_FILE_MULTIPLE,
   UPLOAD_FILE_SINGLE,
 } from "call/queries/application";
+import { client } from "..";
 
 // ---- TYPES
 
@@ -35,19 +33,19 @@ export type DeleteParams = {
 export const useUploadFileSingle = (): UseMutationResult<any, Error> =>
   useMutation<any, Error, any>(
     async (params: UploadSingleParams) =>
-      await request(API_URL, UPLOAD_FILE_SINGLE, params),
+      await client.request(UPLOAD_FILE_SINGLE, params),
     optimisticUpdate(["getLanding", "getSurvey"])
   );
 
 export const useUploadFileMultiple = (): UseMutationResult<any, Error> =>
   useMutation<any, Error, any>(
     async (params: UploadMultipleParams) =>
-      await request(API_URL, UPLOAD_FILE_MULTIPLE, params),
+      await client.request(UPLOAD_FILE_MULTIPLE, params),
     optimisticUpdate(["getLanding", "getSurvey"])
   );
 
 export const useDeleteFile = (): UseMutationResult<any, Error> =>
   useMutation<any, Error, any>(
-    async (id: string) => await request(API_URL, DELETE_FILE, { id }),
+    async (id: string) => await client.request(DELETE_FILE, { id }),
     optimisticUpdate(["getLanding", "getSurvey"])
   );

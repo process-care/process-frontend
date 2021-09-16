@@ -1,15 +1,6 @@
-import {
-  useMutation,
-  UseMutationResult,
-  //   useQuery,
-  //   UseQueryResult,
-} from "react-query";
-import { request } from "graphql-request";
-
+import { useMutation, UseMutationResult } from "react-query";
 import { LOGIN, SIGNIN } from "call/queries/auth";
-
-// import { optimisticUpdate } from "call/optimisiticUpdate";
-import { API_URL } from "constants/api";
+import { client } from "..";
 
 export interface Login {
   identifier: string;
@@ -44,7 +35,7 @@ export interface SigninRes {
 export const useLogin = (): UseMutationResult<LoginRes, Error> =>
   useMutation<LoginRes, Error, any>(
     async ({ identifier, password }) =>
-      await request(API_URL, LOGIN, {
+      await client.request(LOGIN, {
         identifier,
         password,
       })
@@ -53,7 +44,7 @@ export const useLogin = (): UseMutationResult<LoginRes, Error> =>
 export const useSignin = (): UseMutationResult<SigninRes, Error> =>
   useMutation<SigninRes, Error, any>(
     async ({ email, username, password }) =>
-      await request(API_URL, SIGNIN, {
+      await client.request(SIGNIN, {
         email,
         username,
         password,

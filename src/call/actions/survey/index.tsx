@@ -1,4 +1,3 @@
-import { request } from "graphql-request";
 import {
   GET_SURVEY,
   GET_SURVEY_STATS,
@@ -18,13 +17,13 @@ import {
 } from "react-query";
 import { optimisticUpdate } from "call/optimisiticUpdate";
 import ISurvey, { ISurveyRes, ISurveysRes } from "types/survey";
-import { API_URL } from "constants/api";
 import { Survey } from "redux/slices/surveyBuilder";
+import { client } from "..";
 
 export const useAddSurvey: any = (): UseMutationResult<ISurvey, Error> =>
   useMutation<ISurvey, Error, any>(
     async (values: Partial<ISurvey>) =>
-      await request(API_URL, ADD_SURVEY, { values }),
+      await client.request(ADD_SURVEY, { values }),
     optimisticUpdate(["getSurvey"])
   );
 
@@ -32,7 +31,7 @@ export const useGetSurvey = (id: string): UseQueryResult<ISurveyRes, Error> =>
   useQuery<ISurveyRes, Error>(
     ["getSurvey", id],
     () =>
-      request(API_URL, GET_SURVEY, {
+      client.request(GET_SURVEY, {
         id,
       }),
     { enabled: !!id }
@@ -44,7 +43,7 @@ export const useGetSurveyMetadas = (
   useQuery<Survey, Error>(
     ["getSurveyMetadas", id],
     () =>
-      request(API_URL, GET_SURVEY_METADATAS, {
+      client.request(GET_SURVEY_METADATAS, {
         id,
       }),
     { enabled: !!id }
@@ -54,7 +53,7 @@ export const useGetSurveyStats: any = (id: string) =>
   useQuery(
     ["getSurveyStats", id],
     () =>
-      request(API_URL, GET_SURVEY_STATS, {
+      client.request(GET_SURVEY_STATS, {
         id,
       }),
     { enabled: !!id }
@@ -65,19 +64,19 @@ export const useGetMySurveys = (
 ): UseQueryResult<ISurveysRes, Error> =>
   useQuery<ISurveysRes, Error, any>(
     "getSurveys",
-    () => request(API_URL, GET_MY_SURVEYS, { authorId }),
+    () => client.request(GET_MY_SURVEYS, { authorId }),
     { enabled: !!authorId }
   );
 
 export const useGetSurveys = (): UseQueryResult<ISurveysRes, Error> =>
   useQuery<ISurveysRes, Error>("getMySurveys", () =>
-    request(API_URL, GET_SURVEYS)
+    client.request(GET_SURVEYS)
   );
 
 export const useUpdateSurvey = (): UseMutationResult<ISurvey, Error> =>
   useMutation<ISurvey, Error, any>(
     async ({ id, data }: { id: string; data: Partial<ISurvey> }) =>
-      await request(API_URL, UPDATE_SURVEY, {
+      await client.request(UPDATE_SURVEY, {
         id,
         data,
       }),
@@ -87,7 +86,7 @@ export const useUpdateSurvey = (): UseMutationResult<ISurvey, Error> =>
 export const useDeleteSurvey = (): UseMutationResult<ISurvey, Error> =>
   useMutation<ISurvey, Error, any>(
     async (id: string) =>
-      await request(API_URL, DELETE_SURVEY, {
+      await client.request(DELETE_SURVEY, {
         id,
       }),
     optimisticUpdate(["getSurveys"])
@@ -96,7 +95,7 @@ export const useDeleteSurvey = (): UseMutationResult<ISurvey, Error> =>
 export const useUpdateOrder: any = (new_order: string[]) =>
   useMutation(
     async ({ id, new_order }: { id: string; new_order: string[] }) =>
-      await request(API_URL, UPDATE_ORDER, {
+      await client.request(UPDATE_ORDER, {
         id,
         new_order,
       }),

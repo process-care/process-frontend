@@ -8,7 +8,7 @@ import {
   selectPage,
   setIsRemoving,
 } from "redux/slices/formBuilder";
-import { toogleDrawer } from "redux/slices/application";
+import { setAutoSave, toogleDrawer } from "redux/slices/application";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { t } from "static/survey";
 import ToolBox from "../InputsButton";
@@ -31,6 +31,7 @@ import {
 } from "call/actions/formBuider/condition";
 import { useUpdateOrder } from "call/actions/survey";
 import { getNewOrder } from "./utils";
+import { debounce } from "lodash";
 
 interface Props {
   survey: ISurvey;
@@ -83,6 +84,14 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
     );
   };
 
+  const autoSave = () => {
+    dispatch(setAutoSave());
+    setTimeout(() => {
+      dispatch(setAutoSave());
+    }, 2000);
+  };
+  const autoSaveDebounce = debounce(autoSave, 500);
+
   const onChange = (event: React.FormEvent<HTMLFormElement>) => {
     const target = event.target as HTMLFormElement;
     if (target !== null) {
@@ -128,6 +137,7 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
         {() => {
           return (
             <Form
+              onBlur={autoSaveDebounce}
               onChange={(event) => onChange(event)}
               style={{ width: "100%" }}
             >

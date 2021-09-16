@@ -6,6 +6,7 @@ import { Wysiwyg } from "components/Fields/Wysiwyg";
 import { Formik, Form } from "formik";
 import React, { useMemo } from "react";
 import { setEditAboutPage } from "redux/slices/landingBuilder";
+import { debounce } from "lodash";
 
 import { t } from "static/createLanding";
 import { ColorPicker } from "../ColorPicker";
@@ -18,6 +19,7 @@ import { ReactComponent as Delete } from "assets/delete.svg";
 import { goTop } from "utils/application/scrollTo";
 import { ILanding } from "types/landing";
 import { useUpdateLanding } from "call/actions/landing";
+import { setAutoSave } from "redux/slices/application";
 
 interface Props {
   data: ILanding;
@@ -42,6 +44,14 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
       });
     }
   };
+
+  const autoSave = () => {
+    dispatch(setAutoSave());
+    setTimeout(() => {
+      dispatch(setAutoSave());
+    }, 2000);
+  };
+  const autoSaveDebounce = debounce(autoSave, 500);
 
   return (
     <Formik
@@ -116,6 +126,7 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
           >
             <Form
               onChange={(event) => onChange(event)}
+              onBlur={autoSaveDebounce}
               style={{ width: "100%" }}
             >
               <Text variant="currentBold">{t.label_logo}</Text>

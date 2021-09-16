@@ -1,6 +1,8 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { CheckIcon } from "@chakra-ui/icons";
+import { CircularProgress, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { useAppSelector } from "redux/hooks";
 import { ReactComponent as Back } from "./assets/back.svg";
 
 interface Props {
@@ -8,6 +10,7 @@ interface Props {
 }
 
 export const Menu: React.FC<Props> = ({ surveyTitle }) => {
+  const { is_saving } = useAppSelector((state) => state.application);
   return (
     <Flex
       pos="relative"
@@ -32,6 +35,24 @@ export const Menu: React.FC<Props> = ({ surveyTitle }) => {
       >
         {surveyTitle}
       </Text>
+      {is_saving && (
+        <Text
+          variant="xs"
+          mr="40px"
+          color="brand.green"
+          pos="absolute"
+          right="0"
+        >
+          <CheckIcon mr="7px" />
+          Modification sauvegardée
+          <CircularProgress
+            ml={2}
+            isIndeterminate
+            color="brand.green"
+            size="2"
+          />
+        </Text>
+      )}
     </Flex>
   );
 };

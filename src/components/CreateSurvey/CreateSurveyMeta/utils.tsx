@@ -3,7 +3,7 @@ import { Select, Textarea } from "components/Fields";
 import { CustomCreatableSelect } from "components/Fields/SelectCreatable";
 import { FormikErrors } from "formik";
 import { Survey } from "redux/slices/surveyBuilder";
-import { ActionButtons } from "./ActionButtons";
+// import { ActionButtons } from "./ActionButtons";
 
 // TODO : Get the list of all the tags from the backend
 const t = {
@@ -121,8 +121,8 @@ export const renderInputs = (step: number): React.ReactElement => {
       );
       break;
 
-    case 8:
-      return <ActionButtons />;
+    // case 8:
+    //   return <ActionButtons />;
     default:
       return <></>;
       break;

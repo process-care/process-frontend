@@ -1,26 +1,46 @@
 import { Box, Text } from "@chakra-ui/react";
-import React from "react";
+import React, { useCallback } from "react";
 import { Content } from "./Content";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { Team } from "./Team";
 import { useAppSelector } from "redux/hooks";
 import { ILanding } from "types/landing";
+import { useHistory, useParams } from "react-router-dom";
+
+// ---- STATICS
+
+const big_placeholder =
+    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et. <br/> <br/> quo velit tenetur labore at reprehenderit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.<br/> <br/> Blanditiis et, quo velit tenetur labore at reprehenderit.";
+
+
+// ---- TYPES
 
 interface Props {
   data: ILanding;
   isUserView?: boolean;
 }
 
+// ---- COMPONENT
+
 export const Preview: React.FC<Props> = ({ data, isUserView }) => {
-  const big_placeholder =
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et. <br/> <br/> quo velit tenetur labore at reprehenderit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.<br/> <br/> Blanditiis et, quo velit tenetur labore at reprehenderit.";
+  // FIXME: Yup, these ignore are bad, need to be removed
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const { slug } = useParams();
+  const history = useHistory();
 
   const { is_editing_about_page } = useAppSelector(
     (state) => state.landingBuilder
   );
+
   const { color_theme, members } = data;
   const had_members = members?.length > 0;
+
+  const onParticipate = useCallback(() => {
+    console.log('Let us participate !!');
+    history.push(`/survey/${slug}/consent`);
+  }, [slug]);
 
   if (is_editing_about_page) {
     return (
@@ -50,8 +70,8 @@ export const Preview: React.FC<Props> = ({ data, isUserView }) => {
       mx="auto"
       mt={isUserView ? "0" : "100px"}
     >
-      <Header theme={color_theme} logo={data.logo} title={data.title} />
-      <Content data={data} theme={color_theme} />
+      <Header theme={color_theme} logo={data.logo} title={data.title} onParticipate={onParticipate} />
+      <Content data={data} theme={color_theme} onParticipate={onParticipate} />
       {had_members && <Team members={data.members} />}
       <Footer data={data} />
     </Box>

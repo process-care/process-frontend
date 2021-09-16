@@ -6,9 +6,10 @@ interface Props {
   theme: IColors;
   logo: string;
   title: string;
+  onParticipate: () => void
 }
 
-export const Header: React.FC<Props> = ({ theme, logo, title }) => {
+export const Header: React.FC<Props> = ({ theme, logo, title, onParticipate }) => {
   return (
     <Flex justifyContent="space-between" p="5" alignItems="center">
       {!!logo && logo.length !== 0 && (
@@ -21,6 +22,7 @@ export const Header: React.FC<Props> = ({ theme, logo, title }) => {
         variant="rounded"
         backgroundColor={theme?.button || "brand.blue"}
         color="white"
+        onClick={onParticipate}
       >
         Participer à l'étude
       </Button>

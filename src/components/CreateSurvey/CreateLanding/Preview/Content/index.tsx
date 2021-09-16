@@ -8,6 +8,7 @@ import { API_URL_ROOT } from "constants/api";
 interface Props {
   data: ILanding;
   theme: IColors;
+  onParticipate: () => void,
 }
 
 const placeholder =
@@ -17,7 +18,7 @@ const big_placeholder =
 
 const imgStyle = { maxWidth: "400px", width: "400px" };
 
-export const Content: React.FC<Props> = ({ data, theme }) => {
+export const Content: React.FC<Props> = ({ data, theme, onParticipate }) => {
   const had_video = Boolean(data.video_url);
   const had_image = Boolean(data.cover);
   const had_media = had_video || had_image;
@@ -66,6 +67,7 @@ export const Content: React.FC<Props> = ({ data, theme }) => {
             <Button
               variant="rounded"
               backgroundColor={theme?.button || "brand.blue"}
+              onClick={onParticipate}
             >
               {t.cta_participate}
             </Button>

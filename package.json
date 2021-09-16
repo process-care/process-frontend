@@ -51,6 +51,7 @@
     "react-scripts": "4.0.3",
     "react-select": "^4.3.1",
     "react-table": "^7.7.0",
+    "redux-observable": "^2.0.0",
     "slate": "^0.63.0",
     "slate-history": "^0.62.0",
     "slate-react": "^0.63.0",

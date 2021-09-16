@@ -45,9 +45,9 @@ export const CreateSurveyForm: React.FC = () => {
 
   const handleChange = (event: React.FormEvent<HTMLFormElement>) => {
     const target = event.target as HTMLFormElement;
-    const isSelectedField = target.id.includes("react-select");
+    // const isSelectedField = target.id.includes("react-select");
 
-    if (isSelectedField) return false;
+    // if (isSelectedField) return false;
     dispatch(
       updateSurveyMeta({
         data: {
@@ -128,17 +128,18 @@ export const CreateSurveyForm: React.FC = () => {
         }}
       >
         {({ values, errors }) => {
-          useEffect(() => {
-            if (values.language) {
-              dispatch(
-                updateSurveyMeta({
-                  data: {
-                    language: values.language,
-                  },
-                })
-              );
-            }
-          }, [values.language]);
+          // useEffect(() => {
+          //   if (values.language) {
+          //     dispatch(
+          //       updateSurveyMeta({
+          //         data: {
+          //           language: values.language,
+          //         },
+          //       })
+          //     );
+          //   }
+          // }, [values.language]);
+
           useEffect(() => {
             if (values.categories) {
               dispatch(

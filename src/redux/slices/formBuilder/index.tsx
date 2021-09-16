@@ -10,6 +10,7 @@ export interface FormBuilder {
   is_editing: boolean;
   is_collapse_view: boolean;
   is_removing: ICondition["id"];
+  condition_status: string | null;
 }
 
 // Define the initial state using that type
@@ -20,6 +21,7 @@ const initialState: FormBuilder = {
   is_editing: false,
   is_collapse_view: false,
   is_removing: "",
+  condition_status: null,
 };
 
 export const formBuilderSlice = createSlice({
@@ -32,6 +34,9 @@ export const formBuilderSlice = createSlice({
 
     // Inputs
 
+    setConditionStatus: (state, action: PayloadAction<string>) => {
+      state.condition_status = action.payload;
+    },
     selectInput: (state, action: PayloadAction<IQuestion>) => {
       state.selected_input = action.payload;
     },
@@ -71,6 +76,7 @@ export const {
   toggleCollapseView,
   selectPage,
   selectCondition,
+  setConditionStatus,
 } = formBuilderSlice.actions;
 
 export default formBuilderSlice.reducer;

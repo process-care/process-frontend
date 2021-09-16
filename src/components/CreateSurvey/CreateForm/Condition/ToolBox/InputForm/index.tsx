@@ -19,43 +19,33 @@ import { v4 as uuidv4 } from "uuid";
 import { t } from "static/condition";
 import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
 import {
-  useDeleteQuestion,
   useGetQuestion,
   useUpdateQuestion,
 } from "call/actions/formBuider/question";
 import { useAddCondition } from "call/actions/formBuider/condition";
 import ISurvey from "types/survey";
-import { useUpdateOrder } from "call/actions/survey";
+import { useQuestionChain } from "components/CreateSurvey/CreateForm/hooks";
 
 interface Props {
   survey: ISurvey;
 }
 
 const InputForm: React.FC<Props> = ({ survey }) => {
+  const isEditing = useAppSelector((state) => state.formBuilder.is_editing);
   const { selected_input } = useAppSelector((state) => state.formBuilder);
-  const { mutate: updateQuestion } = useUpdateQuestion();
-  const { mutate: deleteQuestion } = useDeleteQuestion();
-  const { mutateAsync: addCondition } = useAddCondition();
-  const { mutateAsync: updateOrder } = useUpdateOrder();
-
-  const { data: currentQuestion } = useGetQuestion(selected_input.id);
-
   const { type } = selected_input;
 
-  const isEditing = useAppSelector((state) => state.formBuilder.is_editing);
   const dispatch = useAppDispatch();
 
-  const onCancel = () => {
-    if (!isEditing) {
-      deleteQuestion(selected_input.id);
-      updateOrder({
-        id: survey.id,
-        new_order: survey?.order.filter(
-          (id: string) => id !== selected_input.id
-        ),
-      });
-    }
+  const { mutateAsync: updateQuestion } = useUpdateQuestion();
+  const { mutateAsync: addCondition } = useAddCondition();
+  const { deleteQuestionChain } = useQuestionChain(selected_input, survey);
+  const { data: currentQuestion } = useGetQuestion(selected_input.id);
 
+  const handleDelete = async () => {
+    if (!isEditing) {
+      deleteQuestionChain();
+    }
     dispatch(toogleDrawer());
     dispatch(setIsEditing(false));
   };
@@ -176,10 +166,7 @@ const InputForm: React.FC<Props> = ({ survey }) => {
                         type: "input",
                         referer_question: selected_input.id,
                         step: 1,
-                        group: {
-                          id: uuidv4(),
-                          name: 1,
-                        },
+                        group: uuidv4(),
                         is_valid: false,
                       }).then((data: any) => {
                         dispatch(
@@ -214,7 +201,7 @@ const InputForm: React.FC<Props> = ({ survey }) => {
               <Footer
                 onSubmit={() => console.log("submit")}
                 disabled={!isValid || isSubmitting}
-                onCancel={() => onCancel()}
+                onCancel={handleDelete}
                 onDelete={() => {
                   dispatch(setIsRemoving(selected_input.id));
                   dispatch(toogleDrawer());

@@ -1,4 +1,4 @@
-import { Box, Button, Center, Collapse, Container } from "@chakra-ui/react";
+import { Box, Collapse, Container } from "@chakra-ui/react";
 import React from "react";
 import { useParams } from "react-router-dom";
 
@@ -7,8 +7,8 @@ import { Menu } from "components/Menu/CreateForm";
 import { ToolBox } from "components/CreateSurvey/CreateLanding/ToolBox";
 import { Preview } from "components/CreateSurvey/CreateLanding/Preview";
 import { useAppSelector } from "redux/hooks";
-import { useGetSurvey, useUpdateSurvey } from "call/actions/survey";
-import { useAddLanding, useGetLanding } from "call/actions/landing";
+import { useGetSurvey } from "call/actions/survey";
+import { useGetLanding } from "call/actions/landing";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 
@@ -18,8 +18,6 @@ export const CreateLanding: React.FC<IRoute> = () => {
   // @ts-ignore
   const { slug: surveyId } = useParams();
   const { preview_mode } = useAppSelector((state) => state.application);
-  const { mutateAsync: addLanding } = useAddLanding();
-  const { mutateAsync: updateSurvey } = useUpdateSurvey();
 
   const { data: survey } = useGetSurvey(surveyId);
   const {
@@ -28,36 +26,14 @@ export const CreateLanding: React.FC<IRoute> = () => {
     error,
   } = useGetLanding(survey?.survey?.landing?.id);
 
-  const createLanding = async () => {
-    const landing: Record<string, any> = await addLanding({
-      title: survey?.survey.title,
-      survey: surveyId,
-    });
-
-    // update survey with landing id.
-    await updateSurvey({
-      id: surveyId,
-      data: { landing: landing.createLanding.landing.id },
-    });
-  };
-
   if (error) {
     return <Error error={error.message} />;
   }
 
-  if (isLoading) {
+  if (isLoading || landing?.landing === undefined) {
     return <Loader />;
   }
 
-  if (landing?.landing === undefined) {
-    return (
-      <Center h="100vh">
-        <Button onClick={createLanding} h="400px" w="30%">
-          Create Landing
-        </Button>
-      </Center>
-    );
-  }
   return (
     <Box overflow="auto">
       <Box

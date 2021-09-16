@@ -4,7 +4,6 @@ import {
   useQuery,
   UseQueryResult,
 } from "react-query";
-import { request } from "graphql-request";
 import {
   GET_QUESTION,
   ADD_QUESTION,
@@ -15,7 +14,7 @@ import {
 } from "call/queries/formBuilder/question";
 import IQuestion, { IQuestionsRes, IQuestionRes } from "types/form/question";
 import { optimisticUpdate } from "call/optimisiticUpdate";
-import { API_URL } from "constants/api";
+import { client } from "call/actions";
 
 // ---- GETTERS
 
@@ -27,7 +26,7 @@ export const useGetQuestion = (
   return useQuery<IQuestionRes, Error>(
     ["getQuestion", id],
     async () => {
-      return await request(API_URL, GET_QUESTION, {
+      return await client.request(GET_QUESTION, {
         id,
       });
     },
@@ -43,7 +42,7 @@ export const useGetQuestions = (
   return useQuery<IQuestionsRes, Error>(
     ["getQuestions", page_id],
     async () => {
-      return await request(API_URL, GET_QUESTIONS, {
+      return await client.request(GET_QUESTIONS, {
         page_id,
       });
     },
@@ -91,7 +90,7 @@ export const useAddQuestion = (
 ): UseMutationResult<Partial<IQuestion>, Error> =>
   useMutation<IQuestion, Error, any>(
     async (new_question: IQuestion) => {
-      return await request(API_URL, ADD_QUESTION, {
+      return await client.request(ADD_QUESTION, {
         new_question,
       });
     },
@@ -105,7 +104,7 @@ export const useUpdateQuestion = (
 ): UseMutationResult<IQuestion, Error> =>
   useMutation<IQuestion, Error, any>(
     async ({ id, data }: { id: string; data: IQuestion }) =>
-      request(API_URL, UPDATE_QUESTION, {
+      client.request(UPDATE_QUESTION, {
         id,
         data,
       }),
@@ -117,7 +116,7 @@ export const useDeleteQuestion = (
 ): UseMutationResult<IQuestion, Error> =>
   useMutation<IQuestion, Error, any>(
     async (id: IQuestion["id"]) =>
-      await request(API_URL, DELETE_QUESTION, {
+      await client.request(DELETE_QUESTION, {
         id,
       }),
     optimisticUpdate(["getQuestions", "getSurvey"], id)

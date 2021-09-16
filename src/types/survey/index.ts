@@ -5,13 +5,14 @@ import { ILanding } from "types/landing";
 export default interface ISurvey {
   id: string;
   order: IQuestion["id"][];
-  consentement?: File;
+  consentement?: any;
   description: string;
   pages: IPage[];
   landing?: ILanding;
   title: string;
   slug: string;
   status: "draft" | "pending" | "closed" | "archived";
+  createdAt: Date;
 }
 
 export interface ISurveyRes {

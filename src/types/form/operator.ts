@@ -5,7 +5,7 @@ export default interface IOperator {
     | "equal"
     | "superior"
     | "inferior"
-    | "different";
+    | "not_equal";
   name?:
     | "Egal ou supérieur à"
     | "Egal ou inférieur à"

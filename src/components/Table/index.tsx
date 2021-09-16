@@ -9,12 +9,13 @@ import {
 } from "react-table";
 import { Box, Text } from "@chakra-ui/react";
 import { useCallback } from "react";
+import { Survey } from "redux/slices/surveyBuilder";
 
 // ---- TYPES
 
 // FIXME: If table is generic, then this is a hack, because if we expect a project ID
 // it means that we will use this component only for a table displaying Projects
-type ClickAction = (projectId: string) => void;
+type ClickAction = (survey: Survey["survey"]) => void;
 
 interface Props {
   columns: Array<Column<any>>;
@@ -80,7 +81,7 @@ const TableHeader = ({ column }: TableHeaderProps) => {
       <Text variant="current" p="30px" textAlign={aligned}>
         {content}
         <span>
-          {column.isSorted ? (column.isSortedDesc ? "↓" : " ↑") : ""}{" "}
+          {column.isSorted ? (column.isSortedDesc ? " ↓" : " ↑") : " ↓"}{" "}
         </span>
       </Text>
     </th>
@@ -101,8 +102,8 @@ const TableRow = ({ row, prepareRow, onClick }: TableRowProps) => {
   // FIXME: Obviously both lines below are bad ⤵️
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore : ID does exist
-  const projectId = row.original.id;
-  const click = useCallback(() => onClick(projectId), [projectId, onClick]);
+  const survey: Survey["survey"] = row.original;
+  const click = useCallback(() => onClick(survey), [survey, onClick]);
 
   return (
     <tr {...row.getRowProps()} style={styles.tr} onClick={click}>

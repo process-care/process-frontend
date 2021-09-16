@@ -3,7 +3,9 @@ import * as React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import theme from "theme";
 import { Layout } from "components/Layout";
-import routes from "routes";
+import { routes } from "routes";
+import { protectedRoutes } from "routes";
+
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { store } from "redux/store";
@@ -12,6 +14,7 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 import "index.css";
+import { ProtectedRoutes } from "routes/ProtectedRoutes";
 
 export const queryClient = new QueryClient();
 
@@ -39,6 +42,21 @@ const App: React.FC = () => {
                       />
                     );
                   })}
+                  <ProtectedRoutes>
+                    {protectedRoutes.map(({ name, path, exact, component }) => {
+                      return (
+                        <Route
+                          key={name}
+                          path={path}
+                          exact={exact}
+                          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                          // @ts-ignore
+                          component={() => component}
+                          strict
+                        />
+                      );
+                    })}
+                  </ProtectedRoutes>
                 </Switch>
               </Layout>
             </BrowserRouter>

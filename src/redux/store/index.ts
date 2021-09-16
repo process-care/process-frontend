@@ -5,6 +5,7 @@ import formBuilder from "redux/slices/formBuilder";
 import application from "redux/slices/application";
 import landingBuilder from "redux/slices/landingBuilder";
 import participation from "redux/slices/participation";
+import surveyBuilder from "redux/slices/surveyBuilder";
 
 import { pingEpic } from "redux/slices/participation/epic";
 
@@ -26,6 +27,7 @@ const epicMiddleware = createEpicMiddleware<AnyAction, AnyAction, RootState, unk
 const combinedReducer = combineReducers({
   formBuilder,
   landingBuilder,
+  surveyBuilder,
   application,
   participation,
 });

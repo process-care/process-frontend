@@ -1,17 +1,24 @@
 import React from "react";
 import IRoute from "types/routes/route";
-import { CreateSurveyForm } from "components/CreateSurvey";
+import { CreateSurveyForm } from "components/CreateSurvey/CreateSurveyMeta";
 import { Menu } from "components/Menu/CreateSurvey";
-import { Box, Container } from "@chakra-ui/react";
+import { Box, Center, Container } from "@chakra-ui/react";
+import { Timeline } from "components/CreateSurvey/Timeline";
 
 export const CreateSurvey: React.FC<IRoute> = () => {
   return (
     <Box d="flex" justifyContent="space-around" w="100%" overflow="hidden">
       <Box w="100%">
         <Menu />
-        <CreateSurveyForm />
+        <div className="background__grid">
+          <Center h="80vh">
+            <CreateSurveyForm />
+          </Center>
+        </div>
       </Box>
-      <Container variant="rightPart" />
+      <Container variant="rightPart">
+        <Timeline />
+      </Container>
     </Box>
   );
 };

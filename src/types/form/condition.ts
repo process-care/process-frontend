@@ -28,3 +28,10 @@ export default interface ICondition {
 export interface IConditionRes {
   conditions: ICondition[];
 }
+
+export interface CheckSurvey {
+  checkSurvey: {
+    data: string;
+    errors: any;
+  };
+}

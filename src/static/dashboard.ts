@@ -5,9 +5,10 @@ export const t = {
   cta: "Créer une nouvelle enquête",
   filters: [
     { label: "Tout voir", id: "all" },
-    { label: "En cours", id: "in_progress" },
+    { label: "Brouillon", id: "draft" },
+    { label: "En cours", id: "pending" },
+    { label: "Fermés", id: "closed" },
     { label: "Archivés", id: "archived" },
-    { label: "Par date", id: "per_date" },
   ],
   header: [
     { Header: "Status", accessor: "status" },

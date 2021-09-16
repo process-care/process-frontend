@@ -69,6 +69,7 @@ export const CustomSelect: React.FC<Props> = ({
   id,
   answers,
   isCollapsed,
+  isMulti = false,
 }): ReactElement => {
   const [field, ,] = useField(id);
   const { setFieldValue } = useFormikContext();
@@ -78,6 +79,7 @@ export const CustomSelect: React.FC<Props> = ({
       {!isCollapsed && (
         <>
           <Select
+            isMulti={isMulti}
             styles={customStyles}
             id={id}
             isRequired={isRequired}
@@ -86,6 +88,7 @@ export const CustomSelect: React.FC<Props> = ({
             options={answers}
             onChange={(value) => setFieldValue(field.name, value?.value)}
             defaultValue={field.value}
+            value={{ label: field.value, value: field.value }}
           />
           <FormHelperText fontSize="xs">{helpText}</FormHelperText>
         </>

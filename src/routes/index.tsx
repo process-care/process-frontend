@@ -1,5 +1,5 @@
 import IRoute from "types/routes/routes";
-import { Authentification } from "pages/Authentification";
+import { Login } from "pages/Auth/Login";
 import { CreateSurvey } from "pages/Survey";
 import { CreateForm } from "pages/Survey/CreateForm";
 import { Dashboard } from "pages/Dashboard";
@@ -7,17 +7,13 @@ import { Landing } from "pages/Landing";
 import { Portail } from "pages/Portail";
 import { CreateLanding } from "pages/Survey/CreateLanding";
 import { Participation } from "pages/Survey/Participation";
+import { CreateConsent } from "pages/Survey/CreateConsent";
+import { Signin } from "pages/Auth/Signin";
 
-const routes: IRoute[] = [
-  {
-    name: "Connexion / Inscription",
-    path: "/connexion",
-    component: <Authentification />,
-    exact: true,
-  },
+export const protectedRoutes: IRoute[] = [
   {
     name: "Création d'enquète",
-    path: "/survey/create",
+    path: "/survey/:slug/create/metadatas",
     component: <CreateSurvey />,
     exact: true,
   },
@@ -25,6 +21,12 @@ const routes: IRoute[] = [
     name: "Création de landing page",
     path: "/survey/:slug/create/landing",
     component: <CreateLanding />,
+    exact: true,
+  },
+  {
+    name: "Création du consentement",
+    path: "/survey/:slug/create/consent",
+    component: <CreateConsent />,
     exact: true,
   },
   {
@@ -37,6 +39,27 @@ const routes: IRoute[] = [
     name: "Dashboard",
     path: "/dashboard",
     component: <Dashboard />,
+    exact: true,
+  },
+  {
+    name: "Profil",
+    path: "/profil",
+    component: <Dashboard />,
+    exact: true,
+  },
+];
+
+export const routes: IRoute[] = [
+  {
+    name: "Connexion",
+    path: "/connexion",
+    component: <Login />,
+    exact: true,
+  },
+  {
+    name: "Inscription",
+    path: "/inscription",
+    component: <Signin />,
     exact: true,
   },
   {
@@ -58,5 +81,3 @@ const routes: IRoute[] = [
     exact: true,
   },
 ];
-
-export default routes;

@@ -43,6 +43,7 @@ const InputsPreview: React.FC<Props> = ({ surveyId, order }) => {
   const { mutateAsync: updateOrder } = useUpdateOrder("updateOrder");
 
   const renderCard = (input: IQuestion, index: number) => {
+    if (!survey) return null;
     return (
       <Card
         key={input.id}

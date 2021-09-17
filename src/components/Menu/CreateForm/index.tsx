@@ -15,7 +15,6 @@ import { Loader } from "components/Spinner";
 import { useGetSurvey } from "call/actions/survey";
 import { setConditionStatus } from "redux/slices/formBuilder";
 import { CheckIcon } from "@chakra-ui/icons";
-
 interface Props {
   isLanding?: boolean;
   surveyId: string;

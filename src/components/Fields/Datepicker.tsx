@@ -26,11 +26,12 @@ export const CustomDatePicker: React.FC<Props> = ({
   isRequired,
   isCollapsed,
 }) => {
-  const [field, meta] = useField(id);
+  const [, meta, helpers] = useField(id);
   const [startDate, setStartDate] = React.useState(new Date());
   const handleChange = (date: Date) => {
     if (date) {
       setStartDate(date);
+      helpers.setValue(date);
     }
   };
 
@@ -41,7 +42,6 @@ export const CustomDatePicker: React.FC<Props> = ({
         <>
           <DatePicker
             required={isRequired}
-            {...field}
             selected={startDate}
             onChange={(d: Date) => {
               handleChange(d);

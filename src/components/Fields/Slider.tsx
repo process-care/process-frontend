@@ -42,13 +42,7 @@ export const CustomSlider: React.FC<Props> = ({
   isRequired,
   isCollapsed,
 }) => {
-  const [, , helpers] = useField(id);
-
-  React.useEffect(() => {
-    if (defaultValue) {
-      helpers.setValue(defaultValue);
-    }
-  }, [defaultValue]);
+  const [field, , helpers] = useField(id);
 
   React.useEffect(() => {
     if (defaultValue) {
@@ -91,6 +85,7 @@ export const CustomSlider: React.FC<Props> = ({
               }
               vertical={vertical}
               onChange={(value) => helpers.setValue(value)}
+              value={field.value}
             />
             <Flex
               w="100%"

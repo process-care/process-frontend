@@ -45,9 +45,7 @@ export const CreateSurveyForm: React.FC = () => {
 
   const handleChange = (event: React.FormEvent<HTMLFormElement>) => {
     const target = event.target as HTMLFormElement;
-    // const isSelectedField = target.id.includes("react-select");
 
-    // if (isSelectedField) return false;
     dispatch(
       updateSurveyMeta({
         data: {
@@ -128,40 +126,6 @@ export const CreateSurveyForm: React.FC = () => {
         }}
       >
         {({ values, errors }) => {
-          // useEffect(() => {
-          //   if (values.language) {
-          //     dispatch(
-          //       updateSurveyMeta({
-          //         data: {
-          //           language: values.language,
-          //         },
-          //       })
-          //     );
-          //   }
-          // }, [values.language]);
-
-          useEffect(() => {
-            if (values.categories) {
-              dispatch(
-                updateSurveyMeta({
-                  data: {
-                    categories: values.categories,
-                  },
-                })
-              );
-            }
-          }, [values.categories]);
-          useEffect(() => {
-            if (values.keywords) {
-              dispatch(
-                updateSurveyMeta({
-                  data: {
-                    keywords: values.keywords,
-                  },
-                })
-              );
-            }
-          }, [values.keywords]);
           return (
             <Box w="100%">
               <Text variant="baseline" minH="40px">

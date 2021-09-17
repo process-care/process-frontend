@@ -17,8 +17,6 @@ interface Props {
   placeholder: string;
   type?: string;
   inputRightAddon?: string;
-  min_length?: string;
-  max_length?: string;
   name: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -34,8 +32,6 @@ export const CustomInput: React.FC<Props> = ({
   placeholder,
   type = "text",
   inputRightAddon,
-  min_length,
-  max_length,
   name,
   style,
   isRequired,
@@ -53,6 +49,7 @@ export const CustomInput: React.FC<Props> = ({
     >
       <FormLabel>{label}</FormLabel>
 
+      {/*  TO DO MODIFY LATER - THE LIB WHO BIND FORMIK DONT LET PASS TYPE="PASSWORD" */}
       {!isCollapsed && (
         <>
           <InputGroup size="sm">
@@ -63,8 +60,6 @@ export const CustomInput: React.FC<Props> = ({
               type={type}
               size="md"
               placeholder={placeholder}
-              min_length={min_length}
-              max_length={max_length}
               {...field}
             />
             {inputRightAddon && (

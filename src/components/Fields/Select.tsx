@@ -72,7 +72,6 @@ export const CustomSelect: React.FC<Props> = ({
   isMulti = false,
 }): ReactElement => {
   const [field, , helpers] = useField(id);
-  // const { setFieldValue } = useFormikContext();
   const { setValue } = helpers;
 
   return (

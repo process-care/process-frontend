@@ -25,6 +25,7 @@ import {
 import { useAddCondition } from "call/actions/formBuider/condition";
 import ISurvey from "types/survey";
 import { useQuestionChain } from "components/CreateSurvey/CreateForm/hooks";
+import { FormikObserver } from "components/CreateSurvey/CreateLanding/ToolBox/Form/FormikObserver";
 
 interface Props {
   survey: ISurvey;
@@ -61,6 +62,8 @@ const InputForm: React.FC<Props> = ({ survey }) => {
   return (
     <Formik
       validateOnBlur={false}
+      validateOnChange={false}
+      validateOnMount={false}
       validationSchema={renderFormValidationSchema(selected_input)}
       initialValues={selected_input ? selected_input : fields[type]}
       onSubmit={(data, { setSubmitting, validateForm }) => {
@@ -87,41 +90,42 @@ const InputForm: React.FC<Props> = ({ survey }) => {
           }
         };
 
-        // Handle repeated fields change
-        React.useEffect(() => {
-          updateQuestion({
-            id: selected_input.id,
-            data: {
-              options: values.options,
-            },
-          });
-        }, [values.options]);
+        // // Handle repeated fields change
+        // React.useEffect(() => {
+        //   updateQuestion({
+        //     id: selected_input.id,
+        //     data: {
+        //       answers: values.option,
+        //     },
+        //   });
+        // }, [values.option]);
 
-        // Handle wysiwyg change
-        React.useEffect(() => {
-          updateQuestion({
-            id: selected_input.id,
-            data: {
-              wysiwyg: values.wysiwyg,
-            },
-          });
-        }, [values.wysiwyg]);
+        // // Handle wysiwyg change
+        // React.useEffect(() => {
+        //   updateQuestion({
+        //     id: selected_input.id,
+        //     data: {
+        //       wysiwyg: values.wysiwyg,
+        //     },
+        //   });
+        // }, [values.wysiwyg]);
 
-        // Handle select change
-        React.useEffect(() => {
-          updateQuestion({
-            id: selected_input.id,
-            data: {
-              freeclassification_responses_count:
-                values.freeclassification_responses_count,
-            },
-          });
-        }, [values.freeclassification_responses_count]);
+        // // Handle select change
+        // React.useEffect(() => {
+        //   updateQuestion({
+        //     id: selected_input.id,
+        //     data: {
+        //       freeclassification_responses_count:
+        //         values.freeclassification_responses_count,
+        //     },
+        //   });
+        // }, [values.freeclassification_responses_count]);
 
+        console.log("RENDER");
         return (
           <Form
             onChange={debounce((event) => onChange(event), 1000)}
-            onBlur={autoSaveDebounce}
+            // onBlur={autoSaveDebounce}
           >
             <Flex
               alignItems="center"

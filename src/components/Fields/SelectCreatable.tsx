@@ -74,9 +74,8 @@ export const CustomCreatableSelect: React.FC<Props> = ({
   name,
 }): ReactElement => {
   const [field, ,] = useField(id);
-  const { setFieldValue } = useFormikContext();
 
-  console.log(field);
+  const { setFieldValue } = useFormikContext();
 
   return (
     <FormControl id={id} textAlign="left">

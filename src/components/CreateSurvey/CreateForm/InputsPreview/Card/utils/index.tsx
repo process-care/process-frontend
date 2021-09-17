@@ -15,8 +15,8 @@ import IQuestion from "types/form/question";
 import { t } from "static/input";
 
 interface Options {
-  value: string | undefined;
-  label: string | undefined;
+  value: string;
+  label: string;
 }
 
 export const renderInput = (input: IQuestion): React.ReactNode => {
@@ -25,7 +25,7 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
   // );
   const isCollapsed = false;
 
-  const formatOptions = (): Options[] | undefined => {
+  const formatOptions = (): Options[] => {
     if (input.options) {
       const arr = [];
       for (const [, value] of Object.entries(input.options)) {
@@ -34,7 +34,7 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
         }
       }
       return arr;
-    }
+    } else return [];
   };
 
   switch (input.type) {
@@ -45,8 +45,6 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
             isCollapsed={isCollapsed}
             isRequired={input.required}
             name={input.id || "input"}
-            min_length={input.min_length}
-            max_length={input.max_length}
             type="text"
             label={input.label || t.label}
             helpText={input.help_text || t.help_text}

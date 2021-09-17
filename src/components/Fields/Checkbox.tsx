@@ -3,22 +3,21 @@ import {
   FormControl,
   FormHelperText,
   FormLabel,
-  Checkbox,
-  CheckboxGroup,
   HStack,
   Box,
 } from "@chakra-ui/react";
-import { useField } from "formik";
+
+import { CheckboxContainer, CheckboxControl } from "formik-chakra-ui";
 
 interface Checkbox {
-  value: string | undefined;
-  label: string | undefined;
+  value: string;
+  label: string;
 }
 
 interface Props {
   label: string;
   helpText?: string;
-  checkbox: Checkbox[] | undefined;
+  checkbox: Checkbox[];
   isRequired?: boolean;
   id: string;
   isCollapsed?: boolean;
@@ -32,35 +31,30 @@ export const CustomCheckbox: React.FC<Props> = ({
   id,
   isCollapsed,
 }) => {
-  const [field, , helpers] = useField(id);
-  const { setValue } = helpers;
   return (
     <FormControl id={id} textAlign="left" isRequired={isRequired}>
       <FormLabel>{label}</FormLabel>
       {!isCollapsed && (
         <>
-          <CheckboxGroup colorScheme="green" value={field.value}>
+          <CheckboxContainer name={id} label="">
             <HStack flexWrap="wrap" spacing={5}>
               {checkbox ? (
                 checkbox.map(({ value, label }) => {
                   return (
-                    <Checkbox
-                      id={id}
-                      name={label}
-                      key={value}
+                    <CheckboxControl
+                      name={id}
+                      value={value}
                       isRequired={isRequired}
-                      onChange={(e) => setValue(e.target.name)}
-                      defaultIsChecked={value === field.value}
                     >
                       {label}
-                    </Checkbox>
+                    </CheckboxControl>
                   );
                 })
               ) : (
                 <Box p={4} />
               )}
             </HStack>
-          </CheckboxGroup>
+          </CheckboxContainer>
           <FormHelperText fontSize="xs">{helpText}</FormHelperText>
         </>
       )}

@@ -13,7 +13,7 @@ import {
   selectCondition,
   setIsRemoving,
 } from "redux/slices/formBuilder";
-import { toogleDrawer } from "redux/slices/application";
+import { setAutoSave, toogleDrawer } from "redux/slices/application";
 import { Switch } from "components/Fields";
 import { v4 as uuidv4 } from "uuid";
 import { t } from "static/condition";
@@ -49,6 +49,14 @@ const InputForm: React.FC<Props> = ({ survey }) => {
     dispatch(toogleDrawer());
     dispatch(setIsEditing(false));
   };
+
+  const autoSave = () => {
+    dispatch(setAutoSave());
+    setTimeout(() => {
+      dispatch(setAutoSave());
+    }, 2000);
+  };
+  const autoSaveDebounce = debounce(autoSave, 500);
 
   return (
     <Formik
@@ -111,7 +119,10 @@ const InputForm: React.FC<Props> = ({ survey }) => {
         }, [values.freeclassification_responses_count]);
 
         return (
-          <Form onChange={debounce((event) => onChange(event), 1000)}>
+          <Form
+            onChange={debounce((event) => onChange(event), 1000)}
+            onBlur={autoSaveDebounce}
+          >
             <Flex
               alignItems="center"
               justifyContent="center"

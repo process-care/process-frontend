@@ -1,26 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Flex } from "@chakra-ui/react";
-import { useGetPage } from "call/actions/formBuider/page";
+import { Box } from "@chakra-ui/react";
 import { Form, Formik, useField } from "formik";
+
+import { useGetPage } from "call/actions/formBuider/page";
 import { renderInput } from "components/CreateSurvey/CreateForm/InputsPreview/Card/utils";
 import { EvaluationCondition, useGetQuestion, useQuestionEvaluation } from "call/actions/formBuider/question";
 import { useCreateAnswer, useGetAnswers, useUpdateAnswer } from "call/actions/answers";
 import { useDebounce } from "utils/hooks/debounce";
-
-// ---- STATICS
-
-const nl = {
-  msg: {
-    nodata: 'No data for this page'
-  },
-  placeholder: {
-    select: 'Selectionnez une réponse'
-  },
-  button: {
-    previous: 'Précédent',
-    next: 'Suivant,'
-  }
-};
+import { NL } from "../nl";
 
 // ---- TYPES
 
@@ -28,7 +15,6 @@ interface Props {
   pageId: string
   participationId: string
 }
-
 
 // ---- COMPONENT
 
@@ -44,7 +30,7 @@ export const FormPage: React.FC<Props> = ({
   const answers = useAnswersGetter(participationId, questionsId);
 
   // If page is empty
-  if (!data?.page) return <Box mt="60">{nl.msg.nodata}</Box>;
+  if (!data?.page) return <Box mt="60">{NL.msg.nodata}</Box>;
 
   // Final render
   return (
@@ -53,6 +39,7 @@ export const FormPage: React.FC<Props> = ({
 
       <Formik
         validateOnBlur={false}
+        validateOnChange={false}
         initialValues={answers.values}
         enableReinitialize
         onSubmit={(data, { setSubmitting, validateForm }) => {
@@ -67,12 +54,6 @@ export const FormPage: React.FC<Props> = ({
               { data.page.questions?.map(q => (
                 <Questionator key={q.id} id={q.id} participationId={participationId} answerId={answers.references.get(q.id)} />
               ))}
-
-              {/* Navigation */}
-              <Flex justifyContent="flex-end" mr="60" mt="10">
-                <Button mr="4" variant="roundedTransparent">{nl.button.previous}</Button>
-                <Button variant="roundedBlue">{nl.button.next}</Button>
-              </Flex>
             </Form>
           );
         }}

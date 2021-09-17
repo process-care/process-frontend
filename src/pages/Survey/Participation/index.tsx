@@ -15,14 +15,20 @@ export const Participation: React.FC<unknown> = () => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const { slug, step } = useParams();
+  const history = useHistory();
 
   // FIXME: remove hardcoded
   const { data, isLoading } = useGetSurvey('61309b6f5a85913a6791a235');
-  const { participationId, onConsent, onRefuse } = useConsentHandlers(slug);
+  const { participation, onConsent, onRefuse } = useConsentHandlers(slug);
 
-  // LOADING
+  // LOADING STATE
   if (isLoading || !data?.survey) {
     return <Box mt="60">Loading in progress...</Box>
+  }
+
+  // Redirect if the there is an existing participation
+  if (participation && step !== 'participate') {
+    history.push(`/survey/${slug}/participate`);
   }
 
   // CONSENT
@@ -33,9 +39,9 @@ export const Participation: React.FC<unknown> = () => {
   }
 
   // PARTICIPATE
-  if (step === 'participate' && participationId) {
+  if (step === 'participate' && participation) {
     return (
-      <ParticipationForm surveyId={data.survey.id} participationId={participationId} />
+      <ParticipationForm surveyId={data.survey.id} participationId={participation.id} />
     )
   }
 
@@ -52,11 +58,13 @@ function useConsentHandlers(slug: string) {
   // TODO: Load this from local storage ?
   // if present: go to participate right away
   // else: set up for consent
-  const [participationId, setParticipationId] = useState<string>();
+  const existingParticipation = findExistingParticipation(slug);
+  const [participation, setParticipation] = useState<StoredParticipation>(existingParticipation);
 
   // Consent
   const onConsent = useCallback((newParticipationId) => {
-    setParticipationId(newParticipationId);
+    setParticipation({ id: newParticipationId, completed: false });
+    storeParticipation(slug, newParticipationId);
     history.push(`/survey/${slug}/participate`)
   }, [slug]);
 
@@ -66,8 +74,37 @@ function useConsentHandlers(slug: string) {
   }, []);
 
   return {
-    participationId,
+    participation,
     onConsent,
     onRefuse,
   }
+}
+
+// ---- HELPER
+
+const LS_PARTICIPATION = 'process__participations';
+
+type StoredParticipation = {
+  id: string,
+  completed: false,
+};
+
+type StoredParticipations = Record<string, StoredParticipation>;
+
+function findExistingParticipation(slug: string) {
+  const participations = readLocalParticipations();
+  return participations[slug];
+}
+
+function storeParticipation(slug: string, newParticipationId: string) {
+  const localParticipations = readLocalParticipations();
+  localParticipations[slug] = { id: newParticipationId, completed: false };
+  localStorage.setItem(LS_PARTICIPATION, JSON.stringify(localParticipations));
+}
+
+function readLocalParticipations(): StoredParticipations {
+  const data = localStorage.getItem(LS_PARTICIPATION);
+  console.log('local storage: ', data);
+  
+  return (data) ? JSON.parse(data): {};
 }

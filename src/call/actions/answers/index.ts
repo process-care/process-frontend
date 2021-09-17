@@ -4,7 +4,6 @@ import {
   useQuery, UseQueryResult,
 } from "react-query";
 
-import { API_URL } from "constants/api";
 import { CREATE_ANSWERS, GET_ANSWERS, UPDATE_ANSWER } from "call/queries/answers";
 import { client } from "..";
 // import { optimisticUpdate } from "call/optimisiticUpdate";

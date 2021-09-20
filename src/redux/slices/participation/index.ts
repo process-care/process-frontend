@@ -1,19 +1,19 @@
-import { Action, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 // ---- TYPES
 
-type CreatedPayload = {
-  id: string,
-}
+// type CreatedPayload = {
+//   id: string;
+// };
 
 // ---- INITIAL STATE
 
 interface SliceState {
-  id?: string
-  consent: boolean
-  completed: boolean
-  startedAt?: string
-  completedAt?: string
+  id?: string;
+  consent: boolean;
+  completed: boolean;
+  startedAt?: string;
+  completedAt?: string;
 }
 
 const initialState: SliceState = {
@@ -28,11 +28,10 @@ export const slice = createSlice({
   initialState,
   reducers: {
     started: (state) => {
-      state.consent = true,
-      state.startedAt = new Date().toString();
+      (state.consent = true), (state.startedAt = new Date().toString());
     },
     created: (state, action) => {
-      state.id = action.payload.id
+      state.id = action.payload.id;
     },
     completed: (state) => {
       state.completed = true;

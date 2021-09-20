@@ -43,7 +43,7 @@ export const useFileHandlers = (
         uploadSingleFile({ ...target, file });
         msg = `uploaded: ${file.name}`;
       }
-    } catch (e) {
+    } catch (e: any) {
       setError(e);
     }
 

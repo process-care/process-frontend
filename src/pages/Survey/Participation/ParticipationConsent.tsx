@@ -55,6 +55,7 @@ export const ParticipationConsent: React.FC<Props> = ({
     >
       <Box w="100%">
         <Menu surveyTitle={survey?.survey.title} />
+
         <div className="background__grid">
           <Box
             h="100%"

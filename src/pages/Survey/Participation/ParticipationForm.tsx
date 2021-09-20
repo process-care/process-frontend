@@ -46,31 +46,36 @@ export const ParticipationForm: React.FC<Props> = ({
   if ((pages?.length ?? 0) < 1 || !selectedPage)
     return <Box mt="60">No pages to display ! Contact the administrator !</Box>;
 
-  console.log(data);
   return (
     <Box>
-      <Box
-        backgroundColor={data.survey.landing?.color_theme?.base || "black"}
-        p="20px"
-        color="white"
-        textAlign="left"
-      >
-        {data.survey.title}
-      </Box>
-
       <Flex direction="row">
         <Box w="20%" p="40px">
-          <PageMenu pages={data.survey.pages} selectIndex={selectIndex} />
+          <PageMenu
+            pages={data.survey.pages}
+            selectIndex={selectIndex}
+            color={data.survey.landing?.color_theme?.base || "black"}
+          />
         </Box>
 
-        <Box pt="6" flexGrow={1} backgroundColor="brand.gray.100">
+        <Box flexGrow={1} backgroundColor="brand.gray.100">
+          <Box
+            pos="sticky"
+            top="0"
+            zIndex="10"
+            backgroundColor={data.survey.landing?.color_theme?.base || "black"}
+            p="20px"
+            color="white"
+            textAlign="left"
+          >
+            {data.survey.title}
+          </Box>
           <FormPage
             pageId={selectedPage.id}
             participationId={participationId}
           />
 
           {/* Navigation */}
-          <Flex justifyContent="flex-end" mr="60" mt="10">
+          <Flex justifyContent="flex-end" mr="60" mt="10" mb="10">
             {!isFirstPage && (
               <Button
                 mr="4"
@@ -104,13 +109,20 @@ export const ParticipationForm: React.FC<Props> = ({
 interface MenuProps {
   pages: IPage[];
   selectIndex: (index: number) => void;
+  color: string;
 }
 
-const PageMenu: React.FC<MenuProps> = ({ pages, selectIndex }) => {
+const PageMenu: React.FC<MenuProps> = ({ pages, selectIndex, color }) => {
   return (
     <>
       {pages.map((p, idx) => (
-        <PageEntry key={p.id} page={p} index={idx} selectIndex={selectIndex} />
+        <PageEntry
+          key={p.id}
+          page={p}
+          index={idx}
+          selectIndex={selectIndex}
+          color={color}
+        />
       ))}
     </>
   );
@@ -122,15 +134,28 @@ interface EntryProps {
   page: IPage;
   index: number;
   selectIndex: (index: number) => void;
+  color: string;
 }
 
-const PageEntry: React.FC<EntryProps> = ({ page, index, selectIndex }) => {
+const PageEntry: React.FC<EntryProps> = ({
+  page,
+  index,
+  selectIndex,
+  color,
+}) => {
   const goTo = useCallback(() => {
     selectIndex(index);
   }, [index]);
 
   return (
-    <Box textAlign="left" fontSize="14px" onClick={goTo} mb="4">
+    <Box
+      _hover={{ cursor: "pointer" }}
+      textAlign="left"
+      fontSize="14px"
+      onClick={goTo}
+      mb="4"
+      color={color}
+    >
       {page.short_name}
     </Box>
   );

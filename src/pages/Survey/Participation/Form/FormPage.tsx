@@ -1,5 +1,5 @@
 import React from "react";
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 
 import { useGetPage } from "call/actions/formBuider/page";
@@ -35,7 +35,9 @@ export const FormPage: React.FC<Props> = ({ pageId, participationId }) => {
   // Final render
   return (
     <Box>
-      {data.page.name}
+      <Text variant="xl" my="20px">
+        {data.page.name}
+      </Text>
 
       <Formik
         validateOnBlur={false}
@@ -51,7 +53,7 @@ export const FormPage: React.FC<Props> = ({ pageId, participationId }) => {
           return (
             <Form>
               {/* Questions */}
-              <Box px="10%">
+              <Box px="10%" pt="20px">
                 {data.page.questions?.map((q) => (
                   <Questionator
                     key={q.id}

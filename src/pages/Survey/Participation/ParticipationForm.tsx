@@ -11,8 +11,8 @@ import { useHistory } from "react-router-dom";
 // ---- TYPES
 
 interface Props {
-  surveyId: string
-  participationId: string
+  surveyId: string;
+  participationId: string;
 }
 
 export enum DIRECTION {
@@ -35,26 +35,35 @@ export const ParticipationForm: React.FC<Props> = ({
     selectedPage,
     nextPage,
     previousPage,
-    selectIndex
+    selectIndex,
   } = useNavigationHandlers(pages);
-  
+
   // TODO: we use the survey Id, but should we use the slug ?
   const { onFinish } = useFinishHandler(participationId, surveyId);
 
   // Missing data checks
   if (!data?.survey) return <Box mt="60">No data for this survey</Box>;
-  if ((pages?.length ?? 0) < 1 || !selectedPage) return <Box mt="60">No pages to display ! Contact the administrator !</Box>;
+  if ((pages?.length ?? 0) < 1 || !selectedPage)
+    return <Box mt="60">No pages to display ! Contact the administrator !</Box>;
 
+  console.log(data);
   return (
     <Box>
-      <Box mt="6" mb="6">{data.survey.title}</Box>
+      <Box
+        backgroundColor={data.survey.landing?.color_theme?.base || "black"}
+        p="20px"
+        color="white"
+        textAlign="left"
+      >
+        {data.survey.title}
+      </Box>
 
       <Flex direction="row">
-        <Box>
+        <Box w="20%" p="40px">
           <PageMenu pages={data.survey.pages} selectIndex={selectIndex} />
         </Box>
 
-        <Box flexGrow={1}>
+        <Box pt="6" flexGrow={1} backgroundColor="brand.gray.100">
           <FormPage
             pageId={selectedPage.id}
             participationId={participationId}
@@ -62,9 +71,25 @@ export const ParticipationForm: React.FC<Props> = ({
 
           {/* Navigation */}
           <Flex justifyContent="flex-end" mr="60" mt="10">
-            {!isFirstPage && <Button mr="4" variant="roundedTransparent" onClick={previousPage}>{NL.button.previous}</Button>}
-            {!isLastPage && <Button variant="roundedBlue" onClick={nextPage}>{NL.button.next}</Button>}
-            {isLastPage && <Button variant="roundedBlue" onClick={onFinish}>{NL.button.finish}</Button> }
+            {!isFirstPage && (
+              <Button
+                mr="4"
+                variant="roundedTransparent"
+                onClick={previousPage}
+              >
+                {NL.button.previous}
+              </Button>
+            )}
+            {!isLastPage && (
+              <Button variant="roundedBlue" onClick={nextPage}>
+                {NL.button.next}
+              </Button>
+            )}
+            {isLastPage && (
+              <Button variant="roundedBlue" onClick={onFinish}>
+                {NL.button.finish}
+              </Button>
+            )}
           </Flex>
         </Box>
       </Flex>
@@ -77,82 +102,78 @@ export const ParticipationForm: React.FC<Props> = ({
 // MENU
 
 interface MenuProps {
-  pages: IPage[],
-  selectIndex: (index: number) => void,
+  pages: IPage[];
+  selectIndex: (index: number) => void;
 }
 
 const PageMenu: React.FC<MenuProps> = ({ pages, selectIndex }) => {
   return (
     <>
-      <div>|</div>
-      <div>|</div>
-      <div>---</div>
-      { pages.map((p, idx) => (
-        <PageEntry
-          key={p.id}
-          page={p}
-          index={idx}
-          selectIndex={selectIndex}
-        />
+      {pages.map((p, idx) => (
+        <PageEntry key={p.id} page={p} index={idx} selectIndex={selectIndex} />
       ))}
     </>
   );
-}
+};
 
 // ENTRY
 
 interface EntryProps {
-  page: IPage,
-  index: number,
-  selectIndex: (index: number) => void,
+  page: IPage;
+  index: number;
+  selectIndex: (index: number) => void;
 }
 
-const PageEntry: React.FC<EntryProps> = ({
-  page,
-  index,
-  selectIndex,
-}) => {
+const PageEntry: React.FC<EntryProps> = ({ page, index, selectIndex }) => {
   const goTo = useCallback(() => {
     selectIndex(index);
-  },[index]);
+  }, [index]);
 
   return (
-    <div onClick={goTo}>| {page.short_name}</div>
-  )
-}
+    <Box textAlign="left" fontSize="14px" onClick={goTo} mb="4">
+      {page.short_name}
+    </Box>
+  );
+};
 
 // ---- HOOKS
 
 function useNavigationHandlers(pages: IPage[] | undefined) {
-    const [selectedIdx, setSelectedIdx] = useState(0);
-    const selectedPage = pages?.[selectedIdx];
-  
-    const onNavigate = useCallback((direction: DIRECTION) => {
+  const [selectedIdx, setSelectedIdx] = useState(0);
+  const selectedPage = pages?.[selectedIdx];
+
+  const onNavigate = useCallback(
+    (direction: DIRECTION) => {
       let newIdx;
       const nbPages = pages?.length ?? 0;
-  
+
       if (direction === DIRECTION.Next) {
         const up = selectedIdx + 1;
-        newIdx = (up > nbPages) ? nbPages : up;
+        newIdx = up > nbPages ? nbPages : up;
       } else {
         const down = selectedIdx - 1;
-        newIdx = (down < 0) ? 0 : down;
+        newIdx = down < 0 ? 0 : down;
       }
-  
-      setSelectedIdx(newIdx);
-    }, [pages?.length, selectedIdx]);
-  
-    const nextPage = useCallback(() => onNavigate(DIRECTION.Next), [onNavigate]);
-    const previousPage = useCallback(() => onNavigate(DIRECTION.Previous), [onNavigate]);
 
-    return {
-      isFirstPage: selectedIdx === 0,
-      isLastPage: (selectedIdx + 1) === pages?.length,
-      selectedPage,
-      selectIndex: setSelectedIdx,
-      nextPage,
-      previousPage,
-    }
+      setSelectedIdx(newIdx);
+    },
+    [pages?.length, selectedIdx]
+  );
+
+  const nextPage = useCallback(() => onNavigate(DIRECTION.Next), [onNavigate]);
+  const previousPage = useCallback(
+    () => onNavigate(DIRECTION.Previous),
+    [onNavigate]
+  );
+
+  return {
+    isFirstPage: selectedIdx === 0,
+    isLastPage: selectedIdx + 1 === pages?.length,
+    selectedPage,
+    selectIndex: setSelectedIdx,
+    nextPage,
+    previousPage,
+  };
 }
 
 function useFinishHandler(participationId: string, slug: string) {
@@ -164,13 +185,13 @@ function useFinishHandler(participationId: string, slug: string) {
     if (!acknowledge) return;
 
     const res = await finishParticipation(participationId);
-    console.log('response for finish call: ', res);
+    console.log("response for finish call: ", res);
 
     finishParticipation(slug);
-    history.push('/');
+    history.push("/");
   }, [slug, participationId]);
 
   return {
     onFinish,
-  }
+  };
 }

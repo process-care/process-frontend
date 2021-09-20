@@ -68,6 +68,7 @@ export const GET_SURVEY = gql`
       categories
       landing {
         id
+        color_theme
       }
       consentement {
         url

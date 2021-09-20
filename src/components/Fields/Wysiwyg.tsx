@@ -1,5 +1,5 @@
 import React from "react";
-import JoditEditor from "jodit-react";
+import JoditEditor from "jodit-react-ts";
 import { useFormikContext } from "formik";
 import { FormControl } from "@chakra-ui/react";
 

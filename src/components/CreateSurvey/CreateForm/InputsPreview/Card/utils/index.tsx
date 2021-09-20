@@ -1,5 +1,5 @@
 import React from "react";
-import { useAppSelector } from "redux/hooks";
+
 import { Box } from "@chakra-ui/react";
 import {
   Input,

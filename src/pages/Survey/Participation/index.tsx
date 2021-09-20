@@ -4,7 +4,10 @@ import { useHistory, useParams } from "react-router-dom";
 import { ParticipationConsent } from "./ParticipationConsent";
 import { ParticipationForm } from "./ParticipationForm";
 import { useGetSurvey } from "call/actions/survey";
-import { findExistingParticipation, storeParticipation } from "./localstorage-handlers";
+import {
+  findExistingParticipation,
+  storeParticipation,
+} from "./localstorage-handlers";
 
 // ---- COMPONENT
 
@@ -12,40 +15,45 @@ export const Participation: React.FC<unknown> = () => {
   // FIXME: Yup, these ignore are bad, need to be removed
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  const { slug, step } = useParams();
+  const { slug: surveyId, step } = useParams();
   const history = useHistory();
 
   // FIXME: remove hardcoded
-  const { data, isLoading } = useGetSurvey('61309b6f5a85913a6791a235');
-  const { participation, onConsent, onRefuse } = useConsentHandlers(slug);
+  const { data, isLoading } = useGetSurvey(surveyId);
+  const { participation, onConsent, onRefuse } = useConsentHandlers(surveyId);
 
   // LOADING STATE
   if (isLoading || !data?.survey) {
-    return <Box mt="60">Loading in progress...</Box>
+    return <Box mt="60">Loading in progress...</Box>;
   }
 
   // Redirect if the there is an existing participation
-  if (participation && step !== 'participate') {
-    history.push(`/survey/${slug}/participate`);
+  if (participation && step !== "participate") {
+    history.push(`/survey/${surveyId}/participate`);
   }
 
   // CONSENT
-  if (step === 'consent') {
+  if (step === "consent") {
     return (
-      <ParticipationConsent surveyId={data.survey.id} onConsent={onConsent} onRefuse={onRefuse} />
-    )
+      <ParticipationConsent
+        surveyId={data.survey.id}
+        onConsent={onConsent}
+        onRefuse={onRefuse}
+      />
+    );
   }
 
   // PARTICIPATE
-  if (step === 'participate' && participation) {
+  if (step === "participate" && participation) {
     return (
-      <ParticipationForm surveyId={data.survey.id} participationId={participation.id} />
-    )
+      <ParticipationForm
+        surveyId={data.survey.id}
+        participationId={participation.id}
+      />
+    );
   }
 
-  return (
-    <Box mt="60">Something went wrong...</Box>
-  );
+  return <Box mt="60">Something went wrong...</Box>;
 };
 
 // ---- HOOKS
@@ -60,11 +68,14 @@ function useConsentHandlers(slug: string) {
   const [participation, setParticipation] = useState(existingParticipation);
 
   // Consent
-  const onConsent = useCallback((newParticipationId) => {
-    setParticipation({ id: newParticipationId, completed: false });
-    storeParticipation(slug, newParticipationId);
-    history.push(`/survey/${slug}/participate`)
-  }, [slug]);
+  const onConsent = useCallback(
+    (newParticipationId) => {
+      setParticipation({ id: newParticipationId, completed: false });
+      storeParticipation(slug, newParticipationId);
+      history.push(`/survey/${slug}/participate`);
+    },
+    [slug]
+  );
 
   // Refuse
   const onRefuse = useCallback(() => {
@@ -75,5 +86,5 @@ function useConsentHandlers(slug: string) {
     participation,
     onConsent,
     onRefuse,
-  }
+  };
 }

@@ -5,6 +5,8 @@ import IPage from "types/form/page";
 import { useGetSurvey } from "call/actions/survey";
 import { FormPage } from "./Form/FormPage";
 import { NL } from "./nl";
+import { useFinishParticipation } from "call/actions/participation";
+import { useHistory } from "react-router-dom";
 
 // ---- TYPES
 
@@ -36,6 +38,8 @@ export const ParticipationForm: React.FC<Props> = ({
     selectIndex
   } = useNavigationHandlers(pages);
   
+  const { onFinish } = useFinishHandler(participationId);
+
   // Missing data checks
   if (!data?.survey) return <Box mt="60">No data for this survey</Box>;
   if ((pages?.length ?? 0) < 1 || !selectedPage) return <Box mt="60">No pages to display ! Contact the administrator !</Box>;
@@ -59,6 +63,7 @@ export const ParticipationForm: React.FC<Props> = ({
           <Flex justifyContent="flex-end" mr="60" mt="10">
             {!isFirstPage && <Button mr="4" variant="roundedTransparent" onClick={previousPage}>{NL.button.previous}</Button>}
             {!isLastPage && <Button variant="roundedBlue" onClick={nextPage}>{NL.button.next}</Button>}
+            {isLastPage && <Button variant="roundedBlue" onClick={onFinish}>{NL.button.finish}</Button> }
           </Flex>
         </Box>
       </Flex>
@@ -132,7 +137,6 @@ function useNavigationHandlers(pages: IPage[] | undefined) {
         const down = selectedIdx - 1;
         newIdx = (down < 0) ? 0 : down;
       }
-      console.log('new idx: ', newIdx);
   
       setSelectedIdx(newIdx);
     }, [pages?.length, selectedIdx]);
@@ -148,4 +152,23 @@ function useNavigationHandlers(pages: IPage[] | undefined) {
       nextPage,
       previousPage,
     }
+}
+
+function useFinishHandler(participationId: string) {
+  const history = useHistory();
+  const { mutateAsync: finishParticipation } = useFinishParticipation();
+
+  const onFinish = useCallback(async () => {
+    const acknowledge = confirm(" Conclure votre participation à l'enquête ?");
+    if (!acknowledge) return;
+
+    const res = await finishParticipation(participationId);
+    console.log('response for finish call: ', res);
+
+    history.push('/');
+  }, [participationId]);
+
+  return {
+    onFinish,
+  }
 }

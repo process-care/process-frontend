@@ -7,6 +7,7 @@ export const NL = {
   },
   button: {
     previous: 'Précédent',
-    next: 'Suivant'
+    next: 'Suivant',
+    finish: 'Terminer'
   }
 };

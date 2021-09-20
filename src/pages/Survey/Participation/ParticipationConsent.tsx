@@ -20,16 +20,13 @@ export const ParticipationConsent: React.FC<Props> = ({
   const { mutateAsync: createParticipation, isLoading } = useCreateParticipation();
 
   const onAccept = useCallback(async () => {
-    console.log('you said yes');
     const res = await createParticipation({ consent: true, completed: false, survey: surveyId });
-
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore : I don't understand the structure of the answer, because that's supposed to work
     onConsent(res.createParticipation.participation.id);
   }, [surveyId]);
 
   const onDecline = useCallback(() => {
-    console.log('you said no');
     onRefuse();
   }, []);
 

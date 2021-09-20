@@ -4,9 +4,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { ParticipationConsent } from "./ParticipationConsent";
 import { ParticipationForm } from "./ParticipationForm";
 import { useGetSurvey } from "call/actions/survey";
-
-// STATIC
-
+import { findExistingParticipation, storeParticipation } from "./localstorage-handlers";
 
 // ---- COMPONENT
 
@@ -59,7 +57,7 @@ function useConsentHandlers(slug: string) {
   // if present: go to participate right away
   // else: set up for consent
   const existingParticipation = findExistingParticipation(slug);
-  const [participation, setParticipation] = useState<StoredParticipation>(existingParticipation);
+  const [participation, setParticipation] = useState(existingParticipation);
 
   // Consent
   const onConsent = useCallback((newParticipationId) => {
@@ -78,33 +76,4 @@ function useConsentHandlers(slug: string) {
     onConsent,
     onRefuse,
   }
-}
-
-// ---- HELPER
-
-const LS_PARTICIPATION = 'process__participations';
-
-type StoredParticipation = {
-  id: string,
-  completed: false,
-};
-
-type StoredParticipations = Record<string, StoredParticipation>;
-
-function findExistingParticipation(slug: string) {
-  const participations = readLocalParticipations();
-  return participations[slug];
-}
-
-function storeParticipation(slug: string, newParticipationId: string) {
-  const localParticipations = readLocalParticipations();
-  localParticipations[slug] = { id: newParticipationId, completed: false };
-  localStorage.setItem(LS_PARTICIPATION, JSON.stringify(localParticipations));
-}
-
-function readLocalParticipations(): StoredParticipations {
-  const data = localStorage.getItem(LS_PARTICIPATION);
-  console.log('local storage: ', data);
-  
-  return (data) ? JSON.parse(data): {};
 }

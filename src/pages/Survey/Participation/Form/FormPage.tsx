@@ -6,6 +6,7 @@ import { useGetPage } from "call/actions/formBuider/page";
 import { renderInput } from "components/CreateSurvey/CreateForm/InputsPreview/Card/utils";
 import { useGetQuestion, useQuestionEvaluation } from "call/actions/formBuider/question";
 import { NL } from "../nl";
+import { shouldShow } from "./condition-evaluations";
 import { useAnswerSaver, useAnswersGetter } from "./answer-hooks";
 
 // ---- TYPES
@@ -90,16 +91,4 @@ const Questionator: React.FC<QuestionatorProps> = ({
       {renderInput(rawQuestion.question)}
     </Box>
   );
-}
-
-// ---- HELPERS
-
-function shouldShow(conditions: [EvaluationCondition] | undefined) {
-  const grouped = new Map();
-
-  const evaluations = conditions?.map(c => {
-    return true;
-  });
-
-  return true;
 }

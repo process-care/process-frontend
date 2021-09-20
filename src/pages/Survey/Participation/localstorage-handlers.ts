@@ -2,7 +2,7 @@ const LS_PARTICIPATION = 'process__participations';
 
 type StoredParticipation = {
   id: string,
-  completed: false,
+  completed: boolean,
 };
 
 type StoredParticipations = Record<string, StoredParticipation>;
@@ -25,6 +25,19 @@ export function findExistingParticipation(slug: string): StoredParticipation | u
 export function storeParticipation(slug: string, newParticipationId: string): void {
   const localParticipations = readLocalParticipations();
   localParticipations[slug] = { id: newParticipationId, completed: false };
+  localStorage.setItem(LS_PARTICIPATION, JSON.stringify(localParticipations));
+}
+
+export function finishParticipation(slug: string): void {
+  // Find participations and target
+  const localParticipations = readLocalParticipations();
+  const participation = localParticipations[slug];
+
+  if (!participation) return;
+  
+  // Mark the target as completed
+  localParticipations[slug] = { ...participation, completed: true };
+  // Save update list of participations
   localStorage.setItem(LS_PARTICIPATION, JSON.stringify(localParticipations));
 }
 

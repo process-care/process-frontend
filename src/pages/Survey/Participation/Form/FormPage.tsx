@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Box } from "@chakra-ui/react";
-import { Form, Formik, useField } from "formik";
+import { Form, Formik } from "formik";
 
 import { useGetPage } from "call/actions/formBuider/page";
 import { renderInput } from "components/CreateSurvey/CreateForm/InputsPreview/Card/utils";
-import { EvaluationCondition, useGetQuestion, useQuestionEvaluation } from "call/actions/formBuider/question";
-import { useCreateAnswer, useGetAnswers, useUpdateAnswer } from "call/actions/answers";
-import { useDebounce } from "utils/hooks/debounce";
+import { useGetQuestion, useQuestionEvaluation } from "call/actions/formBuider/question";
 import { NL } from "../nl";
+import { useAnswerSaver, useAnswersGetter } from "./answer-hooks";
 
 // ---- TYPES
 
@@ -91,73 +90,6 @@ const Questionator: React.FC<QuestionatorProps> = ({
       {renderInput(rawQuestion.question)}
     </Box>
   );
-}
-
-// ---- HOOKS
-
-/**
- * 
- * @param participationId 
- * @param questionsId 
- * @returns 
- */
-function useAnswersGetter(participationId: string, questionsId: string[]) {
-  const { data } = useGetAnswers(participationId, questionsId);
-
-  const ref = new Map();
-
-  const answers = data?.answers.reduce((acc, a) => {
-    acc[a.question.id] = a.value;
-    ref.set(a.question.id, a.id);
-    return acc;
-  }, {} as Record<string, unknown>);
-
-  return {
-    values: answers ?? {},
-    references: ref,
-  };
-}
-
-/**
- * 
- * @param id 
- * @param participationId 
- */
-function useAnswerSaver(questionId: string, participationId: string, initialAnswerId?: string) {
-  const [field] = useField(questionId);
-  const debouncedValue = useDebounce(field.value, 2000);
-
-  const [answerId, setAnswerId] = useState(initialAnswerId);
-  
-  // Mutators
-  const { mutateAsync: create } = useCreateAnswer();
-  const { mutateAsync: update } = useUpdateAnswer();
-
-  useEffect(() => {
-    if (debouncedValue === undefined) return;
-
-    console.log('Saving');
-    console.log('The value changed to: ', debouncedValue);
-    console.log('for participation: ', participationId);
-    console.log('for question: ', questionId);
-    console.log('with answer: ', answerId);
-
-    if (!answerId) {
-      create({ participation: participationId, question: questionId, value: debouncedValue }).then(
-        (v => {
-          setAnswerId(v.createAnswer.answer.id);
-          console.log('Success on CREATE: ', v)
-        }),
-        (e => console.log('Error on CREATE: ', e)),
-      );
-    }
-    else {
-      update({ id: answerId, data: { value: debouncedValue }}).then(
-        (v => console.log('Success on UPDATE: ', v)),
-        (e => console.log('Error on UPDATE: ', e)),
-      );
-    }
-  }, [questionId, answerId, participationId, debouncedValue]);
 }
 
 // ---- HELPERS

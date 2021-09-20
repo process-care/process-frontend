@@ -60,7 +60,7 @@ export const useCreateAnswer = (): UseMutationResult<AnswerCreationResults, Erro
       await client.request(CREATE_ANSWERS, {
         data: values,
       }),
-    // optimisticUpdate(["getSurvey"])
+    // optimisticUpdate(["questionEvaluation"])
   );
 
  
@@ -81,5 +81,5 @@ export const useUpdateAnswer = (): UseMutationResult<AnswerCreationResults, Erro
   useMutation<AnswerCreationResults, Error, any>(
     async (payload: UpdateAnswerPayload) =>
       await client.request(UPDATE_ANSWER, payload),
-    // optimisticUpdate(["getSurvey"])
+    // optimisticUpdate(["questionEvaluation"])
   );

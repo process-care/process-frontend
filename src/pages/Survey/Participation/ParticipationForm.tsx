@@ -38,7 +38,8 @@ export const ParticipationForm: React.FC<Props> = ({
     selectIndex
   } = useNavigationHandlers(pages);
   
-  const { onFinish } = useFinishHandler(participationId);
+  // TODO: we use the survey Id, but should we use the slug ?
+  const { onFinish } = useFinishHandler(participationId, surveyId);
 
   // Missing data checks
   if (!data?.survey) return <Box mt="60">No data for this survey</Box>;
@@ -154,7 +155,7 @@ function useNavigationHandlers(pages: IPage[] | undefined) {
     }
 }
 
-function useFinishHandler(participationId: string) {
+function useFinishHandler(participationId: string, slug: string) {
   const history = useHistory();
   const { mutateAsync: finishParticipation } = useFinishParticipation();
 
@@ -165,8 +166,9 @@ function useFinishHandler(participationId: string) {
     const res = await finishParticipation(participationId);
     console.log('response for finish call: ', res);
 
+    finishParticipation(slug);
     history.push('/');
-  }, [participationId]);
+  }, [slug, participationId]);
 
   return {
     onFinish,

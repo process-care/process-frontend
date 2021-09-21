@@ -75,7 +75,7 @@ const theme = extendTheme({
         fontWeight: "bold",
         fontSize: "14px",
         fontFamily: "IBM Plex Sans",
-        marginBottom: "3px",
+        marginBottom: "5px",
         marginTop: "10px",
       },
     },

@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex, Text, Circle } from "@chakra-ui/react";
 
 import IPage from "types/form/page";
 import { useGetSurvey } from "call/actions/survey";
@@ -45,24 +45,32 @@ export const ParticipationForm: React.FC<Props> = ({
   if (!data?.survey) return <Box mt="60">No data for this survey</Box>;
   if ((pages?.length ?? 0) < 1 || !selectedPage)
     return <Box mt="60">No pages to display ! Contact the administrator !</Box>;
-
+  const currentColor = data.survey.landing?.color_theme?.base || "black";
   return (
     <Box>
-      <Flex direction="row">
-        <Box w="20%" p="40px">
+      <Flex direction="row" h="100vh">
+        <Box w="20%">
           <PageMenu
+            author={data.survey.author?.email}
             pages={data.survey.pages}
             selectIndex={selectIndex}
-            color={data.survey.landing?.color_theme?.base || "black"}
+            color={currentColor}
+            logo={data.survey.landing?.logo}
+            selectedPage={selectedPage}
           />
         </Box>
 
-        <Box flexGrow={1} backgroundColor="brand.gray.100">
+        <Box
+          flexGrow={1}
+          backgroundColor="brand.gray.100"
+          h="fit-content"
+          minH="100vh"
+        >
           <Box
             pos="sticky"
             top="0"
             zIndex="10"
-            backgroundColor={data.survey.landing?.color_theme?.base || "black"}
+            backgroundColor={currentColor}
             p="20px"
             color="white"
             textAlign="left"
@@ -75,7 +83,7 @@ export const ParticipationForm: React.FC<Props> = ({
           />
 
           {/* Navigation */}
-          <Flex justifyContent="flex-end" mr="60" mt="10" mb="10">
+          <Flex justifyContent="flex-end" mt="10" mb="10" pr="10%">
             {!isFirstPage && (
               <Button
                 mr="4"
@@ -86,12 +94,20 @@ export const ParticipationForm: React.FC<Props> = ({
               </Button>
             )}
             {!isLastPage && (
-              <Button variant="roundedBlue" onClick={nextPage}>
+              <Button
+                variant="roundedBlue"
+                backgroundColor={currentColor}
+                onClick={nextPage}
+              >
                 {NL.button.next}
               </Button>
             )}
             {isLastPage && (
-              <Button variant="roundedBlue" onClick={onFinish}>
+              <Button
+                variant="roundedBlue"
+                backgroundColor={currentColor}
+                onClick={onFinish}
+              >
                 {NL.button.finish}
               </Button>
             )}
@@ -110,21 +126,52 @@ interface MenuProps {
   pages: IPage[];
   selectIndex: (index: number) => void;
   color: string;
+  author: string | undefined;
+  logo: string | undefined;
+  selectedPage: IPage | undefined;
 }
 
-const PageMenu: React.FC<MenuProps> = ({ pages, selectIndex, color }) => {
+const PageMenu: React.FC<MenuProps> = ({
+  pages,
+  selectIndex,
+  color,
+  author,
+  logo,
+  selectedPage,
+}) => {
   return (
-    <>
-      {pages.map((p, idx) => (
-        <PageEntry
-          key={p.id}
-          page={p}
-          index={idx}
-          selectIndex={selectIndex}
-          color={color}
-        />
-      ))}
-    </>
+    <Box pos="sticky" top="0">
+      <Flex
+        textAlign="right"
+        py="19.5px"
+        px="20px"
+        borderBottom="1px solid"
+        borderColor={color}
+        alignItems="center"
+        justifyContent="space-between"
+      >
+        {!!logo && logo.length !== 0 ? (
+          <img src={logo} alt="Logo" style={{ maxHeight: "30px" }} />
+        ) : (
+          <Box minH="30px" />
+        )}
+        <Text textDecoration="underline" variant="xs">
+          <a href={`mailto: ${author}`}>{author}</a>
+        </Text>
+      </Flex>
+      <Box p="20px">
+        {pages.map((p, idx) => (
+          <PageEntry
+            selectedPage={selectedPage}
+            key={p.id}
+            page={p}
+            index={idx}
+            selectIndex={selectIndex}
+            color={color}
+          />
+        ))}
+      </Box>
+    </Box>
   );
 };
 
@@ -135,6 +182,7 @@ interface EntryProps {
   index: number;
   selectIndex: (index: number) => void;
   color: string;
+  selectedPage: IPage | undefined;
 }
 
 const PageEntry: React.FC<EntryProps> = ({
@@ -142,6 +190,7 @@ const PageEntry: React.FC<EntryProps> = ({
   index,
   selectIndex,
   color,
+  selectedPage,
 }) => {
   const goTo = useCallback(() => {
     selectIndex(index);
@@ -155,7 +204,11 @@ const PageEntry: React.FC<EntryProps> = ({
       onClick={goTo}
       mb="4"
       color={color}
+      d="flex"
+      alignItems="center"
+      textDecoration={selectedPage?.id === page.id ? "underline" : "none"}
     >
+      <Circle backgroundColor={color} w="10px" h="10px" mr="10px" />
       {page.short_name}
     </Box>
   );

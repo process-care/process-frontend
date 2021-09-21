@@ -75,7 +75,7 @@ export const CustomTextarea: React.FC<Props> = ({
             {meta.error}
           </FormErrorMessage>
           <FormHelperText
-            mt={-1}
+            mt={1}
             lineHeight={1.4}
             fontSize="xs"
             color="gray.400"

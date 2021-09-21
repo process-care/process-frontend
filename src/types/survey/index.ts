@@ -3,6 +3,9 @@ import IQuestion from "types/form/question";
 import { ILanding } from "types/landing";
 
 export default interface ISurvey {
+  author?: {
+    email: string;
+  };
   id: string;
   order: IQuestion["id"][];
   consentement?: any;

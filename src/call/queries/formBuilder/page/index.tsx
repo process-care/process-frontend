@@ -1,6 +1,19 @@
 import { gql } from "graphql-request";
 
-import { pageFragment } from "call/fragments";
+import { pageFragment, questionFragment } from "call/fragments";
+
+export const GET_PAGE = gql`
+  ${pageFragment}
+  ${questionFragment}
+  query getPage($id: ID!) {
+    page(id: $id) {
+      ...pageFragment
+      questions {
+        ...questionFragment
+      }
+    }
+  }
+`;
 
 export const ADD_PAGE = gql`
   ${pageFragment}

@@ -19,6 +19,21 @@ export const GET_QUESTION = gql`
   }
 `;
 
+export const GET_QUESTION_EVALUATION = gql`
+  query getQuestionEvaluation($questionId: ID!, $participationId: ID!) {
+    evaluation: questionEvaluation(questionId: $questionId, participationId: $participationId) {
+      id
+      conditions {
+        id
+        group
+        operator
+        target_value
+        answer
+      }
+    }
+  }
+`;
+
 export const ADD_QUESTION = gql`
   mutation addQuestion($new_question: QuestionInput) {
     createQuestion(input: { data: $new_question }) {

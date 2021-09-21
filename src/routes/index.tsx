@@ -1,5 +1,3 @@
-import React from "react";
-
 import IRoute from "types/routes/routes";
 import { Login } from "pages/Auth/Login";
 import { CreateSurvey } from "pages/Survey";
@@ -8,6 +6,7 @@ import { Dashboard } from "pages/Dashboard";
 import { Landing } from "pages/Landing";
 import { Portail } from "pages/Portail";
 import { CreateLanding } from "pages/Survey/CreateLanding";
+import { Participation } from "pages/Survey/Participation";
 import { CreateConsent } from "pages/Survey/CreateConsent";
 import { Signin } from "pages/Auth/Signin";
 
@@ -73,6 +72,12 @@ export const routes: IRoute[] = [
     name: "Landing page",
     path: "/survey/:slug",
     component: <Landing />,
+    exact: true,
+  },
+  {
+    name: "Consent",
+    path: "/survey/:slug/:step",
+    component: <Participation />,
     exact: true,
   },
 ];

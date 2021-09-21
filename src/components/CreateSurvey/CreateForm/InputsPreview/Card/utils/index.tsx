@@ -1,3 +1,5 @@
+import React from "react";
+
 import { Box } from "@chakra-ui/react";
 import {
   Input,
@@ -10,9 +12,6 @@ import {
   Textarea,
 } from "components/Fields";
 import IQuestion from "types/form/question";
-import React from "react";
-import { useAppSelector } from "redux/hooks";
-
 import { t } from "static/input";
 
 interface Options {
@@ -21,9 +20,11 @@ interface Options {
 }
 
 export const renderInput = (input: IQuestion): React.ReactNode => {
-  const isCollapsed = useAppSelector(
-    (state) => state.formBuilder.is_collapse_view
-  );
+  // const isCollapsed = useAppSelector(
+  //   (state) => state.formBuilder.is_collapse_view
+  // );
+  const isCollapsed = false;
+
   const formatOptions = (): Options[] | undefined => {
     if (input.answers) {
       const arr = [];
@@ -35,6 +36,7 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
       return arr;
     }
   };
+
   switch (input.type) {
     case "input":
       return (
@@ -53,7 +55,7 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
           />
         </>
       );
-      break;
+
     case "number_input":
       return (
         <NumberInput
@@ -69,7 +71,7 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
           max={input.max}
         />
       );
-      break;
+
     case "checkbox":
       return (
         <Checkbox
@@ -81,7 +83,7 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
           checkbox={formatOptions()}
         />
       );
-      break;
+
     case "radio":
       return (
         <Radiobox
@@ -93,7 +95,7 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
           radios={formatOptions()}
         />
       );
-      break;
+
     case "select":
       return (
         <Select
@@ -105,7 +107,7 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
           helpText={input.help_text || t.help_text}
         />
       );
-      break;
+
     case "slider":
       return (
         <Slider
@@ -122,7 +124,7 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
           reverse={input.reverse}
         />
       );
-      break;
+
     case "text_area":
       return (
         <Textarea
@@ -135,7 +137,7 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
           helpText={input.help_text || t.help_text}
         />
       );
-      break;
+
     case "date_picker":
       return (
         <Datepicker
@@ -146,7 +148,6 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
           helpText={input.help_text || t.help_text}
         />
       );
-      break;
 
     case "wysiwyg":
       return (
@@ -158,6 +159,7 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
           }}
         />
       );
+
     case "free_classification":
       return (
         <Textarea
@@ -170,8 +172,8 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
           helpText={input.help_text || t.help_text}
         />
       );
+
     default:
       return false;
-      break;
   }
 };

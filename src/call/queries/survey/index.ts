@@ -66,8 +66,13 @@ export const GET_SURVEY = gql`
       email
       keywords
       categories
+      author {
+        email
+      }
       landing {
         id
+        color_theme
+        logo
       }
       consentement {
         url

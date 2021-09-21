@@ -75,7 +75,7 @@ const theme = extendTheme({
         fontWeight: "bold",
         fontSize: "14px",
         fontFamily: "IBM Plex Sans",
-        marginBottom: "3px",
+        marginBottom: "5px",
         marginTop: "10px",
       },
     },
@@ -112,7 +112,7 @@ const theme = extendTheme({
             color: "gray.600",
           },
         }),
-        box: (props) => ({
+        box: (props: any) => ({
           border: "1px solid",
           borderColor: "black",
           borderRadius: "4px",
@@ -199,7 +199,7 @@ const theme = extendTheme({
     },
     Container: {
       variants: {
-        inputContainer: (props) => ({
+        inputContainer: (props: any) => ({
           margin: 5,
           border: "1px",
           padding: 4,
@@ -218,7 +218,7 @@ const theme = extendTheme({
           width: "100%",
           height: "1px",
         }),
-        createformColumn: (props) => ({
+        createformColumn: (props: any) => ({
           bg: props.colorMode === "dark" ? "gray.200" : "white",
           color: props.colorMode === "dark" ? "white" : "gray.800",
           height: "100vh",

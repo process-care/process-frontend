@@ -27,8 +27,6 @@ const CustomDrawer: React.FC<Props> = ({
           isFullHeight
           isOpen={isOpen}
           size={size}
-          motionPreset="scale"
-          isCentered
           onOverlayClick={onOverlayClick}
           {...props}
         >

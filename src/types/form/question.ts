@@ -25,7 +25,7 @@ export default interface IQuestion {
   units?: string;
   vertical?: boolean;
   reverse?: boolean;
-  answers?: string[];
+  options?: string[];
   min?: number;
   max?: number;
   step?: number;

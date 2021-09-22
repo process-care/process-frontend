@@ -11,8 +11,8 @@ export const renderInput = (
   const target_question = currentCondition.target;
   const Options = () => {
     const answers =
-      target_question?.answers !== undefined &&
-      Object.values(target_question?.answers);
+      target_question?.options !== undefined &&
+      Object.values(target_question?.options);
     if (!answers) {
       return <p>Erreur, pas de réponses</p>;
     } else {

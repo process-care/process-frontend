@@ -101,7 +101,8 @@ const InputsPreview: React.FC<Props> = ({ surveyId, order }) => {
             console.log("DATA :", data);
           }}
         >
-          {() => {
+          {({ values }) => {
+            console.log("___VALUES :", values);
             return (
               <Form style={{ width: "100%" }}>
                 <Flex

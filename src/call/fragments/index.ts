@@ -15,7 +15,7 @@ export const conditionFragment = gql`
     group
     target {
       id
-      answers
+      options
       label
       type
     }
@@ -47,10 +47,10 @@ export const questionFragment = gql`
     id
     type
     rows
-    answers
+    options
     placeholder
     help_text
-    answers
+    options
     required
     units
     max
@@ -77,8 +77,16 @@ export const landingFragment = gql`
     wysiwyg
     members
     image_cover
-    cover { id, name, url }
-    partners { id, name, url }
+    cover {
+      id
+      name
+      url
+    }
+    partners {
+      id
+      name
+      url
+    }
     color_theme
     video_url
     logo

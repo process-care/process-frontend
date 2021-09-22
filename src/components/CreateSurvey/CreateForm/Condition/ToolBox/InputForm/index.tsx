@@ -73,7 +73,7 @@ const InputForm: React.FC<Props> = ({ survey }) => {
         const onChange = (event: React.FormEvent<HTMLFormElement>) => {
           const target = event.target as HTMLFormElement;
 
-          const is_repeated_fields = target.id.includes("option");
+          const is_repeated_fields = target.id.includes("options");
 
           if (is_repeated_fields) return false;
 
@@ -92,10 +92,10 @@ const InputForm: React.FC<Props> = ({ survey }) => {
           updateQuestion({
             id: selected_input.id,
             data: {
-              answers: values.answers,
+              options: values.options,
             },
           });
-        }, [values.answers]);
+        }, [values.options]);
 
         // Handle wysiwyg change
         React.useEffect(() => {

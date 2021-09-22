@@ -6,7 +6,7 @@ export const CheckboxFields: React.FC = () => {
   return (
     <>
       <CommonFields noPlacehoder />
-      <RepeatedFields name="answers" />
+      <RepeatedFields name="Options" />
     </>
   );
 };

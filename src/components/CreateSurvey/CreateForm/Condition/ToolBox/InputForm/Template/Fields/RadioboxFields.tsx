@@ -6,7 +6,7 @@ export const RadioboxFields: React.FC = () => {
   return (
     <>
       <CommonFields noPlacehoder />
-      <RepeatedFields name="answers" />
+      <RepeatedFields name="options" />
     </>
   );
 };

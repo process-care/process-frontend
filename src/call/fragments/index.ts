@@ -94,3 +94,42 @@ export const landingFragment = gql`
     about_page
   }
 `;
+
+export const surveyFullFragment = gql`
+  fragment surveyFullFragment on Survey {
+    id
+    description
+    order
+    title
+    slug
+    language
+    email
+    keywords
+    categories
+    author {
+      email
+    }
+    landing {
+      id
+      color_theme
+      logo
+    }
+    consentement {
+      url
+      id
+      name
+    }
+    pages {
+      id
+      name
+      short_name
+      is_locked
+      questions {
+        id
+      }
+      conditions {
+        id
+      }
+    }
+  }
+`;

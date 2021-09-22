@@ -7,6 +7,7 @@ import {
   DELETE_SURVEY,
   ADD_SURVEY,
   UPDATE_SURVEY,
+  WHERE_SURVEYS,
 } from "call/queries/survey";
 import { UPDATE_ORDER } from "call/queries/survey";
 import {
@@ -66,6 +67,15 @@ export const useGetMySurveys = (
     "getSurveys",
     () => client.request(GET_MY_SURVEYS, { authorId }),
     { enabled: !!authorId }
+  );
+
+export const useGetSurveyBySlug = (slug: string): UseQueryResult<ISurvey, Error> =>
+  useQuery<ISurvey, Error>(
+    ["getSurveyBySlug", slug],
+    () => client.request(WHERE_SURVEYS, { where: { slug } }).then(res => {
+      return res.surveys[0];
+    }),
+    { enabled: Boolean(slug) }
   );
 
 export const useGetSurveys = (): UseQueryResult<ISurveysRes, Error> =>

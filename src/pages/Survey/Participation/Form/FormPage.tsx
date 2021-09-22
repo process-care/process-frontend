@@ -11,17 +11,23 @@ import {
 import { NL } from "../nl";
 import { shouldShow } from "./condition-evaluations";
 import { useAnswerSaver, useAnswersGetter } from "./answer-hooks";
+import IQuestion from "types/form/question";
 
 // ---- TYPES
 
 interface Props {
   pageId: string;
   participationId: string;
+  order: string[];
 }
 
 // ---- COMPONENT
 
-export const FormPage: React.FC<Props> = ({ pageId, participationId }) => {
+export const FormPage: React.FC<Props> = ({
+  pageId,
+  participationId,
+  order,
+}) => {
   // Get page
   const { data } = useGetPage(pageId);
 
@@ -54,14 +60,30 @@ export const FormPage: React.FC<Props> = ({ pageId, participationId }) => {
             <Form>
               {/* Questions */}
               <Box px="10%" pt="20px">
-                {data.page.questions?.map((q) => (
+                {order?.map((inputId: string) => {
+                  const current = data.page.questions?.find(
+                    (q: IQuestion) => q.id === inputId
+                  );
+                  if (current !== undefined) {
+                    return (
+                      <Questionator
+                        key={inputId}
+                        id={inputId}
+                        participationId={participationId}
+                        answerId={answers.references.get(inputId)}
+                      />
+                    );
+                  } else return;
+                })}
+
+                {/* {data.page.questions?.map((q) => (
                   <Questionator
                     key={q.id}
                     id={q.id}
                     participationId={participationId}
                     answerId={answers.references.get(q.id)}
                   />
-                ))}
+                ))} */}
               </Box>
             </Form>
           );

@@ -47,6 +47,7 @@ export const ParticipationForm: React.FC<Props> = ({
   if ((pages?.length ?? 0) < 1 || !selectedPage)
     return <Box mt="60">No pages to display ! Contact the administrator !</Box>;
   const currentColor = data.survey.landing?.color_theme?.base || "black";
+  const { order } = data.survey;
   return (
     <Box>
       <Flex direction="row" h="100vh">
@@ -81,6 +82,7 @@ export const ParticipationForm: React.FC<Props> = ({
           <FormPage
             pageId={selectedPage.id}
             participationId={participationId}
+            order={order}
           />
 
           {/* Navigation */}

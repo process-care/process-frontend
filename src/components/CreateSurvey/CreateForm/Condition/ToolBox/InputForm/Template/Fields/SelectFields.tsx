@@ -6,7 +6,7 @@ export const SelectFields: React.FC = () => {
   return (
     <>
       <CommonFields />
-      <RepeatedFields name="answers" />
+      <RepeatedFields name="options" />
     </>
   );
 };

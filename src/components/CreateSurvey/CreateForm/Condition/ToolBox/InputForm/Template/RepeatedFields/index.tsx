@@ -23,6 +23,8 @@ export const RepeatedFields: React.FC<Props> = ({ name }) => {
     }
   }, [isEditing]);
 
+  console.log(field);
+
   return (
     <Box w="100%">
       <FieldArray
@@ -34,15 +36,15 @@ export const RepeatedFields: React.FC<Props> = ({ name }) => {
                 <Box key={index} w="100%">
                   <Flex w="100%">
                     <Textarea
-                      id={`option.${index}`}
-                      label={`Réponse ${index}`}
+                      id={`options.${index}`}
+                      label={`Option ${index}`}
                       placeholder={
-                        isEditing ? fields[index] : `Réponse ${index}`
+                        isEditing ? fields[index] : `Option ${index}`
                       }
                       rows="small"
                       isRequired
                       isCollapsed={false}
-                      {...field}
+                      // {...field}
                     />
                     <Flex ml={3} mt={8}>
                       <Button

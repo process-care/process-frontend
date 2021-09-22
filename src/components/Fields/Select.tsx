@@ -71,7 +71,7 @@ export const CustomSelect: React.FC<Props> = ({
   isCollapsed,
   isMulti = false,
 }): ReactElement => {
-  const [field, ,] = useField(id);
+  const [field] = useField(id);
   const { setFieldValue } = useFormikContext();
   return (
     <FormControl id={id} textAlign="left">

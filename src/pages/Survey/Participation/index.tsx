@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { Box } from "@chakra-ui/react";
+import { Box, Button, Center, Flex, Text } from "@chakra-ui/react";
 import { useHistory, useParams } from "react-router-dom";
 import { ParticipationConsent } from "./ParticipationConsent";
 import { ParticipationForm } from "./ParticipationForm";
@@ -22,6 +22,23 @@ export const Participation: React.FC<unknown> = () => {
   const { data, isLoading } = useGetSurvey(surveyId);
   const { participation, onConsent, onRefuse } = useConsentHandlers(surveyId);
 
+  if (participation?.completed) {
+    return (
+      <Center h="100vh">
+        <Flex flexDir="column">
+          <Text variant="title">👌 Merci d'avoir rempli cette enquête</Text>
+
+          <Button
+            mt="40px"
+            variant="roundedBlue"
+            onClick={() => history.push("/")}
+          >
+            Retour à l'accueil
+          </Button>
+        </Flex>
+      </Center>
+    );
+  }
   // LOADING STATE
   if (isLoading || !data?.survey) {
     return <Box mt="60">Loading in progress...</Box>;

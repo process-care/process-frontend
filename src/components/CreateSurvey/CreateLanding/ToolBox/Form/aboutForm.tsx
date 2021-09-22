@@ -3,27 +3,23 @@ import { Footer } from "../Footer";
 
 import { Wysiwyg } from "components/Fields/Wysiwyg";
 import { Formik, Form } from "formik";
-import React from "react";
+import React, { useCallback } from "react";
 import { setEditAboutPage } from "redux/slices/landingBuilder";
 import { initialValues } from "./utils/initialValues";
-import { useAppDispatch } from "redux/hooks";
-import { ILanding } from "types/landing";
-import { useUpdateLanding } from "call/actions/landing";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { setAutoSave } from "redux/slices/application";
 import { debounce } from "lodash";
+import { actions, selectors } from "redux/slices/landing-editor";
+import { useDebounce } from "utils/hooks/debounce";
 
-interface Props {
-  data: ILanding;
-}
-
-export const AboutForm: React.FC<Props> = ({ data }) => {
-  const { mutateAsync: updateLanding } = useUpdateLanding();
-
+export const AboutForm: React.FC = () => {
   const dispatch = useAppDispatch();
 
-  const handleSubmit = () => {
+  const aboutPage = useAppSelector(selectors.about);
+
+  const handleFinish = useCallback(() => {
     dispatch(setEditAboutPage());
-  };
+  }, []);
 
   const autoSave = () => {
     dispatch(setAutoSave());
@@ -36,7 +32,7 @@ export const AboutForm: React.FC<Props> = ({ data }) => {
   return (
     <Formik
       validateOnBlur={false}
-      initialValues={{ about_page: data.about_page } || initialValues}
+      initialValues={{ about_page: aboutPage } || initialValues}
       enableReinitialize
       onSubmit={(data, { setSubmitting, validateForm }) => {
         validateForm(data);
@@ -44,15 +40,13 @@ export const AboutForm: React.FC<Props> = ({ data }) => {
       }}
     >
       {({ values }) => {
+        // Handle update value
+        const debouncedAbout = useDebounce(values.about_page, 2000);
         React.useEffect(() => {
-          updateLanding({
-            id: data.id,
-            data: {
-              about_page: values.about_page,
-            },
-          });
-        }, [values.about_page]);
+          dispatch(actions.update({ about_page: debouncedAbout }));
+        }, [debouncedAbout]);
 
+        // Component
         return (
           <Form onBlur={autoSaveDebounce}>
             <Box
@@ -68,8 +62,9 @@ export const AboutForm: React.FC<Props> = ({ data }) => {
             >
               <Wysiwyg id="about_page" />
               <Footer
-                onCancel={() => dispatch(setEditAboutPage())}
-                onSubmit={() => handleSubmit()}
+                // TODO: It's the same... ?
+                onCancel={handleFinish}
+                onSubmit={handleFinish}
               />
             </Box>
           </Form>

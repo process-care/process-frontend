@@ -1,10 +1,24 @@
 import { Box, Text, Flex, Container, Image } from "@chakra-ui/react";
 import { IMember } from "types/landing";
 import React from "react";
+import { useAppSelector } from "redux/hooks";
+import { selectors } from "redux/slices/landing-editor";
 
-export interface MemberList {
-  members: IMember[];
-}
+export const Team: React.FC = () => {
+  const members = useAppSelector(selectors.members);
+
+  return (
+    <Box pb={10}>
+      <Container variant="hr" maxW="unset" mb={5} />
+      <Text variant="xl">L'équipe</Text>
+      <Flex w="80%" marginX="auto" justify="flex-start" mt={20}>
+        {members.map(({ job, name, image }: any, i: number) => (
+          <Member key={i} job={job} name={name} image={image} />
+        ))}
+      </Flex>
+    </Box>
+  );
+};
 
 const Member: React.FC<IMember> = ({ job, name, image }) => {
   return (
@@ -18,19 +32,5 @@ const Member: React.FC<IMember> = ({ job, name, image }) => {
         {job}
       </Text>
     </Flex>
-  );
-};
-
-export const Team: React.FC<MemberList> = ({ members }) => {
-  return (
-    <Box pb={10}>
-      <Container variant="hr" maxW="unset" mb={5} />
-      <Text variant="xl">L'équipe</Text>
-      <Flex w="80%" marginX="auto" justify="flex-start" mt={20}>
-        {members.map(({ job, name, image }: any, i: number) => (
-          <Member key={i} job={job} name={name} image={image} />
-        ))}
-      </Flex>
-    </Box>
   );
 };

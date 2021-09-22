@@ -42,5 +42,6 @@ export const Landing: React.FC<IRoute> = () => {
     );
   }
 
-  return <Preview data={landing.landing} isUserView />;
+  // FIXME: I removed this: "data={landing.landing}" so nothing works anymore
+  return <Preview isUserView />;
 };

@@ -5,16 +5,11 @@ import { t } from "static/createLanding";
 import { LandingForm } from "./Form/landingForm";
 import { useAppSelector } from "redux/hooks";
 import { AboutForm } from "./Form/aboutForm";
-import { ILanding } from "types/landing";
+import { selectors } from "redux/slices/landing-editor";
 
-interface Props {
-  data: ILanding;
-}
+export const ToolBox: React.FC = () => {
+  const isEditingAbout = useAppSelector(selectors.isEditingAbout);
 
-export const ToolBox: React.FC<Props> = ({ data }) => {
-  const { is_editing_about_page } = useAppSelector(
-    (state) => state.landingBuilder
-  );
   return (
     <Container variant="rightPart" height="100%" w="100%">
       <Text
@@ -31,10 +26,10 @@ export const ToolBox: React.FC<Props> = ({ data }) => {
       >
         {t.title}
       </Text>
-      {is_editing_about_page ? (
-        <AboutForm data={data} />
+      {isEditingAbout ? (
+        <AboutForm />
       ) : (
-        <LandingForm data={data} />
+        <LandingForm />
       )}
     </Container>
   );

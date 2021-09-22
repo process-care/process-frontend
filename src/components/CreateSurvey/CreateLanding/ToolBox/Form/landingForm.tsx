@@ -4,38 +4,37 @@ import { UploadFile } from "components/Fields/Uploadfile";
 import { UploadFileRemote } from "components/Fields/UploadFileRemote";
 import { Wysiwyg } from "components/Fields/Wysiwyg";
 import { Formik, Form } from "formik";
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { setEditAboutPage } from "redux/slices/landingBuilder";
 import { debounce } from "lodash";
 
 import { t } from "static/createLanding";
 import { ColorPicker } from "../ColorPicker";
 import { initialValues } from "./utils/initialValues";
-import { useAppDispatch } from "redux/hooks";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { RepeatableFields } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/RepeatableFields";
 import { SvgHover } from "components/SvgHover";
 
 import { ReactComponent as Delete } from "assets/delete.svg";
 import { goTop } from "utils/application/scrollTo";
-import { ILanding } from "types/landing";
 import { useUpdateLanding } from "call/actions/landing";
 import { setAutoSave } from "redux/slices/application";
+import { actions, selectors } from "redux/slices/landing-editor";
 
-interface Props {
-  data: ILanding;
-}
-
-export const LandingForm: React.FC<Props> = ({ data }) => {
+export const LandingForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const { mutateAsync: updateLanding } = useUpdateLanding();
 
+  const data = useAppSelector(selectors.landing);
+
+  // FIXME: update this as a callback ?!
   const onChange = (event: React.FormEvent<HTMLFormElement>) => {
     const target = event.target as HTMLFormElement;
     const is_repeated_fields = target.id.includes("members");
 
     if (target.type === "file" || is_repeated_fields) {
       return false;
-    } else if (target !== null) {
+    } else if (target !== null && data?.id) {
       updateLanding({
         id: data.id,
         data: {
@@ -69,6 +68,11 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
       {(formProps) => {
         const { values, setFieldValue } = formProps;
 
+        // Handle update value
+        React.useEffect(() => {
+          dispatch(actions.update({ ...values }));
+        }, [values]);
+
         // Target params for various uploads (cover, partners)
         const targets = useMemo(() => {
           const base = { refId: values.id, ref: "landing" };
@@ -78,6 +82,13 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
           };
         }, [values.id]);
 
+        // Delete video handler
+        const onDeleteVideo = useCallback(() => {
+          dispatch(actions.update({ video_url: '' }));
+          setFieldValue('video_url', '');
+        }, []);
+
+        // Components
         return (
           <Box
             pos="relative"
@@ -139,6 +150,7 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
                 label={t.image_cta}
                 helpText={t.image_helptext}
                 isDisabled={Boolean(values.video_url)}
+                // TODO: console log only ?
                 onChange={(e) => console.log(e)}
               />
 
@@ -153,13 +165,7 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
                 <Box mt={7} ml={4}>
                   <SvgHover>
                     <Delete
-                      onClick={() => {
-                        updateLanding({
-                          id: data.id,
-                          data: { video_url: "" },
-                        });
-                        setFieldValue("video_url", "");
-                      }}
+                      onClick={onDeleteVideo}
                     />
                   </SvgHover>
                 </Box>
@@ -182,6 +188,7 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
                 label={t.logos_cta}
                 helpText={t.image_helptext}
                 multiple
+                // TODO: console log only ?
                 onChange={(e) => console.log(e)}
               />
 

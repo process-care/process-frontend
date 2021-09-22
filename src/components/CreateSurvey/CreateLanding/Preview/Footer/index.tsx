@@ -1,16 +1,13 @@
 import React from "react";
 import { Flex, Box, Button, Text, Container } from "@chakra-ui/react";
-import { ILanding } from "types/landing";
 import { t } from "static/createLanding";
 import { API_URL_ROOT } from "constants/api";
 import { NavLink } from "react-router-dom";
+import { useAppSelector } from "redux/hooks";
+import { selectors } from "redux/slices/landing-editor";
 
-interface Props {
-  data: ILanding;
-}
-
-export const Footer: React.FC<Props> = ({ data }) => {
-  const { partners } = data;
+export const Footer: React.FC = () => {
+  const partners = useAppSelector(selectors.partners);
 
   return (
     <>

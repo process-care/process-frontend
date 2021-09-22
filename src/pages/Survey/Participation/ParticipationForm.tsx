@@ -7,6 +7,7 @@ import { FormPage } from "./Form/FormPage";
 import { NL } from "./nl";
 import { useFinishParticipation } from "call/actions/participation";
 import { useHistory } from "react-router-dom";
+import { finishParticipation } from "./localstorage-handlers";
 
 // ---- TYPES
 
@@ -256,13 +257,13 @@ function useNavigationHandlers(pages: IPage[] | undefined) {
 
 function useFinishHandler(participationId: string, slug: string) {
   const history = useHistory();
-  const { mutateAsync: finishParticipation } = useFinishParticipation();
+  const { mutateAsync: finishParticipationApi } = useFinishParticipation();
 
   const onFinish = useCallback(async () => {
     const acknowledge = confirm(" Conclure votre participation à l'enquête ?");
     if (!acknowledge) return;
 
-    const res = await finishParticipation(participationId);
+    const res = await finishParticipationApi(participationId);
     console.log("response for finish call: ", res);
 
     finishParticipation(slug);

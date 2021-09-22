@@ -55,7 +55,6 @@ export const CustomNumberInput: React.FC<Props> = ({
           <InputGroup>
             <NumberInput
               {...field}
-              defaultValue={defaultValue}
               min={min}
               max={max}
               precision={precision}
@@ -63,6 +62,8 @@ export const CustomNumberInput: React.FC<Props> = ({
               w="100%"
             >
               <NumberInputField
+                defaultValue={defaultValue}
+                {...field}
                 placeholder={placeholder}
                 borderTopRightRadius={inputRightAddon !== null ? "0" : "5px"}
                 borderBottomRightRadius={inputRightAddon !== null ? "0" : "5px"}

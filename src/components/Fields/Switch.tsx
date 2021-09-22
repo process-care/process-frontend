@@ -3,11 +3,11 @@ import {
   FormControl,
   FormHelperText,
   FormLabel,
-  Switch,
   FormErrorMessage,
 } from "@chakra-ui/react";
 
 import { useField } from "formik";
+import { SwitchControl } from "formik-chakra-ui";
 
 interface Props {
   label: string;
@@ -29,7 +29,7 @@ export const CustomSwitch: React.FC<Props> = ({
   isRequired,
   size = "md",
 }) => {
-  const [field, meta, helpers] = useField(id);
+  const [, meta] = useField(id);
   return (
     <FormControl
       isRequired={isRequired}
@@ -40,14 +40,7 @@ export const CustomSwitch: React.FC<Props> = ({
       d="flex"
       alignItems="center"
     >
-      <Switch
-        size={size}
-        aria-labelledby={id}
-        id={id}
-        mt={-6}
-        isChecked={field.value}
-        onChange={() => helpers.setValue(!field.value)}
-      />
+      <SwitchControl name={id} label="" size={size} mt={-3} />
       <FormLabel ml={5} mt={-2} fontSize={size}>
         {label}
       </FormLabel>

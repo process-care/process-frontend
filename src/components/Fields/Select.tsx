@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react";
 import { FormControl, FormHelperText, FormLabel } from "@chakra-ui/react";
 import { t } from "static/survey";
-import { useField, useFormikContext } from "formik";
+import { useField } from "formik";
 import Select from "react-select";
 
 interface Options {
@@ -71,8 +71,9 @@ export const CustomSelect: React.FC<Props> = ({
   isCollapsed,
   isMulti = false,
 }): ReactElement => {
-  const [field] = useField(id);
-  const { setFieldValue } = useFormikContext();
+  const [field, , helpers] = useField(id);
+  const { setValue } = helpers;
+
   return (
     <FormControl id={id} textAlign="left">
       <FormLabel>{label}</FormLabel>
@@ -86,7 +87,7 @@ export const CustomSelect: React.FC<Props> = ({
             placeholder={placeholder}
             noOptionsMessage={() => t.not_found}
             options={answers}
-            onChange={(value) => setFieldValue(field.name, value?.value)}
+            onChange={(option) => setValue(option.value)}
             defaultValue={field.value}
             value={{ label: field.value, value: field.value }}
           />

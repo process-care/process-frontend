@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
@@ -61,6 +61,8 @@ const InputForm: React.FC<Props> = ({ survey }) => {
   return (
     <Formik
       validateOnBlur={false}
+      validateOnChange={false}
+      validateOnMount={false}
       validationSchema={renderFormValidationSchema(selected_input)}
       initialValues={selected_input ? selected_input : fields[type]}
       onSubmit={(data, { setSubmitting, validateForm }) => {
@@ -87,36 +89,16 @@ const InputForm: React.FC<Props> = ({ survey }) => {
           }
         };
 
-        // Handle repeated fields change
-        React.useEffect(() => {
-          updateQuestion({
-            id: selected_input.id,
-            data: {
-              options: values.options,
-            },
-          });
+        useEffect(() => {
+          if (values.options) {
+            updateQuestion({
+              id: selected_input.id,
+              data: {
+                options: values.options,
+              },
+            });
+          }
         }, [values.options]);
-
-        // Handle wysiwyg change
-        React.useEffect(() => {
-          updateQuestion({
-            id: selected_input.id,
-            data: {
-              wysiwyg: values.wysiwyg,
-            },
-          });
-        }, [values.wysiwyg]);
-
-        // Handle select change
-        React.useEffect(() => {
-          updateQuestion({
-            id: selected_input.id,
-            data: {
-              freeclassification_responses_count:
-                values.freeclassification_responses_count,
-            },
-          });
-        }, [values.freeclassification_responses_count]);
 
         return (
           <Form

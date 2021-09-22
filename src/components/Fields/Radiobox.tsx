@@ -8,6 +8,7 @@ import {
   HStack,
   Box,
 } from "@chakra-ui/react";
+import { RadioGroupControl } from "formik-chakra-ui";
 
 interface Radios {
   value: string | undefined;
@@ -42,23 +43,19 @@ export const CustomRadioBox: React.FC<Props> = ({
         <>
           <RadioGroup colorScheme="green">
             <HStack flexWrap="wrap" spacing={5}>
-              {radios ? (
-                radios.map(({ value, label }) => {
-                  return (
-                    <Radio
-                      id={id}
-                      name={value}
-                      value={value}
-                      key={value}
-                      isRequired={isRequired}
-                    >
-                      {label}
-                    </Radio>
-                  );
-                })
-              ) : (
-                <Box p={5} />
-              )}
+              <RadioGroupControl name={id} label="">
+                {radios ? (
+                  radios.map(({ value, label }) => {
+                    return (
+                      <Radio value={value} isRequired={isRequired}>
+                        {label}
+                      </Radio>
+                    );
+                  })
+                ) : (
+                  <Box p={5} />
+                )}
+              </RadioGroupControl>
             </HStack>
           </RadioGroup>
           <FormHelperText fontSize="xs">{helpText}</FormHelperText>

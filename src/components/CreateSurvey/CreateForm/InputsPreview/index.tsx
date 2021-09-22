@@ -96,7 +96,22 @@ const InputsPreview: React.FC<Props> = ({ surveyId, order }) => {
         overflowY="auto"
       >
         <Formik
-          initialValues={{}}
+          // initialValues={
+          //   questions?.questions
+          //     ? questions?.questions.map((q) => {
+          //         return {
+          //           [q.id]: "",
+          //         };
+          //       })
+          //     : {}
+          // }
+          initialValues={{
+            "61436550bf35072f83f926f0": "Chat",
+            "614368bdbf35072f83f926f1": ["plof"],
+            "6144811e36860e09769b3079": "10",
+            "6144837b36860e09769b307a": "1",
+            "614485d636860e09769b307b": 6,
+          }}
           onSubmit={(data) => {
             console.log("DATA :", data);
           }}
@@ -137,11 +152,7 @@ const InputsPreview: React.FC<Props> = ({ surveyId, order }) => {
     return <div>No Questions ...</div>;
   }
   return (
-    <DragDropContext
-      // onDragStart={() => onDragStart()}
-      // onDragUpdate={() => onDragUpdate()}
-      onDragEnd={(result) => onDragEnd(result)}
-    >
+    <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
       <Droppable droppableId={selected_page.id}>
         {(provided, snapshot) => (
           <Container isDraggingOver={snapshot.isDraggingOver}>
@@ -150,12 +161,7 @@ const InputsPreview: React.FC<Props> = ({ surveyId, order }) => {
             </Text>
             {questions?.questions?.length > 0 && <Header />}
 
-            <Box
-              w="100%"
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-              // isDraggingOver={snapshot.isDraggingOver}
-            >
+            <Box w="100%" ref={provided.innerRef} {...provided.droppableProps}>
               {order?.map((inputId: string, i: number) => {
                 const current = questions?.questions?.find(
                   (c: any) => c.id === inputId

@@ -56,54 +56,18 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
   return (
     <Formik
       validateOnBlur={false}
-      initialValues={data || initialValues}
-      enableReinitialize
+      // initialValues={data || initialValues}
+      initialValues={initialValues}
+      // enableReinitialize
       onSubmit={(data, { setSubmitting, validateForm }) => {
         validateForm(data);
         setSubmitting(true);
       }}
     >
-      {({ values, setFieldValue }) => {
-        console.log(values);
-        // Handle wysiwyg change
-        React.useEffect(() => {
-          updateLanding({
-            id: data.id,
-            data: {
-              wysiwyg: values.wysiwyg,
-            },
-          });
-        }, [values.wysiwyg]);
-
-        React.useEffect(() => {
-          updateLanding({
-            id: data.id,
-            data: {
-              logo: values.logo,
-              image_cover: values.image_cover,
-            },
-          });
-        }, [values.logo, values.image_cover]);
-
-        // Handle wysiwyg change
-        React.useEffect(() => {
-          updateLanding({
-            id: data.id,
-            data: {
-              members: values.members,
-            },
-          });
-        }, [values.members]);
-
-        // Handle colors change
-        React.useEffect(() => {
-          updateLanding({
-            id: data.id,
-            data: {
-              color_theme: values.color_theme,
-            },
-          });
-        }, [values.color_theme]);
+      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment*/}
+      {/* @ts-ignore */}
+      {(formProps) => {
+        const { values, setFieldValue } = formProps;
 
         // Target params for various uploads (cover, partners)
         const targets = useMemo(() => {

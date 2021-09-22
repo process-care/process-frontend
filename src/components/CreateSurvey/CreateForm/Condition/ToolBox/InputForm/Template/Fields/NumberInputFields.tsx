@@ -21,17 +21,19 @@ export const NumberInputFields: React.FC = () => {
       <Flex justifyContent="space-between">
         <NumberInput
           style={{ width: "45%" }}
-          label="Nb de charactères min"
+          label="Nombre min"
           name="min"
           isCollapsed={false}
           placeholder="Ex:5"
+          isRequired
         />
         <NumberInput
           style={{ width: "45%" }}
-          label="Nb de charactères max"
+          label="Nombre max"
           name="max"
           isCollapsed={false}
           placeholder="Ex:5"
+          isRequired
         />
       </Flex>
     </>

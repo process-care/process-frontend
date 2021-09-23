@@ -1,19 +1,27 @@
 import { useEffect, useState } from "react";
 import { useField } from "formik";
 import { useDebounce } from "utils/hooks/debounce";
-import { useCreateAnswer, useGetAnswers, useUpdateAnswer } from "call/actions/answers";
+import {
+  useCreateAnswer,
+  useGetAnswers,
+  useUpdateAnswer,
+} from "call/actions/answers";
 
 /**
- * 
- * @param participationId 
- * @param questionsId 
- * @returns 
+ *
+ * @param participationId
+ * @param questionsId
+ * @returns
  */
- export function useAnswersGetter(
-   participationId: string,
-   questionsId: string[]
-): { values: Record<string, unknown>, references: Map<any, any>} {
-  const { data } = useGetAnswers(participationId, questionsId);
+export function useAnswersGetter(
+  participationId: string,
+  questionsId: string[]
+): {
+  values: Record<string, unknown>;
+  references: Map<any, any>;
+  isLoading: boolean;
+} {
+  const { data, isLoading } = useGetAnswers(participationId, questionsId);
 
   const ref = new Map();
 
@@ -26,13 +34,14 @@ import { useCreateAnswer, useGetAnswers, useUpdateAnswer } from "call/actions/an
   return {
     values: answers ?? {},
     references: ref,
+    isLoading,
   };
 }
 
 /**
- * 
- * @param id 
- * @param participationId 
+ *
+ * @param id
+ * @param participationId
  */
 export function useAnswerSaver(
   questionId: string,
@@ -43,7 +52,7 @@ export function useAnswerSaver(
   const debouncedValue = useDebounce(field.value, 2000);
 
   const [answerId, setAnswerId] = useState(initialAnswerId);
-  
+
   // Mutators
   const { mutateAsync: create } = useCreateAnswer();
   const { mutateAsync: update } = useUpdateAnswer();
@@ -51,21 +60,26 @@ export function useAnswerSaver(
   useEffect(() => {
     if (debouncedValue === undefined) return;
 
-    console.log(`Saving : question "${questionId}" -> value changed to: ${debouncedValue} (answer ID: ${answerId})`);
+    console.log(
+      `Saving : question "${questionId}" -> value changed to: ${debouncedValue} (answer ID: ${answerId})`
+    );
 
     if (!answerId) {
-      create({ participation: participationId, question: questionId, value: debouncedValue }).then(
-        (v => {
+      create({
+        participation: participationId,
+        question: questionId,
+        value: debouncedValue,
+      }).then(
+        (v) => {
           setAnswerId(v.createAnswer.answer.id);
-          console.log('Success on CREATE: ', v)
-        }),
-        (e => console.log('Error on CREATE: ', e)),
+          console.log("Success on CREATE: ", v);
+        },
+        (e) => console.log("Error on CREATE: ", e)
       );
-    }
-    else {
-      update({ id: answerId, data: { value: debouncedValue }}).then(
-        (v => console.log('Success on UPDATE: ', v)),
-        (e => console.log('Error on UPDATE: ', e)),
+    } else {
+      update({ id: answerId, data: { value: debouncedValue } }).then(
+        (v) => console.log("Success on UPDATE: ", v),
+        (e) => console.log("Error on UPDATE: ", e)
       );
     }
   }, [questionId, answerId, participationId, debouncedValue]);

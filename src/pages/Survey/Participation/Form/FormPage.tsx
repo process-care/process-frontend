@@ -51,7 +51,11 @@ export const FormPage: React.FC<Props> = ({
   // If page is empty
   if (!data?.page) return <Box mt="60">{NL.msg.nodata}</Box>;
 
+  // Need to wait answers to set inititalValues
+  if (answers.isLoading) return <p>loading ...</p>;
+
   // Final render
+
   return (
     <Box>
       <Text variant="xl" my="20px">
@@ -162,6 +166,8 @@ const Questionator: React.FC<QuestionatorProps> = ({
   const show = shouldShow(rawEvaluation?.evaluation.conditions);
 
   useAnswerSaver(id, participationId, answerId);
+
+  console.log(rawEvaluation);
 
   if (isLoading) return <div>Loading...</div>;
   if (!rawQuestion?.question) return <div>Oups</div>;

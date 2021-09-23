@@ -18,7 +18,7 @@ interface Props {
   label: string;
   helpText?: string;
   checkbox: Checkbox[];
-  isRequired?: boolean;
+  isRequired?: any;
   id: string;
   isCollapsed?: boolean;
 }
@@ -32,7 +32,7 @@ export const CustomCheckbox: React.FC<Props> = ({
   isCollapsed,
 }) => {
   return (
-    <FormControl id={id} textAlign="left" isRequired={isRequired}>
+    <FormControl id={id} textAlign="left" isRequired={isRequired === "true"}>
       <FormLabel>{label}</FormLabel>
       {!isCollapsed && (
         <>

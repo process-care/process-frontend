@@ -59,7 +59,6 @@ export const Step_1: React.FC<Props> = ({ currentCondition }) => {
   }
 
   const isEmpty = authorizedInputs?.length === 0;
-  console.log(authorizedInputs, survey);
 
   const renderCard = (input: IQuestion) => {
     const isSelected = input.id === currentCondition?.target?.id;

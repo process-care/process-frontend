@@ -15,7 +15,7 @@ interface Props {
   placeholder: string;
   helpText?: string;
   answers: Options[] | undefined;
-  isRequired?: boolean;
+  isRequired?: any;
   isMulti?: boolean;
   isCollapsed?: boolean;
   name: string;
@@ -78,7 +78,7 @@ export const CustomCreatableSelect: React.FC<Props> = ({
   const { setFieldValue } = useFormikContext();
 
   return (
-    <FormControl id={id} textAlign="left">
+    <FormControl id={id} textAlign="left" isRequired={isRequired === "true"}>
       <FormLabel>{label}</FormLabel>
       {!isCollapsed && (
         <>
@@ -86,7 +86,7 @@ export const CustomCreatableSelect: React.FC<Props> = ({
             styles={customStyles}
             id={id}
             name={name}
-            isRequired={isRequired}
+            isRequired={isRequired === "true"}
             placeholder={placeholder}
             noOptionsMessage={() => t.not_found}
             options={answers}

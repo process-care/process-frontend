@@ -15,7 +15,7 @@ interface Props {
   id: string;
   label: string;
   helpText?: string;
-  isRequired?: boolean;
+  isRequired?: any;
   isCollapsed?: boolean;
 }
 
@@ -36,7 +36,7 @@ export const CustomDatePicker: React.FC<Props> = ({
   };
 
   return (
-    <FormControl id={id} textAlign="left" isRequired={isRequired}>
+    <FormControl id={id} textAlign="left" isRequired={isRequired === "true"}>
       <FormLabel>{label}</FormLabel>
       {!isCollapsed && (
         <>

@@ -51,8 +51,6 @@ export const Dashboard: React.FC<IRoute> = () => {
     }
   };
 
-  console.log(isOpen);
-
   const [currentFilter, setCurrentFilter] = useState<string>(t.filters[0].id);
 
   const data = React.useMemo(() => {

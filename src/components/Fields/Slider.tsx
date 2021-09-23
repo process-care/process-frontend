@@ -22,7 +22,7 @@ interface Props {
   max: number | undefined;
   vertical?: boolean;
   reverse?: boolean;
-  isRequired?: boolean;
+  isRequired?: any;
   isCollapsed?: boolean;
 }
 
@@ -61,7 +61,7 @@ export const CustomSlider: React.FC<Props> = ({
 
   return (
     <FormControl
-      isRequired={isRequired}
+      isRequired={isRequired === "true"}
       id="email"
       textAlign="left"
       h={vertical ? "700px" : "fit-content"}

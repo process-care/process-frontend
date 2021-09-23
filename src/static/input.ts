@@ -1,7 +1,7 @@
 export const t = {
   label: "Label à remplir",
-  help_text: "Champ d'aide à remplir",
-  placeholder: "Placeholder à remplir",
+  help_text: "",
+  placeholder: "Renseigner votre réponse",
   removing_confirmation: "Voulez vous supprimer le champs",
   delete_all_inputs: "Tout supprimer",
   verify: "Tester",

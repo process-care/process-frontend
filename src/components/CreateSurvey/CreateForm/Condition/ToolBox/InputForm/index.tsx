@@ -60,9 +60,6 @@ const InputForm: React.FC<Props> = ({ survey }) => {
 
   return (
     <Formik
-      validateOnBlur={false}
-      validateOnChange={false}
-      validateOnMount={false}
       validationSchema={renderFormValidationSchema(selected_input)}
       initialValues={selected_input ? selected_input : fields[type]}
       onSubmit={(data, { setSubmitting, validateForm }) => {
@@ -72,6 +69,7 @@ const InputForm: React.FC<Props> = ({ survey }) => {
       }}
     >
       {({ isValid, isSubmitting, values }) => {
+        console.log(isValid);
         const onChange = (event: React.FormEvent<HTMLFormElement>) => {
           const target = event.target as HTMLFormElement;
 

@@ -23,8 +23,6 @@ export const RepeatedFields: React.FC<Props> = ({ name }) => {
     }
   }, [isEditing]);
 
-  console.log(field);
-
   return (
     <Box w="100%">
       <FieldArray

@@ -15,7 +15,7 @@ interface Props {
   placeholder: string;
   helpText?: string;
   answers: Options[] | undefined;
-  isRequired?: boolean;
+  isRequired?: any;
   isMulti?: boolean;
   isCollapsed?: boolean;
 }
@@ -75,7 +75,7 @@ export const CustomSelect: React.FC<Props> = ({
   const { setValue } = helpers;
 
   return (
-    <FormControl id={id} textAlign="left">
+    <FormControl id={id} textAlign="left" isRequired={isRequired === "true"}>
       <FormLabel>{label}</FormLabel>
       {!isCollapsed && (
         <>
@@ -83,7 +83,7 @@ export const CustomSelect: React.FC<Props> = ({
             isMulti={isMulti}
             styles={customStyles}
             id={id}
-            isRequired={isRequired}
+            isRequired={isRequired === "true"}
             placeholder={placeholder}
             noOptionsMessage={() => t.not_found}
             options={answers}

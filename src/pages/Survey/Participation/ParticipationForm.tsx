@@ -1,10 +1,9 @@
 import React, { useCallback, useState } from "react";
-import { Box, Button, Flex, Text, Circle } from "@chakra-ui/react";
+import { Box, Flex, Text, Circle } from "@chakra-ui/react";
 
 import IPage from "types/form/page";
 import { useGetSurvey } from "call/actions/survey";
 import { FormPage } from "./Form/FormPage";
-import { NL } from "./nl";
 import { useFinishParticipation } from "call/actions/participation";
 import { useHistory } from "react-router-dom";
 import { finishParticipation } from "./localstorage-handlers";
@@ -80,41 +79,16 @@ export const ParticipationForm: React.FC<Props> = ({
             {data.survey.title}
           </Box>
           <FormPage
+            isFirstPage={isFirstPage}
+            isLastPage={isLastPage}
+            currentColor={currentColor}
+            previousPage={previousPage}
+            nextPage={nextPage}
+            onFinish={onFinish}
             pageId={selectedPage.id}
             participationId={participationId}
             order={order}
           />
-
-          {/* Navigation */}
-          <Flex justifyContent="flex-end" mt="10" mb="10" pr="10%">
-            {!isFirstPage && (
-              <Button
-                mr="4"
-                variant="roundedTransparent"
-                onClick={previousPage}
-              >
-                {NL.button.previous}
-              </Button>
-            )}
-            {!isLastPage && (
-              <Button
-                variant="roundedBlue"
-                backgroundColor={currentColor}
-                onClick={nextPage}
-              >
-                {NL.button.next}
-              </Button>
-            )}
-            {isLastPage && (
-              <Button
-                variant="roundedBlue"
-                backgroundColor={currentColor}
-                onClick={onFinish}
-              >
-                {NL.button.finish}
-              </Button>
-            )}
-          </Flex>
         </Box>
       </Flex>
     </Box>
@@ -219,6 +193,26 @@ const PageEntry: React.FC<EntryProps> = ({
 
 // ---- HOOKS
 
+function useFinishHandler(participationId: string, slug: string) {
+  const history = useHistory();
+  const { mutateAsync: finishParticipationApi } = useFinishParticipation();
+
+  const onFinish = useCallback(async () => {
+    const acknowledge = confirm(" Conclure votre participation à l'enquête ?");
+    if (!acknowledge) return;
+
+    const res = await finishParticipationApi(participationId);
+    console.log("response for finish call: ", res);
+
+    finishParticipation(slug);
+    history.push("/");
+  }, [slug, participationId]);
+
+  return {
+    onFinish,
+  };
+}
+
 function useNavigationHandlers(pages: IPage[] | undefined) {
   const [selectedIdx, setSelectedIdx] = useState(0);
   const selectedPage = pages?.[selectedIdx];
@@ -254,25 +248,5 @@ function useNavigationHandlers(pages: IPage[] | undefined) {
     selectIndex: setSelectedIdx,
     nextPage,
     previousPage,
-  };
-}
-
-function useFinishHandler(participationId: string, slug: string) {
-  const history = useHistory();
-  const { mutateAsync: finishParticipationApi } = useFinishParticipation();
-
-  const onFinish = useCallback(async () => {
-    const acknowledge = confirm(" Conclure votre participation à l'enquête ?");
-    if (!acknowledge) return;
-
-    const res = await finishParticipationApi(participationId);
-    console.log("response for finish call: ", res);
-
-    finishParticipation(slug);
-    history.push("/");
-  }, [slug, participationId]);
-
-  return {
-    onFinish,
   };
 }

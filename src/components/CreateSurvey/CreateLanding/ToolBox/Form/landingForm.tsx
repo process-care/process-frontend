@@ -4,7 +4,7 @@ import { UploadFile } from "components/Fields/Uploadfile";
 import { UploadFileRemote } from "components/Fields/UploadFileRemote";
 import { Wysiwyg } from "components/Fields/Wysiwyg";
 import { Formik, Form } from "formik";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 import { setEditAboutPage } from "redux/slices/landingBuilder";
 
 import { t } from "static/createLanding";
@@ -21,24 +21,9 @@ import { actions, selectors } from "redux/slices/landing-editor";
 export const LandingForm: React.FC = () => {
   const dispatch = useAppDispatch();
 
+  // Flag to avoid saving the initial values injected into Formik
+  const firstRender = useRef(true);
   const data = useAppSelector(selectors.landing);
-
-  // FIXME: update this as a callback ?!
-  // const onChange = (event: React.FormEvent<HTMLFormElement>) => {
-  //   const target = event.target as HTMLFormElement;
-  //   const is_repeated_fields = target.id.includes("members");
-
-  //   if (target.type === "file" || is_repeated_fields) {
-  //     return false;
-  //   } else if (target !== null && data?.id) {
-  //     updateLanding({
-  //       id: data.id,
-  //       data: {
-  //         [target.id]: target.value,
-  //       },
-  //     });
-  //   }
-  // };
 
   // const autoSave = () => {
   //   dispatch(setAutoSave());
@@ -74,6 +59,11 @@ export const LandingForm: React.FC = () => {
 
         // Handle update value
         React.useEffect(() => {
+          if (firstRender.current) {
+            firstRender.current = false;
+            return;
+          }
+
           dispatch(actions.update({ ...values }));
         }, [values]);
 

@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 // import type { RootState } from "redux/store";
 import { ILanding } from "types/landing";
 import { RootState } from "redux/store";
+import { DateTime } from 'luxon';
 
 // ---- STATE
 
@@ -9,7 +10,7 @@ export interface LandingEditor {
   // Page status
   isLoading: boolean
   error?: string
-  isEditingAbout: boolean;
+  isEditingAbout: boolean
   lastUpdated: string
   lastSaved: string
   // Date
@@ -67,6 +68,11 @@ export const landingEditorSlice = createSlice({
 
 export const error = (state: RootState): string | undefined => state.landingEditor.error;
 export const isLoading = (state: RootState): boolean => state.landingEditor.isLoading;
+export const hasChanges = (state: RootState): boolean => {
+  const updated = DateTime.fromISO(state.landingEditor.lastUpdated);
+  const saved = DateTime.fromISO(state.landingEditor.lastSaved);
+  return updated > saved;
+}
 
 export const isEditingAbout = (state: RootState): boolean => state.landingEditor.isEditingAbout;
 export const hasMembers = (state: RootState): boolean => (state.landingEditor.data?.members ?? []).length > 0;

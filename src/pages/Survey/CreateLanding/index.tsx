@@ -29,7 +29,10 @@ export const CreateLanding: React.FC<IRoute> = () => {
 
   // TODO: We could even do this effect when the user opens a side menu in the dashboard, so we "preload" the data
   useEffect(() => {
-    if (!landingId) return;
+    if (!landingId) {
+      console.warn('No landing ID to load.');
+      return;
+    }
     dispatch(actions.load(landingId));
   }, [landingId]);
 

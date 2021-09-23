@@ -6,7 +6,6 @@ import { Wysiwyg } from "components/Fields/Wysiwyg";
 import { Formik, Form } from "formik";
 import React, { useCallback, useMemo } from "react";
 import { setEditAboutPage } from "redux/slices/landingBuilder";
-import { debounce } from "lodash";
 
 import { t } from "static/createLanding";
 import { ColorPicker } from "../ColorPicker";
@@ -17,51 +16,56 @@ import { SvgHover } from "components/SvgHover";
 
 import { ReactComponent as Delete } from "assets/delete.svg";
 import { goTop } from "utils/application/scrollTo";
-import { useUpdateLanding } from "call/actions/landing";
-import { setAutoSave } from "redux/slices/application";
 import { actions, selectors } from "redux/slices/landing-editor";
 
 export const LandingForm: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { mutateAsync: updateLanding } = useUpdateLanding();
 
   const data = useAppSelector(selectors.landing);
 
   // FIXME: update this as a callback ?!
-  const onChange = (event: React.FormEvent<HTMLFormElement>) => {
-    const target = event.target as HTMLFormElement;
-    const is_repeated_fields = target.id.includes("members");
+  // const onChange = (event: React.FormEvent<HTMLFormElement>) => {
+  //   const target = event.target as HTMLFormElement;
+  //   const is_repeated_fields = target.id.includes("members");
 
-    if (target.type === "file" || is_repeated_fields) {
-      return false;
-    } else if (target !== null && data?.id) {
-      updateLanding({
-        id: data.id,
-        data: {
-          [target.id]: target.value,
-        },
-      });
-    }
-  };
+  //   if (target.type === "file" || is_repeated_fields) {
+  //     return false;
+  //   } else if (target !== null && data?.id) {
+  //     updateLanding({
+  //       id: data.id,
+  //       data: {
+  //         [target.id]: target.value,
+  //       },
+  //     });
+  //   }
+  // };
 
-  const autoSave = () => {
-    dispatch(setAutoSave());
-    setTimeout(() => {
-      dispatch(setAutoSave());
-    }, 2000);
-  };
-  const autoSaveDebounce = debounce(autoSave, 500);
+  // const autoSave = () => {
+  //   dispatch(setAutoSave());
+  //   setTimeout(() => {
+  //     dispatch(setAutoSave());
+  //   }, 2000);
+  // };
+  // const autoSaveDebounce = debounce(autoSave, 500);
+
+  const onSubmit = useCallback((data, { setSubmitting, validateForm }) => {
+    validateForm(data);
+    setSubmitting(true);
+  }, []);
+
+  const logOnChange = useCallback((e) => console.log(e), []);
+
+  const onEditAbout = useCallback(() => {
+    goTop();
+    dispatch(setEditAboutPage());
+  }, []);
 
   return (
     <Formik
       validateOnBlur={false}
-      // initialValues={data || initialValues}
-      initialValues={initialValues}
+      initialValues={data || initialValues}
       // enableReinitialize
-      onSubmit={(data, { setSubmitting, validateForm }) => {
-        validateForm(data);
-        setSubmitting(true);
-      }}
+      onSubmit={onSubmit}
     >
       {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment*/}
       {/* @ts-ignore */}
@@ -100,13 +104,13 @@ export const LandingForm: React.FC = () => {
             textAlign="left"
           >
             <Form
-              onChange={(event) => onChange(event)}
-              onBlur={autoSaveDebounce}
+              // onBlur={autoSaveDebounce}
               style={{ width: "100%" }}
             >
               <Text variant="currentBold">{t.label_logo}</Text>
               <UploadFile
-                onChange={(e) => console.log(e)}
+                // QUESTION: console log only ?
+                onChange={logOnChange}
                 label={t.logo_cta}
                 id="logo"
                 helpText={t.logo_helptext}
@@ -150,8 +154,8 @@ export const LandingForm: React.FC = () => {
                 label={t.image_cta}
                 helpText={t.image_helptext}
                 isDisabled={Boolean(values.video_url)}
-                // TODO: console log only ?
-                onChange={(e) => console.log(e)}
+                // QUESTION: console log only ?
+                onChange={logOnChange}
               />
 
               <Flex alignItems="center">
@@ -188,8 +192,8 @@ export const LandingForm: React.FC = () => {
                 label={t.logos_cta}
                 helpText={t.image_helptext}
                 multiple
-                // TODO: console log only ?
-                onChange={(e) => console.log(e)}
+                // QUESTION: console log only ?
+                onChange={logOnChange}
               />
 
               <Container variant="hr" my={10} />
@@ -199,10 +203,7 @@ export const LandingForm: React.FC = () => {
                 variant="roundedTransparent"
                 mt={4}
                 mb="100px"
-                onClick={() => {
-                  goTop();
-                  dispatch(setEditAboutPage());
-                }}
+                onClick={onEditAbout}
               >
                 {t.see_more_cta}
               </Button>

@@ -7,7 +7,7 @@ import {
   Row,
   TableInstance,
 } from "react-table";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Text, Tooltip } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { Survey } from "redux/slices/surveyBuilder";
 
@@ -48,17 +48,21 @@ export const Table: React.FC<Props> = ({ columns, data, onClick }) => {
           </tr>
         ))}
       </thead>
-
-      <tbody {...getTableBodyProps()}>
-        {rows.map((row, j) => (
-          <TableRow
-            key={j}
-            row={row}
-            prepareRow={prepareRow}
-            onClick={onClick}
-          />
-        ))}
-      </tbody>
+      <Tooltip
+        label="Cliquer pour éditer les paramètres de l'enquête"
+        placement="top-start"
+      >
+        <tbody {...getTableBodyProps()}>
+          {rows.map((row, j) => (
+            <TableRow
+              key={j}
+              row={row}
+              prepareRow={prepareRow}
+              onClick={onClick}
+            />
+          ))}
+        </tbody>
+      </Tooltip>
     </table>
   );
 };

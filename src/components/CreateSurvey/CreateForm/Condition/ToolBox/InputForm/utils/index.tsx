@@ -22,8 +22,6 @@ import {
 export const renderFormTemplate = (
   input: IQuestion | Record<string, any>
 ): React.ReactNode => {
-  console.log("RENDER TEMPLATE");
-
   switch (input.type) {
     case "input":
       return <InputFields />;

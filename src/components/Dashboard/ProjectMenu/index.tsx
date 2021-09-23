@@ -17,6 +17,7 @@ import { RemovingConfirmation } from "components/CreateSurvey/CreateForm/Conditi
 import { Chart } from "../Chart";
 import { renderStatus } from "utils/application/renderStatus";
 import { Loader } from "components/Spinner";
+import { NavLink } from "react-router-dom";
 
 // ---- STATICS
 
@@ -54,7 +55,7 @@ export const ProjectMenu: React.FC<Props> = ({
     title,
     description,
     date,
-    stepsLeft,
+    // stepsLeft,
     statistics,
     exportURL,
     isLoading,
@@ -137,7 +138,7 @@ export const ProjectMenu: React.FC<Props> = ({
               </Button>
             </Tooltip>
             <Box>
-              <Tooltip label="Supprimer">
+              <Tooltip label="Supprimer l'enquête">
                 <Button onClick={handleTrash} variant="link">
                   <Trash />
                 </Button>
@@ -146,24 +147,31 @@ export const ProjectMenu: React.FC<Props> = ({
           </Box>
 
           <Box p={5} textAlign="left">
-            {stepsLeft > 0 && (
+            {/* {stepsLeft > 0 && (
               <Text variant="xs" textAlign="left" color="red">
                 Il reste {stepsLeft} étapes à finaliser.
               </Text>
-            )}
+            )} */}
+            <Tooltip label={"Voir la page d'accueil"} placement="top-start">
+              <NavLink to={`/survey/${selectedSurvey.id}`}>
+                <Text variant="titleParaLight" mt={4} textAlign="left">
+                  {title}
+                </Text>
 
-            <Text variant="titleParaLight" mt={4} textAlign="left">
-              {title}
-            </Text>
+                <Text variant="smallTitle" textAlign="left">
+                  {description}
+                </Text>
 
-            <Text variant="smallTitle" textAlign="left">
-              {description}
-            </Text>
-
-            <Text variant="xs" mb={5} textAlign="left" color="brand.gray.200">
-              Enquête mise en ligne le {date.toLocaleDateString()}.
-            </Text>
-
+                <Text
+                  variant="xs"
+                  mb={5}
+                  textAlign="left"
+                  color="brand.gray.200"
+                >
+                  Enquête mise en ligne le {date.toLocaleDateString()}.
+                </Text>
+              </NavLink>
+            </Tooltip>
             <Flex justifyContent="space-between" alignItems="center">
               {selectedSurvey.status === "draft" ? (
                 <Button variant="roundedBlue" onClick={handlePublish}>
@@ -174,11 +182,13 @@ export const ProjectMenu: React.FC<Props> = ({
                   Etat : {renderStatus(selectedSurvey.status)}
                 </Text>
               )}
-              <a href={exportURL} download>
-                <Button variant="roundedTransparent" size="xs" p={2}>
-                  CSV ⇣
-                </Button>
-              </a>
+              <Tooltip label={"Exporter les données"} placement="top-start">
+                <a href={exportURL} download>
+                  <Button variant="roundedTransparent" size="xs" p={2}>
+                    CSV ⇣
+                  </Button>
+                </a>
+              </Tooltip>
             </Flex>
           </Box>
 

@@ -20,7 +20,7 @@ interface Props {
   min?: number;
   max?: number;
   precision?: number;
-  isRequired?: boolean;
+  isRequired?: any;
   name: string;
   style?: React.CSSProperties | undefined;
   placeholder: string;
@@ -43,7 +43,7 @@ export const CustomNumberInput: React.FC<Props> = ({
   const [field, meta] = useField(name);
   return (
     <FormControl
-      isRequired={isRequired}
+      isRequired={isRequired === "true"}
       id={name}
       textAlign="left"
       style={style}

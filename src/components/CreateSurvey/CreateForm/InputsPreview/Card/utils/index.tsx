@@ -97,6 +97,7 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
     case "select":
       return (
         <Select
+          isRequired={input.required}
           isCollapsed={isCollapsed}
           id={input.id || "select"}
           label={input.label || t.label}

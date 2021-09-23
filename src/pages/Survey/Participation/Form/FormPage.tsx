@@ -1,7 +1,6 @@
 import React from "react";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
-import * as Yup from "yup";
 
 import { useGetPage } from "call/actions/formBuider/page";
 import { renderInput } from "components/CreateSurvey/CreateForm/InputsPreview/Card/utils";
@@ -13,6 +12,7 @@ import { NL } from "../nl";
 import { shouldShow } from "./condition-evaluations";
 import { useAnswerSaver, useAnswersGetter } from "./answer-hooks";
 import IQuestion from "types/form/question";
+import { formSchema } from "./validation";
 
 // ---- TYPES
 
@@ -51,16 +51,6 @@ export const FormPage: React.FC<Props> = ({
   // If page is empty
   if (!data?.page) return <Box mt="60">{NL.msg.nodata}</Box>;
 
-  const formSchema = data.page.questions
-    ? data.page.questions.reduce(
-        (obj, item) => ({
-          ...obj,
-          [item.id]: item.required ? Yup.string().required("Required") : null,
-        }),
-        {}
-      )
-    : {};
-
   // Final render
   return (
     <Box>
@@ -70,7 +60,7 @@ export const FormPage: React.FC<Props> = ({
 
       <Formik
         validateOnBlur
-        validationSchema={Yup.object().shape(formSchema)}
+        validationSchema={formSchema(data.page.questions)}
         initialValues={answers.values}
         onSubmit={(data, { setSubmitting, validateForm }) => {
           validateForm(data);

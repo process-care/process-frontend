@@ -98,6 +98,7 @@ export const headerData = (state: RootState): HeaderData | undefined => {
 export const selectors = {
   error,
   isLoading,
+  hasChanges,
   isEditingAbout,
   hasMembers,
   headerData,

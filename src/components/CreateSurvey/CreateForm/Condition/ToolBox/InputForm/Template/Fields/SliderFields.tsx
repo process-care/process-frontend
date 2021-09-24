@@ -8,7 +8,6 @@ export const SliderFields: React.FC = () => {
   return (
     <>
       <CommonFields />
-
       <Flex justifyContent="space-between" w="100%">
         <Box w="45%">
           <Input

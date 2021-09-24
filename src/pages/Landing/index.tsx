@@ -26,14 +26,6 @@ export const Landing: React.FC<IRoute> = () => {
     error,
   } = useGetLanding(survey?.survey?.landing?.id);
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  if (error) {
-    return <Error error={error} />;
-  }
-
   if (landing?.landing === undefined) {
     return (
       <Text pt="80px" variant="titleParaLight">
@@ -42,5 +34,13 @@ export const Landing: React.FC<IRoute> = () => {
     );
   }
 
-  return <Preview isUserView data={landing.landing} />;
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (error) {
+    return <Error error={error} />;
+  }
+
+  return <Preview data={landing?.landing} isUserView />;
 };

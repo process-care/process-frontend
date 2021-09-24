@@ -22,7 +22,7 @@ interface Props {
   id: string;
   m?: string;
   p?: string;
-  isRequired?: boolean;
+  isRequired?: any;
   isCollapsed?: boolean;
 }
 
@@ -37,7 +37,13 @@ export const CustomRadioBox: React.FC<Props> = ({
   isCollapsed,
 }) => {
   return (
-    <FormControl id={id} textAlign="left" m={m} p={p} isRequired={isRequired}>
+    <FormControl
+      id={id}
+      textAlign="left"
+      m={m}
+      p={p}
+      isRequired={isRequired === "true"}
+    >
       <FormLabel>{label}</FormLabel>
       {!isCollapsed && (
         <>
@@ -47,7 +53,7 @@ export const CustomRadioBox: React.FC<Props> = ({
                 {radios ? (
                   radios.map(({ value, label }) => {
                     return (
-                      <Radio value={value} isRequired={isRequired}>
+                      <Radio value={value} id={id} isRequired={isRequired}>
                         {label}
                       </Radio>
                     );

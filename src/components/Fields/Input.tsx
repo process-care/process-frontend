@@ -21,7 +21,7 @@ interface Props {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   style?: React.CSSProperties | undefined;
-  isRequired?: boolean;
+  isRequired?: any;
   isCollapsed?: boolean;
   ref?: any;
 }
@@ -41,7 +41,7 @@ export const CustomInput: React.FC<Props> = ({
   const [field, meta] = useField(name);
   return (
     <FormControl
-      isRequired={isRequired}
+      isRequired={isRequired === "true"}
       id={name}
       textAlign="left"
       style={style}

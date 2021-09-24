@@ -105,19 +105,12 @@ const InputsPreview: React.FC<Props> = ({ surveyId, order }) => {
           //       })
           //     : {}
           // }
-          initialValues={{
-            "61436550bf35072f83f926f0": "Chat",
-            "614368bdbf35072f83f926f1": ["plof"],
-            "6144811e36860e09769b3079": "10",
-            "6144837b36860e09769b307a": "1",
-            "614485d636860e09769b307b": 6,
-          }}
+          initialValues={{}}
           onSubmit={(data) => {
             console.log("DATA :", data);
           }}
         >
-          {({ values }) => {
-            console.log("___VALUES :", values);
+          {() => {
             return (
               <Form style={{ width: "100%" }}>
                 <Flex

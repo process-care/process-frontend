@@ -1,10 +1,10 @@
 import React from "react";
 import {
   FormControl,
-  FormErrorMessage,
   FormHelperText,
   FormLabel,
   Textarea,
+  Text,
 } from "@chakra-ui/react";
 import { getRows } from "./utils";
 
@@ -15,7 +15,7 @@ interface Props {
   helpText?: string;
   placeholder: string;
   rows: "small" | "medium" | "large" | undefined;
-  isRequired?: boolean;
+  isRequired?: any;
   id: string;
   m?: string | number;
   p?: string | number;
@@ -41,8 +41,8 @@ export const CustomTextarea: React.FC<Props> = ({
 
   return (
     <FormControl
-      isRequired={isRequired}
-      id="email"
+      isRequired={isRequired === "true"}
+      id={id}
       textAlign="left"
       m={m}
       p={p}
@@ -69,11 +69,14 @@ export const CustomTextarea: React.FC<Props> = ({
             rows={getRows(rows)}
             placeholder={placeholder}
             maxLength={getRows(rows) * 145}
+            isRequired={isRequired === "true"}
             {...field}
           />
-          <FormErrorMessage mt={-2} justifyContent="flex-end" fontSize="10px">
-            {meta.error}
-          </FormErrorMessage>
+          {meta.touched && meta.error && (
+            <Text fontSize="10px" color="red" textAlign="right">
+              {meta.error}
+            </Text>
+          )}
           <FormHelperText
             mt={1}
             lineHeight={1.4}

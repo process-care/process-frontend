@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 
 import { useGetPage } from "call/actions/formBuider/page";
@@ -12,6 +12,7 @@ import { NL } from "../nl";
 import { shouldShow } from "./condition-evaluations";
 import { useAnswerSaver, useAnswersGetter } from "./answer-hooks";
 import IQuestion from "types/form/question";
+import { formSchema } from "./validation";
 
 // ---- TYPES
 
@@ -19,6 +20,12 @@ interface Props {
   pageId: string;
   participationId: string;
   order: string[];
+  isFirstPage: boolean;
+  isLastPage: boolean;
+  nextPage: () => void;
+  previousPage: () => void;
+  currentColor: string;
+  onFinish: () => void;
 }
 
 // ---- COMPONENT
@@ -27,6 +34,12 @@ export const FormPage: React.FC<Props> = ({
   pageId,
   participationId,
   order,
+  isFirstPage,
+  isLastPage,
+  nextPage,
+  previousPage,
+  currentColor,
+  onFinish,
 }) => {
   // Get page
   const { data } = useGetPage(pageId);
@@ -38,7 +51,11 @@ export const FormPage: React.FC<Props> = ({
   // If page is empty
   if (!data?.page) return <Box mt="60">{NL.msg.nodata}</Box>;
 
+  // Need to wait answers to set inititalValues
+  if (answers.isLoading) return <p>loading ...</p>;
+
   // Final render
+
   return (
     <Box>
       <Text variant="xl" my="20px">
@@ -46,16 +63,29 @@ export const FormPage: React.FC<Props> = ({
       </Text>
 
       <Formik
-        validateOnBlur={false}
-        validateOnChange={false}
+        validateOnBlur
+        validationSchema={formSchema(data.page.questions)}
         initialValues={answers.values}
-        enableReinitialize
         onSubmit={(data, { setSubmitting, validateForm }) => {
           validateForm(data);
           setSubmitting(true);
         }}
       >
-        {() => {
+        {({ isValid, dirty }) => {
+          const canSubmit = () => {
+            if (data.page.questions) {
+              //  isValid === true au mount du form alors que des champs required ne sont pas remplis
+              const hadRequiredFields =
+                data.page.questions.filter((q) => q.required).length !== 0;
+
+              if (hadRequiredFields) {
+                return dirty && isValid;
+              } else {
+                return isValid;
+              }
+            } else return true;
+          };
+
           return (
             <Form>
               {/* Questions */}
@@ -75,16 +105,40 @@ export const FormPage: React.FC<Props> = ({
                     );
                   } else return;
                 })}
-
-                {/* {data.page.questions?.map((q) => (
-                  <Questionator
-                    key={q.id}
-                    id={q.id}
-                    participationId={participationId}
-                    answerId={answers.references.get(q.id)}
-                  />
-                ))} */}
               </Box>
+              {/* Navigation */}
+              <Flex justifyContent="flex-end" mt="10" mb="10" pr="10%">
+                {!isFirstPage && (
+                  <Button
+                    disabled={!canSubmit()}
+                    mr="4"
+                    variant="roundedTransparent"
+                    onClick={previousPage}
+                  >
+                    {NL.button.previous}
+                  </Button>
+                )}
+                {!isLastPage && (
+                  <Button
+                    disabled={!canSubmit()}
+                    variant="roundedBlue"
+                    backgroundColor={currentColor}
+                    onClick={nextPage}
+                  >
+                    {NL.button.next}
+                  </Button>
+                )}
+                {isLastPage && (
+                  <Button
+                    disabled={!canSubmit()}
+                    variant="roundedBlue"
+                    backgroundColor={currentColor}
+                    onClick={onFinish}
+                  >
+                    {NL.button.finish}
+                  </Button>
+                )}
+              </Flex>
             </Form>
           );
         }}
@@ -112,6 +166,8 @@ const Questionator: React.FC<QuestionatorProps> = ({
   const show = shouldShow(rawEvaluation?.evaluation.conditions);
 
   useAnswerSaver(id, participationId, answerId);
+
+  console.log(rawEvaluation);
 
   if (isLoading) return <div>Loading...</div>;
   if (!rawQuestion?.question) return <div>Oups</div>;

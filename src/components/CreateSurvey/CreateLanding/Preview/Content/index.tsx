@@ -3,10 +3,10 @@ import { Box, Text, Flex, Button } from "@chakra-ui/react";
 import { Video } from "components/Video";
 import { t } from "static/createLanding";
 import { API_URL_ROOT } from "constants/api";
-import { useAppSelector } from "redux/hooks";
-import { selectors } from "redux/slices/landing-editor";
+import { ILanding } from "types/landing";
 
 interface Props {
+  data?: Partial<ILanding>,
   onParticipate: () => void,
 }
 
@@ -17,9 +17,8 @@ const big_placeholder =
 
 const imgStyle = { maxWidth: "400px", width: "400px" };
 
-export const Content: React.FC<Props> = ({ onParticipate }) => {
-  const data = useAppSelector(selectors.landing);
-
+export const Content: React.FC<Props> = ({ data, onParticipate }) => {
+  // Safety check
   if (!data) return <div>Loading... I guess 🤔</div>;
 
   const {

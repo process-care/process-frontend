@@ -38,12 +38,14 @@ interface Props {
 }
 
 export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
-  const { data, isLoading, error } = useGetSurvey(surveyId);
-  const { preview_mode, is_saving } = useAppSelector(
-    (state) => state.application
-  );
   const dispatch = useAppDispatch();
 
+  const { data, isLoading, error } = useGetSurvey(surveyId);
+  
+  // FIXME: `is_saving` was a general flag for changes in the header, but I modeled one based on the landing editor and
+  // connected to the real saving of changes... If we want that everywhere, it needs to be generalized somehow, but
+  // it might be complicated, and each page may need its own changes/saves notifier.
+  const { preview_mode, is_saving } = useAppSelector(state => state.application);
   const { inProgress, done } = useChangesNotifier();
 
   if (isLoading) {
@@ -196,7 +198,7 @@ function useChangesNotifier() {
     if (!hasUnsavedChanges && !inProgress && done) {
       setTimeout(() => setDone(false), 2000);
     }
-    
+
   }, [hasUnsavedChanges, inProgress, done]);
 
   return {

@@ -1,19 +1,20 @@
 import React from "react";
 import { Button, Flex, Text } from "@chakra-ui/react";
-import { useAppSelector } from "redux/hooks";
-import { selectors } from "redux/slices/landing-editor";
+import { IColor } from "types/landing";
 
 interface Props {
+  title?: string,
+  logo?: string,
+  color_theme?: IColor,
   onParticipate: () => void
 }
 
-export const Header: React.FC<Props> = ({ onParticipate }) => {
-  const data = useAppSelector(selectors.headerData);
-  
-  if (!data) return <div>Something went wrong with the state of the app...</div>
-
-  const { title, logo, color_theme } = data;
-
+export const Header: React.FC<Props> = ({
+  title,
+  logo,
+  color_theme,
+  onParticipate,
+}) => {
   return (
     <Flex justifyContent="space-between" p="5" alignItems="center">
       {!!logo && logo.length !== 0 && (

@@ -13,7 +13,6 @@ import { Error } from "components/Error";
 import { actions, selectors} from "redux/slices/landing-editor";
 
 export const CreateLanding: React.FC<IRoute> = () => {
-  
   // FIXME: Yup, these ignore are bad, need to be removed
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -24,6 +23,7 @@ export const CreateLanding: React.FC<IRoute> = () => {
   const landingId = survey?.landing?.id;
   
   const dispatch = useAppDispatch();
+  const data = useAppSelector(selectors.landing);
   const isLoading = useAppSelector(selectors.isLoading);
   const error = useAppSelector(selectors.error);
 
@@ -82,7 +82,7 @@ export const CreateLanding: React.FC<IRoute> = () => {
               d="flex"
             >
               <div className="background__grid--black">
-                <Preview />
+                <Preview data={data} />
               </div>
             </Container>
           </Box>

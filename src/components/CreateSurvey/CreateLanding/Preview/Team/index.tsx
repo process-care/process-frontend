@@ -1,12 +1,14 @@
 import { Box, Text, Flex, Container, Image } from "@chakra-ui/react";
-import { IMember } from "types/landing";
+import { ILanding, IMember } from "types/landing";
 import React from "react";
-import { useAppSelector } from "redux/hooks";
-import { selectors } from "redux/slices/landing-editor";
 
-export const Team: React.FC = () => {
-  const members = useAppSelector(selectors.members);
+type Props = {
+  members: ILanding['members'],
+}
 
+export const Team: React.FC<Props> = ({
+  members,
+}) => {
   return (
     <Box pb={10}>
       <Container variant="hr" maxW="unset" mb={5} />

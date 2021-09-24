@@ -25,14 +25,6 @@ export const LandingForm: React.FC = () => {
   const firstRender = useRef(true);
   const data = useAppSelector(selectors.landing);
 
-  // const autoSave = () => {
-  //   dispatch(setAutoSave());
-  //   setTimeout(() => {
-  //     dispatch(setAutoSave());
-  //   }, 2000);
-  // };
-  // const autoSaveDebounce = debounce(autoSave, 500);
-
   const onSubmit = useCallback((data, { setSubmitting, validateForm }) => {
     validateForm(data);
     setSubmitting(true);

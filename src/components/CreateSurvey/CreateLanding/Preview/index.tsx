@@ -1,12 +1,13 @@
-import { Box, Text } from "@chakra-ui/react";
 import React, { useCallback } from "react";
+import { Box, Text } from "@chakra-ui/react";
+import { useHistory, useParams } from "react-router-dom";
 import { Content } from "./Content";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { Team } from "./Team";
 import { useAppSelector } from "redux/hooks";
-import { useHistory, useParams } from "react-router-dom";
 import { selectors} from "redux/slices/landing-editor";
+import { ILanding } from "types/landing";
 
 // ---- STATICS
 
@@ -18,11 +19,12 @@ const big_placeholder =
 
 interface Props {
   isUserView?: boolean;
+  data?: Partial<ILanding>,
 }
 
 // ---- COMPONENT
 
-export const Preview: React.FC<Props> = ({ isUserView }) => {
+export const Preview: React.FC<Props> = ({ isUserView, data }) => {
   // FIXME: Yup, these ignore are bad, need to be removed
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -33,15 +35,17 @@ export const Preview: React.FC<Props> = ({ isUserView }) => {
   
   const aboutPage = useAppSelector(selectors.about);
   const isEditingAbout = useAppSelector(selectors.isEditingAbout);
-  const hasMembers = useAppSelector(selectors.hasMembers);
 
   const isFullView = isUserView || preview_mode === "landing";
 
   const onParticipate = useCallback(() => {
-    // TODO: Block this in preview mode
-    console.log('Let us participate !!');
+    if (!isUserView) {
+      alert('Bouton désactivé pendant la prévisualisation.');
+      return;
+    }
+
     history.push(`/survey/${slug}/consent`);
-  }, [slug]);
+  }, [slug, isUserView]);
   
   if (isEditingAbout) {
     return (
@@ -72,10 +76,15 @@ export const Preview: React.FC<Props> = ({ isUserView }) => {
       mx="auto"
       mt={isFullView ? "0" : "100px"}
     >
-      <Header onParticipate={onParticipate} />
-      <Content onParticipate={onParticipate} />
-      {hasMembers && <Team />}
-      <Footer />
+      <Header
+        title={data?.title}
+        logo={data?.logo}
+        color_theme={data?.color_theme}
+        onParticipate={onParticipate}
+      />
+      <Content data={data} onParticipate={onParticipate} />
+      {data?.members && <Team members={data.members} />}
+      <Footer partners={data?.partners ?? []} />
     </Box>
   );
 };

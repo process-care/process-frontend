@@ -1,8 +1,21 @@
-import { useMutation, UseMutationResult } from "react-query";
-import { LOGIN, SIGNIN } from "call/queries/auth";
+import {
+  useMutation,
+  UseMutationResult,
+  useQuery,
+  UseQueryResult,
+} from "react-query";
+import { LOGIN, SIGNIN, GET_ME } from "call/queries/auth";
 import { request } from "graphql-request";
 import { API_URL } from "constants/api";
+import { client } from "..";
 
+export interface User {
+  email: string;
+  lastName: string;
+  firstName: string;
+  job: string;
+  institution: string;
+}
 export interface Login {
   identifier: string;
   password: string;
@@ -51,3 +64,15 @@ export const useSignin = (): UseMutationResult<SigninRes, Error> =>
         password,
       })
   );
+
+export const useGetMe = (userId: string): UseQueryResult<User, Error> => {
+  return useQuery<User, Error>(
+    ["getMe", userId],
+    async () => {
+      return await client.request(GET_ME, {
+        userId,
+      });
+    },
+    { enabled: !!userId }
+  );
+};

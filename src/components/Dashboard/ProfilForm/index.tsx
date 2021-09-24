@@ -9,6 +9,7 @@ import { toogleDrawer } from "redux/slices/application";
 import { Textarea, Input } from "components/Fields";
 import { Footer } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer";
 import { useHistory } from "react-router-dom";
+// import { useGetMe } from "call/actions/auth";
 
 const t = {
   title: "Mon profil",
@@ -18,6 +19,8 @@ const t = {
 export const ProfilForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const history = useHistory();
+  // const cookie = localStorage.getItem("process__user");
+  // const { data } = useGetMe();
 
   const onCancel = () => {
     history.push("/dashboard");

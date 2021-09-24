@@ -29,3 +29,16 @@ export const SIGNIN = gql`
     }
   }
 `;
+
+export const GET_ME = gql`
+  query me($userId: ID!) {
+    users(where: { id: $userId }) {
+      email
+      id
+      firstName
+      lastName
+      job
+      institution
+    }
+  }
+`;

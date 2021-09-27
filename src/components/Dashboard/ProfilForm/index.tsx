@@ -104,7 +104,6 @@ rgba(0, 132, 255, 1))"
                 flexDirection="column"
                 px={10}
                 w="100%"
-                pb="140px"
               >
                 <Textarea
                   isCollapsed={false}

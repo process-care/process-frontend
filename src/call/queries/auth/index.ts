@@ -42,3 +42,18 @@ export const GET_ME = gql`
     }
   }
 `;
+
+export const UPDATE_ME = gql`
+  mutation updateUser($id: ID!, $data: editUserInput) {
+    updateUser(input: { where: { id: $id }, data: $data }) {
+      user {
+        email
+        id
+        firstName
+        lastName
+        job
+        institution
+      }
+    }
+  }
+`;

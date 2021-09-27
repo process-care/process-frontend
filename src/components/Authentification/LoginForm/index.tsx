@@ -67,9 +67,10 @@ export const LoginForm: React.FC = () => {
                     type="password"
                     isRequired
                   />
-                  <Box>
+                  <NavLink to="/mot-de-passe-oublie">
                     <Button variant="link">Mot de passe oublié ? </Button>
-                  </Box>
+                  </NavLink>
+
                   <Flex justifyContent="space-between" pt="90px">
                     <NavLink to="/inscription">
                       <Button variant="rounded">Créer un compte</Button>

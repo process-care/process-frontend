@@ -17,19 +17,22 @@ const loadEpic: Epic = (action$) => action$.pipe(
 );
 
 // Watches over any "update" for the landing
-const updateEpic: Epic = (action$) => action$.pipe(
+const updateEpic: Epic = (action$, state$) => action$.pipe(
   ofType(actions.update.type),
   map(action => action.payload),
   scan((acc, payload) => Object.assign({}, acc, payload), {}),
   debounceTime(5000),
   switchMap(async accumulated => {
-    const savingAt = new Date().toISOString();
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const landingId = accumulated.id;
-    const data = { ...accumulated, id: undefined };
-    await client.request(UPDATE_LANDING, { id: landingId, data });
+    const currentLandingId = state$.value.landingEditor.data?.id;
 
+    if (!currentLandingId) {
+      throw new Error('No Landing ID to save the modifications to.');
+    }
+
+    const savingAt = new Date().toISOString();
+    const data = { ...accumulated, id: undefined };
+
+    await client.request(UPDATE_LANDING, { id: currentLandingId, data });
     return savingAt;
   }),
   map(savedDate => actions.updated({ lastSaved: savedDate })),

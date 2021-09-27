@@ -5,7 +5,6 @@ import { UploadFileRemote } from "components/Fields/UploadFileRemote";
 import { Wysiwyg } from "components/Fields/Wysiwyg";
 import { Formik, Form } from "formik";
 import React, { useCallback, useMemo, useRef } from "react";
-import { setEditAboutPage } from "redux/slices/landingBuilder";
 
 import { t } from "static/createLanding";
 import { ColorPicker } from "../ColorPicker";
@@ -34,7 +33,7 @@ export const LandingForm: React.FC = () => {
 
   const onEditAbout = useCallback(() => {
     goTop();
-    dispatch(setEditAboutPage());
+    dispatch(actions.editAbout(true));
   }, []);
 
   return (

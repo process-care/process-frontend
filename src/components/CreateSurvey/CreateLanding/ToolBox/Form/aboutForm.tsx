@@ -4,13 +4,9 @@ import { Footer } from "../Footer";
 import { Wysiwyg } from "components/Fields/Wysiwyg";
 import { Formik, Form } from "formik";
 import React, { useCallback } from "react";
-import { setEditAboutPage } from "redux/slices/landingBuilder";
 import { initialValues } from "./utils/initialValues";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
-import { setAutoSave } from "redux/slices/application";
-import { debounce } from "lodash";
 import { actions, selectors } from "redux/slices/landing-editor";
-import { useDebounce } from "utils/hooks/debounce";
 
 export const AboutForm: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -18,16 +14,8 @@ export const AboutForm: React.FC = () => {
   const aboutPage = useAppSelector(selectors.about);
 
   const handleFinish = useCallback(() => {
-    dispatch(setEditAboutPage());
+    dispatch(actions.editAbout(false));
   }, []);
-
-  const autoSave = () => {
-    dispatch(setAutoSave());
-    setTimeout(() => {
-      dispatch(setAutoSave());
-    }, 2000);
-  };
-  const autoSaveDebounce = debounce(autoSave, 500);
 
   return (
     <Formik
@@ -40,15 +28,13 @@ export const AboutForm: React.FC = () => {
       }}
     >
       {({ values }) => {
-        // Handle update value
-        const debouncedAbout = useDebounce(values.about_page, 2000);
         React.useEffect(() => {
-          dispatch(actions.update({ about_page: debouncedAbout }));
-        }, [debouncedAbout]);
+          dispatch(actions.update({ about_page: values.about_page }));
+        }, [values.about_page]);
 
         // Component
         return (
-          <Form onBlur={autoSaveDebounce}>
+          <Form>
             <Box
               w="90%"
               mx="auto"

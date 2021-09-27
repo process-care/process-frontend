@@ -61,6 +61,9 @@ export const landingEditorSlice = createSlice({
     updated: (state, action: PayloadAction<UpdatedPayload>) => {
       state.lastSaved = action.payload.lastSaved;
     },
+    editAbout: (state, action: PayloadAction<boolean>) => {
+      state.isEditingAbout = action.payload;
+    }
   },
 });
 

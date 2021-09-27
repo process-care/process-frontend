@@ -8,6 +8,8 @@ import { motion } from "framer-motion";
 import { useAuth } from "components/Authentification/hooks";
 import { useDispatch } from "react-redux";
 import { toogleDrawer } from "redux/slices/application";
+import { useGetMe } from "call/actions/auth";
+import { Loader } from "components/Spinner";
 
 interface Props {
   isPortail?: boolean;
@@ -22,6 +24,7 @@ interface Item {
 export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const { user } = useAuth();
+  const { data, isLoading } = useGetMe(user.id);
   const dispatch = useDispatch();
   const handleClick = () => {
     setIsOpen((prev) => !prev);
@@ -94,6 +97,9 @@ export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
     );
   };
 
+  if (isLoading) {
+    return <Loader />;
+  }
   return (
     <Box
       py={3}
@@ -122,7 +128,7 @@ export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
           _hover={{ cursor: "pointer" }}
           onClick={handleClick}
           ml="20px"
-          name={user?.username}
+          name={data?.users[0].firstName + " " + data?.users[0].lastName}
           w="40px"
           h="40px"
           color="white"

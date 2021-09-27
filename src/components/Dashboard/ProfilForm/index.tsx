@@ -1,6 +1,5 @@
 import React from "react";
 import { Formik, Form } from "formik";
-import { debounce } from "lodash";
 
 import { Avatar, Box, Flex, Text } from "@chakra-ui/react";
 import { useAppDispatch } from "redux/hooks";
@@ -9,6 +8,10 @@ import { toogleDrawer } from "redux/slices/application";
 import { Textarea, Input } from "components/Fields";
 import { Footer } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer";
 import { useHistory } from "react-router-dom";
+import { useAuth } from "components/Authentification/hooks";
+import { useGetMe, User, useUpdateMe } from "call/actions/auth";
+import { Loader } from "components/Spinner";
+// import { useGetMe } from "call/actions/auth";
 
 const t = {
   title: "Mon profil",
@@ -17,6 +20,10 @@ const t = {
 
 export const ProfilForm: React.FC = () => {
   const dispatch = useAppDispatch();
+  const { user } = useAuth();
+  const { data, isLoading } = useGetMe(user.id);
+  const { mutateAsync: updateMe } = useUpdateMe();
+
   const history = useHistory();
 
   const onCancel = () => {
@@ -24,32 +31,38 @@ export const ProfilForm: React.FC = () => {
     dispatch(toogleDrawer());
   };
 
+  if (isLoading) {
+    return <Loader />;
+  }
+  const formatValues = (data: User | Record<string, any>) => {
+    return {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      job: data.job,
+      institution: data.institution,
+    };
+  };
+
   return (
     <Formik
+      enableReinitialize
       validateOnBlur={false}
-      initialValues={{
-        name: "d'Oiron",
-        firstName: "Charles",
-        job: "neurologue",
-        email: "charles@fragile.fr",
-        institution: "Fragile",
-      }}
+      initialValues={data?.users ? data.users[0] : {}}
       onSubmit={(data, { setSubmitting, validateForm }) => {
         validateForm(data);
         setSubmitting(true);
+        updateMe({
+          id: user.id,
+          data: formatValues(data),
+        });
+        setSubmitting(false);
         dispatch(toogleDrawer());
       }}
     >
       {({ isValid, isSubmitting, values }) => {
-        const onChange = (event: React.FormEvent<HTMLFormElement>) => {
-          const target = event.target as HTMLFormElement;
-          if (target !== null) {
-            console.log(target);
-          }
-        };
-
         return (
-          <Form onChange={debounce((event) => onChange(event), 1000)}>
+          <Form>
             <Box
               textAlign="center"
               h="100vh"
@@ -61,7 +74,9 @@ export const ProfilForm: React.FC = () => {
                 <Avatar
                   _hover={{ cursor: "pointer" }}
                   ml="20px"
-                  name="C D"
+                  name={
+                    data?.users[0].firstName + " " + data?.users[0].lastName
+                  }
                   w="104px"
                   h="104px"
                   color="white"
@@ -71,10 +86,10 @@ rgba(0, 132, 255, 1))"
                 />
                 <Flex flexDir="column" alignItems="flex-start" ml="40px">
                   <Text variant="smallTitle" fontWeight="bold">
-                    Charles d'Oiron
+                    {data?.users[0].firstName} {data?.users[0].lastName}
                   </Text>
                   <Text variant="current" color="brand.gray.200">
-                    Neurologue
+                    {data?.users[0].job}
                   </Text>
                 </Flex>
               </Flex>
@@ -89,6 +104,7 @@ rgba(0, 132, 255, 1))"
                 flexDirection="column"
                 px={10}
                 w="100%"
+                pb="140px"
               >
                 <Textarea
                   isCollapsed={false}
@@ -103,7 +119,7 @@ rgba(0, 132, 255, 1))"
                   rows="small"
                   label="Nom"
                   placeholder="Renseigner votre nom"
-                  id="name"
+                  id="lastName"
                   isRequired
                 />
                 <Textarea
@@ -132,6 +148,13 @@ rgba(0, 132, 255, 1))"
                   {t.changePassword}
                 </Text>
 
+                <Input
+                  isCollapsed={false}
+                  label="Ancien mot de passe"
+                  placeholder="Renseigner votre ancien mot de passe"
+                  name="oldPassword"
+                  type="password"
+                />
                 <Input
                   isCollapsed={false}
                   label="Nouveau mot de passe"

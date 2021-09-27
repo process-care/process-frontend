@@ -3,8 +3,8 @@ import {
   FormControl,
   FormHelperText,
   FormLabel,
-  HStack,
   Box,
+  Flex,
 } from "@chakra-ui/react";
 
 import { CheckboxContainer, CheckboxControl } from "formik-chakra-ui";
@@ -32,12 +32,18 @@ export const CustomCheckbox: React.FC<Props> = ({
   isCollapsed,
 }) => {
   return (
-    <FormControl id={id} textAlign="left" isRequired={isRequired === "true"}>
+    <FormControl
+      id={id}
+      textAlign="left"
+      isRequired={isRequired === "true"}
+      display="flex"
+      flexDirection="row-reverse"
+    >
       <FormLabel>{label}</FormLabel>
       {!isCollapsed && (
         <>
           <CheckboxContainer name={id} label="">
-            <HStack flexWrap="wrap" spacing={5}>
+            <Flex p="0">
               {checkbox ? (
                 checkbox.map(({ value, label }) => {
                   return (
@@ -53,7 +59,7 @@ export const CustomCheckbox: React.FC<Props> = ({
               ) : (
                 <Box p={4} />
               )}
-            </HStack>
+            </Flex>
           </CheckboxContainer>
           <FormHelperText fontSize="xs">{helpText}</FormHelperText>
         </>

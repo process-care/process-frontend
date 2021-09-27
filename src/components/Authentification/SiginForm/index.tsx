@@ -1,12 +1,12 @@
 import React from "react";
 import { Formik, Form } from "formik";
 import { Box, Flex, Text, Button } from "@chakra-ui/react";
-import { Textarea, Input } from "components/Fields";
-import { CustomRadioBox } from "components/Fields/Radiobox";
+import { Textarea, Input, Checkbox } from "components/Fields";
 
 import { NavLink } from "react-router-dom";
 import { SuccessPage } from "../SucessPage";
 import { useSignin } from "call/actions/auth";
+import { SigninSchema } from "./validationSchema";
 
 export const SigninForm: React.FC = () => {
   const [isSuccessPage, seIsSuccessPage] = React.useState<boolean>(false);
@@ -24,7 +24,10 @@ export const SigninForm: React.FC = () => {
   }
   return (
     <Formik
-      validateOnBlur={false}
+      validateOnMount={false}
+      validateOnChange={false}
+      validateOnBlur
+      validationSchema={SigninSchema}
       initialValues={{
         name: "",
         firstName: "",
@@ -44,7 +47,7 @@ export const SigninForm: React.FC = () => {
         });
       }}
     >
-      {({ isValid, isSubmitting }) => {
+      {({ isValid, isSubmitting, dirty }) => {
         return (
           <Form
             style={{
@@ -75,7 +78,7 @@ export const SigninForm: React.FC = () => {
                   label="Prénom"
                   placeholder="Renseigner votre prénom"
                   id="firstName"
-                  isRequired
+                  isRequired="true"
                 />
                 <Textarea
                   isCollapsed={false}
@@ -83,7 +86,7 @@ export const SigninForm: React.FC = () => {
                   label="Nom"
                   placeholder="Renseigner votre nom"
                   id="name"
-                  isRequired
+                  isRequired="true"
                 />
 
                 <Textarea
@@ -107,7 +110,7 @@ export const SigninForm: React.FC = () => {
                   label="Email de contact"
                   placeholder="Renseigner votre email"
                   id="email"
-                  isRequired
+                  isRequired="true"
                 />
                 <Input
                   isCollapsed={false}
@@ -115,19 +118,20 @@ export const SigninForm: React.FC = () => {
                   placeholder="Renseigner votre nouveau mot de passe"
                   name="password"
                   type="password"
-                  isRequired
+                  isRequired="true"
                 />
 
                 <Input
                   isCollapsed={false}
                   label="Confirmation du nouveau mot de passe"
                   placeholder="Confimer votre nouveau mot de passe"
-                  name="newPassword"
+                  name="confirmPassword"
                   type="password"
-                  isRequired
+                  isRequired="true"
                 />
-                <CustomRadioBox
-                  radios={[
+                <Checkbox
+                  isRequired="true"
+                  checkbox={[
                     {
                       label:
                         "En créant votre compte vous acceptez les conditions générales d’utilisation de la plateforme",
@@ -145,7 +149,7 @@ export const SigninForm: React.FC = () => {
                 </NavLink>
                 <Button
                   type="submit"
-                  disabled={isSubmitting || !isValid}
+                  disabled={isSubmitting || !isValid || !dirty}
                   variant="roundedBlue"
                 >
                   Valider

@@ -9,8 +9,9 @@ import { Textarea, Input } from "components/Fields";
 import { Footer } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "components/Authentification/hooks";
-import { useGetMe, User, useUpdateMe } from "call/actions/auth";
+import { useGetMe, User, UserRes, useUpdateMe } from "call/actions/auth";
 import { Loader } from "components/Spinner";
+import { changePassword } from "call/actions/password";
 // import { useGetMe } from "call/actions/auth";
 
 const t = {
@@ -44,14 +45,45 @@ export const ProfilForm: React.FC = () => {
     };
   };
 
+  const formatInitialValues = (data: UserRes | undefined) => {
+    if (!data) {
+      return {
+        currentPassword: "",
+        newPassword: "",
+        confirmNewPassword: "",
+      };
+    }
+    return {
+      firstName: data.users[0].firstName,
+      lastName: data.users[0].lastName,
+      email: data.users[0].email,
+      job: data.users[0].job,
+      institution: data.users[0].institution,
+      currentPassword: "",
+      newPassword: "",
+      confirmNewPassword: "",
+    };
+  };
+
   return (
     <Formik
       enableReinitialize
       validateOnBlur={false}
-      initialValues={data?.users ? data.users[0] : {}}
+      initialValues={formatInitialValues(data)}
       onSubmit={(data, { setSubmitting, validateForm }) => {
         validateForm(data);
         setSubmitting(true);
+        if (
+          data.currentPassword !== "" &&
+          data.confirmNewPassword === data.newPassword &&
+          data.newPassword !== ""
+        ) {
+          changePassword(
+            data.currentPassword,
+            data.newPassword,
+            data.confirmNewPassword
+          );
+        }
         updateMe({
           id: user.id,
           data: formatValues(data),
@@ -104,6 +136,7 @@ rgba(0, 132, 255, 1))"
                 flexDirection="column"
                 px={10}
                 w="100%"
+                pb="140px"
               >
                 <Textarea
                   isCollapsed={false}
@@ -149,16 +182,16 @@ rgba(0, 132, 255, 1))"
 
                 <Input
                   isCollapsed={false}
-                  label="Ancien mot de passe"
-                  placeholder="Renseigner votre ancien mot de passe"
-                  name="oldPassword"
+                  label="Mot de passe actuel"
+                  placeholder="Renseigner votre mot de passe actuel"
+                  name="currentPassword"
                   type="password"
                 />
                 <Input
                   isCollapsed={false}
                   label="Nouveau mot de passe"
                   placeholder="Renseigner votre nouveau mot de passe"
-                  name="password"
+                  name="newPassword"
                   type="password"
                 />
 
@@ -166,7 +199,7 @@ rgba(0, 132, 255, 1))"
                   isCollapsed={false}
                   label="Confirmation du nouveau mot de passe"
                   placeholder="Confimer votre nouveau mot de passe"
-                  name="newPassword"
+                  name="confirmNewPassword"
                   type="password"
                 />
 

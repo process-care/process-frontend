@@ -4,11 +4,17 @@ import { GraphQLClient } from "graphql-request";
 const cookie = localStorage.getItem("process__user");
 const jwt = cookie && JSON.parse(cookie)?.jwt;
 
-const getHeaders = () => {
+interface Header {
+  headers: {
+    Authorization: string;
+  };
+}
+
+export const getHeaders = (): Header | undefined => {
   if (jwt) {
     return {
       headers: {
-        authorization: `Bearer ${jwt} `,
+        Authorization: `Bearer ${jwt} `,
       },
     };
   } else {

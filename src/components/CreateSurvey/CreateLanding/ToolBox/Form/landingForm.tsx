@@ -4,70 +4,59 @@ import { UploadFile } from "components/Fields/Uploadfile";
 import { UploadFileRemote } from "components/Fields/UploadFileRemote";
 import { Wysiwyg } from "components/Fields/Wysiwyg";
 import { Formik, Form } from "formik";
-import React, { useMemo } from "react";
-import { setEditAboutPage } from "redux/slices/landingBuilder";
-import { debounce } from "lodash";
+import React, { useCallback, useMemo, useRef } from "react";
 
 import { t } from "static/createLanding";
 import { ColorPicker } from "../ColorPicker";
 import { initialValues } from "./utils/initialValues";
-import { useAppDispatch } from "redux/hooks";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { RepeatableFields } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/RepeatableFields";
 import { SvgHover } from "components/SvgHover";
 
 import { ReactComponent as Delete } from "assets/delete.svg";
 import { goTop } from "utils/application/scrollTo";
-import { ILanding } from "types/landing";
-import { useUpdateLanding } from "call/actions/landing";
-import { setAutoSave } from "redux/slices/application";
+import { actions, selectors } from "redux/slices/landing-editor";
 
-interface Props {
-  data: ILanding;
-}
-
-export const LandingForm: React.FC<Props> = ({ data }) => {
+export const LandingForm: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { mutateAsync: updateLanding } = useUpdateLanding();
 
-  const onChange = (event: React.FormEvent<HTMLFormElement>) => {
-    const target = event.target as HTMLFormElement;
-    const is_repeated_fields = target.id.includes("members");
+  // Flag to avoid saving the initial values injected into Formik
+  const firstRender = useRef(true);
+  const data = useAppSelector(selectors.landing);
 
-    if (target.type === "file" || is_repeated_fields) {
-      return false;
-    } else if (target !== null) {
-      updateLanding({
-        id: data.id,
-        data: {
-          [target.id]: target.value,
-        },
-      });
-    }
-  };
+  const onSubmit = useCallback((data, { setSubmitting, validateForm }) => {
+    validateForm(data);
+    setSubmitting(true);
+  }, []);
 
-  const autoSave = () => {
-    dispatch(setAutoSave());
-    setTimeout(() => {
-      dispatch(setAutoSave());
-    }, 2000);
-  };
-  const autoSaveDebounce = debounce(autoSave, 500);
+  const logOnChange = useCallback((e) => console.log(e), []);
+
+  const onEditAbout = useCallback(() => {
+    goTop();
+    dispatch(actions.editAbout(true));
+  }, []);
 
   return (
     <Formik
       validateOnBlur={false}
-      // initialValues={data || initialValues}
-      initialValues={initialValues}
+      initialValues={data || initialValues}
       // enableReinitialize
-      onSubmit={(data, { setSubmitting, validateForm }) => {
-        validateForm(data);
-        setSubmitting(true);
-      }}
+      onSubmit={onSubmit}
     >
       {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment*/}
       {/* @ts-ignore */}
       {(formProps) => {
         const { values, setFieldValue } = formProps;
+
+        // Handle update value
+        React.useEffect(() => {
+          if (firstRender.current) {
+            firstRender.current = false;
+            return;
+          }
+
+          dispatch(actions.update({ ...values }));
+        }, [values]);
 
         // Target params for various uploads (cover, partners)
         const targets = useMemo(() => {
@@ -78,6 +67,13 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
           };
         }, [values.id]);
 
+        // Delete video handler
+        const onDeleteVideo = useCallback(() => {
+          dispatch(actions.update({ video_url: '' }));
+          setFieldValue('video_url', '');
+        }, []);
+
+        // Components
         return (
           <Box
             pos="relative"
@@ -89,13 +85,13 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
             textAlign="left"
           >
             <Form
-              onChange={(event) => onChange(event)}
-              onBlur={autoSaveDebounce}
+              // onBlur={autoSaveDebounce}
               style={{ width: "100%" }}
             >
               <Text variant="currentBold">{t.label_logo}</Text>
               <UploadFile
-                onChange={(e) => console.log(e)}
+                // QUESTION: console log only ?
+                onChange={logOnChange}
                 label={t.logo_cta}
                 id="logo"
                 helpText={t.logo_helptext}
@@ -139,7 +135,8 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
                 label={t.image_cta}
                 helpText={t.image_helptext}
                 isDisabled={Boolean(values.video_url)}
-                onChange={(e) => console.log(e)}
+                // QUESTION: console log only ?
+                onChange={logOnChange}
               />
 
               <Flex alignItems="center">
@@ -153,13 +150,7 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
                 <Box mt={7} ml={4}>
                   <SvgHover>
                     <Delete
-                      onClick={() => {
-                        updateLanding({
-                          id: data.id,
-                          data: { video_url: "" },
-                        });
-                        setFieldValue("video_url", "");
-                      }}
+                      onClick={onDeleteVideo}
                     />
                   </SvgHover>
                 </Box>
@@ -182,7 +173,8 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
                 label={t.logos_cta}
                 helpText={t.image_helptext}
                 multiple
-                onChange={(e) => console.log(e)}
+                // QUESTION: console log only ?
+                onChange={logOnChange}
               />
 
               <Container variant="hr" my={10} />
@@ -192,10 +184,7 @@ export const LandingForm: React.FC<Props> = ({ data }) => {
                 variant="roundedTransparent"
                 mt={4}
                 mb="100px"
-                onClick={() => {
-                  goTop();
-                  dispatch(setEditAboutPage());
-                }}
+                onClick={onEditAbout}
               >
                 {t.see_more_cta}
               </Button>

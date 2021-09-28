@@ -1,10 +1,26 @@
 import { Box, Text, Flex, Container, Image } from "@chakra-ui/react";
-import { IMember } from "types/landing";
+import { ILanding, IMember } from "types/landing";
 import React from "react";
 
-export interface MemberList {
-  members: IMember[];
+type Props = {
+  members: ILanding['members'],
 }
+
+export const Team: React.FC<Props> = ({
+  members,
+}) => {
+  return (
+    <Box pb={10}>
+      <Container variant="hr" maxW="unset" mb={5} />
+      <Text variant="xl">L'équipe</Text>
+      <Flex w="80%" marginX="auto" justify="flex-start" mt={20}>
+        {members.map(({ job, name, image }: any, i: number) => (
+          <Member key={i} job={job} name={name} image={image} />
+        ))}
+      </Flex>
+    </Box>
+  );
+};
 
 const Member: React.FC<IMember> = ({ job, name, image }) => {
   return (
@@ -18,19 +34,5 @@ const Member: React.FC<IMember> = ({ job, name, image }) => {
         {job}
       </Text>
     </Flex>
-  );
-};
-
-export const Team: React.FC<MemberList> = ({ members }) => {
-  return (
-    <Box pb={10}>
-      <Container variant="hr" maxW="unset" mb={5} />
-      <Text variant="xl">L'équipe</Text>
-      <Flex w="80%" marginX="auto" justify="flex-start" mt={20}>
-        {members.map(({ job, name, image }: any, i: number) => (
-          <Member key={i} job={job} name={name} image={image} />
-        ))}
-      </Flex>
-    </Box>
   );
 };

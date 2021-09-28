@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import {
   Flex,
   Text,
@@ -5,7 +6,6 @@ import {
   Collapse,
   CircularProgress,
 } from "@chakra-ui/react";
-import React from "react";
 import { NavLink } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { ReactComponent as Back } from "./assets/back.svg";
@@ -15,17 +15,34 @@ import { Loader } from "components/Spinner";
 import { useGetSurvey } from "call/actions/survey";
 import { setConditionStatus } from "redux/slices/formBuilder";
 import { CheckIcon } from "@chakra-ui/icons";
+import { selectors } from "redux/slices/landing-editor";
+
+// ---- STATIC
+
+const nl = {
+  button: {
+    leavePreview : 'Sortir de la previsualisation',
+    dashboard: 'Dashboard',
+  },
+  msg: {
+    hasChanges: 'Changements...',
+    changesSaved: 'Sauvegardé !',
+  }
+}
+
+// ---- COMPONENT
+
 interface Props {
   isLanding?: boolean;
   surveyId: string;
 }
 
 export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
-  const { data, isLoading, error } = useGetSurvey(surveyId);
-  const { preview_mode, is_saving } = useAppSelector(
-    (state) => state.application
-  );
   const dispatch = useAppDispatch();
+
+  const { data, isLoading, error } = useGetSurvey(surveyId);
+  const { preview_mode } = useAppSelector(state => state.application);
+  const { inProgress, done } = useChangesNotifier();
 
   if (isLoading) {
     return <Loader />;
@@ -55,7 +72,7 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
             )
           }
         >
-          Sortir de la previsualisation
+          {nl.button.leavePreview}
         </Button>
       )}
 
@@ -71,7 +88,7 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
             <Flex ml="50px" alignItems="center">
               <Back />
               <Text fontSize="12px" ml={2} mr="30px">
-                Dashboard
+                {nl.button.dashboard}
               </Text>
             </Flex>
           </NavLink>
@@ -85,24 +102,8 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
             {data?.survey?.title}
           </Text>
           <Flex pos="absolute" right="10px">
-            {is_saving && (
-              <Text
-                variant="xs"
-                mr="40px"
-                color="brand.green"
-                top="10px"
-                pos="relative"
-              >
-                <CheckIcon mr="7px" />
-                Modification sauvegardée
-                <CircularProgress
-                  ml={2}
-                  isIndeterminate
-                  color="brand.green"
-                  size="2"
-                />
-              </Text>
-            )}
+            {inProgress && <ChangesInProgress />}
+            {done && <ChangesSaved />}
             {isLanding ? (
               <Button
                 variant="roundedBlue"
@@ -130,3 +131,74 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
     </>
   );
 };
+
+// ---- SUB COMPONENTS
+
+function ChangesInProgress() {
+  return (
+    <Text
+      variant="xs"
+      mr="40px"
+      color="brand.blue"
+      top="10px"
+      pos="relative"
+    >
+      <CircularProgress
+        mr={2}
+        isIndeterminate
+        color="brand.blue"
+        size="2"
+      />
+      {nl.msg.hasChanges}
+    </Text>
+  );
+}
+
+function ChangesSaved() {
+  return (
+    <Text
+      variant="xs"
+      mr="40px"
+      color="brand.green"
+      top="10px"
+      pos="relative"
+    >
+      <CheckIcon mr="7px" />
+      {nl.msg.changesSaved}
+    </Text>
+  );
+}
+
+// ---- HOOKS
+
+function useChangesNotifier() {
+  const hasUnsavedChanges = useAppSelector(selectors.hasChanges);
+
+  const [inProgress, setInProgress] = useState(false);
+  const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    // If changes and nothing else -> progress on
+    if (hasUnsavedChanges && !inProgress) {
+      setInProgress(true);
+      setDone(false);
+    }
+
+    // If progress and no more changes -> done
+    if (!hasUnsavedChanges && inProgress && !done) {
+      setInProgress(false);
+      setDone(true);
+    }
+
+    // If nothing else but done -> turn off after a while
+    if (!hasUnsavedChanges && !inProgress && done) {
+      setTimeout(() => setDone(false), 2000);
+    }
+
+  }, [hasUnsavedChanges, inProgress, done]);
+
+  return {
+    inProgress,
+    done,
+  };
+}

@@ -6,7 +6,7 @@ export interface Media {
   url: string;
 }
 
-export interface IColors {
+export interface IColor {
   base: string;
   button: string;
 }
@@ -19,7 +19,7 @@ export interface IMember {
 
 export interface ILanding {
   id: string;
-  color_theme: IColors;
+  color_theme: IColor;
   image_cover: string;
   cover?: Media;
   partners: Media[];

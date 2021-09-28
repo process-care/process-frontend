@@ -1,12 +1,13 @@
-import { Box, Text } from "@chakra-ui/react";
 import React, { useCallback } from "react";
+import { Box, Text } from "@chakra-ui/react";
+import { useHistory, useParams } from "react-router-dom";
 import { Content } from "./Content";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { Team } from "./Team";
 import { useAppSelector } from "redux/hooks";
+import { selectors} from "redux/slices/landing-editor";
 import { ILanding } from "types/landing";
-import { useHistory, useParams } from "react-router-dom";
 
 // ---- STATICS
 
@@ -17,34 +18,36 @@ const big_placeholder =
 // ---- TYPES
 
 interface Props {
-  data: ILanding;
   isUserView?: boolean;
+  data?: Partial<ILanding>,
 }
 
 // ---- COMPONENT
 
-export const Preview: React.FC<Props> = ({ data, isUserView }) => {
+export const Preview: React.FC<Props> = ({ isUserView, data }) => {
   // FIXME: Yup, these ignore are bad, need to be removed
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const { slug } = useParams();
   const history = useHistory();
 
-  const { is_editing_about_page } = useAppSelector(
-    (state) => state.landingBuilder
-  );
   const { preview_mode } = useAppSelector((state) => state.application);
-  const { color_theme, members } = data;
-  const had_members = members?.length > 0;
+  
+  const aboutPage = useAppSelector(selectors.about);
+  const isEditingAbout = useAppSelector(selectors.isEditingAbout);
 
   const isFullView = isUserView || preview_mode === "landing";
 
   const onParticipate = useCallback(() => {
-    console.log('Let us participate !!');
+    if (!isUserView) {
+      alert('Bouton désactivé pendant la prévisualisation.');
+      return;
+    }
+
     history.push(`/survey/${slug}/consent`);
-  }, [slug]);
+  }, [slug, isUserView]);
   
-  if (is_editing_about_page) {
+  if (isEditingAbout) {
     return (
       <Box
         h="fit-content"
@@ -58,12 +61,13 @@ export const Preview: React.FC<Props> = ({ data, isUserView }) => {
           textAlign="left"
           variant="current"
           dangerouslySetInnerHTML={{
-            __html: data.about_page || big_placeholder,
+            __html: aboutPage || big_placeholder,
           }}
         ></Text>
       </Box>
     );
   }
+
   return (
     <Box
       h={isFullView ? "100%" : "fit-content"}
@@ -72,10 +76,15 @@ export const Preview: React.FC<Props> = ({ data, isUserView }) => {
       mx="auto"
       mt={isFullView ? "0" : "100px"}
     >
-      <Header theme={color_theme} logo={data.logo} title={data.title} onParticipate={onParticipate} />
-      <Content data={data} theme={color_theme} onParticipate={onParticipate} />
-      {had_members && <Team members={data.members} />}
-      <Footer data={data} />
+      <Header
+        title={data?.title}
+        logo={data?.logo}
+        color_theme={data?.color_theme}
+        onParticipate={onParticipate}
+      />
+      <Content data={data} onParticipate={onParticipate} />
+      {data?.members && <Team members={data.members} />}
+      <Footer partners={data?.partners ?? []} />
     </Box>
   );
 };

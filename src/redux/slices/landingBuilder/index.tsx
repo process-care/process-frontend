@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 // import type { RootState } from "redux/store";
-import { IColors, ILanding, IMember } from "types/landing";
+import { IColor, ILanding, IMember } from "types/landing";
 import { initialValues } from "components/CreateSurvey/CreateLanding/ToolBox/Form/utils/initialValues";
 import { IBase64 } from "components/Fields/Uploadfile";
 
@@ -11,7 +11,7 @@ export interface LandingBuilder {
 
 interface Update {
   data: {
-    [index: string]: string | IColors | IBase64[] | IMember[];
+    [index: string]: string | IColor | IBase64[] | IMember[];
   };
 }
 

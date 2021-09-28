@@ -60,8 +60,14 @@ export const ProjectMenu: React.FC<Props> = ({
     exportURL,
     isLoading,
   } = useSurveyData(selectedSurvey.id);
-  const { gotToLanding, goToForm, goToConsent, goToSurveyMetadatas } =
-    useNavigator(selectedSurvey);
+
+  const {
+    gotToLanding,
+    goToForm,
+    goToConsent,
+    goToSurveyMetadatas
+  } = useNavigator(selectedSurvey);
+  
   const [statFilter, setStatFilter] = useState(filters[0].id);
 
   // We should be doing that much better :/

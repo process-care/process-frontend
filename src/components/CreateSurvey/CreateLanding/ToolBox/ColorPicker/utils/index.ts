@@ -1,6 +1,6 @@
-import { IColors } from "types/landing";
+import { IColor } from "types/landing";
 
-export const colors: IColors[] = [
+export const colors: IColor[] = [
   {
     base: "#000000",
     button: "#0084FF",

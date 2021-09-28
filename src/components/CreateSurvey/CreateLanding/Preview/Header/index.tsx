@@ -1,15 +1,20 @@
 import React from "react";
 import { Button, Flex, Text } from "@chakra-ui/react";
-import { IColors } from "types/landing";
+import { IColor } from "types/landing";
 
 interface Props {
-  theme: IColors;
-  logo: string;
-  title: string;
+  title?: string,
+  logo?: string,
+  color_theme?: IColor,
   onParticipate: () => void
 }
 
-export const Header: React.FC<Props> = ({ theme, logo, title, onParticipate }) => {
+export const Header: React.FC<Props> = ({
+  title,
+  logo,
+  color_theme,
+  onParticipate,
+}) => {
   return (
     <Flex justifyContent="space-between" p="5" alignItems="center">
       {!!logo && logo.length !== 0 && (
@@ -20,7 +25,7 @@ export const Header: React.FC<Props> = ({ theme, logo, title, onParticipate }) =
       </Text>
       <Button
         variant="rounded"
-        backgroundColor={theme?.button || "brand.blue"}
+        backgroundColor={color_theme?.button || "brand.blue"}
         color="white"
         onClick={onParticipate}
       >

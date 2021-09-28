@@ -1,17 +1,17 @@
 import React from "react";
 import { Flex, Box, Button, Text, Container } from "@chakra-ui/react";
-import { ILanding } from "types/landing";
 import { t } from "static/createLanding";
 import { API_URL_ROOT } from "constants/api";
 import { NavLink } from "react-router-dom";
+import { ILanding } from "types/landing";
 
-interface Props {
-  data: ILanding;
-}
+type Props = {
+  partners: ILanding['partners'],
+};
 
-export const Footer: React.FC<Props> = ({ data }) => {
-  const { partners } = data;
-
+export const Footer: React.FC<Props> = ({
+  partners,
+}) => {
   return (
     <>
       <Container variant="hr" w="100%" maxW="unset" />

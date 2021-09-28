@@ -1,13 +1,12 @@
 import React from "react";
 import { Box, Text, Flex, Button } from "@chakra-ui/react";
-import { IColors, ILanding } from "types/landing";
 import { Video } from "components/Video";
 import { t } from "static/createLanding";
 import { API_URL_ROOT } from "constants/api";
+import { ILanding } from "types/landing";
 
 interface Props {
-  data: ILanding;
-  theme: IColors;
+  data?: Partial<ILanding>,
   onParticipate: () => void,
 }
 
@@ -18,10 +17,22 @@ const big_placeholder =
 
 const imgStyle = { maxWidth: "400px", width: "400px" };
 
-export const Content: React.FC<Props> = ({ data, theme, onParticipate }) => {
-  const had_video = Boolean(data.video_url);
-  const had_image = Boolean(data.cover);
-  const had_media = had_video || had_image;
+export const Content: React.FC<Props> = ({ data, onParticipate }) => {
+  // Safety check
+  if (!data) return <div>Loading... I guess 🤔</div>;
+
+  const {
+    title,
+    subtitle,
+    color_theme: theme,
+    video_url,
+    cover,
+    wysiwyg,
+  } = data;
+
+  const hasVideo = Boolean(video_url);
+  const hasImage = Boolean(cover);
+  const hasMedia = hasVideo || hasImage;
 
   return (
     <Box>
@@ -32,35 +43,35 @@ export const Content: React.FC<Props> = ({ data, theme, onParticipate }) => {
         textAlign="left"
         px="10%"
       >
-        <Text variant="xl">{data.title || "Titre à remplacer"}</Text>
+        <Text variant="xl">{title || "Titre à remplacer"}</Text>
         <Text variant="smallTitle" mt="30px">
-          {data.subtitle || `Sous titre à remplacer. ${placeholder}`}
+          {subtitle || `Sous titre à remplacer. ${placeholder}`}
         </Text>
       </Box>
 
       <Flex px="12%" py="10%">
-        {had_media && (
+        {hasMedia && (
           <Box w="100%">
-            {had_video && <Video url={data.video_url} />}
-            {data.cover?.url && (
+            {hasVideo && <Video url={video_url ?? ''} />}
+            {cover?.url && (
               <img
-                src={`${API_URL_ROOT}${data.cover.url}`}
+                src={`${API_URL_ROOT}${cover.url}`}
                 style={imgStyle}
-                alt={data.cover?.name}
+                alt={cover?.name}
               />
             )}
           </Box>
         )}
         <Box
-          w={had_media ? "100%" : "80%"}
-          m={had_media ? "inherit" : "auto"}
+          w={hasMedia ? "100%" : "80%"}
+          m={hasMedia ? "inherit" : "auto"}
           pl={10}
         >
           <Text
             textAlign="left"
             variant="current"
             dangerouslySetInnerHTML={{
-              __html: data.wysiwyg || big_placeholder,
+              __html: wysiwyg || big_placeholder,
             }}
           ></Text>
           <Flex mt={10} justifyContent="space-between">

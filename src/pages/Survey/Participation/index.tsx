@@ -18,7 +18,6 @@ export const Participation: React.FC<unknown> = () => {
   const { slug: surveyId, step } = useParams();
   const history = useHistory();
 
-  // FIXME: remove hardcoded
   const { data, isLoading } = useGetSurvey(surveyId);
   const { participation, onConsent, onRefuse } = useConsentHandlers(surveyId);
 
@@ -39,6 +38,7 @@ export const Participation: React.FC<unknown> = () => {
       </Center>
     );
   }
+  
   // LOADING STATE
   if (isLoading || !data?.survey) {
     return <Box mt="60">Loading in progress...</Box>;

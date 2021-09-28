@@ -28,7 +28,7 @@ export type DeleteParams = {
 };
 
 // ---- ACTIONS
-// FIXME: update all `any` in there
+// TODO: update all `any` in there
 
 export const useUploadFileSingle = (): UseMutationResult<any, Error> =>
   useMutation<any, Error, any>(

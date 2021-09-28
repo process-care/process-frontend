@@ -6,8 +6,10 @@ import application from "redux/slices/application";
 import landingBuilder from "redux/slices/landingBuilder";
 import participation from "redux/slices/participation";
 import surveyBuilder from "redux/slices/surveyBuilder";
+import landingEditor from 'redux/slices/landing-editor';
 
 import { pingEpic } from "redux/slices/participation/epic";
+import { landingEditorEpics } from "redux/epics/landing-editor";
 
 // ---- EPICS
 
@@ -16,7 +18,8 @@ export type Epic = ReduxEpic<AnyAction, AnyAction, RootState, unknown>;
 
 // Combine all epics from all the app
 export const rootEpic = combineEpics(
-  pingEpic
+  pingEpic,
+  landingEditorEpics,
 );
 
 // Create a middleware to set in the store
@@ -30,6 +33,7 @@ const combinedReducer = combineReducers({
   surveyBuilder,
   application,
   participation,
+  landingEditor,
 });
 
 // ---- STORE

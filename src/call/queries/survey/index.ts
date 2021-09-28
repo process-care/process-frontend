@@ -1,17 +1,9 @@
 import { gql } from "graphql-request";
+import { surveyFullFragment } from "call/fragments";
 
-export const ADD_SURVEY = gql`
-  mutation addSurvey($values: SurveyInput) {
-    createSurvey(input: { data: $values }) {
-      survey {
-        id
-        title
-        slug
-      }
-    }
-  }
-`;
+// ---- QUERIES
 
+// Get my surveys only
 export const GET_MY_SURVEYS = gql`
   query getSurveys($authorId: ID!) {
     surveys(where: { author: $authorId }) {
@@ -33,6 +25,7 @@ export const GET_MY_SURVEYS = gql`
   }
 `;
 
+// Get all surveys
 export const GET_SURVEYS = gql`
   query getSurveys {
     surveys {
@@ -55,47 +48,27 @@ export const GET_SURVEYS = gql`
   }
 `;
 
-export const GET_SURVEY = gql`
-  query getSurvey($id: ID!) {
-    survey(id: $id) {
-      id
-      description
-      order
-      title
-      slug
-      language
-      email
-      keywords
-      categories
-      author {
-        email
-      }
-      landing {
-        id
-        color_theme
-        logo
-      }
-      consentement {
-        url
-        id
-        name
-      }
-      pages {
-        id
-        name
-        short_name
-        is_locked
-        questions {
-          id
-        }
-        conditions {
-          id
-        }
-      }
+// Search for a survey
+export const WHERE_SURVEYS = gql`
+  ${surveyFullFragment}
+  query getSurveys($where: JSON!) {
+    surveys(where: $where) {
+      ...surveyFullFragment
     }
   }
 `;
 
+// Get one specific survey
+export const GET_SURVEY = gql`
+  ${surveyFullFragment}
+  query getSurvey($id: ID!) {
+    survey(id: $id) {
+      ...surveyFullFragment
+    }
+  }
+`;
+
+// GEt survey metadata
 export const GET_SURVEY_METADATAS = gql`
   query getSurvey($id: ID!) {
     survey(id: $id) {
@@ -114,6 +87,7 @@ export const GET_SURVEY_METADATAS = gql`
   }
 `;
 
+// Get survey stats
 export const GET_SURVEY_STATS = gql`
   query getSurveyStats($id: ID!) {
     surveyStats(id: $id) {
@@ -157,6 +131,22 @@ export const GET_SURVEY_STATS = gql`
   }
 `;
 
+// ---- MUTATIONS
+
+// Create survey
+export const ADD_SURVEY = gql`
+  mutation addSurvey($values: SurveyInput) {
+    createSurvey(input: { data: $values }) {
+      survey {
+        id
+        title
+        slug
+      }
+    }
+  }
+`;
+
+// Update survey
 export const UPDATE_SURVEY = gql`
   mutation updateSurvey($id: ID!, $data: editSurveyInput) {
     updateSurvey(input: { where: { id: $id }, data: $data }) {
@@ -172,6 +162,7 @@ export const UPDATE_SURVEY = gql`
   }
 `;
 
+// Delete survey
 export const DELETE_SURVEY = gql`
   mutation deleteSurvey($id: ID!) {
     deleteSurvey(input: { where: { id: $id } }) {
@@ -182,7 +173,7 @@ export const DELETE_SURVEY = gql`
   }
 `;
 
-// order
+// Update order in survey
 export const UPDATE_ORDER = gql`
   mutation updateOrder($id: ID!, $new_order: JSON) {
     updateSurvey(input: { where: { id: $id }, data: { order: $new_order } }) {

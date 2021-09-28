@@ -24,3 +24,30 @@ export const changePassword: any = async (
   );
   return res;
 };
+
+export const forgotPassword: any = async (email: string) => {
+  const res = await axios.post(`${API_URL_ROOT}/auth/forgot-password`, {
+    email,
+    url: `${API_URL_ROOT}/admin/plugins/users-permissions/auth/reset-password`,
+  });
+  console.log("Your user received an email", res);
+  return res;
+};
+
+export const resetPassword: any = async (
+  code: string,
+  password: string,
+  passwordConfirmation: string
+) => {
+  const res = await axios.post(`${API_URL_ROOT}/auth/reset-password`, {
+    code,
+    password,
+    passwordConfirmation,
+  });
+  if (res.status === 200) {
+    return res;
+  } else {
+    console.log(res.data.message);
+    return res.data?.message;
+  }
+};

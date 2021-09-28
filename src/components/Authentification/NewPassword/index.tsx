@@ -3,16 +3,28 @@ import React, { useState } from "react";
 
 import { ReactComponent as Logo } from "assets/black_logo.svg";
 import { Form, Formik } from "formik";
-import { Textarea } from "components/Fields";
-import { forgotPassword } from "call/actions/password";
-import { forgotPasswordSchema } from "./validationSchema";
+import { Input } from "components/Fields";
+import { NavLink, useLocation } from "react-router-dom";
+import { resetPassword } from "call/actions/password";
+import { newPasswordSchema } from "./validationSchema";
 
-export const ForgotPasswordForm: React.FC = () => {
-  const [isSuccess, setSuccess] = useState(false);
+export const NewPasswordForm: React.FC = () => {
+  const [isSuccess, setSuccess] = useState<boolean>(false);
   const [errors, setError] = useState<any>([]);
+  const query = useQuery();
+  const code = query.get("code");
 
   if (isSuccess) {
-    return <Box>✅ Un mail vient d'être envoyer à votre adresse email !</Box>;
+    return (
+      <Flex flexDir="column">
+        ✅ Votre mot de passe à bien été mis à jour !
+        <NavLink to="/connexion">
+          <Button variant="roundedBlue" mt="40px">
+            Se connecter
+          </Button>
+        </NavLink>
+      </Flex>
+    );
   }
 
   return (
@@ -22,13 +34,14 @@ export const ForgotPasswordForm: React.FC = () => {
       </Box>
 
       <Formik
-        validateOnChange
-        initialValues={{ email: "" }}
-        validationSchema={forgotPasswordSchema}
+        validateOnBlur
+        validateOnChange={false}
+        validationSchema={newPasswordSchema}
+        initialValues={{ password: "", passwordConfirmation: "" }}
         onSubmit={async (data, { setSubmitting, validateForm }) => {
           validateForm(data);
           setSubmitting(true);
-          forgotPassword(data.email)
+          resetPassword(code, data.password, data.passwordConfirmation)
             .then((res: any) => {
               if (res.status === 200) {
                 setSuccess(true);
@@ -37,6 +50,7 @@ export const ForgotPasswordForm: React.FC = () => {
             .catch((err: any) => {
               setError(err.response.data.message);
             });
+
           setSubmitting(false);
         }}
       >
@@ -46,18 +60,24 @@ export const ForgotPasswordForm: React.FC = () => {
               <Box w="100%" pt="90px" textAlign="left">
                 <Flex justifyContent="center" flexDirection="column" w="100%">
                   <Text variant="current" mb="20px">
-                    Merci de renseigner votre adresse email, vous recevrez un
-                    lien vous permettant de réinitialiser votre mot de passe.
+                    Merci de renseigner votre nouveau mot de passe.
                   </Text>
-                  <Textarea
+                  <Input
                     isCollapsed={false}
-                    rows="small"
-                    label="Renseigner votre email"
-                    placeholder="Email"
-                    id="email"
+                    type="password"
+                    label="Nouveau mot de passe"
+                    placeholder="Mot de passe"
+                    name="password"
                     isRequired
                   />
-
+                  <Input
+                    isCollapsed={false}
+                    type="password"
+                    label="Confirmation du nouveau mot de passe"
+                    placeholder="Mot de passe"
+                    name="passwordConfirmation"
+                    isRequired
+                  />
                   {errors.length > 0 &&
                     errors[0].messages.map((err: any) => {
                       return (
@@ -73,7 +93,7 @@ export const ForgotPasswordForm: React.FC = () => {
                     disabled={!isValid || isSubmitting}
                     variant="roundedBlue"
                   >
-                    Reinitialiser mon mot de passe
+                    Réinitialiser mon mot de passe
                   </Button>
                 </Flex>
               </Box>
@@ -84,3 +104,7 @@ export const ForgotPasswordForm: React.FC = () => {
     </Box>
   );
 };
+
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}

@@ -55,6 +55,7 @@ export const Card: React.FC<Props> = ({ data }) => {
         <Flex mt="10px" alignItems="center">
           {data.keywords.map((keyword) => (
             <Text
+              mr="20px"
               key={keyword.label}
               variant="xs"
               color={data.landing?.color_theme?.button || "black"}

@@ -5,11 +5,9 @@ import { ReactComponent as Logo } from "assets/black_logo.svg";
 import { Form, Formik } from "formik";
 import { Textarea } from "components/Fields";
 import { forgotPassword } from "call/actions/password";
-import { forgotPasswordSchema } from "./validationSchema";
 
 export const ForgotPasswordForm: React.FC = () => {
   const [isSuccess, setSuccess] = useState(false);
-  const [errors, setError] = useState<any>([]);
 
   if (isSuccess) {
     return <Box>✅ Un mail vient d'être envoyer à votre adresse email !</Box>;
@@ -22,21 +20,18 @@ export const ForgotPasswordForm: React.FC = () => {
       </Box>
 
       <Formik
-        validateOnChange
+        validateOnBlur={false}
         initialValues={{ email: "" }}
-        validationSchema={forgotPasswordSchema}
         onSubmit={async (data, { setSubmitting, validateForm }) => {
           validateForm(data);
           setSubmitting(true);
-          forgotPassword(data.email)
-            .then((res: any) => {
-              if (res.status === 200) {
-                setSuccess(true);
-              }
-            })
-            .catch((err: any) => {
-              setError(err.response.data.message);
-            });
+          forgotPassword(data.email).then((res: any) => {
+            if (res.status === 200) {
+              setSuccess(true);
+            } else {
+              setSuccess(false);
+            }
+          });
           setSubmitting(false);
         }}
       >
@@ -57,15 +52,6 @@ export const ForgotPasswordForm: React.FC = () => {
                     id="email"
                     isRequired
                   />
-
-                  {errors.length > 0 &&
-                    errors[0].messages.map((err: any) => {
-                      return (
-                        <Text color="red" fontSize="12px" mt="10px">
-                          {err.message}
-                        </Text>
-                      );
-                    })}
 
                   <Button
                     mt="40px"

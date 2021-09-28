@@ -10,6 +10,7 @@ import { Participation } from "pages/Survey/Participation";
 import { CreateConsent } from "pages/Survey/CreateConsent";
 import { Signin } from "pages/Auth/Signin";
 import { ForgotPassword } from "pages/Auth/ForgotPassword";
+import { NewPassword } from "pages/Auth/NewPassword";
 
 export const protectedRoutes: IRoute[] = [
   {
@@ -67,6 +68,12 @@ export const routes: IRoute[] = [
     name: "Mot de passe oublié",
     path: "/mot-de-passe-oublie",
     component: <ForgotPassword />,
+    exact: true,
+  },
+  {
+    name: "Mot de passe oublié",
+    path: "/nouveau-mot-de-passe",
+    component: <NewPassword />,
     exact: true,
   },
   {

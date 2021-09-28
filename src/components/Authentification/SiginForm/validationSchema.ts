@@ -17,10 +17,13 @@ export const SigninSchema = Yup.object().shape({
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       "^(?=.*[A-Za-z])(?=.*d)(?=.*[@$!%*#?&])[A-Za-zd@$!%*#?&]{8,}$",
-      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+      "Le mot de passe doit contenir au moins 8 charcatères, une majuscule, une minuscule, un nombre et un charactère spécial"
     )
     .required("Ce champs est requis"),
   confirmPassword: Yup.string()
     .required("Ce champs est requis")
-    .oneOf([Yup.ref("password"), null], "Passwords must match"),
+    .oneOf(
+      [Yup.ref("password"), null],
+      "Les mots de passe ne sont pas identiques"
+    ),
 });

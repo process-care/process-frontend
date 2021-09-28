@@ -2,7 +2,7 @@ import { Grid } from "@chakra-ui/react";
 import React from "react";
 import { Loader } from "components/Spinner";
 import { NavLink } from "react-router-dom";
-import { ISurveysRes } from "types/survey";
+import ISurvey from "types/survey";
 import { Card } from "./Card";
 
 const t = {
@@ -10,7 +10,7 @@ const t = {
 };
 
 interface Props {
-  surveys: ISurveysRes | undefined;
+  surveys: ISurvey[] | undefined;
   isLoading: boolean;
 }
 
@@ -25,7 +25,7 @@ export const SurveyGrid: React.FC<Props> = ({ surveys, isLoading }) => {
 
   return (
     <Grid templateColumns="repeat(3, 1fr)" gap={10} pt="80px" px="10%">
-      {surveys.surveys.map((survey) => {
+      {surveys.map((survey) => {
         return (
           <NavLink to={`/survey/${survey.id}`}>
             <Card data={survey} />

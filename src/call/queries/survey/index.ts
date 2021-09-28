@@ -35,7 +35,7 @@ export const GET_MY_SURVEYS = gql`
 
 export const GET_SURVEYS = gql`
   query getSurveys {
-    surveys(where: { status: "pending" }) {
+    surveys {
       id
       description
       title
@@ -49,6 +49,7 @@ export const GET_SURVEYS = gql`
         color_theme
         subtitle
       }
+      keywords
       createdAt
     }
   }

@@ -16,6 +16,7 @@ export default interface ISurvey {
   slug: string;
   status: "draft" | "pending" | "closed" | "archived";
   createdAt: Date;
+  keywords: Record<string, any>[];
 }
 
 export interface ISurveyRes {

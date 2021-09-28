@@ -2,54 +2,14 @@ import { Box, Button, Flex, Circle, Text } from "@chakra-ui/react";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "redux/hooks";
-import { Survey, updateSurveyStep } from "redux/slices/surveyBuilder";
+import { actions, selectors } from "redux/slices/survey-editor";
+import { Survey } from "redux/slices/surveyBuilder";
+import { t } from "./static";
 
-// STATIC
-const t = {
-  cancel: "Annuler",
-  steps: [
-    {
-      id: "title",
-      label: "Titre de l'enquête",
-      pos: 1,
-    },
-    {
-      id: "slug",
-      label: "Url de l'enquête",
-      pos: 2,
-    },
-    {
-      id: "description",
-      label: "Description de l'enquête",
-      pos: 3,
-    },
-    {
-      id: "keywords",
-      label: "Mot-clé publics",
-      pos: 4,
-    },
+// ---- TYPES
 
-    {
-      id: "language",
-      label: "Langue de l'enquête",
-      pos: 5,
-    },
-    {
-      id: "email",
-      label: "Mail de contact",
-      pos: 6,
-    },
-    {
-      id: "categories",
-      label: "Categories du projet",
-      pos: 7,
-    },
-  ],
-};
-
-// //   TYPES
 interface Props {
-  survey: Survey["survey"];
+  survey: Partial<Survey["survey"]> | undefined;
   step: number;
 }
 
@@ -59,12 +19,35 @@ interface IStep {
   pos: number;
 }
 
+// ---- COMPONENT
+
+export const Timeline: React.FC = () => {
+  const survey = useAppSelector(selectors.survey);
+  const step = useAppSelector(selectors.step);
+
+  return (
+    <Box p="20px" pos="relative">
+      <Flex justifyContent="flex-end">
+        <NavLink to="/dashboard">
+          <Button variant="link" color="gray.200">
+            {t.cancel}
+          </Button>
+        </NavLink>
+      </Flex>
+      <RenderSteps survey={survey} step={step} />
+    </Box>
+  );
+};
+
+// --- SUBCOMPONENT
+
 const RenderSteps: React.FC<Props> = ({ survey, step }) => {
   const dispatch = useAppDispatch();
 
   const navigateTo = (target: number) => {
-    dispatch(updateSurveyStep(target));
+    dispatch(actions.setStep(target));
   };
+  if (!survey) return null;
 
   const Step = ({ data }: { data: IStep }) => {
     const { id, label, pos } = data;
@@ -131,23 +114,6 @@ const RenderSteps: React.FC<Props> = ({ survey, step }) => {
       {t.steps.map((data: any) => {
         return <Step data={data} key={data.pos} />;
       })}
-    </Box>
-  );
-};
-
-export const Timeline: React.FC = () => {
-  const { survey, step } = useAppSelector((state) => state.surveyBuilder);
-  return (
-    <Box p="20px" pos="relative">
-      <Flex justifyContent="flex-end">
-        <NavLink to="/dashboard">
-          <Button variant="link" color="gray.200">
-            {t.cancel}
-          </Button>
-        </NavLink>
-      </Flex>
-
-      <RenderSteps survey={survey} step={step} />
     </Box>
   );
 };

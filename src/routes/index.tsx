@@ -12,45 +12,6 @@ import { Signin } from "pages/Auth/Signin";
 import { ForgotPassword } from "pages/Auth/ForgotPassword";
 import { NewPassword } from "pages/Auth/NewPassword";
 
-export const protectedRoutes: IRoute[] = [
-  {
-    name: "Création d'enquète",
-    path: "/survey/:slug/create/metadatas",
-    component: <CreateSurvey />,
-    exact: true,
-  },
-  {
-    name: "Création de landing page",
-    path: "/survey/:slug/create/landing",
-    component: <CreateLanding />,
-    exact: true,
-  },
-  {
-    name: "Création du consentement",
-    path: "/survey/:slug/create/consent",
-    component: <CreateConsent />,
-    exact: true,
-  },
-  {
-    name: "Création du formulaire",
-    path: "/survey/:slug/create/form",
-    component: <CreateForm />,
-    exact: true,
-  },
-  {
-    name: "Dashboard",
-    path: "/dashboard",
-    component: <Dashboard />,
-    exact: true,
-  },
-  {
-    name: "Profil",
-    path: "/profil",
-    component: <Dashboard />,
-    exact: true,
-  },
-];
-
 export const routes: IRoute[] = [
   {
     name: "Connexion",
@@ -92,6 +53,45 @@ export const routes: IRoute[] = [
     name: "Consent",
     path: "/survey/:slug/:step",
     component: <Participation />,
+    exact: true,
+  },
+];
+
+export const protectedRoutes: IRoute[] = [
+  {
+    name: "Création d'enquète",
+    path: "/survey/:slug/create/metadatas",
+    component: <CreateSurvey />,
+    exact: true,
+  },
+  {
+    name: "Création de landing page",
+    path: "/survey/:slug/create/landing",
+    component: <CreateLanding />,
+    exact: true,
+  },
+  {
+    name: "Création du consentement",
+    path: "/survey/:slug/create/consent",
+    component: <CreateConsent />,
+    exact: true,
+  },
+  {
+    name: "Création du formulaire",
+    path: "/survey/:slug/create/form",
+    component: <CreateForm />,
+    exact: true,
+  },
+  {
+    name: "Dashboard",
+    path: "/dashboard",
+    component: <Dashboard />,
+    exact: true,
+  },
+  {
+    name: "Profil",
+    path: "/profil",
+    component: <Dashboard />,
     exact: true,
   },
 ];

@@ -18,7 +18,6 @@ import { useAppSelector } from "redux/hooks";
 import { toogleDrawer } from "redux/slices/application";
 import { useDispatch } from "react-redux";
 import { ProfilForm } from "components/Dashboard/ProfilForm";
-import { useCreateSurveyChain } from "./hooks";
 import { useAuth } from "components/Authentification/hooks";
 
 export const Dashboard: React.FC<IRoute> = () => {
@@ -29,7 +28,6 @@ export const Dashboard: React.FC<IRoute> = () => {
 
   const { data: surveys, isLoading, error } = useGetMySurveys(user.id);
 
-  const { createSurveyChain } = useCreateSurveyChain();
   const isOpen = useAppSelector((state) => state.application.drawer_is_open);
   const isProfilPage = location.pathname === "/profil";
 
@@ -100,6 +98,10 @@ export const Dashboard: React.FC<IRoute> = () => {
     handleDrawer();
   };
 
+  const goToCreateSurvey = () => {
+    history.push(`/survey/draft/create/metadatas`);
+  };
+
   if (isLoading || surveys === undefined) {
     return <Loader />;
   }
@@ -129,11 +131,7 @@ export const Dashboard: React.FC<IRoute> = () => {
                 ? `Mes ${surveysLenght} enquêtes`
                 : "Mon enquête"}
             </Text>
-            <Button
-              onClick={createSurveyChain}
-              variant="roundedBlue"
-              zIndex="0"
-            >
+            <Button onClick={goToCreateSurvey} variant="roundedBlue" zIndex="0">
               {t.cta}
             </Button>
           </Flex>

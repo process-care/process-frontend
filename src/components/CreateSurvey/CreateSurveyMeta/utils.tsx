@@ -159,3 +159,18 @@ export const checkValidity = (
     return categories?.length !== 0 && !errors.categories;
   } else return false;
 };
+
+// remove unused values
+export const formatValues = (
+  data: Partial<Survey["survey"]> | undefined
+): Partial<Survey["survey"]> => {
+  return {
+    title: data?.title,
+    slug: data?.slug,
+    email: data?.email,
+    language: data?.language,
+    description: data?.description,
+    keywords: data?.keywords,
+    categories: data?.categories,
+  };
+};

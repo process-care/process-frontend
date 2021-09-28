@@ -1,19 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { Formik, Form } from "formik";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 
 import { createSurveySchema } from "../validationSchema";
 import { useAppSelector, useAppDispatch } from "redux/hooks";
-import { debounce } from "lodash";
-
-import { updateSurveyMeta, updateSurveyStep } from "redux/slices/surveyBuilder";
 
 import { ReactComponent as Submit } from "./../assets/submit.svg";
-import { checkValidity, renderInputs } from "./utils";
-import { useUpdateSurvey, useGetSurveyMetadas } from "call/actions/survey";
+import { checkValidity, formatValues, renderInputs } from "./utils";
 
-import { useHistory, useParams } from "react-router-dom";
-import { setAutoSave } from "redux/slices/application";
+import { useParams } from "react-router-dom";
+import { selectors, actions } from "redux/slices/survey-editor";
+import { useCreateSurveyChain } from "./hooks";
+import { useGetSurveyBySlug } from "call/actions/survey";
 
 // COMPONENT
 
@@ -21,119 +19,57 @@ export const CreateSurveyForm: React.FC = () => {
   // FIXME: Yup, these ignore are bad, need to be removed
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  const { slug: surveyId } = useParams();
-  const history = useHistory();
+  const { slug } = useParams();
+  const { data: survey } = useGetSurveyBySlug(slug);
+
   const dispatch = useAppDispatch();
-  const { step, survey } = useAppSelector((state) => state.surveyBuilder);
-  const { mutateAsync: updateSurvey } = useUpdateSurvey();
-  const { data, isLoading } = useGetSurveyMetadas(surveyId);
+  const { createSurveyChain } = useCreateSurveyChain();
 
-  const autoSave = () => {
-    dispatch(setAutoSave());
-    setTimeout(() => {
-      dispatch(setAutoSave());
-    }, 2000);
-  };
-  const autoSaveDebounce = debounce(autoSave, 500);
-
+  //  TO DO: Add data into redux when component mounts
+  // TODO: We could even do this effect when the user opens a side menu in the dashboard, so we "preload" the data
   useEffect(() => {
-    if (data && !isLoading) {
-      dispatch(updateSurveyMeta({ data: data.survey }));
+    if (!survey) {
+      console.warn("No landing ID to load.");
+      return;
     }
-    dispatch(updateSurveyStep(1));
-  }, [isLoading]);
+    dispatch(actions.load(survey.id));
+  }, [survey]);
 
-  const handleChange = (event: React.FormEvent<HTMLFormElement>) => {
-    const target = event.target as HTMLFormElement;
+  // Flag to avoid saving the initial values injected into Formik
+  const firstRender = useRef(true);
+  const data = useAppSelector(selectors.survey);
+  const step = useAppSelector(selectors.step);
 
-    dispatch(
-      updateSurveyMeta({
-        data: {
-          [target.id]: target.value,
-        },
-      })
-    );
-  };
-
-  const goToDashboard = () => {
-    history.push("/dashboard");
-  };
-
-  const Navigatebtn = ({
-    step,
-    previous,
-    values,
-    errors,
-  }: {
-    step: number;
-    previous?: boolean;
-    errors: any;
-    values: any;
-  }) => {
-    const target = step + (previous ? -1 : +1);
-
-    const handleClick = (target: number) => {
-      dispatch(updateSurveyStep(target));
-      // Update backend
-      updateSurvey({
-        id: surveyId,
-        data: values,
-      });
-    };
-
-    return (
-      <Box mr="40px">
-        <Button
-          disabled={!previous && !checkValidity(step, values, errors)}
-          transform={previous ? "rotate(180deg)" : "inherit"}
-          onClick={() => handleClick(target)}
-          variant="ghost"
-          right="0"
-          _hover={{
-            backgroundColor: "transparent",
-            right: "3px",
-            transition: "all 300ms",
-          }}
-        >
-          <Submit />
-        </Button>
-      </Box>
-    );
-  };
-
-  // remove unused values
-  const formatInitialValues = () => {
-    return {
-      title: survey.title,
-      slug: survey.slug,
-      email: survey.email,
-      language: survey.language,
-      description: survey.description,
-      keywords: survey.keywords,
-      categories: survey.categories,
-    };
-  };
+  const onSubmit = useCallback((data, { setSubmitting, validateForm }) => {
+    validateForm(data);
+    setSubmitting(true);
+  }, []);
 
   return (
     <>
       <Formik
-        initialValues={formatInitialValues()}
+        initialValues={formatValues(data)}
         enableReinitialize
         validationSchema={createSurveySchema}
-        onSubmit={(data, { setSubmitting, validateForm }) => {
-          validateForm(data);
-          setSubmitting(true);
-        }}
+        onSubmit={onSubmit}
       >
         {({ values, errors }) => {
+          // Handle update value
+          useEffect(() => {
+            if (firstRender.current) {
+              firstRender.current = false;
+              return;
+            }
+
+            dispatch(actions.update({ ...values }));
+          }, [values]);
+
           return (
             <Box w="100%">
               <Text variant="baseline" minH="40px">
                 {values.title}
               </Text>
               <Form
-                onChange={(event) => handleChange(event)}
-                onBlur={autoSaveDebounce}
                 style={{
                   width: "100%",
                   display: "flex",
@@ -171,7 +107,7 @@ export const CreateSurveyForm: React.FC = () => {
                   </Flex>
                   <Flex mt="50px">
                     {step === 7 && (
-                      <Button onClick={goToDashboard} variant="rounded">
+                      <Button onClick={createSurveyChain} variant="rounded">
                         Valider
                       </Button>
                     )}
@@ -183,5 +119,44 @@ export const CreateSurveyForm: React.FC = () => {
         }}
       </Formik>
     </>
+  );
+};
+
+// --- SUBCOMPONENT
+const Navigatebtn = ({
+  step,
+  previous,
+  values,
+  errors,
+}: {
+  step: number;
+  previous?: boolean;
+  errors: any;
+  values: any;
+}) => {
+  const target = step + (previous ? -1 : +1);
+  const dispatch = useAppDispatch();
+
+  const navigateTo = (target: number) => {
+    dispatch(actions.setStep(target));
+  };
+
+  return (
+    <Box mr="40px">
+      <Button
+        disabled={!previous && !checkValidity(step, values, errors)}
+        transform={previous ? "rotate(180deg)" : "inherit"}
+        onClick={() => navigateTo(target)}
+        variant="ghost"
+        right="0"
+        _hover={{
+          backgroundColor: "transparent",
+          right: "3px",
+          transition: "all 300ms",
+        }}
+      >
+        <Submit />
+      </Button>
+    </Box>
   );
 };

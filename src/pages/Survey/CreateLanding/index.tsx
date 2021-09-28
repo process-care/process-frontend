@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { useGetSurveyBySlug } from "call/actions/survey";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
-import { actions, selectors} from "redux/slices/landing-editor";
+import { actions, selectors } from "redux/slices/landing-editor";
 
 export const CreateLanding: React.FC<IRoute> = () => {
   // FIXME: Yup, these ignore are bad, need to be removed
@@ -21,7 +21,7 @@ export const CreateLanding: React.FC<IRoute> = () => {
 
   const { data: survey } = useGetSurveyBySlug(slug);
   const landingId = survey?.landing?.id;
-  
+
   const dispatch = useAppDispatch();
   const data = useAppSelector(selectors.landing);
   const isLoading = useAppSelector(selectors.isLoading);
@@ -30,7 +30,7 @@ export const CreateLanding: React.FC<IRoute> = () => {
   // TODO: We could even do this effect when the user opens a side menu in the dashboard, so we "preload" the data
   useEffect(() => {
     if (!landingId) {
-      console.warn('No landing ID to load.');
+      console.warn("No landing ID to load.");
       return;
     }
     dispatch(actions.load(landingId));
@@ -44,7 +44,7 @@ export const CreateLanding: React.FC<IRoute> = () => {
     return <Loader />;
   }
 
-  if (!survey) return <Error error={'No survey found...'} />;
+  if (!survey) return <Error error={"No survey found..."} />;
 
   return (
     <Box overflow="auto">

@@ -2,20 +2,20 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 // import type { RootState } from "redux/store";
 import { ILanding } from "types/landing";
 import { RootState } from "redux/store";
-import { DateTime } from 'luxon';
+import { DateTime } from "luxon";
 
 // ---- STATE
 
 export interface LandingEditor {
   // Page status
-  isLoading: boolean
-  error?: string
-  isEditingAbout: boolean
-  lastUpdated: string
-  lastSaved: string
+  isLoading: boolean;
+  error?: string;
+  isEditingAbout: boolean;
+  lastUpdated: string;
+  lastSaved: string;
   // Date
   // TODO: not fond of the Partial here... need to redefine what's mandatory in a Landing page ?
-  data?: Partial<ILanding>
+  data?: Partial<ILanding>;
 }
 
 const initialState: LandingEditor = {
@@ -32,11 +32,11 @@ type LoadedPayload = ILanding;
 type UpdatePayload = Partial<ILanding>;
 
 type UpdatedPayload = {
-  lastSaved: string,
-}
+  lastSaved: string;
+};
 
 // ----- SLICE
-const SLICE_NAME = 'landing-editor';
+const SLICE_NAME = "landing-editor";
 
 export const landingEditorSlice = createSlice({
   name: SLICE_NAME,
@@ -48,7 +48,7 @@ export const landingEditorSlice = createSlice({
     loaded: (state, action: PayloadAction<LoadedPayload>) => {
       // Switch flags
       state.isLoading = false;
-      
+
       // Update landing data
       const landing = action.payload;
       state.data = landing;
@@ -63,29 +63,37 @@ export const landingEditorSlice = createSlice({
     },
     editAbout: (state, action: PayloadAction<boolean>) => {
       state.isEditingAbout = action.payload;
-    }
+    },
   },
 });
 
 // ---- SELECTORS
 
-export const error = (state: RootState): string | undefined => state.landingEditor.error;
-export const isLoading = (state: RootState): boolean => state.landingEditor.isLoading;
+export const error = (state: RootState): string | undefined =>
+  state.landingEditor.error;
+export const isLoading = (state: RootState): boolean =>
+  state.landingEditor.isLoading;
 export const hasChanges = (state: RootState): boolean => {
   const updated = DateTime.fromISO(state.landingEditor.lastUpdated);
   const saved = DateTime.fromISO(state.landingEditor.lastSaved);
   return updated > saved;
-}
+};
 
-export const isEditingAbout = (state: RootState): boolean => state.landingEditor.isEditingAbout;
-export const hasMembers = (state: RootState): boolean => (state.landingEditor.data?.members ?? []).length > 0;
+export const isEditingAbout = (state: RootState): boolean =>
+  state.landingEditor.isEditingAbout;
+export const hasMembers = (state: RootState): boolean =>
+  (state.landingEditor.data?.members ?? []).length > 0;
 
-export const landing = (state: RootState): Partial<ILanding> | undefined => state.landingEditor.data;
-export const members = (state: RootState): ILanding['members'] => (state.landingEditor.data?.members ?? []);
-export const partners = (state: RootState): ILanding['partners'] => (state.landingEditor.data?.partners ?? []);
-export const about = (state: RootState): ILanding['about_page'] | undefined => state.landingEditor.data?.about_page;
+export const landing = (state: RootState): Partial<ILanding> | undefined =>
+  state.landingEditor.data;
+export const members = (state: RootState): ILanding["members"] =>
+  state.landingEditor.data?.members ?? [];
+export const partners = (state: RootState): ILanding["partners"] =>
+  state.landingEditor.data?.partners ?? [];
+export const about = (state: RootState): ILanding["about_page"] | undefined =>
+  state.landingEditor.data?.about_page;
 
-type HeaderData = Partial<Pick<ILanding, 'title' | 'color_theme' | 'logo'>>;
+type HeaderData = Partial<Pick<ILanding, "title" | "color_theme" | "logo">>;
 
 export const headerData = (state: RootState): HeaderData | undefined => {
   if (!state.landingEditor.data) return;

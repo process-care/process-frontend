@@ -7,6 +7,7 @@ import { Image } from "@chakra-ui/react";
 import Hero from "assets/hero.jpg";
 import { useGetSurveys } from "call/actions/survey";
 import { Filters } from "components/Dashboard/Filters";
+import { NoData } from "components/SurveyGrid/noData";
 
 // STATIC
 
@@ -30,8 +31,8 @@ export const Portail: React.FC<IRoute> = () => {
       surveys?.surveys?.filter((survey) => {
         if (currentFilter === "all") return surveys.surveys;
         if (currentFilter === "pending") return survey.status === "pending";
-
         if (currentFilter === "archived") return survey.status === "archived";
+        else return [];
       }),
     [currentFilter, surveys]
   );
@@ -89,7 +90,11 @@ export const Portail: React.FC<IRoute> = () => {
           />
         </Box>
 
-        <SurveyGrid surveys={filteredSurveys} isLoading={isLoading} />
+        {filteredSurveys && filteredSurveys.length > 0 ? (
+          <SurveyGrid surveys={filteredSurveys} isLoading={isLoading} />
+        ) : (
+          <NoData content="Nous n'avons pas trouvé d'enquêtes pour votre recherche." />
+        )}
       </Box>
     </Box>
   );

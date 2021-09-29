@@ -17,6 +17,9 @@ export const Step_2: React.FC<Props> = ({ currentCondition }) => {
       return operatorsForMultiple;
     } else return operators;
   };
+
+  console.log("check", checkIfMultiple(currentCondition), currentCondition);
+
   return (
     <Flex
       flexWrap="wrap"

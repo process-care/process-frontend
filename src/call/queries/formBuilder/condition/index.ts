@@ -44,6 +44,12 @@ export const UPDATE_CONDITION = gql`
   }
 `;
 
+export const DELETE_GROUP_CONDITION = gql`
+  mutation deleteGroupCondition($name: String) {
+    deleteGroupCondition(name: $name)
+  }
+`;
+
 export const DELETE_CONDITION = gql`
   mutation deletecondition($id: ID!) {
     deleteCondition(input: { where: { id: $id } }) {

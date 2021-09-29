@@ -4,7 +4,7 @@ import React from "react";
 import { t } from "static/global";
 
 interface Props {
-  confirm: () => Promise<void>;
+  confirm: () => Promise<void> | any;
   close: () => void;
   content: string;
   height?: string;

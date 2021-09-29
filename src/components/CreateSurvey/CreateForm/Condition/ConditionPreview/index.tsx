@@ -100,10 +100,7 @@ export const ConditionPreview: React.FC = () => {
                         ? current_condition.referer_page?.id
                         : current_condition.referer_question?.id,
                     step: 1,
-                    group: {
-                      id: current_condition?.group.id,
-                      name: current_condition?.group.name,
-                    },
+                    group: current_condition?.group,
                     is_valid: false,
                   }).then((data: any) =>
                     dispatch(selectCondition(data.createCondition.condition))

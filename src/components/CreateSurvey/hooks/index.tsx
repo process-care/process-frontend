@@ -37,7 +37,7 @@ export const useNavigator: any = (survey: Survey["survey"]) => {
   }, [id]);
 
   const goToSurveyMetadatas = useCallback(() => {
-    history.push(`/survey/${id}/create/metadatas`);
+    history.push(`/survey/${slug}/create/metadatas`);
   }, [id]);
 
   return {

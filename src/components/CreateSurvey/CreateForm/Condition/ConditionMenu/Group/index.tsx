@@ -26,6 +26,7 @@ import { Operator } from "./Operator";
 import {
   useAddCondition,
   useDeleteCondition,
+  useDeleteGroupCondition,
   useGetConditions,
   useUpdateCondition,
 } from "call/actions/formBuider/condition";
@@ -42,6 +43,7 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
   });
   const { mutateAsync: deleteCondition } = useDeleteCondition();
   const { mutateAsync: addCondition } = useAddCondition();
+  const { mutateAsync: deleteGroupCondition } = useDeleteGroupCondition();
 
   const currentCondition = data?.conditions.find(
     (c: ICondition) => c.id === selected_condition.id
@@ -70,6 +72,16 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
     }
   };
 
+  const handleDeleteGroup = () => {
+    deleteGroupCondition(currentCondition?.group);
+    // Si on supprime la selected_condition, il faut selectionner la premiere condition s'il y en a une ou reset la selected_condition
+    if (selected_condition.group === currentCondition?.group && conditions) {
+      dispatch(selectCondition(conditions[0]));
+    } else {
+      dispatch(selectCondition({}));
+    }
+  };
+
   return (
     <Box h="100%">
       {clean_groups?.map(({ name, id }) => {
@@ -78,10 +90,7 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
             <RemovingConfirmation
               key={id}
               content={t.removing_group_confirmation}
-              confirm={async () =>
-                // Implement group deletion
-                await console.log("remove condition group")
-              }
+              confirm={handleDeleteGroup}
               close={() => setRemoving({ type: null, id: "" })}
             />
           );

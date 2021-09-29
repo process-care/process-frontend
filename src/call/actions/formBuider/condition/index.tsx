@@ -11,6 +11,7 @@ import {
   CHECK_SURVEY,
   GET_CONDITION,
   GET_CONDITIONS,
+  DELETE_GROUP_CONDITION,
 } from "call/queries/formBuilder/condition";
 
 import { optimisticUpdate } from "call/optimisiticUpdate";
@@ -73,6 +74,18 @@ export const useDeleteCondition = (): UseMutationResult<ICondition, Error> =>
     async (id: ICondition["id"]) =>
       await client.request(DELETE_CONDITION, {
         id,
+      }),
+    optimisticUpdate(["getConditions", "getSurvey", "getQuestions"])
+  );
+
+export const useDeleteGroupCondition = (): UseMutationResult<
+  ICondition,
+  Error
+> =>
+  useMutation<ICondition, Error, any>(
+    async (name: ICondition["id"]) =>
+      await client.request(DELETE_GROUP_CONDITION, {
+        name,
       }),
     optimisticUpdate(["getConditions", "getSurvey", "getQuestions"])
   );

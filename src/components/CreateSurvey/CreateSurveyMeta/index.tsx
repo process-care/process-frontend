@@ -10,7 +10,6 @@ import { checkValidity, formatValues, renderInputs } from "./utils";
 
 import { useParams } from "react-router-dom";
 import { selectors, actions } from "redux/slices/survey-editor";
-import { useCreateSurveyChain } from "./hooks";
 import { useGetSurveyBySlug } from "call/actions/survey";
 
 // COMPONENT
@@ -23,13 +22,11 @@ export const CreateSurveyForm: React.FC = () => {
   const { data: survey } = useGetSurveyBySlug(slug);
 
   const dispatch = useAppDispatch();
-  const { createSurveyChain } = useCreateSurveyChain();
 
-  //  TO DO: Add data into redux when component mounts
   // TODO: We could even do this effect when the user opens a side menu in the dashboard, so we "preload" the data
   useEffect(() => {
     if (!survey) {
-      console.warn("No landing ID to load.");
+      console.warn("No survey ID to load.");
       return;
     }
     dispatch(actions.load(survey.id));
@@ -43,6 +40,7 @@ export const CreateSurveyForm: React.FC = () => {
   const onSubmit = useCallback((data, { setSubmitting, validateForm }) => {
     validateForm(data);
     setSubmitting(true);
+    dispatch(actions.post(data));
   }, []);
 
   return (
@@ -107,7 +105,7 @@ export const CreateSurveyForm: React.FC = () => {
                   </Flex>
                   <Flex mt="50px">
                     {step === 7 && (
-                      <Button onClick={createSurveyChain} variant="rounded">
+                      <Button type="submit" variant="rounded">
                         Valider
                       </Button>
                     )}

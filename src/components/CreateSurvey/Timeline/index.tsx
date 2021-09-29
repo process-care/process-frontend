@@ -24,7 +24,6 @@ interface IStep {
 export const Timeline: React.FC = () => {
   const survey = useAppSelector(selectors.survey);
   const step = useAppSelector(selectors.step);
-
   return (
     <Box p="20px" pos="relative">
       <Flex justifyContent="flex-end">
@@ -47,13 +46,12 @@ const RenderSteps: React.FC<Props> = ({ survey, step }) => {
   const navigateTo = (target: number) => {
     dispatch(actions.setStep(target));
   };
-  if (!survey) return null;
 
   const Step = ({ data }: { data: IStep }) => {
     const { id, label, pos } = data;
-    const isCompleted = survey[id] !== null;
+    const isCompleted = survey && survey[id]?.length !== 0;
     const isCurrent = pos === step;
-    const value = survey[id];
+    const value = survey && survey[id];
 
     return (
       <Box

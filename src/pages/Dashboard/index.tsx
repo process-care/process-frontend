@@ -19,6 +19,7 @@ import { toogleDrawer } from "redux/slices/application";
 import { useDispatch } from "react-redux";
 import { ProfilForm } from "components/Dashboard/ProfilForm";
 import { useAuth } from "components/Authentification/hooks";
+import { actions } from "redux/slices/survey-editor";
 
 export const Dashboard: React.FC<IRoute> = () => {
   const { user } = useAuth();
@@ -99,6 +100,7 @@ export const Dashboard: React.FC<IRoute> = () => {
   };
 
   const goToCreateSurvey = () => {
+    dispatch(actions.reset());
     history.push(`/survey/draft/create/metadatas`);
   };
 

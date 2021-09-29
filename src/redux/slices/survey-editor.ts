@@ -1,27 +1,44 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
 // import type { RootState } from "redux/store";
 import { RootState } from "redux/store";
 import { DateTime } from "luxon";
 import { Survey } from "./surveyBuilder";
 import slugify from "slugify";
+import { history } from "redux/store/history";
 
 // ---- STATE
 
 export interface SurveyEditor {
   // Page status
   isLoading: boolean;
+  isPosting: boolean;
+  isFailed: boolean;
   error?: string;
   lastUpdated: string;
   lastSaved: string;
+  lastPosted: string;
   data?: Partial<Survey["survey"]>;
   step: number;
 }
 
 const initialState: SurveyEditor = {
   isLoading: true,
+  isPosting: false,
+  isFailed: false,
   lastUpdated: new Date().toISOString(),
   lastSaved: new Date().toISOString(),
+  lastPosted: new Date().toISOString(),
   step: 1,
+  data: {
+    title: "",
+    description: "",
+    slug: "",
+    keywords: [],
+    categories: [],
+    language: "",
+    email: "",
+  },
 };
 
 // ---- ACTIONS
@@ -32,6 +49,9 @@ type UpdatePayload = Partial<Survey["survey"]>;
 
 type UpdatedPayload = {
   lastSaved: string;
+};
+type PostedPayload = {
+  lastPosted: string;
 };
 
 // ----- SLICE
@@ -66,6 +86,24 @@ export const surveyEditorSlice = createSlice({
     },
     updated: (state, action: PayloadAction<UpdatedPayload>) => {
       state.lastSaved = action.payload.lastSaved;
+    },
+    post: (state, _action: PayloadAction<string>) => {
+      state.isPosting = true;
+    },
+    posted: (state, action: PayloadAction<PostedPayload>) => {
+      // Switch flags
+      state.isPosting = false;
+      state.lastPosted = action.payload.lastPosted;
+      // reset
+      state = initialState;
+
+      setTimeout(() => {
+        history.push(`/dashboard`);
+      }, 1);
+    },
+    failed: (state, action: PayloadAction<string>) => {
+      state.isFailed = true;
+      state.error = action.payload;
     },
     setStep: (state, action: PayloadAction<number>) => {
       state.step = action.payload;

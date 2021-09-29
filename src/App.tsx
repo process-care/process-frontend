@@ -1,6 +1,6 @@
 import { ChakraProvider, ColorModeScript, CSSReset } from "@chakra-ui/react";
 import * as React from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import theme from "theme";
 import { Layout } from "components/Layout";
 import { routes } from "routes";
@@ -15,6 +15,8 @@ import { QueryClient, QueryClientProvider } from "react-query";
 
 import "index.css";
 import { ProtectedRoutes } from "routes/ProtectedRoutes";
+import { ConnectedRouter } from "connected-react-router";
+import { history } from "redux/store/history";
 
 export const queryClient = new QueryClient();
 
@@ -26,7 +28,7 @@ const App: React.FC = () => {
         <ChakraProvider theme={theme}>
           <CSSReset />
           <DndProvider backend={HTML5Backend}>
-            <BrowserRouter>
+            <ConnectedRouter history={history}>
               <Layout>
                 <Switch>
                   {routes.map(({ name, path, exact, component }) => {
@@ -59,7 +61,7 @@ const App: React.FC = () => {
                   </ProtectedRoutes>
                 </Switch>
               </Layout>
-            </BrowserRouter>
+            </ConnectedRouter>
           </DndProvider>
         </ChakraProvider>
       </Provider>

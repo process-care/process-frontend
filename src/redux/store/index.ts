@@ -10,6 +10,8 @@ import {
   createEpicMiddleware,
 } from "redux-observable";
 
+import { connectRouter } from "connected-react-router";
+import { routerMiddleware } from "connected-react-router";
 import formBuilder from "redux/slices/formBuilder";
 import application from "redux/slices/application";
 import landingBuilder from "redux/slices/landingBuilder";
@@ -21,7 +23,7 @@ import surveyEditor from "redux/slices/survey-editor";
 import { pingEpic } from "redux/slices/participation/epic";
 import { landingEditorEpics } from "redux/epics/landing-editor";
 import { surveyEditorEpics } from "redux/epics/survey-editor";
-
+import { history } from "./history";
 // ---- EPICS
 
 // Generic type of an epic
@@ -52,13 +54,18 @@ const combinedReducer = combineReducers({
   participation,
   landingEditor,
   surveyEditor,
+  router: connectRouter(history),
 });
 
 // ---- STORE
 
 export const store = configureStore({
   reducer: combinedReducer,
-  middleware: [...getDefaultMiddleware(), epicMiddleware],
+  middleware: [
+    ...getDefaultMiddleware(),
+    epicMiddleware,
+    routerMiddleware(history),
+  ],
 });
 
 // Run all the epics

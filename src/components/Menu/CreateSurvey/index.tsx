@@ -1,7 +1,7 @@
 import { CheckIcon } from "@chakra-ui/icons";
 import { CircularProgress, Flex, Text } from "@chakra-ui/react";
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { useAppSelector } from "redux/hooks";
 import { ReactComponent as Back } from "./assets/back.svg";
 
@@ -10,6 +10,10 @@ interface Props {
 }
 
 export const Menu: React.FC<Props> = ({ surveyTitle }) => {
+  // FIXME: Yup, these ignore are bad, need to be removed
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const { slug } = useParams();
   const { is_saving } = useAppSelector((state) => state.application);
   return (
     <Flex
@@ -19,7 +23,7 @@ export const Menu: React.FC<Props> = ({ surveyTitle }) => {
       justifyContent="flex-start"
       alignItems="center"
     >
-      <NavLink to="/dashboard">
+      <NavLink to={`/dashboard?surveySlug=${slug}`}>
         <Flex ml="50px" alignItems="center">
           <Back />
           <Text fontSize="12px" ml={2} mr="30px">

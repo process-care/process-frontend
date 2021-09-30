@@ -19,7 +19,6 @@ import { RemovingConfirmation } from "../../../RemovingConfirmation";
 import { v4 as uuidv4 } from "uuid";
 import { SvgHover } from "components/SvgHover";
 import { ReactComponent as Trash } from "assets/trash.svg";
-import { useDeletePage, useUpdatePage } from "call/actions/formBuider/page";
 import ISurvey from "types/survey";
 import {
   useAddQuestion,
@@ -32,6 +31,7 @@ import {
 import { useUpdateOrder } from "call/actions/survey";
 import { getNewOrder } from "./utils";
 import { debounce } from "lodash";
+import { actions } from "redux/slices/page-editor";
 
 interface Props {
   survey: ISurvey;
@@ -42,8 +42,6 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
   const { selected_page, is_removing } = useAppSelector(
     (state) => state.formBuilder
   );
-  const { mutate: deletePage } = useDeletePage();
-  const { mutate: updatePage } = useUpdatePage();
   const { mutateAsync: addQuestion } = useAddQuestion();
   const { mutateAsync: updateQuestion } = useUpdateQuestion();
   const { mutateAsync: addCondition } = useAddCondition();
@@ -94,19 +92,29 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
 
   const onChange = (event: React.FormEvent<HTMLFormElement>) => {
     const target = event.target as HTMLFormElement;
-    if (target !== null) {
-      updatePage({
+
+    dispatch(
+      actions.update({
         id: selected_page.id,
-        data: {
-          [target.id]:
-            target.checked !== undefined ? target.checked : target.value,
+        changes: {
+          name: target.checked !== undefined ? target.checked : target.value,
         },
-      });
-    }
+      })
+    );
+    // if (target !== null) {
+    //   updatePage({
+    //     id: selected_page.id,
+    //     data: {
+    //       [target.id]:
+    //         target.checked !== undefined ? target.checked : target.value,
+    //     },
+    //   });
+    // }
   };
 
   const handleDelete = async () => {
-    deletePage(selected_page.id);
+    dispatch(actions.delete(selected_page.id));
+    // deletePage(selected_page.id);
     dispatch(selectPage(pages[0]));
     dispatch(setIsRemoving(""));
   };
@@ -116,7 +124,7 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
       <RemovingConfirmation
         height="100%"
         content={`${t.remove_page} ${selected_page.name} ?`}
-        confirm={() => handleDelete()}
+        confirm={handleDelete}
         close={() => dispatch(setIsRemoving(""))}
       />
     );

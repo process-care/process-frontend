@@ -10,8 +10,8 @@ import { ReactComponent as Add } from "./assets/add.svg";
 
 import { isInactive } from "./utils";
 import { SvgHover } from "components/SvgHover";
-import { useAddPage } from "call/actions/formBuider/page";
 import ISurvey from "types/survey";
+import { actions, selectors } from "redux/slices/page-editor";
 
 interface Props {
   survey: ISurvey;
@@ -22,9 +22,7 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
     (state) => state.formBuilder
   );
   const dispatch = useAppDispatch();
-  const { mutateAsync: addPage, isLoading } = useAddPage();
-
-  const { pages } = survey;
+  const pages = useAppSelector(selectors.pages);
 
   // Select first page if selected_page is empty.
   React.useEffect(() => {
@@ -34,13 +32,14 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
   }, [pages]);
 
   const handlePage = () => {
-    !isLoading &&
-      addPage({
-        name: `Page ${pages.length + 1}`,
-        is_locked: false,
-        short_name: `P${pages.length + 1}`,
-        survey: survey.id,
-      }).then((data: any) => dispatch(selectPage(data.createPage.page)));
+    dispatch(actions.create({ id: survey.id }));
+    // !isLoading &&
+    //   addPage({
+    //     name: `Page ${pages.length + 1}`,
+    //     is_locked: false,
+    //     short_name: `P${pages.length + 1}`,
+    //     survey: survey.id,
+    //   }).then((data: any) => dispatch(selectPage(data.createPage.page)));
   };
 
   return (

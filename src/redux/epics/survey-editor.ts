@@ -59,6 +59,7 @@ const postEpic: Epic = (action$, state$) =>
           status: "draft",
         },
       });
+
       const surveyId = surveyRes?.createSurvey?.survey.id;
       if (surveyId) {
         await client.request(ADD_PAGE, {

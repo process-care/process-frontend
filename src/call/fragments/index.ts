@@ -35,6 +35,13 @@ export const pageFragment = gql`
     id
     name
     short_name
+    is_locked
+    conditions {
+      id
+    }
+    questions {
+      id
+    }
     survey {
       id
     }

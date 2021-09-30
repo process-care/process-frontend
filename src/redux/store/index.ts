@@ -19,10 +19,15 @@ import participation from "redux/slices/participation";
 import surveyBuilder from "redux/slices/surveyBuilder";
 import landingEditor from "redux/slices/landing-editor";
 import surveyEditor from "redux/slices/survey-editor";
+import questions from "redux/slices/question-editor";
+import conditions from "redux/slices/condition-editor";
+import pages from "redux/slices/page-editor";
 
 import { pingEpic } from "redux/slices/participation/epic";
 import { landingEditorEpics } from "redux/epics/landing-editor";
 import { surveyEditorEpics } from "redux/epics/survey-editor";
+import { pageEditorEpic } from "redux/epics/page-editor";
+
 import { history } from "./history";
 // ---- EPICS
 
@@ -33,7 +38,8 @@ export type Epic = ReduxEpic<AnyAction, AnyAction, RootState, unknown>;
 export const rootEpic = combineEpics(
   pingEpic,
   landingEditorEpics,
-  surveyEditorEpics
+  surveyEditorEpics,
+  pageEditorEpic
 );
 
 // Create a middleware to set in the store
@@ -46,6 +52,12 @@ const epicMiddleware = createEpicMiddleware<
 
 // ---- REDUCERS
 
+const formEditor = combineReducers({
+  pages,
+  questions,
+  conditions,
+});
+
 const combinedReducer = combineReducers({
   formBuilder,
   landingBuilder,
@@ -54,6 +66,7 @@ const combinedReducer = combineReducers({
   participation,
   landingEditor,
   surveyEditor,
+  formEditor,
   router: connectRouter(history),
 });
 

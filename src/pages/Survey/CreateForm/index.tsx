@@ -1,5 +1,5 @@
 import { Box, Container } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import InputsPreview from "components/CreateSurvey/CreateForm/InputsPreview";
@@ -20,6 +20,8 @@ import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 import { useGetSurvey } from "call/actions/survey";
 import { Banner } from "components/Banner";
+import { useDispatch } from "react-redux";
+import { actions } from "redux/slices/page-editor";
 
 export const CreateForm: React.FC<IRoute> = () => {
   // FIXME: Yup, these ignore are bad, need to be removed
@@ -27,9 +29,13 @@ export const CreateForm: React.FC<IRoute> = () => {
   // @ts-ignore
   const { slug: surveyId } = useParams();
   const { data, isLoading, error } = useGetSurvey(surveyId);
-
+  const dispatch = useDispatch();
   const isOpen = useAppSelector((state) => state.application.drawer_is_open);
   const { selected_condition } = useAppSelector((state) => state.formBuilder);
+
+  useEffect(() => {
+    dispatch(actions.initialize(surveyId));
+  }, [surveyId]);
 
   if (isLoading) {
     return <Loader />;

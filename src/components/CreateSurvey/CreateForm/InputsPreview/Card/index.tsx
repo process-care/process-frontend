@@ -23,25 +23,21 @@ import { ReactComponent as Condition } from "./assets/condition.svg";
 
 import { RemovingConfirmation } from "./../../RemovingConfirmation";
 import { actions } from "redux/slices/application";
+import { actions as actionsQuestion } from "redux/slices/question-editor";
+
 import { t } from "static/input";
 import { SvgHover } from "components/SvgHover";
 import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
 
-import ISurvey from "types/survey";
-import { useQuestionChain } from "../../hooks";
-
 interface CardProps {
   input: IQuestion;
   index: number;
-  survey: ISurvey;
 }
 
-const Card: React.FC<CardProps> = ({ input, index, survey }) => {
+const Card: React.FC<CardProps> = ({ input, index }) => {
   const dispatch = useAppDispatch();
   const { is_removing } = useAppSelector((state) => state.formBuilder);
   const isRemoving = is_removing === input.id;
-
-  const { deleteQuestionChain } = useQuestionChain(input, survey);
 
   const color = useColorModeValue("gray.800", "gray.900");
 
@@ -52,7 +48,7 @@ const Card: React.FC<CardProps> = ({ input, index, survey }) => {
   };
 
   const handleDelete = async () => {
-    deleteQuestionChain();
+    dispatch(actionsQuestion.delete(input.id));
   };
 
   return (

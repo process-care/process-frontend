@@ -86,16 +86,16 @@ export const useQuestionEvaluation = (
 // ---- CRUD
 
 export const useAddQuestion = (
-  new_question?: IQuestion
+  values?: IQuestion
 ): UseMutationResult<Partial<IQuestion>, Error> =>
   useMutation<IQuestion, Error, any>(
-    async (new_question: IQuestion) => {
+    async (values: IQuestion) => {
       return await client.request(ADD_QUESTION, {
-        new_question,
+        values,
       });
     },
 
-    optimisticUpdate(["getQuestions"], new_question)
+    optimisticUpdate(["getQuestions"], values)
   );
 
 export const useUpdateQuestion = (

@@ -1,71 +1,142 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  createEntityAdapter,
+  createSlice,
+  PayloadAction,
+} from "@reduxjs/toolkit";
 
 // import type { RootState } from "redux/store";
 import { RootState } from "redux/store";
 import { DateTime } from "luxon";
 import IQuestion from "types/form/question";
+import ISurvey from "types/survey";
 
-// ---- STATE
+// ----- ENTITY ADAPTER
 
-export interface SurveyEditor {
-  // Page status
+const questionAdapter = createEntityAdapter<IQuestion>({
+  selectId: (question) => question.id,
+});
+
+// ---- TYPES
+
+export interface QuestionEditor {
+  // Questions status
+  selectedQuestion: string;
+  isCreating: boolean;
   isLoading: boolean;
-  isPosting: boolean;
+  isSaving: boolean;
   isFailed: boolean;
+  isDeleting: boolean;
   error?: string;
   lastUpdated: string;
   lastSaved: string;
-  lastPosted: string;
-  data?: Partial<IQuestion>;
+  lastCreated: string;
+  lastDeleted: string;
 }
 
-const initialState: SurveyEditor = {
+// ---- STATE
+
+const initialState: QuestionEditor = {
+  isCreating: false,
   isLoading: true,
-  isPosting: false,
+  isSaving: false,
   isFailed: false,
+  isDeleting: false,
   lastUpdated: new Date().toISOString(),
   lastSaved: new Date().toISOString(),
-  lastPosted: new Date().toISOString(),
+  lastCreated: new Date().toISOString(),
+  lastDeleted: new Date().toISOString(),
+  selectedQuestion: "",
 };
+
 // ----- ACTIONS
 
-type UpdatePayload = Partial<IQuestion>;
+type UpdatePayload = {
+  id: string;
+  changes: Partial<IQuestion>;
+};
+
+type UpdatedPayload = {
+  lastUpdated: string;
+};
+
+type DeletedPayload = {
+  lastDeleted: string;
+};
+
+type SavedPayload = {
+  lastSaved: string;
+};
+
+type CreatePayload = {
+  type: IQuestion["type"];
+  survey: ISurvey;
+};
+
+type CreatedPayload = {
+  question: IQuestion;
+  lastCreated: string;
+};
 
 // ----- SLICE
 const SLICE_NAME = "question-editor";
 
 export const questionsSlice = createSlice({
   name: SLICE_NAME,
-  initialState,
+  initialState: questionAdapter.getInitialState(initialState),
   reducers: {
-    load: (state, _action: PayloadAction<string>) => {
+    initialize: (state, _action: PayloadAction<string>) => {
       state.isLoading = true;
     },
-    loaded: (state, action: PayloadAction<IQuestion>) => {
+    initialized: (state, action: PayloadAction<any>) => {
       state.isLoading = false;
-      const question = action.payload;
-      state.data = question;
+      questionAdapter.setMany(state, action.payload);
+      if (action.payload[0]) state.selectedQuestion = action.payload[0].id;
+    },
+    create: (state, _action: PayloadAction<CreatePayload>) => {
+      state.isCreating = true;
+    },
+    created: (state, action: PayloadAction<CreatedPayload>) => {
+      state.isCreating = false;
+      state.lastCreated = action.payload.lastCreated;
+      questionAdapter.addOne(state, action.payload.question);
+      state.selectedQuestion = action.payload.question.id;
     },
     update: (state, action: PayloadAction<UpdatePayload>) => {
       state.lastUpdated = new Date().toISOString();
-      const updated = { ...state.data, ...action.payload };
-      state.data = updated;
+      questionAdapter.updateOne(state, action.payload);
     },
-    updated: (state, action: PayloadAction<any>) => {
+    updated: (state, action: PayloadAction<UpdatedPayload>) => {
+      state.lastUpdated = action.payload.lastUpdated;
+    },
+    delete: (state, action: PayloadAction<any>) => {
+      state.isDeleting = true;
+      questionAdapter.removeOne(state, action.payload);
+      const lastQuestionId = state.ids.length - 1;
+      if (lastQuestionId) {
+        state.selectedQuestion = state.ids[lastQuestionId].toString();
+      } else {
+        state.selectedQuestion = "";
+      }
+    },
+    deleted: (state, action: PayloadAction<DeletedPayload>) => {
+      state.isDeleting = false;
+      state.lastDeleted = action.payload.lastDeleted;
+    },
+    save: (state) => {
+      state.isSaving = true;
+    },
+    saved: (state, action: PayloadAction<SavedPayload>) => {
+      state.isSaving = false;
       state.lastSaved = action.payload.lastSaved;
-    },
-    post: (state, _action: PayloadAction<string>) => {
-      state.isPosting = true;
-    },
-    posted: (state, action: PayloadAction<any>) => {
-      state.isPosting = false;
-      state.lastPosted = action.payload.lastPosted;
     },
     failed: (state, action: PayloadAction<string>) => {
       state.isFailed = true;
       state.error = action.payload;
     },
-    reset: () => initialState,
+    setSelectedQuestion: (state, action: PayloadAction<string>) => {
+      state.selectedQuestion = action.payload;
+    },
+    reset: () => questionAdapter.getInitialState(initialState),
   },
 });
 
@@ -81,14 +152,31 @@ export const hasChanges = (state: RootState): boolean => {
   return updated > saved;
 };
 
-export const question = (state: RootState): Partial<IQuestion> | undefined =>
-  state.formEditor.questions.data;
+export const questions = (state: RootState): IQuestion[] =>
+  questionAdapter.getSelectors().selectAll(state.formEditor.questions);
+
+const getSelectedQuestionId = (state: RootState): string =>
+  state.formEditor.questions.selectedQuestion;
+
+const getSelectedPageQuestions = (state: RootState): IQuestion[] => {
+  return questions(state).filter(
+    (question) => question.page?.id === state.formEditor.pages.selectedPage
+  );
+};
+
+const getSelectedQuestion = (state: RootState): IQuestion | any =>
+  questionAdapter
+    .getSelectors()
+    .selectById(state.formEditor.questions, getSelectedQuestionId(state));
 
 export const selectors = {
   error,
   isLoading,
   hasChanges,
-  question,
+  questions,
+  getSelectedQuestionId,
+  getSelectedQuestion,
+  getSelectedPageQuestions,
 };
 
 // ---- EXPORTS

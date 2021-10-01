@@ -21,7 +21,7 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
   const { selected_condition } = useAppSelector((state) => state.formBuilder);
   const selectedPage = useAppSelector(selectors.getSelectedPage);
   const dispatch = useAppDispatch();
-  const pages = useAppSelector(selectors.pages);
+  const pages = useAppSelector(selectors.getAllPages);
 
   const handlePage = () => {
     dispatch(actions.create({ id: survey.id }));
@@ -53,7 +53,7 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
             >
               <Flex alignItems="center" position="relative">
                 <Box position="absolute" right="16px" bottom="35px">
-                  {page.conditions.length > 0 ? <Condition /> : ""}
+                  {page?.conditions?.length > 0 ? <Condition /> : ""}
                 </Box>
                 <Box
                   onClick={() => selectPage(page.id)}

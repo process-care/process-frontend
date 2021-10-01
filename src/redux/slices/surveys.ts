@@ -8,23 +8,23 @@ import {
 import { RootState } from "redux/store";
 import { DateTime } from "luxon";
 import IPage from "types/form/page";
+import ISurvey from "types/survey";
 
 // ----- ENTITY ADAPTER
 
-const pageAdapter = createEntityAdapter<IPage>({
-  selectId: (page) => page.id,
+const surveyAdapter = createEntityAdapter<ISurvey>({
+  selectId: (survey) => survey.id,
 });
 
 // ---- TYPES
 
-export interface PageEditor {
-  // Page status
-  selectedPage: string;
-  isCreating: boolean;
+export interface surveyEditor {
+  // Surveys status
+  selectedSurvey: string;
   isLoading: boolean;
-  isSaving: boolean;
   isFailed: boolean;
   isDeleting: boolean;
+  isSaving: boolean;
   error?: string;
   lastUpdated: string;
   lastSaved: string;
@@ -34,17 +34,16 @@ export interface PageEditor {
 
 // ---- STATE
 
-const initialState: PageEditor = {
-  isCreating: false,
+const initialState: surveyEditor = {
   isLoading: true,
-  isSaving: false,
   isFailed: false,
+  isSaving: false,
   isDeleting: false,
   lastUpdated: new Date().toISOString(),
   lastSaved: new Date().toISOString(),
   lastCreated: new Date().toISOString(),
   lastDeleted: new Date().toISOString(),
-  selectedPage: "",
+  selectedSurvey: "",
 };
 // ----- ACTIONS
 
@@ -65,52 +64,34 @@ type SavedPayload = {
   lastSaved: string;
 };
 
-type ID = {
-  id: string;
-};
-
-type CreatedPayload = {
-  page: IPage;
-  lastCreated: string;
-};
-
 // ----- SLICE
 
-const SLICE_NAME = "page-editor";
+const SLICE_NAME = "surveys";
 
-export const questionsSlice = createSlice({
+export const surveysSlice = createSlice({
   name: SLICE_NAME,
-  initialState: pageAdapter.getInitialState(initialState),
+  initialState: surveyAdapter.getInitialState(initialState),
   reducers: {
     initialize: (state, _action: PayloadAction<string>) => {
       state.isLoading = true;
     },
     initialized: (state, action: PayloadAction<any>) => {
       state.isLoading = false;
-      pageAdapter.setMany(state, action.payload);
-      if (action.payload[0]) state.selectedPage = action.payload[0].id;
-    },
-    create: (state, _action: PayloadAction<ID>) => {
-      state.isCreating = true;
-    },
-    created: (state, action: PayloadAction<CreatedPayload>) => {
-      state.isCreating = false;
-      state.lastCreated = action.payload.lastCreated;
-      pageAdapter.addOne(state, action.payload.page);
-      state.selectedPage = action.payload.page.id;
+      surveyAdapter.setMany(state, action.payload);
+      if (action.payload[0]) state.selectedSurvey = action.payload[0].id;
     },
     update: (state, action: PayloadAction<UpdatePayload>) => {
       state.lastUpdated = new Date().toISOString();
-      pageAdapter.updateOne(state, action.payload);
+      surveyAdapter.updateOne(state, action.payload);
     },
     updated: (state, action: PayloadAction<UpdatedPayload>) => {
       state.lastUpdated = action.payload.lastUpdated;
     },
     delete: (state, action: PayloadAction<any>) => {
       state.isDeleting = true;
-      pageAdapter.removeOne(state, action.payload);
+      surveyAdapter.removeOne(state, action.payload);
       const lastPageId = state.ids.length - 1;
-      state.selectedPage = state.ids[lastPageId].toString();
+      state.selectedSurvey = state.ids[lastPageId].toString();
     },
     deleted: (state, action: PayloadAction<DeletedPayload>) => {
       state.isDeleting = false;
@@ -127,34 +108,33 @@ export const questionsSlice = createSlice({
       state.isFailed = true;
       state.error = action.payload;
     },
-    setSelectedPage: (state, action: PayloadAction<string>) => {
-      state.selectedPage = action.payload;
+    setselectedSurvey: (state, action: PayloadAction<string>) => {
+      state.selectedSurvey = action.payload;
     },
-    reset: () => pageAdapter.getInitialState(initialState),
+    reset: () => surveyAdapter.getInitialState(initialState),
   },
 });
 
 // ---- SELECTORS
 
 export const error = (state: RootState): string | undefined =>
-  state.formEditor.pages.error;
-export const isLoading = (state: RootState): boolean =>
-  state.formEditor.pages.isLoading;
+  state.surveys.error;
+export const isLoading = (state: RootState): boolean => state.surveys.isLoading;
 export const hasChanges = (state: RootState): boolean => {
-  const updated = DateTime.fromISO(state.formEditor.questions.lastUpdated);
-  const saved = DateTime.fromISO(state.formEditor.questions.lastSaved);
+  const updated = DateTime.fromISO(state.surveys.lastUpdated);
+  const saved = DateTime.fromISO(state.surveys.lastSaved);
   return updated > saved;
 };
-export const getAllPages = (state: RootState): IPage[] =>
-  pageAdapter.getSelectors().selectAll(state.formEditor.pages);
+export const getAllSurveys = (state: RootState): ISurvey[] =>
+  surveyAdapter.getSelectors().selectAll(state.surveys);
 
-const getSelectedPageId = (state: RootState): string =>
-  state.formEditor.pages.selectedPage;
+const getselectedSurveyId = (state: RootState): string =>
+  state.surveys.selectedSurvey;
 
-const getSelectedPage = (state: RootState): IPage | undefined =>
-  pageAdapter
+const getselectedSurvey = (state: RootState): ISurvey | undefined =>
+  surveyAdapter
     .getSelectors()
-    .selectById(state.formEditor.pages, getSelectedPageId(state));
+    .selectById(state.surveys, getselectedSurveyId(state));
 
 // ---- EXPORTS
 
@@ -162,10 +142,10 @@ export const selectors = {
   error,
   isLoading,
   hasChanges,
-  getAllPages,
-  getSelectedPage,
-  getSelectedPageId,
+  getAllSurveys,
+  getselectedSurvey,
+  getselectedSurveyId,
 };
 
-export const actions = questionsSlice.actions;
-export default questionsSlice.reducer;
+export const actions = surveysSlice.actions;
+export default surveysSlice.reducer;

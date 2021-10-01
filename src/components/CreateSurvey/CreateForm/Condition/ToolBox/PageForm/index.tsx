@@ -1,12 +1,7 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 
-// import { fields } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/logic/initialValues";
-import {
-  selectCondition,
-  selectInput,
-  setIsRemoving,
-} from "redux/slices/formBuilder";
+import { selectCondition, setIsRemoving } from "redux/slices/formBuilder";
 import { actions as actionsApplication } from "redux/slices/application";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { t } from "static/survey";
@@ -19,18 +14,10 @@ import { v4 as uuidv4 } from "uuid";
 import { SvgHover } from "components/SvgHover";
 import { ReactComponent as Trash } from "assets/trash.svg";
 import ISurvey from "types/survey";
-import {
-  useAddQuestion,
-  useUpdateQuestion,
-} from "call/actions/formBuider/question";
-import {
-  useAddCondition,
-  useGetConditions,
-} from "call/actions/formBuider/condition";
-import { useUpdateOrder } from "call/actions/survey";
-import { getNewOrder } from "./utils";
-import { debounce } from "lodash";
+import { useAddCondition } from "call/actions/formBuider/condition";
+// import { debounce } from "lodash";
 import { actions, selectors } from "redux/slices/page-editor";
+import { actions as actionsQuestion } from "redux/slices/question-editor";
 
 interface Props {
   survey: ISurvey;
@@ -43,14 +30,7 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
   const selectedPageId = useAppSelector(selectors.getSelectedPageId);
   const selectedPage = useAppSelector(selectors.getSelectedPage);
 
-  const { mutateAsync: addQuestion } = useAddQuestion();
-  const { mutateAsync: updateQuestion } = useUpdateQuestion();
   const { mutateAsync: addCondition } = useAddCondition();
-  const { mutateAsync: updateOrder } = useUpdateOrder();
-  const { data: conditions } = useGetConditions({
-    id: selectedPageId,
-    type: "page",
-  });
 
   const { pages } = survey;
 
@@ -59,37 +39,18 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
 
   const isRemoving = is_removing === selectedPageId;
 
-  const handleSelect = (
-    type: IQuestion["type"],
-    internal_title: string | undefined
-  ) => {
-    addQuestion({ type, internal_title, page: selectedPageId }).then(
-      (data: any) => {
-        const new_question: IQuestion = data.createQuestion.question;
-        updateOrder({
-          id: survey.id,
-          new_order: getNewOrder(survey, selectedPageId, new_question.id),
-        });
-        updateQuestion({
-          id: new_question.id,
-          data: {
-            internal_title: `${new_question.type}-${new_question.id}`,
-          },
-        }).then((data: any) => {
-          dispatch(selectInput(data.updateQuestion.question));
-          dispatch(actionsApplication.toogleDrawer());
-        });
-      }
-    );
+  const handleSelect = (type: IQuestion["type"]) => {
+    // TODO: remove survey , get it insite epic
+    dispatch(actionsQuestion.create({ type, survey }));
   };
 
-  const autoSave = () => {
-    dispatch(actionsApplication.setAutoSave());
-    setTimeout(() => {
-      dispatch(actionsApplication.setAutoSave());
-    }, 2000);
-  };
-  const autoSaveDebounce = debounce(autoSave, 500);
+  // const autoSave = () => {
+  //   dispatch(actionsApplication.setAutoSave());
+  //   setTimeout(() => {
+  //     dispatch(actionsApplication.setAutoSave());
+  //   }, 2000);
+  // };
+  // const autoSaveDebounce = debounce(autoSave, 500);
 
   const onChange = (event: React.FormEvent<HTMLFormElement>) => {
     const target = event.target as HTMLFormElement;
@@ -135,7 +96,7 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
         {() => {
           return (
             <Form
-              onBlur={autoSaveDebounce}
+              // onBlur={autoSaveDebounce}
               onChange={(event) => onChange(event)}
               style={{ width: "100%" }}
             >
@@ -184,7 +145,7 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
                   placeholder="Page 1"
                   helpText="40 signes maximum"
                 />
-                <ToolBox onSelect={(type, name) => handleSelect(type, name)} />
+                <ToolBox onSelect={(type) => handleSelect(type)} />
               </Box>
 
               {isNotFirstPage && (
@@ -194,7 +155,7 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
                   justifyContent="space-between"
                   mt={5}
                 >
-                  {conditions?.conditions?.length === 0 ? (
+                  {selectedPage?.conditions?.length === 0 ? (
                     <Button
                       variant="link"
                       color="brand.blue"
@@ -221,8 +182,8 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
                       onClick={() =>
                         dispatch(
                           selectCondition(
-                            conditions?.conditions !== undefined
-                              ? conditions?.conditions[0]
+                            selectedPage?.conditions !== undefined
+                              ? selectedPage?.conditions[0]
                               : {}
                           )
                         )

@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import IRoute from "types/routes/route";
 import { Box, Container, Text, Flex, Button } from "@chakra-ui/react";
 import { useHistory } from "react-router";
 import { t } from "static/dashboard";
 import { Filters } from "components/Dashboard/Filters";
 import { Table } from "components/Table";
-import { useGetMySurveys } from "call/actions/survey";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 import { ProjectMenu } from "components/Dashboard/ProjectMenu";
@@ -20,14 +19,19 @@ import { useDispatch } from "react-redux";
 import { ProfilForm } from "components/Dashboard/ProfilForm";
 import { useAuth } from "components/Authentification/hooks";
 import { actions } from "redux/slices/survey-editor";
+import {
+  actions as actionsSurveys,
+  selectors as selectorsSurveys,
+} from "redux/slices/surveys";
 
 export const Dashboard: React.FC<IRoute> = () => {
   const { user } = useAuth();
   const history = useHistory();
   const { location } = history;
   const dispatch = useDispatch();
-
-  const { data: surveys, isLoading, error } = useGetMySurveys(user.id);
+  const surveys = useAppSelector(selectorsSurveys.getAllSurveys);
+  const error = useAppSelector(selectorsSurveys.error);
+  const isLoading = useAppSelector(selectorsSurveys.isLoading);
 
   const isOpen = useAppSelector((state) => state.application.drawerIsOpen);
   const isProfilPage = location.pathname === "/profil";
@@ -55,7 +59,7 @@ export const Dashboard: React.FC<IRoute> = () => {
   const [currentFilter, setCurrentFilter] = useState<string>(t.filters[0].id);
 
   const data = React.useMemo(() => {
-    const orderedList = surveys?.surveys.sort((a, b) => {
+    const orderedList = surveys.sort((a, b) => {
       return dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf();
     });
 
@@ -66,7 +70,7 @@ export const Dashboard: React.FC<IRoute> = () => {
         return survey.status === currentFilter;
       });
     }
-  }, [currentFilter, surveys?.surveys]);
+  }, [currentFilter, surveys]);
 
   const columns = React.useMemo(
     () =>
@@ -81,7 +85,7 @@ export const Dashboard: React.FC<IRoute> = () => {
         } else if (accessor === "total") {
           return {
             Header,
-            accessor: (d: any) => d.participations.length,
+            accessor: (d: any) => d.participations?.length,
           };
         } else
           return {
@@ -106,15 +110,19 @@ export const Dashboard: React.FC<IRoute> = () => {
     history.push(`/survey/draft/create/metadatas`);
   };
 
+  useEffect(() => {
+    dispatch(actionsSurveys.initialize(user.id));
+  }, [user.id]);
+
   if (isLoading || surveys === undefined) {
     return <Loader />;
   }
 
   if (error) {
-    return <Error error={error.message} />;
+    return <Error error={error} />;
   }
 
-  const surveysLenght = surveys.surveys.length;
+  const surveysLenght = surveys.length;
 
   return (
     <Box d="flex" justifyContent="space-around" w="100%">

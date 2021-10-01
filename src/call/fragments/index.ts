@@ -64,6 +64,9 @@ export const questionFragment = gql`
     min
     step
     internal_title
+    page {
+      id
+    }
     conditions {
       id
       referer_page {

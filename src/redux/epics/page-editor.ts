@@ -32,7 +32,7 @@ const createEpic: Epic = (action$, state$) =>
     ofType(actions.create.type),
     switchMap(async (action) => {
       const { id } = action.payload;
-      const pagesLength = selectors.pages(state$.value).length;
+      const pagesLength = selectors.getAllPages(state$.value).length;
       const pageData = {
         name: `Page ${pagesLength + 1}`,
         is_locked: false,
@@ -71,7 +71,7 @@ const updateEpic: Epic = (action$) =>
     ofType(actions.update.type),
     map((action) => action.payload),
     scan((acc, payload) => Object.assign({}, acc, payload), {}),
-    debounceTime(1000),
+    debounceTime(3000),
     switchMap(async (accumulated: any) => {
       const updatedAt: string = new Date().toISOString();
       await client.request(UPDATE_PAGE, {

@@ -25,6 +25,7 @@ import {
 import { useAddCondition } from "call/actions/formBuider/condition";
 import ISurvey from "types/survey";
 import { useQuestionChain } from "components/CreateSurvey/CreateForm/hooks";
+import { selectors } from "redux/slices/question-editor";
 
 interface Props {
   survey: ISurvey;
@@ -32,15 +33,20 @@ interface Props {
 
 const InputForm: React.FC<Props> = ({ survey }) => {
   const isEditing = useAppSelector((state) => state.formBuilder.is_editing);
+  const selectedQuestion = useAppSelector(selectors.getSelectedQuestion);
+  const selectedQuestionId = useAppSelector(selectors.getSelectedQuestionId);
+
   const { selected_input } = useAppSelector((state) => state.formBuilder);
-  const { type } = selected_input;
+  const type = selectedQuestion?.type;
 
   const dispatch = useAppDispatch();
 
   const { mutateAsync: updateQuestion } = useUpdateQuestion();
   const { mutateAsync: addCondition } = useAddCondition();
-  const { deleteQuestionChain } = useQuestionChain(selected_input, survey);
-  const { data: currentQuestion } = useGetQuestion(selected_input.id);
+  const { deleteQuestionChain } = useQuestionChain(selectedQuestion, survey);
+  const { data: currentQuestion } = useGetQuestion(selectedQuestionId);
+
+  console.log(currentQuestion, selectedQuestion);
 
   const handleDelete = async () => {
     if (!isEditing) {
@@ -60,8 +66,8 @@ const InputForm: React.FC<Props> = ({ survey }) => {
 
   return (
     <Formik
-      validationSchema={renderFormValidationSchema(selected_input)}
-      initialValues={selected_input ? selected_input : fields[type]}
+      validationSchema={renderFormValidationSchema(selectedQuestion)}
+      initialValues={selectedQuestion ? selectedQuestion : fields[type]}
       onSubmit={(data, { setSubmitting, validateForm }) => {
         validateForm(data);
         setSubmitting(true);
@@ -79,7 +85,7 @@ const InputForm: React.FC<Props> = ({ survey }) => {
 
           if (target !== null) {
             updateQuestion({
-              id: selected_input.id,
+              id: selectedQuestionId,
               data: {
                 [target.id]: target.value,
               },
@@ -90,7 +96,7 @@ const InputForm: React.FC<Props> = ({ survey }) => {
         useEffect(() => {
           if (values.options) {
             updateQuestion({
-              id: selected_input.id,
+              id: selectedQuestionId,
               data: {
                 options: values.options,
               },
@@ -121,17 +127,17 @@ const InputForm: React.FC<Props> = ({ survey }) => {
                 alignItems="start"
               >
                 <Flex alignItems="center">
-                  <InputIcon type={selected_input.type} />
+                  <InputIcon type={type} />
                   <Box ml={2}>
                     <Text variant="xsMedium">
                       {survey?.order?.findIndex(
-                        (id: string) => id === selected_input.id
+                        (id: string) => id === selectedQuestionId
                       ) + 1}
                     </Text>
-                    <Text variant="xs">Question {selected_input.type}</Text>
+                    <Text variant="xs">Question {type}</Text>
                   </Box>
                 </Flex>
-                {selected_input.type !== "wysiwyg" && (
+                {type !== "wysiwyg" && (
                   <Flex flexDirection="column">
                     <Switch label="" id="required" size="sm" />
                     <Text variant="xsMedium">Réponse obligatoire</Text>
@@ -139,7 +145,7 @@ const InputForm: React.FC<Props> = ({ survey }) => {
                 )}
               </Flex>
 
-              <Box mb={8}>{renderFormTemplate(selected_input)}</Box>
+              <Box mb={8}>{renderFormTemplate(selectedQuestion)}</Box>
 
               <Flex
                 alignItems="center"

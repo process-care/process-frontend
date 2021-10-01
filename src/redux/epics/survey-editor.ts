@@ -10,11 +10,11 @@ import { ADD_PAGE } from "call/queries/formBuilder/page";
 // Watches over "load" landing
 const loadEpic: Epic = (action$) =>
   action$.pipe(
-    ofType(actions.load.type),
+    ofType(actions.initialize.type),
     switchMap((action) => client.request(GET_SURVEY, { id: action.payload })),
     map((result) => {
       const payload = result.survey;
-      return actions.loaded(payload);
+      return actions.initialize(payload);
     })
   );
 

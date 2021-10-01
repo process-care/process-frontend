@@ -29,7 +29,7 @@ export const CreateSurveyForm: React.FC = () => {
       console.warn("No survey ID to load.");
       return;
     }
-    dispatch(actions.load(survey.id));
+    dispatch(actions.initialize(survey.id));
   }, [survey]);
 
   // Flag to avoid saving the initial values injected into Formik

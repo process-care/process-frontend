@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "redux/store";
-
+import { actions as questionAction } from "./../question-editor";
 // ---- TYPES
 
 interface IPreview {
@@ -53,6 +53,11 @@ export const applicationSlice = createSlice({
     setSelectedCondition: (state, action: PayloadAction<string>) => {
       state.selectedCondition = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(questionAction.created, (state) => {
+      state.drawerIsOpen = true;
+    });
   },
 });
 

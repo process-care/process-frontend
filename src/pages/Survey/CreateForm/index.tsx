@@ -18,7 +18,7 @@ import { ConditionPreview } from "components/CreateSurvey/CreateForm/Condition/C
 import { RightPart } from "components/Layout/RightPart";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
-import { useGetSurvey } from "call/actions/survey";
+import { useGetSurveyBySlug } from "call/actions/survey";
 import { Banner } from "components/Banner";
 import { useDispatch } from "react-redux";
 import { actions } from "redux/slices/page-editor";
@@ -27,15 +27,15 @@ export const CreateForm: React.FC<IRoute> = () => {
   // FIXME: Yup, these ignore are bad, need to be removed
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  const { slug: surveyId } = useParams();
-  const { data, isLoading, error } = useGetSurvey(surveyId);
+  const { slug } = useParams();
+  const { data: survey, isLoading, error } = useGetSurveyBySlug(slug);
   const dispatch = useDispatch();
-  const isOpen = useAppSelector((state) => state.application.drawer_is_open);
+  const isOpen = useAppSelector((state) => state.application.drawerIsOpen);
   const { selected_condition } = useAppSelector((state) => state.formBuilder);
 
   useEffect(() => {
-    dispatch(actions.initialize(surveyId));
-  }, [surveyId]);
+    if (survey) dispatch(actions.initialize(survey.id));
+  }, [slug, isLoading]);
 
   if (isLoading) {
     return <Loader />;
@@ -45,7 +45,7 @@ export const CreateForm: React.FC<IRoute> = () => {
     return <Error error={error} />;
   }
 
-  if (!data?.survey) {
+  if (!survey) {
     return <div>No Survey</div>;
   }
 
@@ -54,12 +54,11 @@ export const CreateForm: React.FC<IRoute> = () => {
       <Drawer
         isOpen={isOpen}
         size="md"
-        content={<InputForm survey={data?.survey} />}
+        content={<InputForm survey={survey} />}
       />
       <Box d="flex" justifyContent="space-around" w="100%" overflow="hidden">
         <Box w="100%">
-          <Menu surveyId={surveyId} />
-
+          <Menu surveyId={survey.id} />
           <Banner />
           <Box
             d="flex"
@@ -74,7 +73,7 @@ export const CreateForm: React.FC<IRoute> = () => {
               borderRight="1px"
               borderColor="gray.200"
             >
-              <PageBuilder survey={data?.survey} />
+              <PageBuilder survey={survey} />
             </Container>
 
             <Container
@@ -87,19 +86,13 @@ export const CreateForm: React.FC<IRoute> = () => {
                 {selected_condition?.id !== undefined ? (
                   <ConditionPreview />
                 ) : (
-                  <InputsPreview
-                    order={data?.survey.order}
-                    surveyId={surveyId}
-                  />
+                  <InputsPreview order={survey.order} surveyId={survey.id} />
                 )}
               </div>
             </Container>
           </Box>
         </Box>
-        <RightPart
-          selected_condition={selected_condition}
-          survey={data?.survey}
-        />
+        <RightPart selected_condition={selected_condition} survey={survey} />
       </Box>
     </Box>
   );

@@ -28,12 +28,12 @@ export const useNavigator: any = (survey: Survey["survey"]) => {
 
   // Take you to the form editor
   const goToForm = useCallback(() => {
-    history.push(`/survey/${id}/create/form`);
+    history.push(`/survey/${slug}/create/form`);
   }, [id]);
 
   // Take you to the consent page
   const goToConsent = useCallback(() => {
-    history.push(`/survey/${id}/create/consent`);
+    history.push(`/survey/${slug}/create/consent`);
   }, [id]);
 
   const goToSurveyMetadatas = useCallback(() => {

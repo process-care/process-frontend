@@ -1,4 +1,4 @@
-import { map, switchMap, scan } from "rxjs";
+import { map, switchMap, scan, debounceTime } from "rxjs";
 import { combineEpics, ofType } from "redux-observable";
 import { Epic } from "redux/store";
 import { actions, selectors } from "redux/slices/page-editor";
@@ -60,7 +60,6 @@ const createEpic: Epic = (action$, state$) =>
           page: newPage.createPage.page,
           lastCreated: createdAt,
         });
-        // TODO: Select it !
       }
     )
   );
@@ -72,11 +71,9 @@ const updateEpic: Epic = (action$) =>
     ofType(actions.update.type),
     map((action) => action.payload),
     scan((acc, payload) => Object.assign({}, acc, payload), {}),
-    // debounceTime(5000),
-    // TODO: Need to remove because it is not working, if we change a lot of page it doesnot update all
+    debounceTime(1000),
     switchMap(async (accumulated: any) => {
       const updatedAt: string = new Date().toISOString();
-
       await client.request(UPDATE_PAGE, {
         id: accumulated.id,
         data: accumulated.changes,

@@ -1,7 +1,7 @@
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import React from "react";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
-import { selectPage, setIsRemoving } from "redux/slices/formBuilder";
+import { setIsRemoving } from "redux/slices/formBuilder";
 
 import { ReactComponent as Locked } from "./assets/locked.svg";
 import { ReactComponent as Delete } from "./assets/delete.svg";
@@ -18,28 +18,16 @@ interface Props {
 }
 
 const PageBuilder: React.FC<Props> = ({ survey }) => {
-  const { selected_page, selected_condition } = useAppSelector(
-    (state) => state.formBuilder
-  );
+  const { selected_condition } = useAppSelector((state) => state.formBuilder);
+  const selectedPage = useAppSelector(selectors.getSelectedPage);
   const dispatch = useAppDispatch();
   const pages = useAppSelector(selectors.pages);
 
-  // Select first page if selected_page is empty.
-  React.useEffect(() => {
-    if (!selected_page.id && pages.length > 0) {
-      dispatch(selectPage(pages[0]));
-    }
-  }, [pages]);
-
   const handlePage = () => {
     dispatch(actions.create({ id: survey.id }));
-    // !isLoading &&
-    //   addPage({
-    //     name: `Page ${pages.length + 1}`,
-    //     is_locked: false,
-    //     short_name: `P${pages.length + 1}`,
-    //     survey: survey.id,
-    //   }).then((data: any) => dispatch(selectPage(data.createPage.page)));
+  };
+  const selectPage = (id: string) => {
+    dispatch(actions.setSelectedPage(id));
   };
 
   return (
@@ -53,7 +41,7 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
     >
       <Box h="80%" overflowY="auto" w="100%">
         {pages?.map((page, i) => {
-          const isSelected = selected_page.id === page.id;
+          const isSelected = selectedPage?.id === page.id;
           return (
             <Box
               mb={4}
@@ -68,7 +56,7 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
                   {page.conditions.length > 0 ? <Condition /> : ""}
                 </Box>
                 <Box
-                  onClick={() => dispatch(selectPage(page))}
+                  onClick={() => selectPage(page.id)}
                   d="flex"
                   flexDirection="column"
                   border="1px"
@@ -92,7 +80,7 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
                   <Box
                     _hover={{ cursor: "pointer" }}
                     onClick={() => {
-                      dispatch(selectPage(page));
+                      selectPage(page.id);
                       dispatch(setIsRemoving(page.id));
                     }}
                   >

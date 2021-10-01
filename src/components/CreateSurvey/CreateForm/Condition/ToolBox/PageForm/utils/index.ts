@@ -7,12 +7,12 @@ import ISurvey from "types/survey";
 
 export const getNewOrder: any = (
   survey: ISurvey,
-  selected_page: Partial<IPage>,
+  selectedPageId: string,
   new_question_id: string
 ) => {
   const { pages, order } = survey;
   const current_page_idx = pages.findIndex(
-    (page: IPage) => page.id === selected_page.id
+    (page: IPage) => page.id === selectedPageId
   );
 
   const questions = pages[current_page_idx]?.questions;

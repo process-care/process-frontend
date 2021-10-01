@@ -13,7 +13,7 @@ import {
   selectCondition,
   setIsRemoving,
 } from "redux/slices/formBuilder";
-import { setAutoSave, toogleDrawer } from "redux/slices/application";
+import { actions } from "redux/slices/application";
 import { Switch } from "components/Fields";
 import { v4 as uuidv4 } from "uuid";
 import { t } from "static/condition";
@@ -46,14 +46,14 @@ const InputForm: React.FC<Props> = ({ survey }) => {
     if (!isEditing) {
       deleteQuestionChain();
     }
-    dispatch(toogleDrawer());
+    dispatch(actions.toogleDrawer());
     dispatch(setIsEditing(false));
   };
 
   const autoSave = () => {
-    dispatch(setAutoSave());
+    dispatch(actions.setAutoSave());
     setTimeout(() => {
-      dispatch(setAutoSave());
+      dispatch(actions.setAutoSave());
     }, 2000);
   };
   const autoSaveDebounce = debounce(autoSave, 500);
@@ -65,7 +65,7 @@ const InputForm: React.FC<Props> = ({ survey }) => {
       onSubmit={(data, { setSubmitting, validateForm }) => {
         validateForm(data);
         setSubmitting(true);
-        dispatch(toogleDrawer());
+        dispatch(actions.toogleDrawer());
       }}
     >
       {({ isValid, isSubmitting, values }) => {
@@ -163,7 +163,7 @@ const InputForm: React.FC<Props> = ({ survey }) => {
                         dispatch(
                           selectCondition(data.createCondition.condition)
                         );
-                        dispatch(toogleDrawer());
+                        dispatch(actions.toogleDrawer());
                       });
                     }}
                   >
@@ -181,7 +181,7 @@ const InputForm: React.FC<Props> = ({ survey }) => {
                             : {}
                         )
                       );
-                      dispatch(toogleDrawer());
+                      dispatch(actions.toogleDrawer());
                     }}
                   >
                     {t.edit_condition}
@@ -195,7 +195,7 @@ const InputForm: React.FC<Props> = ({ survey }) => {
                 onCancel={handleDelete}
                 onDelete={() => {
                   dispatch(setIsRemoving(selected_input.id));
-                  dispatch(toogleDrawer());
+                  dispatch(actions.toogleDrawer());
                 }}
               />
             </Flex>

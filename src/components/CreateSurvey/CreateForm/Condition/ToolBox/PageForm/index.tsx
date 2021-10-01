@@ -5,10 +5,9 @@ import { useAppDispatch, useAppSelector } from "redux/hooks";
 import {
   selectCondition,
   selectInput,
-  selectPage,
   setIsRemoving,
 } from "redux/slices/formBuilder";
-import { setAutoSave, toogleDrawer } from "redux/slices/application";
+import { actions as actionsApplication } from "redux/slices/application";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { t } from "static/survey";
 import ToolBox from "../InputsButton";
@@ -31,7 +30,7 @@ import {
 import { useUpdateOrder } from "call/actions/survey";
 import { getNewOrder } from "./utils";
 import { debounce } from "lodash";
-import { actions } from "redux/slices/page-editor";
+import { actions, selectors } from "redux/slices/page-editor";
 
 interface Props {
   survey: ISurvey;
@@ -39,35 +38,37 @@ interface Props {
 
 export const PageForm: React.FC<Props> = ({ survey }) => {
   const dispatch = useAppDispatch();
-  const { selected_page, is_removing } = useAppSelector(
-    (state) => state.formBuilder
-  );
+  const { is_removing } = useAppSelector((state) => state.formBuilder);
+
+  const selectedPageId = useAppSelector(selectors.getSelectedPageId);
+  const selectedPage = useAppSelector(selectors.getSelectedPage);
+
   const { mutateAsync: addQuestion } = useAddQuestion();
   const { mutateAsync: updateQuestion } = useUpdateQuestion();
   const { mutateAsync: addCondition } = useAddCondition();
   const { mutateAsync: updateOrder } = useUpdateOrder();
   const { data: conditions } = useGetConditions({
-    id: selected_page?.id,
+    id: selectedPageId,
     type: "page",
   });
 
   const { pages } = survey;
 
   const isNotFirstPage =
-    pages.findIndex((page) => page.id === selected_page.id) > 0;
+    pages.findIndex((page) => page.id === selectedPageId) > 0;
 
-  const isRemoving = is_removing === selected_page.id;
+  const isRemoving = is_removing === selectedPageId;
 
   const handleSelect = (
     type: IQuestion["type"],
     internal_title: string | undefined
   ) => {
-    addQuestion({ type, internal_title, page: selected_page.id }).then(
+    addQuestion({ type, internal_title, page: selectedPageId }).then(
       (data: any) => {
         const new_question: IQuestion = data.createQuestion.question;
         updateOrder({
           id: survey.id,
-          new_order: getNewOrder(survey, selected_page, new_question.id),
+          new_order: getNewOrder(survey, selectedPageId, new_question.id),
         });
         updateQuestion({
           id: new_question.id,
@@ -76,54 +77,43 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
           },
         }).then((data: any) => {
           dispatch(selectInput(data.updateQuestion.question));
-          dispatch(toogleDrawer());
+          dispatch(actionsApplication.toogleDrawer());
         });
       }
     );
   };
 
   const autoSave = () => {
-    dispatch(setAutoSave());
+    dispatch(actionsApplication.setAutoSave());
     setTimeout(() => {
-      dispatch(setAutoSave());
+      dispatch(actionsApplication.setAutoSave());
     }, 2000);
   };
   const autoSaveDebounce = debounce(autoSave, 500);
 
   const onChange = (event: React.FormEvent<HTMLFormElement>) => {
     const target = event.target as HTMLFormElement;
-
     dispatch(
       actions.update({
-        id: selected_page.id,
+        id: selectedPageId,
         changes: {
-          name: target.checked !== undefined ? target.checked : target.value,
+          [target.id]:
+            target.checked !== undefined ? target.checked : target.value,
         },
       })
     );
-    // if (target !== null) {
-    //   updatePage({
-    //     id: selected_page.id,
-    //     data: {
-    //       [target.id]:
-    //         target.checked !== undefined ? target.checked : target.value,
-    //     },
-    //   });
-    // }
   };
 
   const handleDelete = async () => {
-    dispatch(actions.delete(selected_page.id));
-    // deletePage(selected_page.id);
-    dispatch(selectPage(pages[0]));
+    dispatch(actions.delete(selectedPageId));
     dispatch(setIsRemoving(""));
   };
 
-  if (isRemoving) {
+  if (isRemoving && Boolean(selectedPageId)) {
     return (
       <RemovingConfirmation
         height="100%"
-        content={`${t.remove_page} ${selected_page.name} ?`}
+        content={`${t.remove_page} ${selectedPage?.name} ?`}
         confirm={handleDelete}
         close={() => dispatch(setIsRemoving(""))}
       />
@@ -134,12 +124,12 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
     <Box p={4}>
       <Formik
         validateOnBlur={false}
-        initialValues={selected_page}
+        initialValues={selectedPage ? selectedPage : {}}
         enableReinitialize
         onSubmit={(data, { setSubmitting, validateForm }) => {
           validateForm(data);
           setSubmitting(true);
-          dispatch(toogleDrawer());
+          dispatch(actionsApplication.toogleDrawer());
         }}
       >
         {() => {
@@ -153,7 +143,7 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
                 {isNotFirstPage ? (
                   <Box
                     onClick={() => {
-                      dispatch(setIsRemoving(selected_page.id));
+                      dispatch(setIsRemoving(selectedPageId));
                     }}
                   >
                     <SvgHover>
@@ -211,7 +201,7 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
                       onClick={() => {
                         addCondition({
                           type: "page",
-                          referer_page: selected_page.id,
+                          referer_page: selectedPageId,
                           step: 1,
                           group: uuidv4(),
                           is_valid: false,

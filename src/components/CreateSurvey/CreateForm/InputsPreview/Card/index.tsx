@@ -22,7 +22,7 @@ import { ReactComponent as Edit } from "./assets/edit.svg";
 import { ReactComponent as Condition } from "./assets/condition.svg";
 
 import { RemovingConfirmation } from "./../../RemovingConfirmation";
-import { toogleDrawer } from "redux/slices/application";
+import { actions } from "redux/slices/application";
 import { t } from "static/input";
 import { SvgHover } from "components/SvgHover";
 import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
@@ -48,7 +48,7 @@ const Card: React.FC<CardProps> = ({ input, index, survey }) => {
   const handleEdit = () => {
     dispatch(setIsEditing(true));
     dispatch(selectInput(input));
-    dispatch(toogleDrawer());
+    dispatch(actions.toogleDrawer());
   };
 
   const handleDelete = async () => {

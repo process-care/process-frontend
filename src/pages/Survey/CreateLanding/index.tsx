@@ -17,7 +17,7 @@ export const CreateLanding: React.FC<IRoute> = () => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const { slug } = useParams();
-  const { preview_mode } = useAppSelector((state) => state.application);
+  const { previewMode } = useAppSelector((state) => state.application);
 
   const { data: survey } = useGetSurveyBySlug(slug);
   const landingId = survey?.landing?.id;
@@ -66,7 +66,7 @@ export const CreateLanding: React.FC<IRoute> = () => {
             <Menu isLanding surveyId={survey.id} />
           </Box>
           <Box
-            mt={preview_mode !== "landing" ? "60px" : "0"}
+            mt={previewMode !== "landing" ? "60px" : "0"}
             d="flex"
             justifyContent="space-around"
             overflow="hidden"
@@ -87,7 +87,7 @@ export const CreateLanding: React.FC<IRoute> = () => {
             </Container>
           </Box>
         </Box>
-        <Collapse in={preview_mode !== "landing"} style={{ width: "32%" }}>
+        <Collapse in={previewMode !== "landing"} style={{ width: "32%" }}>
           <ToolBox />
         </Collapse>
       </Box>

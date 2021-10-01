@@ -6,20 +6,19 @@ import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { Team } from "./Team";
 import { useAppSelector } from "redux/hooks";
-import { selectors} from "redux/slices/landing-editor";
+import { selectors } from "redux/slices/landing-editor";
 import { ILanding } from "types/landing";
 
 // ---- STATICS
 
 const big_placeholder =
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et. <br/> <br/> quo velit tenetur labore at reprehenderit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.<br/> <br/> Blanditiis et, quo velit tenetur labore at reprehenderit.";
-
+  "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et. <br/> <br/> quo velit tenetur labore at reprehenderit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.<br/> <br/> Blanditiis et, quo velit tenetur labore at reprehenderit.";
 
 // ---- TYPES
 
 interface Props {
   isUserView?: boolean;
-  data?: Partial<ILanding>,
+  data?: Partial<ILanding>;
 }
 
 // ---- COMPONENT
@@ -31,22 +30,22 @@ export const Preview: React.FC<Props> = ({ isUserView, data }) => {
   const { slug } = useParams();
   const history = useHistory();
 
-  const { preview_mode } = useAppSelector((state) => state.application);
-  
+  const { previewMode } = useAppSelector((state) => state.application);
+
   const aboutPage = useAppSelector(selectors.about);
   const isEditingAbout = useAppSelector(selectors.isEditingAbout);
 
-  const isFullView = isUserView || preview_mode === "landing";
+  const isFullView = isUserView || previewMode === "landing";
 
   const onParticipate = useCallback(() => {
     if (!isUserView) {
-      alert('Bouton désactivé pendant la prévisualisation.');
+      alert("Bouton désactivé pendant la prévisualisation.");
       return;
     }
 
     history.push(`/survey/${slug}/consent`);
   }, [slug, isUserView]);
-  
+
   if (isEditingAbout) {
     return (
       <Box

@@ -37,7 +37,7 @@ export const useGetQuestion = (
 // MANY
 
 export const useGetQuestions = (
-  page_id: string
+  page_id: string | undefined
 ): UseQueryResult<IQuestionsRes, Error> => {
   return useQuery<IQuestionsRes, Error>(
     ["getQuestions", page_id],
@@ -55,21 +55,21 @@ export const useGetQuestions = (
 export interface QuestionEvaluationResult {
   evaluation: {
     id: string;
-    conditions: [EvaluationCondition]
-  }
+    conditions: [EvaluationCondition];
+  };
 }
 
 export interface EvaluationCondition {
-  id: string,
-  group: string,
-  operator: string,
-  target_value: string,
-  answer?: unknown,
+  id: string;
+  group: string;
+  operator: string;
+  target_value: string;
+  answer?: unknown;
 }
 
 export const useQuestionEvaluation = (
   questionId: string,
-  participationId: string,
+  participationId: string
 ): UseQueryResult<QuestionEvaluationResult, Error> => {
   return useQuery<QuestionEvaluationResult, Error>(
     ["questionEvaluation", questionId, participationId],

@@ -13,6 +13,7 @@ import { useGetQuestions } from "call/actions/formBuider/question";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 import { useGetSurvey, useUpdateOrder } from "call/actions/survey";
+import { selectors } from "redux/slices/page-editor";
 
 export interface Item {
   id: number;
@@ -33,12 +34,13 @@ interface Props {
 }
 
 const InputsPreview: React.FC<Props> = ({ surveyId, order }) => {
-  const { selected_page } = useAppSelector((state) => state.formBuilder);
+  const selectedPage = useAppSelector(selectors.getSelectedPage);
+
   const {
     data: questions,
     isLoading,
     error,
-  } = useGetQuestions(selected_page.id);
+  } = useGetQuestions(selectedPage?.id);
   const { data: survey } = useGetSurvey(surveyId);
   const { mutateAsync: updateOrder } = useUpdateOrder("updateOrder");
 
@@ -141,16 +143,19 @@ const InputsPreview: React.FC<Props> = ({ surveyId, order }) => {
     return <Error error={error} />;
   }
 
+  if (!selectedPage) {
+    return <p>no selected page</p>;
+  }
   if (!questions?.questions) {
     return <div>No Questions ...</div>;
   }
   return (
     <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
-      <Droppable droppableId={selected_page.id}>
+      <Droppable droppableId={selectedPage.id}>
         {(provided, snapshot) => (
           <Container isDraggingOver={snapshot.isDraggingOver}>
             <Text fontSize="14px" mt={3} textTransform="uppercase">
-              {selected_page.name}
+              {selectedPage?.name}
             </Text>
             {questions?.questions?.length > 0 && <Header />}
 

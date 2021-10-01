@@ -15,7 +15,7 @@ import dayjs from "dayjs";
 
 import { Survey } from "redux/slices/surveyBuilder";
 import { useAppSelector } from "redux/hooks";
-import { toogleDrawer } from "redux/slices/application";
+import { actions as actionsApplication } from "redux/slices/application";
 import { useDispatch } from "react-redux";
 import { ProfilForm } from "components/Dashboard/ProfilForm";
 import { useAuth } from "components/Authentification/hooks";
@@ -29,7 +29,7 @@ export const Dashboard: React.FC<IRoute> = () => {
 
   const { data: surveys, isLoading, error } = useGetMySurveys(user.id);
 
-  const isOpen = useAppSelector((state) => state.application.drawer_is_open);
+  const isOpen = useAppSelector((state) => state.application.drawerIsOpen);
   const isProfilPage = location.pathname === "/profil";
 
   const [menuIsOpen, setMenuIsOpen] = useState(false);
@@ -43,8 +43,10 @@ export const Dashboard: React.FC<IRoute> = () => {
 
   const toggleMenu = (survey: Survey["survey"]) => {
     if (isOpen) {
+      dispatch(actionsApplication.setSelectedSurvey(survey.id));
       setSelectedSurvey(survey);
     } else {
+      dispatch(actionsApplication.setSelectedSurvey(survey.id));
       setSelectedSurvey(survey);
       setMenuIsOpen(true);
     }
@@ -91,7 +93,7 @@ export const Dashboard: React.FC<IRoute> = () => {
   );
 
   const handleDrawer = () => {
-    dispatch(toogleDrawer());
+    dispatch(actionsApplication.toogleDrawer());
   };
 
   const closeDrawer = () => {

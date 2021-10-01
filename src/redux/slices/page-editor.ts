@@ -15,10 +15,11 @@ const pageAdapter = createEntityAdapter<IPage>({
   selectId: (page) => page.id,
 });
 
-// ---- STATE
+// ---- TYPES
 
 export interface PageEditor {
   // Page status
+  selectedPage: string;
   isCreating: boolean;
   isLoading: boolean;
   isSaving: boolean;
@@ -31,6 +32,8 @@ export interface PageEditor {
   lastDeleted: string;
 }
 
+// ---- STATE
+
 const initialState: PageEditor = {
   isCreating: false,
   isLoading: true,
@@ -41,6 +44,7 @@ const initialState: PageEditor = {
   lastSaved: new Date().toISOString(),
   lastCreated: new Date().toISOString(),
   lastDeleted: new Date().toISOString(),
+  selectedPage: "",
 };
 // ----- ACTIONS
 
@@ -84,6 +88,7 @@ export const questionsSlice = createSlice({
     initialized: (state, action: PayloadAction<any>) => {
       state.isLoading = false;
       pageAdapter.setMany(state, action.payload);
+      if (action.payload[0]) state.selectedPage = action.payload[0].id;
     },
     create: (state, _action: PayloadAction<ID>) => {
       state.isCreating = true;
@@ -92,6 +97,7 @@ export const questionsSlice = createSlice({
       state.isCreating = false;
       state.lastCreated = action.payload.lastCreated;
       pageAdapter.addOne(state, action.payload.page);
+      state.selectedPage = action.payload.page.id;
     },
     update: (state, action: PayloadAction<UpdatePayload>) => {
       state.lastUpdated = new Date().toISOString();
@@ -103,6 +109,8 @@ export const questionsSlice = createSlice({
     delete: (state, action: PayloadAction<any>) => {
       state.isDeleting = true;
       pageAdapter.removeOne(state, action.payload);
+      const lastPageId = state.ids.length - 1;
+      state.selectedPage = state.ids[lastPageId].toString();
     },
     deleted: (state, action: PayloadAction<DeletedPayload>) => {
       state.isDeleting = false;
@@ -118,6 +126,9 @@ export const questionsSlice = createSlice({
     failed: (state, action: PayloadAction<string>) => {
       state.isFailed = true;
       state.error = action.payload;
+    },
+    setSelectedPage: (state, action: PayloadAction<string>) => {
+      state.selectedPage = action.payload;
     },
     reset: () => pageAdapter.getInitialState(initialState),
   },
@@ -137,6 +148,14 @@ export const hasChanges = (state: RootState): boolean => {
 export const pages = (state: RootState): IPage[] =>
   pageAdapter.getSelectors().selectAll(state.formEditor.pages);
 
+const getSelectedPageId = (state: RootState): string =>
+  state.formEditor.pages.selectedPage;
+
+const getSelectedPage = (state: RootState): IPage | undefined =>
+  pageAdapter
+    .getSelectors()
+    .selectById(state.formEditor.pages, getSelectedPageId(state));
+
 // ---- EXPORTS
 
 export const selectors = {
@@ -144,6 +163,8 @@ export const selectors = {
   isLoading,
   hasChanges,
   pages,
+  getSelectedPage,
+  getSelectedPageId,
 };
 
 export const actions = questionsSlice.actions;

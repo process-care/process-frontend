@@ -3,9 +3,10 @@ import { useField } from "formik";
 import { useDebounce } from "utils/hooks/debounce";
 import {
   useCreateAnswer,
-  useGetAnswers,
   useUpdateAnswer,
 } from "call/actions/answers";
+import { useAppSelector } from "redux/hooks";
+import { selectors } from "redux/slices/participation/answers";
 
 /**
  *
@@ -14,18 +15,16 @@ import {
  * @returns
  */
 export function useAnswersGetter(
-  participationId: string,
   questionsId: string[]
 ): {
   values: Record<string, unknown>;
   references: Map<any, any>;
-  isLoading: boolean;
 } {
-  const { data, isLoading } = useGetAnswers(participationId, questionsId);
+  const data = useAppSelector(state => selectors.selectByIds(state, questionsId));
 
   const ref = new Map();
 
-  const answers = data?.answers.reduce((acc, a) => {
+  const answers = data.reduce((acc, a) => {
     acc[a.question.id] = a.value;
     ref.set(a.question.id, a.id);
     return acc;
@@ -34,7 +33,6 @@ export function useAnswersGetter(
   return {
     values: answers ?? {},
     references: ref,
-    isLoading,
   };
 }
 

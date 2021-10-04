@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Box, Flex, Text, Circle } from "@chakra-ui/react";
 
 import IPage from "types/form/page";
@@ -7,6 +7,9 @@ import { FormPage } from "./Form/FormPage";
 import { useFinishParticipation } from "call/actions/participation";
 import { useHistory } from "react-router-dom";
 import { finishParticipation } from "./localstorage-handlers";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
+import { actions } from "redux/slices/participation/status";
+import { selectors } from "redux/slices/participation/page-visited";
 
 // ---- TYPES
 
@@ -26,8 +29,14 @@ export const ParticipationForm: React.FC<Props> = ({
   surveyId,
   participationId,
 }) => {
+  const dispatch = useAppDispatch();
+
   const { data } = useGetSurvey(surveyId);
-  const pages = data?.survey.pages;
+  const pages = useAppSelector(selectors.selectAll);
+
+  useEffect(() => {
+    dispatch(actions.initialize({ surveyId, participationId }));
+  }, [surveyId, participationId]);
 
   const {
     isFirstPage,
@@ -45,8 +54,10 @@ export const ParticipationForm: React.FC<Props> = ({
   if (!data?.survey) return <Box mt="60">No data for this survey</Box>;
   if ((pages?.length ?? 0) < 1 || !selectedPage)
     return <Box mt="60">No pages to display ! Contact the administrator !</Box>;
+
   const currentColor = data.survey.landing?.color_theme?.base || "black";
   const { order } = data.survey;
+  
   return (
     <Box>
       <Flex direction="row" h="100vh">
@@ -198,11 +209,12 @@ function useFinishHandler(participationId: string, slug: string) {
   const { mutateAsync: finishParticipationApi } = useFinishParticipation();
 
   const onFinish = useCallback(async () => {
+    // TODO: improve this with a better UI ?
     const acknowledge = confirm(" Conclure votre participation à l'enquête ?");
     if (!acknowledge) return;
 
-    const res = await finishParticipationApi(participationId);
-    console.log("response for finish call: ", res);
+    // Tell the API we're done and wait for it to be saved
+    await finishParticipationApi(participationId);
 
     finishParticipation(slug);
     history.push("/");

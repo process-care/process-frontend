@@ -2,17 +2,21 @@ import React from "react";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 
-import { useGetPage } from "call/actions/formBuider/page";
 import { renderInput } from "components/CreateSurvey/CreateForm/InputsPreview/Card/utils";
 import {
   useGetQuestion,
   useQuestionEvaluation,
 } from "call/actions/formBuider/question";
+import { selectors as pagesSelectors } from "redux/slices/participation/page-visited";
+
 import { NL } from "../nl";
 import { shouldShow } from "./condition-evaluations";
 import { useAnswerSaver, useAnswersGetter } from "./answer-hooks";
 import IQuestion from "types/form/question";
 import { formSchema } from "./validation";
+import { useAppSelector } from "redux/hooks";
+import { selectors } from "redux/slices/participation/questions-seen";
+import IOperator from "types/form/operator";
 
 // ---- TYPES
 
@@ -42,29 +46,28 @@ export const FormPage: React.FC<Props> = ({
   onFinish,
 }) => {
   // Get page
-  const { data } = useGetPage(pageId);
+  const page = useAppSelector(state => pagesSelectors.selectById(state, pageId));
 
   // Get answers
-  const questionsId = data?.page.questions?.map((q) => q.id) ?? [];
-  const answers = useAnswersGetter(participationId, questionsId);
+  const questionsId = page?.questions?.map((q) => q.id) ?? [];
+  const answers = useAnswersGetter(questionsId);
 
   // If page is empty
-  if (!data?.page) return <Box mt="60">{NL.msg.nodata}</Box>;
+  if (!page) return <Box mt="60">{NL.msg.nodata}</Box>;
 
   // Need to wait answers to set inititalValues
-  if (answers.isLoading) return <p>loading ...</p>;
+  // if (answers.isLoading) return <p>loading ...</p>;
 
   // Final render
-
   return (
     <Box>
       <Text variant="xl" my="20px">
-        {data.page.name}
+        {page.name}
       </Text>
 
       <Formik
         validateOnBlur
-        validationSchema={formSchema(data.page.questions)}
+        validationSchema={formSchema(page.questions)}
         initialValues={answers.values}
         onSubmit={(data, { setSubmitting, validateForm }) => {
           validateForm(data);
@@ -73,10 +76,10 @@ export const FormPage: React.FC<Props> = ({
       >
         {({ isValid, dirty }) => {
           const canSubmit = () => {
-            if (data.page.questions) {
+            if (page.questions) {
               //  isValid === true au mount du form alors que des champs required ne sont pas remplis
               const hadRequiredFields =
-                data.page.questions.filter((q) => q.required).length !== 0;
+                page.questions.filter((q) => q.required).length !== 0;
 
               if (hadRequiredFields) {
                 return dirty && isValid;
@@ -91,7 +94,7 @@ export const FormPage: React.FC<Props> = ({
               {/* Questions */}
               <Box px="10%" pt="20px">
                 {order?.map((inputId: string) => {
-                  const current = data.page.questions?.find(
+                  const current = page.questions?.find(
                     (q: IQuestion) => q.id === inputId
                   );
                   if (current !== undefined) {
@@ -106,6 +109,7 @@ export const FormPage: React.FC<Props> = ({
                   } else return;
                 })}
               </Box>
+
               {/* Navigation */}
               <Flex justifyContent="flex-end" mt="10" mb="10" pr="10%">
                 {!isFirstPage && (
@@ -160,22 +164,24 @@ const Questionator: React.FC<QuestionatorProps> = ({
   participationId,
   answerId,
 }) => {
-  const { data: rawEvaluation } = useQuestionEvaluation(id, participationId);
-  const { data: rawQuestion, isLoading } = useGetQuestion(id);
+  // Get question's related content & answers
+  const question = useAppSelector(state => selectors.selectById(state, id));
+  const evaluations = useAppSelector(state => selectors.selectEvaluation(state, id));
 
-  const show = shouldShow(rawEvaluation?.evaluation.conditions);
+  // Evaluate if the question should be shown
+  const show = shouldShow(evaluations);
 
+  // Bind the save mechanism
   useAnswerSaver(id, participationId, answerId);
 
-  console.log(rawEvaluation);
-
-  if (isLoading) return <div>Loading...</div>;
-  if (!rawQuestion?.question) return <div>Oups</div>;
+  // Intermediate displays
+  if (!question) return <div>Loading...</div>;
   if (!show) return null;
 
+  // Render
   return (
     <Box mb="10" backgroundColor="white" w="100%" p="40px">
-      {renderInput(rawQuestion.question)}
+      {renderInput(question)}
     </Box>
   );
 };

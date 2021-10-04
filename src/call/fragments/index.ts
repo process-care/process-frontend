@@ -59,12 +59,9 @@ export const questionFragment = gql`
     internal_title
     conditions {
       id
-      referer_page {
-        id
-      }
-      referer_question {
-        id
-      }
+      target { id }
+      referer_page { id }
+      referer_question { id }
       type
     }
   }
@@ -126,6 +123,7 @@ export const surveyFullFragment = gql`
       is_locked
       questions {
         id
+        required
       }
       conditions {
         id

@@ -1,10 +1,22 @@
 import { gql } from "graphql-request";
 import { questionFragment } from "call/fragments";
 
-export const GET_QUESTIONS = gql`
+// ---- QUERIES
+
+export const GET_QUESTIONS_BY_PAGE = gql`
   ${questionFragment}
   query getQuestions($page_id: ID!) {
     questions(where: { page: $page_id }, limit: 10) {
+      ...questionFragment
+    }
+  }
+`;
+
+export const GET_QUESTIONS_BY_SURVEY = gql`
+  ${questionFragment}
+
+  query questionsBySurvey($surveyId: ID!) {
+    questionsBySurvey(surveyId: $surveyId) {
       ...questionFragment
     }
   }
@@ -33,6 +45,8 @@ export const GET_QUESTION_EVALUATION = gql`
     }
   }
 `;
+
+// ---- MUTATIONS
 
 export const ADD_QUESTION = gql`
   mutation addQuestion($new_question: QuestionInput) {

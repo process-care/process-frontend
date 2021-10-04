@@ -20,10 +20,11 @@ import surveyBuilder from "redux/slices/surveyBuilder";
 import landingEditor from "redux/slices/landing-editor";
 import surveyEditor from "redux/slices/survey-editor";
 
-import { pingEpic } from "redux/slices/participation/epic";
 import { landingEditorEpics } from "redux/epics/landing-editor";
 import { surveyEditorEpics } from "redux/epics/survey-editor";
 import { history } from "./history";
+import participationEpics from "redux/epics/participation";
+
 // ---- EPICS
 
 // Generic type of an epic
@@ -31,9 +32,9 @@ export type Epic = ReduxEpic<AnyAction, AnyAction, RootState, unknown>;
 
 // Combine all epics from all the app
 export const rootEpic = combineEpics(
-  pingEpic,
   landingEditorEpics,
-  surveyEditorEpics
+  surveyEditorEpics,
+  participationEpics,
 );
 
 // Create a middleware to set in the store

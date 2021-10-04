@@ -1,47 +1,14 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { combineReducers } from "@reduxjs/toolkit";
+import status from 'redux/slices/participation/status';
+import pages from 'redux/slices/participation/page-visited';
+import questions from 'redux/slices/participation/questions-seen';
+import answers from 'redux/slices/participation/answers';
 
-// ---- TYPES
-
-// type CreatedPayload = {
-//   id: string;
-// };
-
-// ---- INITIAL STATE
-
-interface SliceState {
-  id?: string;
-  consent: boolean;
-  completed: boolean;
-  startedAt?: string;
-  completedAt?: string;
-}
-
-const initialState: SliceState = {
-  consent: false,
-  completed: false,
-};
-
-// ---- SLICE
-
-export const slice = createSlice({
-  name: "participation",
-  initialState,
-  reducers: {
-    started: (state) => {
-      (state.consent = true), (state.startedAt = new Date().toString());
-    },
-    created: (state, action) => {
-      state.id = action.payload.id;
-    },
-    completed: (state) => {
-      state.completed = true;
-      state.completedAt = new Date().toString();
-    },
-  },
+const participation = combineReducers({
+  status,
+  pages,
+  questions,
+  answers,
 });
 
-// ---- ACTIONS
-
-export const actions = slice.actions;
-
-export default slice.reducer;
+export default participation;

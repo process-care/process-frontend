@@ -13,26 +13,20 @@ import { RemovingConfirmation } from "../../../RemovingConfirmation";
 import { v4 as uuidv4 } from "uuid";
 import { SvgHover } from "components/SvgHover";
 import { ReactComponent as Trash } from "assets/trash.svg";
-import ISurvey from "types/survey";
 import { useAddCondition } from "call/actions/formBuider/condition";
 // import { debounce } from "lodash";
 import { actions, selectors } from "redux/slices/page-editor";
 import { actions as actionsQuestion } from "redux/slices/question-editor";
 
-interface Props {
-  survey: ISurvey;
-}
-
-export const PageForm: React.FC<Props> = ({ survey }) => {
+export const PageForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const { is_removing } = useAppSelector((state) => state.formBuilder);
 
   const selectedPageId = useAppSelector(selectors.getSelectedPageId);
   const selectedPage = useAppSelector(selectors.getSelectedPage);
+  const pages = useAppSelector(selectors.getAllPages);
 
   const { mutateAsync: addCondition } = useAddCondition();
-
-  const { pages } = survey;
 
   const isNotFirstPage =
     pages.findIndex((page) => page.id === selectedPageId) > 0;
@@ -40,8 +34,7 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
   const isRemoving = is_removing === selectedPageId;
 
   const handleSelect = (type: IQuestion["type"]) => {
-    // TODO: remove survey , get it insite epic
-    dispatch(actionsQuestion.create({ type, survey }));
+    dispatch(actionsQuestion.create({ type }));
   };
 
   // const autoSave = () => {

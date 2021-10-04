@@ -28,7 +28,7 @@ import { useQuestionChain } from "components/CreateSurvey/CreateForm/hooks";
 import { selectors } from "redux/slices/question-editor";
 
 interface Props {
-  survey: ISurvey;
+  survey: ISurvey | Record<string, any>;
 }
 
 const InputForm: React.FC<Props> = ({ survey }) => {
@@ -45,8 +45,6 @@ const InputForm: React.FC<Props> = ({ survey }) => {
   const { mutateAsync: addCondition } = useAddCondition();
   const { deleteQuestionChain } = useQuestionChain(selectedQuestion, survey);
   const { data: currentQuestion } = useGetQuestion(selectedQuestionId);
-
-  console.log(currentQuestion, selectedQuestion);
 
   const handleDelete = async () => {
     if (!isEditing) {
@@ -75,7 +73,6 @@ const InputForm: React.FC<Props> = ({ survey }) => {
       }}
     >
       {({ isValid, isSubmitting, values }) => {
-        console.log(isValid);
         const onChange = (event: React.FormEvent<HTMLFormElement>) => {
           const target = event.target as HTMLFormElement;
 

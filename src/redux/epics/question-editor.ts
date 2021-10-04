@@ -33,9 +33,11 @@ const createEpic: Epic = (action$, state$) =>
   action$.pipe(
     ofType(actions.create.type),
     switchMap(async (action) => {
-      const { type, survey } = action.payload;
+      const { type } = action.payload;
       const createdAt = new Date().toISOString();
       const selectedPage = state$.value.formEditor.pages.selectedPage;
+      const selectedSurveyId = state$.value.formEditor.survey.survey.id;
+      const selectedSurvey = state$.value.formEditor.survey.survey;
       const newQuestion = await client.request(ADD_QUESTION, {
         values: {
           type,
@@ -46,8 +48,8 @@ const createEpic: Epic = (action$, state$) =>
       const newQuestionId = newQuestion.createQuestion.question.id;
       if (newQuestionId) {
         await client.request(UPDATE_ORDER, {
-          id: survey.id,
-          new_order: getNewOrder(survey, selectedPage, newQuestionId),
+          id: selectedSurveyId,
+          new_order: getNewOrder(selectedSurvey, selectedPage, newQuestionId),
         });
       }
 
@@ -98,7 +100,6 @@ const deleteEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.delete.type),
     switchMap(async (action) => {
-      console.log(action.payload);
       const id: string = action.payload;
       const deletedAt = new Date().toISOString();
       await client.request(DELETE_QUESTION, {

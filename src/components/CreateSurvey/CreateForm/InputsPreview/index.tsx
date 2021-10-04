@@ -4,19 +4,18 @@ import Card from "./Card";
 
 import IQuestion from "types/form/question";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
-
 import { Formik, Form } from "formik";
 import { Header } from "./Header";
 
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
-import { useUpdateOrder } from "call/actions/survey";
 import { selectors } from "redux/slices/page-editor";
 import {
   actions,
   selectors as selectorsQuestion,
 } from "redux/slices/question-editor";
+import { actions as actionsSurvey } from "redux/slices/survey";
 
 export interface Item {
   id: number;
@@ -36,17 +35,14 @@ interface Props {
   surveyId: string;
 }
 
-const InputsPreview: React.FC<Props> = ({ surveyId, order }) => {
+const InputsPreview: React.FC<Props> = ({ order }) => {
   const selectedPage = useAppSelector(selectors.getSelectedPage);
   const selectedPageId = useAppSelector(selectors.getSelectedPageId);
   const questions = useAppSelector(selectorsQuestion.getSelectedPageQuestions);
-
   const isLoading = useAppSelector(selectorsQuestion.isLoading);
   const error = useAppSelector(selectorsQuestion.error);
 
   const dispatch = useAppDispatch();
-
-  const { mutateAsync: updateOrder } = useUpdateOrder("updateOrder");
 
   useEffect(() => {
     if (selectedPageId && isLoading)
@@ -76,10 +72,7 @@ const InputsPreview: React.FC<Props> = ({ surveyId, order }) => {
       new_input_order.splice(source.index, 1);
       new_input_order.splice(destination.index, 0, draggableId);
 
-      updateOrder({
-        id: surveyId,
-        new_order: new_input_order,
-      });
+      dispatch(actionsSurvey.updateOrder(new_input_order));
     }
   };
 
@@ -132,8 +125,8 @@ const InputsPreview: React.FC<Props> = ({ surveyId, order }) => {
       </Box>
     );
   };
-
-  if (isLoading || order === undefined) {
+  if (isLoading) {
+    // if (isLoading || order === undefined) {
     return (
       <Box pt="400px">
         <Loader />
@@ -151,6 +144,8 @@ const InputsPreview: React.FC<Props> = ({ surveyId, order }) => {
     return <div>No Questions ...</div>;
   }
 
+  console.log(order, "ORDER");
+
   return (
     <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
       <Droppable droppableId={selectedPage.id}>
@@ -162,18 +157,11 @@ const InputsPreview: React.FC<Props> = ({ surveyId, order }) => {
             {questions.length > 0 && <Header />}
 
             <Box w="100%" ref={provided.innerRef} {...provided.droppableProps}>
-              {/* {order?.map((inputId: string, i: number) => {
+              {order?.map((inputId: string, i: number) => {
                 const current = questions.find((c: any) => c.id === inputId);
                 if (current !== undefined) {
                   return renderCard(current, i);
                 } else return;
-              })} */}
-
-              {/* TODO: Filter by order */}
-              {questions?.map((questions: IQuestion, i: number) => {
-                if (questions !== undefined) {
-                  return renderCard(questions, i);
-                }
               })}
 
               {provided.placeholder}

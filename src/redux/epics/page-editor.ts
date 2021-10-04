@@ -4,8 +4,7 @@ import { Epic } from "redux/store";
 import { actions, selectors } from "redux/slices/page-editor";
 
 import { client } from "call/actions";
-import { GET_SURVEY } from "call/queries/survey";
-import { ISurveyRes } from "types/survey";
+import { GET_SURVEY_BY_SLUG } from "call/queries/survey";
 import {
   ADD_PAGE,
   DELETE_PAGE,
@@ -18,9 +17,11 @@ const initializeEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.initialize.type),
     // TODO: Check if survey is not in redux / if here do not query it
-    switchMap((action) => client.request(GET_SURVEY, { id: action.payload })),
-    map((survey: ISurveyRes) => {
-      const payload = survey.survey.pages;
+    switchMap((action) => {
+      return client.request(GET_SURVEY_BY_SLUG, { slug: action.payload });
+    }),
+    map((survey: Record<string, any>) => {
+      const payload = survey.surveys[0].pages;
       return actions.initialized(payload);
     })
   );

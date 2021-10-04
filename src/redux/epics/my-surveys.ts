@@ -1,8 +1,7 @@
 import { map, switchMap } from "rxjs";
 import { combineEpics, ofType } from "redux-observable";
 import { Epic } from "redux/store";
-import { actions } from "redux/slices/surveys";
-
+import { actions } from "redux/slices/my-surveys";
 import { client } from "call/actions";
 import { GET_MY_SURVEYS } from "call/queries/survey";
 
@@ -10,9 +9,9 @@ import { GET_MY_SURVEYS } from "call/queries/survey";
 const initializeEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.initialize.type),
-    switchMap((action) =>
-      client.request(GET_MY_SURVEYS, { authorId: action.payload })
-    ),
+    switchMap((action) => {
+      return client.request(GET_MY_SURVEYS, { authorId: action.payload });
+    }),
     map((result) => {
       const payload = result.surveys;
       return actions.initialized(payload);

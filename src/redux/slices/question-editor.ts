@@ -8,7 +8,6 @@ import {
 import { RootState } from "redux/store";
 import { DateTime } from "luxon";
 import IQuestion from "types/form/question";
-import ISurvey from "types/survey";
 
 // ----- ENTITY ADAPTER
 
@@ -69,7 +68,6 @@ type SavedPayload = {
 
 type CreatePayload = {
   type: IQuestion["type"];
-  survey: ISurvey;
 };
 
 type CreatedPayload = {

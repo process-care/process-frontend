@@ -108,9 +108,6 @@ export const surveysSlice = createSlice({
       state.isFailed = true;
       state.error = action.payload;
     },
-    setselectedSurvey: (state, action: PayloadAction<string>) => {
-      state.selectedSurvey = action.payload;
-    },
     reset: () => surveyAdapter.getInitialState(initialState),
   },
 });
@@ -128,13 +125,13 @@ export const hasChanges = (state: RootState): boolean => {
 export const getAllSurveys = (state: RootState): ISurvey[] =>
   surveyAdapter.getSelectors().selectAll(state.surveys);
 
-const getselectedSurveyId = (state: RootState): string =>
+const getSelectedSurveyId = (state: RootState): string =>
   state.surveys.selectedSurvey;
 
-const getselectedSurvey = (state: RootState): ISurvey | undefined =>
+const getSelectedSurvey = (state: RootState): ISurvey | undefined =>
   surveyAdapter
     .getSelectors()
-    .selectById(state.surveys, getselectedSurveyId(state));
+    .selectById(state.surveys, getSelectedSurveyId(state));
 
 // ---- EXPORTS
 
@@ -143,8 +140,8 @@ export const selectors = {
   isLoading,
   hasChanges,
   getAllSurveys,
-  getselectedSurvey,
-  getselectedSurveyId,
+  getSelectedSurvey,
+  getSelectedSurveyId,
 };
 
 export const actions = surveysSlice.actions;

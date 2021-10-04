@@ -14,7 +14,7 @@ import ISurvey from "types/survey";
 import { actions, selectors } from "redux/slices/page-editor";
 
 interface Props {
-  survey: ISurvey;
+  survey: ISurvey | Record<string, any>;
 }
 
 const PageBuilder: React.FC<Props> = ({ survey }) => {

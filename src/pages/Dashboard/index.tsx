@@ -20,38 +20,36 @@ import { ProfilForm } from "components/Dashboard/ProfilForm";
 import { useAuth } from "components/Authentification/hooks";
 import { actions } from "redux/slices/survey-editor";
 import {
-  actions as actionsSurveys,
-  selectors as selectorsSurveys,
-} from "redux/slices/surveys";
+  actions as actionsMySurveys,
+  selectors as selectorsMySurveys,
+} from "redux/slices/my-surveys";
+
+import ISurvey from "types/survey";
 
 export const Dashboard: React.FC<IRoute> = () => {
   const { user } = useAuth();
   const history = useHistory();
   const { location } = history;
   const dispatch = useDispatch();
-  const surveys = useAppSelector(selectorsSurveys.getAllSurveys);
-  const error = useAppSelector(selectorsSurveys.error);
-  const isLoading = useAppSelector(selectorsSurveys.isLoading);
+  const surveys = useAppSelector(selectorsMySurveys.getAllSurveys);
+  const error = useAppSelector(selectorsMySurveys.error);
+  const isLoading = useAppSelector(selectorsMySurveys.isLoading);
 
   const isOpen = useAppSelector((state) => state.application.drawerIsOpen);
   const isProfilPage = location.pathname === "/profil";
 
   const [menuIsOpen, setMenuIsOpen] = useState(false);
-  const [selectedSurvey, setSelectedSurvey] = useState<Survey["survey"] | null>(
-    null
+  const [clickedSurvey, setClickedSurvey] = useState<ISurvey | undefined>(
+    undefined
   );
-
   const toggleOff = () => {
     setMenuIsOpen(false);
   };
 
   const toggleMenu = (survey: Survey["survey"]) => {
-    if (isOpen) {
-      dispatch(actionsApplication.setSelectedSurvey(survey.id));
-      setSelectedSurvey(survey);
-    } else {
-      dispatch(actionsApplication.setSelectedSurvey(survey.id));
-      setSelectedSurvey(survey);
+    const current = surveys.find((s) => s.id === survey.id);
+    setClickedSurvey(current);
+    if (!isOpen) {
       setMenuIsOpen(true);
     }
   };
@@ -111,7 +109,7 @@ export const Dashboard: React.FC<IRoute> = () => {
   };
 
   useEffect(() => {
-    dispatch(actionsSurveys.initialize(user.id));
+    dispatch(actionsMySurveys.initialize(user.id));
   }, [user.id]);
 
   if (isLoading || surveys === undefined) {
@@ -160,7 +158,7 @@ export const Dashboard: React.FC<IRoute> = () => {
       </div>
       <ProjectMenu
         menuIsOpen={menuIsOpen}
-        selectedSurvey={selectedSurvey}
+        selectedSurvey={clickedSurvey}
         onClose={toggleOff}
       />
     </Box>

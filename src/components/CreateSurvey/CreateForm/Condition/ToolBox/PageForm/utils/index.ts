@@ -10,7 +10,13 @@ export const getNewOrder: any = (
   selectedPageId: string,
   new_question_id: string
 ) => {
-  const { pages, order } = survey;
+  console.log(survey, "S");
+
+  const pages = survey?.pages;
+  const order = survey?.order;
+
+  console.log(pages);
+
   const current_page_idx = pages.findIndex(
     (page: IPage) => page.id === selectedPageId
   );

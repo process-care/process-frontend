@@ -3,49 +3,48 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import InputsPreview from "components/CreateSurvey/CreateForm/InputsPreview";
-
 import IRoute from "types/routes/route";
-
 import Drawer from "components/Drawer";
 import InputForm from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm";
 import PageBuilder from "components/CreateSurvey/CreateForm/PageBuilder";
+import { Menu } from "components/Menu/CreateForm";
 
 import { useAppSelector } from "redux/hooks";
 
-import { Menu } from "components/Menu/CreateForm";
-
 import { ConditionPreview } from "components/CreateSurvey/CreateForm/Condition/ConditionPreview";
 import { RightPart } from "components/Layout/RightPart";
-import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
-import { useGetSurveyBySlug } from "call/actions/survey";
 import { Banner } from "components/Banner";
 import { useDispatch } from "react-redux";
-import { actions } from "redux/slices/page-editor";
+import { actions as actionsPage } from "redux/slices/page-editor";
+import { selectors as selectorsMySurveys } from "redux/slices/my-surveys";
+import {
+  selectors as selectorSurvey,
+  actions as actionsSurvey,
+} from "redux/slices/survey";
 
 export const CreateForm: React.FC<IRoute> = () => {
   // FIXME: Yup, these ignore are bad, need to be removed
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  const { slug } = useParams();
-  const { data: survey, isLoading, error } = useGetSurveyBySlug(slug);
+  const { slug }: { slug: string } = useParams();
   const dispatch = useDispatch();
   const isOpen = useAppSelector((state) => state.application.drawerIsOpen);
+  const selectedSurvey = useAppSelector(selectorSurvey.getSelectedSurvey);
+  const error = useAppSelector(selectorsMySurveys.error);
   const { selected_condition } = useAppSelector((state) => state.formBuilder);
 
   useEffect(() => {
-    if (survey) dispatch(actions.initialize(survey.id));
-  }, [slug, isLoading]);
+    Boolean(selectedSurvey) && dispatch(actionsSurvey.initialize(slug));
 
-  if (isLoading) {
-    return <Loader />;
-  }
+    dispatch(actionsPage.initialize(slug));
+  }, [slug]);
 
   if (error) {
     return <Error error={error} />;
   }
 
-  if (!survey) {
+  if (!selectedSurvey) {
     return <div>No Survey</div>;
   }
 
@@ -54,11 +53,11 @@ export const CreateForm: React.FC<IRoute> = () => {
       <Drawer
         isOpen={isOpen}
         size="md"
-        content={<InputForm survey={survey} />}
+        content={<InputForm survey={selectedSurvey} />}
       />
       <Box d="flex" justifyContent="space-around" w="100%" overflow="hidden">
         <Box w="100%">
-          <Menu surveyId={survey.id} />
+          <Menu surveyId={selectedSurvey.id} />
           <Banner />
           <Box
             d="flex"
@@ -73,7 +72,7 @@ export const CreateForm: React.FC<IRoute> = () => {
               borderRight="1px"
               borderColor="gray.200"
             >
-              <PageBuilder survey={survey} />
+              <PageBuilder survey={selectedSurvey} />
             </Container>
 
             <Container
@@ -86,13 +85,16 @@ export const CreateForm: React.FC<IRoute> = () => {
                 {selected_condition?.id !== undefined ? (
                   <ConditionPreview />
                 ) : (
-                  <InputsPreview order={survey.order} surveyId={survey.id} />
+                  <InputsPreview
+                    order={selectedSurvey.order}
+                    surveyId={selectedSurvey.id}
+                  />
                 )}
               </div>
             </Container>
           </Box>
         </Box>
-        <RightPart selected_condition={selected_condition} survey={survey} />
+        <RightPart selected_condition={selected_condition} />
       </Box>
     </Box>
   );

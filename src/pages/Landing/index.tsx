@@ -6,7 +6,7 @@ import { Text } from "@chakra-ui/react";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 import { Preview } from "components/CreateSurvey/CreateLanding/Preview";
-import { useGetSurvey } from "call/actions/survey";
+import { useGetSurveyBySlug } from "call/actions/survey";
 
 const t = {
   noLanding:
@@ -17,14 +17,14 @@ export const Landing: React.FC<IRoute> = () => {
   // FIXME: Yup, these ignore are bad, need to be removed
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  const { slug: surveyId } = useParams();
+  const { slug } = useParams();
 
-  const { data: survey } = useGetSurvey(surveyId);
+  const { data: survey } = useGetSurveyBySlug(slug);
   const {
     data: landing,
     isLoading,
     error,
-  } = useGetLanding(survey?.survey?.landing?.id);
+  } = useGetLanding(survey?.landing?.id);
 
   if (landing?.landing === undefined) {
     return (

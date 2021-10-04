@@ -3,7 +3,7 @@ import { Box, Button, Center, Flex, Text } from "@chakra-ui/react";
 import { useHistory, useParams } from "react-router-dom";
 import { ParticipationConsent } from "./ParticipationConsent";
 import { ParticipationForm } from "./ParticipationForm";
-import { useGetSurvey } from "call/actions/survey";
+import { useGetSurveyBySlug } from "call/actions/survey";
 import {
   findExistingParticipation,
   storeParticipation,
@@ -15,11 +15,11 @@ export const Participation: React.FC<unknown> = () => {
   // FIXME: Yup, these ignore are bad, need to be removed
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  const { slug: surveyId, step } = useParams();
+  const { slug, step } = useParams();
   const history = useHistory();
 
-  const { data, isLoading } = useGetSurvey(surveyId);
-  const { participation, onConsent, onRefuse } = useConsentHandlers(surveyId);
+  const { data: survey, isLoading } = useGetSurveyBySlug(slug);
+  const { participation, onConsent, onRefuse } = useConsentHandlers(slug);
 
   if (participation?.completed) {
     return (
@@ -40,20 +40,20 @@ export const Participation: React.FC<unknown> = () => {
   }
   
   // LOADING STATE
-  if (isLoading || !data?.survey) {
+  if (isLoading || !survey) {
     return <Box mt="60">Loading in progress...</Box>;
   }
 
   // Redirect if the there is an existing participation
   if (participation && step !== "participate") {
-    history.push(`/survey/${surveyId}/participate`);
+    history.push(`/survey/${survey.id}/participate`);
   }
 
   // CONSENT
   if (step === "consent") {
     return (
       <ParticipationConsent
-        surveyId={data.survey.id}
+        surveyId={survey.id}
         onConsent={onConsent}
         onRefuse={onRefuse}
       />
@@ -64,7 +64,7 @@ export const Participation: React.FC<unknown> = () => {
   if (step === "participate" && participation) {
     return (
       <ParticipationForm
-        surveyId={data.survey.id}
+        surveyId={survey.id}
         participationId={participation.id}
       />
     );

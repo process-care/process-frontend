@@ -46,7 +46,7 @@ export const applicationSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(questionAction.created, (state) => {
+    builder.addCase(questionAction.create, (state) => {
       state.drawerIsOpen = true;
     });
     builder.addCase(questionAction.saved, (state) => {

@@ -9,6 +9,7 @@ import {
   ADD_QUESTION,
   DELETE_QUESTION,
   GET_QUESTIONS,
+  UPDATE_QUESTION,
 } from "call/queries/formBuilder/question";
 import { UPDATE_ORDER } from "call/queries/survey";
 import { getNewOrder } from "components/CreateSurvey/CreateForm/Condition/ToolBox/PageForm/utils";
@@ -74,24 +75,24 @@ const createEpic: Epic = (action$, state$) =>
     )
   );
 
-// // ----  UPDATE QUESTION
+// // ----  SAVE QUESTION
 
-// const updateEpic: Epic = (action$) =>
-//   action$.pipe(
-//     ofType(actions.update.type),
-//     map((action) => action.payload),
-//     scan((acc, payload) => Object.assign({}, acc, payload), {}),
-//     debounceTime(1000),
-//     switchMap(async (accumulated: any) => {
-//       const updatedAt: string = new Date().toISOString();
-//       await client.request(UPDATE_PAGE, {
-//         id: accumulated.id,
-//         data: accumulated.changes,
-//       });
-//       return updatedAt;
-//     }),
-//     map((updatedAt) => actions.updated({ lastUpdated: updatedAt }))
-//   );
+const saveEpic: Epic = (action$, state$) =>
+  action$.pipe(
+    ofType(actions.save.type),
+    switchMap(async (action) => {
+      const savedAt: string = new Date().toISOString();
+      const selectedQuestionId =
+        state$.value.formEditor.questions.selectedQuestion;
+
+      await client.request(UPDATE_QUESTION, {
+        id: selectedQuestionId,
+        data: action.payload.changes,
+      });
+      return savedAt;
+    }),
+    map((savedAt) => actions.saved({ lastSaved: savedAt }))
+  );
 
 // // ----  DELETE QUESTION
 
@@ -104,10 +105,6 @@ const deleteEpic: Epic = (action$) =>
       await client.request(DELETE_QUESTION, {
         id,
       });
-      //  const new_order = survey?.order.filter(
-      //    (id) => id !== selectedQuestion.id
-      //  );
-      //  await updateOrder({ id: survey?.id, new_order });
       return deletedAt;
     }),
     map((deletedAt) => {
@@ -120,6 +117,6 @@ const deleteEpic: Epic = (action$) =>
 export const questionEditorEpic = combineEpics(
   initializeEpic,
   createEpic,
-  //   updateEpic,
+  saveEpic,
   deleteEpic
 );

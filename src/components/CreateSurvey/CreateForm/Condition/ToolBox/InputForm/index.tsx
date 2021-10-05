@@ -1,111 +1,107 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
-import { debounce } from "lodash";
 
 import { Footer } from "./Template/Footer";
-import { renderFormTemplate, renderFormValidationSchema } from "./utils";
-import { fields } from "./Template/logic/initialValues";
 import {
-  setIsEditing,
-  selectCondition,
-  setIsRemoving,
-} from "redux/slices/formBuilder";
-import { actions } from "redux/slices/application";
+  getDiff,
+  renderFormTemplate,
+  renderFormValidationSchema,
+} from "./utils";
+import { fields } from "./Template/logic/initialValues";
+import { selectCondition, setIsRemoving } from "redux/slices/formBuilder";
+
 import { Switch } from "components/Fields";
 import { v4 as uuidv4 } from "uuid";
 import { t } from "static/condition";
 import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
-import {
-  useGetQuestion,
-  useUpdateQuestion,
-} from "call/actions/formBuider/question";
+import { useGetQuestion } from "call/actions/formBuider/question";
 import { useAddCondition } from "call/actions/formBuider/condition";
 import ISurvey from "types/survey";
-import { useQuestionChain } from "components/CreateSurvey/CreateForm/hooks";
-import { selectors } from "redux/slices/formEditor/question-editor";
+import {
+  selectors as selectorsQuestion,
+  actions as actionsQuestion,
+} from "redux/slices/formEditor/question-editor";
+import {
+  selectors as selectorsApplication,
+  actions as actionsApplication,
+} from "redux/slices/application";
 
 interface Props {
   survey: ISurvey | Record<string, any>;
 }
 
 const InputForm: React.FC<Props> = ({ survey }) => {
-  const isEditing = useAppSelector((state) => state.formBuilder.is_editing);
-  const selectedQuestion = useAppSelector(selectors.getSelectedQuestion);
-  const selectedQuestionId = useAppSelector(selectors.getSelectedQuestionId);
+  const isEditing = useAppSelector(selectorsApplication.isEditing);
+  const selectedQuestion = useAppSelector(
+    selectorsQuestion.getSelectedQuestion
+  );
+  const selectedQuestionId = useAppSelector(
+    selectorsQuestion.getSelectedQuestionId
+  );
+  const [prevState, setPrevState] =
+    useState<Record<string, any>>(selectedQuestion);
 
-  const { selected_input } = useAppSelector((state) => state.formBuilder);
   const type = selectedQuestion?.type;
 
   const dispatch = useAppDispatch();
 
-  const { mutateAsync: updateQuestion } = useUpdateQuestion();
   const { mutateAsync: addCondition } = useAddCondition();
-  const { deleteQuestionChain } = useQuestionChain(selectedQuestion, survey);
   const { data: currentQuestion } = useGetQuestion(selectedQuestionId);
 
-  const handleDelete = async () => {
+  const handleCancel = async () => {
     if (!isEditing) {
-      deleteQuestionChain();
+      dispatch(actionsQuestion.delete(selectedQuestionId));
+    } else {
+      dispatch(actionsApplication.toogleDrawer());
+      dispatch(
+        actionsQuestion.update({
+          id: selectedQuestionId,
+          changes: prevState,
+        })
+      );
     }
-    dispatch(actions.toogleDrawer());
-    dispatch(setIsEditing(false));
+    dispatch(actionsApplication.setIsEditing(false));
   };
 
-  const autoSave = () => {
-    dispatch(actions.setAutoSave());
-    setTimeout(() => {
-      dispatch(actions.setAutoSave());
-    }, 2000);
-  };
-  const autoSaveDebounce = debounce(autoSave, 500);
+  // Save state to get diff
+  useEffect(() => {
+    setPrevState(prevState);
+  }, []);
+
+  const handleSubmit = useCallback((data, { setSubmitting, validateForm }) => {
+    validateForm(data);
+    setSubmitting(true);
+    const newChanges = getDiff(data, prevState);
+    dispatch(actionsQuestion.save({ changes: newChanges }));
+    setSubmitting(false);
+  }, []);
 
   return (
     <Formik
       validationSchema={renderFormValidationSchema(selectedQuestion)}
       initialValues={selectedQuestion ? selectedQuestion : fields[type]}
-      onSubmit={(data, { setSubmitting, validateForm }) => {
-        validateForm(data);
-        setSubmitting(true);
-        dispatch(actions.toogleDrawer());
-      }}
+      onSubmit={handleSubmit}
     >
       {({ isValid, isSubmitting, values }) => {
-        const onChange = (event: React.FormEvent<HTMLFormElement>) => {
-          const target = event.target as HTMLFormElement;
-
-          const is_repeated_fields = target.id.includes("options");
-
-          if (is_repeated_fields) return false;
-
-          if (target !== null) {
-            updateQuestion({
-              id: selectedQuestionId,
-              data: {
-                [target.id]: target.value,
-              },
-            });
-          }
-        };
-
         useEffect(() => {
-          if (values.options) {
-            updateQuestion({
-              id: selectedQuestionId,
-              data: {
-                options: values.options,
-              },
-            });
+          const newChanges = getDiff(values, selectedQuestion);
+          if (values) {
+            dispatch(
+              actionsQuestion.update({
+                id: selectedQuestionId,
+                changes: {
+                  ...newChanges,
+                },
+              })
+            );
           }
-        }, [values.options]);
+        }, [values]);
 
         return (
-          <Form
-            onChange={debounce((event) => onChange(event), 1000)}
-            onBlur={autoSaveDebounce}
-          >
+          <Form>
             <Flex
               alignItems="center"
               justifyContent="center"
@@ -158,7 +154,7 @@ const InputForm: React.FC<Props> = ({ survey }) => {
                     onClick={() => {
                       addCondition({
                         type: "input",
-                        referer_question: selected_input.id,
+                        referer_question: selectedQuestionId,
                         step: 1,
                         group: uuidv4(),
                         is_valid: false,
@@ -166,7 +162,7 @@ const InputForm: React.FC<Props> = ({ survey }) => {
                         dispatch(
                           selectCondition(data.createCondition.condition)
                         );
-                        dispatch(actions.toogleDrawer());
+                        dispatch(actionsApplication.toogleDrawer());
                       });
                     }}
                   >
@@ -184,7 +180,7 @@ const InputForm: React.FC<Props> = ({ survey }) => {
                             : {}
                         )
                       );
-                      dispatch(actions.toogleDrawer());
+                      dispatch(actionsApplication.toogleDrawer());
                     }}
                   >
                     {t.edit_condition}
@@ -195,10 +191,10 @@ const InputForm: React.FC<Props> = ({ survey }) => {
               <Footer
                 onSubmit={() => console.log("submit")}
                 disabled={!isValid || isSubmitting}
-                onCancel={handleDelete}
+                onCancel={handleCancel}
                 onDelete={() => {
-                  dispatch(setIsRemoving(selected_input.id));
-                  dispatch(actions.toogleDrawer());
+                  dispatch(setIsRemoving(selectedQuestionId));
+                  dispatch(actionsApplication.toogleDrawer());
                 }}
               />
             </Flex>

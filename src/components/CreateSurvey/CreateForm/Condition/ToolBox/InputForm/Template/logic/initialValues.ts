@@ -10,8 +10,8 @@ const commonFieldsInitialValues = {
 const inputFieldsInitialValues = {
   ...commonFieldsInitialValues,
   placeholder: "",
-  min_length: "",
-  max_length: "",
+  min: "",
+  max: "",
 };
 
 const multipleInputFieldsInitialValues = {

@@ -3,6 +3,8 @@ import { FieldArray, useField, useFormikContext } from "formik";
 import { Textarea } from "components/Fields";
 import { Flex, Box, Button, Text } from "@chakra-ui/react";
 import { useAppSelector } from "redux/hooks";
+import { selectors as selectorsApplication } from "redux/slices/application";
+
 interface Props {
   name: string;
 }
@@ -10,7 +12,7 @@ interface Props {
 export const RepeatedFields: React.FC<Props> = ({ name }) => {
   const [field, meta] = useField(name);
   const { setFieldValue } = useFormikContext();
-  const isEditing = useAppSelector((state) => state.formBuilder.is_editing);
+  const isEditing = useAppSelector(selectorsApplication.isEditing);
 
   const fields = field.value;
 
@@ -18,7 +20,7 @@ export const RepeatedFields: React.FC<Props> = ({ name }) => {
     // Populate answers field on edit.
     if (isEditing) {
       fields?.map((value: string, index: number) => {
-        setFieldValue(`option.${index}`, value);
+        setFieldValue(`options.${index}`, value);
       });
     }
   }, [isEditing]);
@@ -42,14 +44,13 @@ export const RepeatedFields: React.FC<Props> = ({ name }) => {
                       rows="small"
                       isRequired
                       isCollapsed={false}
-                      // {...field}
                     />
                     <Flex ml={3} mt={8}>
                       <Button
                         type="button"
                         onClick={() => {
                           arrayHelpers.remove(index);
-                          setFieldValue(`option.${index}`, undefined);
+                          setFieldValue(`options.${index}`, undefined);
                         }}
                       >
                         -

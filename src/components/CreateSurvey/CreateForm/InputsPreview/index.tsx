@@ -16,6 +16,7 @@ import {
   selectors as selectorsQuestion,
 } from "redux/slices/formEditor/question-editor";
 import { actions as actionsSurvey } from "redux/slices/formEditor/selected-survey";
+import { NoData } from "components/SurveyGrid/noData";
 
 export interface Item {
   id: number;
@@ -140,11 +141,9 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
   if (!selectedPage) {
     return <p>no selected page</p>;
   }
-  if (!questions) {
-    return <div>No Questions ...</div>;
+  if (questions.length === 0) {
+    return <NoData content="Il n'y a pas de questions" />;
   }
-
-  console.log(order, "ORDER");
 
   return (
     <DragDropContext onDragEnd={(result) => onDragEnd(result)}>

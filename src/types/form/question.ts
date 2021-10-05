@@ -20,8 +20,6 @@ export default interface IQuestion {
   help_text?: string;
   internal_title?: string;
   internal_description?: string;
-  min_length?: string;
-  max_length?: string;
   units?: string;
   vertical?: boolean;
   reverse?: boolean;

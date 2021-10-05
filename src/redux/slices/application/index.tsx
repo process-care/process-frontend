@@ -11,10 +11,7 @@ interface Application {
   drawerIsOpen: boolean;
   previewMode: "form" | "landing" | null;
   isSaving: boolean;
-  selectedPage?: string;
-  selectedQuestion?: string;
-  selectedCondition?: string;
-  selectedSurvey?: string;
+  isEditing: boolean;
 }
 
 // ---- STATE
@@ -23,6 +20,7 @@ const initialState: Application = {
   drawerIsOpen: false,
   previewMode: null,
   isSaving: false,
+  isEditing: false,
 };
 
 // ----- SLICE
@@ -43,42 +41,31 @@ export const applicationSlice = createSlice({
       const { previewMode } = action.payload;
       state.previewMode = previewMode;
     },
-    setSelectedSurvey: (state, action: PayloadAction<string>) => {
-      state.selectedSurvey = action.payload;
-    },
-
-    setSelectedQuestion: (state, action: PayloadAction<string>) => {
-      state.selectedQuestion = action.payload;
-    },
-    setSelectedCondition: (state, action: PayloadAction<string>) => {
-      state.selectedCondition = action.payload;
+    setIsEditing: (state, action: PayloadAction<boolean>) => {
+      state.isEditing = action.payload;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(questionAction.created, (state) => {
       state.drawerIsOpen = true;
     });
+    builder.addCase(questionAction.saved, (state) => {
+      state.drawerIsOpen = false;
+    });
+    builder.addCase(questionAction.delete, (state) => {
+      state.drawerIsOpen = false;
+    });
   },
 });
 
 // ---- SELECTORS
 
-const selectedSurvey = (state: RootState): string | undefined =>
-  state.application.selectedSurvey;
-const selectedPage = (state: RootState): string | undefined =>
-  state.application.selectedPage;
-const selectedCondition = (state: RootState): string | undefined =>
-  state.application.selectedCondition;
-const selectedQuestion = (state: RootState): string | undefined =>
-  state.application.selectedQuestion;
+const isEditing = (state: RootState): boolean => state.application.isEditing;
 
 // ---- EXPORTS
 
 export const selectors = {
-  selectedSurvey,
-  selectedPage,
-  selectedQuestion,
-  selectedCondition,
+  isEditing,
 };
 
 export const actions = applicationSlice.actions;

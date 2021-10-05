@@ -71,7 +71,6 @@ export const formBuilderSlice = createSlice({
 
 export const {
   selectInput,
-  setIsEditing,
   setIsRemoving,
   toggleCollapseView,
   selectPage,

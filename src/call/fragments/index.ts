@@ -60,8 +60,8 @@ export const questionFragment = gql`
     options
     required
     units
-    max
-    min
+    # max
+    # min
     step
     internal_title
     page {

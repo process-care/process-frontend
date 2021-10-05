@@ -6,7 +6,7 @@ import { useAppSelector } from "redux/hooks";
 import { UploadFile } from "components/Fields/Uploadfile";
 import { ReactComponent as Delete } from "assets/delete.svg";
 import { SvgHover } from "components/SvgHover";
-
+import { selectors as selectorsApplication } from "redux/slices/application";
 interface Props {
   name: string;
 }
@@ -14,7 +14,7 @@ interface Props {
 export const RepeatableFields: React.FC<Props> = ({ name }) => {
   const [field, meta] = useField(name);
   const { setFieldValue } = useFormikContext();
-  const isEditing = useAppSelector((state) => state.formBuilder.is_editing);
+  const isEditing = useAppSelector(selectorsApplication.isEditing);
   const fields = field.value;
 
   return (

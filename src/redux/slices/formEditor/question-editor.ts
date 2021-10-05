@@ -62,6 +62,10 @@ type DeletedPayload = {
   lastDeleted: string;
 };
 
+type SavePayload = {
+  changes: Partial<IQuestion>;
+};
+
 type SavedPayload = {
   lastSaved: string;
 };
@@ -106,11 +110,12 @@ export const questionsSlice = createSlice({
     updated: (state, action: PayloadAction<UpdatedPayload>) => {
       state.lastUpdated = action.payload.lastUpdated;
     },
-    delete: (state, action: PayloadAction<any>) => {
+    delete: (state, action: PayloadAction<string>) => {
       state.isDeleting = true;
       questionAdapter.removeOne(state, action.payload);
       const lastQuestionId = state.ids.length - 1;
-      if (lastQuestionId) {
+      console.log(lastQuestionId, "IDD");
+      if (lastQuestionId !== -1) {
         state.selectedQuestion = state.ids[lastQuestionId].toString();
       } else {
         state.selectedQuestion = "";
@@ -120,7 +125,7 @@ export const questionsSlice = createSlice({
       state.isDeleting = false;
       state.lastDeleted = action.payload.lastDeleted;
     },
-    save: (state) => {
+    save: (state, _action: PayloadAction<SavePayload>) => {
       state.isSaving = true;
     },
     saved: (state, action: PayloadAction<SavedPayload>) => {

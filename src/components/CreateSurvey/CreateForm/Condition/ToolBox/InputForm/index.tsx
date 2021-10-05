@@ -79,6 +79,8 @@ const InputForm: React.FC<Props> = ({ survey }) => {
     setSubmitting(false);
   }, []);
 
+  console.log(selectedQuestion);
+
   return (
     <Formik
       validationSchema={renderFormValidationSchema(selectedQuestion)}

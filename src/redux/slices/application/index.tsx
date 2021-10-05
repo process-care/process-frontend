@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "redux/store";
-import { actions as questionAction } from "./../question-editor";
+import { actions as questionAction } from "../formEditor/question-editor";
 // ---- TYPES
 
 interface IPreview {

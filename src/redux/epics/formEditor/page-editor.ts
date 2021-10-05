@@ -1,7 +1,7 @@
 import { map, switchMap, scan, debounceTime } from "rxjs";
 import { combineEpics, ofType } from "redux-observable";
 import { Epic } from "redux/store";
-import { actions, selectors } from "redux/slices/page-editor";
+import { actions, selectors } from "redux/slices/formEditor/page-editor";
 
 import { client } from "call/actions";
 import { GET_SURVEY_BY_SLUG } from "call/queries/survey";

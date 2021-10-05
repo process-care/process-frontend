@@ -10,12 +10,12 @@ import { Header } from "./Header";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
-import { selectors } from "redux/slices/page-editor";
+import { selectors } from "redux/slices/formEditor/page-editor";
 import {
   actions,
   selectors as selectorsQuestion,
-} from "redux/slices/question-editor";
-import { actions as actionsSurvey } from "redux/slices/survey";
+} from "redux/slices/formEditor/question-editor";
+import { actions as actionsSurvey } from "redux/slices/formEditor/selected-survey";
 
 export interface Item {
   id: number;

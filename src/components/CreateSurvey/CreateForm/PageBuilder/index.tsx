@@ -11,7 +11,7 @@ import { ReactComponent as Add } from "./assets/add.svg";
 import { isInactive } from "./utils";
 import { SvgHover } from "components/SvgHover";
 import ISurvey from "types/survey";
-import { actions, selectors } from "redux/slices/page-editor";
+import { actions, selectors } from "redux/slices/formEditor/page-editor";
 
 interface Props {
   survey: ISurvey | Record<string, any>;

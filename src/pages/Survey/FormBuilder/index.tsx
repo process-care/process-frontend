@@ -16,12 +16,12 @@ import { RightPart } from "components/Layout/RightPart";
 import { Error } from "components/Error";
 import { Banner } from "components/Banner";
 import { useDispatch } from "react-redux";
-import { actions as actionsPage } from "redux/slices/page-editor";
+import { actions as actionsPage } from "redux/slices/formEditor/page-editor";
 import { selectors as selectorsMySurveys } from "redux/slices/my-surveys";
 import {
   selectors as selectorSurvey,
   actions as actionsSurvey,
-} from "redux/slices/survey";
+} from "redux/slices/formEditor/selected-survey";
 
 export const CreateForm: React.FC<IRoute> = () => {
   // FIXME: Yup, these ignore are bad, need to be removed

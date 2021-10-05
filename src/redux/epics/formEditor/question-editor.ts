@@ -1,7 +1,7 @@
 import { map, switchMap } from "rxjs";
 import { combineEpics, ofType } from "redux-observable";
 import { Epic } from "redux/store";
-import { actions } from "redux/slices/question-editor";
+import { actions } from "redux/slices/formEditor/question-editor";
 
 import { client } from "call/actions";
 
@@ -36,8 +36,7 @@ const createEpic: Epic = (action$, state$) =>
       const { type } = action.payload;
       const createdAt = new Date().toISOString();
       const selectedPage = state$.value.formEditor.pages.selectedPage;
-      const selectedSurveyId = state$.value.formEditor.survey.survey.id;
-      const selectedSurvey = state$.value.formEditor.survey.survey;
+      const selectedSurvey = state$.value.formEditor.selectedSurvey.survey;
       const newQuestion = await client.request(ADD_QUESTION, {
         values: {
           type,
@@ -48,7 +47,7 @@ const createEpic: Epic = (action$, state$) =>
       const newQuestionId = newQuestion.createQuestion.question.id;
       if (newQuestionId) {
         await client.request(UPDATE_ORDER, {
-          id: selectedSurveyId,
+          id: selectedSurvey.id,
           new_order: getNewOrder(selectedSurvey, selectedPage, newQuestionId),
         });
       }

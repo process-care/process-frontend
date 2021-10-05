@@ -15,8 +15,8 @@ import { SvgHover } from "components/SvgHover";
 import { ReactComponent as Trash } from "assets/trash.svg";
 import { useAddCondition } from "call/actions/formBuider/condition";
 // import { debounce } from "lodash";
-import { actions, selectors } from "redux/slices/page-editor";
-import { actions as actionsQuestion } from "redux/slices/question-editor";
+import { actions, selectors } from "redux/slices/formEditor/page-editor";
+import { actions as actionsQuestion } from "redux/slices/formEditor/question-editor";
 
 export const PageForm: React.FC = () => {
   const dispatch = useAppDispatch();

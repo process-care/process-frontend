@@ -23,7 +23,7 @@ import { ReactComponent as Condition } from "./assets/condition.svg";
 
 import { RemovingConfirmation } from "./../../RemovingConfirmation";
 import { actions } from "redux/slices/application";
-import { actions as actionsQuestion } from "redux/slices/question-editor";
+import { actions as actionsQuestion } from "redux/slices/formEditor/question-editor";
 
 import { t } from "static/input";
 import { SvgHover } from "components/SvgHover";

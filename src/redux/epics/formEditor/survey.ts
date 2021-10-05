@@ -1,7 +1,7 @@
 import { map, switchMap } from "rxjs";
 import { combineEpics, ofType } from "redux-observable";
 import { Epic } from "redux/store";
-import { actions } from "redux/slices/survey";
+import { actions } from "redux/slices/formEditor/selected-survey";
 import { client } from "call/actions";
 import { GET_SURVEY_BY_SLUG, UPDATE_ORDER } from "call/queries/survey";
 
@@ -24,11 +24,11 @@ const updateOrderEpic: Epic = (action$, state$) =>
     ofType(actions.updateOrder.type),
     // TODO: update order in api
     map((action) => action.payload),
-    switchMap((action) => {
-      const selectedSurveyId = state$.value.formEditor.survey.survey.id;
+    switchMap((payload) => {
+      const selectedSurveyId = state$.value.formEditor.selectedSurvey.survey.id;
       return client.request(UPDATE_ORDER, {
         id: selectedSurveyId,
-        data: { new_order: action.payload },
+        new_order: payload,
       });
     }),
     map((payload) => {

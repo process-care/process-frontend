@@ -25,7 +25,7 @@ import {
 import { useAddCondition } from "call/actions/formBuider/condition";
 import ISurvey from "types/survey";
 import { useQuestionChain } from "components/CreateSurvey/CreateForm/hooks";
-import { selectors } from "redux/slices/question-editor";
+import { selectors } from "redux/slices/formEditor/question-editor";
 
 interface Props {
   survey: ISurvey | Record<string, any>;

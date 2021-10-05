@@ -6,7 +6,7 @@ import { getNewOrder } from "components/CreateSurvey/CreateForm/Condition/ToolBo
 
 // ---- TYPES
 
-export interface surveyEditor {
+export interface selectedSurveyEditor {
   // Survey status
   survey: ISurvey | Record<string, any>;
   isLoading: boolean;
@@ -17,7 +17,7 @@ export interface surveyEditor {
 
 // ---- STATE
 
-const initialState: surveyEditor = {
+const initialState: selectedSurveyEditor = {
   survey: {},
   isLoading: true,
   isOrdering: false,
@@ -26,9 +26,9 @@ const initialState: surveyEditor = {
 
 // ----- SLICE
 
-const SLICE_NAME = "survey";
+const SLICE_NAME = "selected-survey";
 
-export const surveySlice = createSlice({
+export const selectedSurveySlice = createSlice({
   name: SLICE_NAME,
   initialState: initialState,
   reducers: {
@@ -69,12 +69,12 @@ export const surveySlice = createSlice({
 // ---- SELECTORS
 
 export const error = (state: RootState): string | undefined =>
-  state.formEditor.survey.error;
+  state.formEditor.selectedSurvey.error;
 export const isLoading = (state: RootState): boolean =>
-  state.formEditor.survey.isLoading;
+  state.formEditor.selectedSurvey.isLoading;
 export const getSelectedSurvey = (
   state: RootState
-): ISurvey | Record<string, any> => state.formEditor.survey.survey;
+): ISurvey | Record<string, any> => state.formEditor.selectedSurvey.survey;
 // ---- EXPORTS
 
 export const selectors = {
@@ -83,5 +83,5 @@ export const selectors = {
   getSelectedSurvey,
 };
 
-export const actions = surveySlice.actions;
-export default surveySlice.reducer;
+export const actions = selectedSurveySlice.actions;
+export default selectedSurveySlice.reducer;

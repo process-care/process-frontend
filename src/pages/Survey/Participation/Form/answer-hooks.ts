@@ -1,12 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useField } from "formik";
-import { useDebounce } from "utils/hooks/debounce";
-import {
-  useCreateAnswer,
-  useUpdateAnswer,
-} from "call/actions/answers";
-import { useAppSelector } from "redux/hooks";
-import { selectors } from "redux/slices/participation/answers";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
+import { actions, selectors } from "redux/slices/participation/answers";
 
 /**
  *
@@ -25,8 +20,8 @@ export function useAnswersGetter(
   const ref = new Map();
 
   const answers = data.reduce((acc, a) => {
-    acc[a.question.id] = a.value;
-    ref.set(a.question.id, a.id);
+    acc[a.questionId] = a.value;
+    ref.set(a.questionId, a.id);
     return acc;
   }, {} as Record<string, unknown>);
 
@@ -43,42 +38,11 @@ export function useAnswersGetter(
  */
 export function useAnswerSaver(
   questionId: string,
-  participationId: string,
-  initialAnswerId?: string
 ): void {
+  const dispatch = useAppDispatch();
   const [field] = useField(questionId);
-  const debouncedValue = useDebounce(field.value, 2000);
-
-  const [answerId, setAnswerId] = useState(initialAnswerId);
-
-  // Mutators
-  const { mutateAsync: create } = useCreateAnswer();
-  const { mutateAsync: update } = useUpdateAnswer();
 
   useEffect(() => {
-    if (debouncedValue === undefined) return;
-
-    console.log(
-      `Saving : question "${questionId}" -> value changed to: ${debouncedValue} (answer ID: ${answerId})`
-    );
-
-    if (!answerId) {
-      create({
-        participation: participationId,
-        question: questionId,
-        value: debouncedValue,
-      }).then(
-        (v) => {
-          setAnswerId(v.createAnswer.answer.id);
-          console.log("Success on CREATE: ", v);
-        },
-        (e) => console.log("Error on CREATE: ", e)
-      );
-    } else {
-      update({ id: answerId, data: { value: debouncedValue } }).then(
-        (v) => console.log("Success on UPDATE: ", v),
-        (e) => console.log("Error on UPDATE: ", e)
-      );
-    }
-  }, [questionId, answerId, participationId, debouncedValue]);
+    dispatch(actions.update({ questionId, value: field.value }));
+  }, [questionId, field.value]);
 }

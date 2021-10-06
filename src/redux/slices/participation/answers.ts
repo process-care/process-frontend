@@ -1,45 +1,48 @@
-import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
-import { Answer } from "call/actions/answers";
+import { createEntityAdapter, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { actions as statusAct } from 'redux/slices/participation/status';
 import { RootState } from "redux/store";
 
-// ---- TYPES
-
-// type CreatedPayload = {
-//   id: string;
-// };
-
 // ---- INITIAL STATE
 
-interface SliceState {
-  maybe: boolean;
+export interface Answer {
+  id?: string;
+  questionId: string;
+  value: unknown;
 }
 
-const initialState: SliceState = {
-  maybe: false,
-};
+// ---- ACTIONS
+
+export type UpsertAnswerPayload = {
+  questionId: string,
+  value: string,
+}
 
 // ---- SLICE
 
 const SLICE_NAME = 'answers';
 
 const adapter = createEntityAdapter<Answer>({
-  selectId: (a) => a.question.id,
+  selectId: (a) => a.questionId,
 });
 
 export const slice = createSlice({
   name: SLICE_NAME,
   initialState: adapter.getInitialState(),
   reducers: {
-    initialize: (state) => {
-      console.log('yolo');
+    update: (state, action: PayloadAction<UpsertAnswerPayload>) => {
+      console.log('payload for upsert: ', action.payload);
+      adapter.upsertOne(state, action.payload);
     },
+    updated: (_state) => {
+      console.log('answers updated... !');
+    }
   },
   extraReducers: builder => {
     builder.addCase(statusAct.initialized, (state, action) => {
       console.log('initialized answers');
-      adapter.setAll(state, action.payload.answers);
+      const sanitized = action.payload.answers.map(a => ({ id: a.id, questionId: a.question.id, value: a.value }));
+      adapter.setAll(state, sanitized);
     });
   }
 });

@@ -60,6 +60,7 @@ const selectAll = (state: RootState): IQuestion[] => entitySelectors.selectAll(s
 const selectEvaluation = (state: RootState, questionId: string): EvaluationCondition[] => {
   // Get the question
   const q = entitySelectors.selectById(state.participation.questions, questionId);
+
   if (!q) return [];
   if (!q.conditions) return [];
 

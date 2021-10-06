@@ -60,9 +60,10 @@ export const questionFragment = gql`
     conditions {
       id
       target { id }
-      referer_page { id }
-      referer_question { id }
       type
+      operator
+      target_value
+      group
     }
   }
 `;
@@ -127,6 +128,11 @@ export const surveyFullFragment = gql`
       }
       conditions {
         id
+        target { id }
+        type
+        operator
+        target_value
+        group
       }
     }
   }

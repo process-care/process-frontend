@@ -38,7 +38,7 @@ export const GET_ANSWERS_BY_PARTICIPATION = gql`
 
 // MUTATION
 
-export const CREATE_ANSWERS = gql`
+export const CREATE_ANSWER = gql`
   ${answerFragment}
 
   mutation createAnswer ($data: AnswerInput!) {

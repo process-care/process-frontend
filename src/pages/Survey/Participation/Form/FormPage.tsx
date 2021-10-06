@@ -3,20 +3,14 @@ import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 
 import { renderInput } from "components/CreateSurvey/CreateForm/InputsPreview/Card/utils";
-import {
-  useGetQuestion,
-  useQuestionEvaluation,
-} from "call/actions/formBuider/question";
 import { selectors as pagesSelectors } from "redux/slices/participation/page-visited";
 
 import { NL } from "../nl";
 import { shouldShow } from "./condition-evaluations";
 import { useAnswerSaver, useAnswersGetter } from "./answer-hooks";
-import IQuestion from "types/form/question";
 import { formSchema } from "./validation";
 import { useAppSelector } from "redux/hooks";
 import { selectors } from "redux/slices/participation/questions-seen";
-import IOperator from "types/form/operator";
 
 // ---- TYPES
 
@@ -52,11 +46,14 @@ export const FormPage: React.FC<Props> = ({
   const questionsId = page?.questions?.map((q) => q.id) ?? [];
   const answers = useAnswersGetter(questionsId);
 
+  const orderInPage = order.reduce((acc, qId) => {
+    const existsInPage = questionsId.some(qInPage => qInPage === qId);
+    if (existsInPage) acc.push(qId);
+    return acc;
+  }, [] as string[]);
+
   // If page is empty
   if (!page) return <Box mt="60">{NL.msg.nodata}</Box>;
-
-  // Need to wait answers to set inititalValues
-  // if (answers.isLoading) return <p>loading ...</p>;
 
   // Final render
   return (
@@ -66,8 +63,8 @@ export const FormPage: React.FC<Props> = ({
       </Text>
 
       <Formik
-        validateOnBlur
-        validationSchema={formSchema(page.questions)}
+        // validateOnBlur
+        // validationSchema={formSchema(page.questions)}
         initialValues={answers.values}
         onSubmit={(data, { setSubmitting, validateForm }) => {
           validateForm(data);
@@ -75,39 +72,24 @@ export const FormPage: React.FC<Props> = ({
         }}
       >
         {({ isValid, dirty }) => {
+          // TODO: use callback ?
           const canSubmit = () => {
-            if (page.questions) {
-              //  isValid === true au mount du form alors que des champs required ne sont pas remplis
-              const hadRequiredFields =
-                page.questions.filter((q) => q.required).length !== 0;
-
-              if (hadRequiredFields) {
-                return dirty && isValid;
-              } else {
-                return isValid;
-              }
-            } else return true;
+            if (!page.questions) return true;
+            //  isValid === true au mount du form alors que des champs required ne sont pas remplis
+            const hasRequiredFields = page.questions.some(q => q.required);
+            return (hasRequiredFields) ? dirty && isValid : isValid;
           };
 
           return (
             <Form>
               {/* Questions */}
               <Box px="10%" pt="20px">
-                {order?.map((inputId: string) => {
-                  const current = page.questions?.find(
-                    (q: IQuestion) => q.id === inputId
-                  );
-                  if (current !== undefined) {
-                    return (
-                      <Questionator
-                        key={inputId}
-                        id={inputId}
-                        participationId={participationId}
-                        answerId={answers.references.get(inputId)}
-                      />
-                    );
-                  } else return;
-                })}
+                {orderInPage.map((inputId: string) => (
+                  <Questionator
+                    key={inputId}
+                    id={inputId}
+                  />
+                ))}
               </Box>
 
               {/* Navigation */}
@@ -155,14 +137,10 @@ export const FormPage: React.FC<Props> = ({
 
 type QuestionatorProps = {
   id: string;
-  participationId: string;
-  answerId?: string;
 };
 
 const Questionator: React.FC<QuestionatorProps> = ({
   id,
-  participationId,
-  answerId,
 }) => {
   // Get question's related content & answers
   const question = useAppSelector(state => selectors.selectById(state, id));
@@ -172,7 +150,7 @@ const Questionator: React.FC<QuestionatorProps> = ({
   const show = shouldShow(evaluations);
 
   // Bind the save mechanism
-  useAnswerSaver(id, participationId, answerId);
+  useAnswerSaver(id);
 
   // Intermediate displays
   if (!question) return <div>Loading...</div>;

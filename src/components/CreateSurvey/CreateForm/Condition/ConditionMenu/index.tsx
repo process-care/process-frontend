@@ -33,10 +33,7 @@ export const ConditionMenu: React.FC = () => {
   const isDisabled = !current_condition?.is_valid;
   const groups = data?.conditions.map((c: ICondition) => c.group);
 
-  const last_group =
-    data && data?.conditions.length > 0
-      ? Math.max(...data?.conditions.map((c: ICondition) => c.group.name))
-      : 1;
+  const last_group = (data && data?.conditions.length > 0) ? data.conditions.length : 1;
 
   const isConditionTypePage = data?.conditions[0]?.type === "page";
 

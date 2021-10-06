@@ -14,7 +14,7 @@ import { t } from "static/condition";
 
 interface Props {
   conditions: ICondition[] | undefined;
-  groups: { id: string | number; name: number }[] | undefined;
+  groups: string[] | undefined;
   last_group: number;
 }
 interface State {
@@ -49,9 +49,9 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
     (c: ICondition) => c.id === selected_condition.id
   );
   const { mutateAsync: updateCondition } = useUpdateCondition();
-  const clean_groups = groups?.filter(
-    (v, i, a) => a.findIndex((t) => t.id === v.id) === i
-  );
+
+  const clean_groups = Array.from(new Set(groups));
+
   const isDisabled = !currentCondition?.is_valid;
   const [isRemoving, setRemoving] = React.useState<State>({
     type: null,
@@ -84,7 +84,7 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
 
   return (
     <Box h="100%">
-      {clean_groups?.map(({ name, id }) => {
+      {clean_groups?.map((id, idx) => {
         if (isRemoving.type === "group" && isRemoving.id === id) {
           return (
             <RemovingConfirmation
@@ -126,7 +126,7 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
             {conditions?.map((condition: ICondition, index: number) => {
               const isLast = index === conditions.length - 1;
 
-              if (condition.group.id === id) {
+              if (condition.group === id) {
                 if (
                   isRemoving.type === "condition" &&
                   isRemoving.id === condition.id
@@ -239,10 +239,7 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
                                 ? condition?.referer_page?.id
                                 : condition?.referer_question?.id,
                               step: 1,
-                              group: {
-                                id: condition?.group.id,
-                                name: condition?.group.name,
-                              },
+                              group: condition?.group,
                               is_valid: false,
                             }).then((data: any) =>
                               dispatch(
@@ -259,7 +256,9 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
                 );
               }
             })}
-            <Separator value="OU" isLast={last_group === id} />
+
+            <Separator value="OU" isLast={last_group === idx} />
+
             <Flex justifyContent="flex-end">
               <Button
                 isDisabled={isDisabled}

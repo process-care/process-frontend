@@ -9,18 +9,9 @@ export default interface ICondition {
   referer_question?: IQuestion;
   referer_id?: IPage["id"] | ICondition["id"];
   target?: IQuestion;
-  target_value?: string | number;
-  operator?:
-    | "equal_or_superior"
-    | "equal_or_inferior"
-    | "equal"
-    | "superior"
-    | "inferior"
-    | "different";
-  group: {
-    id: string | number;
-    name: number;
-  };
+  target_value: string;
+  operator: IOperator['id'];
+  group: string;
   step?: 1 | 2 | 3;
   is_valid: boolean;
 }

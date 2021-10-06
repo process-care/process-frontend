@@ -18,7 +18,7 @@ export const renderOperator = (
   operators: ICondition["operator"] | undefined
 ): React.ReactElement | string | undefined => {
   switch (operators) {
-    case "different":
+    case "not_equal":
       return <Different />;
       break;
     case "equal":

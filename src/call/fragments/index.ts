@@ -4,9 +4,7 @@ export const conditionFragment = gql`
   fragment conditionFragment on Condition {
     id
     operator
-    is_valid
     group
-    step
     type
     referer_page {
       id

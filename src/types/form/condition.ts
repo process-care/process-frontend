@@ -4,7 +4,7 @@ import IPage from "./page";
 
 export default interface ICondition {
   id: string;
-  type: "page" | "input";
+  type: "page" | "question";
   referer_page?: IPage;
   referer_question?: IQuestion;
   referer_id?: IPage["id"] | ICondition["id"];

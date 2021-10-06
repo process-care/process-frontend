@@ -13,7 +13,7 @@ export default interface IQuestion {
     | "checkbox"
     | "date_picker"
     | "free_classification";
-  name: string;
+  // name: string;
   id: string;
   label?: string;
   placeholder?: string;

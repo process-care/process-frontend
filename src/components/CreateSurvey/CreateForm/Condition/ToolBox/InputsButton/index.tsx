@@ -8,7 +8,6 @@ import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
 interface Props {
   onSelect: (
     type: IQuestion["type"],
-    name: string,
     id: string,
     internal_title: string | undefined
   ) => void;
@@ -31,9 +30,7 @@ const ToolBox: React.FC<Props> = ({ onSelect }) => {
             py="30px"
             isDisabled={type === "wysiwyg"}
             pl={3}
-            onClick={() =>
-              onSelect(type, name, `${type}-${id}`, `${type}-${id}`)
-            }
+            onClick={() => onSelect(type, `${type}-${id}`, `${type}-${id}`)}
           >
             <Box mr={2}>
               <InputIcon type={type} />

@@ -30,6 +30,7 @@ import { landingEditorEpics } from "redux/epics/landing-editor";
 import { surveyEditorEpics } from "redux/epics/survey-editor";
 import { surveysEpics } from "redux/epics/my-surveys";
 import { surveyEpics } from "redux/epics/formEditor/survey";
+import { conditionsEditorEpics } from "redux/epics/formEditor/condition-editor";
 
 import { pageEditorEpic } from "redux/epics/formEditor/page-editor";
 import { questionEditorEpic } from "redux/epics/formEditor/question-editor";
@@ -48,7 +49,8 @@ export const rootEpic = combineEpics(
   pageEditorEpic,
   questionEditorEpic,
   surveysEpics,
-  surveyEpics
+  surveyEpics,
+  conditionsEditorEpics
 );
 
 // Create a middleware to set in the store

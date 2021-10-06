@@ -14,16 +14,17 @@ import { fields } from "./Template/logic/initialValues";
 import { selectCondition, setIsRemoving } from "redux/slices/formBuilder";
 
 import { Switch } from "components/Fields";
-import { v4 as uuidv4 } from "uuid";
 import { t } from "static/condition";
 import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
-import { useGetQuestion } from "call/actions/formBuider/question";
-import { useAddCondition } from "call/actions/formBuider/condition";
 import ISurvey from "types/survey";
 import {
   selectors as selectorsQuestion,
   actions as actionsQuestion,
 } from "redux/slices/formEditor/question-editor";
+import {
+  selectors as selectorsCondition,
+  actions as actionsCondition,
+} from "redux/slices/formEditor/condition-editor";
 import {
   selectors as selectorsApplication,
   actions as actionsApplication,
@@ -34,6 +35,10 @@ interface Props {
 }
 
 const InputForm: React.FC<Props> = ({ survey }) => {
+  const dispatch = useAppDispatch();
+  const currentConditions = useAppSelector(
+    selectorsCondition.getSelectedQuestionsConditions
+  );
   const isEditing = useAppSelector(selectorsApplication.isEditing);
   const selectedQuestion = useAppSelector(
     selectorsQuestion.getSelectedQuestion
@@ -46,10 +51,7 @@ const InputForm: React.FC<Props> = ({ survey }) => {
 
   const type = selectedQuestion?.type;
 
-  const dispatch = useAppDispatch();
-
-  const { mutateAsync: addCondition } = useAddCondition();
-  const { data: currentQuestion } = useGetQuestion(selectedQuestionId);
+  console.log(currentConditions);
 
   const handleCancel = async () => {
     if (!isEditing) {
@@ -79,7 +81,15 @@ const InputForm: React.FC<Props> = ({ survey }) => {
     setSubmitting(false);
   }, []);
 
-  console.log(selectedQuestion);
+  const createCondition = (group?: string) => {
+    dispatch(
+      actionsCondition.create({
+        type: "question",
+        refererId: selectedQuestionId,
+        group,
+      })
+    );
+  };
 
   return (
     <Formik
@@ -149,24 +159,11 @@ const InputForm: React.FC<Props> = ({ survey }) => {
                 mt={5}
                 pb="100px"
               >
-                {currentQuestion?.question?.conditions?.length === 0 ? (
+                {currentConditions.length === 0 ? (
                   <Button
                     variant="link"
                     color="brand.blue"
-                    onClick={() => {
-                      addCondition({
-                        type: "input",
-                        referer_question: selectedQuestionId,
-                        step: 1,
-                        group: uuidv4(),
-                        is_valid: false,
-                      }).then((data: any) => {
-                        dispatch(
-                          selectCondition(data.createCondition.condition)
-                        );
-                        dispatch(actionsApplication.toogleDrawer());
-                      });
-                    }}
+                    onClick={() => createCondition()}
                   >
                     {t.add_condition}
                   </Button>
@@ -175,13 +172,7 @@ const InputForm: React.FC<Props> = ({ survey }) => {
                     variant="link"
                     color="brand.blue"
                     onClick={() => {
-                      dispatch(
-                        selectCondition(
-                          currentQuestion?.question?.conditions !== undefined
-                            ? currentQuestion?.question?.conditions[0]
-                            : {}
-                        )
-                      );
+                      dispatch(selectCondition(currentConditions[0]));
                       dispatch(actionsApplication.toogleDrawer());
                     }}
                   >

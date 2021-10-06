@@ -1,97 +1,199 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  createEntityAdapter,
+  createSlice,
+  PayloadAction,
+} from "@reduxjs/toolkit";
 
 // import type { RootState } from "redux/store";
 import { RootState } from "redux/store";
 import { DateTime } from "luxon";
 import ICondition from "types/form/condition";
 
-// ---- STATE
+// ----- ENTITY ADAPTER
 
-export interface conditions {
-  // Page status
+const conditionAdapter = createEntityAdapter<ICondition>({
+  selectId: (condition) => condition.id,
+});
+
+// ---- TYPES
+
+export interface QuestionEditor {
+  // Questions status
+  selectedCondition: string;
+  isCreating: boolean;
   isLoading: boolean;
-  isPosting: boolean;
+  isSaving: boolean;
   isFailed: boolean;
+  isDeleting: boolean;
   error?: string;
   lastUpdated: string;
   lastSaved: string;
-  lastPosted: string;
-  data?: Partial<ICondition>;
+  lastCreated: string;
+  lastDeleted: string;
 }
 
-const initialState: conditions = {
+// ---- STATE
+
+const initialState: QuestionEditor = {
+  isCreating: false,
   isLoading: true,
-  isPosting: false,
+  isSaving: false,
   isFailed: false,
+  isDeleting: false,
   lastUpdated: new Date().toISOString(),
   lastSaved: new Date().toISOString(),
-  lastPosted: new Date().toISOString(),
+  lastCreated: new Date().toISOString(),
+  lastDeleted: new Date().toISOString(),
+  selectedCondition: "",
 };
+
 // ----- ACTIONS
 
-type UpdatePayload = Partial<ICondition>;
+type UpdatePayload = {
+  id: string;
+  changes: Partial<ICondition>;
+};
+
+type UpdatedPayload = {
+  lastUpdated: string;
+};
+
+type DeletedPayload = {
+  lastDeleted: string;
+};
+
+type SavePayload = {
+  changes: Partial<ICondition>;
+};
+
+type SavedPayload = {
+  lastSaved: string;
+};
+
+type CreatePayload = {
+  refererId: string;
+  type: ICondition["type"];
+  group?: string;
+};
+
+type CreatedPayload = {
+  lastCreated: string;
+  condition: ICondition;
+};
 
 // ----- SLICE
-const SLICE_NAME = "question-editor";
+const SLICE_NAME = "condition-editor";
 
-export const questionEditorSlice = createSlice({
+export const conditionSlice = createSlice({
   name: SLICE_NAME,
-  initialState,
+  initialState: conditionAdapter.getInitialState(initialState),
   reducers: {
-    load: (state, _action: PayloadAction<string>) => {
+    initialize: (state, _action: PayloadAction<string>) => {
       state.isLoading = true;
     },
-    loaded: (state, action: PayloadAction<ICondition>) => {
+    initialized: (state, action: PayloadAction<any>) => {
       state.isLoading = false;
-      const question = action.payload;
-      state.data = question;
+      conditionAdapter.setMany(state, action.payload);
+      if (action.payload[0]) state.selectedCondition = action.payload[0].id;
+    },
+    create: (state, _action: PayloadAction<CreatePayload>) => {
+      state.isCreating = true;
+    },
+    created: (state, action: PayloadAction<CreatedPayload>) => {
+      state.isCreating = false;
+      state.lastCreated = action.payload.lastCreated;
+      conditionAdapter.addOne(state, action.payload.condition);
+      state.selectedCondition = action.payload.condition.id;
     },
     update: (state, action: PayloadAction<UpdatePayload>) => {
       state.lastUpdated = new Date().toISOString();
-      const updated = { ...state.data, ...action.payload };
-      state.data = updated;
+      conditionAdapter.updateOne(state, action.payload);
     },
-    updated: (state, action: PayloadAction<any>) => {
+    updated: (state, action: PayloadAction<UpdatedPayload>) => {
+      state.lastUpdated = action.payload.lastUpdated;
+    },
+    delete: (state, action: PayloadAction<string>) => {
+      state.isDeleting = true;
+      conditionAdapter.removeOne(state, action.payload);
+      const lastConditionId = state.ids.length - 1;
+
+      if (lastConditionId !== -1) {
+        state.selectedCondition = state.ids[lastConditionId].toString();
+      } else {
+        state.selectedCondition = "";
+      }
+    },
+    deleted: (state, action: PayloadAction<DeletedPayload>) => {
+      state.isDeleting = false;
+      state.lastDeleted = action.payload.lastDeleted;
+    },
+    save: (state, _action: PayloadAction<SavePayload>) => {
+      state.isSaving = true;
+    },
+    saved: (state, action: PayloadAction<SavedPayload>) => {
+      state.isSaving = false;
       state.lastSaved = action.payload.lastSaved;
-    },
-    post: (state, _action: PayloadAction<string>) => {
-      state.isPosting = true;
-    },
-    posted: (state, action: PayloadAction<any>) => {
-      state.isPosting = false;
-      state.lastPosted = action.payload.lastPosted;
     },
     failed: (state, action: PayloadAction<string>) => {
       state.isFailed = true;
       state.error = action.payload;
     },
-    reset: () => initialState,
+    setselectedCondition: (state, action: PayloadAction<string>) => {
+      state.selectedCondition = action.payload;
+    },
+    reset: () => conditionAdapter.getInitialState(initialState),
   },
 });
 
 // ---- SELECTORS
 
 export const error = (state: RootState): string | undefined =>
-  state.formEditor.conditions.error;
+  state.formEditor.questions.error;
 export const isLoading = (state: RootState): boolean =>
-  state.formEditor.conditions.isLoading;
+  state.formEditor.questions.isLoading;
 export const hasChanges = (state: RootState): boolean => {
-  const updated = DateTime.fromISO(state.formEditor.conditions.lastUpdated);
-  const saved = DateTime.fromISO(state.formEditor.conditions.lastSaved);
+  const updated = DateTime.fromISO(state.formEditor.questions.lastUpdated);
+  const saved = DateTime.fromISO(state.formEditor.questions.lastSaved);
   return updated > saved;
 };
 
-export const question = (state: RootState): Partial<ICondition> | undefined =>
-  state.formEditor.conditions.data;
+export const conditions = (state: RootState): ICondition[] =>
+  conditionAdapter.getSelectors().selectAll(state.formEditor.conditions);
+
+const getselectedConditionId = (state: RootState): string =>
+  state.formEditor.conditions.selectedCondition;
+
+const getSelectedPageConditions = (state: RootState): ICondition[] => {
+  return conditions(state).filter(
+    (condition) =>
+      condition.referer_page?.id === state.formEditor.pages.selectedPage
+  );
+};
+const getSelectedQuestionsConditions = (state: RootState): ICondition[] => {
+  return conditions(state).filter(
+    (condition) =>
+      condition.referer_question?.id ===
+      state.formEditor.questions.selectedQuestion
+  );
+};
+
+const getselectedCondition = (state: RootState): ICondition | any =>
+  conditionAdapter
+    .getSelectors()
+    .selectById(state.formEditor.conditions, getselectedConditionId(state));
 
 export const selectors = {
   error,
   isLoading,
   hasChanges,
-  question,
+  conditions,
+  getselectedConditionId,
+  getselectedCondition,
+  getSelectedPageConditions,
+  getSelectedQuestionsConditions,
 };
 
 // ---- EXPORTS
 
-export const actions = questionEditorSlice.actions;
-export default questionEditorSlice.reducer;
+export const actions = conditionSlice.actions;
+export default conditionSlice.reducer;

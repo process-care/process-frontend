@@ -51,7 +51,7 @@ export const Step_1: React.FC<Props> = ({ currentCondition }) => {
     .filter((q: IQuestion) => authorizedInputTypes.includes(q.type))
     .filter((q: IQuestion) => q.id !== selected_input.id);
 
-  if (currentCondition?.type === "input") {
+  if (currentCondition?.type === "question") {
     authorizedInputs?.filter((q: IQuestion) =>
       inputsBeforeCurrent?.includes(q.id)
     );

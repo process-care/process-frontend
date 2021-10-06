@@ -93,15 +93,6 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
         overflowY="auto"
       >
         <Formik
-          // initialValues={
-          //   questions?.questions
-          //     ? questions?.questions.map((q) => {
-          //         return {
-          //           [q.id]: "",
-          //         };
-          //       })
-          //     : {}
-          // }
           initialValues={{}}
           onSubmit={(data) => {
             console.log("DATA :", data);
@@ -126,8 +117,7 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
       </Box>
     );
   };
-  if (isLoading) {
-    // if (isLoading || order === undefined) {
+  if (isLoading || order === undefined) {
     return (
       <Box pt="400px">
         <Loader />
@@ -139,7 +129,7 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
   }
 
   if (!selectedPage) {
-    return <p>no selected page</p>;
+    return <p>Une erreur est survenue (pas de page séléctionnée)</p>;
   }
   if (questions.length === 0) {
     return <NoData content="Il n'y a pas de questions" />;

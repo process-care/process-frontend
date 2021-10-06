@@ -24,8 +24,8 @@ export const GET_CONDITIONS: any = (type: string) => {
 
 export const ADD_CONDITION = gql`
   ${conditionFragment}
-  mutation addcondition($new_condition: ConditionInput) {
-    createCondition(input: { data: $new_condition }) {
+  mutation addcondition($newCondition: ConditionInput) {
+    createCondition(input: { data: $newCondition }) {
       condition {
         ...conditionFragment
       }

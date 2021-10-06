@@ -37,21 +37,12 @@ const createEpic: Epic = (action$, state$) =>
       const { type } = action.payload;
       const createdAt = new Date().toISOString();
       const selectedPage = state$.value.formEditor.pages.selectedPage;
-      const selectedSurvey = state$.value.formEditor.selectedSurvey.survey;
       const newQuestion = await client.request(ADD_QUESTION, {
         values: {
           type,
           page: selectedPage,
         },
       });
-
-      const newQuestionId = newQuestion.createQuestion.question.id;
-      if (newQuestionId) {
-        await client.request(UPDATE_ORDER, {
-          id: selectedSurvey.id,
-          new_order: getNewOrder(selectedSurvey, selectedPage, newQuestionId),
-        });
-      }
 
       return { newQuestion, createdAt };
     }),
@@ -84,10 +75,26 @@ const saveEpic: Epic = (action$, state$) =>
       const savedAt: string = new Date().toISOString();
       const selectedQuestionId =
         state$.value.formEditor.questions.selectedQuestion;
+      const selectedQuestion =
+        state$.value.formEditor.questions.entities[selectedQuestionId];
+      const selectedSurvey = state$.value.formEditor.selectedSurvey.survey;
+      const selectedPage = state$.value.formEditor.pages.selectedPage;
 
+      // TODO: change the hack to send the internal title only when it is modify
       await client.request(UPDATE_QUESTION, {
         id: selectedQuestionId,
-        data: action.payload.changes,
+        data: {
+          ...action.payload.changes,
+          internal_title: selectedQuestion?.internal_title,
+        },
+      });
+      await client.request(UPDATE_ORDER, {
+        id: selectedSurvey.id,
+        new_order: getNewOrder(
+          selectedSurvey,
+          selectedPage,
+          selectedQuestionId
+        ),
       });
       return savedAt;
     }),

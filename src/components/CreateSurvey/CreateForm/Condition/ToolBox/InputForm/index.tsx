@@ -16,7 +16,6 @@ import { selectCondition, setIsRemoving } from "redux/slices/formBuilder";
 import { Switch } from "components/Fields";
 import { t } from "static/condition";
 import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
-import ISurvey from "types/survey";
 import {
   selectors as selectorsQuestion,
   actions as actionsQuestion,
@@ -31,10 +30,10 @@ import {
 } from "redux/slices/application";
 
 interface Props {
-  survey: ISurvey | Record<string, any>;
+  order: string[];
 }
 
-const InputForm: React.FC<Props> = ({ survey }) => {
+const InputForm: React.FC<Props> = ({ order }) => {
   const dispatch = useAppDispatch();
   const currentConditions = useAppSelector(
     selectorsCondition.getSelectedQuestionsConditions
@@ -50,8 +49,6 @@ const InputForm: React.FC<Props> = ({ survey }) => {
     useState<Record<string, any>>(selectedQuestion);
 
   const type = selectedQuestion?.type;
-
-  console.log(currentConditions);
 
   const handleCancel = async () => {
     if (!isEditing) {
@@ -135,7 +132,7 @@ const InputForm: React.FC<Props> = ({ survey }) => {
                   <InputIcon type={type} />
                   <Box ml={2}>
                     <Text variant="xsMedium">
-                      {survey?.order?.findIndex(
+                      {order?.findIndex(
                         (id: string) => id === selectedQuestionId
                       ) + 1}
                     </Text>

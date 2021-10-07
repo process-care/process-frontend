@@ -77,6 +77,7 @@ type CreatePayload = {
 type CreatedPayload = {
   question: IQuestion;
   lastCreated: string;
+  formEditor: any;
 };
 
 // ----- SLICE
@@ -113,17 +114,16 @@ export const questionsSlice = createSlice({
     delete: (state, action: PayloadAction<string>) => {
       state.isDeleting = true;
       questionAdapter.removeOne(state, action.payload);
+    },
+    deleted: (state, action: PayloadAction<DeletedPayload>) => {
+      state.isDeleting = false;
+      state.lastDeleted = action.payload.lastDeleted;
       const lastQuestionId = state.ids.length - 1;
-      console.log(lastQuestionId, "IDD");
       if (lastQuestionId !== -1) {
         state.selectedQuestion = state.ids[lastQuestionId].toString();
       } else {
         state.selectedQuestion = "";
       }
-    },
-    deleted: (state, action: PayloadAction<DeletedPayload>) => {
-      state.isDeleting = false;
-      state.lastDeleted = action.payload.lastDeleted;
     },
     save: (state, _action: PayloadAction<SavePayload>) => {
       state.isSaving = true;

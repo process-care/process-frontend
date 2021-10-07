@@ -18,7 +18,7 @@ import { UPDATE_ORDER } from "call/queries/survey";
 const initializeEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.initialize.type),
-    switchMap((action) => {
+    switchMap(async (action) => {
       return client.request(GET_QUESTIONS, { page_id: action.payload });
     }),
     map((result) => {
@@ -36,16 +36,11 @@ const createEpic: Epic = (action$, state$) =>
       const { type } = action.payload;
       const createdAt = new Date().toISOString();
       const selectedPage = state$.value.formEditor.pages.selectedPage;
-      const selectedSurvey = state$.value.formEditor.selectedSurvey.survey;
       const newQuestion = await client.request(ADD_QUESTION, {
         values: {
           type,
           page: selectedPage,
         },
-      });
-      await client.request(UPDATE_ORDER, {
-        id: selectedSurvey.id,
-        new_order: selectedSurvey.order,
       });
 
       return { newQuestion, createdAt };
@@ -64,6 +59,7 @@ const createEpic: Epic = (action$, state$) =>
             ...newQuestion.createQuestion.question,
             internal_title: `${type}-${id}`,
           },
+          formEditor: state$.value.formEditor,
           lastCreated: createdAt,
         });
       }
@@ -81,6 +77,8 @@ const saveEpic: Epic = (action$, state$) =>
         state$.value.formEditor.questions.selectedQuestion;
       const selectedQuestion =
         state$.value.formEditor.questions.entities[selectedQuestionId];
+      const selectedSurvey = state$.value.formEditor.selectedSurvey.id;
+      const order = state$.value.formEditor.selectedSurvey.order;
 
       // TODO: change the hack to send the internal title only when it is modify
       await client.request(UPDATE_QUESTION, {
@@ -90,10 +88,10 @@ const saveEpic: Epic = (action$, state$) =>
           internal_title: selectedQuestion?.internal_title,
         },
       });
-      // await client.request(UPDATE_ORDER, {
-      //   id: selectedSurvey.id,
-      //   new_order: selectedSurvey.order,
-      // });
+      await client.request(UPDATE_ORDER, {
+        id: selectedSurvey,
+        new_order: order,
+      });
       return savedAt;
     }),
     map((savedAt) => actions.saved({ lastSaved: savedAt }))
@@ -105,20 +103,21 @@ const deleteEpic: Epic = (action$, state$) =>
   action$.pipe(
     ofType(actions.delete.type),
     switchMap(async (action) => {
-      const selectedSurvey = state$.value.formEditor.selectedSurvey.survey;
-
       const id: string = action.payload;
       const deletedAt = new Date().toISOString();
       await client.request(DELETE_QUESTION, {
         id,
       });
-      await client.request(UPDATE_ORDER, {
-        id: selectedSurvey.id,
-        new_order: selectedSurvey.order,
-      });
+
       return deletedAt;
     }),
-    map((deletedAt) => {
+    switchMap(async (deletedAt) => {
+      const selectedSurvey = state$.value.formEditor.selectedSurvey.survey;
+      const order = state$.value.formEditor.selectedSurvey.order;
+      await client.request(UPDATE_ORDER, {
+        id: selectedSurvey.id,
+        new_order: order,
+      });
       return actions.deleted({
         lastDeleted: deletedAt,
       });

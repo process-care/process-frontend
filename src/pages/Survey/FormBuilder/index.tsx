@@ -22,6 +22,7 @@ import {
   selectors as selectorSurvey,
   actions as actionsSurvey,
 } from "redux/slices/formEditor/selected-survey";
+import { Loader } from "components/Spinner";
 
 export const CreateForm: React.FC<IRoute> = () => {
   // FIXME: Yup, these ignore are bad, need to be removed
@@ -31,13 +32,15 @@ export const CreateForm: React.FC<IRoute> = () => {
   const dispatch = useDispatch();
   const isOpen = useAppSelector((state) => state.application.drawerIsOpen);
   const selectedSurvey = useAppSelector(selectorSurvey.getSelectedSurvey);
+  const selectedSurveyId = useAppSelector(selectorSurvey.getSelectedSurveyId);
+
+  const order = useAppSelector(selectorSurvey.getOrder);
+
   const error = useAppSelector(selectorsMySurveys.error);
   const { selected_condition } = useAppSelector((state) => state.formBuilder);
 
-  console.log("ORDER", selectedSurvey.order);
   useEffect(() => {
-    Boolean(selectedSurvey) && dispatch(actionsSurvey.initialize(slug));
-
+    dispatch(actionsSurvey.initialize(slug));
     dispatch(actionsPage.initialize(slug));
   }, [slug]);
 
@@ -45,17 +48,13 @@ export const CreateForm: React.FC<IRoute> = () => {
     return <Error error={error} />;
   }
 
-  if (!selectedSurvey) {
-    return <div>No Survey</div>;
+  if (!selectedSurveyId) {
+    return <Loader />;
   }
 
   return (
     <Box h="100vh" overflow="hidden">
-      <Drawer
-        isOpen={isOpen}
-        size="md"
-        content={<InputForm survey={selectedSurvey} />}
-      />
+      <Drawer isOpen={isOpen} size="md" content={<InputForm order={order} />} />
       <Box d="flex" justifyContent="space-around" w="100%" overflow="hidden">
         <Box w="100%">
           <Menu surveyId={selectedSurvey.id} />
@@ -86,10 +85,7 @@ export const CreateForm: React.FC<IRoute> = () => {
                 {selected_condition?.id !== undefined ? (
                   <ConditionPreview />
                 ) : (
-                  <InputsPreview
-                    order={selectedSurvey.order}
-                    surveyId={selectedSurvey.id}
-                  />
+                  <InputsPreview order={order} surveyId={selectedSurveyId} />
                 )}
               </div>
             </Container>

@@ -132,6 +132,9 @@ export const surveyFullFragment = gql`
       name
       short_name
       is_locked
+      survey {
+        id
+      }
       questions {
         id
       }

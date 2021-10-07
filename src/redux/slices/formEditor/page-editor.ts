@@ -145,8 +145,18 @@ export const hasChanges = (state: RootState): boolean => {
   const saved = DateTime.fromISO(state.formEditor.questions.lastSaved);
   return updated > saved;
 };
-export const getAllPages = (state: RootState): IPage[] =>
+
+export const pages = (state: RootState): IPage[] =>
   pageAdapter.getSelectors().selectAll(state.formEditor.pages);
+
+const getAllPages = (state: RootState): IPage[] => {
+  return pages(state).filter(
+    (page) => page?.survey?.id === state.formEditor.selectedSurvey.id
+  );
+};
+
+// export const getAllPages = (state: RootState): IPage[] =>
+//   pageAdapter.getSelectors().selectAll(state.formEditor.pages);
 
 const getSelectedPageId = (state: RootState): string =>
   state.formEditor.pages.selectedPage;

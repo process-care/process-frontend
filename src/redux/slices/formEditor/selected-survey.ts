@@ -9,6 +9,8 @@ import { getNewOrder } from "components/CreateSurvey/CreateForm/Condition/ToolBo
 export interface selectedSurveyEditor {
   // Survey status
   survey: ISurvey | Record<string, any>;
+  id: string;
+  order: string[];
   isLoading: boolean;
   isFailed: boolean;
   isOrdering: boolean;
@@ -18,6 +20,8 @@ export interface selectedSurveyEditor {
 // ---- STATE
 
 const initialState: selectedSurveyEditor = {
+  id: "",
+  order: [],
   survey: {},
   isLoading: true,
   isOrdering: false,
@@ -38,9 +42,12 @@ export const selectedSurveySlice = createSlice({
     initialized: (state, action: PayloadAction<any>) => {
       state.isLoading = false;
       state.survey = action.payload;
+      state.order = action.payload.order;
+      state.id = action.payload.id;
     },
     updateOrder: (state, action: PayloadAction<ISurvey["id"][]>) => {
       state.isOrdering = true;
+      state.order = action.payload;
       state.survey.order = action.payload;
     },
     updatedOrder: (state, _action: PayloadAction<string>) => {
@@ -50,19 +57,15 @@ export const selectedSurveySlice = createSlice({
   extraReducers: (builder) => {
     // Update Order on create question
     builder.addCase(questionAction.created, (state, action) => {
-      console.log("ACTION", action);
-      state.survey.order = getNewOrder(
-        state.survey,
-        action.payload.question.page?.id,
+      state.order = getNewOrder(
+        action.payload.formEditor,
         action.payload.question.id
       );
     });
 
     // Update Order on delete question
     builder.addCase(questionAction.delete, (state, action) => {
-      state.survey.order = state.survey.order.filter(
-        (id: string) => id !== action.payload
-      );
+      state.order = state.order.filter((id: string) => id !== action.payload);
     });
   },
 });
@@ -73,15 +76,24 @@ export const error = (state: RootState): string | undefined =>
   state.formEditor.selectedSurvey.error;
 export const isLoading = (state: RootState): boolean =>
   state.formEditor.selectedSurvey.isLoading;
+
 export const getSelectedSurvey = (
   state: RootState
 ): ISurvey | Record<string, any> => state.formEditor.selectedSurvey.survey;
+
+export const getSelectedSurveyId = (state: RootState): string =>
+  state.formEditor.selectedSurvey.id;
+
+export const getOrder = (state: RootState): string[] =>
+  state.formEditor.selectedSurvey.order;
 // ---- EXPORTS
 
 export const selectors = {
   error,
   isLoading,
   getSelectedSurvey,
+  getOrder,
+  getSelectedSurveyId,
 };
 
 export const actions = selectedSurveySlice.actions;

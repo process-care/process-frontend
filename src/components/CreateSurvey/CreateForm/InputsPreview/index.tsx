@@ -45,10 +45,10 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
 
   const dispatch = useAppDispatch();
 
+  // TODO: DONT CALL API WHEN WE CHANGE PAGE
   useEffect(() => {
-    if (selectedPageId && isLoading)
-      dispatch(actions.initialize(selectedPageId));
-  }, [selectedPageId, isLoading]);
+    dispatch(actions.initialize(selectedPageId));
+  }, [selectedPageId]);
 
   const renderCard = (input: IQuestion, index: number) => {
     return <Card key={input.id} input={input} index={index} />;
@@ -118,11 +118,7 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
     );
   };
   if (isLoading || order === undefined) {
-    return (
-      <Box pt="400px">
-        <Loader />
-      </Box>
-    );
+    return <Loader />;
   }
   if (error) {
     return <Error error={error} />;
@@ -131,7 +127,7 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
   if (!selectedPage) {
     return <p>Une erreur est survenue (pas de page séléctionnée)</p>;
   }
-  if (questions.length === 0) {
+  if (!isLoading && questions.length === 0) {
     return <NoData content="Il n'y a pas de questions" />;
   }
 

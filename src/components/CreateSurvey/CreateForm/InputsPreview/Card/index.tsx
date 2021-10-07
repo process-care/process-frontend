@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 import { renderInput } from "./utils";
 import IQuestion from "types/form/question";
-import { selectInput, setIsRemoving } from "redux/slices/formBuilder";
+import { setIsRemoving } from "redux/slices/formBuilder";
 import { Draggable } from "react-beautiful-dnd";
 
 import { ReactComponent as Delete } from "./assets/delete.svg";
@@ -39,7 +39,7 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
 
   const handleEdit = () => {
     dispatch(actions.setIsEditing(true));
-    dispatch(selectInput(input));
+    dispatch(actionsQuestion.setSelectedQuestion(input.id));
     dispatch(actions.toogleDrawer());
   };
 

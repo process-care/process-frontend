@@ -12,7 +12,6 @@ import {
   UPDATE_QUESTION,
 } from "call/queries/formBuilder/question";
 import { UPDATE_ORDER } from "call/queries/survey";
-import { getNewOrder } from "components/CreateSurvey/CreateForm/Condition/ToolBox/PageForm/utils";
 
 // ---- INITIALIZE QUESTIONS
 
@@ -37,11 +36,16 @@ const createEpic: Epic = (action$, state$) =>
       const { type } = action.payload;
       const createdAt = new Date().toISOString();
       const selectedPage = state$.value.formEditor.pages.selectedPage;
+      const selectedSurvey = state$.value.formEditor.selectedSurvey.survey;
       const newQuestion = await client.request(ADD_QUESTION, {
         values: {
           type,
           page: selectedPage,
         },
+      });
+      await client.request(UPDATE_ORDER, {
+        id: selectedSurvey.id,
+        new_order: selectedSurvey.order,
       });
 
       return { newQuestion, createdAt };
@@ -77,8 +81,6 @@ const saveEpic: Epic = (action$, state$) =>
         state$.value.formEditor.questions.selectedQuestion;
       const selectedQuestion =
         state$.value.formEditor.questions.entities[selectedQuestionId];
-      const selectedSurvey = state$.value.formEditor.selectedSurvey.survey;
-      const selectedPage = state$.value.formEditor.pages.selectedPage;
 
       // TODO: change the hack to send the internal title only when it is modify
       await client.request(UPDATE_QUESTION, {
@@ -88,14 +90,10 @@ const saveEpic: Epic = (action$, state$) =>
           internal_title: selectedQuestion?.internal_title,
         },
       });
-      await client.request(UPDATE_ORDER, {
-        id: selectedSurvey.id,
-        new_order: getNewOrder(
-          selectedSurvey,
-          selectedPage,
-          selectedQuestionId
-        ),
-      });
+      // await client.request(UPDATE_ORDER, {
+      //   id: selectedSurvey.id,
+      //   new_order: selectedSurvey.order,
+      // });
       return savedAt;
     }),
     map((savedAt) => actions.saved({ lastSaved: savedAt }))
@@ -103,14 +101,20 @@ const saveEpic: Epic = (action$, state$) =>
 
 // // ----  DELETE QUESTION
 
-const deleteEpic: Epic = (action$) =>
+const deleteEpic: Epic = (action$, state$) =>
   action$.pipe(
     ofType(actions.delete.type),
     switchMap(async (action) => {
+      const selectedSurvey = state$.value.formEditor.selectedSurvey.survey;
+
       const id: string = action.payload;
       const deletedAt = new Date().toISOString();
       await client.request(DELETE_QUESTION, {
         id,
+      });
+      await client.request(UPDATE_ORDER, {
+        id: selectedSurvey.id,
+        new_order: selectedSurvey.order,
       });
       return deletedAt;
     }),

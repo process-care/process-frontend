@@ -50,6 +50,7 @@ export const selectedSurveySlice = createSlice({
   extraReducers: (builder) => {
     // Update Order on create question
     builder.addCase(questionAction.created, (state, action) => {
+      console.log("ACTION", action);
       state.survey.order = getNewOrder(
         state.survey,
         action.payload.question.page?.id,

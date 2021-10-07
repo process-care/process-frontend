@@ -34,6 +34,7 @@ export const CreateForm: React.FC<IRoute> = () => {
   const error = useAppSelector(selectorsMySurveys.error);
   const { selected_condition } = useAppSelector((state) => state.formBuilder);
 
+  console.log("ORDER", selectedSurvey.order);
   useEffect(() => {
     Boolean(selectedSurvey) && dispatch(actionsSurvey.initialize(slug));
 

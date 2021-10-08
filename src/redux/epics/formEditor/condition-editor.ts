@@ -6,11 +6,11 @@ import { v4 as uuidv4 } from "uuid";
 
 import { client } from "call/actions";
 
+import { DELETE_QUESTION } from "call/queries/formBuilder/question";
 import {
-  DELETE_QUESTION,
-  UPDATE_QUESTION,
-} from "call/queries/formBuilder/question";
-import { ADD_CONDITION } from "call/queries/formBuilder/condition";
+  ADD_CONDITION,
+  UPDATE_CONDITION,
+} from "call/queries/formBuilder/condition";
 
 // ---- INITIALIZE CONDITION
 
@@ -55,36 +55,15 @@ const createEpic: Epic = (action$) =>
         createdAt: string;
       }) => {
         const data = newCondition.createCondition.condition;
-        const formatCondition = {
-          ...data,
-          isValid: false,
-          step: 1,
-        };
+
         return actions.created({
           lastCreated: createdAt,
-          condition: formatCondition,
+          condition: data,
+          isValid: false,
+          step: 1,
         });
       }
     )
-  );
-
-// // ----  SAVE CONDITION
-
-const saveEpic: Epic = (action$, state$) =>
-  action$.pipe(
-    ofType(actions.save.type),
-    switchMap(async (action) => {
-      const savedAt: string = new Date().toISOString();
-      const selectedQuestionId =
-        state$.value.formEditor.questions.selectedQuestion;
-
-      await client.request(UPDATE_QUESTION, {
-        id: selectedQuestionId,
-        data: action.payload.changes,
-      });
-      return savedAt;
-    }),
-    map((savedAt) => actions.saved({ lastSaved: savedAt }))
   );
 
 // // ----  DELETE CONDITION
@@ -105,6 +84,41 @@ const deleteEpic: Epic = (action$) =>
         lastDeleted: deletedAt,
       });
     })
+  );
+
+// // ----  SAVE CONDITION
+
+const saveEpic: Epic = (action$, state$) =>
+  action$.pipe(
+    ofType(actions.save.type),
+    switchMap(async () => {
+      const savedAt: string = new Date().toISOString();
+      const selectedConditionId =
+        state$.value.formEditor.conditions.selectedCondition;
+
+      const conditions = Object.entries(
+        state$.value.formEditor.conditions.entities
+      );
+      const changes = conditions.filter((c) => c[0] === selectedConditionId)[0];
+
+      // We need to send target : id, referer_question:id, but Icondition have full Question object adn we use it in frontend
+      const formatPayload = (changes: any) => {
+        return {
+          ...changes[1],
+          id: undefined,
+          target: changes[1].target.id,
+          referer_question: changes[1].referer_question?.id,
+          referer_page: changes[1].referer_page?.id,
+        };
+      };
+
+      await client.request(UPDATE_CONDITION, {
+        id: selectedConditionId,
+        data: formatPayload(changes),
+      });
+      return savedAt;
+    }),
+    map((savedAt) => actions.saved({ lastSaved: savedAt }))
   );
 
 export const conditionsEditorEpics = combineEpics(

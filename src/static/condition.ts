@@ -12,7 +12,7 @@ export const t = {
   cant_edit:
     "Merci de finaliser la condition en cours pour modifier les autres conditions",
   error: "Une erreur est survenue ...",
-  success: "Votre condition est enregistrée !",
+  success: "Votre condition est valide, vous pouvez l'enregistrer !",
   steps: [
     "Sélectionnez une question",
     "Sélectionnez un opérateur",

@@ -17,12 +17,7 @@ export default interface ICondition {
     | "superior"
     | "inferior"
     | "not_equal";
-  group: {
-    id: string | number;
-    name: number;
-  };
-  step: 1 | 2 | 3;
-  is_valid: boolean;
+  group: string;
 }
 
 export interface IConditionRes {

@@ -1,10 +1,7 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import ICondition from "types/form/condition";
 import React from "react";
 import { Circle } from "@chakra-ui/react";
-
 import { t } from "static/condition";
-import { useUpdateCondition } from "call/actions/formBuider/condition";
 
 const steps = [
   { title: t.steps[0] },
@@ -13,33 +10,24 @@ const steps = [
 ];
 
 interface Props {
-  currentCondition: ICondition | undefined;
   isDisabled: boolean;
+  step: number;
+  navigateTo: (step: number) => void;
 }
 
 export const StepCounter: React.FC<Props> = ({
-  currentCondition,
   isDisabled,
+  step,
+  navigateTo,
 }) => {
-  const { mutateAsync: updateCondition } = useUpdateCondition();
   return (
     <Flex justifyContent="center" mt={4} w="50%" mx="auto">
       {steps.map((_, i) => {
-        const isDone =
-          currentCondition?.step !== undefined &&
-          currentCondition?.step >= i + 1;
+        const isDone = step >= i + 1;
         return (
           <Flex w="40%" key={i}>
             <Flex
-              onClick={() =>
-                !isDisabled &&
-                updateCondition({
-                  id: currentCondition?.id,
-                  data: {
-                    step: i + 1,
-                  },
-                })
-              }
+              onClick={() => !isDisabled && navigateTo(i + 1)}
               flexDirection="column"
               justifyContent="center"
               alignItems="center"

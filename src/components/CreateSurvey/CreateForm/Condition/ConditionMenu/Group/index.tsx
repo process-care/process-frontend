@@ -14,7 +14,7 @@ import { t } from "static/condition";
 
 interface Props {
   conditions: ICondition[] | undefined;
-  groups: { id: string | number; name: number }[] | undefined;
+  groups: string[] | undefined;
   last_group: number;
 }
 interface State {
@@ -30,9 +30,12 @@ import {
   useGetConditions,
   useUpdateCondition,
 } from "call/actions/formBuider/condition";
+import { selectors } from "redux/slices/formEditor/condition-editor";
 
 export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
   const dispatch = useAppDispatch();
+  const isValid = useAppSelector(selectors.getValidity);
+
   const { selected_condition } = useAppSelector((state) => state.formBuilder);
   const { data } = useGetConditions({
     id:
@@ -50,9 +53,9 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
   );
   const { mutateAsync: updateCondition } = useUpdateCondition();
   const clean_groups = groups?.filter(
-    (v, i, a) => a.findIndex((t) => t.id === v.id) === i
+    (v, i, a) => a.findIndex((t) => t === v) === i
   );
-  const isDisabled = !currentCondition?.is_valid;
+
   const [isRemoving, setRemoving] = React.useState<State>({
     type: null,
     id: "",
@@ -84,7 +87,7 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
 
   return (
     <Box h="100%">
-      {clean_groups?.map(({ name, id }) => {
+      {clean_groups?.map((id) => {
         if (isRemoving.type === "group" && isRemoving.id === id) {
           return (
             <RemovingConfirmation
@@ -126,7 +129,7 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
             {conditions?.map((condition: ICondition, index: number) => {
               const isLast = index === conditions.length - 1;
 
-              if (condition.group.id === id) {
+              if (condition.group === id) {
                 if (
                   isRemoving.type === "condition" &&
                   isRemoving.id === condition.id
@@ -164,7 +167,7 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
                                 </Text>
                                 <Button
                                   d="flex"
-                                  isDisabled={isDisabled}
+                                  isDisabled={!isValid}
                                   onClick={() => {
                                     updateCondition({
                                       id: condition.id,
@@ -226,7 +229,7 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
                       )}
                       <Flex justifyContent="flex-end">
                         <Button
-                          isDisabled={isDisabled}
+                          isDisabled={!isValid}
                           variant="link"
                           opacity={0.5}
                           fontSize="10"
@@ -238,12 +241,7 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
                                 : "referer_question"]: is_page_type
                                 ? condition?.referer_page?.id
                                 : condition?.referer_question?.id,
-                              step: 1,
-                              group: {
-                                id: condition?.group.id,
-                                name: condition?.group.name,
-                              },
-                              is_valid: false,
+                              group: condition?.group,
                             }).then((data: any) =>
                               dispatch(
                                 selectCondition(data.createCondition.condition)
@@ -259,10 +257,12 @@ export const Group: React.FC<Props> = ({ conditions, groups, last_group }) => {
                 );
               }
             })}
-            <Separator value="OU" isLast={last_group === id} />
+            <Separator value="OU" isLast={false} />
+
+            {/* <Separator value="OU" isLast={last_group === id} /> */}
             <Flex justifyContent="flex-end">
               <Button
-                isDisabled={isDisabled}
+                isDisabled={!isValid}
                 variant="link"
                 opacity={0.5}
                 fontSize="10"

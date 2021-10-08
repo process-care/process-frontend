@@ -21,6 +21,10 @@ export const renderInput = (
     );
   };
 
+  const handleValidity = (bool: boolean) => {
+    dispatch(actionsCondition.setValidity(bool));
+  };
+
   const target_question = selectedCondition.target;
   const Options = () => {
     const answers =
@@ -36,12 +40,12 @@ export const renderInput = (
               isSelected={selectedCondition.target_value === option}
               isOptionMode
               option={option}
-              onClick={() =>
+              onClick={() => {
                 handleUpdate({
                   target_value: option !== undefined ? option : "",
-                  is_valid: true,
-                })
-              }
+                });
+                handleValidity(true);
+              }}
             />
           ))}
         </ul>

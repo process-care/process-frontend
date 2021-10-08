@@ -9,6 +9,11 @@ import { ReactComponent as Submit } from "./../../assets/submit.svg";
 import { ReactComponent as Check } from "./../../assets/check.svg";
 import { renderInput } from "./utils";
 import { checkIfMultiple } from "utils/formBuilder/input";
+import {
+  actions as actionsCondition,
+  selectors,
+} from "redux/slices/formEditor/condition-editor";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 interface Props {
   selectedCondition: ICondition;
@@ -16,6 +21,12 @@ interface Props {
 }
 
 export const Step_3: React.FC<Props> = ({ selectedCondition, updateStep }) => {
+  const dispatch = useAppDispatch();
+  const isValid = useAppSelector(selectors.getValidity);
+  const handleValidity = (bool: boolean) => {
+    dispatch(actionsCondition.setValidity(bool));
+  };
+
   return (
     <Container w="90%" maxW="unset">
       <Formik
@@ -31,7 +42,7 @@ export const Step_3: React.FC<Props> = ({ selectedCondition, updateStep }) => {
             const target = event.target as HTMLFormElement;
             if (target !== null) {
               if (target.value === "") {
-                updateStep({ is_valid: false });
+                handleValidity(false);
               } else updateStep({ target_value: target.value });
             }
           };
@@ -51,7 +62,7 @@ export const Step_3: React.FC<Props> = ({ selectedCondition, updateStep }) => {
                   ml={5}
                   updateStep={() => {
                     if (values.target_value) {
-                      updateStep({ is_valid: true });
+                      handleValidity(true);
                     }
                   }}
                   _hover={{
@@ -65,7 +76,7 @@ export const Step_3: React.FC<Props> = ({ selectedCondition, updateStep }) => {
                   )}
                 </Box>
               </Box>
-              {selectedCondition.is_valid && isNotEmpty && (
+              {isValid && isNotEmpty && (
                 <Flex
                   alignItems="center"
                   justifyContent="flex-end"

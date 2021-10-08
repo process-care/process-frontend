@@ -31,11 +31,13 @@ export interface QuestionEditor {
   lastSaved: string;
   lastCreated: string;
   lastDeleted: string;
+  isValid: boolean;
 }
 
 // ---- STATE
 
 const initialState: QuestionEditor = {
+  isValid: false,
   step: 1,
   isCreating: false,
   isLoading: true,
@@ -64,10 +66,6 @@ type DeletedPayload = {
   lastDeleted: string;
 };
 
-type SavePayload = {
-  changes: Partial<ICondition>;
-};
-
 type SavedPayload = {
   lastSaved: string;
 };
@@ -81,6 +79,8 @@ type CreatePayload = {
 type CreatedPayload = {
   lastCreated: string;
   condition: ICondition;
+  step: number;
+  isValid: boolean;
 };
 
 // ----- SLICE
@@ -106,6 +106,8 @@ export const conditionSlice = createSlice({
       state.lastCreated = action.payload.lastCreated;
       conditionAdapter.addOne(state, action.payload.condition);
       state.selectedCondition = action.payload.condition.id;
+      state.step = action.payload.step;
+      state.isValid = action.payload.isValid;
     },
     update: (state, action: PayloadAction<UpdatePayload>) => {
       state.lastUpdated = new Date().toISOString();
@@ -129,7 +131,7 @@ export const conditionSlice = createSlice({
       state.isDeleting = false;
       state.lastDeleted = action.payload.lastDeleted;
     },
-    save: (state, _action: PayloadAction<SavePayload>) => {
+    save: (state, _action: PayloadAction) => {
       state.isSaving = true;
     },
     saved: (state, action: PayloadAction<SavedPayload>) => {
@@ -145,6 +147,9 @@ export const conditionSlice = createSlice({
     },
     setStep: (state, action: PayloadAction<number>) => {
       state.step = action.payload;
+    },
+    setValidity: (state, action: PayloadAction<boolean>) => {
+      state.isValid = action.payload;
     },
     reset: () => conditionAdapter.getInitialState(initialState),
   },
@@ -169,6 +174,8 @@ const getSelectedConditionId = (state: RootState): string =>
   state.formEditor.conditions.selectedCondition;
 
 const getStep = (state: RootState): number => state.formEditor.conditions.step;
+const getValidity = (state: RootState): boolean =>
+  state.formEditor.conditions.isValid;
 
 const getSelectedPageConditions = (state: RootState): ICondition[] => {
   return conditions(state).filter(
@@ -199,6 +206,7 @@ export const selectors = {
   getSelectedPageConditions,
   getSelectedQuestionsConditions,
   getStep,
+  getValidity,
 };
 
 // ---- EXPORTS

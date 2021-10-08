@@ -9,22 +9,28 @@ import { client } from "call/actions";
 import { DELETE_QUESTION } from "call/queries/formBuilder/question";
 import {
   ADD_CONDITION,
+  GET_CONDITIONS_BY_QUESTION,
   UPDATE_CONDITION,
 } from "call/queries/formBuilder/condition";
 
 // ---- INITIALIZE CONDITION
 
-// const initializeEpic: Epic = (action$) =>
-//   action$.pipe(
-//     ofType(actions.initialize.type),
-//     switchMap((action) => {
-//       return client.request(GET_CONDITIONS, { taget: action.payload });
-//     }),
-//     map((result) => {
-//       const payload = result.questions;
-//       return actions.initialized(payload);
-//     })
-//   );
+const initializeEpic: Epic = (action$) =>
+  action$.pipe(
+    ofType(actions.initialize.type),
+    switchMap((action) => {
+      console.log(action);
+      return client.request(GET_CONDITIONS_BY_QUESTION, {
+        where: { referer_question: action.payload },
+      });
+    }),
+    map((result) => {
+      if (result) {
+        console.log(result);
+        return actions.initialized(result.conditions);
+      } else return actions.initialized([]);
+    })
+  );
 
 // ----  CREATE CONDITION
 
@@ -122,7 +128,7 @@ const saveEpic: Epic = (action$, state$) =>
   );
 
 export const conditionsEditorEpics = combineEpics(
-  // initializeEpic,
+  initializeEpic,
   createEpic,
   saveEpic,
   deleteEpic

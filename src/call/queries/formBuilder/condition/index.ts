@@ -22,6 +22,15 @@ export const GET_CONDITIONS: any = (type: string) => {
   `;
 };
 
+export const GET_CONDITIONS_BY_QUESTION = gql`
+  ${conditionFragment}
+  query getConditons($referer_question: [ID]) {
+    conditions(where: { referer_question: $referer_question }) {
+      ...conditionFragment
+    }
+  }
+`;
+
 export const ADD_CONDITION = gql`
   ${conditionFragment}
   mutation addcondition($newCondition: ConditionInput) {

@@ -12,9 +12,10 @@ import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 import { selectors } from "redux/slices/formEditor/page-editor";
 import {
-  actions,
+  actions as actionsQuestion,
   selectors as selectorsQuestion,
 } from "redux/slices/formEditor/question-editor";
+import { actions as actionsCondition } from "redux/slices/formEditor/condition-editor";
 import { actions as actionsSurvey } from "redux/slices/formEditor/selected-survey";
 import { NoData } from "components/SurveyGrid/noData";
 
@@ -42,13 +43,18 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
   const questions = useAppSelector(selectorsQuestion.getSelectedPageQuestions);
   const isLoading = useAppSelector(selectorsQuestion.isLoading);
   const error = useAppSelector(selectorsQuestion.error);
-
+  const ids = questions.map((q) => q.id);
   const dispatch = useAppDispatch();
 
   // TODO: DONT CALL API WHEN WE CHANGE PAGE
   useEffect(() => {
-    dispatch(actions.initialize(selectedPageId));
+    dispatch(actionsQuestion.initialize(selectedPageId));
   }, [selectedPageId]);
+  useEffect(() => {
+    if (!isLoading) {
+      dispatch(actionsCondition.initialize(ids));
+    }
+  }, [isLoading]);
 
   const renderCard = (input: IQuestion, index: number) => {
     return <Card key={input.id} input={input} index={index} />;

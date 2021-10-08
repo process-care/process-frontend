@@ -90,13 +90,12 @@ export const conditionSlice = createSlice({
   name: SLICE_NAME,
   initialState: conditionAdapter.getInitialState(initialState),
   reducers: {
-    initialize: (state, _action: PayloadAction<string>) => {
+    initialize: (state, _action: PayloadAction<string[]>) => {
       state.isLoading = true;
     },
     initialized: (state, action: PayloadAction<any>) => {
       state.isLoading = false;
       conditionAdapter.setMany(state, action.payload);
-      if (action.payload[0]) state.selectedCondition = action.payload[0].id;
     },
     create: (state, _action: PayloadAction<CreatePayload>) => {
       state.isCreating = true;
@@ -137,6 +136,7 @@ export const conditionSlice = createSlice({
     saved: (state, action: PayloadAction<SavedPayload>) => {
       state.isSaving = false;
       state.lastSaved = action.payload.lastSaved;
+      state.selectedCondition = "";
     },
     failed: (state, action: PayloadAction<string>) => {
       state.isFailed = true;

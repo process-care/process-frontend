@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "redux/store";
 import { actions as questionAction } from "../formEditor/question-editor";
+import { actions as conditionAction } from "../formEditor/condition-editor";
+
 // ---- TYPES
 
 interface IPreview {
@@ -54,6 +56,9 @@ export const applicationSlice = createSlice({
     });
     builder.addCase(questionAction.delete, (state) => {
       state.drawerIsOpen = false;
+    });
+    builder.addCase(conditionAction.saved, (state) => {
+      state.drawerIsOpen = true;
     });
   },
 });

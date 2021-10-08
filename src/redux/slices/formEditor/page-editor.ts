@@ -59,6 +59,7 @@ type UpdatedPayload = {
 
 type DeletedPayload = {
   lastDeleted: string;
+  questionsToDelete: string[];
 };
 
 type SavedPayload = {

@@ -4,6 +4,8 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit";
 
+import { actions as pageActions } from "./page-editor";
+
 // import type { RootState } from "redux/store";
 import { RootState } from "redux/store";
 import { DateTime } from "luxon";
@@ -141,6 +143,13 @@ export const questionsSlice = createSlice({
     },
     reset: () => questionAdapter.getInitialState(initialState),
   },
+  extraReducers: (builder) => {
+    // Delete all questions from a page when the page is deleted
+    builder.addCase(pageActions.deleted, (state, action) => {
+      const { questionsToDelete } = action.payload;
+      questionAdapter.removeMany(state, questionsToDelete);
+    });
+  },
 });
 
 // ---- SELECTORS
@@ -167,6 +176,13 @@ const getSelectedPageQuestions = (state: RootState): IQuestion[] => {
   );
 };
 
+const getQuestionsByPageId = (
+  state: RootState,
+  pageId: string
+): IQuestion[] => {
+  return questions(state).filter((question) => question.page?.id === pageId);
+};
+
 const getSelectedQuestion = (state: RootState): IQuestion | any =>
   questionAdapter
     .getSelectors()
@@ -180,6 +196,7 @@ export const selectors = {
   getSelectedQuestionId,
   getSelectedQuestion,
   getSelectedPageQuestions,
+  getQuestionsByPageId,
 };
 
 // ---- EXPORTS

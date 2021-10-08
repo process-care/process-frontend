@@ -2,7 +2,6 @@ import { map, switchMap, scan, debounceTime } from "rxjs";
 import { combineEpics, ofType } from "redux-observable";
 import { Epic } from "redux/store";
 import { actions, selectors } from "redux/slices/formEditor/page-editor";
-import { selectors as questionsSelectors } from "redux/slices/formEditor/question-editor";
 
 import { client } from "call/actions";
 import { GET_SURVEY_BY_SLUG } from "call/queries/survey";
@@ -11,14 +10,12 @@ import {
   DELETE_PAGE,
   UPDATE_PAGE,
 } from "call/queries/formBuilder/page";
-import { DELETE_QUESTION } from "call/queries/formBuilder/question";
 
 // ---- INITIALIZE PAGES
 
 const initializeEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.initialize.type),
-    // TODO: Check if survey is not in redux / if here do not query it
     switchMap((action) => {
       return client.request(GET_SURVEY_BY_SLUG, { slug: action.payload });
     }),
@@ -88,34 +85,22 @@ const updateEpic: Epic = (action$) =>
 
 // ----  DELETE PAGE
 
-const deleteEpic: Epic = (action$, state$) =>
+const deleteEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.delete.type),
     switchMap(async (action) => {
-      console.log("DELETE PAGE");
       const pageId: string = action.payload;
-
-      const questionsToDelete = questionsSelectors
-        .getQuestionsByPageId(state$.value, pageId)
-        .map((question) => question.id);
       const deletedAt = new Date().toISOString();
-      // Delete page
+
       await client.request(DELETE_PAGE, {
         id: pageId,
       });
-      // Delete questions on page
-      questionsToDelete.forEach(async (id) => {
-        await client.request(DELETE_QUESTION, {
-          id,
-        });
-      });
-      return { deletedAt, questionsToDelete };
+
+      return { deletedAt };
     }),
-    // We need to to send questionsToDelete to selected-survey extra reducer for deleting questions in redux
-    map(({ deletedAt, questionsToDelete }) => {
+    map(({ deletedAt }) => {
       return actions.deleted({
         lastDeleted: deletedAt,
-        questionsToDelete,
       });
     })
   );

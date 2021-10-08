@@ -4,9 +4,6 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit";
 
-import { actions as pageActions } from "./page-editor";
-
-// import type { RootState } from "redux/store";
 import { RootState } from "redux/store";
 import { DateTime } from "luxon";
 import IQuestion from "types/form/question";
@@ -142,13 +139,6 @@ export const questionsSlice = createSlice({
       state.selectedQuestion = action.payload;
     },
     reset: () => questionAdapter.getInitialState(initialState),
-  },
-  extraReducers: (builder) => {
-    // Delete all questions from a page when the page is deleted
-    builder.addCase(pageActions.deleted, (state, action) => {
-      const { questionsToDelete } = action.payload;
-      questionAdapter.removeMany(state, questionsToDelete);
-    });
   },
 });
 

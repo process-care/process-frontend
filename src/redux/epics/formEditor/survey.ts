@@ -22,7 +22,6 @@ const initializeEpic: Epic = (action$) =>
 const updateOrderEpic: Epic = (action$, state$) =>
   action$.pipe(
     ofType(actions.updateOrder.type),
-    // TODO: update order in api
     map((action) => action.payload),
     switchMap((payload) => {
       const selectedSurveyId = state$.value.formEditor.selectedSurvey.survey.id;

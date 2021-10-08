@@ -16,7 +16,10 @@ import { ReactComponent as Trash } from "assets/trash.svg";
 import { useAddCondition } from "call/actions/formBuider/condition";
 // import { debounce } from "lodash";
 import { actions, selectors } from "redux/slices/formEditor/page-editor";
-import { actions as actionsQuestion } from "redux/slices/formEditor/question-editor";
+import {
+  selectors as questionsSelectors,
+  actions as actionsQuestion,
+} from "redux/slices/formEditor/question-editor";
 
 export const PageForm: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -25,6 +28,9 @@ export const PageForm: React.FC = () => {
   const selectedPageId = useAppSelector(selectors.getSelectedPageId);
   const selectedPage = useAppSelector(selectors.getSelectedPage);
   const pages = useAppSelector(selectors.getAllPages);
+  const questionsOnSelectedPage = useAppSelector(
+    questionsSelectors.getSelectedPageQuestions
+  ).map((question) => question.id);
 
   const { mutateAsync: addCondition } = useAddCondition();
 
@@ -36,14 +42,6 @@ export const PageForm: React.FC = () => {
   const handleSelect = (type: IQuestion["type"]) => {
     dispatch(actionsQuestion.create({ type }));
   };
-
-  // const autoSave = () => {
-  //   dispatch(actionsApplication.setAutoSave());
-  //   setTimeout(() => {
-  //     dispatch(actionsApplication.setAutoSave());
-  //   }, 2000);
-  // };
-  // const autoSaveDebounce = debounce(autoSave, 500);
 
   const onChange = (event: React.FormEvent<HTMLFormElement>) => {
     const target = event.target as HTMLFormElement;
@@ -60,6 +58,12 @@ export const PageForm: React.FC = () => {
 
   const handleDelete = async () => {
     dispatch(actions.delete(selectedPageId));
+    // Need to delete question with dispatch here to get the chain working well (update order etc ...)
+    // TODO: Maybe i can create an epic to dispatch all actions at once
+    questionsOnSelectedPage.forEach((questionId) => {
+      dispatch(actionsQuestion.delete(questionId));
+    });
+
     dispatch(setIsRemoving(""));
   };
 

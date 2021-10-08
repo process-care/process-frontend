@@ -3,12 +3,24 @@ import React from "react";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { toggleCollapseView } from "redux/slices/formBuilder";
 import { t } from "static/input";
-
+import {
+  selectors as selectorsQuestion,
+  actions as actionsQuestion,
+} from "redux/slices/formEditor/question-editor";
 export const Header: React.FC = () => {
   const dispatch = useAppDispatch();
   const isCollapse = useAppSelector(
     (state) => state.formBuilder.is_collapse_view
   );
+
+  const questions = useAppSelector(selectorsQuestion.getSelectedPageQuestions);
+  const idsToDelete = questions.map((q) => q.id);
+  const deleteAll = () => {
+    idsToDelete.forEach((id) => {
+      dispatch(actionsQuestion.delete(id));
+    });
+  };
+
   return (
     <Flex
       justifyContent="space-between"
@@ -18,11 +30,7 @@ export const Header: React.FC = () => {
       pl="50px"
     >
       <ButtonGroup>
-        <Button
-          variant="link"
-          fontSize="10px"
-          onClick={() => console.log("remove all inputs")}
-        >
+        <Button variant="link" fontSize="10px" onClick={deleteAll}>
           {t.delete_all_inputs}
         </Button>
       </ButtonGroup>

@@ -9,7 +9,10 @@ export const getNewOrder: any = (
   new_question_id: string
 ) => {
   const pagesIds = formEditor.pages.ids;
-  const order = formEditor.selectedSurvey.order;
+  const order =
+    formEditor.selectedSurvey.order === null
+      ? []
+      : formEditor.selectedSurvey.order;
   const selectedPageId = formEditor.pages.selectedPage;
   const q = Object.entries(formEditor.questions.entities);
   const questions = q.filter((c) => c[1]?.page?.id === selectedPageId);

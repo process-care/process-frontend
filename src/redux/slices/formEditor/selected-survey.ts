@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { actions as questionAction } from "./question-editor";
-import { actions as pageActions } from "./page-editor";
 
 import { RootState } from "redux/store";
 import ISurvey from "types/survey";
@@ -63,15 +62,6 @@ export const selectedSurveySlice = createSlice({
         action.payload.formEditor,
         action.payload.question.id
       );
-    });
-    // Update Order on delete page
-    builder.addCase(pageActions.deleted, (state, action) => {
-      const { questionsToDelete } = action.payload;
-      const order = state.order;
-      const newOrder = order.filter(function (e) {
-        return questionsToDelete.indexOf(e) < 0;
-      });
-      state.order = newOrder;
     });
     // Update Order on delete question
     builder.addCase(questionAction.delete, (state, action) => {

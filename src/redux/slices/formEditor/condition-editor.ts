@@ -20,6 +20,7 @@ const conditionAdapter = createEntityAdapter<ICondition>({
 export interface QuestionEditor {
   // Questions status
   selectedCondition: string;
+  step: number;
   isCreating: boolean;
   isLoading: boolean;
   isSaving: boolean;
@@ -35,6 +36,7 @@ export interface QuestionEditor {
 // ---- STATE
 
 const initialState: QuestionEditor = {
+  step: 1,
   isCreating: false,
   isLoading: true,
   isSaving: false,
@@ -141,6 +143,9 @@ export const conditionSlice = createSlice({
     setselectedCondition: (state, action: PayloadAction<string>) => {
       state.selectedCondition = action.payload;
     },
+    setStep: (state, action: PayloadAction<number>) => {
+      state.step = action.payload;
+    },
     reset: () => conditionAdapter.getInitialState(initialState),
   },
 });
@@ -160,8 +165,10 @@ export const hasChanges = (state: RootState): boolean => {
 export const conditions = (state: RootState): ICondition[] =>
   conditionAdapter.getSelectors().selectAll(state.formEditor.conditions);
 
-const getselectedConditionId = (state: RootState): string =>
+const getSelectedConditionId = (state: RootState): string =>
   state.formEditor.conditions.selectedCondition;
+
+const getStep = (state: RootState): number => state.formEditor.conditions.step;
 
 const getSelectedPageConditions = (state: RootState): ICondition[] => {
   return conditions(state).filter(
@@ -177,20 +184,21 @@ const getSelectedQuestionsConditions = (state: RootState): ICondition[] => {
   );
 };
 
-const getselectedCondition = (state: RootState): ICondition | any =>
+const getSelectedCondition = (state: RootState): ICondition | undefined =>
   conditionAdapter
     .getSelectors()
-    .selectById(state.formEditor.conditions, getselectedConditionId(state));
+    .selectById(state.formEditor.conditions, getSelectedConditionId(state));
 
 export const selectors = {
   error,
   isLoading,
   hasChanges,
   conditions,
-  getselectedConditionId,
-  getselectedCondition,
+  getSelectedConditionId,
+  getSelectedCondition,
   getSelectedPageConditions,
   getSelectedQuestionsConditions,
+  getStep,
 };
 
 // ---- EXPORTS

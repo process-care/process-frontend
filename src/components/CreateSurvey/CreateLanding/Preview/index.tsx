@@ -24,10 +24,7 @@ interface Props {
 // ---- COMPONENT
 
 export const Preview: React.FC<Props> = ({ isUserView, data }) => {
-  // FIXME: Yup, these ignore are bad, need to be removed
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const { slug } = useParams();
+  const { slug } = useParams<{ slug: string }>();
   const history = useHistory();
 
   const { previewMode } = useAppSelector((state) => state.application);

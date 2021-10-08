@@ -86,6 +86,7 @@ const InputForm: React.FC<Props> = ({ order }) => {
         group,
       })
     );
+    dispatch(actionsApplication.toogleDrawer());
   };
 
   return (

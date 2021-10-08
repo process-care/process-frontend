@@ -4,21 +4,18 @@ import { Button, Flex } from "@chakra-ui/react";
 import { operators, operatorsForMultiple } from "constants/operators";
 import ICondition from "types/form/condition";
 import { checkIfMultiple } from "utils/formBuilder/input";
-import { useUpdateCondition } from "call/actions/formBuider/condition";
 
 interface Props {
-  currentCondition: Partial<ICondition>;
+  selectedCondition: ICondition;
+  updateStep: (d: any) => void;
 }
 
-export const Step_2: React.FC<Props> = ({ currentCondition }) => {
-  const { mutateAsync: updateCondition } = useUpdateCondition();
+export const Step_2: React.FC<Props> = ({ selectedCondition, updateStep }) => {
   const authorizedOperators = () => {
-    if (checkIfMultiple(currentCondition)) {
+    if (checkIfMultiple(selectedCondition)) {
       return operatorsForMultiple;
     } else return operators;
   };
-
-  console.log("check", checkIfMultiple(currentCondition), currentCondition);
 
   return (
     <Flex
@@ -30,18 +27,11 @@ export const Step_2: React.FC<Props> = ({ currentCondition }) => {
       pt="10%"
     >
       {authorizedOperators().map(({ id, name }) => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        const isSelected = id === currentCondition.operator;
+        const isSelected = id === selectedCondition.operator;
 
         return (
           <Button
-            onClick={() =>
-              updateCondition({
-                id: currentCondition.id,
-                data: { operator: id },
-              })
-            }
+            onClick={() => updateStep({ operator: id })}
             key={id}
             variant="box"
             minW="200px"

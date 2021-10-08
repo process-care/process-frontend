@@ -1,19 +1,18 @@
 import ICondition from "types/form/condition";
 
 export const checkStepValidation = (
-  current_condition: ICondition | undefined
+  step: number,
+  selectedCondition: ICondition
 ): boolean => {
-  if (current_condition) {
-    const { step, target, operator, is_valid } = current_condition;
+  const { target, operator, is_valid } = selectedCondition;
 
-    if (step === 1 && !!target?.id) {
-      return false;
-    }
-    if (step === 2 && !!operator) {
-      return false;
-    }
-    if (step === 3 && !!is_valid) {
-      return false;
-    } else return true;
+  if (step === 1 && !!target?.id) {
+    return false;
+  }
+  if (step === 2 && !!operator) {
+    return false;
+  }
+  if (step === 3 && !!is_valid) {
+    return false;
   } else return true;
 };

@@ -1,7 +1,7 @@
 import { Box, Text } from "@chakra-ui/react";
 import { Footer } from "components/CreateSurvey/CreateLanding/ToolBox/Footer";
 import React from "react";
-import { useAppSelector, useAppDispatch } from "redux/hooks";
+import { useAppDispatch } from "redux/hooks";
 import { t } from "static/condition";
 
 import { selectCondition } from "redux/slices/formBuilder";
@@ -11,26 +11,19 @@ import {
   useDeleteCondition,
   useGetConditions,
 } from "call/actions/formBuider/condition";
-import { Loader } from "components/Spinner";
-import { Error } from "components/Error";
 
-export const ConditionMenu: React.FC = () => {
+interface Props {
+  selectedCondition: ICondition;
+}
+export const ConditionMenu: React.FC<Props> = ({ selectedCondition }) => {
   const dispatch = useAppDispatch();
-  const { selected_condition } = useAppSelector((state) => state.formBuilder);
-  const { data, isLoading, error } = useGetConditions({
-    id:
-      selected_condition.type === "page"
-        ? selected_condition?.referer_page?.id
-        : selected_condition?.referer_question?.id,
-    type: selected_condition.type,
+  const { data } = useGetConditions({
+    id: "iei",
+    type: selectedCondition?.type,
   });
   const { mutateAsync: deleteCondition } = useDeleteCondition();
 
-  const current_condition = data?.conditions.find(
-    (c: ICondition) => c.id === selected_condition.id
-  );
-
-  const isDisabled = !current_condition?.is_valid;
+  const isDisabled = !selectedCondition.is_valid;
   const groups = data?.conditions.map((c: ICondition) => c.group);
 
   const last_group =
@@ -39,17 +32,6 @@ export const ConditionMenu: React.FC = () => {
       : 1;
 
   const isConditionTypePage = data?.conditions[0]?.type === "page";
-
-  if (isLoading || current_condition === undefined) {
-    return (
-      <Box pt="400px">
-        <Loader />
-      </Box>
-    );
-  }
-  if (error) {
-    return <Error error={error} />;
-  }
 
   return (
     <Box h="100%" pos="relative">
@@ -79,8 +61,8 @@ export const ConditionMenu: React.FC = () => {
           disabled={isDisabled}
           onSubmit={() => dispatch(selectCondition({}))}
           onCancel={() => {
-            if (!current_condition.is_valid) {
-              deleteCondition(current_condition.id);
+            if (!selectedCondition.is_valid) {
+              deleteCondition(selectedCondition.id);
             }
             dispatch(selectCondition({}));
           }}

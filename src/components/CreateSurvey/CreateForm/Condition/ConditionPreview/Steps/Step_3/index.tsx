@@ -9,19 +9,18 @@ import { ReactComponent as Submit } from "./../../assets/submit.svg";
 import { ReactComponent as Check } from "./../../assets/check.svg";
 import { renderInput } from "./utils";
 import { checkIfMultiple } from "utils/formBuilder/input";
-import { useUpdateCondition } from "call/actions/formBuider/condition";
 
 interface Props {
-  currentCondition: Partial<ICondition>;
+  selectedCondition: ICondition;
+  updateStep: (d: any) => void;
 }
 
-export const Step_3: React.FC<Props> = ({ currentCondition }) => {
-  const { mutateAsync: updateCondition } = useUpdateCondition();
+export const Step_3: React.FC<Props> = ({ selectedCondition, updateStep }) => {
   return (
     <Container w="90%" maxW="unset">
       <Formik
         validateOnBlur={false}
-        initialValues={{ target_value: currentCondition.target_value }}
+        initialValues={{ target_value: selectedCondition.target_value }}
         onSubmit={(data, { setSubmitting, validateForm }) => {
           validateForm(data);
           setSubmitting(true);
@@ -32,22 +31,11 @@ export const Step_3: React.FC<Props> = ({ currentCondition }) => {
             const target = event.target as HTMLFormElement;
             if (target !== null) {
               if (target.value === "") {
-                updateCondition({
-                  id: currentCondition.id,
-                  data: {
-                    is_valid: false,
-                  },
-                });
-              } else
-                updateCondition({
-                  id: currentCondition.id,
-                  data: {
-                    target_value: target.value,
-                  },
-                });
+                updateStep({ is_valid: false });
+              } else updateStep({ target_value: target.value });
             }
           };
-          const isNotEmpty = checkIfMultiple(currentCondition)
+          const isNotEmpty = checkIfMultiple(selectedCondition)
             ? true
             : values.target_value !== "" && values.target_value !== undefined;
 
@@ -57,18 +45,13 @@ export const Step_3: React.FC<Props> = ({ currentCondition }) => {
               style={{ width: "100%" }}
             >
               <Box d="flex" mx="auto" alignItems="center" w="100%">
-                {renderInput(currentCondition)}
+                {renderInput(selectedCondition)}
                 <Box
                   pt={6}
                   ml={5}
-                  onClick={() => {
+                  updateStep={() => {
                     if (values.target_value) {
-                      updateCondition({
-                        id: currentCondition.id,
-                        data: {
-                          is_valid: true,
-                        },
-                      });
+                      updateStep({ is_valid: true });
                     }
                   }}
                   _hover={{
@@ -77,12 +60,12 @@ export const Step_3: React.FC<Props> = ({ currentCondition }) => {
                     transition: "all 400ms",
                   }}
                 >
-                  {isNotEmpty && !checkIfMultiple(currentCondition) && (
+                  {isNotEmpty && !checkIfMultiple(selectedCondition) && (
                     <Submit />
                   )}
                 </Box>
               </Box>
-              {currentCondition.is_valid && isNotEmpty && (
+              {selectedCondition.is_valid && isNotEmpty && (
                 <Flex
                   alignItems="center"
                   justifyContent="flex-end"

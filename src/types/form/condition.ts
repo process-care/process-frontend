@@ -16,12 +16,12 @@ export default interface ICondition {
     | "equal"
     | "superior"
     | "inferior"
-    | "different";
+    | "not_equal";
   group: {
     id: string | number;
     name: number;
   };
-  step?: 1 | 2 | 3;
+  step: 1 | 2 | 3;
   is_valid: boolean;
 }
 

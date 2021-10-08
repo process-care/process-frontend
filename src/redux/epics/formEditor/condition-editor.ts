@@ -32,7 +32,6 @@ const createEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.create.type),
     switchMap(async (action) => {
-      console.log(action);
       const { type, refererId, group } = action.payload;
       const createdAt = new Date().toISOString();
       const newGroup = `group-${uuidv4()}`;

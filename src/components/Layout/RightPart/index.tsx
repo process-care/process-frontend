@@ -3,18 +3,19 @@ import React from "react";
 import { Container } from "@chakra-ui/react";
 import { ConditionMenu } from "components/CreateSurvey/CreateForm/Condition/ConditionMenu";
 import { PageForm } from "components/CreateSurvey/CreateForm/Condition/ToolBox/PageForm";
+import ICondition from "types/form/condition";
 
 interface Props {
-  selected_condition:
-    | {
-        id: string;
-      }
-    | Record<string, any>;
+  selectedCondition: ICondition | undefined;
 }
-export const RightPart: React.FC<Props> = ({ selected_condition }) => {
+export const RightPart: React.FC<Props> = ({ selectedCondition }) => {
   return (
     <Container variant="rightPart">
-      {selected_condition?.id !== undefined ? <ConditionMenu /> : <PageForm />}
+      {selectedCondition?.id !== undefined ? (
+        <ConditionMenu selectedCondition={selectedCondition} />
+      ) : (
+        <PageForm />
+      )}
     </Container>
   );
 };

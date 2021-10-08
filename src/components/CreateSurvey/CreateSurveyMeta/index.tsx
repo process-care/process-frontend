@@ -15,10 +15,7 @@ import { useGetSurveyBySlug } from "call/actions/survey";
 // COMPONENT
 
 export const CreateSurveyForm: React.FC = () => {
-  // FIXME: Yup, these ignore are bad, need to be removed
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const { slug } = useParams();
+  const { slug } = useParams<{ slug: string }>();
   const { data: survey } = useGetSurveyBySlug(slug);
 
   const dispatch = useAppDispatch();

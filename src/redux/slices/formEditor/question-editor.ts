@@ -7,6 +7,7 @@ import {
 import { RootState } from "redux/store";
 import { DateTime } from "luxon";
 import IQuestion from "types/form/question";
+import { actions as conditionActions } from "./condition-editor";
 
 // ----- ENTITY ADAPTER
 
@@ -139,6 +140,23 @@ export const questionsSlice = createSlice({
       state.selectedQuestion = action.payload;
     },
     reset: () => questionAdapter.getInitialState(initialState),
+  },
+  extraReducers: (builder) => {
+    // Update Question on create condition
+    builder.addCase(conditionActions.created, (state, action) => {
+      const id = action.payload.condition.referer_question?.id;
+
+      if (id !== undefined) {
+        const payload = {
+          id,
+          changes: {
+            // Check if it is working with conditions already created maybe need to spread old state
+            conditions: [action.payload.condition],
+          },
+        };
+        questionAdapter.updateOne(state, payload);
+      }
+    });
   },
 });
 

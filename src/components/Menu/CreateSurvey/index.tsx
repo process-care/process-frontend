@@ -10,10 +10,7 @@ interface Props {
 }
 
 export const Menu: React.FC<Props> = ({ surveyTitle }) => {
-  // FIXME: Yup, these ignore are bad, need to be removed
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const { slug } = useParams();
+  const { slug } = useParams<{ slug: string }>();
   const { isSaving } = useAppSelector((state) => state.application);
   return (
     <Flex

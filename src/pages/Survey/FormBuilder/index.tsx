@@ -18,6 +18,7 @@ import { Banner } from "components/Banner";
 import { useDispatch } from "react-redux";
 import { actions as actionsPage } from "redux/slices/formEditor/page-editor";
 import { selectors as selectorsMySurveys } from "redux/slices/my-surveys";
+import { selectors as conditionSelectors } from "redux/slices/formEditor/condition-editor";
 import {
   selectors as selectorSurvey,
   actions as actionsSurvey,
@@ -25,10 +26,7 @@ import {
 import { Loader } from "components/Spinner";
 
 export const CreateForm: React.FC<IRoute> = () => {
-  // FIXME: Yup, these ignore are bad, need to be removed
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const { slug }: { slug: string } = useParams();
+  const { slug } = useParams<{ slug: string }>();
   const dispatch = useDispatch();
   const isOpen = useAppSelector((state) => state.application.drawerIsOpen);
   const selectedSurvey = useAppSelector(selectorSurvey.getSelectedSurvey);
@@ -37,8 +35,9 @@ export const CreateForm: React.FC<IRoute> = () => {
   const order = useAppSelector(selectorSurvey.getOrder);
 
   const error = useAppSelector(selectorsMySurveys.error);
-  const { selected_condition } = useAppSelector((state) => state.formBuilder);
-
+  const selectedCondition = useAppSelector(
+    conditionSelectors.getSelectedCondition
+  );
   useEffect(() => {
     dispatch(actionsSurvey.initialize(slug));
     dispatch(actionsPage.initialize(slug));
@@ -82,8 +81,8 @@ export const CreateForm: React.FC<IRoute> = () => {
               p="0"
             >
               <div className="background__grid">
-                {selected_condition?.id !== undefined ? (
-                  <ConditionPreview />
+                {selectedCondition !== undefined ? (
+                  <ConditionPreview selectedCondition={selectedCondition} />
                 ) : (
                   <InputsPreview order={order} surveyId={selectedSurveyId} />
                 )}
@@ -91,7 +90,7 @@ export const CreateForm: React.FC<IRoute> = () => {
             </Container>
           </Box>
         </Box>
-        <RightPart selected_condition={selected_condition} />
+        <RightPart selectedCondition={selectedCondition} />
       </Box>
     </Box>
   );

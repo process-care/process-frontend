@@ -18,6 +18,7 @@ export const ConditionMenu: React.FC<Props> = ({ selectedCondition }) => {
     selectors.getSelectedQuestionsConditions
   );
   const currentPageConditions = (selectedCondition: ICondition) => {
+    // The selected page can change to we can't use the selector page's conditions.
     const id = selectedCondition.referer_page?.id;
     if (!id) return [];
     return useAppSelector((state) =>
@@ -30,12 +31,6 @@ export const ConditionMenu: React.FC<Props> = ({ selectedCondition }) => {
     : currentQuestionConditions;
 
   const groups = currentConditions.map((c: ICondition) => c.group);
-
-  // TODO:
-  const last_group = 0;
-  // currentConditions && currentConditions?.conditions.length > 0
-  //   ? Math.max(...currentConditions?.conditions.map((c: ICondition) => c.group))
-  //   : 1;
 
   const onCancel = () => {
     dispatch(actions.setSelectedCondition(""));
@@ -61,7 +56,6 @@ export const ConditionMenu: React.FC<Props> = ({ selectedCondition }) => {
           selectedCondition={selectedCondition}
           currentConditions={currentConditions}
           groups={groups}
-          last_group={last_group}
         />
       </Box>
 

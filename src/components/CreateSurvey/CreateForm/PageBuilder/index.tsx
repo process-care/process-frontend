@@ -12,16 +12,19 @@ import { isInactive } from "./utils";
 import { SvgHover } from "components/SvgHover";
 import ISurvey from "types/survey";
 import { actions, selectors } from "redux/slices/formEditor/page-editor";
+import { selectors as selectorsPage } from "redux/slices/formEditor/condition-editor";
 
 interface Props {
   survey: ISurvey | Record<string, any>;
 }
 
 const PageBuilder: React.FC<Props> = ({ survey }) => {
-  const { selected_condition } = useAppSelector((state) => state.formBuilder);
-  const selectedPage = useAppSelector(selectors.getSelectedPage);
   const dispatch = useAppDispatch();
+
   const pages = useAppSelector(selectors.getAllPages);
+  const conditions = useAppSelector(selectorsPage.conditions);
+  const selectedCondition = useAppSelector(selectorsPage.getSelectedCondition);
+  const selectedPage = useAppSelector(selectors.getSelectedPage);
 
   const handlePage = () => {
     dispatch(actions.create({ id: survey.id }));
@@ -48,12 +51,13 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
               w="100%"
               key={page.id}
               visibility={
-                isInactive(selected_condition, pages, i) ? "hidden" : "visible"
+                isInactive(selectedCondition, pages, i) ? "hidden" : "visible"
               }
             >
               <Flex alignItems="center" position="relative">
                 <Box position="absolute" right="16px" bottom="35px">
-                  {page?.conditions?.length > 0 ? <Condition /> : ""}
+                  {conditions.filter((c) => c.referer_page?.id === page.id)
+                    .length > 0 && <Condition />}
                 </Box>
                 <Box
                   onClick={() => selectPage(page.id)}

@@ -5,7 +5,7 @@ import IPage from "types/form/page";
 // Hide page after current page when we make condition input
 
 export const isInactive = (
-  selectedCondition: Partial<ICondition>,
+  selectedCondition: ICondition | undefined,
   pages: IPage[],
   i: number
 ): boolean => {

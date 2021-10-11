@@ -16,7 +16,6 @@ import { actions, selectors } from "redux/slices/formEditor/condition-editor";
 interface Props {
   currentConditions: ICondition[];
   groups: string[] | undefined;
-  last_group: number;
   selectedCondition: ICondition;
 }
 interface State {
@@ -52,15 +51,6 @@ export const Group: React.FC<Props> = ({
 
   const handleDelete = async (id: string) => {
     dispatch(actions.delete(id));
-
-    // Si on supprime la selected_condition, il faut selectionner la premiere condition s'il y en a une ou reset la selected_condition
-    // if (id === selectedCondition.id && currentConditions) {
-    //   if (currentConditions.length > 1) {
-    //     dispatch(actions.setSelectedCondition(currentConditions[0].id));
-    //   } else {
-    //     dispatch(actions.setSelectedCondition(""));
-    //   }
-    // }
   };
 
   const handleDeleteGroup = () => {
@@ -71,16 +61,6 @@ export const Group: React.FC<Props> = ({
         conditionsId: currentConditions.map((c) => c.id),
       })
     );
-
-    // Si on supprime la selected_condition, il faut selectionner la premiere condition s'il y en a une ou reset la selected_condition
-    // if (
-    //   selectedCondition.group === currentCondition?.group &&
-    //   currentConditions
-    // ) {
-    //   dispatch(selectCondition(currentConditions[0]));
-    // } else {
-    //   dispatch(selectCondition({}));
-    // }
   };
 
   const goToFirstStep = (id: string) => {

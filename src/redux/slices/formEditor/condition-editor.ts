@@ -122,12 +122,13 @@ export const conditionSlice = createSlice({
     delete: (state, action: PayloadAction<string>) => {
       state.isDeleting = true;
       conditionAdapter.removeOne(state, action.payload);
-      const lastConditionId = state.ids.length - 1;
-
-      if (lastConditionId !== -1) {
-        state.selectedCondition = state.ids[lastConditionId].toString();
-      } else {
-        state.selectedCondition = "";
+      const groupId = action.payload;
+      const entities = conditionAdapter.getSelectors().selectAll(state);
+      const currentGroup = entities.find((e) => e.group === groupId)?.group;
+      const sameGroup = entities.filter((e) => e.group === currentGroup);
+      if (sameGroup.length === 0) state.selectedCondition = "";
+      if (sameGroup.length > 0) {
+        state.selectedCondition = sameGroup[0].id;
       }
     },
     deleted: (state, action: PayloadAction<DeletedPayload>) => {
@@ -137,12 +138,12 @@ export const conditionSlice = createSlice({
     deleteGroup: (state, action: PayloadAction<DeleteGroupPayload>) => {
       state.isDeleting = true;
       conditionAdapter.removeMany(state, action.payload.conditionsId);
-      const lastConditionId = state.ids.length - 1;
-
-      if (lastConditionId !== -1) {
-        state.selectedCondition = state.ids[lastConditionId].toString();
-      } else {
-        state.selectedCondition = "";
+      const { groupId } = action.payload;
+      const entities = conditionAdapter.getSelectors().selectAll(state);
+      const sameGroup = entities.filter((e) => e.group === groupId);
+      if (sameGroup.length === 0) state.selectedCondition = "";
+      if (sameGroup.length > 0) {
+        state.selectedCondition = sameGroup[0].id;
       }
     },
     deletedGroup: (state, action: PayloadAction<DeletedPayload>) => {

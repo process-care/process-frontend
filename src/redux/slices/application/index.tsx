@@ -51,7 +51,9 @@ export const applicationSlice = createSlice({
     builder.addCase(questionAction.created, (state) => {
       state.drawerIsOpen = true;
     });
-    builder.addCase(questionAction.saved, (state) => {
+    builder.addCase(questionAction.saved, (state, action) => {
+      console.log(action, "in extra");
+
       state.drawerIsOpen = false;
     });
     builder.addCase(questionAction.delete, (state) => {

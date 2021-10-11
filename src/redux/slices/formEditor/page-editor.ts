@@ -4,10 +4,10 @@ import {
   createEntityAdapter,
 } from "@reduxjs/toolkit";
 
-// import type { RootState } from "redux/store";
 import { RootState } from "redux/store";
 import { DateTime } from "luxon";
 import IPage from "types/form/page";
+import { actions as conditionActions } from "./condition-editor";
 
 // ----- ENTITY ADAPTER
 
@@ -131,6 +131,22 @@ export const questionsSlice = createSlice({
       state.selectedPage = action.payload;
     },
     reset: () => pageAdapter.getInitialState(initialState),
+  },
+  extraReducers: (builder) => {
+    // Update Question on delete condition
+    builder.addCase(conditionActions.created, (state, action) => {
+      const id = action.payload.condition.referer_page?.id;
+
+      if (id !== undefined) {
+        const payload = {
+          id,
+          changes: {
+            conditions: [action.payload.condition],
+          },
+        };
+        pageAdapter.updateOne(state, payload);
+      }
+    });
   },
 });
 

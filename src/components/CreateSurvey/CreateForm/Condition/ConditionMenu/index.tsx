@@ -1,33 +1,35 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Button, Text } from "@chakra-ui/react";
 import React from "react";
-import { useAppSelector } from "redux/hooks";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { t } from "static/condition";
-
 import { Group } from "./Group";
 import ICondition from "types/form/condition";
-import { useGetConditions } from "call/actions/formBuider/condition";
-import { selectors } from "redux/slices/formEditor/condition-editor";
+import { selectors, actions } from "redux/slices/formEditor/condition-editor";
 
 interface Props {
   selectedCondition: ICondition;
 }
 export const ConditionMenu: React.FC<Props> = ({ selectedCondition }) => {
   const isValid = useAppSelector(selectors.getValidity);
+  const dispatch = useAppDispatch();
 
-  const { data } = useGetConditions({
-    id: "iei",
-    type: selectedCondition?.type,
-  });
+  const currentConditions = useAppSelector(
+    selectors.getSelectedQuestionsConditions
+  );
 
-  const groups = data?.conditions.map((c: ICondition) => c.group);
+  const groups = currentConditions.map((c: ICondition) => c.group);
 
   // TODO:
   const last_group = 0;
-  // data && data?.conditions.length > 0
-  //   ? Math.max(...data?.conditions.map((c: ICondition) => c.group))
+  // currentConditions && currentConditions?.conditions.length > 0
+  //   ? Math.max(...currentConditions?.conditions.map((c: ICondition) => c.group))
   //   : 1;
 
   const isTypePage = selectedCondition.type === "page";
+
+  const onCancel = () => {
+    dispatch(actions.setSelectedCondition(""));
+  };
 
   return (
     <Box h="100%" pos="relative">
@@ -46,14 +48,19 @@ export const ConditionMenu: React.FC<Props> = ({ selectedCondition }) => {
           </Text>
         )}
         <Group
-          conditions={data?.conditions}
+          selectedCondition={selectedCondition}
+          currentConditions={currentConditions}
           groups={groups}
           last_group={last_group}
         />
       </Box>
 
-      {/* <Box pos="sticky" bottom="0px" top="0px" w="100%">
-        <Footer
+      <Box pos="absolute" bottom="30px" w="100%">
+        <Button variant="rounded" onClick={onCancel}>
+          Revenir au formulaire
+        </Button>
+
+        {/* <Footer
           disabled={!isValid}
           onSubmit={() => dispatch(selectCondition({}))}
           onCancel={() => {
@@ -62,8 +69,8 @@ export const ConditionMenu: React.FC<Props> = ({ selectedCondition }) => {
             }
             dispatch(selectCondition({}));
           }}
-        />
-      </Box> */}
+        /> */}
+      </Box>
     </Box>
   );
 };

@@ -11,7 +11,7 @@ import {
   renderFormValidationSchema,
 } from "./utils";
 import { fields } from "./Template/logic/initialValues";
-import { selectCondition, setIsRemoving } from "redux/slices/formBuilder";
+import { setIsRemoving } from "redux/slices/formBuilder";
 
 import { Switch } from "components/Fields";
 import { t } from "static/condition";
@@ -86,6 +86,12 @@ const InputForm: React.FC<Props> = ({ order }) => {
         group,
       })
     );
+    dispatch(actionsApplication.toogleDrawer());
+  };
+
+  const editCondition = (id: string) => {
+    dispatch(actionsCondition.setSelectedCondition(id));
+    dispatch(actionsCondition.setValidity(true));
     dispatch(actionsApplication.toogleDrawer());
   };
 
@@ -169,12 +175,11 @@ const InputForm: React.FC<Props> = ({ order }) => {
                   <Button
                     variant="link"
                     color="brand.blue"
-                    onClick={() => {
-                      dispatch(selectCondition(currentConditions[0]));
-                      dispatch(actionsApplication.toogleDrawer());
-                    }}
+                    onClick={() => editCondition(currentConditions[0].id)}
                   >
-                    {t.edit_condition}
+                    {currentConditions.length === 1
+                      ? t.edit_condition
+                      : t.edit_conditions}
                   </Button>
                 )}
               </Flex>

@@ -10,6 +10,7 @@ export const Separator: React.FC<Props> = ({ isLast, value }) => {
   return (
     <Flex alignItems="center" justifyContent="space-between" mt={2}>
       <Box borderTop="1px solid" w="45%" borderColor="brand.line" />
+
       <Text
         opacity={isLast ? 0.2 : 1}
         fontSize="10"

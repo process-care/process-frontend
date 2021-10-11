@@ -60,8 +60,8 @@ export const Step_3: React.FC<Props> = ({ selectedCondition, updateStep }) => {
                 <Box
                   pt={6}
                   ml={5}
-                  updateStep={() => {
-                    if (values.target_value) {
+                  onClick={() => {
+                    if (isNotEmpty) {
                       handleValidity(true);
                     }
                   }}

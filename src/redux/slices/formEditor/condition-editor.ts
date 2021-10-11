@@ -65,13 +65,17 @@ type UpdatedPayload = {
 type DeletedPayload = {
   lastDeleted: string;
 };
+type DeleteGroupPayload = {
+  groupId: string;
+  conditionsId: string[];
+};
 
 type SavedPayload = {
   lastSaved: string;
 };
 
 type CreatePayload = {
-  refererId: string;
+  refererId: string | undefined;
   type: ICondition["type"];
   group?: string;
 };
@@ -130,6 +134,21 @@ export const conditionSlice = createSlice({
       state.isDeleting = false;
       state.lastDeleted = action.payload.lastDeleted;
     },
+    deleteGroup: (state, action: PayloadAction<DeleteGroupPayload>) => {
+      state.isDeleting = true;
+      conditionAdapter.removeMany(state, action.payload.conditionsId);
+      const lastConditionId = state.ids.length - 1;
+
+      if (lastConditionId !== -1) {
+        state.selectedCondition = state.ids[lastConditionId].toString();
+      } else {
+        state.selectedCondition = "";
+      }
+    },
+    deletedGroup: (state, action: PayloadAction<DeletedPayload>) => {
+      state.isDeleting = false;
+      state.lastDeleted = action.payload.lastDeleted;
+    },
     save: (state, _action: PayloadAction) => {
       state.isSaving = true;
     },
@@ -142,7 +161,7 @@ export const conditionSlice = createSlice({
       state.isFailed = true;
       state.error = action.payload;
     },
-    setselectedCondition: (state, action: PayloadAction<string>) => {
+    setSelectedCondition: (state, action: PayloadAction<string>) => {
       state.selectedCondition = action.payload;
     },
     setStep: (state, action: PayloadAction<number>) => {

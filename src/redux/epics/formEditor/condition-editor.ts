@@ -6,9 +6,10 @@ import { v4 as uuidv4 } from "uuid";
 
 import { client } from "call/actions";
 
-import { DELETE_QUESTION } from "call/queries/formBuilder/question";
 import {
   ADD_CONDITION,
+  DELETE_CONDITION,
+  DELETE_GROUP_CONDITION,
   GET_CONDITIONS_BY_QUESTION,
   UPDATE_CONDITION,
 } from "call/queries/formBuilder/condition";
@@ -19,7 +20,6 @@ const initializeEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.initialize.type),
     switchMap((action) => {
-      console.log(action);
       return client.request(GET_CONDITIONS_BY_QUESTION, {
         where: { referer_question: action.payload },
       });
@@ -80,13 +80,33 @@ const deleteEpic: Epic = (action$) =>
     switchMap(async (action) => {
       const id: string = action.payload;
       const deletedAt = new Date().toISOString();
-      await client.request(DELETE_QUESTION, {
+      await client.request(DELETE_CONDITION, {
         id,
       });
       return deletedAt;
     }),
     map((deletedAt) => {
       return actions.deleted({
+        lastDeleted: deletedAt,
+      });
+    })
+  );
+
+// // ----  DELETE GROUP CONDITION
+
+const deleteGroupEpic: Epic = (action$) =>
+  action$.pipe(
+    ofType(actions.deleteGroup.type),
+    switchMap(async (action) => {
+      const groupId: string = action.payload.groupId;
+      const deletedAt = new Date().toISOString();
+      await client.request(DELETE_GROUP_CONDITION, {
+        name: groupId,
+      });
+      return deletedAt;
+    }),
+    map((deletedAt) => {
+      return actions.deletedGroup({
         lastDeleted: deletedAt,
       });
     })
@@ -131,5 +151,6 @@ export const conditionsEditorEpics = combineEpics(
   initializeEpic,
   createEpic,
   saveEpic,
-  deleteEpic
+  deleteEpic,
+  deleteGroupEpic
 );

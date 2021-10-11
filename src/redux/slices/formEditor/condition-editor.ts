@@ -202,6 +202,15 @@ const getSelectedPageConditions = (state: RootState): ICondition[] => {
       condition.referer_page?.id === state.formEditor.pages.selectedPage
   );
 };
+
+const getConditionsByPageId = (
+  state: RootState,
+  pageId: string
+): ICondition[] => {
+  return conditions(state).filter(
+    (condition) => condition.referer_page?.id === pageId
+  );
+};
 const getSelectedQuestionsConditions = (state: RootState): ICondition[] => {
   return conditions(state).filter(
     (condition) =>
@@ -226,6 +235,7 @@ export const selectors = {
   getSelectedQuestionsConditions,
   getStep,
   getValidity,
+  getConditionsByPageId,
 };
 
 // ---- EXPORTS

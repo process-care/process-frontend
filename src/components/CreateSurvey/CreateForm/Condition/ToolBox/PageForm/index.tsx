@@ -1,7 +1,7 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 
-import { selectCondition, setIsRemoving } from "redux/slices/formBuilder";
+import { setIsRemoving } from "redux/slices/formBuilder";
 import { actions as actionsApplication } from "redux/slices/application";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { t } from "static/survey";
@@ -10,16 +10,17 @@ import { Formik, Form } from "formik";
 import { Switch, Textarea } from "components/Fields";
 import IQuestion from "types/form/question";
 import { RemovingConfirmation } from "../../../RemovingConfirmation";
-import { v4 as uuidv4 } from "uuid";
 import { SvgHover } from "components/SvgHover";
 import { ReactComponent as Trash } from "assets/trash.svg";
-import { useAddCondition } from "call/actions/formBuider/condition";
-// import { debounce } from "lodash";
 import { actions, selectors } from "redux/slices/formEditor/page-editor";
 import {
   selectors as questionsSelectors,
   actions as actionsQuestion,
 } from "redux/slices/formEditor/question-editor";
+import {
+  selectors as selectorsCondition,
+  actions as actionsCondition,
+} from "redux/slices/formEditor/condition-editor";
 
 export const PageForm: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -31,8 +32,9 @@ export const PageForm: React.FC = () => {
   const questionsOnSelectedPage = useAppSelector(
     questionsSelectors.getSelectedPageQuestions
   ).map((question) => question.id);
-
-  const { mutateAsync: addCondition } = useAddCondition();
+  const currentConditions = useAppSelector(
+    selectorsCondition.getSelectedPageConditions
+  );
 
   const isNotFirstPage =
     pages.findIndex((page) => page.id === selectedPageId) > 0;
@@ -63,8 +65,21 @@ export const PageForm: React.FC = () => {
     questionsOnSelectedPage.forEach((questionId) => {
       dispatch(actionsQuestion.delete(questionId));
     });
-
     dispatch(setIsRemoving(""));
+  };
+
+  const createCondition = () => {
+    dispatch(
+      actionsCondition.create({
+        type: "page",
+        refererId: selectedPageId,
+      })
+    );
+  };
+
+  const editCondition = (id: string) => {
+    dispatch(actionsCondition.setSelectedCondition(id));
+    dispatch(actionsCondition.setValidity(true));
   };
 
   if (isRemoving && Boolean(selectedPageId)) {
@@ -93,7 +108,6 @@ export const PageForm: React.FC = () => {
         {() => {
           return (
             <Form
-              // onBlur={autoSaveDebounce}
               onChange={(event) => onChange(event)}
               style={{ width: "100%" }}
             >
@@ -156,19 +170,7 @@ export const PageForm: React.FC = () => {
                     <Button
                       variant="link"
                       color="brand.blue"
-                      onClick={() => {
-                        addCondition({
-                          type: "page",
-                          referer_page: selectedPageId,
-                          step: 1,
-                          group: uuidv4(),
-                          is_valid: false,
-                        }).then((data: any) =>
-                          dispatch(
-                            selectCondition(data.createCondition.condition)
-                          )
-                        );
-                      }}
+                      onClick={() => createCondition()}
                     >
                       {t.add_condition_page}
                     </Button>
@@ -176,15 +178,7 @@ export const PageForm: React.FC = () => {
                     <Button
                       variant="link"
                       color="brand.blue"
-                      onClick={() =>
-                        dispatch(
-                          selectCondition(
-                            selectedPage?.conditions !== undefined
-                              ? selectedPage?.conditions[0]
-                              : {}
-                          )
-                        )
-                      }
+                      onClick={() => editCondition(currentConditions?.[0].id)}
                     >
                       {t.edit_condition}
                     </Button>

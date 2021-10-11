@@ -12,10 +12,22 @@ interface Props {
 export const ConditionMenu: React.FC<Props> = ({ selectedCondition }) => {
   const isValid = useAppSelector(selectors.getValidity);
   const dispatch = useAppDispatch();
+  const isTypePage = selectedCondition.type === "page";
 
-  const currentConditions = useAppSelector(
+  const currentQuestionConditions = useAppSelector(
     selectors.getSelectedQuestionsConditions
   );
+  const currentPageConditions = (selectedCondition: ICondition) => {
+    const id = selectedCondition.referer_page?.id;
+    if (!id) return [];
+    return useAppSelector((state) =>
+      selectors.getConditionsByPageId(state, id)
+    );
+  };
+
+  const currentConditions = isTypePage
+    ? currentPageConditions(selectedCondition)
+    : currentQuestionConditions;
 
   const groups = currentConditions.map((c: ICondition) => c.group);
 
@@ -24,8 +36,6 @@ export const ConditionMenu: React.FC<Props> = ({ selectedCondition }) => {
   // currentConditions && currentConditions?.conditions.length > 0
   //   ? Math.max(...currentConditions?.conditions.map((c: ICondition) => c.group))
   //   : 1;
-
-  const isTypePage = selectedCondition.type === "page";
 
   const onCancel = () => {
     dispatch(actions.setSelectedCondition(""));

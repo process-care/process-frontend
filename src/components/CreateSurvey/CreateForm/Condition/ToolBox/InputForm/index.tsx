@@ -78,12 +78,11 @@ const InputForm: React.FC<Props> = ({ order }) => {
     setSubmitting(false);
   }, []);
 
-  const createCondition = (group?: string) => {
+  const createCondition = () => {
     dispatch(
       actionsCondition.create({
         type: "question",
         refererId: selectedQuestionId,
-        group,
       })
     );
     dispatch(actionsApplication.toogleDrawer());

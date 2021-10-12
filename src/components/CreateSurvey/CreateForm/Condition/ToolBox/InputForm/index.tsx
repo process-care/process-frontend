@@ -93,9 +93,13 @@ const InputForm: React.FC<Props> = ({ order }) => {
     dispatch(actionsCondition.setValidity(true));
     dispatch(actionsApplication.toogleDrawer());
   };
+  if (!selectedQuestion) {
+    return <p>no selectedQuestion</p>;
+  }
 
   return (
     <Formik
+      validateOnBlur
       validationSchema={renderFormValidationSchema(selectedQuestion)}
       initialValues={selectedQuestion ? selectedQuestion : fields[type]}
       onSubmit={handleSubmit}
@@ -164,6 +168,7 @@ const InputForm: React.FC<Props> = ({ order }) => {
               >
                 {currentConditions.length === 0 ? (
                   <Button
+                    isDisabled={!isValid}
                     variant="link"
                     color="brand.blue"
                     onClick={() => createCondition()}
@@ -172,6 +177,7 @@ const InputForm: React.FC<Props> = ({ order }) => {
                   </Button>
                 ) : (
                   <Button
+                    isDisabled={!isValid}
                     variant="link"
                     color="brand.blue"
                     onClick={() => editCondition(currentConditions[0].id)}

@@ -51,15 +51,19 @@ export const applicationSlice = createSlice({
     builder.addCase(questionAction.created, (state) => {
       state.drawerIsOpen = true;
     });
-    builder.addCase(questionAction.saved, (state, action) => {
-      console.log(action, "in extra");
-
+    builder.addCase(questionAction.saved, (state) => {
       state.drawerIsOpen = false;
     });
     builder.addCase(questionAction.delete, (state) => {
       state.drawerIsOpen = false;
     });
-    builder.addCase(conditionAction.saved, (state) => {
+    builder.addCase(conditionAction.saved, (state, action) => {
+      const { type } = action.payload.condition;
+      if (type === "question") {
+        state.drawerIsOpen = true;
+      }
+    });
+    builder.addCase(conditionAction.deleted, (state) => {
       state.drawerIsOpen = true;
     });
   },

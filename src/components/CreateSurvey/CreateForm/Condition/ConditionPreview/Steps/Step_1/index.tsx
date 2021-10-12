@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Container, Text } from "@chakra-ui/react";
-import { useAppSelector } from "redux/hooks";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 import IQuestion from "types/form/question";
 import ICondition from "types/form/condition";
@@ -10,6 +10,10 @@ import { t } from "static/input";
 import { InputBox } from "components/CreateSurvey/CreateForm/InputsPreview/InputBox";
 import { selectors as selectorsQuestion } from "redux/slices/formEditor/question-editor";
 import { selectors as selectorsSurvey } from "redux/slices/formEditor/selected-survey";
+import {
+  selectors as selectorsPage,
+  actions as actionsPage,
+} from "redux/slices/formEditor/page-editor";
 
 interface Props {
   selectedCondition: ICondition;
@@ -17,44 +21,47 @@ interface Props {
 }
 
 export const Step_1: React.FC<Props> = ({ selectedCondition, updateStep }) => {
+  const dispatch = useAppDispatch();
   const selectedQuestion = useAppSelector(
     selectorsQuestion.getSelectedQuestion
   );
   const questions = useAppSelector(selectorsQuestion.getSelectedPageQuestions);
+  const pages = useAppSelector(selectorsPage.getAllPages);
   const order = useAppSelector(selectorsSurvey.getOrder);
+  const isTypePage = selectedCondition.type === "page";
 
-  // TODO: check this logic
+  React.useEffect(() => {
+    // Select first page if we make a condition on page.
+    if (isTypePage && pages.length > 0) {
+      dispatch(actionsPage.setSelectedPage(pages[0].id));
+    }
+  }, [isTypePage]);
 
-  // React.useEffect(() => {
-  //   // Select first page if we make a condition on page.
-  //   if (selectedCondition.type === "page" && survey?.survey.pages[0]) {
-  //     dispatch(selectPage(survey?.survey.pages[0]));
-  //   }
-  // }, [selectedCondition.type]);
+  const referId = isTypePage
+    ? selectedCondition.referer_page?.id
+    : selectedCondition.referer_question?.id;
+  const currentInputIndex = order.findIndex((id: string) => id === referId);
 
-  // Si selectedCondition.type === "page" alors on affiche les inputs des pages précédantes.
-  // Si selectedCondition.type === "input" alors on affiche les inputs précédants l'input referent
-
-  const currentInputIndex = order.findIndex(
-    (id: string) => id === selectedCondition.referer_question?.id
-  );
   const questionsBeforeCurrent = order.slice(0, currentInputIndex);
-  // Remove all types who can't be conditionable, remove the selected input, remove input after the selected one.
+
+  // Remove all types who can't be conditionable,
   const conditionableQuestions = questions
     .filter((q: IQuestion) => authorizedQuestionTypes.includes(q.type))
-    .filter((q: IQuestion) => q.id !== selectedQuestion.id);
+    .filter((q: IQuestion) => q.id !== selectedQuestion?.id);
 
-  if (selectedCondition?.type === "question") {
-    conditionableQuestions?.filter((q: IQuestion) =>
-      questionsBeforeCurrent?.includes(q.id)
-    );
+  if (!isTypePage) {
+    // Si selectedCondition.type === "page" alors on affiche les inputs des pages précédantes.
+    // Si selectedCondition.type === "input" alors on affiche les inputs précédants l'input referent
+    conditionableQuestions
+      .filter((q: IQuestion) => questionsBeforeCurrent?.includes(q.id))
+      .filter((q: IQuestion) => q.id !== selectedQuestion?.id);
     conditionableQuestions;
   }
 
   const isEmpty = conditionableQuestions?.length === 0;
-
   const renderCard = (question: IQuestion) => {
     const isSelected = question.id === selectedCondition.target?.id;
+
     return (
       <InputBox
         key={question.id}

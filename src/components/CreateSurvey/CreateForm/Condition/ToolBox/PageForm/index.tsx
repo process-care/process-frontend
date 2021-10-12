@@ -32,7 +32,7 @@ export const PageForm: React.FC = () => {
   const questionsOnSelectedPage = useAppSelector(
     questionsSelectors.getSelectedPageQuestions
   ).map((question) => question.id);
-  const currentConditions = useAppSelector(
+  const conditionsOnSelectedPage = useAppSelector(
     selectorsCondition.getSelectedPageConditions
   );
 
@@ -42,6 +42,7 @@ export const PageForm: React.FC = () => {
   const isRemoving = is_removing === selectedPageId;
 
   const handleSelect = (type: IQuestion["type"]) => {
+    dispatch(actionsQuestion.setSelectedQuestion(""));
     dispatch(actionsQuestion.create({ type }));
   };
 
@@ -69,6 +70,7 @@ export const PageForm: React.FC = () => {
   };
 
   const createCondition = () => {
+    dispatch(actionsQuestion.setSelectedQuestion(""));
     dispatch(
       actionsCondition.create({
         type: "page",
@@ -166,7 +168,7 @@ export const PageForm: React.FC = () => {
                   justifyContent="space-between"
                   mt={5}
                 >
-                  {selectedPage?.conditions?.length === 0 ? (
+                  {conditionsOnSelectedPage.length === 0 ? (
                     <Button
                       variant="link"
                       color="brand.blue"
@@ -178,7 +180,9 @@ export const PageForm: React.FC = () => {
                     <Button
                       variant="link"
                       color="brand.blue"
-                      onClick={() => editCondition(currentConditions?.[0].id)}
+                      onClick={() =>
+                        editCondition(conditionsOnSelectedPage?.[0].id)
+                      }
                     >
                       {t.edit_condition}
                     </Button>

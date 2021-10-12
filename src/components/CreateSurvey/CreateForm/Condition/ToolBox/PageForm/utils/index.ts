@@ -24,7 +24,6 @@ export const getNewOrder: any = (
   const length = questions?.length;
 
   if (questions && length && length > 0) {
-    console.log("HAD QUESTIONS ___");
     const ids = questions.map((q) => q[0]);
     const last_idx = Math.max(
       ...ids.map((i) => {
@@ -37,17 +36,14 @@ export const getNewOrder: any = (
     return new_order;
   } else {
     if (previousQuestions.length === 0) {
-      console.log("FIRST QUESTION___");
       return [new_question_id];
     } else {
-      console.log("NEW PAGE ");
       const ids = previousQuestions.map((q) => q[0]);
       const last_idx = Math.max(
         ...ids.map((i) => {
           return order.findIndex((id: string) => id === i);
         })
       );
-      console.log(ids, order);
 
       const new_order = order !== null ? [...order] : [];
       new_order.splice(last_idx + 1, 0, new_question_id);

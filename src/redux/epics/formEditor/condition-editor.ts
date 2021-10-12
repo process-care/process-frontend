@@ -1,9 +1,8 @@
 import { map, switchMap } from "rxjs";
 import { combineEpics, ofType } from "redux-observable";
-import { Epic } from "redux/store";
+import { Epic, store } from "redux/store";
 import { actions } from "redux/slices/formEditor/condition-editor";
 import { v4 as uuidv4 } from "uuid";
-
 import { client } from "call/actions";
 
 import {
@@ -20,13 +19,14 @@ const initializeEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.initialize.type),
     switchMap((action) => {
+      console.log("INITIALIZE CONDITION");
+
       return client.request(GET_CONDITIONS_BY_QUESTION, {
         where: { referer_question: action.payload },
       });
     }),
     map((result) => {
       if (result) {
-        console.log(result);
         return actions.initialized(result.conditions);
       } else return actions.initialized([]);
     })
@@ -38,6 +38,7 @@ const createEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.create.type),
     switchMap(async (action) => {
+      const redirectToPage = store.getState().formEditor.pages.selectedPage;
       const { type, refererId, group } = action.payload;
       const createdAt = new Date().toISOString();
       const newGroup = `group-${uuidv4()}`;
@@ -50,23 +51,25 @@ const createEpic: Epic = (action$) =>
         },
       });
 
-      return { createdAt, newCondition };
+      return { createdAt, newCondition, redirectToPage };
     }),
     map(
       ({
         newCondition,
         createdAt,
+        redirectToPage,
       }: {
         newCondition: any;
         createdAt: string;
+        redirectToPage: string;
       }) => {
         const data = newCondition.createCondition.condition;
-
         return actions.created({
           lastCreated: createdAt,
           condition: data,
           isValid: false,
           step: 1,
+          redirectToPage,
         });
       }
     )
@@ -126,7 +129,6 @@ const saveEpic: Epic = (action$, state$) =>
         state$.value.formEditor.conditions.entities
       );
       const changes = conditions.filter((c) => c[0] === selectedConditionId)[0];
-
       // We need to send target : id, referer_question:id, but Icondition have full Question object adn we use it in frontend
       const formatPayload = (changes: any) => {
         return {
@@ -137,14 +139,17 @@ const saveEpic: Epic = (action$, state$) =>
           referer_page: changes[1].referer_page?.id,
         };
       };
+      const condition = formatPayload(changes);
 
       await client.request(UPDATE_CONDITION, {
         id: selectedConditionId,
-        data: formatPayload(changes),
+        data: condition,
       });
-      return savedAt;
+      return { savedAt, condition };
     }),
-    map((savedAt) => actions.saved({ lastSaved: savedAt }))
+    map(({ savedAt, condition }) =>
+      actions.saved({ lastSaved: savedAt, condition })
+    )
   );
 
 export const conditionsEditorEpics = combineEpics(

@@ -87,7 +87,7 @@ export const questionsSlice = createSlice({
   name: SLICE_NAME,
   initialState: questionAdapter.getInitialState(initialState),
   reducers: {
-    initialize: (state, _action: PayloadAction<string>) => {
+    initialize: (state, _action: PayloadAction<string[]>) => {
       state.isLoading = true;
     },
     initialized: (state, action: PayloadAction<any>) => {

@@ -20,6 +20,8 @@ const initializeEpic: Epic = (action$) =>
       return client.request(GET_SURVEY_BY_SLUG, { slug: action.payload });
     }),
     map((survey: Record<string, any>) => {
+      console.log("INITIALIZE PAGES");
+
       const payload = survey.surveys[0].pages;
       return actions.initialized(payload);
     })

@@ -8,6 +8,7 @@ import { RootState } from "redux/store";
 import { DateTime } from "luxon";
 import IPage from "types/form/page";
 import { actions as conditionActions } from "./condition-editor";
+import { actions as questionActions } from "./question-editor";
 
 // ----- ENTITY ADAPTER
 
@@ -20,6 +21,7 @@ const pageAdapter = createEntityAdapter<IPage>({
 export interface PageEditor {
   // Page status
   selectedPage: string;
+  redirectToPage?: string;
   isCreating: boolean;
   isLoading: boolean;
   isSaving: boolean;
@@ -130,6 +132,9 @@ export const questionsSlice = createSlice({
     setSelectedPage: (state, action: PayloadAction<string>) => {
       state.selectedPage = action.payload;
     },
+    setRedirectPage: (state, action: PayloadAction<string>) => {
+      state.redirectToPage = action.payload;
+    },
     reset: () => pageAdapter.getInitialState(initialState),
   },
   extraReducers: (builder) => {
@@ -145,6 +150,17 @@ export const questionsSlice = createSlice({
           },
         };
         pageAdapter.updateOne(state, payload);
+      }
+      state.redirectToPage = action.payload.redirectToPage;
+    });
+    builder.addCase(conditionActions.saved, (state) => {
+      if (state.redirectToPage) {
+        state.selectedPage = state.redirectToPage;
+      }
+    });
+    builder.addCase(questionActions.saved, (state) => {
+      if (state.redirectToPage) {
+        state.selectedPage = state.redirectToPage;
       }
     });
   },

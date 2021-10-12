@@ -10,8 +10,9 @@ interface Props {
   selectedCondition: ICondition;
 }
 export const ConditionMenu: React.FC<Props> = ({ selectedCondition }) => {
-  const isValid = useAppSelector(selectors.getValidity);
   const dispatch = useAppDispatch();
+
+  const isValid = useAppSelector(selectors.getValidity);
   const isTypePage = selectedCondition.type === "page";
 
   const currentQuestionConditions = useAppSelector(
@@ -29,11 +30,14 @@ export const ConditionMenu: React.FC<Props> = ({ selectedCondition }) => {
   const currentConditions = isTypePage
     ? currentPageConditions(selectedCondition)
     : currentQuestionConditions;
-
   const groups = currentConditions.map((c: ICondition) => c.group);
 
   const onCancel = () => {
-    dispatch(actions.setSelectedCondition(""));
+    if (!isValid) {
+      dispatch(actions.delete(selectedCondition.id));
+    } else {
+      dispatch(actions.setSelectedCondition(""));
+    }
   };
 
   return (
@@ -63,17 +67,6 @@ export const ConditionMenu: React.FC<Props> = ({ selectedCondition }) => {
         <Button variant="rounded" onClick={onCancel}>
           Revenir au formulaire
         </Button>
-
-        {/* <Footer
-          disabled={!isValid}
-          onSubmit={() => dispatch(selectCondition({}))}
-          onCancel={() => {
-            if (!isValid) {
-              deleteCondition(selectedCondition.id);
-            }
-            dispatch(selectCondition({}));
-          }}
-        /> */}
       </Box>
     </Box>
   );

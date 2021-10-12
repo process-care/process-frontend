@@ -16,13 +16,22 @@ import { RightPart } from "components/Layout/RightPart";
 import { Error } from "components/Error";
 import { Banner } from "components/Banner";
 import { useDispatch } from "react-redux";
-import { actions as actionsPage } from "redux/slices/formEditor/page-editor";
+import {
+  actions as actionsPage,
+  selectors as selectorsPage,
+} from "redux/slices/formEditor/page-editor";
 import { selectors as selectorsMySurveys } from "redux/slices/my-surveys";
 import { selectors as conditionSelectors } from "redux/slices/formEditor/condition-editor";
 import {
   selectors as selectorSurvey,
   actions as actionsSurvey,
 } from "redux/slices/formEditor/selected-survey";
+import {
+  actions as actionsQuestion,
+  selectors as selectorsQuestion,
+} from "redux/slices/formEditor/question-editor";
+import { actions as actionsCondition } from "redux/slices/formEditor/condition-editor";
+
 import { Loader } from "components/Spinner";
 
 export const CreateForm: React.FC<IRoute> = () => {
@@ -31,8 +40,13 @@ export const CreateForm: React.FC<IRoute> = () => {
   const isOpen = useAppSelector((state) => state.application.drawerIsOpen);
   const selectedSurvey = useAppSelector(selectorSurvey.getSelectedSurvey);
   const selectedSurveyId = useAppSelector(selectorSurvey.getSelectedSurveyId);
+  const pages = useAppSelector(selectorsPage.getAllPages);
+  const questions = useAppSelector(selectorsQuestion.getSelectedPageQuestions);
+  const isLoading = useAppSelector(selectorsQuestion.isLoading);
+  const isLoadingPage = useAppSelector(selectorsPage.isLoading);
 
   const order = useAppSelector(selectorSurvey.getOrder);
+  const ids = questions.map((q) => q.id);
 
   const error = useAppSelector(selectorsMySurveys.error);
   const selectedCondition = useAppSelector(
@@ -42,6 +56,16 @@ export const CreateForm: React.FC<IRoute> = () => {
     dispatch(actionsSurvey.initialize(slug));
     dispatch(actionsPage.initialize(slug));
   }, [slug]);
+
+  useEffect(() => {
+    dispatch(actionsQuestion.initialize(pages.map((p) => p.id)));
+  }, [isLoadingPage]);
+
+  useEffect(() => {
+    if (!isLoading) {
+      dispatch(actionsCondition.initialize(ids));
+    }
+  }, [isLoading]);
 
   if (error) {
     return <Error error={error} />;

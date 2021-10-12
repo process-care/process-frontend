@@ -10,6 +10,15 @@ export const GET_QUESTIONS = gql`
   }
 `;
 
+export const GET_QUESTIONS_BY_PAGE = gql`
+  ${questionFragment}
+  query getQuestions($page: [ID]) {
+    questions(where: { page: $page }) {
+      ...questionFragment
+    }
+  }
+`;
+
 export const GET_QUESTION = gql`
   ${questionFragment}
   query getQuestion($id: ID!) {

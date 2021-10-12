@@ -8,7 +8,7 @@ import { client } from "call/actions";
 import {
   ADD_QUESTION,
   DELETE_QUESTION,
-  GET_QUESTIONS,
+  GET_QUESTIONS_BY_PAGE,
   UPDATE_QUESTION,
 } from "call/queries/formBuilder/question";
 import { UPDATE_ORDER } from "call/queries/survey";
@@ -19,11 +19,14 @@ const initializeEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.initialize.type),
     filter((action) => {
-      const page_id = action.payload;
-      return Boolean(page_id);
+      console.log("INITIALIZE QUESTIONS");
+      const pages = action.payload;
+      return pages.length !== 0;
     }),
     switchMap(async (action) => {
-      return client.request(GET_QUESTIONS, { page_id: action.payload });
+      return client.request(GET_QUESTIONS_BY_PAGE, {
+        page: action.payload,
+      });
     }),
     map((result) => {
       const payload = result.questions;

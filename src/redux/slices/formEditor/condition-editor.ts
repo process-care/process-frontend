@@ -72,6 +72,8 @@ type DeleteGroupPayload = {
 
 type SavedPayload = {
   lastSaved: string;
+  // Api payload don't send the same conditon referer page type
+  condition: Record<string, any>;
 };
 
 type CreatePayload = {
@@ -85,6 +87,7 @@ type CreatedPayload = {
   condition: ICondition;
   step: number;
   isValid: boolean;
+  redirectToPage: string;
 };
 
 // ----- SLICE

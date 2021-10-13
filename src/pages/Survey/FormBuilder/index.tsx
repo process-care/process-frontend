@@ -58,8 +58,13 @@ export const CreateForm: React.FC<IRoute> = () => {
     dispatch(actionsPage.initialize(slug));
   }, [dispatch]);
 
+  console.log(isLoadingPage, "isLoadingPage");
+  console.log(isLoadingQuestion, "isLoadingQuestion");
+
   useEffect(() => {
-    dispatch(actionsQuestion.initialize(pages.map((p) => p.id)));
+    if (!isLoadingPage) {
+      dispatch(actionsQuestion.initialize(pages.map((p) => p.id)));
+    }
   }, [isLoadingPage]);
 
   useEffect(() => {
@@ -77,9 +82,9 @@ export const CreateForm: React.FC<IRoute> = () => {
     return <Error error={error} />;
   }
 
-  if (isLoadingQuestion) {
-    return <Loader />;
-  }
+  // if (isLoadingQuestion) {
+  //   return <Loader />;
+  // }
 
   return (
     <Box h="100vh" overflow="hidden">

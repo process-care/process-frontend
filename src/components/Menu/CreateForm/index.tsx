@@ -10,7 +10,7 @@ import { NavLink } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { ReactComponent as Back } from "./assets/back.svg";
 import { t } from "static/input";
-import { tooglePreview } from "redux/slices/application";
+import { actions } from "redux/slices/application";
 import { Loader } from "components/Spinner";
 import { useGetSurvey } from "call/actions/survey";
 import { setConditionStatus } from "redux/slices/formBuilder";
@@ -21,14 +21,14 @@ import { selectors } from "redux/slices/landing-editor";
 
 const nl = {
   button: {
-    leavePreview : 'Sortir de la previsualisation',
-    dashboard: 'Dashboard',
+    leavePreview: "Sortir de la previsualisation",
+    dashboard: "Dashboard",
   },
   msg: {
-    hasChanges: 'Changements...',
-    changesSaved: 'Sauvegardé !',
-  }
-}
+    hasChanges: "Changements...",
+    changesSaved: "Sauvegardé !",
+  },
+};
 
 // ---- COMPONENT
 
@@ -41,7 +41,7 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
   const dispatch = useAppDispatch();
 
   const { data, isLoading, error } = useGetSurvey(surveyId);
-  const { preview_mode } = useAppSelector(state => state.application);
+  const { previewMode } = useAppSelector((state) => state.application);
   const { inProgress, done } = useChangesNotifier();
 
   if (isLoading) {
@@ -58,7 +58,7 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
 
   return (
     <>
-      {preview_mode === "landing" && (
+      {previewMode === "landing" && (
         <Button
           pos="absolute"
           top="19px"
@@ -66,8 +66,8 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
           variant="roundedBlue"
           onClick={() =>
             dispatch(
-              tooglePreview({
-                preview_mode: null,
+              actions.tooglePreview({
+                previewMode: null,
               })
             )
           }
@@ -76,7 +76,7 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
         </Button>
       )}
 
-      <Collapse in={preview_mode !== "landing"}>
+      <Collapse in={previewMode !== "landing"}>
         <Flex
           pos="relative"
           p={5}
@@ -110,8 +110,8 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
                 mr={5}
                 onClick={() =>
                   dispatch(
-                    tooglePreview({
-                      preview_mode: "landing",
+                    actions.tooglePreview({
+                      previewMode: "landing",
                     })
                   )
                 }
@@ -136,19 +136,8 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
 
 function ChangesInProgress() {
   return (
-    <Text
-      variant="xs"
-      mr="40px"
-      color="brand.blue"
-      top="10px"
-      pos="relative"
-    >
-      <CircularProgress
-        mr={2}
-        isIndeterminate
-        color="brand.blue"
-        size="2"
-      />
+    <Text variant="xs" mr="40px" color="brand.blue" top="10px" pos="relative">
+      <CircularProgress mr={2} isIndeterminate color="brand.blue" size="2" />
       {nl.msg.hasChanges}
     </Text>
   );
@@ -156,13 +145,7 @@ function ChangesInProgress() {
 
 function ChangesSaved() {
   return (
-    <Text
-      variant="xs"
-      mr="40px"
-      color="brand.green"
-      top="10px"
-      pos="relative"
-    >
+    <Text variant="xs" mr="40px" color="brand.green" top="10px" pos="relative">
       <CheckIcon mr="7px" />
       {nl.msg.changesSaved}
     </Text>
@@ -194,7 +177,6 @@ function useChangesNotifier() {
     if (!hasUnsavedChanges && !inProgress && done) {
       setTimeout(() => setDone(false), 2000);
     }
-
   }, [hasUnsavedChanges, inProgress, done]);
 
   return {

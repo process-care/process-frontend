@@ -61,14 +61,11 @@ export const surveyEditorSlice = createSlice({
   name: SLICE_NAME,
   initialState,
   reducers: {
-    load: (state, _action: PayloadAction<string>) => {
+    initialize: (state, _action: PayloadAction<string>) => {
       state.isLoading = true;
     },
-    loaded: (state, action: PayloadAction<LoadedPayload>) => {
-      // Switch flags
+    initialized: (state, action: PayloadAction<LoadedPayload>) => {
       state.isLoading = false;
-
-      // Update survey data
       const survey = action.payload;
       state.data = survey;
     },
@@ -91,10 +88,9 @@ export const surveyEditorSlice = createSlice({
       state.isPosting = true;
     },
     posted: (state, action: PayloadAction<PostedPayload>) => {
-      // Switch flags
       state.isPosting = false;
-      state.lastPosted = action.payload.lastPosted;
-      // reset
+      const { lastPosted } = action.payload;
+      state.lastPosted = lastPosted;
       state = initialState;
 
       setTimeout(() => {
@@ -108,6 +104,7 @@ export const surveyEditorSlice = createSlice({
     setStep: (state, action: PayloadAction<number>) => {
       state.step = action.payload;
     },
+
     reset: () => initialState,
   },
 });

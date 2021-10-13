@@ -10,11 +10,7 @@ import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 import { renderInput } from "./utils";
 import IQuestion from "types/form/question";
-import {
-  selectInput,
-  setIsEditing,
-  setIsRemoving,
-} from "redux/slices/formBuilder";
+import { setIsRemoving } from "redux/slices/formBuilder";
 import { Draggable } from "react-beautiful-dnd";
 
 import { ReactComponent as Delete } from "./assets/delete.svg";
@@ -22,37 +18,33 @@ import { ReactComponent as Edit } from "./assets/edit.svg";
 import { ReactComponent as Condition } from "./assets/condition.svg";
 
 import { RemovingConfirmation } from "./../../RemovingConfirmation";
-import { toogleDrawer } from "redux/slices/application";
+import { actions } from "redux/slices/application";
+import { actions as actionsQuestion } from "redux/slices/formEditor/question-editor";
+
 import { t } from "static/input";
 import { SvgHover } from "components/SvgHover";
 import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
 
-import ISurvey from "types/survey";
-import { useQuestionChain } from "../../hooks";
-
 interface CardProps {
   input: IQuestion;
   index: number;
-  survey: ISurvey;
 }
 
-const Card: React.FC<CardProps> = ({ input, index, survey }) => {
+const Card: React.FC<CardProps> = ({ input, index }) => {
   const dispatch = useAppDispatch();
   const { is_removing } = useAppSelector((state) => state.formBuilder);
   const isRemoving = is_removing === input.id;
 
-  const { deleteQuestionChain } = useQuestionChain(input, survey);
-
   const color = useColorModeValue("gray.800", "gray.900");
 
   const handleEdit = () => {
-    dispatch(setIsEditing(true));
-    dispatch(selectInput(input));
-    dispatch(toogleDrawer());
+    dispatch(actions.setIsEditing(true));
+    dispatch(actionsQuestion.setSelectedQuestion(input.id));
+    dispatch(actions.toogleDrawer());
   };
 
   const handleDelete = async () => {
-    deleteQuestionChain();
+    dispatch(actionsQuestion.delete(input.id));
   };
 
   return (

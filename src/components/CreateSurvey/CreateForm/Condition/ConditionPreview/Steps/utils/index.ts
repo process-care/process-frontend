@@ -1,19 +1,21 @@
-import ICondition from "types/form/condition";
+import { useAppSelector } from "redux/hooks";
+import { selectors } from "redux/slices/formEditor/condition-editor";
 
-export const checkStepValidation = (
-  current_condition: ICondition | undefined
-): boolean => {
-  if (current_condition) {
-    const { step, target, operator, is_valid } = current_condition;
+export const checkStepValidation = (): boolean => {
+  const isValid = useAppSelector(selectors.getValidity);
+  const step = useAppSelector(selectors.getStep);
+  const selectedCondition = useAppSelector(selectors.getSelectedCondition);
 
-    if (step === 1 && !!target?.id) {
-      return false;
-    }
-    if (step === 2 && !!operator) {
-      return false;
-    }
-    if (step === 3 && !!is_valid) {
-      return false;
-    } else return true;
+  const target = selectedCondition?.target;
+  const operator = selectedCondition?.operator;
+
+  if (step === 1 && !!target?.id) {
+    return false;
+  }
+  if (step === 2 && !!operator) {
+    return false;
+  }
+  if (step === 3 && isValid) {
+    return false;
   } else return true;
 };

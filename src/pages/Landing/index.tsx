@@ -14,11 +14,7 @@ const t = {
 };
 
 export const Landing: React.FC<IRoute> = () => {
-  // FIXME: Yup, these ignore are bad, need to be removed
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const { slug: surveyId } = useParams();
-
+  const { slug: surveyId } = useParams<{ slug: string }>();
   const { data: survey } = useGetSurvey(surveyId);
   const {
     data: landing,

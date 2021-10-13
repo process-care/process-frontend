@@ -3,7 +3,7 @@ import { Formik, Form } from "formik";
 
 import { Avatar, Box, Flex, Text } from "@chakra-ui/react";
 import { useAppDispatch } from "redux/hooks";
-import { toogleDrawer } from "redux/slices/application";
+import { actions } from "redux/slices/application";
 
 import { Textarea, Input } from "components/Fields";
 import { Footer } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer";
@@ -29,7 +29,7 @@ export const ProfilForm: React.FC = () => {
 
   const onCancel = () => {
     history.push("/dashboard");
-    dispatch(toogleDrawer());
+    dispatch(actions.toogleDrawer());
   };
 
   if (isLoading) {
@@ -89,7 +89,7 @@ export const ProfilForm: React.FC = () => {
           data: formatValues(data),
         });
         setSubmitting(false);
-        dispatch(toogleDrawer());
+        dispatch(actions.toogleDrawer());
       }}
     >
       {({ isValid, isSubmitting, values }) => {
@@ -209,7 +209,7 @@ rgba(0, 132, 255, 1))"
                   disabled={!isValid || isSubmitting}
                   onCancel={() => onCancel()}
                   onDelete={() => {
-                    dispatch(toogleDrawer());
+                    dispatch(actions.toogleDrawer());
                   }}
                 />
               </Flex>

@@ -11,13 +11,13 @@ import {
   useGetSurveyStats,
   useUpdateSurvey,
 } from "call/actions/survey";
-import { Survey } from "redux/slices/surveyBuilder";
 import { useNavigator } from "components/CreateSurvey/hooks";
 import { RemovingConfirmation } from "components/CreateSurvey/CreateForm/Condition/ToolBox/PageForm/Status";
 import { Chart } from "../Chart";
 import { renderStatus } from "utils/application/renderStatus";
 import { Loader } from "components/Spinner";
 import { NavLink } from "react-router-dom";
+import ISurvey from "types/survey";
 
 // ---- STATICS
 
@@ -34,7 +34,7 @@ const filters = [
 
 interface Props {
   menuIsOpen: boolean;
-  selectedSurvey?: Survey["survey"] | null;
+  selectedSurvey?: ISurvey | Record<string, any>;
   onClose: () => void;
 }
 
@@ -46,8 +46,8 @@ export const ProjectMenu: React.FC<Props> = ({
   onClose,
 }) => {
   if (!menuIsOpen || !selectedSurvey) return <></>;
-  const [isRemoving, setIsRemoving] = useState<boolean>(false);
 
+  const [isRemoving, setIsRemoving] = useState<boolean>(false);
   const { mutateAsync: deleteSurvey } = useDeleteSurvey();
   const { mutateAsync: udpateSurvey } = useUpdateSurvey();
 
@@ -58,20 +58,16 @@ export const ProjectMenu: React.FC<Props> = ({
     // stepsLeft,
     statistics,
     exportURL,
-    isLoading,
+    isLoadingStats,
   } = useSurveyData(selectedSurvey.id);
 
-  const {
-    gotToLanding,
-    goToForm,
-    goToConsent,
-    goToSurveyMetadatas
-  } = useNavigator(selectedSurvey);
-  
+  const { gotToLanding, goToForm, goToConsent, goToSurveyMetadatas } =
+    useNavigator(selectedSurvey);
+
   const [statFilter, setStatFilter] = useState(filters[0].id);
 
   // We should be doing that much better :/
-  if (isLoading) {
+  if (isLoadingStats) {
     return (
       <Container
         variant="rightPart"
@@ -303,7 +299,7 @@ function useSurveyData(surveyId: string) {
     stepsLeft,
     statistics: data?.surveyStats?.statistics,
     exportURL,
-    isLoading,
+    isLoadingStats: isLoading,
   };
 }
 

@@ -4,7 +4,7 @@ import IPage from "./page";
 
 export default interface ICondition {
   id: string;
-  type: "page" | "input";
+  type: "page" | "question";
   referer_page?: IPage;
   referer_question?: IQuestion;
   referer_id?: IPage["id"] | ICondition["id"];
@@ -16,13 +16,8 @@ export default interface ICondition {
     | "equal"
     | "superior"
     | "inferior"
-    | "different";
-  group: {
-    id: string | number;
-    name: number;
-  };
-  step?: 1 | 2 | 3;
-  is_valid: boolean;
+    | "not_equal";
+  group: string;
 }
 
 export interface IConditionRes {

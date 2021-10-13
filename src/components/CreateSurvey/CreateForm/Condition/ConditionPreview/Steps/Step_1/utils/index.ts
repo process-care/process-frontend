@@ -1,4 +1,4 @@
-export const authorizedInputTypes: string[] = [
+export const authorizedQuestionTypes: string[] = [
   "select",
   "slider",
   "number_input",

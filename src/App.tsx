@@ -10,7 +10,6 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { store } from "redux/store";
 import { Provider } from "react-redux";
-import { ReactQueryDevtools } from "react-query/devtools";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 import "index.css";
@@ -65,7 +64,6 @@ const App: React.FC = () => {
           </DndProvider>
         </ChakraProvider>
       </Provider>
-      <ReactQueryDevtools position="bottom-right" />
     </QueryClientProvider>
   );
 };

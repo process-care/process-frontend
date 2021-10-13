@@ -3,16 +3,17 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 import Card from "./Card";
 
 import IQuestion from "types/form/question";
-import { useAppSelector } from "redux/hooks";
-
+import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { Formik, Form } from "formik";
 import { Header } from "./Header";
 
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import { useGetQuestions } from "call/actions/formBuider/question";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
-import { useGetSurvey, useUpdateOrder } from "call/actions/survey";
+import { selectors } from "redux/slices/formEditor/page-editor";
+import { selectors as selectorsQuestion } from "redux/slices/formEditor/question-editor";
+import { actions as actionsSurvey } from "redux/slices/formEditor/selected-survey";
+import { NoData } from "components/SurveyGrid/noData";
 
 export interface Item {
   id: number;
@@ -32,26 +33,17 @@ interface Props {
   surveyId: string;
 }
 
-const InputsPreview: React.FC<Props> = ({ surveyId, order }) => {
-  const { selected_page } = useAppSelector((state) => state.formBuilder);
-  const {
-    data: questions,
-    isLoading,
-    error,
-  } = useGetQuestions(selected_page.id);
-  const { data: survey } = useGetSurvey(surveyId);
-  const { mutateAsync: updateOrder } = useUpdateOrder("updateOrder");
+const InputsPreview: React.FC<Props> = ({ order }) => {
+  const selectedPage = useAppSelector(selectors.getSelectedPage);
+
+  const questions = useAppSelector(selectorsQuestion.getSelectedPageQuestions);
+  const isLoading = useAppSelector(selectorsQuestion.isLoading);
+  const error = useAppSelector(selectorsQuestion.error);
+
+  const dispatch = useAppDispatch();
 
   const renderCard = (input: IQuestion, index: number) => {
-    if (!survey) return null;
-    return (
-      <Card
-        key={input.id}
-        input={input}
-        index={index}
-        survey={survey?.survey}
-      />
-    );
+    return <Card key={input.id} input={input} index={index} />;
   };
 
   const onDragEnd = (result: any) => {
@@ -73,10 +65,7 @@ const InputsPreview: React.FC<Props> = ({ surveyId, order }) => {
       new_input_order.splice(source.index, 1);
       new_input_order.splice(destination.index, 0, draggableId);
 
-      updateOrder({
-        id: survey?.survey.id,
-        new_order: new_input_order,
-      });
+      dispatch(actionsSurvey.updateOrder(new_input_order));
     }
   };
 
@@ -96,15 +85,6 @@ const InputsPreview: React.FC<Props> = ({ surveyId, order }) => {
         overflowY="auto"
       >
         <Formik
-          // initialValues={
-          //   questions?.questions
-          //     ? questions?.questions.map((q) => {
-          //         return {
-          //           [q.id]: "",
-          //         };
-          //       })
-          //     : {}
-          // }
           initialValues={{}}
           onSubmit={(data) => {
             console.log("DATA :", data);
@@ -129,36 +109,33 @@ const InputsPreview: React.FC<Props> = ({ surveyId, order }) => {
       </Box>
     );
   };
-
   if (isLoading || order === undefined) {
-    return (
-      <Box pt="400px">
-        <Loader />
-      </Box>
-    );
+    return <Loader />;
   }
   if (error) {
     return <Error error={error} />;
   }
 
-  if (!questions?.questions) {
-    return <div>No Questions ...</div>;
+  if (!selectedPage) {
+    return <p>Une erreur est survenue (pas de page séléctionnée)</p>;
   }
+  if (!isLoading && questions.length === 0) {
+    return <NoData content="Il n'y a pas de questions" />;
+  }
+
   return (
     <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
-      <Droppable droppableId={selected_page.id}>
+      <Droppable droppableId={selectedPage.id}>
         {(provided, snapshot) => (
           <Container isDraggingOver={snapshot.isDraggingOver}>
             <Text fontSize="14px" mt={3} textTransform="uppercase">
-              {selected_page.name}
+              {selectedPage?.name}
             </Text>
-            {questions?.questions?.length > 0 && <Header />}
+            {questions.length > 0 && <Header />}
 
             <Box w="100%" ref={provided.innerRef} {...provided.droppableProps}>
               {order?.map((inputId: string, i: number) => {
-                const current = questions?.questions?.find(
-                  (c: any) => c.id === inputId
-                );
+                const current = questions.find((c: any) => c.id === inputId);
                 if (current !== undefined) {
                   return renderCard(current, i);
                 } else return;

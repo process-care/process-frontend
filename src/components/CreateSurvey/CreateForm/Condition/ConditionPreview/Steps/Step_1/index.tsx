@@ -1,80 +1,73 @@
 import React from "react";
 
 import { Container, Text } from "@chakra-ui/react";
-import { useAppSelector, useAppDispatch } from "redux/hooks";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 import IQuestion from "types/form/question";
 import ICondition from "types/form/condition";
-import { authorizedInputTypes } from "./utils";
+import { authorizedQuestionTypes } from "./utils";
 import { t } from "static/input";
 import { InputBox } from "components/CreateSurvey/CreateForm/InputsPreview/InputBox";
-import { useGetQuestions } from "call/actions/formBuider/question";
-import { useUpdateCondition } from "call/actions/formBuider/condition";
-import { useGetSurvey } from "call/actions/survey";
-import { selectPage } from "redux/slices/formBuilder";
-import { useParams } from "react-router-dom";
+import { selectors as selectorsQuestion } from "redux/slices/formEditor/question-editor";
+import { selectors as selectorsSurvey } from "redux/slices/formEditor/selected-survey";
+import {
+  selectors as selectorsPage,
+  actions as actionsPage,
+} from "redux/slices/formEditor/page-editor";
 
 interface Props {
-  currentCondition: ICondition | undefined;
+  selectedCondition: ICondition;
+  updateStep: (d: any) => void;
 }
 
-export const Step_1: React.FC<Props> = ({ currentCondition }) => {
+export const Step_1: React.FC<Props> = ({ selectedCondition, updateStep }) => {
   const dispatch = useAppDispatch();
-  // FIXME: Yup, these ignore are bad, need to be removed
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const { slug: surveyId } = useParams();
-  const { mutateAsync: updateCondition } = useUpdateCondition();
-  const { selected_input, selected_page } = useAppSelector(
-    (state) => state.formBuilder
+  const selectedQuestion = useAppSelector(
+    selectorsQuestion.getSelectedQuestion
   );
-  const { data } = useGetQuestions(selected_page.id);
-
-  const { data: survey } = useGetSurvey(surveyId);
+  const questions = useAppSelector(selectorsQuestion.getSelectedPageQuestions);
+  const pages = useAppSelector(selectorsPage.getAllPages);
+  const order = useAppSelector(selectorsSurvey.getOrder);
+  const isTypePage = selectedCondition.type === "page";
 
   React.useEffect(() => {
     // Select first page if we make a condition on page.
-    if (currentCondition?.type === "page" && survey?.survey.pages[0]) {
-      dispatch(selectPage(survey?.survey.pages[0]));
+    if (isTypePage && pages.length > 0) {
+      dispatch(actionsPage.setSelectedPage(pages[0].id));
     }
-  }, [currentCondition?.type]);
+  }, [isTypePage]);
 
-  // Si currentCondition.type === "page" alors on affiche les inputs des pages précédantes.
-  // Si currentCondition.type === "input" alors on affiche les inputs précédants l'input referent
-  const inputOrder = survey?.survey?.order;
-  const currentInputIndex = inputOrder?.findIndex(
-    (id: string) => id === currentCondition?.referer_question?.id
-  );
-  const inputsBeforeCurrent = inputOrder?.slice(0, currentInputIndex);
-  // Remove all types who can't be conditionable, remove the selected input, remove input after the selected one.
-  const authorizedInputs = data?.questions
-    .filter((q: IQuestion) => authorizedInputTypes.includes(q.type))
-    .filter((q: IQuestion) => q.id !== selected_input.id);
+  const referId = isTypePage
+    ? selectedCondition.referer_page?.id
+    : selectedCondition.referer_question?.id;
+  const currentInputIndex = order.findIndex((id: string) => id === referId);
 
-  if (currentCondition?.type === "input") {
-    authorizedInputs?.filter((q: IQuestion) =>
-      inputsBeforeCurrent?.includes(q.id)
-    );
-    authorizedInputs;
+  const questionsBeforeCurrent = order.slice(0, currentInputIndex);
+
+  // Remove all types who can't be conditionable,
+  const conditionableQuestions = questions
+    .filter((q: IQuestion) => authorizedQuestionTypes.includes(q.type))
+    .filter((q: IQuestion) => q.id !== selectedQuestion?.id);
+
+  if (!isTypePage) {
+    // Si selectedCondition.type === "page" alors on affiche les inputs des pages précédantes.
+    // Si selectedCondition.type === "input" alors on affiche les inputs précédants l'input referent
+    conditionableQuestions
+      .filter((q: IQuestion) => questionsBeforeCurrent?.includes(q.id))
+      .filter((q: IQuestion) => q.id !== selectedQuestion?.id);
+    conditionableQuestions;
   }
 
-  const isEmpty = authorizedInputs?.length === 0;
+  const isEmpty = conditionableQuestions?.length === 0;
+  const renderCard = (question: IQuestion) => {
+    const isSelected = question.id === selectedCondition.target?.id;
 
-  const renderCard = (input: IQuestion) => {
-    const isSelected = input.id === currentCondition?.target?.id;
     return (
       <InputBox
-        key={input.id}
+        key={question.id}
         isSelected={isSelected}
-        input={input}
-        onClick={() =>
-          updateCondition({
-            id: currentCondition?.id,
-            data: {
-              target: input.id,
-            },
-          })
-        }
+        input={question}
+        onClick={() => updateStep({ target: question })}
       />
     );
   };
@@ -92,8 +85,8 @@ export const Step_1: React.FC<Props> = ({ currentCondition }) => {
         </Text>
       )}
 
-      {inputOrder?.map((inputId: string) => {
-        const current = authorizedInputs?.find(
+      {order.map((inputId: string) => {
+        const current = conditionableQuestions?.find(
           (c: IQuestion) => c.id === inputId
         );
         if (current !== undefined) {

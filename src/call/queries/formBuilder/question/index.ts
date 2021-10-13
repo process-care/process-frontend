@@ -10,6 +10,15 @@ export const GET_QUESTIONS = gql`
   }
 `;
 
+export const GET_QUESTIONS_BY_PAGE = gql`
+  ${questionFragment}
+  query getQuestions($page: [ID]) {
+    questions(where: { page: $page }) {
+      ...questionFragment
+    }
+  }
+`;
+
 export const GET_QUESTION = gql`
   ${questionFragment}
   query getQuestion($id: ID!) {
@@ -21,7 +30,10 @@ export const GET_QUESTION = gql`
 
 export const GET_QUESTION_EVALUATION = gql`
   query getQuestionEvaluation($questionId: ID!, $participationId: ID!) {
-    evaluation: questionEvaluation(questionId: $questionId, participationId: $participationId) {
+    evaluation: questionEvaluation(
+      questionId: $questionId
+      participationId: $participationId
+    ) {
       id
       conditions {
         id
@@ -35,8 +47,8 @@ export const GET_QUESTION_EVALUATION = gql`
 `;
 
 export const ADD_QUESTION = gql`
-  mutation addQuestion($new_question: QuestionInput) {
-    createQuestion(input: { data: $new_question }) {
+  mutation addQuestion($values: QuestionInput) {
+    createQuestion(input: { data: $values }) {
       question {
         id
         type

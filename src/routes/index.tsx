@@ -1,7 +1,7 @@
 import IRoute from "types/routes/routes";
 import { Login } from "pages/Auth/Login";
 import { CreateSurvey } from "pages/Survey";
-import { CreateForm } from "pages/Survey/CreateForm";
+import { CreateForm } from "pages/Survey/FormBuilder";
 import { Dashboard } from "pages/Dashboard";
 import { Landing } from "pages/Landing";
 import { Portail } from "pages/Portail";

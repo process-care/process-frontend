@@ -22,10 +22,27 @@ export const GET_CONDITIONS: any = (type: string) => {
   `;
 };
 
+export const GET_CONDITIONS_BY_QUESTION = gql`
+  ${conditionFragment}
+  query getConditons($referer_question: [ID]) {
+    conditions(where: { referer_question: $referer_question }) {
+      ...conditionFragment
+    }
+  }
+`;
+export const GET_CONDITIONS_BY_PAGE = gql`
+  ${conditionFragment}
+  query getConditons($referer_page: [ID]) {
+    conditions(where: { referer_page: $referer_page }) {
+      ...conditionFragment
+    }
+  }
+`;
+
 export const ADD_CONDITION = gql`
   ${conditionFragment}
-  mutation addcondition($new_condition: ConditionInput) {
-    createCondition(input: { data: $new_condition }) {
+  mutation addcondition($newCondition: ConditionInput) {
+    createCondition(input: { data: $newCondition }) {
       condition {
         ...conditionFragment
       }

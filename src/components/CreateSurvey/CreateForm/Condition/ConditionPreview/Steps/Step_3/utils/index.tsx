@@ -1,14 +1,31 @@
-import { useUpdateCondition } from "call/actions/formBuider/condition";
 import { InputBox } from "components/CreateSurvey/CreateForm/InputsPreview/InputBox";
 import { Textarea } from "components/Fields";
 import ICondition from "types/form/condition";
 import React from "react";
+import { useAppDispatch } from "redux/hooks";
+import { actions as actionsCondition } from "redux/slices/formEditor/condition-editor";
 
 export const renderInput = (
-  currentCondition: Partial<ICondition>
+  selectedCondition: ICondition
 ): React.ReactElement => {
-  const { mutateAsync: updateCondition } = useUpdateCondition();
-  const target_question = currentCondition.target;
+  const dispatch = useAppDispatch();
+
+  const handleUpdate = (changes: Record<string, any>) => {
+    dispatch(
+      actionsCondition.update({
+        id: selectedCondition.id,
+        changes: {
+          ...changes,
+        },
+      })
+    );
+  };
+
+  const handleValidity = (bool: boolean) => {
+    dispatch(actionsCondition.setValidity(bool));
+  };
+
+  const target_question = selectedCondition.target;
   const Options = () => {
     const answers =
       target_question?.options !== undefined &&
@@ -20,18 +37,15 @@ export const renderInput = (
         <ul style={{ width: "100%" }}>
           {answers.map((option) => (
             <InputBox
-              isSelected={currentCondition.target_value === option}
+              isSelected={selectedCondition.target_value === option}
               isOptionMode
               option={option}
-              onClick={() =>
-                updateCondition({
-                  id: currentCondition.id,
-                  data: {
-                    target_value: option !== undefined ? option : "",
-                    is_valid: true,
-                  },
-                })
-              }
+              onClick={() => {
+                handleUpdate({
+                  target_value: option !== undefined ? option : "",
+                });
+                handleValidity(true);
+              }}
             />
           ))}
         </ul>

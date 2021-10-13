@@ -7,7 +7,7 @@ import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useAuth } from "components/Authentification/hooks";
 import { useDispatch } from "react-redux";
-import { toogleDrawer } from "redux/slices/application";
+import { actions } from "redux/slices/application";
 import { useGetMe } from "call/actions/auth";
 import { Loader } from "components/Spinner";
 
@@ -40,7 +40,7 @@ export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
   };
 
   const handleDrawer = () => {
-    dispatch(toogleDrawer());
+    dispatch(actions.toogleDrawer());
   };
 
   const items: Item[] = [

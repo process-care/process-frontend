@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import IRoute from "types/routes/route";
 import { Box, Container, Text, Flex, Button } from "@chakra-ui/react";
 import { useHistory } from "react-router";
 import { t } from "static/dashboard";
 import { Filters } from "components/Dashboard/Filters";
 import { Table } from "components/Table";
-import { useGetMySurveys } from "call/actions/survey";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 import { ProjectMenu } from "components/Dashboard/ProjectMenu";
@@ -15,37 +14,42 @@ import dayjs from "dayjs";
 
 import { Survey } from "redux/slices/surveyBuilder";
 import { useAppSelector } from "redux/hooks";
-import { toogleDrawer } from "redux/slices/application";
+import { actions as actionsApplication } from "redux/slices/application";
 import { useDispatch } from "react-redux";
 import { ProfilForm } from "components/Dashboard/ProfilForm";
 import { useAuth } from "components/Authentification/hooks";
 import { actions } from "redux/slices/survey-editor";
+import {
+  actions as actionsMySurveys,
+  selectors as selectorsMySurveys,
+} from "redux/slices/my-surveys";
+
+import ISurvey from "types/survey";
 
 export const Dashboard: React.FC<IRoute> = () => {
   const { user } = useAuth();
   const history = useHistory();
   const { location } = history;
   const dispatch = useDispatch();
+  const surveys = useAppSelector(selectorsMySurveys.getAllSurveys);
+  const error = useAppSelector(selectorsMySurveys.error);
+  const isLoading = useAppSelector(selectorsMySurveys.isLoading);
 
-  const { data: surveys, isLoading, error } = useGetMySurveys(user.id);
-
-  const isOpen = useAppSelector((state) => state.application.drawer_is_open);
+  const isOpen = useAppSelector((state) => state.application.drawerIsOpen);
   const isProfilPage = location.pathname === "/profil";
 
   const [menuIsOpen, setMenuIsOpen] = useState(false);
-  const [selectedSurvey, setSelectedSurvey] = useState<Survey["survey"] | null>(
-    null
+  const [clickedSurvey, setClickedSurvey] = useState<ISurvey | undefined>(
+    undefined
   );
-
   const toggleOff = () => {
     setMenuIsOpen(false);
   };
 
   const toggleMenu = (survey: Survey["survey"]) => {
-    if (isOpen) {
-      setSelectedSurvey(survey);
-    } else {
-      setSelectedSurvey(survey);
+    const current = surveys.find((s) => s.id === survey.id);
+    setClickedSurvey(current);
+    if (!isOpen) {
       setMenuIsOpen(true);
     }
   };
@@ -53,7 +57,7 @@ export const Dashboard: React.FC<IRoute> = () => {
   const [currentFilter, setCurrentFilter] = useState<string>(t.filters[0].id);
 
   const data = React.useMemo(() => {
-    const orderedList = surveys?.surveys.sort((a, b) => {
+    const orderedList = surveys.sort((a, b) => {
       return dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf();
     });
 
@@ -64,7 +68,7 @@ export const Dashboard: React.FC<IRoute> = () => {
         return survey.status === currentFilter;
       });
     }
-  }, [currentFilter, surveys?.surveys]);
+  }, [currentFilter, surveys]);
 
   const columns = React.useMemo(
     () =>
@@ -79,7 +83,7 @@ export const Dashboard: React.FC<IRoute> = () => {
         } else if (accessor === "total") {
           return {
             Header,
-            accessor: (d: any) => d.participations.length,
+            accessor: (d: any) => d.participations?.length,
           };
         } else
           return {
@@ -91,7 +95,7 @@ export const Dashboard: React.FC<IRoute> = () => {
   );
 
   const handleDrawer = () => {
-    dispatch(toogleDrawer());
+    dispatch(actionsApplication.toogleDrawer());
   };
 
   const closeDrawer = () => {
@@ -104,15 +108,19 @@ export const Dashboard: React.FC<IRoute> = () => {
     history.push(`/survey/draft/create/metadatas`);
   };
 
+  useEffect(() => {
+    dispatch(actionsMySurveys.initialize(user.id));
+  }, [user.id]);
+
   if (isLoading || surveys === undefined) {
     return <Loader />;
   }
 
   if (error) {
-    return <Error error={error.message} />;
+    return <Error error={error} />;
   }
 
-  const surveysLenght = surveys.surveys.length;
+  const surveysLenght = surveys.length;
 
   return (
     <Box d="flex" justifyContent="space-around" w="100%">
@@ -150,7 +158,7 @@ export const Dashboard: React.FC<IRoute> = () => {
       </div>
       <ProjectMenu
         menuIsOpen={menuIsOpen}
-        selectedSurvey={selectedSurvey}
+        selectedSurvey={clickedSurvey}
         onClose={toggleOff}
       />
     </Box>

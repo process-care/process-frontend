@@ -15,6 +15,7 @@ export const GET_MY_SURVEYS = gql`
       participations {
         id
       }
+      order
       landing {
         id
         color_theme
@@ -63,6 +64,16 @@ export const GET_SURVEY = gql`
   ${surveyFullFragment}
   query getSurvey($id: ID!) {
     survey(id: $id) {
+      ...surveyFullFragment
+    }
+  }
+`;
+
+// Get one specific survey
+export const GET_SURVEY_BY_SLUG = gql`
+  ${surveyFullFragment}
+  query getSurveyBySlug($slug: String!) {
+    surveys(where: { slug: $slug }) {
       ...surveyFullFragment
     }
   }

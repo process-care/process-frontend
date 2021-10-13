@@ -19,7 +19,6 @@ const initializeEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.initialize.type),
     filter((action) => {
-      console.log("INITIALIZE QUESTIONS");
       const pages = action.payload;
       return pages.length !== 0;
     }),

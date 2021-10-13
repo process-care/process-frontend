@@ -42,11 +42,12 @@ export const CreateForm: React.FC<IRoute> = () => {
   const selectedSurveyId = useAppSelector(selectorSurvey.getSelectedSurveyId);
   const pages = useAppSelector(selectorsPage.getAllPages);
   const questions = useAppSelector(selectorsQuestion.getSelectedPageQuestions);
-  const isLoading = useAppSelector(selectorsQuestion.isLoading);
+  const isLoadingQuestion = useAppSelector(selectorsQuestion.isLoading);
   const isLoadingPage = useAppSelector(selectorsPage.isLoading);
 
   const order = useAppSelector(selectorSurvey.getOrder);
-  const ids = questions.map((q) => q.id);
+  const questionsIds = questions.map((q) => q.id);
+  const pagesIds = pages.map((q) => q.id);
 
   const error = useAppSelector(selectorsMySurveys.error);
   const selectedCondition = useAppSelector(
@@ -55,17 +56,22 @@ export const CreateForm: React.FC<IRoute> = () => {
   useEffect(() => {
     dispatch(actionsSurvey.initialize(slug));
     dispatch(actionsPage.initialize(slug));
-  }, [slug]);
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(actionsQuestion.initialize(pages.map((p) => p.id)));
   }, [isLoadingPage]);
 
   useEffect(() => {
-    if (!isLoading) {
-      dispatch(actionsCondition.initialize(ids));
+    if (!isLoadingQuestion) {
+      dispatch(
+        actionsCondition.initialize({
+          questionsIds: questionsIds,
+          pagesIds: pagesIds,
+        })
+      );
     }
-  }, [isLoading]);
+  }, [isLoadingQuestion]);
 
   if (error) {
     return <Error error={error} />;

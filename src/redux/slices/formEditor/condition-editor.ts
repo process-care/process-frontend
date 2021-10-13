@@ -75,7 +75,10 @@ type SavedPayload = {
   // Api payload don't send the same conditon referer page type
   condition: Record<string, any>;
 };
-
+type InitializePayload = {
+  questionsIds: string[];
+  pagesIds: string[];
+};
 type CreatePayload = {
   refererId: string | undefined;
   type: ICondition["type"];
@@ -97,7 +100,7 @@ export const conditionSlice = createSlice({
   name: SLICE_NAME,
   initialState: conditionAdapter.getInitialState(initialState),
   reducers: {
-    initialize: (state, _action: PayloadAction<string[]>) => {
+    initialize: (state, _action: PayloadAction<InitializePayload>) => {
       state.isLoading = true;
     },
     initialized: (state, action: PayloadAction<any>) => {

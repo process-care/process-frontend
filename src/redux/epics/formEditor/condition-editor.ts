@@ -9,6 +9,7 @@ import {
   ADD_CONDITION,
   DELETE_CONDITION,
   DELETE_GROUP_CONDITION,
+  GET_CONDITIONS_BY_PAGE,
   GET_CONDITIONS_BY_QUESTION,
   UPDATE_CONDITION,
 } from "call/queries/formBuilder/condition";
@@ -18,16 +19,19 @@ import {
 const initializeEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.initialize.type),
-    switchMap((action) => {
-      console.log("INITIALIZE CONDITION");
-
-      return client.request(GET_CONDITIONS_BY_QUESTION, {
-        where: { referer_question: action.payload },
+    switchMap(async (action) => {
+      const res1 = await client.request(GET_CONDITIONS_BY_QUESTION, {
+        referer_question: action.payload.questionsIds,
       });
+      const res2 = await client.request(GET_CONDITIONS_BY_PAGE, {
+        referer_page: action.payload.pagesIds,
+      });
+      const result = res1.conditions.concat(res2.conditions);
+      return result;
     }),
     map((result) => {
       if (result) {
-        return actions.initialized(result.conditions);
+        return actions.initialized(result);
       } else return actions.initialized([]);
     })
   );

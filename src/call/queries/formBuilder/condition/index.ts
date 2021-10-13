@@ -30,6 +30,14 @@ export const GET_CONDITIONS_BY_QUESTION = gql`
     }
   }
 `;
+export const GET_CONDITIONS_BY_PAGE = gql`
+  ${conditionFragment}
+  query getConditons($referer_page: [ID]) {
+    conditions(where: { referer_page: $referer_page }) {
+      ...conditionFragment
+    }
+  }
+`;
 
 export const ADD_CONDITION = gql`
   ${conditionFragment}

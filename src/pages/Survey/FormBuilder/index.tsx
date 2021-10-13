@@ -32,7 +32,7 @@ import {
 } from "redux/slices/formEditor/question-editor";
 import { actions as actionsCondition } from "redux/slices/formEditor/condition-editor";
 
-import { Loader } from "components/Spinner";
+// import { Loader } from "components/Spinner";
 
 export const CreateForm: React.FC<IRoute> = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -47,7 +47,7 @@ export const CreateForm: React.FC<IRoute> = () => {
 
   const order = useAppSelector(selectorSurvey.getOrder);
   const questionsIds = questions.map((q) => q.id);
-  const pagesIds = pages.map((q) => q.id);
+  const pagesIds = pages.map((p) => p.id);
 
   const error = useAppSelector(selectorsMySurveys.error);
   const selectedCondition = useAppSelector(
@@ -59,7 +59,9 @@ export const CreateForm: React.FC<IRoute> = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(actionsQuestion.initialize(pages.map((p) => p.id)));
+    if (!isLoadingPage) {
+      dispatch(actionsQuestion.initialize(pagesIds));
+    }
   }, [isLoadingPage]);
 
   useEffect(() => {
@@ -77,9 +79,9 @@ export const CreateForm: React.FC<IRoute> = () => {
     return <Error error={error} />;
   }
 
-  if (isLoadingQuestion) {
-    return <Loader />;
-  }
+  // if (isLoadingQuestion) {
+  //   return <Loader />;
+  // }
 
   return (
     <Box h="100vh" overflow="hidden">

@@ -47,7 +47,7 @@ export const CreateForm: React.FC<IRoute> = () => {
 
   const order = useAppSelector(selectorSurvey.getOrder);
   const questionsIds = questions.map((q) => q.id);
-  const pagesIds = pages.map((q) => q.id);
+  const pagesIds = pages.map((p) => p.id);
 
   const error = useAppSelector(selectorsMySurveys.error);
   const selectedCondition = useAppSelector(
@@ -58,12 +58,9 @@ export const CreateForm: React.FC<IRoute> = () => {
     dispatch(actionsPage.initialize(slug));
   }, [dispatch]);
 
-  console.log(isLoadingPage, "isLoadingPage");
-  console.log(isLoadingQuestion, "isLoadingQuestion");
-
   useEffect(() => {
     if (!isLoadingPage) {
-      dispatch(actionsQuestion.initialize(pages.map((p) => p.id)));
+      dispatch(actionsQuestion.initialize(pagesIds));
     }
   }, [isLoadingPage]);
 

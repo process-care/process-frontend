@@ -20,19 +20,28 @@ const initializeEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.initialize.type),
     switchMap(async (action) => {
-      const res1 = await client.request(GET_CONDITIONS_BY_QUESTION, {
-        referer_question: action.payload.questionsIds,
-      });
-      const res2 = await client.request(GET_CONDITIONS_BY_PAGE, {
-        referer_page: action.payload.pagesIds,
-      });
-      const result = res1.conditions.concat(res2.conditions);
+      const { questionsIds, pagesIds } = action.payload;
+      let res1;
+      let res2;
+      const result = [];
+      if (questionsIds.length > 0) {
+        res1 = await client.request(GET_CONDITIONS_BY_QUESTION, {
+          referer_question: questionsIds,
+        });
+        res1 && result.push(...res1.conditions);
+      }
+      if (pagesIds.length > 0) {
+        res2 = await client.request(GET_CONDITIONS_BY_PAGE, {
+          referer_page: pagesIds,
+        });
+        res2 && result.push(...res2.conditions);
+      }
+
       return result;
     }),
     map((result) => {
-      if (result) {
-        return actions.initialized(result);
-      } else return actions.initialized([]);
+      console.log("INITIALIZE CONDITIONS", result);
+      return actions.initialized(result);
     })
   );
 

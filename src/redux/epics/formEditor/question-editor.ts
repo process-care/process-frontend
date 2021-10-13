@@ -27,9 +27,10 @@ const initializeEpic: Epic = (action$) =>
         page: action.payload,
       });
     }),
-    map((result) => {
-      const payload = result.questions;
-      return actions.initialized(payload);
+    map(({ questions }) => {
+      console.log("INITIALIZE QUESTIONS", questions);
+
+      return actions.initialized(questions);
     })
   );
 

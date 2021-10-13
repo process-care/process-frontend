@@ -4,10 +4,10 @@ import { Epic } from "redux/store";
 import { actions, selectors } from "redux/slices/formEditor/page-editor";
 
 import { client } from "call/actions";
-import { GET_SURVEY_BY_SLUG } from "call/queries/survey";
 import {
   ADD_PAGE,
   DELETE_PAGE,
+  GET_PAGE_BY_SURVEY,
   UPDATE_PAGE,
 } from "call/queries/formBuilder/page";
 
@@ -17,13 +17,11 @@ const initializeEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.initialize.type),
     switchMap((action) => {
-      return client.request(GET_SURVEY_BY_SLUG, { slug: action.payload });
+      return client.request(GET_PAGE_BY_SURVEY, { slug: action.payload });
     }),
-    map((survey: Record<string, any>) => {
-      console.log("INITIALIZE PAGES");
-
-      const payload = survey.surveys[0].pages;
-      return actions.initialized(payload);
+    map(({ pages }) => {
+      console.log("INITIALIZE PAGES", pages);
+      return actions.initialized(pages);
     })
   );
 

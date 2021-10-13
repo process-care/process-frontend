@@ -77,7 +77,7 @@ export const CreateForm: React.FC<IRoute> = () => {
     return <Error error={error} />;
   }
 
-  if (!selectedSurveyId) {
+  if (isLoadingQuestion) {
     return <Loader />;
   }
 

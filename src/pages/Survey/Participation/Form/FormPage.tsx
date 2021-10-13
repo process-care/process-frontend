@@ -63,8 +63,8 @@ export const FormPage: React.FC<Props> = ({
       </Text>
 
       <Formik
-        // validateOnBlur
-        // validationSchema={formSchema(page.questions)}
+        validateOnBlur
+        validationSchema={formSchema(page.questions)}
         initialValues={answers.values}
         onSubmit={(data, { setSubmitting, validateForm }) => {
           validateForm(data);

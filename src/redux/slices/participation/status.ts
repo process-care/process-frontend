@@ -13,7 +13,7 @@ import IQuestion from "types/form/question";
 
 interface SliceState {
   isLoading: boolean,
-  participationID?: string
+  participationId?: string
   surveyId?: string
 }
 
@@ -45,7 +45,7 @@ export const slice = createSlice({
     initialize: (state, action: PayloadAction<InitializePayload>) => {
       console.log('Let the fun begins');
       const { participationId, surveyId } = action.payload;
-      state.participationID = participationId;
+      state.participationId = participationId;
       state.surveyId = surveyId;
 
       // Start loading only if we have both params

@@ -6,36 +6,62 @@ import { actions, selectors } from 'redux/slices/participation/answers';
 import { client } from 'call/actions';
 import { CREATE_ANSWER, UPDATE_ANSWER } from 'call/queries/answers';
 
+const DEBOUNCE_TIME = 3000;
+
 // Initialize pages-visited upon init
 const upsertAnswersEpic: Epic = (action$, state$) => action$.pipe(
   ofType(actions.update.type),
-  filter(action => action.payload.questionId),
+  filter(action => action.payload.questionId && action.payload.value),
   map(action => action.payload),
   timeInterval(),
   scan((acc, payload) => {
     const { value, interval } = payload;
-    if (interval > 3000) acc = {};
+    // After the same interval as the debounced time, we reset the accumulator
+    if (interval > DEBOUNCE_TIME) acc = {};
+
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore : we are sure we have a questionId, see "filter" above the chain
     acc[value.questionId] = value.value;
     return acc;
   }, {}),
-  debounceTime(3000),
+  debounceTime(DEBOUNCE_TIME),
   switchMap(async (accu) => {
-    console.log('this is the accumulated values: ', accu);
+    const participationId = state$.value.participation.status.participationId;
 
+    if (!participationId) throw new Error('Missing participation Id to save answers !');
+    
     const allUpserts = Object.entries(accu).map(([qId, value]) => {
       const answerInState = selectors.selectById(state$.value, qId);
       return (answerInState?.id)
         ? client.request(UPDATE_ANSWER, { id: answerInState.id, data: { value } })
-        : client.request(CREATE_ANSWER, { data: { value, question: qId } });
+        : client.request(CREATE_ANSWER, { data: { value, question: qId, participation: participationId } });
     });
 
     return Promise.all(allUpserts);
   }),
   map(results => {
-    console.log('results of upserts: ', results);
-    return actions.updated;
+    const upserted = results.reduce((acc, res) => {
+      let target;
+      let rawAnswer;
+
+      // Find the correct targets according to the operation type
+      if (res.createAnswer) {
+        target = acc.created;
+        rawAnswer = res.createAnswer.answer;
+      }
+      else {
+        target = acc.updated;
+        rawAnswer = res.updateAnswer.answer;
+      }
+
+      // Sanitize into correct payload form then push into related target
+      const answer = { id: rawAnswer.question.id, changes: { id: rawAnswer.id } };
+      target.push(answer);
+
+      return acc;
+    }, { created: [], updated: [] });
+
+    return actions.updated(upserted);
   }),
 );
 

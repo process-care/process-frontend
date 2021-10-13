@@ -41,8 +41,12 @@ export function useAnswerSaver(
 ): void {
   const dispatch = useAppDispatch();
   const [field] = useField(questionId);
+  const stateValue = useAppSelector(state => selectors.selectById(state, questionId));
 
   useEffect(() => {
+    // Do not dispatch if the value isn't different between Formik / Redux
+    if (stateValue?.value === field.value) return;
+
     dispatch(actions.update({ questionId, value: field.value }));
-  }, [questionId, field.value]);
+  }, [questionId, field.value, stateValue?.value]);
 }

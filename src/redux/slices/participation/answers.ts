@@ -1,4 +1,4 @@
-import { createEntityAdapter, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createEntityAdapter, createSlice, PayloadAction, Update } from "@reduxjs/toolkit";
 
 import { actions as statusAct } from 'redux/slices/participation/status';
 import { RootState } from "redux/store";
@@ -18,6 +18,11 @@ export type UpsertAnswerPayload = {
   value: string,
 }
 
+export type UpsertedAnswerPayload = {
+  created: Update<Answer>[]
+  updated: Update<Answer>[]
+}
+
 // ---- SLICE
 
 const SLICE_NAME = 'answers';
@@ -31,16 +36,15 @@ export const slice = createSlice({
   initialState: adapter.getInitialState(),
   reducers: {
     update: (state, action: PayloadAction<UpsertAnswerPayload>) => {
-      console.log('payload for upsert: ', action.payload);
       adapter.upsertOne(state, action.payload);
     },
-    updated: (_state) => {
-      console.log('answers updated... !');
+    updated: (state, action: PayloadAction<UpsertedAnswerPayload>) => {
+      // Update only those who have been created to keep their answerId
+      adapter.updateMany(state, action.payload.created);
     }
   },
   extraReducers: builder => {
     builder.addCase(statusAct.initialized, (state, action) => {
-      console.log('initialized answers');
       const sanitized = action.payload.answers.map(a => ({ id: a.id, questionId: a.question.id, value: a.value }));
       adapter.setAll(state, sanitized);
     });

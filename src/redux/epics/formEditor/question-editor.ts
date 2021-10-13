@@ -1,4 +1,4 @@
-import { map, switchMap, filter } from "rxjs";
+import { map, switchMap } from "rxjs";
 import { combineEpics, ofType } from "redux-observable";
 import { Epic } from "redux/store";
 import { actions } from "redux/slices/formEditor/question-editor";
@@ -18,10 +18,10 @@ import { UPDATE_ORDER } from "call/queries/survey";
 const initializeEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.initialize.type),
-    filter((action) => {
-      const pages = action.payload;
-      return pages.length !== 0;
-    }),
+    // filter((action) => {
+    //   const pages = action.payload;
+    //   return pages.length !== 0;
+    // }),
     switchMap(async (action) => {
       return client.request(GET_QUESTIONS_BY_PAGE, {
         page: action.payload,

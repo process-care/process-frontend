@@ -32,7 +32,7 @@ import {
 } from "redux/slices/formEditor/question-editor";
 import { actions as actionsCondition } from "redux/slices/formEditor/condition-editor";
 
-import { Loader } from "components/Spinner";
+// import { Loader } from "components/Spinner";
 
 export const CreateForm: React.FC<IRoute> = () => {
   const { slug } = useParams<{ slug: string }>();

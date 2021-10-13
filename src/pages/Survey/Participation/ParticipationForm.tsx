@@ -32,7 +32,7 @@ export const ParticipationForm: React.FC<Props> = ({
   const dispatch = useAppDispatch();
 
   const { data } = useGetSurvey(surveyId);
-  const pages = useAppSelector(selectors.selectAll);
+  const pages = useAppSelector(selectors.selectShown);
 
   useEffect(() => {
     dispatch(actions.initialize({ surveyId, participationId }));
@@ -64,7 +64,7 @@ export const ParticipationForm: React.FC<Props> = ({
         <Box w="20%">
           <PageMenu
             author={data.survey.author?.email}
-            pages={data.survey.pages}
+            pages={pages}
             selectIndex={selectIndex}
             color={currentColor}
             logo={data.survey.landing?.logo}
@@ -225,6 +225,9 @@ function useFinishHandler(participationId: string, slug: string) {
   };
 }
 
+// TODO: update this to use the id of the page rather than an index to navigate
+// Because the array of pages can changes according to hidden / shown page and we must
+// not be able to select a hidden page or modify the selected page when the index number varies
 function useNavigationHandlers(pages: IPage[] | undefined) {
   const [selectedIdx, setSelectedIdx] = useState(0);
   const selectedPage = pages?.[selectedIdx];
@@ -248,10 +251,7 @@ function useNavigationHandlers(pages: IPage[] | undefined) {
   );
 
   const nextPage = useCallback(() => onNavigate(DIRECTION.Next), [onNavigate]);
-  const previousPage = useCallback(
-    () => onNavigate(DIRECTION.Previous),
-    [onNavigate]
-  );
+  const previousPage = useCallback(() => onNavigate(DIRECTION.Previous), [onNavigate]);
 
   return {
     isFirstPage: selectedIdx === 0,

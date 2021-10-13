@@ -7,20 +7,10 @@ import { selectors as answerSelectors } from 'redux/slices/participation/answers
 import { EvaluationCondition } from "call/actions/formBuider/question";
 
 // ---- TYPES
-
-// type CreatedPayload = {
-//   id: string;
-// };
+// Not needed, for now, may be removed later.
 
 // ---- INITIAL STATE
-
-interface SliceState {
-  maybe: boolean;
-}
-
-const initialState: SliceState = {
-  maybe: false,
-};
+// Nothing so far.
 
 // ---- SLICE
 
@@ -33,14 +23,9 @@ const adapter = createEntityAdapter<IQuestion>({
 export const slice = createSlice({
   name: SLICE_NAME,
   initialState: adapter.getInitialState(),
-  reducers: {
-    initialize: (state) => {
-      console.log('yolo');
-    },
-  },
+  reducers: {},
   extraReducers: builder => {
     builder.addCase(statusAct.initialized, (state, action) => {
-      console.log('initialized questions');
       adapter.setAll(state, action.payload.questions);
     });
   }
@@ -57,6 +42,9 @@ const selectById = (state: RootState, questionId: string | undefined): IQuestion
 
 const selectAll = (state: RootState): IQuestion[] => entitySelectors.selectAll(state.participation.questions);
 
+// TODO: see the comments in "page-visited" slice => maybe this should return the boolean right away, instead
+// of the data to compute the evaluation. So the logic is embeded into the redux, and it only exposes a props
+// that the UI can use mindlessly. It could also be better memoized like that, I guess ?
 const selectEvaluation = (state: RootState, questionId: string): EvaluationCondition[] => {
   // Get the question
   const q = entitySelectors.selectById(state.participation.questions, questionId);
@@ -86,13 +74,13 @@ const selectEvaluation = (state: RootState, questionId: string): EvaluationCondi
   return evals;
 };
 
+// ---- EXPORTS
+
 export const selectors = {
   selectAll,
   selectById,
   selectEvaluation,
 };
-
-// ---- ACTIONS
 
 export const actions = slice.actions;
 

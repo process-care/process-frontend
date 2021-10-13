@@ -30,7 +30,6 @@ interface Props {
 
 export const FormPage: React.FC<Props> = ({
   pageId,
-  participationId,
   order,
   isFirstPage,
   isLastPage,

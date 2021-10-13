@@ -43,7 +43,7 @@ export const slice = createSlice({
   initialState,
   reducers: {
     initialize: (state, action: PayloadAction<InitializePayload>) => {
-      console.log('Let the fun begins');
+      console.log('Let the fun begins: initialize everything !');
       const { participationId, surveyId } = action.payload;
       state.participationId = participationId;
       state.surveyId = surveyId;

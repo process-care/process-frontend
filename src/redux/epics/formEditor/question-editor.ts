@@ -18,10 +18,6 @@ import { UPDATE_ORDER } from "call/queries/survey";
 const initializeEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.initialize.type),
-    // filter((action) => {
-    //   const pages = action.payload;
-    //   return pages.length !== 0;
-    // }),
     switchMap(async (action) => {
       return client.request(GET_QUESTIONS_BY_PAGE, {
         page: action.payload,

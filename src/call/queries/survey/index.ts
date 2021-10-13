@@ -8,19 +8,9 @@ export const GET_MY_SURVEYS = gql`
   query getSurveys($authorId: ID!) {
     surveys(where: { author: $authorId }) {
       id
-      description
       title
       slug
       status
-      participations {
-        id
-      }
-      order
-      landing {
-        id
-        color_theme
-        subtitle
-      }
       createdAt
     }
   }

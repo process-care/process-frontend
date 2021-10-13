@@ -34,15 +34,6 @@ export const pageFragment = gql`
     name
     short_name
     is_locked
-    conditions {
-      id
-    }
-    questions {
-      id
-    }
-    survey {
-      id
-    }
   }
 `;
 
@@ -127,20 +118,20 @@ export const surveyFullFragment = gql`
       id
       name
     }
-    pages {
-      id
-      name
-      short_name
-      is_locked
-      survey {
-        id
-      }
-      questions {
-        id
-      }
-      conditions {
-        id
-      }
-    }
+    # pages {
+    #   id
+    #   name
+    #   short_name
+    #   is_locked
+    #   survey {
+    #     id
+    #   }
+    #   questions {
+    #     id
+    #   }
+    #   conditions {
+    #     id
+    #   }
+    # }
   }
 `;

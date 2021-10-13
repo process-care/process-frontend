@@ -39,7 +39,7 @@ export function shouldShow(conditions: EvaluationCondition[] | undefined): boole
   // console.log('here are the grouped conditions: ', groupEvals);
 
   // If there is at least one true value, the OR chain is valid
-  const finalEval = Array.from(groupEvals.values()).find(v => v === true);
+  const finalEval = Array.from(groupEvals.values()).some(v => v === true);
   return finalEval;
 }
 
@@ -49,14 +49,14 @@ export function shouldShow(conditions: EvaluationCondition[] | undefined): boole
  * @returns 
  */
 function evaluate(c: EvaluationCondition): boolean {
-  const { answer, target_value: value } = c;
+  const { answer, target_value: value, operator } = c;
 
-  // console.log('nuf: ', answer, value);
+  // console.log('nuf: ', c.operator, answer, value);
 
   if (!answer) return false;
   
-  switch(c.operator) {
-    case Operator.EQ: return c.answer === value;
+  switch(operator) {
+    case Operator.EQ: return answer === value;
     case Operator.NEQ: return answer !== value;
 
     case Operator.EQ_SUP: return Number(answer) >= Number(value);

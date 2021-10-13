@@ -66,7 +66,6 @@ const selectEvaluation = (state: RootState, pageId: string): EvaluationCondition
     if (!target) return acc;
 
     const answer = answerSelectors.selectById(state, target.id)
-    if (!answer) return acc;
 
     acc.push({
       id,

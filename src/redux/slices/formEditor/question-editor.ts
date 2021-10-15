@@ -11,7 +11,7 @@ import { actions as conditionActions } from "./condition-editor";
 
 // ----- ENTITY ADAPTER
 
-const questionAdapter = createEntityAdapter<IQuestion>({
+export const questionAdapter = createEntityAdapter<IQuestion>({
   selectId: (question) => question.id,
 });
 
@@ -34,7 +34,7 @@ export interface QuestionEditor {
 
 // ---- STATE
 
-const initialState: QuestionEditor = {
+export const initialQuestionState: QuestionEditor = {
   isCreating: false,
   isLoading: true,
   isSaving: false,
@@ -85,7 +85,7 @@ const SLICE_NAME = "question-editor";
 
 export const questionsSlice = createSlice({
   name: SLICE_NAME,
-  initialState: questionAdapter.getInitialState(initialState),
+  initialState: questionAdapter.getInitialState(initialQuestionState),
   reducers: {
     initialize: (state, _action: PayloadAction<string[]>) => {
       state.isLoading = true;
@@ -139,7 +139,7 @@ export const questionsSlice = createSlice({
     setSelectedQuestion: (state, action: PayloadAction<string>) => {
       state.selectedQuestion = action.payload;
     },
-    reset: () => questionAdapter.getInitialState(initialState),
+    reset: () => questionAdapter.getInitialState(initialQuestionState),
   },
   extraReducers: (builder) => {
     // Update Question on create condition

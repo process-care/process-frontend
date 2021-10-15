@@ -20,7 +20,7 @@ export interface selectedSurveyEditor {
 
 // ---- STATE
 
-const initialState: selectedSurveyEditor = {
+export const initialSurveyState: selectedSurveyEditor = {
   id: "",
   order: [],
   survey: {},
@@ -35,7 +35,7 @@ const SLICE_NAME = "selected-survey";
 
 export const selectedSurveySlice = createSlice({
   name: SLICE_NAME,
-  initialState: initialState,
+  initialState: initialSurveyState,
   reducers: {
     initialize: (state, _action: PayloadAction<string>) => {
       state.isLoading = true;

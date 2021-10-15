@@ -11,7 +11,7 @@ import ICondition from "types/form/condition";
 
 // ----- ENTITY ADAPTER
 
-const conditionAdapter = createEntityAdapter<ICondition>({
+export const conditionAdapter = createEntityAdapter<ICondition>({
   selectId: (condition) => condition.id,
 });
 
@@ -36,7 +36,7 @@ export interface QuestionEditor {
 
 // ---- STATE
 
-const initialState: QuestionEditor = {
+export const initialConditionState: QuestionEditor = {
   isValid: false,
   step: 1,
   isCreating: false,
@@ -98,7 +98,7 @@ const SLICE_NAME = "condition-editor";
 
 export const conditionSlice = createSlice({
   name: SLICE_NAME,
-  initialState: conditionAdapter.getInitialState(initialState),
+  initialState: conditionAdapter.getInitialState(initialConditionState),
   reducers: {
     initialize: (state, _action: PayloadAction<InitializePayload>) => {
       state.isLoading = true;
@@ -177,7 +177,7 @@ export const conditionSlice = createSlice({
     setValidity: (state, action: PayloadAction<boolean>) => {
       state.isValid = action.payload;
     },
-    reset: () => conditionAdapter.getInitialState(initialState),
+    reset: () => conditionAdapter.getInitialState(initialConditionState),
   },
 });
 

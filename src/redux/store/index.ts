@@ -23,6 +23,8 @@ import questions from "redux/slices/formEditor/question-editor";
 import conditions from "redux/slices/formEditor/condition-editor";
 import pages from "redux/slices/formEditor/page-editor";
 import surveys from "redux/slices/my-surveys";
+import globalSlice from "redux/slices/formEditor/formEditor";
+
 import selectedSurvey from "redux/slices/formEditor/selected-survey";
 
 import { pingEpic } from "redux/slices/participation/epic";
@@ -79,6 +81,7 @@ const combinedReducer = combineReducers({
   landingEditor,
   surveyEditor,
   formEditor,
+  globalSlice,
   surveys,
   router: connectRouter(history),
 });

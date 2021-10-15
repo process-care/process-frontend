@@ -2,6 +2,9 @@ import {
   createSlice,
   PayloadAction,
   createEntityAdapter,
+  createReducer,
+  CreateSliceOptions,
+  EntityState,
 } from "@reduxjs/toolkit";
 
 import { RootState } from "redux/store";
@@ -12,7 +15,7 @@ import { actions as questionActions } from "./question-editor";
 
 // ----- ENTITY ADAPTER
 
-const pageAdapter = createEntityAdapter<IPage>({
+export const pageAdapter = createEntityAdapter<IPage>({
   selectId: (page) => page.id,
 });
 
@@ -34,9 +37,11 @@ export interface PageEditor {
   lastDeleted: string;
 }
 
+type State = RootState["formEditor"];
+
 // ---- STATE
 
-const initialState: PageEditor = {
+export const initialPageState: PageEditor = {
   isCreating: false,
   isLoading: true,
   isSaving: false,
@@ -80,9 +85,9 @@ type CreatedPayload = {
 
 const SLICE_NAME = "page-editor";
 
-export const questionsSlice = createSlice({
+export const pageSlice = createSlice({
   name: SLICE_NAME,
-  initialState: pageAdapter.getInitialState(initialState),
+  initialState: pageAdapter.getInitialState(initialPageState),
   reducers: {
     initialize: (state, _action: PayloadAction<string>) => {
       state.isLoading = true;
@@ -135,7 +140,7 @@ export const questionsSlice = createSlice({
     setRedirectPage: (state, action: PayloadAction<string>) => {
       state.redirectToPage = action.payload;
     },
-    reset: () => pageAdapter.getInitialState(initialState),
+    reset: () => pageAdapter.getInitialState(initialPageState),
   },
   extraReducers: (builder) => {
     // Update Question on delete condition
@@ -168,32 +173,36 @@ export const questionsSlice = createSlice({
 
 // ---- SELECTORS
 
-export const error = (state: RootState): string | undefined =>
-  state.formEditor.pages.error;
-export const isLoading = (state: RootState): boolean =>
-  state.formEditor.pages.isLoading;
-export const hasChanges = (state: RootState): boolean => {
-  const updated = DateTime.fromISO(state.formEditor.questions.lastUpdated);
-  const saved = DateTime.fromISO(state.formEditor.questions.lastSaved);
+export const error = (state: State): string | undefined => state.pages.error;
+export const isLoading = (state: any): boolean =>
+  state.globalSlice.pages.isLoading;
+export const hasChanges = (state: any): boolean => {
+  const updated = DateTime.fromISO(state.globalSlice.questions.lastUpdated);
+  const saved = DateTime.fromISO(state.globalSlice.questions.lastSaved);
   return updated > saved;
 };
 
-export const pages = (state: RootState): IPage[] =>
-  pageAdapter.getSelectors().selectAll(state.formEditor.pages);
+export const pages = (state: any): IPage[] =>
+  pageAdapter.getSelectors().selectAll(state.globalSlice.pages);
 
-const getAllPages = (state: RootState): IPage[] => {
+const getAllPages = (state: any): IPage[] => {
   return pages(state).filter(
-    (page) => page?.survey?.id === state.formEditor.selectedSurvey.id
+    (page) => page?.survey?.id === state.globalSlice.selectedSurvey.id
   );
 };
 
-// export const getAllPages = (state: RootState): IPage[] =>
-//   pageAdapter.getSelectors().selectAll(state.formEditor.pages);
+const getSelectedPageId2 = (state: any): string =>
+  state.globalSlice.pages.selectedPage;
 
-const getSelectedPageId = (state: RootState): string =>
+const getSelectedPage2 = (state: any): IPage | undefined =>
+  pageAdapter
+    .getSelectors()
+    .selectById(state.globalSlice.pages, getSelectedPageId(state));
+
+const getSelectedPageId = (state: any): string =>
   state.formEditor.pages.selectedPage;
 
-const getSelectedPage = (state: RootState): IPage | undefined =>
+const getSelectedPage = (state: any): IPage | undefined =>
   pageAdapter
     .getSelectors()
     .selectById(state.formEditor.pages, getSelectedPageId(state));
@@ -207,7 +216,72 @@ export const selectors = {
   getAllPages,
   getSelectedPage,
   getSelectedPageId,
+  getSelectedPage2,
+  getSelectedPageId2,
 };
 
-export const actions = questionsSlice.actions;
-export default questionsSlice.reducer;
+export const selectorsPage = {
+  error,
+  isLoading,
+  hasChanges,
+  getAllPages,
+  getSelectedPage,
+  getSelectedPageId,
+};
+
+export const actions = pageSlice.actions;
+export default pageSlice.reducer;
+
+export const pageReducers: any = {
+  initialize: (state: State, action: PayloadAction<string>) => {
+    state.pages.isLoading = true;
+  },
+  initialized: (state: State, action: PayloadAction<any>) => {
+    state.pages.isLoading = false;
+    pageAdapter.setMany(state.pages, action.payload);
+    if (action.payload[0]) state.pages.selectedPage = action.payload[0].id;
+  },
+  create: (state: State, _action: PayloadAction<ID>) => {
+    state.pages.isCreating = true;
+  },
+  created: (state: State, action: PayloadAction<CreatedPayload>) => {
+    state.pages.isCreating = false;
+    state.pages.lastCreated = action.payload.lastCreated;
+    pageAdapter.addOne(state.pages, action.payload.page);
+    state.pages.selectedPage = action.payload.page.id;
+  },
+  update: (state: State, action: PayloadAction<UpdatePayload>) => {
+    state.pages.lastUpdated = new Date().toISOString();
+    pageAdapter.updateOne(state.pages, action.payload);
+  },
+  updated: (state: State, action: PayloadAction<UpdatedPayload>) => {
+    state.pages.lastUpdated = action.payload.lastUpdated;
+  },
+  delete: (state: State, action: PayloadAction<any>) => {
+    state.pages.isDeleting = true;
+    pageAdapter.removeOne(state.pages, action.payload);
+    const lastPageId = state.pages.ids.length - 1;
+    state.pages.selectedPage = state.pages.ids[lastPageId].toString();
+  },
+  deleted: (state: State, action: PayloadAction<DeletedPayload>) => {
+    state.pages.isDeleting = false;
+    state.pages.lastDeleted = action.payload.lastDeleted;
+  },
+  save: (state: State) => {
+    state.pages.isSaving = true;
+  },
+  saved: (state: State, action: PayloadAction<SavedPayload>) => {
+    state.pages.isSaving = false;
+    state.pages.lastSaved = action.payload.lastSaved;
+  },
+  failed: (state: State, action: PayloadAction<string>) => {
+    state.pages.isFailed = true;
+    state.pages.error = action.payload;
+  },
+  setSelectedPage: (state: State, action: PayloadAction<string>) => {
+    state.pages.selectedPage = action.payload;
+  },
+  setRedirectPage: (state: State, action: PayloadAction<string>) => {
+    state.pages.redirectToPage = action.payload;
+  },
+};

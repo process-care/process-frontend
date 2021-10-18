@@ -3,7 +3,7 @@ import { Textarea } from "components/Fields";
 import ICondition from "types/form/condition";
 import React from "react";
 import { useAppDispatch } from "redux/hooks";
-import { actions as actionsCondition } from "redux/slices/formEditor/condition-editor";
+import { actions } from "redux/slices/global";
 
 export const renderInput = (
   selectedCondition: ICondition
@@ -12,7 +12,7 @@ export const renderInput = (
 
   const handleUpdate = (changes: Record<string, any>) => {
     dispatch(
-      actionsCondition.update({
+      actions.updateCondition({
         id: selectedCondition.id,
         changes: {
           ...changes,
@@ -22,7 +22,7 @@ export const renderInput = (
   };
 
   const handleValidity = (bool: boolean) => {
-    dispatch(actionsCondition.setValidity(bool));
+    dispatch(actions.setValidityCondition(bool));
   };
 
   const target_question = selectedCondition.target;

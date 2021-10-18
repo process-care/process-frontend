@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { t } from "static/condition";
 import { Group } from "./Group";
 import ICondition from "types/form/condition";
-import { selectors, actions } from "redux/slices/formEditor/condition-editor";
+import { selectors, actions } from "redux/slices/global";
 
 interface Props {
   selectedCondition: ICondition;
@@ -12,18 +12,18 @@ interface Props {
 export const ConditionMenu: React.FC<Props> = ({ selectedCondition }) => {
   const dispatch = useAppDispatch();
 
-  const isValid = useAppSelector(selectors.getValidity);
+  const isValid = useAppSelector(selectors.conditions.getValidity);
   const isTypePage = selectedCondition.type === "page";
 
   const currentQuestionConditions = useAppSelector(
-    selectors.getSelectedQuestionsConditions
+    selectors.conditions.getSelectedQuestionsConditions
   );
   const currentPageConditions = (selectedCondition: ICondition) => {
     // The selected page can change to we can't use the selector page's conditions.
     const id = selectedCondition.referer_page?.id;
     if (!id) return [];
     return useAppSelector((state) =>
-      selectors.getConditionsByPageId(state, id)
+      selectors.conditions.getConditionsByPageId(state, id)
     );
   };
 
@@ -34,7 +34,7 @@ export const ConditionMenu: React.FC<Props> = ({ selectedCondition }) => {
 
   const onCancel = () => {
     if (!isValid) {
-      dispatch(actions.delete(selectedCondition.id));
+      dispatch(actions.deleteCondition(selectedCondition.id));
     } else {
       dispatch(actions.setSelectedCondition(""));
     }

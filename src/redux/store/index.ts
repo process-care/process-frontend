@@ -19,21 +19,18 @@ import participation from "redux/slices/participation";
 import surveyBuilder from "redux/slices/surveyBuilder";
 import landingEditor from "redux/slices/landing-editor";
 import surveyEditor from "redux/slices/survey-editor";
-import questions from "redux/slices/formEditor/question-editor";
-import conditions from "redux/slices/formEditor/condition-editor";
-import pages from "redux/slices/formEditor/page-editor";
 import surveys from "redux/slices/my-surveys";
-import selectedSurvey from "redux/slices/formEditor/selected-survey";
+import global from "redux/slices/global";
 
 import { pingEpic } from "redux/slices/participation/epic";
 import { landingEditorEpics } from "redux/epics/landing-editor";
 import { surveyEditorEpics } from "redux/epics/survey-editor";
 import { surveysEpics } from "redux/epics/my-surveys";
-import { surveyEpics } from "redux/epics/formEditor/survey";
-import { conditionsEditorEpics } from "redux/epics/formEditor/condition-editor";
+import { surveyEpics } from "redux/epics/global/survey";
+import { conditionsEditorEpics } from "redux/epics/global/condition-editor";
 
-import { pageEditorEpic } from "redux/epics/formEditor/page-editor";
-import { questionEditorEpic } from "redux/epics/formEditor/question-editor";
+import { pageEditorEpic } from "redux/epics/global/page-editor";
+import { questionEditorEpic } from "redux/epics/global/question-editor";
 
 import { history } from "./history";
 // ---- EPICS
@@ -63,14 +60,8 @@ const epicMiddleware = createEpicMiddleware<
 
 // ---- REDUCERS
 
-const formEditor = combineReducers({
-  selectedSurvey,
-  pages,
-  questions,
-  conditions,
-});
-
 const combinedReducer = combineReducers({
+  global,
   formBuilder,
   landingBuilder,
   surveyBuilder,
@@ -78,7 +69,6 @@ const combinedReducer = combineReducers({
   participation,
   landingEditor,
   surveyEditor,
-  formEditor,
   surveys,
   router: connectRouter(history),
 });

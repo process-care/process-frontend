@@ -1,7 +1,7 @@
 import { map, switchMap } from "rxjs";
 import { combineEpics, ofType } from "redux-observable";
 import { Epic, store } from "redux/store";
-import { actions } from "redux/slices/formEditor/condition-editor";
+import { actions } from "redux/slices/global";
 import { v4 as uuidv4 } from "uuid";
 import { client } from "call/actions";
 
@@ -9,49 +9,16 @@ import {
   ADD_CONDITION,
   DELETE_CONDITION,
   DELETE_GROUP_CONDITION,
-  GET_CONDITIONS_BY_PAGE,
-  GET_CONDITIONS_BY_QUESTION,
   UPDATE_CONDITION,
 } from "call/queries/formBuilder/condition";
-
-// ---- INITIALIZE CONDITION
-
-const initializeEpic: Epic = (action$) =>
-  action$.pipe(
-    ofType(actions.initialize.type),
-    switchMap(async (action) => {
-      const { questionsIds, pagesIds } = action.payload;
-      let res1;
-      let res2;
-      const result = [];
-      if (questionsIds.length > 0) {
-        res1 = await client.request(GET_CONDITIONS_BY_QUESTION, {
-          referer_question: questionsIds,
-        });
-        res1 && result.push(...res1.conditions);
-      }
-      if (pagesIds.length > 0) {
-        res2 = await client.request(GET_CONDITIONS_BY_PAGE, {
-          referer_page: pagesIds,
-        });
-        res2 && result.push(...res2.conditions);
-      }
-
-      return result;
-    }),
-    map((result) => {
-      console.log("INITIALIZE CONDITIONS", result);
-      return actions.initialized(result);
-    })
-  );
 
 // ----  CREATE CONDITION
 
 const createEpic: Epic = (action$) =>
   action$.pipe(
-    ofType(actions.create.type),
+    ofType(actions.createCondition.type),
     switchMap(async (action) => {
-      const redirectToPage = store.getState().formEditor.pages.selectedPage;
+      const redirectToPage = store.getState().global.pages.selectedPage;
       const { type, refererId, group } = action.payload;
       const createdAt = new Date().toISOString();
       const newGroup = `group-${uuidv4()}`;
@@ -77,7 +44,7 @@ const createEpic: Epic = (action$) =>
         redirectToPage: string;
       }) => {
         const data = newCondition.createCondition.condition;
-        return actions.created({
+        return actions.createdCondition({
           lastCreated: createdAt,
           condition: data,
           isValid: false,
@@ -92,7 +59,7 @@ const createEpic: Epic = (action$) =>
 
 const deleteEpic: Epic = (action$) =>
   action$.pipe(
-    ofType(actions.delete.type),
+    ofType(actions.deleteCondition.type),
     switchMap(async (action) => {
       const id: string = action.payload;
       const deletedAt = new Date().toISOString();
@@ -102,7 +69,7 @@ const deleteEpic: Epic = (action$) =>
       return deletedAt;
     }),
     map((deletedAt) => {
-      return actions.deleted({
+      return actions.deletedCondition({
         lastDeleted: deletedAt,
       });
     })
@@ -112,7 +79,7 @@ const deleteEpic: Epic = (action$) =>
 
 const deleteGroupEpic: Epic = (action$) =>
   action$.pipe(
-    ofType(actions.deleteGroup.type),
+    ofType(actions.deleteGroupCondition.type),
     switchMap(async (action) => {
       const groupId: string = action.payload.groupId;
       const deletedAt = new Date().toISOString();
@@ -122,7 +89,7 @@ const deleteGroupEpic: Epic = (action$) =>
       return deletedAt;
     }),
     map((deletedAt) => {
-      return actions.deletedGroup({
+      return actions.deletedGroupCondition({
         lastDeleted: deletedAt,
       });
     })
@@ -132,14 +99,14 @@ const deleteGroupEpic: Epic = (action$) =>
 
 const saveEpic: Epic = (action$, state$) =>
   action$.pipe(
-    ofType(actions.save.type),
+    ofType(actions.saveCondition.type),
     switchMap(async () => {
       const savedAt: string = new Date().toISOString();
       const selectedConditionId =
-        state$.value.formEditor.conditions.selectedCondition;
+        state$.value.global.conditions.selectedCondition;
 
       const conditions = Object.entries(
-        state$.value.formEditor.conditions.entities
+        state$.value.global.conditions.entities
       );
       const changes = conditions.filter((c) => c[0] === selectedConditionId)[0];
       // We need to send target : id, referer_question:id, but Icondition have full Question object adn we use it in frontend
@@ -161,12 +128,11 @@ const saveEpic: Epic = (action$, state$) =>
       return { savedAt, condition };
     }),
     map(({ savedAt, condition }) =>
-      actions.saved({ lastSaved: savedAt, condition })
+      actions.savedCondition({ lastSaved: savedAt, condition })
     )
   );
 
 export const conditionsEditorEpics = combineEpics(
-  initializeEpic,
   createEpic,
   saveEpic,
   deleteEpic,

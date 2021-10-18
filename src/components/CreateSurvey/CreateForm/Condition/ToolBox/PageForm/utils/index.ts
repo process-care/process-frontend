@@ -1,20 +1,17 @@
-import { RootState } from "redux/store";
-
 // If inputs exist on current page Get the index of the last question in the current page and push the new question after it.
 // If no input on this page Get the index of the last question in previous page and push the new question after it.
 // If we are on the first page, just push it.
 
+import { RootState } from "redux/store";
+
 export const getNewOrder: any = (
-  formEditor: RootState["formEditor"],
+  global: RootState["global"],
   new_question_id: string
 ) => {
-  const pagesIds = formEditor.pages.ids;
-  const order =
-    formEditor.selectedSurvey.order === null
-      ? []
-      : formEditor.selectedSurvey.order;
-  const selectedPageId = formEditor.pages.selectedPage;
-  const q = Object.entries(formEditor.questions.entities);
+  const pagesIds = global.pages.ids;
+  const order = global.survey.order === null ? [] : global.survey.order;
+  const selectedPageId = global.pages.selectedPage;
+  const q = Object.entries(global.questions.entities);
   const questions = q.filter((c) => c[1]?.page?.id === selectedPageId);
 
   const previousPageIdx = pagesIds.findIndex((p) => p === selectedPageId) - 1;

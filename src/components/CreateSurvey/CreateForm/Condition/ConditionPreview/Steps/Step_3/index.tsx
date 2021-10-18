@@ -9,10 +9,7 @@ import { ReactComponent as Submit } from "./../../assets/submit.svg";
 import { ReactComponent as Check } from "./../../assets/check.svg";
 import { renderInput } from "./utils";
 import { checkIfMultiple } from "utils/formBuilder/input";
-import {
-  actions as actionsCondition,
-  selectors,
-} from "redux/slices/formEditor/condition-editor";
+import { actions, selectors } from "redux/slices/global";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 interface Props {
@@ -22,9 +19,9 @@ interface Props {
 
 export const Step_3: React.FC<Props> = ({ selectedCondition, updateStep }) => {
   const dispatch = useAppDispatch();
-  const isValid = useAppSelector(selectors.getValidity);
+  const isValid = useAppSelector(selectors.conditions.getValidity);
   const handleValidity = (bool: boolean) => {
-    dispatch(actionsCondition.setValidity(bool));
+    dispatch(actions.setValidityCondition(bool));
   };
 
   return (

@@ -11,7 +11,7 @@ import { ReactComponent as Delete } from "./../assets/delete.svg";
 import { RemovingConfirmation } from "../../../RemovingConfirmation";
 import { t } from "static/condition";
 import { Operator } from "./Operator";
-import { actions, selectors } from "redux/slices/formEditor/condition-editor";
+import { actions, selectors } from "redux/slices/global";
 
 interface Props {
   currentConditions: ICondition[];
@@ -28,8 +28,9 @@ export const Group: React.FC<Props> = ({
   groups,
   selectedCondition,
 }) => {
+  console.log(currentConditions);
   const dispatch = useAppDispatch();
-  const isValid = useAppSelector(selectors.getValidity);
+  const isValid = useAppSelector(selectors.conditions.getValidity);
 
   const currentCondition = currentConditions?.find(
     (c: ICondition) => c.id === selectedCondition.id
@@ -50,13 +51,13 @@ export const Group: React.FC<Props> = ({
     : currentCondition?.referer_question?.id;
 
   const handleDelete = async (id: string) => {
-    dispatch(actions.delete(id));
+    dispatch(actions.deleteCondition(id));
   };
 
   const handleDeleteGroup = () => {
     if (!currentCondition) return;
     dispatch(
-      actions.deleteGroup({
+      actions.deleteGroupCondition({
         groupId: currentCondition?.group,
         conditionsId: currentConditions.map((c) => c.id),
       })
@@ -71,7 +72,7 @@ export const Group: React.FC<Props> = ({
   const createCondition = (newGroup?: boolean) => {
     if (!currentCondition) return;
     dispatch(
-      actions.create({
+      actions.createCondition({
         refererId,
         type: currentCondition.type,
         group: newGroup ? uuidv4() : currentCondition.group,

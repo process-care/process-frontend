@@ -18,8 +18,8 @@ import { ReactComponent as Edit } from "./assets/edit.svg";
 import { ReactComponent as Condition } from "./assets/condition.svg";
 
 import { RemovingConfirmation } from "./../../RemovingConfirmation";
-import { actions } from "redux/slices/application";
-import { actions as actionsQuestion } from "redux/slices/formEditor/question-editor";
+import { actions as appActions } from "redux/slices/application";
+import { actions, selectors } from "redux/slices/global";
 
 import { t } from "static/input";
 import { SvgHover } from "components/SvgHover";
@@ -33,18 +33,23 @@ interface CardProps {
 const Card: React.FC<CardProps> = ({ input, index }) => {
   const dispatch = useAppDispatch();
   const { is_removing } = useAppSelector((state) => state.formBuilder);
+
+  const getCondition = (input: IQuestion) =>
+    useAppSelector((state) =>
+      selectors.conditions.getConditionsByQuestionId(state, input.id)
+    );
   const isRemoving = is_removing === input.id;
 
   const color = useColorModeValue("gray.800", "gray.900");
 
   const handleEdit = () => {
-    dispatch(actions.setIsEditing(true));
-    dispatch(actionsQuestion.setSelectedQuestion(input.id));
-    dispatch(actions.toogleDrawer());
+    dispatch(appActions.setIsEditing(true));
+    dispatch(actions.setSelectedQuestion(input.id));
+    dispatch(appActions.toogleDrawer());
   };
 
   const handleDelete = async () => {
-    dispatch(actionsQuestion.delete(input.id));
+    dispatch(actions.deleteQuestion(input.id));
   };
 
   return (
@@ -106,8 +111,7 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
               <Edit />
             </SvgHover>
 
-            {input?.conditions !== undefined &&
-              input?.conditions?.length > 0 && <Condition />}
+            {getCondition(input).length > 0 && <Condition />}
           </Box>
         </Flex>
       )}

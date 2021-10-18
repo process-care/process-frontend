@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "redux/store";
-import { actions as questionAction } from "../formEditor/question-editor";
-import { actions as conditionAction } from "../formEditor/condition-editor";
+import { actions as globalActions } from "./../global";
 
 // ---- TYPES
 
@@ -48,22 +47,22 @@ export const applicationSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(questionAction.created, (state) => {
+    builder.addCase(globalActions.createdQuestion, (state) => {
       state.drawerIsOpen = true;
     });
-    builder.addCase(questionAction.saved, (state) => {
+    builder.addCase(globalActions.savedQuestion, (state) => {
       state.drawerIsOpen = false;
     });
-    builder.addCase(questionAction.delete, (state) => {
+    builder.addCase(globalActions.deleteQuestion, (state) => {
       state.drawerIsOpen = false;
     });
-    builder.addCase(conditionAction.saved, (state, action) => {
+    builder.addCase(globalActions.savedCondition, (state, action) => {
       const { type } = action.payload.condition;
       if (type === "question") {
         state.drawerIsOpen = true;
       }
     });
-    builder.addCase(conditionAction.deleted, (state) => {
+    builder.addCase(globalActions.deletedCondition, (state) => {
       state.drawerIsOpen = true;
     });
   },

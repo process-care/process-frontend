@@ -16,17 +16,10 @@ import { setIsRemoving } from "redux/slices/formBuilder";
 import { Switch } from "components/Fields";
 import { t } from "static/condition";
 import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
+import { selectors, actions } from "redux/slices/global";
 import {
-  selectors as selectorsQuestion,
-  actions as actionsQuestion,
-} from "redux/slices/formEditor/question-editor";
-import {
-  selectors as selectorsCondition,
-  actions as actionsCondition,
-} from "redux/slices/formEditor/condition-editor";
-import {
-  selectors as selectorsApplication,
-  actions as actionsApplication,
+  selectors as appSelectors,
+  actions as appActions,
 } from "redux/slices/application";
 
 interface Props {
@@ -36,14 +29,14 @@ interface Props {
 const InputForm: React.FC<Props> = ({ order }) => {
   const dispatch = useAppDispatch();
   const currentConditions = useAppSelector(
-    selectorsCondition.getSelectedQuestionsConditions
+    selectors.conditions.getSelectedQuestionsConditions
   );
-  const isEditing = useAppSelector(selectorsApplication.isEditing);
+  const isEditing = useAppSelector(appSelectors.isEditing);
   const selectedQuestion = useAppSelector(
-    selectorsQuestion.getSelectedQuestion
+    selectors.questions.getSelectedQuestion
   );
   const selectedQuestionId = useAppSelector(
-    selectorsQuestion.getSelectedQuestionId
+    selectors.questions.getSelectedQuestionId
   );
   const [prevState, setPrevState] =
     useState<Record<string, any>>(selectedQuestion);
@@ -52,46 +45,45 @@ const InputForm: React.FC<Props> = ({ order }) => {
 
   const handleCancel = async () => {
     if (!isEditing) {
-      dispatch(actionsQuestion.delete(selectedQuestionId));
+      dispatch(actions.deleteQuestion(selectedQuestionId));
     } else {
-      dispatch(actionsApplication.toogleDrawer());
+      dispatch(appActions.toogleDrawer());
       dispatch(
-        actionsQuestion.update({
+        actions.updateQuestion({
           id: selectedQuestionId,
           changes: prevState,
         })
       );
     }
-    dispatch(actionsApplication.setIsEditing(false));
+    dispatch(appActions.setIsEditing(false));
   };
 
   // Save state to get diff
   useEffect(() => {
     setPrevState(prevState);
-  }, []);
+  }, [selectedQuestionId]);
 
   const handleSubmit = useCallback((data, { setSubmitting, validateForm }) => {
     validateForm(data);
     setSubmitting(true);
-    const newChanges = getDiff(data, prevState);
-    dispatch(actionsQuestion.save({ changes: newChanges }));
+    dispatch(actions.saveQuestion({ changes: data }));
     setSubmitting(false);
   }, []);
 
   const createCondition = () => {
     dispatch(
-      actionsCondition.create({
+      actions.createCondition({
         type: "question",
         refererId: selectedQuestionId,
       })
     );
-    dispatch(actionsApplication.toogleDrawer());
+    dispatch(appActions.toogleDrawer());
   };
 
   const editCondition = (id: string) => {
-    dispatch(actionsCondition.setSelectedCondition(id));
-    dispatch(actionsCondition.setValidity(true));
-    dispatch(actionsApplication.toogleDrawer());
+    dispatch(actions.setSelectedCondition(id));
+    dispatch(actions.setValidityCondition(true));
+    dispatch(appActions.toogleDrawer());
   };
   if (!selectedQuestion) {
     return <p>no selectedQuestion</p>;
@@ -109,7 +101,7 @@ const InputForm: React.FC<Props> = ({ order }) => {
           const newChanges = getDiff(values, selectedQuestion);
           if (values) {
             dispatch(
-              actionsQuestion.update({
+              actions.updateQuestion({
                 id: selectedQuestionId,
                 changes: {
                   ...newChanges,
@@ -195,7 +187,7 @@ const InputForm: React.FC<Props> = ({ order }) => {
                 onCancel={handleCancel}
                 onDelete={() => {
                   dispatch(setIsRemoving(selectedQuestionId));
-                  dispatch(actionsApplication.toogleDrawer());
+                  dispatch(appActions.toogleDrawer());
                 }}
               />
             </Flex>

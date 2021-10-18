@@ -2,7 +2,9 @@ import React from "react";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 import { setIsRemoving } from "redux/slices/formBuilder";
-import { actions as actionsApplication } from "redux/slices/application";
+import { actions as appActions } from "redux/slices/application";
+import { actions, selectors } from "redux/slices/global";
+
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { t } from "static/survey";
 import ToolBox from "../InputsButton";
@@ -12,28 +14,19 @@ import IQuestion from "types/form/question";
 import { RemovingConfirmation } from "../../../RemovingConfirmation";
 import { SvgHover } from "components/SvgHover";
 import { ReactComponent as Trash } from "assets/trash.svg";
-import { actions, selectors } from "redux/slices/formEditor/page-editor";
-import {
-  selectors as questionsSelectors,
-  actions as actionsQuestion,
-} from "redux/slices/formEditor/question-editor";
-import {
-  selectors as selectorsCondition,
-  actions as actionsCondition,
-} from "redux/slices/formEditor/condition-editor";
 
 export const PageForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const { is_removing } = useAppSelector((state) => state.formBuilder);
 
-  const selectedPageId = useAppSelector(selectors.getSelectedPageId);
-  const selectedPage = useAppSelector(selectors.getSelectedPage);
-  const pages = useAppSelector(selectors.getAllPages);
+  const selectedPageId = useAppSelector(selectors.pages.getSelectedPageId);
+  const selectedPage = useAppSelector(selectors.pages.getSelectedPage);
+  const pages = useAppSelector(selectors.pages.getAllPages);
   const questionsOnSelectedPage = useAppSelector(
-    questionsSelectors.getSelectedPageQuestions
+    selectors.questions.getSelectedPageQuestions
   ).map((question) => question.id);
   const conditionsOnSelectedPage = useAppSelector(
-    selectorsCondition.getSelectedPageConditions
+    selectors.conditions.getSelectedPageConditions
   );
 
   const isNotFirstPage =
@@ -42,14 +35,14 @@ export const PageForm: React.FC = () => {
   const isRemoving = is_removing === selectedPageId;
 
   const handleSelect = (type: IQuestion["type"]) => {
-    dispatch(actionsQuestion.setSelectedQuestion(""));
-    dispatch(actionsQuestion.create({ type }));
+    dispatch(actions.setSelectedQuestion(""));
+    dispatch(actions.createQuestion({ type }));
   };
 
   const onChange = (event: React.FormEvent<HTMLFormElement>) => {
     const target = event.target as HTMLFormElement;
     dispatch(
-      actions.update({
+      actions.updatePage({
         id: selectedPageId,
         changes: {
           [target.id]:
@@ -60,19 +53,19 @@ export const PageForm: React.FC = () => {
   };
 
   const handleDelete = async () => {
-    dispatch(actions.delete(selectedPageId));
+    dispatch(actions.deletePage(selectedPageId));
     // Need to delete question with dispatch here to get the chain working well (update order etc ...)
     // TODO: Maybe i can create an epic to dispatch all actions at once
     questionsOnSelectedPage.forEach((questionId) => {
-      dispatch(actionsQuestion.delete(questionId));
+      dispatch(actions.deleteQuestion(questionId));
     });
     dispatch(setIsRemoving(""));
   };
 
   const createCondition = () => {
-    dispatch(actionsQuestion.setSelectedQuestion(""));
+    dispatch(actions.setSelectedQuestion(""));
     dispatch(
-      actionsCondition.create({
+      actions.createCondition({
         type: "page",
         refererId: selectedPageId,
       })
@@ -80,8 +73,8 @@ export const PageForm: React.FC = () => {
   };
 
   const editCondition = (id: string) => {
-    dispatch(actionsCondition.setSelectedCondition(id));
-    dispatch(actionsCondition.setValidity(true));
+    dispatch(actions.setSelectedCondition(id));
+    dispatch(actions.setValidityCondition(true));
   };
 
   if (isRemoving && Boolean(selectedPageId)) {
@@ -104,7 +97,7 @@ export const PageForm: React.FC = () => {
         onSubmit={(data, { setSubmitting, validateForm }) => {
           validateForm(data);
           setSubmitting(true);
-          dispatch(actionsApplication.toogleDrawer());
+          dispatch(appActions.toogleDrawer());
         }}
       >
         {() => {

@@ -33,7 +33,7 @@ export default interface IQuestion {
   page?: Partial<IPage>;
   wysiwyg?: string | undefined;
   freeclassification_responses_count?: string;
-  conditions?: ICondition[] | [];
+  conditions?: ICondition[];
 }
 
 export interface IQuestionsRes {

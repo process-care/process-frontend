@@ -1,10 +1,12 @@
 import { useAppSelector } from "redux/hooks";
-import { selectors } from "redux/slices/formEditor/condition-editor";
+import { selectors } from "redux/slices/global";
 
 export const checkStepValidation = (): boolean => {
-  const isValid = useAppSelector(selectors.getValidity);
-  const step = useAppSelector(selectors.getStep);
-  const selectedCondition = useAppSelector(selectors.getSelectedCondition);
+  const isValid = useAppSelector(selectors.conditions.getValidity);
+  const step = useAppSelector(selectors.conditions.getStep);
+  const selectedCondition = useAppSelector(
+    selectors.conditions.getSelectedCondition
+  );
 
   const target = selectedCondition?.target;
   const operator = selectedCondition?.operator;

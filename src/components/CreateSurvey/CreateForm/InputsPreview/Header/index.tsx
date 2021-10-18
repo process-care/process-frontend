@@ -3,21 +3,20 @@ import React from "react";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { toggleCollapseView } from "redux/slices/formBuilder";
 import { t } from "static/input";
-import {
-  selectors as selectorsQuestion,
-  actions as actionsQuestion,
-} from "redux/slices/formEditor/question-editor";
+import { selectors, actions } from "redux/slices/global";
 export const Header: React.FC = () => {
   const dispatch = useAppDispatch();
   const isCollapse = useAppSelector(
     (state) => state.formBuilder.is_collapse_view
   );
 
-  const questions = useAppSelector(selectorsQuestion.getSelectedPageQuestions);
+  const questions = useAppSelector(
+    selectors.questions.getSelectedPageQuestions
+  );
   const idsToDelete = questions.map((q) => q.id);
   const deleteAll = () => {
     idsToDelete.forEach((id) => {
-      dispatch(actionsQuestion.delete(id));
+      dispatch(actions.deleteQuestion(id));
     });
   };
 

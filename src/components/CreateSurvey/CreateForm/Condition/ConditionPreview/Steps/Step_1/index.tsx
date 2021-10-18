@@ -8,12 +8,7 @@ import ICondition from "types/form/condition";
 import { authorizedQuestionTypes } from "./utils";
 import { t } from "static/input";
 import { InputBox } from "components/CreateSurvey/CreateForm/InputsPreview/InputBox";
-import { selectors as selectorsQuestion } from "redux/slices/formEditor/question-editor";
-import { selectors as selectorsSurvey } from "redux/slices/formEditor/selected-survey";
-import {
-  selectors as selectorsPage,
-  actions as actionsPage,
-} from "redux/slices/formEditor/page-editor";
+import { selectors, actions } from "redux/slices/global";
 
 interface Props {
   selectedCondition: ICondition;
@@ -23,17 +18,19 @@ interface Props {
 export const Step_1: React.FC<Props> = ({ selectedCondition, updateStep }) => {
   const dispatch = useAppDispatch();
   const selectedQuestion = useAppSelector(
-    selectorsQuestion.getSelectedQuestion
+    selectors.questions.getSelectedQuestion
   );
-  const questions = useAppSelector(selectorsQuestion.getSelectedPageQuestions);
-  const pages = useAppSelector(selectorsPage.getAllPages);
-  const order = useAppSelector(selectorsSurvey.getOrder);
+  const questions = useAppSelector(
+    selectors.questions.getSelectedPageQuestions
+  );
+  const pages = useAppSelector(selectors.pages.getAllPages);
+  const order = useAppSelector(selectors.survey.getOrder);
   const isTypePage = selectedCondition.type === "page";
 
   React.useEffect(() => {
     // Select first page if we make a condition on page.
     if (isTypePage && pages.length > 0) {
-      dispatch(actionsPage.setSelectedPage(pages[0].id));
+      dispatch(actions.setSelectedPage(pages[0].id));
     }
   }, [isTypePage]);
 

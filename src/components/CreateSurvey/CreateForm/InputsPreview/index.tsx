@@ -10,9 +10,7 @@ import { Header } from "./Header";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
-import { selectors } from "redux/slices/formEditor/page-editor";
-import { selectors as selectorsQuestion } from "redux/slices/formEditor/question-editor";
-import { actions as actionsSurvey } from "redux/slices/formEditor/selected-survey";
+import { selectors, actions } from "redux/slices/global";
 import { NoData } from "components/SurveyGrid/noData";
 
 export interface Item {
@@ -34,13 +32,15 @@ interface Props {
 }
 
 const InputsPreview: React.FC<Props> = ({ order }) => {
-  const selectedPage = useAppSelector(selectors.getSelectedPage);
-
-  const questions = useAppSelector(selectorsQuestion.getSelectedPageQuestions);
-  const isLoading = useAppSelector(selectorsQuestion.isLoading);
-  const error = useAppSelector(selectorsQuestion.error);
-
   const dispatch = useAppDispatch();
+
+  const selectedPage = useAppSelector(selectors.pages.getSelectedPage);
+
+  const questions = useAppSelector(
+    selectors.questions.getSelectedPageQuestions
+  );
+  const isLoading = useAppSelector(selectors.questions.isLoading);
+  const error = useAppSelector(selectors.questions.error);
 
   const renderCard = (input: IQuestion, index: number) => {
     return <Card key={input.id} input={input} index={index} />;
@@ -65,7 +65,7 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
       new_input_order.splice(source.index, 1);
       new_input_order.splice(destination.index, 0, draggableId);
 
-      dispatch(actionsSurvey.updateOrder(new_input_order));
+      dispatch(actions.updateOrder(new_input_order));
     }
   };
 
@@ -109,9 +109,11 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
       </Box>
     );
   };
+
   if (isLoading || order === undefined) {
     return <Loader />;
   }
+
   if (error) {
     return <Error error={error} />;
   }

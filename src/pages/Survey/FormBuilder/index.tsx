@@ -16,79 +16,44 @@ import { RightPart } from "components/Layout/RightPart";
 import { Error } from "components/Error";
 import { Banner } from "components/Banner";
 import { useDispatch } from "react-redux";
-import {
-  actions as actionsPage,
-  selectors as selectorsPage,
-} from "redux/slices/formEditor/page-editor";
-import { selectors as selectorsMySurveys } from "redux/slices/my-surveys";
-import { selectors as conditionSelectors } from "redux/slices/formEditor/condition-editor";
-import {
-  selectors as selectorSurvey,
-  actions as actionsSurvey,
-} from "redux/slices/formEditor/selected-survey";
-import {
-  actions as actionsQuestion,
-  selectors as selectorsQuestion,
-} from "redux/slices/formEditor/question-editor";
-import { actions as actionsCondition } from "redux/slices/formEditor/condition-editor";
 
-// import { Loader } from "components/Spinner";
+import { actions, selectors } from "redux/slices/global";
+
+import { Loader } from "components/Spinner";
 
 export const CreateForm: React.FC<IRoute> = () => {
   const { slug } = useParams<{ slug: string }>();
   const dispatch = useDispatch();
+
   const isOpen = useAppSelector((state) => state.application.drawerIsOpen);
-  const selectedSurvey = useAppSelector(selectorSurvey.getSelectedSurvey);
-  const selectedSurveyId = useAppSelector(selectorSurvey.getSelectedSurveyId);
-  const pages = useAppSelector(selectorsPage.getAllPages);
-  const questions = useAppSelector(selectorsQuestion.getSelectedPageQuestions);
-  const isLoadingQuestion = useAppSelector(selectorsQuestion.isLoading);
-  const isLoadingPage = useAppSelector(selectorsPage.isLoading);
+  const selectedSurvey = useAppSelector(selectors.survey.getSelectedSurvey);
+  const selectedSurveyId = useAppSelector(selectors.survey.getSelectedSurveyId);
+  const isLoading = useAppSelector(selectors.survey.isLoading);
+  const order = useAppSelector(selectors.survey.getOrder);
+  const error = useAppSelector(selectors.survey.error);
 
-  const order = useAppSelector(selectorSurvey.getOrder);
-  const questionsIds = questions.map((q) => q.id);
-  const pagesIds = pages.map((p) => p.id);
-
-  const error = useAppSelector(selectorsMySurveys.error);
   const selectedCondition = useAppSelector(
-    conditionSelectors.getSelectedCondition
+    selectors.conditions.getSelectedCondition
   );
-  useEffect(() => {
-    dispatch(actionsSurvey.initialize(slug));
-    dispatch(actionsPage.initialize(slug));
-  }, [dispatch]);
 
   useEffect(() => {
-    if (!isLoadingPage) {
-      dispatch(actionsQuestion.initialize(pagesIds));
-    }
-  }, [isLoadingPage]);
-
-  useEffect(() => {
-    if (!isLoadingQuestion) {
-      dispatch(
-        actionsCondition.initialize({
-          questionsIds: questionsIds,
-          pagesIds: pagesIds,
-        })
-      );
-    }
-  }, [isLoadingQuestion]);
+    dispatch(actions.initializeSurvey(slug));
+  }, [slug]);
 
   if (error) {
     return <Error error={error} />;
   }
 
-  // if (isLoadingQuestion) {
-  //   return <Loader />;
-  // }
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <Box h="100vh" overflow="hidden">
       <Drawer isOpen={isOpen} size="md" content={<InputForm order={order} />} />
       <Box d="flex" justifyContent="space-around" w="100%" overflow="hidden">
         <Box w="100%">
-          <Menu surveyId={selectedSurvey.id} />
+          <Menu surveyId={selectedSurveyId} />
           <Banner />
           <Box
             d="flex"

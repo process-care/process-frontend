@@ -9,10 +9,7 @@ import { StepCounter } from "./Steps/StepCounter";
 import { checkStepValidation } from "./Steps/utils";
 import ICondition from "types/form/condition";
 import { Loader } from "components/Spinner";
-import {
-  actions as actionsCondition,
-  selectors as selectorsCondition,
-} from "redux/slices/formEditor/condition-editor";
+import { actions, selectors } from "redux/slices/global";
 
 interface Props {
   selectedCondition: ICondition;
@@ -20,11 +17,11 @@ interface Props {
 
 export const ConditionPreview: React.FC<Props> = ({ selectedCondition }) => {
   const dispatch = useAppDispatch();
-  const step = useAppSelector(selectorsCondition.getStep);
+  const step = useAppSelector(selectors.conditions.getStep);
 
   const handleUpdate = (changes: Record<string, any>) => {
     dispatch(
-      actionsCondition.update({
+      actions.updateCondition({
         id: selectedCondition.id,
         changes: {
           ...changes,
@@ -70,11 +67,11 @@ export const ConditionPreview: React.FC<Props> = ({ selectedCondition }) => {
   }
 
   const handleNavigation = (to: number) => {
-    dispatch(actionsCondition.setStep(to));
+    dispatch(actions.setStepCondition(to));
   };
 
   const saveCondition = () => {
-    dispatch(actionsCondition.save());
+    dispatch(actions.saveCondition());
   };
 
   return (

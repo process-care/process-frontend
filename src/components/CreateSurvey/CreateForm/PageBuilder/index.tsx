@@ -11,8 +11,8 @@ import { ReactComponent as Add } from "./assets/add.svg";
 import { isInactive } from "./utils";
 import { SvgHover } from "components/SvgHover";
 import ISurvey from "types/survey";
-import { actions, selectors } from "redux/slices/formEditor/page-editor";
-import { selectors as selectorsPage } from "redux/slices/formEditor/condition-editor";
+
+import { actions, selectors } from "redux/slices/global";
 
 interface Props {
   survey: ISurvey | Record<string, any>;
@@ -21,17 +21,20 @@ interface Props {
 const PageBuilder: React.FC<Props> = ({ survey }) => {
   const dispatch = useAppDispatch();
 
-  const pages = useAppSelector(selectors.getAllPages);
-  const conditions = useAppSelector(selectorsPage.conditions);
-  const selectedCondition = useAppSelector(selectorsPage.getSelectedCondition);
-  const selectedPage = useAppSelector(selectors.getSelectedPage);
+  const pages = useAppSelector(selectors.pages.getAllPages);
+  const selectedCondition = useAppSelector(
+    selectors.conditions.getSelectedCondition
+  );
+  const selectedPage = useAppSelector(selectors.pages.getSelectedPage);
 
   const handlePage = () => {
-    dispatch(actions.create({ id: survey.id }));
+    dispatch(actions.createPage({ id: survey.id }));
   };
   const selectPage = (id: string) => {
     dispatch(actions.setSelectedPage(id));
   };
+
+  const conditions = useAppSelector(selectors.conditions.getAllConditions);
 
   return (
     <Flex
@@ -56,8 +59,8 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
             >
               <Flex alignItems="center" position="relative">
                 <Box position="absolute" right="16px" bottom="35px">
-                  {conditions.filter((c) => c.referer_page?.id === page.id)
-                    .length > 0 && <Condition />}
+                  {conditions.filter((c) => c?.referer_page?.id === page.id)
+                    ?.length > 0 && <Condition />}
                 </Box>
                 <Box
                   onClick={() => selectPage(page.id)}

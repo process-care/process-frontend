@@ -1,38 +1,23 @@
 import { map, switchMap, scan, debounceTime } from "rxjs";
 import { combineEpics, ofType } from "redux-observable";
 import { Epic } from "redux/store";
-import { actions, selectors } from "redux/slices/formEditor/page-editor";
+import { actions, selectors } from "redux/slices/global";
 
 import { client } from "call/actions";
 import {
   ADD_PAGE,
   DELETE_PAGE,
-  GET_PAGE_BY_SURVEY,
   UPDATE_PAGE,
 } from "call/queries/formBuilder/page";
-
-// ---- INITIALIZE PAGES
-
-const initializeEpic: Epic = (action$) =>
-  action$.pipe(
-    ofType(actions.initialize.type),
-    switchMap((action) => {
-      return client.request(GET_PAGE_BY_SURVEY, { slug: action.payload });
-    }),
-    map(({ pages }) => {
-      console.log("INITIALIZE PAGES", pages);
-      return actions.initialized(pages);
-    })
-  );
 
 // ----  CREATE PAGE
 
 const createEpic: Epic = (action$, state$) =>
   action$.pipe(
-    ofType(actions.create.type),
+    ofType(actions.createPage.type),
     switchMap(async (action) => {
       const { id } = action.payload;
-      const pagesLength = selectors.getAllPages(state$.value).length;
+      const pagesLength = selectors.pages.getAllPages(state$.value).length;
       const pageData = {
         name: `Page ${pagesLength + 1}`,
         is_locked: false,
@@ -56,7 +41,7 @@ const createEpic: Epic = (action$, state$) =>
         newPage: Record<string, any>;
         createdAt: string;
       }) => {
-        return actions.created({
+        return actions.createdPage({
           page: newPage.createPage.page,
           lastCreated: createdAt,
         });
@@ -68,7 +53,7 @@ const createEpic: Epic = (action$, state$) =>
 
 const updateEpic: Epic = (action$) =>
   action$.pipe(
-    ofType(actions.update.type),
+    ofType(actions.updatePage.type),
     map((action) => action.payload),
     scan((acc, payload) => Object.assign({}, acc, payload), {}),
     debounceTime(3000),
@@ -80,14 +65,14 @@ const updateEpic: Epic = (action$) =>
       });
       return updatedAt;
     }),
-    map((updatedAt) => actions.updated({ lastUpdated: updatedAt }))
+    map((updatedAt) => actions.updatedPage({ lastUpdated: updatedAt }))
   );
 
 // ----  DELETE PAGE
 
 const deleteEpic: Epic = (action$) =>
   action$.pipe(
-    ofType(actions.delete.type),
+    ofType(actions.deletePage.type),
     switchMap(async (action) => {
       const pageId: string = action.payload;
       const deletedAt = new Date().toISOString();
@@ -99,15 +84,10 @@ const deleteEpic: Epic = (action$) =>
       return { deletedAt };
     }),
     map(({ deletedAt }) => {
-      return actions.deleted({
+      return actions.deletedPage({
         lastDeleted: deletedAt,
       });
     })
   );
 
-export const pageEditorEpic = combineEpics(
-  initializeEpic,
-  createEpic,
-  updateEpic,
-  deleteEpic
-);
+export const pageEditorEpic = combineEpics(createEpic, updateEpic, deleteEpic);

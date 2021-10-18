@@ -1,20 +1,21 @@
 import { map, switchMap } from "rxjs";
 import { combineEpics, ofType } from "redux-observable";
 import { Epic } from "redux/store";
-import { actions } from "redux/slices/formEditor/selected-survey";
+import { actions } from "redux/slices/global";
 import { client } from "call/actions";
 import { GET_SURVEY_BY_SLUG, UPDATE_ORDER } from "call/queries/survey";
 
 // Watches over "initialize" currentsurvey
 const initializeEpic: Epic = (action$) =>
   action$.pipe(
-    ofType(actions.initialize.type),
+    ofType(actions.initializeSurvey.type),
     switchMap((action) => {
       return client.request(GET_SURVEY_BY_SLUG, { slug: action.payload });
     }),
     map((result) => {
+      console.log("INITIALIZE SURVEY");
       const payload = result.surveys[0];
-      return actions.initialized(payload);
+      return actions.initializedSurvey(payload);
     })
   );
 
@@ -24,7 +25,7 @@ const updateOrderEpic: Epic = (action$, state$) =>
     ofType(actions.updateOrder.type),
     map((action) => action.payload),
     switchMap((payload) => {
-      const selectedSurveyId = state$.value.formEditor.selectedSurvey.survey.id;
+      const selectedSurveyId = state$.value.global.survey.selectedSurvey;
       return client.request(UPDATE_ORDER, {
         id: selectedSurveyId,
         new_order: payload,

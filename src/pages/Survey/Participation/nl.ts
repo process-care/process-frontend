@@ -8,6 +8,10 @@ export const NL = {
   button: {
     previous: 'Précédent',
     next: 'Suivant',
-    finish: 'Terminer'
+    finish: 'Terminer',
+    consent: {
+      accept: 'Je donne mon consentement',
+      refuse: 'Je refuse',
+    }
   }
 };

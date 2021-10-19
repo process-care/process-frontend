@@ -1,16 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 
-import { renderInput } from "components/CreateSurvey/CreateForm/InputsPreview/Card/utils";
-import { selectors as pagesSelectors } from "redux/slices/participation/page-visited";
+import { actions, selectors as pageSelectors } from "redux/slices/participation/page";
 
 import { NL } from "../nl";
-import { shouldShow } from "./condition-evaluations";
-import { useAnswerSaver, useAnswersGetter } from "./answer-hooks";
+import { useInitialPageContent } from "./answer-hooks";
 import { formSchema } from "./validation";
-import { useAppSelector } from "redux/hooks";
-import { selectors } from "redux/slices/participation/questions-seen";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
+import { Questionator } from "./Questionator";
 
 // ---- TYPES
 
@@ -28,7 +26,7 @@ interface Props {
 
 // ---- COMPONENT
 
-export const FormPage: React.FC<Props> = ({
+export const Page: React.FC<Props> = ({
   pageId,
   order,
   isFirstPage,
@@ -38,18 +36,11 @@ export const FormPage: React.FC<Props> = ({
   currentColor,
   onFinish,
 }) => {
-  // Get page
-  const page = useAppSelector(state => pagesSelectors.selectById(state, pageId));
+  const dispatch = useAppDispatch();
 
-  // Get answers
-  const questionsId = page?.questions?.map((q) => q.id) ?? [];
-  const answers = useAnswersGetter(questionsId);
-
-  const orderInPage = order.reduce((acc, qId) => {
-    const existsInPage = questionsId.some(qInPage => qInPage === qId);
-    if (existsInPage) acc.push(qId);
-    return acc;
-  }, [] as string[]);
+  // Get page & content
+  const page = useAppSelector(state => pageSelectors.selectById(state, pageId));
+  const { orderInPage, initialAnswers } = useInitialPageContent(page, order);
 
   // If page is empty
   if (!page) return <Box mt="60">{NL.msg.nodata}</Box>;
@@ -63,21 +54,21 @@ export const FormPage: React.FC<Props> = ({
 
       <Formik
         validateOnBlur
+        validateOnMount
+        enableReinitialize
         validationSchema={formSchema(page.questions)}
-        initialValues={answers.values}
+        initialValues={initialAnswers}
         onSubmit={(data, { setSubmitting, validateForm }) => {
           validateForm(data);
           setSubmitting(true);
         }}
       >
-        {({ isValid, dirty }) => {
-          // TODO: use callback ?
-          const canSubmit = () => {
-            if (!page.questions) return true;
-            //  isValid === true au mount du form alors que des champs required ne sont pas remplis
-            const hasRequiredFields = page.questions.some(q => q.required);
-            return (hasRequiredFields) ? dirty && isValid : isValid;
-          };
+        {({ isValid }) => {
+          // Update the "submitable" status in redux (only if different)
+          useEffect(() => {
+            if (isValid === page.submitable) return;
+            dispatch(actions.submitable({ id: pageId, submitable: isValid }));
+          }, [isValid, pageId, page.submitable]);
 
           return (
             <Form>
@@ -95,7 +86,6 @@ export const FormPage: React.FC<Props> = ({
               <Flex justifyContent="flex-end" mt="10" mb="10" pr="10%">
                 {!isFirstPage && (
                   <Button
-                    disabled={!canSubmit()}
                     mr="4"
                     variant="roundedTransparent"
                     onClick={previousPage}
@@ -105,7 +95,7 @@ export const FormPage: React.FC<Props> = ({
                 )}
                 {!isLastPage && (
                   <Button
-                    disabled={!canSubmit()}
+                    disabled={!isValid}
                     variant="roundedBlue"
                     backgroundColor={currentColor}
                     onClick={nextPage}
@@ -115,7 +105,7 @@ export const FormPage: React.FC<Props> = ({
                 )}
                 {isLastPage && (
                   <Button
-                    disabled={!canSubmit()}
+                    disabled={!isValid}
                     variant="roundedBlue"
                     backgroundColor={currentColor}
                     onClick={onFinish}
@@ -128,37 +118,6 @@ export const FormPage: React.FC<Props> = ({
           );
         }}
       </Formik>
-    </Box>
-  );
-};
-
-// ---- SUB COMPONENTS
-
-type QuestionatorProps = {
-  id: string;
-};
-
-const Questionator: React.FC<QuestionatorProps> = ({
-  id,
-}) => {
-  // Get question's related content & answers
-  const question = useAppSelector(state => selectors.selectById(state, id));
-  const evaluations = useAppSelector(state => selectors.selectEvaluation(state, id));
-
-  // Evaluate if the question should be shown
-  const show = shouldShow(evaluations);
-
-  // Bind the save mechanism
-  useAnswerSaver(id);
-
-  // Intermediate displays
-  if (!question) return <div>Loading...</div>;
-  if (!show) return null;
-
-  // Render
-  return (
-    <Box mb="10" backgroundColor="white" w="100%" p="40px">
-      {renderInput(question)}
     </Box>
   );
 };

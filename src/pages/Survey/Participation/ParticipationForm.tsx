@@ -3,13 +3,13 @@ import { Box, Flex, Text, Circle } from "@chakra-ui/react";
 
 import IPage from "types/form/page";
 import { useGetSurvey } from "call/actions/survey";
-import { FormPage } from "./Form/FormPage";
+import { Page } from "./Form/Page";
 import { useFinishParticipation } from "call/actions/participation";
 import { useHistory } from "react-router-dom";
 import { finishParticipation } from "./localstorage-handlers";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { actions } from "redux/slices/participation/status";
-import { selectors } from "redux/slices/participation/page-visited";
+import { ReduxPage, selectors } from "redux/slices/participation/page";
 
 // ---- TYPES
 
@@ -62,7 +62,7 @@ export const ParticipationForm: React.FC<Props> = ({
     <Box>
       <Flex direction="row" h="100vh">
         <Box w="20%">
-          <PageMenu
+          <ParticipationMenu
             author={data.survey.author?.email}
             pages={pages}
             selectIndex={selectIndex}
@@ -89,7 +89,7 @@ export const ParticipationForm: React.FC<Props> = ({
           >
             {data.survey.title}
           </Box>
-          <FormPage
+          <Page
             isFirstPage={isFirstPage}
             isLastPage={isLastPage}
             currentColor={currentColor}
@@ -111,7 +111,7 @@ export const ParticipationForm: React.FC<Props> = ({
 // MENU
 
 interface MenuProps {
-  pages: IPage[];
+  pages: ReduxPage[];
   selectIndex: (index: number) => void;
   color: string;
   author: string | undefined;
@@ -119,7 +119,7 @@ interface MenuProps {
   selectedPage: IPage | undefined;
 }
 
-const PageMenu: React.FC<MenuProps> = ({
+const ParticipationMenu: React.FC<MenuProps> = ({
   pages,
   selectIndex,
   color,
@@ -148,16 +148,22 @@ const PageMenu: React.FC<MenuProps> = ({
         </Text>
       </Flex>
       <Box p="20px">
-        {pages.map((p, idx) => (
-          <PageEntry
-            selectedPage={selectedPage}
-            key={p.id}
-            page={p}
-            index={idx}
-            selectIndex={selectIndex}
-            color={color}
-          />
-        ))}
+        {pages.map((p, idx) => {
+          const prevIdx = (idx === 0) ? 0 : idx - 1;
+          const isNavigable = pages[prevIdx].submitable ?? false;
+
+          return (
+            <PageEntry
+              key={p.id}
+              index={idx}
+              page={p}
+              color={color}
+              isNavigable={isNavigable}
+              selectedPageId={selectedPage?.id}
+              selectIndex={selectIndex}
+            />
+          );
+        })}
       </Box>
     </Box>
   );
@@ -166,27 +172,32 @@ const PageMenu: React.FC<MenuProps> = ({
 // ENTRY
 
 interface EntryProps {
-  page: IPage;
   index: number;
-  selectIndex: (index: number) => void;
+  page: ReduxPage;
   color: string;
-  selectedPage: IPage | undefined;
+  isNavigable: boolean;
+  selectedPageId: string | undefined;
+  selectIndex: (index: number) => void;
 }
 
 const PageEntry: React.FC<EntryProps> = ({
-  page,
   index,
-  selectIndex,
+  page,
   color,
-  selectedPage,
+  isNavigable,
+  selectedPageId,
+  selectIndex,
 }) => {
+  const isSelected = selectedPageId === page.id;
+
   const goTo = useCallback(() => {
+    if (!isNavigable) return;
     selectIndex(index);
-  }, [index]);
+  }, [index, isNavigable]);
 
   return (
     <Box
-      _hover={{ cursor: "pointer" }}
+      _hover={{ cursor: (isNavigable || isSelected) ? "pointer" : "not-allowed" }}
       textAlign="left"
       fontSize="14px"
       onClick={goTo}
@@ -194,7 +205,7 @@ const PageEntry: React.FC<EntryProps> = ({
       color={color}
       d="flex"
       alignItems="center"
-      textDecoration={selectedPage?.id === page.id ? "underline" : "none"}
+      textDecoration={isSelected ? "underline" : "none"}
     >
       <Circle backgroundColor={color} w="10px" h="10px" mr="10px" />
       {page.short_name}
@@ -228,6 +239,7 @@ function useFinishHandler(participationId: string, slug: string) {
 // TODO: update this to use the id of the page rather than an index to navigate
 // Because the array of pages can changes according to hidden / shown page and we must
 // not be able to select a hidden page or modify the selected page when the index number varies
+// EDIT: Since it's recomputed when pages change, it's actually okay
 function useNavigationHandlers(pages: IPage[] | undefined) {
   const [selectedIdx, setSelectedIdx] = useState(0);
   const selectedPage = pages?.[selectedIdx];

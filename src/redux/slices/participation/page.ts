@@ -1,4 +1,4 @@
-import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
+import { createEntityAdapter, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import IPage from "types/form/page";
 
 import { RootState } from "redux/store";
@@ -7,17 +7,23 @@ import { selectors as answerSelectors } from 'redux/slices/participation/answers
 import { EvaluationCondition } from "call/actions/formBuider/question";
 import { shouldShow } from "pages/Survey/Participation/Form/condition-evaluations";
 
-// ---- TYPES
-// Nothing so far.
-
 // ---- INITIAL STATE
-// None for now...
+
+// TODO: make the submitable false by default ?
+export type ReduxPage = IPage & { submitable?: boolean };
+
+// ---- ACTIONS
+
+export type SubmitablePayload = {
+  id: string,
+  submitable: boolean,
+}
 
 // ---- SLICE
 
 const SLICE_NAME = 'pages';
 
-const adapter = createEntityAdapter<IPage>({
+const adapter = createEntityAdapter<ReduxPage>({
   selectId: (p) => p.id,
 });
 
@@ -25,9 +31,10 @@ export const slice = createSlice({
   name: SLICE_NAME,
   initialState: adapter.getInitialState(),
   reducers: {
-    // TODO: Remove unused demo placeholder
-    update: (_state, _action) => {
-      console.log('Update, man');
+    submitable: (state, action: PayloadAction<SubmitablePayload>) => {
+      const { id, submitable } = action.payload;
+      const changes = { id, changes: { submitable }};
+      adapter.updateOne(state, changes);
     }
   },
   extraReducers: builder => {
@@ -41,12 +48,12 @@ export const slice = createSlice({
 
 const entitySelectors = adapter.getSelectors();
 
-const selectById = (state: RootState, pageId: string | undefined): IPage | undefined => {
+const selectById = (state: RootState, pageId: string | undefined): ReduxPage | undefined => {
   if (!pageId) return;
   return entitySelectors.selectById(state.participation.pages, pageId);
 };
 
-const selectAll = (state: RootState): IPage[] => entitySelectors.selectAll(state.participation.pages);
+const selectAll = (state: RootState): ReduxPage[] => entitySelectors.selectAll(state.participation.pages);
 
 // TODO: Memoize this (or maybe compute it inside reducer when adding/updating answers, with extra reducers ?)
 // Note to self: Hmm... No, it's a computed property, so it should be computed upon selecting it, with memoization.
@@ -83,7 +90,7 @@ const selectEvaluation = (state: RootState, pageId: string): EvaluationCondition
 
 // TODO: Memoize this (or maybe compute it inside reducer when adding/updating answers, with extra reducers ?)
 // Same as above, it's computed, so it should be memoized and deduced WHEN needed (and not recomputed at every answer update)
-const selectShown = (state: RootState): IPage[] => {
+const selectShown = (state: RootState): ReduxPage[] => {
   const allPages = entitySelectors.selectAll(state.participation.pages)
 
   const filtered = allPages.reduce((acc, p) => {

@@ -14,12 +14,11 @@ const initializeEpic: Epic = (action$) => action$.pipe(
   filter(action => action.payload.surveyId && action.payload.participationId),
   switchMap(async (action) => {
     const  { participationId, surveyId } = action.payload;
-    console.log('survey ID: ', surveyId);
     
     const pages = client.request(GET_SURVEY, { id: surveyId }).then(res => res.survey?.pages);
     const questions = client.request(GET_QUESTIONS_BY_SURVEY, { surveyId }).then(res => res.questionsBySurvey);
     const answers = client.request(GET_ANSWERS_BY_PARTICIPATION, { participationId }).then(res => res.answers);
-
+    
     return Promise.all([pages, questions, answers]);
   }),
   map(results => {

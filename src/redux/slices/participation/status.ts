@@ -43,7 +43,6 @@ export const slice = createSlice({
   initialState,
   reducers: {
     initialize: (state, action: PayloadAction<InitializePayload>) => {
-      console.log('Let the fun begins: initialize everything !');
       const { participationId, surveyId } = action.payload;
       state.participationId = participationId;
       state.surveyId = surveyId;
@@ -52,7 +51,6 @@ export const slice = createSlice({
       if (surveyId && participationId) state.isLoading = true;
     },
     initialized: (state, _action: PayloadAction<InitializedPayload>) => {
-      console.log('DONE !');
       state.isLoading = false;
     }
   },

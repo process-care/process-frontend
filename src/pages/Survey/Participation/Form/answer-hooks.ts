@@ -1,34 +1,56 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useField } from "formik";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { actions, selectors } from "redux/slices/participation/answers";
+import { ReduxPage } from "redux/slices/participation/page";
+
+// ---- TYPES
+
+type InitialAnswers = Record<string, unknown>;
+
+type InitialContent = {
+  initialAnswers: InitialAnswers,
+  orderInPage: string[]
+};
+
+// ---- HOOKS
 
 /**
- *
- * @param participationId
- * @param questionsId
- * @returns
+ * 
+ * @param page 
+ * @param order 
+ * @returns 
  */
-export function useAnswersGetter(
-  questionsId: string[]
-): {
-  values: Record<string, unknown>;
-  references: Map<any, any>;
-} {
+export function useInitialPageContent(page: ReduxPage | undefined, order: string[]): InitialContent {
+  // Filter questions & order in this page
+  const { questionsId, orderInPage } = useMemo(() => {
+    const questionsId = page?.questions?.map((q) => q.id) ?? [];
+
+    // Narrow the order to this page only
+    const orderInPage = order.reduce((acc, qId) => {
+      const existsInPage = questionsId.some(qInPage => qInPage === qId);
+      if (existsInPage) acc.push(qId);
+      return acc;
+    }, [] as string[]);
+
+    return { questionsId, orderInPage };
+  }, [page?.id]);
+
+  // Select related data from redux
+  // It cannot be memoized, since it's a hook
   const data = useAppSelector(state => selectors.selectByIds(state, questionsId));
 
-  const ref = new Map();
+  // Recompute the initial answers ONLY when the Page ID changes !
+  const initialAnswers = useMemo(() => {
+    const answers = data.reduce((acc, a) => {
+      acc[a.questionId] = a.value;
+      return acc;
+    }, {} as Record<string, unknown>);
 
-  const answers = data.reduce((acc, a) => {
-    acc[a.questionId] = a.value;
-    ref.set(a.questionId, a.id);
-    return acc;
-  }, {} as Record<string, unknown>);
-
-  return {
-    values: answers ?? {},
-    references: ref,
-  };
+    return answers;
+  }, [page?.id]);
+  
+  return { initialAnswers, orderInPage };
 }
 
 /**

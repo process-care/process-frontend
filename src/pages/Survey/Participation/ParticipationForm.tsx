@@ -1,15 +1,16 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Box, Flex, Text, Circle } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 
+import { ParticipationMenu } from "./ParticipationMenu";
+import { Page } from "./Form/Page";
 import IPage from "types/form/page";
 import { useGetSurvey } from "call/actions/survey";
-import { Page } from "./Form/Page";
 import { useFinishParticipation } from "call/actions/participation";
 import { useHistory } from "react-router-dom";
 import { finishParticipation } from "./localstorage-handlers";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { actions } from "redux/slices/participation/status";
-import { ReduxPage, selectors } from "redux/slices/participation/page";
+import { selectors } from "redux/slices/participation/page";
 
 // ---- TYPES
 
@@ -106,112 +107,7 @@ export const ParticipationForm: React.FC<Props> = ({
   );
 };
 
-// ---- SUB COMPONENTS
 
-// MENU
-
-interface MenuProps {
-  pages: ReduxPage[];
-  selectIndex: (index: number) => void;
-  color: string;
-  author: string | undefined;
-  logo: string | undefined;
-  selectedPage: IPage | undefined;
-}
-
-const ParticipationMenu: React.FC<MenuProps> = ({
-  pages,
-  selectIndex,
-  color,
-  author,
-  logo,
-  selectedPage,
-}) => {
-  return (
-    <Box pos="sticky" top="0">
-      <Flex
-        textAlign="right"
-        py="19.5px"
-        px="20px"
-        borderBottom="1px solid"
-        borderColor={color}
-        alignItems="center"
-        justifyContent="space-between"
-      >
-        {!!logo && logo.length !== 0 ? (
-          <img src={logo} alt="Logo" style={{ maxHeight: "30px" }} />
-        ) : (
-          <Box minH="30px" />
-        )}
-        <Text textDecoration="underline" variant="xs">
-          <a href={`mailto: ${author}`}>{author}</a>
-        </Text>
-      </Flex>
-      <Box p="20px">
-        {pages.map((p, idx) => {
-          const prevIdx = (idx === 0) ? 0 : idx - 1;
-          const isNavigable = pages[prevIdx].submitable ?? false;
-
-          return (
-            <PageEntry
-              key={p.id}
-              index={idx}
-              page={p}
-              color={color}
-              isNavigable={isNavigable}
-              selectedPageId={selectedPage?.id}
-              selectIndex={selectIndex}
-            />
-          );
-        })}
-      </Box>
-    </Box>
-  );
-};
-
-// ENTRY
-
-interface EntryProps {
-  index: number;
-  page: ReduxPage;
-  color: string;
-  isNavigable: boolean;
-  selectedPageId: string | undefined;
-  selectIndex: (index: number) => void;
-}
-
-const PageEntry: React.FC<EntryProps> = ({
-  index,
-  page,
-  color,
-  isNavigable,
-  selectedPageId,
-  selectIndex,
-}) => {
-  const isSelected = selectedPageId === page.id;
-
-  const goTo = useCallback(() => {
-    if (!isNavigable) return;
-    selectIndex(index);
-  }, [index, isNavigable]);
-
-  return (
-    <Box
-      _hover={{ cursor: (isNavigable || isSelected) ? "pointer" : "not-allowed" }}
-      textAlign="left"
-      fontSize="14px"
-      onClick={goTo}
-      mb="4"
-      color={color}
-      d="flex"
-      alignItems="center"
-      textDecoration={isSelected ? "underline" : "none"}
-    >
-      <Circle backgroundColor={color} w="10px" h="10px" mr="10px" />
-      {page.short_name}
-    </Box>
-  );
-};
 
 // ---- HOOKS
 
@@ -236,10 +132,6 @@ function useFinishHandler(participationId: string, slug: string) {
   };
 }
 
-// TODO: update this to use the id of the page rather than an index to navigate
-// Because the array of pages can changes according to hidden / shown page and we must
-// not be able to select a hidden page or modify the selected page when the index number varies
-// EDIT: Since it's recomputed when pages change, it's actually okay
 function useNavigationHandlers(pages: IPage[] | undefined) {
   const [selectedIdx, setSelectedIdx] = useState(0);
   const selectedPage = pages?.[selectedIdx];

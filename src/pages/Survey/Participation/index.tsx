@@ -8,6 +8,7 @@ import {
   findExistingParticipation,
   storeParticipation,
 } from "./localstorage-handlers";
+import { NL } from "./nl";
 
 // ---- COMPONENT
 
@@ -25,14 +26,14 @@ export const Participation: React.FC<unknown> = () => {
     return (
       <Center h="100vh">
         <Flex flexDir="column">
-          <Text variant="title">👌 Merci d'avoir rempli cette enquête</Text>
+          <Text variant="title">{NL.msg.thxParticipation}</Text>
 
           <Button
             mt="40px"
             variant="roundedBlue"
             onClick={() => history.push("/")}
           >
-            Retour à l'accueil
+            {NL.button.backToWelcome}
           </Button>
         </Flex>
       </Center>
@@ -46,7 +47,7 @@ export const Participation: React.FC<unknown> = () => {
 
   // Redirect if the there is an existing participation
   if (participation && step !== "participate") {
-    history.push(`/survey/${survey.id}/participate`);
+    history.push(`/survey/${survey.slug}/participate`);
   }
 
   // CONSENT
@@ -61,7 +62,12 @@ export const Participation: React.FC<unknown> = () => {
   }
 
   // PARTICIPATE
-  if (step === "participate" && participation) {
+  if (step === "participate") {
+    if (!participation) {
+      history.push(`/survey/${survey.slug}/consent`);
+      return <Box mt="60">{NL.msg.missingConsent}</Box>;
+    } 
+    
     return (
       <ParticipationForm
         surveyId={survey.id}
@@ -78,9 +84,6 @@ export const Participation: React.FC<unknown> = () => {
 function useConsentHandlers(slug: string) {
   const history = useHistory();
 
-  // TODO: Load this from local storage ?
-  // if present: go to participate right away
-  // else: set up for consent
   const existingParticipation = findExistingParticipation(slug);
   const [participation, setParticipation] = useState(existingParticipation);
 

@@ -14,14 +14,14 @@ export const TextareaFields: React.FC = () => {
           style={{ width: "45%" }}
           placeholder="ex: 5"
           label="Nb de charactères min"
-          name="min_length"
+          name="min"
           isCollapsed={false}
         />
         <NumberInput
           placeholder="ex: 5"
           style={{ width: "45%" }}
           label="Nb de charactères max"
-          name="max_length"
+          name="max"
           isCollapsed={false}
         />
       </Flex>

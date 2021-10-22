@@ -3,20 +3,29 @@ import { questionFragment } from "call/fragments";
 
 // ---- QUERIES
 
-export const GET_QUESTIONS_BY_PAGE = gql`
-  ${questionFragment}
-  query getQuestions($page_id: ID!) {
-    questions(where: { page: $page_id }, limit: 10) {
-      ...questionFragment
-    }
-  }
-`;
+// export const GET_QUESTIONS_BY_PAGE = gql`
+//   ${questionFragment}
+//   query getQuestions($page_id: ID!) {
+//     questions(where: { page: $page_id }, limit: 10) {
+//       ...questionFragment
+//     }
+//   }
+// `;
 
 export const GET_QUESTIONS_BY_SURVEY = gql`
   ${questionFragment}
 
   query questionsBySurvey($surveyId: ID!) {
     questionsBySurvey(surveyId: $surveyId) {
+      ...questionFragment
+    }
+  }
+`;
+
+export const GET_QUESTIONS_BY_PAGE = gql`
+  ${questionFragment}
+  query getQuestions($page: [ID]) {
+    questions(where: { page: $page }) {
       ...questionFragment
     }
   }
@@ -33,7 +42,10 @@ export const GET_QUESTION = gql`
 
 export const GET_QUESTION_EVALUATION = gql`
   query getQuestionEvaluation($questionId: ID!, $participationId: ID!) {
-    evaluation: questionEvaluation(questionId: $questionId, participationId: $participationId) {
+    evaluation: questionEvaluation(
+      questionId: $questionId
+      participationId: $participationId
+    ) {
       id
       conditions {
         id
@@ -49,8 +61,8 @@ export const GET_QUESTION_EVALUATION = gql`
 // ---- MUTATIONS
 
 export const ADD_QUESTION = gql`
-  mutation addQuestion($new_question: QuestionInput) {
-    createQuestion(input: { data: $new_question }) {
+  mutation addQuestion($values: QuestionInput) {
+    createQuestion(input: { data: $values }) {
       question {
         id
         type

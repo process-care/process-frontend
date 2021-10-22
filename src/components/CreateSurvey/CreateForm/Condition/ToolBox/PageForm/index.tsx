@@ -1,14 +1,10 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 
-// import { fields } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/logic/initialValues";
-import {
-  selectCondition,
-  selectInput,
-  selectPage,
-  setIsRemoving,
-} from "redux/slices/formBuilder";
-import { setAutoSave, toogleDrawer } from "redux/slices/application";
+import { setIsRemoving } from "redux/slices/formBuilder";
+import { actions as appActions } from "redux/slices/application";
+import { actions, selectors } from "redux/slices/global";
+
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { t } from "static/survey";
 import ToolBox from "../InputsButton";
@@ -16,107 +12,77 @@ import { Formik, Form } from "formik";
 import { Switch, Textarea } from "components/Fields";
 import IQuestion from "types/form/question";
 import { RemovingConfirmation } from "../../../RemovingConfirmation";
-import { v4 as uuidv4 } from "uuid";
 import { SvgHover } from "components/SvgHover";
 import { ReactComponent as Trash } from "assets/trash.svg";
-import { useDeletePage, useUpdatePage } from "call/actions/formBuider/page";
-import ISurvey from "types/survey";
-import {
-  useAddQuestion,
-  useUpdateQuestion,
-} from "call/actions/formBuider/question";
-import {
-  useAddCondition,
-  useGetConditions,
-} from "call/actions/formBuider/condition";
-import { useUpdateOrder } from "call/actions/survey";
-import { getNewOrder } from "./utils";
-import { debounce } from "lodash";
 
-interface Props {
-  survey: ISurvey;
-}
-
-export const PageForm: React.FC<Props> = ({ survey }) => {
+export const PageForm: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { selected_page, is_removing } = useAppSelector(
-    (state) => state.formBuilder
-  );
-  const { mutate: deletePage } = useDeletePage();
-  const { mutate: updatePage } = useUpdatePage();
-  const { mutateAsync: addQuestion } = useAddQuestion();
-  const { mutateAsync: updateQuestion } = useUpdateQuestion();
-  const { mutateAsync: addCondition } = useAddCondition();
-  const { mutateAsync: updateOrder } = useUpdateOrder();
-  const { data: conditions } = useGetConditions({
-    id: selected_page?.id,
-    type: "page",
-  });
+  const { is_removing } = useAppSelector((state) => state.formBuilder);
 
-  const { pages } = survey;
+  const selectedPageId = useAppSelector(selectors.pages.getSelectedPageId);
+  const selectedPage = useAppSelector(selectors.pages.getSelectedPage);
+  const pages = useAppSelector(selectors.pages.getAllPages);
+  const questionsOnSelectedPage = useAppSelector(
+    selectors.questions.getSelectedPageQuestions
+  ).map((question) => question.id);
+  const conditionsOnSelectedPage = useAppSelector(
+    selectors.conditions.getSelectedPageConditions
+  );
 
   const isNotFirstPage =
-    pages.findIndex((page) => page.id === selected_page.id) > 0;
+    pages.findIndex((page) => page.id === selectedPageId) > 0;
 
-  const isRemoving = is_removing === selected_page.id;
+  const isRemoving = is_removing === selectedPageId;
 
-  const handleSelect = (
-    type: IQuestion["type"],
-    internal_title: string | undefined
-  ) => {
-    addQuestion({ type, internal_title, page: selected_page.id }).then(
-      (data: any) => {
-        const new_question: IQuestion = data.createQuestion.question;
-        updateOrder({
-          id: survey.id,
-          new_order: getNewOrder(survey, selected_page, new_question.id),
-        });
-        updateQuestion({
-          id: new_question.id,
-          data: {
-            internal_title: `${new_question.type}-${new_question.id}`,
-          },
-        }).then((data: any) => {
-          dispatch(selectInput(data.updateQuestion.question));
-          dispatch(toogleDrawer());
-        });
-      }
-    );
+  const handleSelect = (type: IQuestion["type"]) => {
+    dispatch(actions.setSelectedQuestion(""));
+    dispatch(actions.createQuestion({ type }));
   };
-
-  const autoSave = () => {
-    dispatch(setAutoSave());
-    setTimeout(() => {
-      dispatch(setAutoSave());
-    }, 2000);
-  };
-  const autoSaveDebounce = debounce(autoSave, 500);
 
   const onChange = (event: React.FormEvent<HTMLFormElement>) => {
     const target = event.target as HTMLFormElement;
-    if (target !== null) {
-      updatePage({
-        id: selected_page.id,
-        data: {
+    dispatch(
+      actions.updatePage({
+        id: selectedPageId,
+        changes: {
           [target.id]:
             target.checked !== undefined ? target.checked : target.value,
         },
-      });
-    }
+      })
+    );
   };
 
   const handleDelete = async () => {
-    deletePage(selected_page.id);
-    dispatch(selectPage(pages[0]));
+    dispatch(actions.deletePage(selectedPageId));
+    // Need to delete question with dispatch here to get the chain working well (update order etc ...)
+    // TODO: Maybe i can create an epic to dispatch all actions at once
+    questionsOnSelectedPage.forEach((questionId) => {
+      dispatch(actions.deleteQuestion(questionId));
+    });
     dispatch(setIsRemoving(""));
   };
 
-  if (isRemoving) {
+  const createCondition = () => {
+    dispatch(actions.setSelectedQuestion(""));
+    dispatch(
+      actions.createCondition({
+        type: "page",
+        refererId: selectedPageId,
+      })
+    );
+  };
+
+  const editCondition = (id: string) => {
+    dispatch(actions.setSelectedCondition(id));
+    dispatch(actions.setValidityCondition(true));
+  };
+
+  if (isRemoving && Boolean(selectedPageId)) {
     return (
       <RemovingConfirmation
         height="100%"
-        content={`${t.remove_page} ${selected_page.name} ?`}
-        confirm={() => handleDelete()}
+        content={`${t.remove_page} ${selectedPage?.name} ?`}
+        confirm={handleDelete}
         close={() => dispatch(setIsRemoving(""))}
       />
     );
@@ -126,18 +92,17 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
     <Box p={4}>
       <Formik
         validateOnBlur={false}
-        initialValues={selected_page}
+        initialValues={selectedPage ? selectedPage : {}}
         enableReinitialize
         onSubmit={(data, { setSubmitting, validateForm }) => {
           validateForm(data);
           setSubmitting(true);
-          dispatch(toogleDrawer());
+          dispatch(appActions.toogleDrawer());
         }}
       >
         {() => {
           return (
             <Form
-              onBlur={autoSaveDebounce}
               onChange={(event) => onChange(event)}
               style={{ width: "100%" }}
             >
@@ -145,7 +110,7 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
                 {isNotFirstPage ? (
                   <Box
                     onClick={() => {
-                      dispatch(setIsRemoving(selected_page.id));
+                      dispatch(setIsRemoving(selectedPageId));
                     }}
                   >
                     <SvgHover>
@@ -186,7 +151,7 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
                   placeholder="Page 1"
                   helpText="40 signes maximum"
                 />
-                <ToolBox onSelect={(type, name) => handleSelect(type, name)} />
+                <ToolBox onSelect={(type) => handleSelect(type)} />
               </Box>
 
               {isNotFirstPage && (
@@ -196,23 +161,11 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
                   justifyContent="space-between"
                   mt={5}
                 >
-                  {conditions?.conditions?.length === 0 ? (
+                  {conditionsOnSelectedPage.length === 0 ? (
                     <Button
                       variant="link"
                       color="brand.blue"
-                      onClick={() => {
-                        addCondition({
-                          type: "page",
-                          referer_page: selected_page.id,
-                          step: 1,
-                          group: uuidv4(),
-                          is_valid: false,
-                        }).then((data: any) =>
-                          dispatch(
-                            selectCondition(data.createCondition.condition)
-                          )
-                        );
-                      }}
+                      onClick={() => createCondition()}
                     >
                       {t.add_condition_page}
                     </Button>
@@ -221,13 +174,7 @@ export const PageForm: React.FC<Props> = ({ survey }) => {
                       variant="link"
                       color="brand.blue"
                       onClick={() =>
-                        dispatch(
-                          selectCondition(
-                            conditions?.conditions !== undefined
-                              ? conditions?.conditions[0]
-                              : {}
-                          )
-                        )
+                        editCondition(conditionsOnSelectedPage?.[0].id)
                       }
                     >
                       {t.edit_condition}

@@ -30,7 +30,6 @@ export const forgotPassword: any = async (email: string) => {
     email,
     url: `${API_URL_ROOT}/admin/plugins/users-permissions/auth/reset-password`,
   });
-  console.log("Your user received an email", res);
   return res;
 };
 
@@ -47,7 +46,6 @@ export const resetPassword: any = async (
   if (res.status === 200) {
     return res;
   } else {
-    console.log(res.data.message);
     return res.data?.message;
   }
 };

@@ -41,7 +41,7 @@ export const CommonFields: React.FC<Props> = ({ noPlacehoder = false }) => {
         placeholder="Renseigner le nom interne de votre question"
         name="internal_title"
         helpText="Ce champ vous permet de donner un titre à la question,il n'est pas visible par les utilisateurs."
-        isRequired="true"
+        isRequired="false"
       />
     </>
   );

@@ -22,7 +22,7 @@ import {
 export const renderFormTemplate = (
   input: IQuestion | Record<string, any>
 ): React.ReactNode => {
-  switch (input.type) {
+  switch (input?.type) {
     case "input":
       return <InputFields />;
       break;
@@ -61,7 +61,7 @@ export const renderFormTemplate = (
 export const renderFormValidationSchema = (
   input: IQuestion | Record<string, any>
 ): React.ReactFragment => {
-  switch (input.type) {
+  switch (input?.type) {
     case "input":
       return CommonFieldsSchema;
       break;
@@ -94,3 +94,15 @@ export const renderFormValidationSchema = (
       break;
   }
 };
+
+export const getDiff = (
+  newValues: Record<string, any>,
+  oldValues: Record<string, any>
+): Record<string, any> =>
+  Object.keys(newValues).reduce((diff, key) => {
+    if (oldValues[key] === newValues[key]) return diff;
+    return {
+      ...diff,
+      [key]: newValues[key],
+    };
+  }, {});

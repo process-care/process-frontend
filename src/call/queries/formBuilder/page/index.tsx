@@ -2,6 +2,15 @@ import { gql } from "graphql-request";
 
 import { pageFragment, questionFragment } from "call/fragments";
 
+export const GET_PAGE_BY_SURVEY = gql`
+  ${pageFragment}
+  query getPage($slug: ID!) {
+    pages(where: { survey: { slug: $slug } }) {
+      ...pageFragment
+    }
+  }
+`;
+
 export const GET_PAGE = gql`
   ${pageFragment}
   ${questionFragment}

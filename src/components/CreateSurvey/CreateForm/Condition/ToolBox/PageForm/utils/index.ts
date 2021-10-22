@@ -1,28 +1,27 @@
-import IPage from "types/form/page";
-import ISurvey from "types/survey";
-
 // If inputs exist on current page Get the index of the last question in the current page and push the new question after it.
 // If no input on this page Get the index of the last question in previous page and push the new question after it.
 // If we are on the first page, just push it.
 
+import { RootState } from "redux/store";
+
 export const getNewOrder: any = (
-  survey: ISurvey,
-  selected_page: Partial<IPage>,
+  global: RootState["global"],
   new_question_id: string
 ) => {
-  const { pages, order } = survey;
-  const current_page_idx = pages.findIndex(
-    (page: IPage) => page.id === selected_page.id
-  );
+  const pagesIds = global.pages.ids;
+  const order = global.survey.order === null ? [] : global.survey.order;
+  const selectedPageId = global.pages.selectedPage;
+  const q = Object.entries(global.questions.entities);
+  const questions = q.filter((c) => c[1]?.page?.id === selectedPageId);
 
-  const questions = pages[current_page_idx]?.questions;
+  const previousPageIdx = pagesIds.findIndex((p) => p === selectedPageId) - 1;
+  const previousPageId = pagesIds[previousPageIdx];
+  const previousQuestions = q.filter((c) => c[1]?.page?.id === previousPageId);
+  console.log(previousQuestions);
   const length = questions?.length;
 
   if (questions && length && length > 0) {
-    console.log("had questions");
-
-    const ids = questions.map((q) => q.id);
-
+    const ids = questions.map((q) => q[0]);
     const last_idx = Math.max(
       ...ids.map((i) => {
         return order.findIndex((id: string) => id === i);
@@ -33,17 +32,10 @@ export const getNewOrder: any = (
 
     return new_order;
   } else {
-    console.log("had no questions");
-
-    const previous_questions = pages[current_page_idx - 1]?.questions;
-    if (previous_questions === undefined) {
-      console.log("had no previous questions");
-
+    if (previousQuestions.length === 0) {
       return [new_question_id];
     } else {
-      console.log("had questions");
-
-      const ids = previous_questions && previous_questions.map((q) => q.id);
+      const ids = previousQuestions.map((q) => q[0]);
       const last_idx = Math.max(
         ...ids.map((i) => {
           return order.findIndex((id: string) => id === i);

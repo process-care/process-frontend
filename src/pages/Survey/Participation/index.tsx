@@ -13,10 +13,7 @@ import { NL } from "./nl";
 // ---- COMPONENT
 
 export const Participation: React.FC<unknown> = () => {
-  // FIXME: Yup, these ignore are bad, need to be removed
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const { slug, step } = useParams();
+  const { slug, step } = useParams<{ slug: string; step: string }>();
   const history = useHistory();
 
   const { data: survey, isLoading } = useGetSurveyBySlug(slug);
@@ -39,7 +36,7 @@ export const Participation: React.FC<unknown> = () => {
       </Center>
     );
   }
-  
+
   // LOADING STATE
   if (isLoading || !survey) {
     return <Box mt="60">Loading in progress...</Box>;

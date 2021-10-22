@@ -1,5 +1,5 @@
 export const t = {
-  validate: "Valider",
+  validate: "Enregistrer",
   cancel: "Annuler",
   verify: "Vérifier",
 };

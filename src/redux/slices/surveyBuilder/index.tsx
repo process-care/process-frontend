@@ -13,7 +13,7 @@ export interface Survey {
     keywords?: string[];
     categories?: string[];
     landing?: string;
-    order?: IQuestion["id"][];
+    order: IQuestion["id"][];
     pages?: IPage[];
     status?: "draft" | "pending" | "closed" | "archived";
     createdAt?: string;
@@ -31,6 +31,7 @@ interface Update {
 
 export const initialState: Survey = {
   survey: {
+    order: [],
     id: "",
     title: "",
     slug: "",

@@ -72,7 +72,7 @@ export const CustomTextarea: React.FC<Props> = ({
             isRequired={isRequired === "true"}
             {...field}
           />
-          {meta.touched && meta.error && (
+          {meta.error && (
             <Text fontSize="10px" color="red" textAlign="right">
               {meta.error}
             </Text>

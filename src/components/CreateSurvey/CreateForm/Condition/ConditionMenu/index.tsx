@@ -1,87 +1,73 @@
-import { Box, Text } from "@chakra-ui/react";
-import { Footer } from "components/CreateSurvey/CreateLanding/ToolBox/Footer";
+import { Box, Button, Text } from "@chakra-ui/react";
 import React from "react";
-import { useAppSelector, useAppDispatch } from "redux/hooks";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { t } from "static/condition";
-
-import { selectCondition } from "redux/slices/formBuilder";
 import { Group } from "./Group";
 import ICondition from "types/form/condition";
-import {
-  useDeleteCondition,
-  useGetConditions,
-} from "call/actions/formBuider/condition";
-import { Loader } from "components/Spinner";
-import { Error } from "components/Error";
+import { selectors, actions } from "redux/slices/global";
 
-export const ConditionMenu: React.FC = () => {
+interface Props {
+  selectedCondition: ICondition;
+}
+export const ConditionMenu: React.FC<Props> = ({ selectedCondition }) => {
   const dispatch = useAppDispatch();
-  const { selected_condition } = useAppSelector((state) => state.formBuilder);
-  const { data, isLoading, error } = useGetConditions({
-    id:
-      selected_condition.type === "page"
-        ? selected_condition?.referer_page?.id
-        : selected_condition?.referer_question?.id,
-    type: selected_condition.type,
-  });
-  const { mutateAsync: deleteCondition } = useDeleteCondition();
 
-  const current_condition = data?.conditions.find(
-    (c: ICondition) => c.id === selected_condition.id
+  const isValid = useAppSelector(selectors.conditions.getValidity);
+  const isTypePage = selectedCondition.type === "page";
+
+  const currentQuestionConditions = useAppSelector(
+    selectors.conditions.getSelectedQuestionsConditions
   );
-
-  const isDisabled = !current_condition?.is_valid;
-  const groups = data?.conditions.map((c: ICondition) => c.group);
-
-  const last_group = (data && data?.conditions.length > 0) ? data.conditions.length : 1;
-
-  const isConditionTypePage = data?.conditions[0]?.type === "page";
-
-  if (isLoading || current_condition === undefined) {
-    return (
-      <Box pt="400px">
-        <Loader />
-      </Box>
+  
+  const currentPageConditions = (selectedCondition: ICondition) => {
+    // The selected page can change to we can't use the selector page's conditions.
+    const id = selectedCondition.referer_page?.id;
+    if (!id) return [];
+    return useAppSelector((state) =>
+      selectors.conditions.getConditionsByPageId(state, id)
     );
-  }
-  if (error) {
-    return <Error error={error} />;
-  }
+  };
+
+  const currentConditions = isTypePage
+    ? currentPageConditions(selectedCondition)
+    : currentQuestionConditions;
+  const groups = currentConditions.map((c: ICondition) => c.group);
+
+  const onCancel = () => {
+    if (!isValid) {
+      dispatch(actions.deleteCondition(selectedCondition.id));
+    } else {
+      dispatch(actions.setSelectedCondition(""));
+    }
+  };
 
   return (
     <Box h="100%" pos="relative">
       <Box px={4} pt={4} mb="100px">
         <Text variant="current" textTransform="uppercase">
-          {isConditionTypePage ? t.show_page : t.show_input}
+          {isTypePage ? t.show_page : t.show_input}
         </Text>
         <Text variant="xsMedium">
-          {isConditionTypePage
-            ? data?.conditions[0]?.referer_page?.name
-            : data?.conditions[0]?.referer_question?.label}
+          {isTypePage
+            ? selectedCondition.referer_page?.name
+            : selectedCondition.referer_question?.label}
         </Text>
-        {isDisabled && (
+        {!isValid && (
           <Text variant="xs" mt={5} textAlign="left" color="brand.gray.200">
             {t.cant_edit}
           </Text>
         )}
         <Group
-          conditions={data?.conditions}
+          selectedCondition={selectedCondition}
+          currentConditions={currentConditions}
           groups={groups}
-          last_group={last_group}
         />
       </Box>
 
-      <Box pos="sticky" bottom="0px" top="0px" w="100%">
-        <Footer
-          disabled={isDisabled}
-          onSubmit={() => dispatch(selectCondition({}))}
-          onCancel={() => {
-            if (!current_condition.is_valid) {
-              deleteCondition(current_condition.id);
-            }
-            dispatch(selectCondition({}));
-          }}
-        />
+      <Box pos="absolute" bottom="30px" w="100%">
+        <Button variant="rounded" onClick={onCancel}>
+          Revenir au formulaire
+        </Button>
       </Box>
     </Box>
   );

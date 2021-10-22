@@ -38,7 +38,7 @@ export const useGetQuestion = (
 // MANY
 
 export const useGetQuestions = (
-  page_id: string
+  page_id: string | undefined
 ): UseQueryResult<IQuestionsRes, Error> => {
   return useQuery<IQuestionsRes, Error>(
     ["getQuestions", page_id],
@@ -56,8 +56,8 @@ export const useGetQuestions = (
 export interface QuestionEvaluationResult {
   evaluation: {
     id: string;
-    conditions: [EvaluationCondition]
-  }
+    conditions: [EvaluationCondition];
+  };
 }
 
 export interface EvaluationCondition {
@@ -70,7 +70,7 @@ export interface EvaluationCondition {
 
 export const useQuestionEvaluation = (
   questionId: string,
-  participationId: string,
+  participationId: string
 ): UseQueryResult<QuestionEvaluationResult, Error> => {
   return useQuery<QuestionEvaluationResult, Error>(
     ["questionEvaluation", questionId, participationId],
@@ -87,16 +87,16 @@ export const useQuestionEvaluation = (
 // ---- CRUD
 
 export const useAddQuestion = (
-  new_question?: IQuestion
+  values?: IQuestion
 ): UseMutationResult<Partial<IQuestion>, Error> =>
   useMutation<IQuestion, Error, any>(
-    async (new_question: IQuestion) => {
+    async (values: IQuestion) => {
       return await client.request(ADD_QUESTION, {
-        new_question,
+        values,
       });
     },
 
-    optimisticUpdate(["getQuestions"], new_question)
+    optimisticUpdate(["getQuestions"], values)
   );
 
 export const useUpdateQuestion = (

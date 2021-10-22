@@ -1,59 +1,59 @@
 import { Box, Container } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import InputsPreview from "components/CreateSurvey/CreateForm/InputsPreview";
-
 import IRoute from "types/routes/route";
-
 import Drawer from "components/Drawer";
 import InputForm from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm";
 import PageBuilder from "components/CreateSurvey/CreateForm/PageBuilder";
+import { Menu } from "components/Menu/CreateForm";
 
 import { useAppSelector } from "redux/hooks";
 
-import { Menu } from "components/Menu/CreateForm";
-
 import { ConditionPreview } from "components/CreateSurvey/CreateForm/Condition/ConditionPreview";
 import { RightPart } from "components/Layout/RightPart";
-import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
-import { useGetSurvey } from "call/actions/survey";
 import { Banner } from "components/Banner";
+import { useDispatch } from "react-redux";
+
+import { actions, selectors } from "redux/slices/global";
+
+import { Loader } from "components/Spinner";
 
 export const CreateForm: React.FC<IRoute> = () => {
-  // FIXME: Yup, these ignore are bad, need to be removed
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const { slug: surveyId } = useParams();
-  const { data, isLoading, error } = useGetSurvey(surveyId);
+  const { slug } = useParams<{ slug: string }>();
+  const dispatch = useDispatch();
 
-  const isOpen = useAppSelector((state) => state.application.drawer_is_open);
-  const { selected_condition } = useAppSelector((state) => state.formBuilder);
+  const isOpen = useAppSelector((state) => state.application.drawerIsOpen);
+  const selectedSurvey = useAppSelector(selectors.survey.getSelectedSurvey);
+  const selectedSurveyId = useAppSelector(selectors.survey.getSelectedSurveyId);
+  const isLoading = useAppSelector(selectors.survey.isLoading);
+  const order = useAppSelector(selectors.survey.getOrder);
+  const error = useAppSelector(selectors.survey.error);
 
-  if (isLoading) {
-    return <Loader />;
-  }
+  const selectedCondition = useAppSelector(
+    selectors.conditions.getSelectedCondition
+  );
+
+  useEffect(() => {
+    dispatch(actions.initializeSurvey(slug));
+  }, [slug]);
 
   if (error) {
     return <Error error={error} />;
   }
 
-  if (!data?.survey) {
-    return <div>No Survey</div>;
+  if (isLoading) {
+    return <Loader />;
   }
 
   return (
     <Box h="100vh" overflow="hidden">
-      <Drawer
-        isOpen={isOpen}
-        size="md"
-        content={<InputForm survey={data?.survey} />}
-      />
+      <Drawer isOpen={isOpen} size="md" content={<InputForm order={order} />} />
       <Box d="flex" justifyContent="space-around" w="100%" overflow="hidden">
         <Box w="100%">
-          <Menu surveyId={surveyId} />
-
+          <Menu surveyId={selectedSurveyId} />
           <Banner />
           <Box
             d="flex"
@@ -68,7 +68,7 @@ export const CreateForm: React.FC<IRoute> = () => {
               borderRight="1px"
               borderColor="gray.200"
             >
-              <PageBuilder survey={data?.survey} />
+              <PageBuilder survey={selectedSurvey} />
             </Container>
 
             <Container
@@ -78,22 +78,16 @@ export const CreateForm: React.FC<IRoute> = () => {
               p="0"
             >
               <div className="background__grid">
-                {selected_condition?.id !== undefined ? (
-                  <ConditionPreview />
+                {selectedCondition !== undefined ? (
+                  <ConditionPreview selectedCondition={selectedCondition} />
                 ) : (
-                  <InputsPreview
-                    order={data?.survey.order}
-                    surveyId={surveyId}
-                  />
+                  <InputsPreview order={order} surveyId={selectedSurveyId} />
                 )}
               </div>
             </Container>
           </Box>
         </Box>
-        <RightPart
-          selected_condition={selected_condition}
-          survey={data?.survey}
-        />
+        <RightPart selectedCondition={selectedCondition} />
       </Box>
     </Box>
   );

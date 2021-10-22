@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { Box, Circle, Flex, Text } from "@chakra-ui/react";
 import { ReduxPage } from "redux/slices/participation/page";
 
@@ -23,6 +23,24 @@ export const ParticipationMenu: React.FC<MenuProps> = ({
   logo,
   selectedPage,
 }) => {
+
+  const navigables = useMemo(() => {
+    let isBlocked = false;
+    
+    return pages.map((p, idx) => {
+      const prevIdx = (idx === 0) ? 0 : idx - 1;
+      // We can navigate to a page if:
+      // first page (idx = 0) OR the previous page is submitable (= valid)
+      // AND there is no unnavigable page already up the chain
+      // |-> edge case like: P1 unvalid (accessible) P2 valid (not accessible) P3 (accessible)
+      const isNavigable = ((pages[prevIdx].submitable ?? false) || idx === 0) && !isBlocked;
+      
+      if (!isNavigable) isBlocked = true;
+      return isNavigable
+    });
+
+  }, [pages]);
+
   return (
     <Box pos="sticky" top="0">
       <Flex
@@ -45,16 +63,13 @@ export const ParticipationMenu: React.FC<MenuProps> = ({
       </Flex>
       <Box p="20px">
         {pages.map((p, idx) => {
-          const prevIdx = (idx === 0) ? 0 : idx - 1;
-          const isNavigable = (pages[prevIdx].submitable ?? false) || idx === 0;
-
           return (
             <PageEntry
               key={p.id}
               index={idx}
               page={p}
               color={color}
-              isNavigable={isNavigable}
+              isNavigable={navigables[idx]}
               selectedPageId={selectedPage?.id}
               selectIndex={selectIndex}
             />

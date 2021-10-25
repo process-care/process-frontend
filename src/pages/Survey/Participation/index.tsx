@@ -3,33 +3,34 @@ import { Box, Button, Center, Flex, Text } from "@chakra-ui/react";
 import { useHistory, useParams } from "react-router-dom";
 import { ParticipationConsent } from "./ParticipationConsent";
 import { ParticipationForm } from "./ParticipationForm";
-import { useGetSurvey } from "call/actions/survey";
+import { useGetSurveyBySlug } from "call/actions/survey";
 import {
   findExistingParticipation,
   storeParticipation,
 } from "./localstorage-handlers";
+import { NL } from "./nl";
 
 // ---- COMPONENT
 
 export const Participation: React.FC<unknown> = () => {
-  const { slug: surveyId, step } = useParams<{ slug: string; step: string }>();
+  const { slug, step } = useParams<{ slug: string; step: string }>();
   const history = useHistory();
 
-  const { data, isLoading } = useGetSurvey(surveyId);
-  const { participation, onConsent, onRefuse } = useConsentHandlers(surveyId);
+  const { data: survey, isLoading } = useGetSurveyBySlug(slug);
+  const { participation, onConsent, onRefuse } = useConsentHandlers(slug);
 
   if (participation?.completed) {
     return (
       <Center h="100vh">
         <Flex flexDir="column">
-          <Text variant="title">👌 Merci d'avoir rempli cette enquête</Text>
+          <Text variant="title">{NL.msg.thxParticipation}</Text>
 
           <Button
             mt="40px"
             variant="roundedBlue"
             onClick={() => history.push("/")}
           >
-            Retour à l'accueil
+            {NL.button.backToWelcome}
           </Button>
         </Flex>
       </Center>
@@ -37,20 +38,20 @@ export const Participation: React.FC<unknown> = () => {
   }
 
   // LOADING STATE
-  if (isLoading || !data?.survey) {
+  if (isLoading || !survey) {
     return <Box mt="60">Loading in progress...</Box>;
   }
 
   // Redirect if the there is an existing participation
   if (participation && step !== "participate") {
-    history.push(`/survey/${surveyId}/participate`);
+    history.push(`/survey/${survey.slug}/participate`);
   }
 
   // CONSENT
   if (step === "consent") {
     return (
       <ParticipationConsent
-        surveyId={data.survey.id}
+        surveyId={survey.id}
         onConsent={onConsent}
         onRefuse={onRefuse}
       />
@@ -58,10 +59,15 @@ export const Participation: React.FC<unknown> = () => {
   }
 
   // PARTICIPATE
-  if (step === "participate" && participation) {
+  if (step === "participate") {
+    if (!participation) {
+      history.push(`/survey/${survey.slug}/consent`);
+      return <Box mt="60">{NL.msg.missingConsent}</Box>;
+    } 
+    
     return (
       <ParticipationForm
-        surveyId={data.survey.id}
+        surveyId={survey.id}
         participationId={participation.id}
       />
     );
@@ -75,9 +81,6 @@ export const Participation: React.FC<unknown> = () => {
 function useConsentHandlers(slug: string) {
   const history = useHistory();
 
-  // TODO: Load this from local storage ?
-  // if present: go to participate right away
-  // else: set up for consent
   const existingParticipation = findExistingParticipation(slug);
   const [participation, setParticipation] = useState(existingParticipation);
 

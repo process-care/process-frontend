@@ -6,7 +6,7 @@ import {
 } from "react-query";
 
 import {
-  CREATE_ANSWERS,
+  CREATE_ANSWER,
   GET_ANSWERS,
   UPDATE_ANSWER,
 } from "call/queries/answers";
@@ -66,7 +66,7 @@ export const useCreateAnswer = (): UseMutationResult<
 > =>
   useMutation<AnswerCreationResults, Error, any>(
     async (values: Partial<AnswerPayload>) =>
-      await client.request(CREATE_ANSWERS, {
+      await client.request(CREATE_ANSWER, {
         data: values,
       })
     // optimisticUpdate(["questionEvaluation"])

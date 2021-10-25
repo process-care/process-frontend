@@ -7,7 +7,7 @@ import {
 import {
   GET_QUESTION,
   ADD_QUESTION,
-  GET_QUESTIONS,
+  GET_QUESTIONS_BY_PAGE,
   DELETE_QUESTION,
   UPDATE_QUESTION,
   GET_QUESTION_EVALUATION,
@@ -15,6 +15,7 @@ import {
 import IQuestion, { IQuestionsRes, IQuestionRes } from "types/form/question";
 import { optimisticUpdate } from "call/optimisiticUpdate";
 import { client } from "call/actions";
+import IOperator from "types/form/operator";
 
 // ---- GETTERS
 
@@ -42,7 +43,7 @@ export const useGetQuestions = (
   return useQuery<IQuestionsRes, Error>(
     ["getQuestions", page_id],
     async () => {
-      return await client.request(GET_QUESTIONS, {
+      return await client.request(GET_QUESTIONS_BY_PAGE, {
         page_id,
       });
     },
@@ -60,11 +61,11 @@ export interface QuestionEvaluationResult {
 }
 
 export interface EvaluationCondition {
-  id: string;
-  group: string;
-  operator: string;
-  target_value: string;
-  answer?: unknown;
+  id: string,
+  group: string,
+  operator: IOperator['id'],
+  target_value: string,
+  answer?: unknown,
 }
 
 export const useQuestionEvaluation = (

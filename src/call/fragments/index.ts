@@ -67,13 +67,11 @@ export const questionFragment = gql`
     }
     conditions {
       id
-      referer_page {
-        id
-      }
-      referer_question {
-        id
-      }
+      target { id }
       type
+      operator
+      target_value
+      group
     }
   }
 `;
@@ -213,9 +211,15 @@ export const surveyFullFragment = gql`
       }
       questions {
         id
+        required
       }
       conditions {
         id
+        target { id }
+        type
+        operator
+        target_value
+        group
       }
     }
   }

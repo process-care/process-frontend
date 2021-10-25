@@ -6,7 +6,7 @@ import { Text } from "@chakra-ui/react";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 import { Preview } from "components/CreateSurvey/CreateLanding/Preview";
-import { useGetSurvey } from "call/actions/survey";
+import { useGetSurveyBySlug } from "call/actions/survey";
 
 const t = {
   noLanding:
@@ -14,13 +14,14 @@ const t = {
 };
 
 export const Landing: React.FC<IRoute> = () => {
-  const { slug: surveyId } = useParams<{ slug: string }>();
-  const { data: survey } = useGetSurvey(surveyId);
+  const { slug } = useParams<{ slug: string }>();
+
+  const { data: survey } = useGetSurveyBySlug(slug);
   const {
     data: landing,
     isLoading,
     error,
-  } = useGetLanding(survey?.survey?.landing?.id);
+  } = useGetLanding(survey?.landing?.id);
 
   if (landing?.landing === undefined) {
     return (

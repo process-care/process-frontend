@@ -22,7 +22,6 @@ import surveyEditor from "redux/slices/survey-editor";
 import surveys from "redux/slices/my-surveys";
 import global from "redux/slices/global";
 
-import { pingEpic } from "redux/slices/participation/epic";
 import { landingEditorEpics } from "redux/epics/landing-editor";
 import { surveyEditorEpics } from "redux/epics/survey-editor";
 import { surveysEpics } from "redux/epics/my-surveys";
@@ -33,6 +32,8 @@ import { pageEditorEpic } from "redux/epics/global/page-editor";
 import { questionEditorEpic } from "redux/epics/global/question-editor";
 
 import { history } from "./history";
+import participationEpics from "redux/epics/participation";
+
 // ---- EPICS
 
 // Generic type of an epic
@@ -40,9 +41,9 @@ export type Epic = ReduxEpic<AnyAction, AnyAction, RootState, unknown>;
 
 // Combine all epics from all the app
 export const rootEpic = combineEpics(
-  pingEpic,
   landingEditorEpics,
   surveyEditorEpics,
+  participationEpics,
   pageEditorEpic,
   questionEditorEpic,
   surveysEpics,

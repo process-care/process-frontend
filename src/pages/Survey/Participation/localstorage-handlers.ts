@@ -28,7 +28,12 @@ export function storeParticipation(slug: string, newParticipationId: string): vo
   localStorage.setItem(LS_PARTICIPATION, JSON.stringify(localParticipations));
 }
 
-export function finishParticipation(slug: string): void {
+export function finishParticipation(slug: string | undefined): void {
+  if (!slug) {
+    console.error('Missing slug to complete the participation !');
+    return;
+  }
+
   // Find participations and target
   const localParticipations = readLocalParticipations();
   const participation = localParticipations[slug];

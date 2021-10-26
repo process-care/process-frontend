@@ -49,7 +49,7 @@ export const ParticipationForm: React.FC<Props> = ({
   } = useNavigationHandlers(pages);
 
   // TODO: we use the survey Id, but should we use the slug ?
-  const { onFinish } = useFinishHandler(participationId, surveyId);
+  const { onFinish } = useFinishHandler(participationId, data?.survey.slug);
 
   // Missing data checks
   if (!data?.survey) return <Box mt="60">No data for this survey</Box>;
@@ -111,7 +111,7 @@ export const ParticipationForm: React.FC<Props> = ({
 
 // ---- HOOKS
 
-function useFinishHandler(participationId: string, slug: string) {
+function useFinishHandler(participationId: string, slug: string | undefined) {
   const history = useHistory();
   const { mutateAsync: finishParticipationApi } = useFinishParticipation();
 

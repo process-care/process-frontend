@@ -244,7 +244,7 @@ export const ProjectMenu: React.FC<Props> = ({
             </Flex>
           </Box>
 
-          <Box mt={10}>
+          <Box mt={10} mb={20}>
             <Text variant="baseline" textAlign="center" mb={8}>
               Statistiques
             </Text>
@@ -256,8 +256,7 @@ export const ProjectMenu: React.FC<Props> = ({
               center
             />
 
-            <Flex mt={5} ml={50} mr={50} justifyContent="space-between">
-              <BigNumber value={selectedStats.visits} label={"visites"} />
+            <Flex mt={5} ml={50} mr={50} justifyContent="space-around">
               <BigNumber value={selectedStats.consented} label={"consentis"} />
               <BigNumber value={selectedStats.completed} label={"terminés"} />
             </Flex>
@@ -270,9 +269,7 @@ export const ProjectMenu: React.FC<Props> = ({
               alignItems="flex-start"
             >
               <div>Progression de la complétion</div>
-              <Tooltip label={"charts !"}>
-                <Chart />
-              </Tooltip>
+              <Chart />
             </Flex>
           </Box>
         </Box>

@@ -5,9 +5,9 @@ import IRoute from "types/routes/route";
 import { Image } from "@chakra-ui/react";
 
 import Hero from "assets/hero.jpg";
-import { useGetSurveys } from "call/actions/survey";
 import { Filters } from "components/Dashboard/Filters";
 import { NoData } from "components/SurveyGrid/noData";
+import { useGetPublishedSurvey } from "./portal.queries";
 
 // STATIC
 
@@ -23,20 +23,14 @@ const t = {
   ],
 };
 export const Portail: React.FC<IRoute> = () => {
-  const { data: surveys, isLoading } = useGetSurveys();
+  const { data: surveys, isLoading } = useGetPublishedSurvey();
   const [currentFilter, setCurrentFilter] = useState<string>(t.filters[0].id);
 
   const filteredSurveys = useMemo(
-    () =>
-      surveys?.surveys?.filter((survey) => {
-        if (currentFilter === "all") return surveys.surveys;
-        if (currentFilter === "pending") return survey.status === "pending";
-        if (currentFilter === "archived") return survey.status === "archived";
-        else return [];
-      }),
+    () => surveys?.surveys?.filter((survey) => currentFilter === 'all' || survey.status === currentFilter),
     [currentFilter, surveys]
   );
-
+    
   return (
     <Box>
       <Box>

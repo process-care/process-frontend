@@ -75,6 +75,7 @@ export const questionFragment = gql`
     }
   }
 `;
+
 export const landingFragment = gql`
   fragment landingFragment on Landing {
     id

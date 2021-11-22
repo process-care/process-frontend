@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import slugify from "slugify";
 import IPage from "types/form/page";
 import IQuestion from "types/form/question";
+
 export interface Survey {
   survey: {
     id: string;

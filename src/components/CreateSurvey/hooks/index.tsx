@@ -3,6 +3,7 @@ import { useAddLanding } from "call/actions/landing";
 import { useUpdateSurvey } from "call/actions/survey";
 import { useHistory } from "react-router-dom";
 import { Survey } from "redux/slices/surveyBuilder";
+import { SURVEY_STATUS } from "types/survey";
 
 export const useNavigator: any = (survey: Survey["survey"]) => {
   const { mutateAsync: addLanding } = useAddLanding();
@@ -28,6 +29,11 @@ export const useNavigator: any = (survey: Survey["survey"]) => {
 
   // Take you to the form editor
   const goToForm = useCallback(() => {
+    if (survey.status !== SURVEY_STATUS.Draft) {
+      alert("Désolé, vous ne pouvez pas éditer le formulaire d'une enquête en cours.");
+      return;
+    }
+
     history.push(`/survey/${slug}/create/form`);
   }, [id]);
 

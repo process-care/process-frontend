@@ -27,7 +27,7 @@ export const SurveyGrid: React.FC<Props> = ({ surveys, isLoading }) => {
     <Grid templateColumns="repeat(3, 1fr)" gap={10} pt="80px" px="10%">
       {surveys.map((survey) => {
         return (
-          <NavLink to={`/survey/${survey.slug}`}>
+          <NavLink key={survey.id} to={`/survey/${survey.slug}`}>
             <Card data={survey} />
           </NavLink>
         );

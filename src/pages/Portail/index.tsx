@@ -9,7 +9,7 @@ import { Filters } from "components/Dashboard/Filters";
 import { NoData } from "components/SurveyGrid/noData";
 import { useGetPublishedSurvey } from "./portal.queries";
 
-// STATIC
+// ---- STATIC
 
 const t = {
   title:
@@ -22,6 +22,9 @@ const t = {
     { label: "Archivés", id: "archived" },
   ],
 };
+
+// ---- COMPONENT
+
 export const Portail: React.FC<IRoute> = () => {
   const { data: surveys, isLoading } = useGetPublishedSurvey();
   const [currentFilter, setCurrentFilter] = useState<string>(t.filters[0].id);

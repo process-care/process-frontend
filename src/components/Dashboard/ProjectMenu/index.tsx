@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 
 import { Box, Button, Container, Flex, Tooltip, Text } from "@chakra-ui/react";
 import { ReactComponent as Close } from "./assets/close.svg";
@@ -17,7 +17,7 @@ import { Chart } from "../Chart";
 import { renderStatus } from "utils/application/renderStatus";
 import { Loader } from "components/Spinner";
 import { NavLink } from "react-router-dom";
-import ISurvey from "types/survey";
+import ISurvey, { SURVEY_STATUS } from "types/survey";
 
 // ---- STATICS
 
@@ -115,6 +115,8 @@ export const ProjectMenu: React.FC<Props> = ({
     });
   };
 
+  const isDraft = selectedSurvey.status === SURVEY_STATUS.Draft;
+
   return (
     // TODO: Use a % + max-width to limit growth on big screens
     <Container
@@ -129,7 +131,7 @@ export const ProjectMenu: React.FC<Props> = ({
         <RemovingConfirmation
           confirm={handleDelete}
           close={() => setIsRemoving(false)}
-          content={`Voulez-vous vraiment supprimer le sondage ${selectedSurvey.title}?`}
+          content={`Voulez-vous vraiment supprimer l'enquête "${selectedSurvey.title}" ?`}
         />
       ) : (
         <Box>
@@ -175,7 +177,7 @@ export const ProjectMenu: React.FC<Props> = ({
               </NavLink>
             </Tooltip>
             <Flex justifyContent="space-between" alignItems="center">
-              {selectedSurvey.status === "draft" ? (
+              {isDraft ? (
                 <Button variant="roundedBlue" onClick={handlePublish}>
                   Publier
                 </Button>
@@ -205,6 +207,7 @@ export const ProjectMenu: React.FC<Props> = ({
               <ActionButton
                 top
                 right
+                disabled={!isDraft}
                 label={"Modifier le questionnaire"}
                 onClick={goToForm}
               />
@@ -321,6 +324,7 @@ const BigNumber = ({ value, label }: BigNumberProps) => {
 // -- Actions
 
 interface ActionButtonProps {
+  disabled?: boolean;
   label: string;
   top?: boolean;
   bottom?: boolean;
@@ -330,8 +334,10 @@ interface ActionButtonProps {
 }
 
 const borderStyle = "1px solid";
+const disabledStyle = { backgroundColor: 'grey' };
 
 const ActionButton = ({
+  disabled,
   top,
   right,
   bottom,
@@ -346,12 +352,20 @@ const ActionButton = ({
     borderRight: right ? borderStyle : undefined,
   };
 
+  const hoverStyle = useMemo(() => {
+    return (disabled)
+      ? { cursor: "not-allowed" }
+      : { cursor: "pointer" };
+  }, [disabled]);
+
   return (
     <Box
+      disabled={disabled}
+      _disabled= {disabledStyle}
       p={3}
       w="calc(100% / 3)"
       {...borders}
-      _hover={{ cursor: "pointer" }}
+      _hover={hoverStyle}
       onClick={onClick}
     >
       <Text variant="xs">{label}</Text>

@@ -48,7 +48,6 @@ export const ParticipationForm: React.FC<Props> = ({
     selectIndex,
   } = useNavigationHandlers(pages);
 
-  // TODO: we use the survey Id, but should we use the slug ?
   const { onFinish } = useFinishHandler(participationId, data?.survey.slug);
 
   // Missing data checks

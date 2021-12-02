@@ -2,6 +2,13 @@ import IPage from "types/form/page";
 import IQuestion from "types/form/question";
 import { ILanding } from "types/landing";
 
+export enum SURVEY_STATUS {
+  Draft = 'draft',
+  Running = 'pending',
+  Closed = 'closed',
+  Archived = 'archived',
+} 
+
 export default interface ISurvey {
   author?: {
     email: string;

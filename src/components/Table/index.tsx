@@ -84,9 +84,9 @@ const TableHeader = ({ column }: TableHeaderProps) => {
     <th {...props}>
       <Text variant="current" p="30px" textAlign={aligned}>
         {content}
-        <span>
-          {column.isSorted ? (column.isSortedDesc ? " ↓" : " ↑") : " ↓"}{" "}
-        </span>
+        &nbsp;
+        {column.isSorted ? (column.isSortedDesc ? "↓" : "↑") : "↓"}
+        &nbsp;
       </Text>
     </th>
   );

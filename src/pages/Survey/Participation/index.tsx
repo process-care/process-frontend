@@ -9,6 +9,7 @@ import {
   storeParticipation,
 } from "./localstorage-handlers";
 import { NL } from "./nl";
+import { SURVEY_STATUS } from "types/survey";
 
 // ---- COMPONENT
 
@@ -19,27 +20,32 @@ export const Participation: React.FC<unknown> = () => {
   const { data: survey, isLoading } = useGetSurveyBySlug(slug);
   const { participation, onConsent, onRefuse } = useConsentHandlers(slug);
 
+  const goBackHome = useCallback(() => history.push("/"), []);
+
+  // If there is already a completed participation in local storage
   if (participation?.completed) {
     return (
-      <Center h="100vh">
-        <Flex flexDir="column">
-          <Text variant="title">{NL.msg.thxParticipation}</Text>
-
-          <Button
-            mt="40px"
-            variant="roundedBlue"
-            onClick={() => history.push("/")}
-          >
-            {NL.button.backToWelcome}
-          </Button>
-        </Flex>
-      </Center>
-    );
+      <OverWarning
+        msg={NL.msg.thxParticipation}
+        cta={NL.button.backToWelcome}
+        action={goBackHome}
+      />
+    )
   }
 
   // LOADING STATE
   if (isLoading || !survey) {
     return <Box mt="60">Loading in progress...</Box>;
+  }
+
+  if (survey.status !== SURVEY_STATUS.Running) {
+    return (
+      <OverWarning
+        msg={NL.msg.surveyOver}
+        cta={NL.button.backToWelcome}
+        action={goBackHome}
+      />
+    )
   }
 
   // Redirect if the there is an existing participation
@@ -104,4 +110,34 @@ function useConsentHandlers(slug: string) {
     onConsent,
     onRefuse,
   };
+}
+
+// ---- SUB COMPONENTS
+
+type OverWarningProps = {
+  msg: string,
+  cta: string,
+  action: () => void,
+}
+
+const OverWarning = ({
+  msg,
+  cta,
+  action,
+}: OverWarningProps) => {
+  return (
+    <Center h="100vh">
+      <Flex flexDir="column">
+        <Text variant="title">{msg}</Text>
+
+        <Button
+          mt="40px"
+          variant="roundedBlue"
+          onClick={action}
+        >
+          {cta}
+        </Button>
+      </Flex>
+    </Center>
+  )
 }

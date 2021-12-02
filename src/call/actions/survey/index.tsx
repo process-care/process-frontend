@@ -21,13 +21,9 @@ import ISurvey, { ISurveyRes, ISurveysRes } from "types/survey";
 import { Survey } from "redux/slices/surveyBuilder";
 import { client } from "..";
 
-export const useAddSurvey: any = (): UseMutationResult<ISurvey, Error> =>
-  useMutation<ISurvey, Error, any>(
-    async (values: Partial<ISurvey>) =>
-      await client.request(ADD_SURVEY, { values }),
-    optimisticUpdate(["getSurvey"])
-  );
+// ---- QUERIES
 
+// Get one by ID
 export const useGetSurvey = (id: string): UseQueryResult<ISurveyRes, Error> =>
   useQuery<ISurveyRes, Error>(
     ["getSurvey", id],
@@ -38,6 +34,7 @@ export const useGetSurvey = (id: string): UseQueryResult<ISurveyRes, Error> =>
     { enabled: !!id }
   );
 
+// Get metadata of a survey by ID
 export const useGetSurveyMetadas = (
   id: string
 ): UseQueryResult<Survey, Error> =>
@@ -50,6 +47,7 @@ export const useGetSurveyMetadas = (
     { enabled: !!id }
   );
 
+// Get stats of a survey by ID
 export const useGetSurveyStats: any = (id: string) =>
   useQuery(
     ["getSurveyStats", id],
@@ -60,6 +58,7 @@ export const useGetSurveyStats: any = (id: string) =>
     { enabled: !!id }
   );
 
+// Get only my on surveys  
 export const useGetMySurveys = (
   authorId: string
 ): UseQueryResult<ISurveysRes, Error> =>
@@ -69,6 +68,7 @@ export const useGetMySurveys = (
     { enabled: !!authorId }
   );
 
+// Get one by slug  
 export const useGetSurveyBySlug = (slug: string): UseQueryResult<ISurvey, Error> =>
   useQuery<ISurvey, Error>(
     ["getSurveyBySlug", slug],
@@ -78,9 +78,19 @@ export const useGetSurveyBySlug = (slug: string): UseQueryResult<ISurvey, Error>
     { enabled: Boolean(slug) }
   );
 
+// Get all surveys  
 export const useGetSurveys = (): UseQueryResult<ISurveysRes, Error> =>
   useQuery<ISurveysRes, Error>("getMySurveys", () =>
     client.request(GET_SURVEYS)
+  );
+
+  // ---- MUTATIONS
+
+  export const useAddSurvey: any = (): UseMutationResult<ISurvey, Error> =>
+  useMutation<ISurvey, Error, any>(
+    async (values: Partial<ISurvey>) =>
+      await client.request(ADD_SURVEY, { values }),
+    optimisticUpdate(["getSurvey"])
   );
 
 export const useUpdateSurvey = (): UseMutationResult<ISurvey, Error> =>

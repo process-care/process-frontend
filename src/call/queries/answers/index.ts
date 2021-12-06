@@ -25,9 +25,20 @@ export const GET_ANSWERS = gql`
   }
 `;
 
+export const GET_ANSWERS_BY_PARTICIPATION = gql`
+  ${answerFragment}
+
+  query getAnswersByParticipation($participationId: ID!) {
+    answers(where: { participation: $participationId })
+    {
+      ...answerFragment
+    }
+  }
+`;
+
 // MUTATION
 
-export const CREATE_ANSWERS = gql`
+export const CREATE_ANSWER = gql`
   ${answerFragment}
 
   mutation createAnswer ($data: AnswerInput!) {

@@ -6,6 +6,7 @@ import { Menu } from "components/Menu/CreateSurvey";
 import { useGetSurvey } from "call/actions/survey";
 import { PdfPreview } from "../CreateConsent/PdfPreview";
 import { API_URL_ROOT } from "constants/api";
+import { NL } from "./nl";
 
 // ---- TYPES
 
@@ -82,11 +83,11 @@ export const ParticipationConsent: React.FC<Props> = ({
               onClick={onAccept}
               mr="10"
             >
-              Je donne mon consentement
+              {NL.button.consent.accept}
             </Button>
 
             <Button isFullWidth variant="rounded" onClick={onDecline}>
-              Je refuse
+              {NL.button.consent.refuse}
             </Button>
           </Box>
         </Center>

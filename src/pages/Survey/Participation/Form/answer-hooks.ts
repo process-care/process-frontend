@@ -1,41 +1,56 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useField } from "formik";
-import { useDebounce } from "utils/hooks/debounce";
-import {
-  useCreateAnswer,
-  useGetAnswers,
-  useUpdateAnswer,
-} from "call/actions/answers";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
+import { actions, selectors } from "redux/slices/participation/answers";
+import { ReduxPage } from "redux/slices/participation/page";
+
+// ---- TYPES
+
+type InitialAnswers = Record<string, unknown>;
+
+type InitialContent = {
+  initialAnswers: InitialAnswers,
+  orderInPage: string[]
+};
+
+// ---- HOOKS
 
 /**
- *
- * @param participationId
- * @param questionsId
- * @returns
+ * 
+ * @param page 
+ * @param order 
+ * @returns 
  */
-export function useAnswersGetter(
-  participationId: string,
-  questionsId: string[]
-): {
-  values: Record<string, unknown>;
-  references: Map<any, any>;
-  isLoading: boolean;
-} {
-  const { data, isLoading } = useGetAnswers(participationId, questionsId);
+export function useInitialPageContent(page: ReduxPage | undefined, order: string[]): InitialContent {
+  // Filter questions & order in this page
+  const { questionsId, orderInPage } = useMemo(() => {
+    const questionsId = page?.questions?.map((q) => q.id) ?? [];
 
-  const ref = new Map();
+    // Narrow the order to this page only
+    const orderInPage = order.reduce((acc, qId) => {
+      const existsInPage = questionsId.some(qInPage => qInPage === qId);
+      if (existsInPage) acc.push(qId);
+      return acc;
+    }, [] as string[]);
 
-  const answers = data?.answers.reduce((acc, a) => {
-    acc[a.question.id] = a.value;
-    ref.set(a.question.id, a.id);
-    return acc;
-  }, {} as Record<string, unknown>);
+    return { questionsId, orderInPage };
+  }, [page?.id]);
 
-  return {
-    values: answers ?? {},
-    references: ref,
-    isLoading,
-  };
+  // Select related data from redux
+  // It cannot be memoized, since it's a hook
+  const data = useAppSelector(state => selectors.selectByIds(state, questionsId));
+
+  // Recompute the initial answers ONLY when the Page ID changes !
+  const initialAnswers = useMemo(() => {
+    const answers = data.reduce((acc, a) => {
+      acc[a.questionId] = a.value;
+      return acc;
+    }, {} as Record<string, unknown>);
+
+    return answers;
+  }, [page?.id]);
+  
+  return { initialAnswers, orderInPage };
 }
 
 /**
@@ -45,42 +60,15 @@ export function useAnswersGetter(
  */
 export function useAnswerSaver(
   questionId: string,
-  participationId: string,
-  initialAnswerId?: string
 ): void {
+  const dispatch = useAppDispatch();
   const [field] = useField(questionId);
-  const debouncedValue = useDebounce(field.value, 2000);
-
-  const [answerId, setAnswerId] = useState(initialAnswerId);
-
-  // Mutators
-  const { mutateAsync: create } = useCreateAnswer();
-  const { mutateAsync: update } = useUpdateAnswer();
+  const stateValue = useAppSelector(state => selectors.selectById(state, questionId));
 
   useEffect(() => {
-    if (debouncedValue === undefined) return;
+    // Do not dispatch if the value isn't different between Formik / Redux
+    if (stateValue?.value === field.value) return;
 
-    console.log(
-      `Saving : question "${questionId}" -> value changed to: ${debouncedValue} (answer ID: ${answerId})`
-    );
-
-    if (!answerId) {
-      create({
-        participation: participationId,
-        question: questionId,
-        value: debouncedValue,
-      }).then(
-        (v) => {
-          setAnswerId(v.createAnswer.answer.id);
-          console.log("Success on CREATE: ", v);
-        },
-        (e) => console.log("Error on CREATE: ", e)
-      );
-    } else {
-      update({ id: answerId, data: { value: debouncedValue } }).then(
-        (v) => console.log("Success on UPDATE: ", v),
-        (e) => console.log("Error on UPDATE: ", e)
-      );
-    }
-  }, [questionId, answerId, participationId, debouncedValue]);
+    dispatch(actions.update({ questionId, value: field.value }));
+  }, [questionId, field.value, stateValue?.value]);
 }

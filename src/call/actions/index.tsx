@@ -21,4 +21,5 @@ export const getHeaders = (): Header | undefined => {
     return undefined;
   }
 };
+
 export const client = new GraphQLClient(API_URL, getHeaders());

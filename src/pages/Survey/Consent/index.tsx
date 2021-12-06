@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { Box, Button } from "@chakra-ui/react";
 import { useHistory, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { actions } from "redux/slices/participation";
+import { actions } from "redux/slices/participation/status";
 import { useCreateParticipation } from "call/actions/participation";
 
 // STATIC

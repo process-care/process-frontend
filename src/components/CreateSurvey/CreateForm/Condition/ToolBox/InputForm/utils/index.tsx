@@ -11,6 +11,7 @@ import {
   DatepickerFields,
   WysiwygFields,
   FreeclassificationFields,
+  AssociatedClassification,
 } from "../Template";
 import {
   CommonFieldsSchema,
@@ -51,7 +52,8 @@ export const renderFormTemplate = (
       return <WysiwygFields />;
     case "free_classification":
       return <FreeclassificationFields />;
-
+    case "associated_classification":
+      return <AssociatedClassification />;
     default:
       return <TextareaFields />;
       break;

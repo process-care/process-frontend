@@ -41,6 +41,10 @@ export const fields: { [type: string]: Record<string, unknown> } = {
     rows: [],
     freeclassification_responses_count: "",
   },
+  associated_classification: {
+    ...commonFieldsInitialValues,
+    ...inputFieldsInitialValues,
+  },
 
   checkbox: {
     ...multipleInputFieldsInitialValues,

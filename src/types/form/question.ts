@@ -12,7 +12,8 @@ export default interface IQuestion {
     | "radio"
     | "checkbox"
     | "date_picker"
-    | "free_classification";
+    | "free_classification"
+    | "associated_classification";
   // name: string;
   id: string;
   label?: string;
@@ -34,6 +35,17 @@ export default interface IQuestion {
   wysiwyg?: string | undefined;
   freeclassification_responses_count?: string;
   conditions?: ICondition[];
+  factors?: [
+    {
+      title: string;
+      modalities: [
+        {
+          description: string;
+          file?: string;
+        }
+      ];
+    }
+  ];
 }
 
 export interface IQuestionsRes {

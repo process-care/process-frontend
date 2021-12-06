@@ -42,6 +42,10 @@ export const inputs: Obj[] = [
   },
   {
     type: "free_classification",
-    name: "Question free democratic classification",
+    name: "Question libre classification",
+  },
+  {
+    type: "associated_classification",
+    name: "Question par association",
   },
 ];

@@ -7,6 +7,7 @@ import { CustomSelect as Select } from "components/Fields/Select";
 import { CustomSlider as Slider } from "components/Fields/Slider";
 import { CustomSwitch as Switch } from "components/Fields/Switch";
 import { CustomDatePicker as Datepicker } from "components/Fields/Datepicker";
+import { AssociatedClassification } from "components/Fields/AssociatedClassification";
 
 export {
   Input,
@@ -18,4 +19,5 @@ export {
   Slider,
   Switch,
   Datepicker,
+  AssociatedClassification,
 };

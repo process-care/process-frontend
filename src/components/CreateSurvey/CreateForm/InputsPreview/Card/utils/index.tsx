@@ -10,6 +10,7 @@ import {
   Slider,
   Datepicker,
   Textarea,
+  AssociatedClassification,
 } from "components/Fields";
 import IQuestion from "types/form/question";
 import { t } from "static/input";
@@ -170,6 +171,18 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
           placeholder={input.placeholder || t.placeholder}
           helpText={input.help_text || t.help_text}
         />
+      );
+    case "associated_classification":
+      return (
+        <>
+          <AssociatedClassification
+            isCollapsed={isCollapsed}
+            name={input.id || "associated_classification"}
+            label={input.label || t.label}
+            helpText={input.help_text || t.help_text}
+            factors={input.factors}
+          />
+        </>
       );
 
     default:

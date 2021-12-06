@@ -58,8 +58,7 @@ export const questionFragment = gql`
     options
     required
     units
-    # max
-    # min
+    factors
     step
     internal_title
     page {
@@ -104,6 +103,7 @@ export const landingFragment = gql`
 `;
 
 export const surveyFullFragment = gql`
+  # TODO: update with page and question fragments
   fragment surveyFullFragment on Survey {
     id
     description
@@ -158,8 +158,7 @@ export const surveyFullFragment = gql`
         options
         required
         units
-        # max
-        # min
+        factors
         step
         internal_title
         page {

@@ -1,6 +1,10 @@
 import ICondition from "./condition";
 import IPage from "./page";
 
+interface Modality {
+  description: string;
+  file?: string;
+}
 export default interface IQuestion {
   type:
     | "input"
@@ -38,12 +42,7 @@ export default interface IQuestion {
   factors?: [
     {
       title: string;
-      modalities: [
-        {
-          description: string;
-          file?: string;
-        }
-      ];
+      modalities: Modality[];
     }
   ];
 }

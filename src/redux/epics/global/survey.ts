@@ -13,7 +13,6 @@ const initializeEpic: Epic = (action$) =>
       return client.request(GET_SURVEY_BY_SLUG, { slug: action.payload });
     }),
     map((result) => {
-      console.log("INITIALIZE SURVEY");
       const payload = result.surveys[0];
       return actions.initializedSurvey(payload);
     })

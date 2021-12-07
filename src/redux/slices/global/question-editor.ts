@@ -162,7 +162,7 @@ export const questionsReducers = {
   deleteQuestion: (state: GlobalState, action: PayloadAction<string>): void => {
     state.questions.isDeleting = true;
     questionAdapter.removeOne(state.questions, action.payload);
-    state.survey.order = state.survey.order.filter(
+    state.survey.order = state.survey.order?.filter(
       (id: string) => id !== action.payload
     );
   },

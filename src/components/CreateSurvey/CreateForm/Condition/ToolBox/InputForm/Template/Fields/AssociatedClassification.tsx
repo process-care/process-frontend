@@ -12,7 +12,7 @@ export const AssociatedClassification: React.FC = () => {
         placeholder="ex: 4"
         style={{ width: "45%" }}
         label="Nb de répétitions vignettes"
-        name="loop_count"
+        name="max_loop"
         isCollapsed={false}
       />
       <AssociatedSubfields name="options" />

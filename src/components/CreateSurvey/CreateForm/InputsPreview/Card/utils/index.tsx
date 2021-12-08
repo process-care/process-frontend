@@ -179,8 +179,11 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
             isCollapsed={isCollapsed}
             name={input.id || "associated_classification"}
             label={input.label || t.label}
-            helpText={input.help_text || t.help_text}
+            helpText={
+              input.help_text || "Cliquer sur une vignette pour la sélectionner"
+            }
             factors={input.factors}
+            maxLoop={input.max_loop}
           />
         </>
       );

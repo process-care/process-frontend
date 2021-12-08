@@ -91,7 +91,7 @@
 // };
 
 import React, { useState, useEffect } from "react";
-import { Box, Button, FormLabel, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, FormLabel, Text } from "@chakra-ui/react";
 import IQuestion from "types/form/question";
 import { v4 as uuidv4 } from "uuid";
 
@@ -109,28 +109,31 @@ export const AssociatedClassification: React.FC<Props> = ({
   isCollapsed,
   factors,
 }) => {
-  const [state, setState] = useState<any[]>([0, 0, 0]);
+  const [state, setState] = useState<any[]>([
+    [
+      [0, 0, 0],
+      [0, 0, 0],
+    ],
+  ]);
 
   const _f = factors?.filter((f) => f !== null);
   const _m = _f?.map((f) => f.modalities?.length);
 
   const generate = () => {
-    const variation = _m?.map((m) => Math.floor(Math.random() * m));
-
-    if (variation) {
-      if (
-        state.length > 0 &&
-        state.every((arr) => JSON.stringify(arr) === JSON.stringify(variation))
-      ) {
-        console.log("END OF POSSIBILTIES", state);
-        return false;
-      } else if (
-        state.some((arr) => JSON.stringify(arr) === JSON.stringify(variation))
-      ) {
-        console.log("IS SAME");
-        generate();
-      } else setState([...state, variation]);
-    }
+    console.log("generate");
+    const _a = _m?.map((m) => Math.floor(Math.random() * m));
+    const _b = _m?.map((m) => Math.floor(Math.random() * m));
+    const variation = [_a, _b];
+    setState([...state, variation]);
+    // if (variation()) {
+    //   console.log(variation());
+    //   if (
+    //     state.some((arr) => JSON.stringify(arr) === JSON.stringify(variation()))
+    //   ) {
+    //     console.log("IS SAME");
+    //     generate();
+    //   } else setState([...state, variation()]);
+    // }
   };
 
   useEffect(() => {
@@ -152,7 +155,6 @@ export const AssociatedClassification: React.FC<Props> = ({
         w="40%"
         _hover={{ border: "1px solid black" }}
       >
-        <Button onClick={() => generate()}>generate</Button>
         {filteredFactors.map((factor, idx) => {
           const _t = state[state.length - 1][idx];
 
@@ -161,12 +163,15 @@ export const AssociatedClassification: React.FC<Props> = ({
           }
 
           return (
-            <Box key={uuidv4()}>
+            <Box
+              key={uuidv4()}
+              p="20px"
+              backgroundColor={idx % 2 == 0 ? "transparent" : "gray.100"}
+            >
               <Text variant="currentBold" textTransform="uppercase" mt="10px">
                 {factor?.title}
               </Text>
 
-              <Text>{_t}</Text>
               <Text variant="xs">{factor?.modalities[_t]?.description}</Text>
             </Box>
           );
@@ -179,12 +184,20 @@ export const AssociatedClassification: React.FC<Props> = ({
     <Box>
       <FormLabel>{label}</FormLabel>
       {!isCollapsed && (
-        <>
-          <Box d="flex" justifyContent="space-around" w="100%">
-            <Card factors={factors} />
+        <Flex flexDir="column">
+          <Box>
+            <Box d="flex" justifyContent="space-around" w="100%">
+              <Card factors={factors} />
+              <Card factors={factors} />
+            </Box>
+            <Text fontSize="xs">{helpText}</Text>
           </Box>
-          <Text fontSize="xs">{helpText}</Text>
-        </>
+          <Box d="flex" justifyContent="flex-end" mt="20px" mr="5%">
+            <Button w="fit-content" onClick={() => generate()}>
+              Suivant
+            </Button>
+          </Box>
+        </Flex>
       )}
     </Box>
   );

@@ -3,6 +3,8 @@ import { Box, Flex, FormLabel, Text } from "@chakra-ui/react";
 import IQuestion from "types/form/question";
 import { v4 as uuidv4 } from "uuid";
 import { Loader } from "components/Spinner";
+import { useField } from "formik";
+
 interface Props {
   label: string;
   helpText?: string;
@@ -25,14 +27,17 @@ export const AssociatedClassification: React.FC<Props> = ({
   isCollapsed,
   factors,
   maxLoop,
+  name,
 }) => {
+  const [field, , helpers] = useField(name);
+
   const [state, setState] = useState<State>({
     variations: [],
     isMounted: false,
   });
 
   const totalClicked = state.variations.length - 1;
-  const isFinished = totalClicked === (maxLoop && parseInt(maxLoop));
+  const isFinished = totalClicked === (maxLoop && parseInt(maxLoop) + 1);
   const _f = factors?.filter((f) => f !== null);
   const _m = _f?.map((f) => f.modalities?.length);
 
@@ -83,6 +88,28 @@ export const AssociatedClassification: React.FC<Props> = ({
       return <></>;
     }
 
+    const handleClick = () => {
+      generate();
+
+      const formatPayload = () => {
+        return {
+          variations: filteredFactors.map((f, idx) => {
+            const _t =
+              state.variations[state.variations.length - 1][index][idx];
+            return {
+              [f.title]: f?.modalities[_t]?.description,
+            };
+          }),
+          choice: index,
+        };
+      };
+      if (!field.value) {
+        helpers.setValue([formatPayload()]);
+      } else {
+        helpers.setValue([...field.value, formatPayload()]);
+      }
+    };
+
     return (
       <Box
         border="1px solid #E5E5E5"
@@ -90,11 +117,10 @@ export const AssociatedClassification: React.FC<Props> = ({
         mt="30px"
         w="40%"
         _hover={{ border: "1px solid black", cursor: "pointer" }}
-        onClick={() => generate()}
+        onClick={() => handleClick()}
       >
         {filteredFactors.map((factor, idx) => {
           const _t = state.variations[state.variations.length - 1][index][idx];
-
           if (!factor.modalities) {
             return <></>;
           }
@@ -136,7 +162,7 @@ export const AssociatedClassification: React.FC<Props> = ({
           <Box>
             <Box d="flex" justifyContent="space-around" w="100%">
               {[...Array(TOTAL_CARDS)].map((_, i) => (
-                <Card factors={factors} index={i} />
+                <Card factors={factors} index={i} key={i} />
               ))}
             </Box>
             <Text mt="15px" fontSize="xs">

@@ -59,6 +59,7 @@ export const questionFragment = gql`
     required
     units
     factors
+    max_loop
     step
     internal_title
     page {
@@ -66,7 +67,9 @@ export const questionFragment = gql`
     }
     conditions {
       id
-      target { id }
+      target {
+        id
+      }
       type
       operator
       target_value
@@ -158,6 +161,7 @@ export const surveyFullFragment = gql`
         required
         units
         factors
+        max_loop
         step
         internal_title
         page {
@@ -215,7 +219,9 @@ export const surveyFullFragment = gql`
       }
       conditions {
         id
-        target { id }
+        target {
+          id
+        }
         type
         operator
         target_value

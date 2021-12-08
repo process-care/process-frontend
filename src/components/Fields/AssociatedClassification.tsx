@@ -1,135 +1,68 @@
-// import React, { useEffect } from "react";
-// import { Box, FormLabel, Text } from "@chakra-ui/react";
-// import IQuestion from "types/form/question";
-// import { v4 as uuidv4 } from "uuid";
-// interface Props {
-//   label: string;
-//   helpText?: string;
-//   name: string;
-//   isCollapsed?: boolean;
-//   factors: IQuestion["factors"];
-// }
-
-// export const AssociatedClassification: React.FC<Props> = ({
-//   label,
-//   helpText,
-//   isCollapsed,
-//   factors,
-// }) => {
-//   const Card = ({ factors }: { factors: IQuestion["factors"] }) => {
-//     const filteredFactors = factors?.filter((f) => f !== null);
-//     const [state, setState] = React.useState({ r: 0, isMounted: false });
-//     if (filteredFactors === undefined) {
-//       return <></>;
-//     }
-
-//     return (
-//       <Box
-//         border="1px solid #E5E5E5"
-//         borderRadius="5px"
-//         mt="30px"
-//         w="40%"
-//         _hover={{ border: "1px solid black" }}
-//       >
-//         {filteredFactors.map((factor, i) => {
-//           if (!factor?.modalities) {
-//             return <></>;
-//           }
-//           const rr = filteredFactors.map(
-//             (f) => f.modalities && f.modalities.length
-//           );
-//           const random = Math.floor(Math.random() * rr[i]);
-
-//           useEffect(() => {
-//             setState({ r: random, isMounted: true });
-//           }, [random]);
-
-//           if (!state.isMounted) {
-//             return <>Loading</>;
-//           }
-
-//           return (
-//             <Box key={uuidv4()}>
-//               <Text variant="currentBold" textTransform="uppercase" mt="10px">
-//                 {factor?.title}
-//               </Text>
-//               <Box borderBottom="1px solid #E5E5E5" py="10px" pl="10px">
-//                 <Box key={factor?.modalities[random]?.description}>
-//                   {factor?.modalities[random]?.file && (
-//                     <img
-//                       src={factor?.modalities[random]?.file}
-//                       alt={factor?.modalities[random]?.description}
-//                       style={{ maxWidth: "30px", margin: "0 auto" }}
-//                     />
-//                   )}
-//                   <Text variant="currentLight" textAlign="left">
-//                     {/* {factor?.modalities[r]?.description} */}
-//                     {state.r}
-//                   </Text>
-//                 </Box>
-//               </Box>
-//             </Box>
-//           );
-//         })}
-//       </Box>
-//     );
-//   };
-
-//   return (
-//     <Box>
-//       <FormLabel>{label}</FormLabel>
-//       {!isCollapsed && (
-//         <>
-//           <Box d="flex" justifyContent="space-around" w="100%">
-//             <Card factors={factors} />
-//           </Box>
-//           <Text fontSize="xs">{helpText}</Text>
-//         </>
-//       )}
-//     </Box>
-//   );
-// };
-
 import React, { useState, useEffect } from "react";
-import { Box, Button, FormLabel, Text } from "@chakra-ui/react";
+import { Box, Flex, FormLabel, Text } from "@chakra-ui/react";
 import IQuestion from "types/form/question";
 import { v4 as uuidv4 } from "uuid";
-
+import { Loader } from "components/Spinner";
 interface Props {
   label: string;
   helpText?: string;
   name: string;
   isCollapsed?: boolean;
   factors: IQuestion["factors"];
+  maxLoop: string | undefined;
 }
+
+interface State {
+  variations: number[][][];
+  isMounted: boolean;
+}
+
+const TOTAL_CARDS = 2;
 
 export const AssociatedClassification: React.FC<Props> = ({
   label,
   helpText,
   isCollapsed,
   factors,
+  maxLoop,
 }) => {
-  const [state, setState] = useState<any[]>([0, 0, 0]);
+  const [state, setState] = useState<State>({
+    variations: [],
+    isMounted: false,
+  });
 
+  const totalClicked = state.variations.length - 1;
+  const isFinished = totalClicked === (maxLoop && parseInt(maxLoop));
   const _f = factors?.filter((f) => f !== null);
   const _m = _f?.map((f) => f.modalities?.length);
 
   const generate = () => {
-    const variation = _m?.map((m) => Math.floor(Math.random() * m));
+    if (!_m) {
+      return;
+    }
+    const _a = _m?.map((m) => Math.floor(Math.random() * m));
+    const _b = _m?.map((m) => Math.floor(Math.random() * m));
+    const variation = [_a, _b];
+
+    // if vignette _a === vignette _b, generate again
+    if (JSON.stringify(_a) === JSON.stringify(_b)) {
+      generate();
+    }
 
     if (variation) {
+      // if variation exist, generate again
       if (
-        state.length > 0 &&
-        state.every((arr) => JSON.stringify(arr) === JSON.stringify(variation))
-      ) {
-        console.log("END OF POSSIBILTIES", state);
-        return false;
-      } else if (
-        state.some((arr) => JSON.stringify(arr) === JSON.stringify(variation))
+        state.variations.some(
+          (_v) => JSON.stringify(_v) === JSON.stringify(variation)
+        )
       ) {
         console.log("IS SAME");
         generate();
-      } else setState([...state, variation]);
+      } else
+        setState({
+          variations: [...state.variations, variation],
+          isMounted: true,
+        });
     }
   };
 
@@ -137,9 +70,15 @@ export const AssociatedClassification: React.FC<Props> = ({
     generate();
   }, []);
 
-  console.log("STATE", state);
-  const Card = ({ factors }: { factors: IQuestion["factors"] }) => {
+  const Card = ({
+    factors,
+    index,
+  }: {
+    factors: IQuestion["factors"];
+    index: number;
+  }) => {
     const filteredFactors = factors?.filter((f) => f !== null);
+
     if (filteredFactors === undefined) {
       return <></>;
     }
@@ -150,23 +89,26 @@ export const AssociatedClassification: React.FC<Props> = ({
         borderRadius="5px"
         mt="30px"
         w="40%"
-        _hover={{ border: "1px solid black" }}
+        _hover={{ border: "1px solid black", cursor: "pointer" }}
+        onClick={() => generate()}
       >
-        <Button onClick={() => generate()}>generate</Button>
         {filteredFactors.map((factor, idx) => {
-          const _t = state[state.length - 1][idx];
+          const _t = state.variations[state.variations.length - 1][index][idx];
 
           if (!factor.modalities) {
             return <></>;
           }
 
           return (
-            <Box key={uuidv4()}>
+            <Box
+              key={uuidv4()}
+              p="20px"
+              backgroundColor={idx % 2 == 0 ? "transparent" : "gray.100"}
+            >
               <Text variant="currentBold" textTransform="uppercase" mt="10px">
                 {factor?.title}
               </Text>
 
-              <Text>{_t}</Text>
               <Text variant="xs">{factor?.modalities[_t]?.description}</Text>
             </Box>
           );
@@ -175,16 +117,33 @@ export const AssociatedClassification: React.FC<Props> = ({
     );
   };
 
+  if (!state.isMounted) {
+    return <Loader />;
+  }
+
+  if (isFinished) {
+    return <Text variant="smallTitle">Merci !</Text>;
+  }
+
   return (
     <Box>
       <FormLabel>{label}</FormLabel>
+      <Text mt="15px" fontSize="xs">
+        {`${totalClicked} / ${maxLoop}`}
+      </Text>
       {!isCollapsed && (
-        <>
-          <Box d="flex" justifyContent="space-around" w="100%">
-            <Card factors={factors} />
+        <Flex flexDir="column">
+          <Box>
+            <Box d="flex" justifyContent="space-around" w="100%">
+              {[...Array(TOTAL_CARDS)].map((_, i) => (
+                <Card factors={factors} index={i} />
+              ))}
+            </Box>
+            <Text mt="15px" fontSize="xs">
+              {helpText}
+            </Text>
           </Box>
-          <Text fontSize="xs">{helpText}</Text>
-        </>
+        </Flex>
       )}
     </Box>
   );

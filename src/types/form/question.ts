@@ -39,6 +39,7 @@ export default interface IQuestion {
   wysiwyg?: string | undefined;
   freeclassification_responses_count?: string;
   conditions?: ICondition[];
+  max_loop?: string;
   factors?: [
     {
       title: string;

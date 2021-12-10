@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Box, Flex, FormLabel, Text } from "@chakra-ui/react";
+import { Box, Flex, FormLabel, Spinner, Text } from "@chakra-ui/react";
 import IQuestion from "types/form/question";
 import { v4 as uuidv4 } from "uuid";
-import { Loader } from "components/Spinner";
 import { useField } from "formik";
+import { useAppSelector } from "redux/hooks";
 
 interface Props {
   label: string;
@@ -29,87 +29,20 @@ export const AssociatedClassification: React.FC<Props> = ({
   maxLoop,
   name,
 }) => {
-  const [field, , helpers] = useField(name);
+  const { generate, handleClick, state, filteredFactors, count } =
+    useAssociatedLogic(factors, name);
+  const drawerIsOpen = useAppSelector(
+    (state) => state.application.drawerIsOpen
+  );
 
-  const [state, setState] = useState<State>({
-    variations: [],
-    isMounted: false,
-  });
+  const isFinished = count === (maxLoop && parseInt(maxLoop));
 
-  const totalClicked = state.variations.length - 1;
-  const isFinished = totalClicked === (maxLoop && parseInt(maxLoop) + 1);
-  const _f = factors?.filter((f) => f !== null);
-  const _m = _f?.map((f) => f.modalities?.length);
-
-  const generate = () => {
-    if (!_m) {
-      return;
-    }
-    const _a = _m?.map((m) => Math.floor(Math.random() * m));
-    const _b = _m?.map((m) => Math.floor(Math.random() * m));
-    const variation = [_a, _b];
-
-    // if vignette _a === vignette _b, generate again
-    if (JSON.stringify(_a) === JSON.stringify(_b)) {
-      generate();
-    }
-
-    if (variation) {
-      // if variation exist, generate again
-      if (
-        state.variations.some(
-          (_v) => JSON.stringify(_v) === JSON.stringify(variation)
-        )
-      ) {
-        console.log("IS SAME");
-        generate();
-      } else
-        setState({
-          variations: [...state.variations, variation],
-          isMounted: true,
-        });
-    }
-  };
-
-  useEffect(() => {
-    generate();
-  }, []);
-
-  const Card = ({
-    factors,
-    index,
-  }: {
-    factors: IQuestion["factors"];
-    index: number;
-  }) => {
-    const filteredFactors = factors?.filter((f) => f !== null);
-
+  const Card = ({ index }: { index: number }) => {
     if (filteredFactors === undefined) {
       return <></>;
     }
 
-    const handleClick = () => {
-      generate();
-
-      const formatPayload = () => {
-        return {
-          variations: filteredFactors.map((f, idx) => {
-            const _t =
-              state.variations[state.variations.length - 1][index][idx];
-            return {
-              [f.title]: f?.modalities[_t]?.description,
-            };
-          }),
-          choice: index,
-        };
-      };
-      if (!field.value) {
-        helpers.setValue([formatPayload()]);
-      } else {
-        helpers.setValue([...field.value, formatPayload()]);
-      }
-    };
-
+    console.log(state);
     return (
       <Box
         border="1px solid #E5E5E5"
@@ -117,13 +50,13 @@ export const AssociatedClassification: React.FC<Props> = ({
         mt="30px"
         w="40%"
         _hover={{ border: "1px solid black", cursor: "pointer" }}
-        onClick={() => handleClick()}
+        onClick={() => handleClick(index)}
       >
         {filteredFactors.map((factor, idx) => {
-          const _t = state.variations[state.variations.length - 1][index][idx];
-          if (!factor.modalities) {
-            return <></>;
-          }
+          const random =
+            state.variations.length > 0
+              ? state.variations[state.variations.length - 1][index][idx]
+              : 0;
 
           return (
             <Box
@@ -135,7 +68,13 @@ export const AssociatedClassification: React.FC<Props> = ({
                 {factor?.title}
               </Text>
 
-              <Text variant="xs">{factor?.modalities[_t]?.description}</Text>
+              {!factor.modalities ? (
+                <Spinner size="xs" bottom="5px" pos="relative" />
+              ) : (
+                <Text variant="xs">
+                  {factor?.modalities[random]?.description}
+                </Text>
+              )}
             </Box>
           );
         })}
@@ -143,9 +82,10 @@ export const AssociatedClassification: React.FC<Props> = ({
     );
   };
 
-  if (!state.isMounted) {
-    return <Loader />;
-  }
+  useEffect(() => {
+    // Generate only if drawer is close (mean no adding new factors /modalities)
+    !drawerIsOpen && generate();
+  }, [drawerIsOpen]);
 
   if (isFinished) {
     return <Text variant="smallTitle">Merci !</Text>;
@@ -154,15 +94,17 @@ export const AssociatedClassification: React.FC<Props> = ({
   return (
     <Box>
       <FormLabel>{label}</FormLabel>
-      <Text mt="15px" fontSize="xs">
-        {`${totalClicked} / ${maxLoop}`}
-      </Text>
+      {maxLoop && (
+        <Text mt="15px" fontSize="xs">
+          {`${count} / ${maxLoop}`}
+        </Text>
+      )}
       {!isCollapsed && (
         <Flex flexDir="column">
           <Box>
             <Box d="flex" justifyContent="space-around" w="100%">
               {[...Array(TOTAL_CARDS)].map((_, i) => (
-                <Card factors={factors} index={i} key={i} />
+                <Card index={i} key={i} />
               ))}
             </Box>
             <Text mt="15px" fontSize="xs">
@@ -173,4 +115,89 @@ export const AssociatedClassification: React.FC<Props> = ({
       )}
     </Box>
   );
+};
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const useAssociatedLogic = (
+  factors: IQuestion["factors"],
+  name: string
+) => {
+  const [field, , helpers] = useField(name);
+
+  const [state, setState] = useState<State>({
+    variations: [],
+    isMounted: false,
+  });
+  const [count, setCount] = useState(0);
+  const filteredFactors = factors?.filter((f) => f !== null);
+  const modalitiesPerFactorCount = filteredFactors?.map(
+    (f) => f.modalities?.length
+  );
+
+  const generate = () => {
+    if (!modalitiesPerFactorCount) {
+      return;
+    }
+
+    const varA = modalitiesPerFactorCount?.map((m) =>
+      Math.floor(Math.random() * m)
+    );
+    const varB = modalitiesPerFactorCount?.map((m) =>
+      Math.floor(Math.random() * m)
+    );
+    const pair = [varA, varB];
+
+    // if variation A === variation B, generate again
+    if (JSON.stringify(varA) === JSON.stringify(varB)) {
+      console.log("GENERATE AGAIN");
+      generate();
+    }
+
+    if (pair) {
+      // if variation exist, generate again
+      if (
+        state.variations.some(
+          (_v) => JSON.stringify(_v) === JSON.stringify(pair)
+        )
+      ) {
+        console.log("IS SAME");
+        generate();
+      } else
+        setState({
+          ...state,
+          variations: [...state.variations, pair],
+          isMounted: true,
+        });
+    }
+  };
+  const handleClick = (index: number) => {
+    generate();
+    setCount(count + 1);
+
+    const formatPayload = () => {
+      return {
+        variations: filteredFactors?.map((f, idx) => {
+          const _t = state.variations[state.variations.length - 1][index][idx];
+          return {
+            [f.title]: f?.modalities[_t]?.description,
+          };
+        }),
+        choice: index,
+      };
+    };
+    if (!field.value) {
+      helpers.setValue([formatPayload()]);
+    } else {
+      helpers.setValue([...field.value, formatPayload()]);
+    }
+  };
+
+  return {
+    generate,
+    handleClick,
+    setState,
+    state,
+    filteredFactors,
+    count,
+  };
 };

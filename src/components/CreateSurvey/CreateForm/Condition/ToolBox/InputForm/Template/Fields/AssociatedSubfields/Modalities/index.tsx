@@ -44,7 +44,7 @@ export const Modalities: React.FC<Props> = ({ name }) => {
                           isEditing ? fields[index] : `Modalité ${index}`
                         }
                         rows="medium"
-                        isRequired
+                        isRequired="true"
                         isCollapsed={false}
                       />
 

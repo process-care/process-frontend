@@ -21,7 +21,7 @@ export const AssociatedSubfields: React.FC<Props> = ({ name }) => {
     // Populate answers field on edit.
     if (isEditing) {
       fields?.map((value: string, index: number) => {
-        setFieldValue(`options.${index}`, value);
+        setFieldValue(`${name}.${index}`, value);
       });
     }
   }, [isEditing]);
@@ -37,13 +37,13 @@ export const AssociatedSubfields: React.FC<Props> = ({ name }) => {
                 <Box key={index} w="100%">
                   <Flex w="100%">
                     <Textarea
-                      id={`factors.${index}.title`}
+                      id={`${name}.${index}.title`}
                       label={`Titre du facteur #${index + 1}`}
                       placeholder={
                         isEditing ? fields[index] : `Facteur ${index}`
                       }
                       rows="small"
-                      isRequired
+                      isRequired="true"
                       isCollapsed={false}
                     />
 
@@ -52,7 +52,7 @@ export const AssociatedSubfields: React.FC<Props> = ({ name }) => {
                         type="button"
                         onClick={() => {
                           arrayHelpers.remove(index);
-                          setFieldValue(`factors.${index}`, undefined);
+                          setFieldValue(`${name}.${index}`, undefined);
                         }}
                       >
                         -
@@ -62,7 +62,12 @@ export const AssociatedSubfields: React.FC<Props> = ({ name }) => {
                         <Button
                           ml={3}
                           type="button"
-                          onClick={() => arrayHelpers.push("")}
+                          onClick={() =>
+                            arrayHelpers.push({
+                              title: "",
+                              modalities: [],
+                            })
+                          }
                           variant="solid"
                         >
                           +

@@ -18,6 +18,7 @@ import {
   MultipleInputFieldsSchema,
   SliderSchema,
   WysiwygSchema,
+  AssociatedSchema,
 } from "../ValidationSchemas";
 
 export const renderFormTemplate = (
@@ -90,6 +91,8 @@ export const renderFormValidationSchema = (
       break;
     case "wysiwyg":
       return WysiwygSchema;
+    case "associated_classification":
+      return AssociatedSchema;
 
     default:
       return CommonFieldsSchema;

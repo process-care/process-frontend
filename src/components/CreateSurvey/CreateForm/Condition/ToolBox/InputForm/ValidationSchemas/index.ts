@@ -32,3 +32,10 @@ export const WysiwygSchema = Yup.object().shape({
   internal_title: Yup.string().required("Ce champs est requis"),
   wysiwyg: Yup.string(),
 });
+
+// Associated Classification
+
+export const AssociatedSchema = CommonFieldsSchema.shape({
+  factors: Yup.array()
+  .required("Merci de renseigner un facteur au minumum"),
+});

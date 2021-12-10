@@ -26,7 +26,7 @@ export const AssociatedClassification: React.FC<Props> = ({
   helpText,
   isCollapsed,
   factors,
-  maxLoop,
+  maxLoop = "5",
   name,
 }) => {
   const { generate, handleClick, state, filteredFactors, count } =
@@ -42,7 +42,6 @@ export const AssociatedClassification: React.FC<Props> = ({
       return <></>;
     }
 
-    console.log(state);
     return (
       <Box
         border="1px solid #E5E5E5"
@@ -64,16 +63,27 @@ export const AssociatedClassification: React.FC<Props> = ({
               p="20px"
               backgroundColor={idx % 2 == 0 ? "transparent" : "gray.100"}
             >
-              <Text variant="currentBold" textTransform="uppercase" mt="10px">
-                {factor?.title}
-              </Text>
+              {filteredFactors.length > 1 && (
+                <Text variant="currentBold" textTransform="uppercase" mt="10px">
+                  {factor?.title}
+                </Text>
+              )}
 
               {!factor.modalities ? (
                 <Spinner size="xs" bottom="5px" pos="relative" />
               ) : (
-                <Text variant="xs">
-                  {factor?.modalities[random]?.description}
-                </Text>
+                <Box>
+                  {factor?.modalities[random]?.file && (
+                    <img
+                      src={factor?.modalities[random]?.file}
+                      alt={factor?.modalities[random]?.description}
+                      style={{ maxWidth: "30px", margin: "0 auto" }}
+                    />
+                  )}
+                  <Text variant="xs">
+                    {factor?.modalities[random]?.description}
+                  </Text>
+                </Box>
               )}
             </Box>
           );
@@ -90,7 +100,7 @@ export const AssociatedClassification: React.FC<Props> = ({
   if (isFinished) {
     return <Text variant="smallTitle">Merci !</Text>;
   }
-
+  console.log(maxLoop);
   return (
     <Box>
       <FormLabel>{label}</FormLabel>
@@ -150,7 +160,7 @@ export const useAssociatedLogic = (
     // if variation A === variation B, generate again
     if (JSON.stringify(varA) === JSON.stringify(varB)) {
       console.log("GENERATE AGAIN");
-      generate();
+      // generate();
     }
 
     if (pair) {

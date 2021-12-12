@@ -17,7 +17,6 @@ export const getNewOrder: any = (
   const previousPageIdx = pagesIds.findIndex((p) => p === selectedPageId) - 1;
   const previousPageId = pagesIds[previousPageIdx];
   const previousQuestions = q.filter((c) => c[1]?.page?.id === previousPageId);
-  console.log(previousQuestions);
   const length = questions?.length;
 
   if (questions && length && length > 0) {

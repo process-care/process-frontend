@@ -29,13 +29,23 @@ export const AssociatedClassification: React.FC<Props> = ({
   maxLoop = "5",
   name,
 }) => {
-  const { generate, handleClick, state, filteredFactors, count } =
-    useAssociatedLogic(factors, name);
+  const {
+    generate,
+    handleClick,
+    state,
+    filteredFactors,
+    totalClick,
+    maxVariations,
+  } = useAssociatedLogic(factors, name);
   const drawerIsOpen = useAppSelector(
     (state) => state.application.drawerIsOpen
   );
 
-  const isFinished = count === (maxLoop && parseInt(maxLoop));
+  const isFinished =
+    totalClick ===
+    (maxVariations - 1 > (maxLoop && parseInt(maxLoop))
+      ? maxLoop && parseInt(maxLoop)
+      : maxVariations);
 
   const Card = ({ index }: { index: number }) => {
     if (filteredFactors === undefined) {
@@ -100,13 +110,14 @@ export const AssociatedClassification: React.FC<Props> = ({
   if (isFinished) {
     return <Text variant="smallTitle">Merci !</Text>;
   }
-  console.log(maxLoop);
   return (
     <Box>
       <FormLabel>{label}</FormLabel>
       {maxLoop && (
         <Text mt="15px" fontSize="xs">
-          {`${count} / ${maxLoop}`}
+          {maxVariations - 1 > parseInt(maxLoop)
+            ? `${totalClick} / ${maxLoop}`
+            : `${totalClick} / ${maxVariations}`}
         </Text>
       )}
       {!isCollapsed && (
@@ -138,63 +149,96 @@ export const useAssociatedLogic = (
     variations: [],
     isMounted: false,
   });
-  const [count, setCount] = useState(0);
+  const [totalClick, setClick] = useState(0);
   const filteredFactors = factors?.filter((f) => f !== null);
-  const modalitiesPerFactorCount = filteredFactors?.map(
-    (f) => f.modalities?.length
+  const modalitiesPerFactor = filteredFactors
+    ?.map((f) => f.modalities?.length)
+    .filter((m) => m !== 0);
+
+  const totalVariations = React.useMemo(
+    () => modalitiesPerFactor?.reduce((a, b) => a * b),
+    [modalitiesPerFactor]
   );
+  const getMaxVariation: any = (n: number, k: number) => {
+    const factorialize: any = (num: number) => {
+      if (num < 0) return -1;
+      else if (num === 0) return 1;
+      else {
+        return num * factorialize(num - 1);
+      }
+    };
+
+    const _A = (n: number, k: number) => {
+      return factorialize(n) / factorialize(n - k);
+    };
+
+    return (_A(n, k) / factorialize(k)) * 2;
+  };
+
+  const maxVariations = React.useMemo(() => {
+    if (totalVariations) return getMaxVariation(totalVariations, 2);
+  }, [totalVariations]);
 
   const generate = () => {
-    if (!modalitiesPerFactorCount) {
+    if (maxVariations - 1 === state.variations.length) {
+      console.log("End of variations");
       return;
     }
-
-    const varA = modalitiesPerFactorCount?.map((m) =>
-      Math.floor(Math.random() * m)
-    );
-    const varB = modalitiesPerFactorCount?.map((m) =>
-      Math.floor(Math.random() * m)
-    );
-    const pair = [varA, varB];
-
-    // if variation A === variation B, generate again
-    if (JSON.stringify(varA) === JSON.stringify(varB)) {
-      console.log("GENERATE AGAIN");
-      // generate();
+    if (!modalitiesPerFactor) {
+      return;
     }
+    const randomize = () => {
+      return modalitiesPerFactor?.map((m) => Math.floor(Math.random() * m));
+    };
 
-    if (pair) {
-      // if variation exist, generate again
-      if (
-        state.variations.some(
-          (_v) => JSON.stringify(_v) === JSON.stringify(pair)
-        )
-      ) {
-        console.log("IS SAME");
-        generate();
-      } else
-        setState({
-          ...state,
-          variations: [...state.variations, pair],
-          isMounted: true,
-        });
+    const card1 = randomize();
+    const card2 = randomize();
+
+    const variation = [card1, card2];
+
+    const cardsAreSame = (arrA: number[], arrB: number[]) => {
+      return JSON.stringify(arrA) === JSON.stringify(arrB);
+    };
+
+    if (cardsAreSame(card1, card2)) {
+      console.log("same cards");
+      generate();
+    } else if (
+      state.variations.some(
+        (v) => JSON.stringify(v) === JSON.stringify(variation)
+      ) ||
+      state.variations.some(
+        (v) => JSON.stringify(v) === JSON.stringify(variation.reverse())
+      )
+    ) {
+      console.log("Variation already exists");
+      generate();
+    } else {
+      setState({
+        ...state,
+        variations: [...state.variations, variation],
+        isMounted: true,
+      });
     }
   };
-  const handleClick = (index: number) => {
+  const handleClick = (cardIdx: number) => {
     generate();
-    setCount(count + 1);
+    setClick(totalClick + 1);
 
     const formatPayload = () => {
       return {
         variations: filteredFactors?.map((f, idx) => {
-          const _t = state.variations[state.variations.length - 1][index][idx];
+          // derniere variation sauvegardée /
+          const lastVariation = state.variations[state.variations.length - 1];
+          const getRandom = lastVariation[cardIdx][idx];
           return {
-            [f.title]: f?.modalities[_t]?.description,
+            [f.title]: [f?.modalities[getRandom]?.description],
           };
         }),
-        choice: index,
+        choice: cardIdx,
       };
     };
+    console.log(formatPayload());
     if (!field.value) {
       helpers.setValue([formatPayload()]);
     } else {
@@ -208,6 +252,7 @@ export const useAssociatedLogic = (
     setState,
     state,
     filteredFactors,
-    count,
+    totalClick,
+    maxVariations,
   };
 };

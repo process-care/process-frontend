@@ -2,16 +2,16 @@ import React from "react";
 import IRoute from "types/routes/route";
 import { useParams } from "react-router-dom";
 import { useGetLanding } from "call/actions/landing";
-import { Text } from "@chakra-ui/react";
+// import { Text } from "@chakra-ui/react";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 import { Preview } from "components/CreateSurvey/CreateLanding/Preview";
 import { useGetSurveyBySlug } from "call/actions/survey";
 
-const t = {
-  noLanding:
-    "⚠️ Dev ⚠️ La landing n'a pas encore été créée pour cette enquete.",
-};
+// const t = {
+//   noLanding:
+//     "⚠️ Dev ⚠️ La landing n'a pas encore été créée pour cette enquete.",
+// };
 
 export const Landing: React.FC<IRoute> = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -23,13 +23,13 @@ export const Landing: React.FC<IRoute> = () => {
     error,
   } = useGetLanding(survey?.landing?.id);
 
-  if (landing?.landing === undefined) {
-    return (
-      <Text pt="80px" variant="titleParaLight">
-        {t.noLanding}
-      </Text>
-    );
-  }
+  // if (landing?.landing === undefined) {
+  //   return (
+  //     <Text pt="80px" variant="titleParaLight">
+  //       {t.noLanding}
+  //     </Text>
+  //   );
+  // }
 
   if (isLoading) {
     return <Loader />;

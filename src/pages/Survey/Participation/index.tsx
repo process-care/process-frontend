@@ -30,13 +30,14 @@ export const Participation: React.FC<unknown> = () => {
         cta={NL.button.backToWelcome}
         action={goBackHome}
       />
-    )
+    );
   }
 
   // LOADING STATE
   if (isLoading || !survey) {
     return <Box mt="60">Loading in progress...</Box>;
   }
+  console.log(survey);
 
   if (survey.status !== SURVEY_STATUS.Running) {
     return (
@@ -45,7 +46,7 @@ export const Participation: React.FC<unknown> = () => {
         cta={NL.button.backToWelcome}
         action={goBackHome}
       />
-    )
+    );
   }
 
   // Redirect if the there is an existing participation
@@ -69,8 +70,8 @@ export const Participation: React.FC<unknown> = () => {
     if (!participation) {
       history.push(`/survey/${survey.slug}/consent`);
       return <Box mt="60">{NL.msg.missingConsent}</Box>;
-    } 
-    
+    }
+
     return (
       <ParticipationForm
         surveyId={survey.id}
@@ -115,29 +116,21 @@ function useConsentHandlers(slug: string) {
 // ---- SUB COMPONENTS
 
 type OverWarningProps = {
-  msg: string,
-  cta: string,
-  action: () => void,
-}
+  msg: string;
+  cta: string;
+  action: () => void;
+};
 
-const OverWarning = ({
-  msg,
-  cta,
-  action,
-}: OverWarningProps) => {
+const OverWarning = ({ msg, cta, action }: OverWarningProps) => {
   return (
     <Center h="100vh">
       <Flex flexDir="column">
         <Text variant="title">{msg}</Text>
 
-        <Button
-          mt="40px"
-          variant="roundedBlue"
-          onClick={action}
-        >
+        <Button mt="40px" variant="roundedBlue" onClick={action}>
           {cta}
         </Button>
       </Flex>
     </Center>
-  )
-}
+  );
+};

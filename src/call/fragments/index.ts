@@ -119,6 +119,7 @@ export const surveyFullFragment = gql`
     author {
       email
     }
+    status
     pages {
       id
       name

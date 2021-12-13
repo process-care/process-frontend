@@ -198,19 +198,7 @@ export const ProjectMenu: React.FC<Props> = ({
               </Tooltip>
             </Flex>
           </Box>
-          {!hadLanding && (
-            <Box pl={5} d="flex" alignContent="flex-start">
-              <Text variant="current">
-                ⚠️ L'enquête n'a pas de page d'accueil
-              </Text>
-            </Box>
-          )}
-          {!hadQuestion && (
-            <Box pl={5} d="flex" alignContent="flex-start">
-              <Text variant="current">⚠️ Le formulaire est vide</Text>
-            </Box>
-          )}
-
+          <Warning hadLanding={hadLanding} hadQuestion={hadQuestion} />
           <Box mt={4}>
             <Flex>
               <ActionButton
@@ -351,6 +339,31 @@ const BigNumber = ({ value, label }: BigNumberProps) => {
       <Text variant="currentLight">{label}</Text>
     </Flex>
   );
+};
+
+//  -- Warning
+
+const Warning = ({
+  hadLanding,
+  hadQuestion,
+}: {
+  hadLanding: boolean;
+  hadQuestion: boolean;
+}) => {
+  if (!hadLanding) {
+    return (
+      <Box pl={5} d="flex" alignContent="flex-start">
+        <Text variant="current">⚠️ L'enquête n'a pas de page d'accueil</Text>
+      </Box>
+    );
+  }
+  if (!hadQuestion) {
+    return (
+      <Box pl={5} d="flex" alignContent="flex-start">
+        <Text variant="current">⚠️ Le formulaire est vide</Text>
+      </Box>
+    );
+  } else return <></>;
 };
 
 // -- Actions

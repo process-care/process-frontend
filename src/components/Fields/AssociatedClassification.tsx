@@ -226,19 +226,23 @@ export const useAssociatedLogic = (
     setClick(totalClick + 1);
 
     const formatPayload = () => {
-      return {
-        variations: filteredFactors?.map((f, idx) => {
-          // derniere variation sauvegardée /
-          const lastVariation = state.variations[state.variations.length - 1];
-          const getRandom = lastVariation[cardIdx][idx];
+      const lastVariation = state.variations[state.variations.length - 1];
+
+      const format = (el: number) => {
+        return filteredFactors?.map((f, idx) => {
           return {
-            [f.title]: [f?.modalities[getRandom]?.description],
+            [f.title]: f.modalities[lastVariation[el][idx]].description,
           };
-        }),
+        });
+      };
+
+      // TODO: replace format(0) by dynamic value (come from TOTAL_CARDS)
+      return {
+        variations: [format(0), format(1)],
         choice: cardIdx,
       };
     };
-    console.log(formatPayload());
+
     if (!field.value) {
       helpers.setValue([formatPayload()]);
     } else {

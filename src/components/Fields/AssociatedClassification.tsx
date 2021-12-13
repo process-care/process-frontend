@@ -113,7 +113,7 @@ export const AssociatedClassification: React.FC<Props> = ({
   return (
     <Box>
       <FormLabel>{label}</FormLabel>
-      {maxLoop && (
+      {maxLoop && maxVariations && (
         <Text mt="15px" fontSize="xs">
           {maxVariations - 1 > parseInt(maxLoop)
             ? `${totalClick} / ${maxLoop}`
@@ -172,7 +172,7 @@ export const useAssociatedLogic = (
       return factorialize(n) / factorialize(n - k);
     };
 
-    return (_A(n, k) / factorialize(k)) * 2;
+    return _A(n, k) / factorialize(k);
   };
 
   const maxVariations = React.useMemo(() => {

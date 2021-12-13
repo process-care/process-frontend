@@ -5,7 +5,13 @@ import { useAppSelector } from "redux/hooks";
 
 export const Banner: React.FC = () => {
   const { condition_status } = useAppSelector((state) => state.formBuilder);
-  const { data, isLoading, isError } = useCheckSurvey(condition_status);
+  const { data, isLoading } = useCheckSurvey(condition_status);
+  console.log(data);
+
+  if (!condition_status || data === undefined) {
+    return <></>;
+  }
+
   if (isLoading) {
     return (
       <Box
@@ -20,7 +26,7 @@ export const Banner: React.FC = () => {
       </Box>
     );
   }
-  if (data) {
+  if (data?.checkSurvey?.valid) {
     return (
       <Box w="100%" p="5px" backgroundColor="brand.green">
         <Text variant="current" color="white">
@@ -28,15 +34,39 @@ export const Banner: React.FC = () => {
         </Text>
       </Box>
     );
-  }
-  if (isError) {
+  } else
     return (
       <Box w="100%" p="5px" backgroundColor="brand.alert">
-        <Text variant="current" color="brand.red">
-          Une condition est erronnée ...
-        </Text>
+        {data?.checkSurvey?.errors.map((error: any) => {
+          return (
+            <Box textAlign="left" pl="10%">
+              <Text variant="current" color="brand.red">
+                Erreur sur la page: {error.pageId}
+              </Text>
+              {error?.errors?.map((err: any) => {
+                return (
+                  <>
+                    <Text variant="current" color="brand.red">
+                      Pour la question: {err.questionId}
+                    </Text>
+                    {err?.unordered?.map((el: any) => {
+                      return (
+                        <>
+                          <Text variant="current" color="brand.red">
+                            à la condition: {el.conditionId}
+                          </Text>
+                          <Text variant="current" color="brand.red">
+                            Sur le positionement de: {el.targetId}
+                          </Text>
+                        </>
+                      );
+                    })}
+                  </>
+                );
+              })}
+            </Box>
+          );
+        })}
       </Box>
     );
-  }
-  return <></>;
 };

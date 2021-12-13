@@ -54,7 +54,7 @@ export const CreateForm: React.FC<IRoute> = () => {
       <Box d="flex" justifyContent="space-around" w="100%" overflow="hidden">
         <Box w="100%">
           <Menu surveyId={selectedSurveyId} />
-          <Banner />
+
           <Box
             d="flex"
             justifyContent="space-around"
@@ -76,7 +76,10 @@ export const CreateForm: React.FC<IRoute> = () => {
               w="94%"
               alignItems="center"
               p="0"
+              d="flex"
+              flexDirection="column"
             >
+              <Banner />
               <div className="background__grid">
                 {selectedCondition !== undefined ? (
                   <ConditionPreview selectedCondition={selectedCondition} />

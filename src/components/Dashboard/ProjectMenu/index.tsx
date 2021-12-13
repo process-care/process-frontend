@@ -223,16 +223,18 @@ export const ProjectMenu: React.FC<Props> = ({
               <ActionButton
                 top
                 right
-                disabled={!isDraft && process.env.NODE_ENV !== "development"}
+                disabled={!isDraft}
                 label={"Modifier le questionnaire"}
                 onClick={goToForm}
               />
               <ActionButton
                 top
+                disabled={!isDraft}
                 label={"Modifier le consentement"}
                 onClick={goToConsent}
               />
               <ActionButton
+                disabled={!isDraft}
                 top
                 left
                 label={"Modifier les données de l'enquête"}
@@ -350,7 +352,7 @@ interface ActionButtonProps {
 }
 
 const borderStyle = "1px solid";
-const disabledStyle = { backgroundColor: "grey" };
+const disabledStyle = { backgroundColor: "#cdcdcd", opacity: 0.3 };
 
 const ActionButton = ({
   disabled,
@@ -381,6 +383,9 @@ const ActionButton = ({
       {...borders}
       _hover={hoverStyle}
       onClick={onClick}
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
     >
       <Text variant="xs">{label}</Text>
     </Box>

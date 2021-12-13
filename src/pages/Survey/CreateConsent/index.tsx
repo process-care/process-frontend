@@ -76,7 +76,6 @@ export const CreateConsent: React.FC = () => {
                 dispatch(updateConsentMeta(values));
               }, [values]);
 
-              // Target params for various uploads (cover, partners)
               const targets = React.useMemo(() => {
                 const base = { refId: surveyId, ref: "survey" };
                 return {

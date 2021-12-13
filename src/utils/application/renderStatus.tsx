@@ -1,7 +1,7 @@
 import { Survey } from "redux/slices/surveyBuilder";
 
 interface StatusTrad {
-  trad: "Non publié" | "Finalisé" | "Archivé" | "En cours";
+  trad: "📝 Non publié" | "🔐 Finalisé" | "💾 Archivé" | "✅ En cours";
 }
 
 export const renderStatus = (
@@ -9,22 +9,22 @@ export const renderStatus = (
 ): StatusTrad["trad"] => {
   switch (status) {
     case "draft":
-      return "Non publié";
+      return "📝 Non publié";
       break;
 
     case "closed":
-      return "Finalisé";
+      return "🔐 Finalisé";
       break;
 
     case "archived":
-      return "Archivé";
+      return "💾 Archivé";
       break;
 
     case "pending":
-      return "En cours";
+      return "✅ En cours";
       break;
     default:
-      return "En cours";
+      return "✅ En cours";
       break;
   }
 };

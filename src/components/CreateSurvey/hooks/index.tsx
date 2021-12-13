@@ -29,8 +29,13 @@ export const useNavigator: any = (survey: Survey["survey"]) => {
 
   // Take you to the form editor
   const goToForm = useCallback(() => {
-    if (survey.status !== SURVEY_STATUS.Draft) {
-      alert("Désolé, vous ne pouvez pas éditer le formulaire d'une enquête en cours.");
+    if (
+      survey.status !== SURVEY_STATUS.Draft &&
+      process.env.NODE_ENV !== "development"
+    ) {
+      alert(
+        "Désolé, vous ne pouvez pas éditer le formulaire d'une enquête en cours."
+      );
       return;
     }
 

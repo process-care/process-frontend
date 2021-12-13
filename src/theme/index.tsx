@@ -181,6 +181,9 @@ const theme = extendTheme({
           _hover: {
             bg: "blue",
             color: "white",
+            _disabled: {
+              bg: "brand.blue",
+            },
           },
         }),
         roundedTransparent: () => ({

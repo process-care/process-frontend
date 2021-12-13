@@ -116,6 +116,9 @@ export const ProjectMenu: React.FC<Props> = ({
   };
 
   const isDraft = selectedSurvey.status === SURVEY_STATUS.Draft;
+  const hadLanding = selectedSurvey.landing !== null;
+  const hadQuestion = selectedSurvey;
+  console.log(hadQuestion);
 
   return (
     // TODO: Use a % + max-width to limit growth on big screens
@@ -178,7 +181,11 @@ export const ProjectMenu: React.FC<Props> = ({
             </Tooltip>
             <Flex justifyContent="space-between" alignItems="center">
               {isDraft ? (
-                <Button variant="roundedBlue" onClick={handlePublish}>
+                <Button
+                  disabled={!hadLanding}
+                  variant="roundedBlue"
+                  onClick={handlePublish}
+                >
                   Publier
                 </Button>
               ) : (
@@ -195,19 +202,28 @@ export const ProjectMenu: React.FC<Props> = ({
               </Tooltip>
             </Flex>
           </Box>
+          {!hadLanding && (
+            <Box pl={5} d="flex" alignContent="flex-start">
+              <Text variant="current">
+                ⚠️ L'enquête n'a pas de page d'accueil
+              </Text>
+            </Box>
+          )}
 
           <Box mt={4}>
             <Flex>
               <ActionButton
                 top
                 right
-                label={"Modifier la page d'accueil"}
+                label={` ${
+                  hadLanding ? "Modifier" : "Créer"
+                } la page d'accueil`}
                 onClick={gotToLanding}
               />
               <ActionButton
                 top
                 right
-                disabled={!isDraft}
+                disabled={!isDraft && process.env.NODE_ENV !== "development"}
                 label={"Modifier le questionnaire"}
                 onClick={goToForm}
               />
@@ -334,7 +350,7 @@ interface ActionButtonProps {
 }
 
 const borderStyle = "1px solid";
-const disabledStyle = { backgroundColor: 'grey' };
+const disabledStyle = { backgroundColor: "grey" };
 
 const ActionButton = ({
   disabled,
@@ -353,15 +369,13 @@ const ActionButton = ({
   };
 
   const hoverStyle = useMemo(() => {
-    return (disabled)
-      ? { cursor: "not-allowed" }
-      : { cursor: "pointer" };
+    return disabled ? { cursor: "not-allowed" } : { cursor: "pointer" };
   }, [disabled]);
 
   return (
     <Box
       disabled={disabled}
-      _disabled= {disabledStyle}
+      _disabled={disabledStyle}
       p={3}
       w="calc(100% / 3)"
       {...borders}

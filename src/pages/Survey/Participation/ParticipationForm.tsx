@@ -57,7 +57,7 @@ export const ParticipationForm: React.FC<Props> = ({
 
   const currentColor = data.survey.landing?.color_theme?.base || "black";
   const { order } = data.survey;
-  
+
   return (
     <Box>
       <Flex direction="row" h="100vh">
@@ -106,8 +106,6 @@ export const ParticipationForm: React.FC<Props> = ({
   );
 };
 
-
-
 // ---- HOOKS
 
 function useFinishHandler(participationId: string, slug: string | undefined) {
@@ -154,7 +152,10 @@ function useNavigationHandlers(pages: IPage[] | undefined) {
   );
 
   const nextPage = useCallback(() => onNavigate(DIRECTION.Next), [onNavigate]);
-  const previousPage = useCallback(() => onNavigate(DIRECTION.Previous), [onNavigate]);
+  const previousPage = useCallback(
+    () => onNavigate(DIRECTION.Previous),
+    [onNavigate]
+  );
 
   return {
     isFirstPage: selectedIdx === 0,

@@ -63,9 +63,10 @@ export const ProjectMenu: React.FC<Props> = ({
 
   const { gotToLanding, goToForm, goToConsent, goToSurveyMetadatas } =
     useNavigator(selectedSurvey);
+  const { isDraft, hadLanding, hadQuestion, canPublish } =
+    useWarning(selectedSurvey);
 
   const [statFilter, setStatFilter] = useState(filters[0].id);
-
   // We should be doing that much better :/
   if (isLoadingStats) {
     return (
@@ -114,11 +115,6 @@ export const ProjectMenu: React.FC<Props> = ({
       },
     });
   };
-
-  const isDraft = selectedSurvey.status === SURVEY_STATUS.Draft;
-  const hadLanding = selectedSurvey.landing !== null;
-  const hadQuestion = selectedSurvey;
-  console.log(hadQuestion);
 
   return (
     // TODO: Use a % + max-width to limit growth on big screens
@@ -182,7 +178,7 @@ export const ProjectMenu: React.FC<Props> = ({
             <Flex justifyContent="space-between" alignItems="center">
               {isDraft ? (
                 <Button
-                  disabled={!hadLanding}
+                  disabled={!canPublish}
                   variant="roundedBlue"
                   onClick={handlePublish}
                 >
@@ -209,6 +205,11 @@ export const ProjectMenu: React.FC<Props> = ({
               </Text>
             </Box>
           )}
+          {!hadQuestion && (
+            <Box pl={5} d="flex" alignContent="flex-start">
+              <Text variant="current">⚠️ Le formulaire est vide</Text>
+            </Box>
+          )}
 
           <Box mt={4}>
             <Flex>
@@ -224,7 +225,7 @@ export const ProjectMenu: React.FC<Props> = ({
                 top
                 right
                 disabled={!isDraft}
-                label={"Modifier le questionnaire"}
+                label={` ${hadQuestion ? "Modifier" : "Créer"} le formulaire`}
                 onClick={goToForm}
               />
               <ActionButton
@@ -318,6 +319,19 @@ function useSurveyData(surveyId: string) {
     statistics: data?.surveyStats?.statistics,
     exportURL,
     isLoadingStats: isLoading,
+  };
+}
+
+function useWarning(selectedSurvey: ISurvey | Record<string, any>) {
+  const isDraft = selectedSurvey.status === SURVEY_STATUS.Draft;
+  const hadLanding = selectedSurvey.landing !== null;
+  const hadQuestion = selectedSurvey.order?.length > 0;
+  const canPublish = !isDraft && hadLanding && hadQuestion;
+  return {
+    isDraft,
+    hadLanding,
+    hadQuestion,
+    canPublish,
   };
 }
 

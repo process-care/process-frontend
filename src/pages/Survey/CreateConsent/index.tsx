@@ -2,7 +2,7 @@ import { Box, Center, Container, Text, Button } from "@chakra-ui/react";
 import React from "react";
 import { Menu } from "components/Menu/CreateSurvey";
 import { Form, Formik } from "formik";
-import { useGetSurvey } from "call/actions/survey";
+import { useGetSurveyBySlug } from "call/actions/survey";
 import { useHistory, useParams } from "react-router-dom";
 
 import { useDispatch } from "react-redux";
@@ -22,14 +22,15 @@ const t = {
 
 export const CreateConsent: React.FC = () => {
   const { slug: surveyId } = useParams<{ slug: string }>();
-  const { data: survey } = useGetSurvey(surveyId);
+  const { data: survey } = useGetSurveyBySlug(surveyId);
   const dispatch = useDispatch();
-  const url = survey?.survey?.consentement?.url;
+  const url = survey?.consentement?.url;
   const history = useHistory();
 
   const goToDashboard = () => {
     history.push("/dashboard");
   };
+
   return (
     <Box
       d="flex"
@@ -39,7 +40,7 @@ export const CreateConsent: React.FC = () => {
       h="100vh"
     >
       <Box w="100%">
-        <Menu surveyTitle={survey?.survey.title} />
+        <Menu surveyTitle={survey?.title} />
         <div className="background__grid">
           <Box
             h="100%"
@@ -61,7 +62,7 @@ export const CreateConsent: React.FC = () => {
           <Formik
             validateOnBlur={false}
             initialValues={
-              survey?.survey.consentement || {
+              survey?.consentement || {
                 consentement: { id: "", name: "", url: "" },
               }
             }
@@ -77,11 +78,11 @@ export const CreateConsent: React.FC = () => {
               }, [values]);
 
               const targets = React.useMemo(() => {
-                const base = { refId: surveyId, ref: "survey" };
+                const base = { refId: survey?.id, ref: "survey" };
                 return {
                   consentement: { ...base, field: "consentement" },
                 };
-              }, [values]);
+              }, [values, survey]);
 
               return (
                 <Form style={{ textAlign: "left", width: "80%" }}>
@@ -92,7 +93,7 @@ export const CreateConsent: React.FC = () => {
                     content={values}
                     label={t.cta}
                     helpText={t.format}
-                    onChange={(e) => console.log(e)}
+                    onChange={(e: any) => console.log(e)}
                   />
 
                   <Box pos="fixed" bottom="50px" d="flex" flexDir="column">

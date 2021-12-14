@@ -1,5 +1,5 @@
 import { createSlice, EntityState, PayloadAction } from "@reduxjs/toolkit";
-import ICondition from "types/form/condition";
+import ICondition, { CheckSurvey } from "types/form/condition";
 
 import IPage from "types/form/page";
 import IQuestion from "types/form/question";
@@ -116,6 +116,13 @@ export const globalSlice = createSlice({
     },
     updatedOrder: (state: GlobalState, _action: PayloadAction<string>) => {
       state.survey.isOrdering = false;
+    },
+    checkSurvey: (state: GlobalState, action: PayloadAction<boolean>) => {
+      state.survey.isChecking = action.payload;
+    },
+    checkedSurvey: (state: GlobalState, action: PayloadAction<CheckSurvey>) => {
+      state.survey.status = action.payload;
+      state.survey.isChecking = false;
     },
   },
 });

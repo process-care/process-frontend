@@ -6,6 +6,7 @@ import { Survey } from "./../surveyBuilder";
 import slugify from "slugify";
 import { history } from "redux/store/history";
 import { GlobalState } from "../global";
+import { CheckSurvey } from "types/form/condition";
 
 // ---- STATE
 
@@ -14,8 +15,9 @@ export interface SurveyEditor {
   isLoading: boolean;
   isPosting: boolean;
   isFailed: boolean;
+  isChecking: boolean;
   isOrdering: boolean;
-  error?: string;
+  status?: CheckSurvey;
   lastUpdated: string;
   lastSaved: string;
   lastPosted: string;
@@ -29,6 +31,7 @@ export const initialSurveyState: SurveyEditor = {
   isLoading: true,
   isPosting: false,
   isFailed: false,
+  isChecking: false,
   isOrdering: false,
   lastUpdated: new Date().toISOString(),
   lastSaved: new Date().toISOString(),
@@ -117,9 +120,9 @@ export const surveyReducers = {
       history.push(`/dashboard`);
     }, 1);
   },
-  failed: (state: GlobalState, action: PayloadAction<string>): void => {
+  failed: (state: GlobalState, action: PayloadAction<any>): void => {
     state.survey.isFailed = true;
-    state.survey.error = action.payload;
+    state.survey.status = action.payload;
   },
   setStep: (state: GlobalState, action: PayloadAction<number>): void => {
     state.survey.step = action.payload;

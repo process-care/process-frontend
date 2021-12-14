@@ -28,12 +28,6 @@ export const formBuilderSlice = createSlice({
   name: "formBuilder",
   initialState,
   reducers: {
-    //Mock
-
-    // mockForm: () => formMock,
-
-    // Inputs
-
     setConditionStatus: (state, action: PayloadAction<string>) => {
       state.condition_status = action.payload;
     },

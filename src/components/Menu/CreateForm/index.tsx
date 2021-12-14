@@ -10,10 +10,10 @@ import { NavLink } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { ReactComponent as Back } from "./assets/back.svg";
 import { t } from "static/input";
-import { actions } from "redux/slices/application";
+import { actions as appActions } from "redux/slices/application";
 import { Loader } from "components/Spinner";
 import { useGetSurvey } from "call/actions/survey";
-import { setConditionStatus } from "redux/slices/formBuilder";
+import { actions as globalActions } from "redux/slices/global";
 import { CheckIcon } from "@chakra-ui/icons";
 import { selectors } from "redux/slices/landing-editor";
 
@@ -53,7 +53,8 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
   }
 
   const handleVerify = () => {
-    dispatch(setConditionStatus(surveyId));
+    console.log("verify");
+    dispatch(globalActions.checkSurvey(true));
   };
 
   return (
@@ -66,7 +67,7 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
           variant="roundedBlue"
           onClick={() =>
             dispatch(
-              actions.tooglePreview({
+              appActions.tooglePreview({
                 previewMode: null,
               })
             )
@@ -110,7 +111,7 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
                 mr={5}
                 onClick={() =>
                   dispatch(
-                    actions.tooglePreview({
+                    appActions.tooglePreview({
                       previewMode: "landing",
                     })
                   )

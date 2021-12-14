@@ -33,6 +33,7 @@ interface CardProps {
 const Card: React.FC<CardProps> = ({ input, index }) => {
   const dispatch = useAppDispatch();
   const { is_removing } = useAppSelector((state) => state.formBuilder);
+  const { status } = useAppSelector((state) => state.global.survey);
 
   const getCondition = (input: IQuestion) =>
     useAppSelector((state) =>
@@ -51,6 +52,12 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
   const handleDelete = async () => {
     dispatch(actions.deleteQuestion(input.id));
   };
+
+  console.log(status);
+
+  const ErrorsListId = status?.checkSurvey?.errors
+    ?.map((e) => e?.errors.map((el) => el?.questionId))
+    .flat();
 
   return (
     <Draggable draggableId={input.id} index={index}>
@@ -76,7 +83,13 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
           </Box>
 
           <Box _hover={{ cursor: "grab" }} key={input.id} w="100%">
-            <Container variant="inputContainer" padding={isRemoving ? 0 : 4}>
+            <Container
+              variant="inputContainer"
+              padding={isRemoving ? 0 : 4}
+              borderColor={
+                ErrorsListId?.includes(input.id) ? "red.500" : "gray.300"
+              }
+            >
               <Box color={color}>
                 {!isRemoving && (
                   <Flex w="100%" justifyContent="space-between" pb={4}>

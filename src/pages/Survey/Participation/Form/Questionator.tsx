@@ -14,13 +14,14 @@ export type Props = {
 
 // ---- COMPONENT
 
-export const Questionator: React.FC<Props> = ({
-  id,
-}) => {
+export const Questionator: React.FC<Props> = ({ id }) => {
   // Get question's related content & answers
-  const question = useAppSelector(state => selectors.selectById(state, id));
-  const evaluations = useAppSelector(state => selectors.selectEvaluation(state, id));
+  const question = useAppSelector((state) => selectors.selectById(state, id));
+  const evaluations = useAppSelector((state) =>
+    selectors.selectEvaluation(state, id)
+  );
 
+  console.log(evaluations);
   // Evaluate if the question should be shown
   const show = shouldShow(evaluations);
 

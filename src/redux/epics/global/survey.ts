@@ -4,6 +4,7 @@ import { Epic } from "redux/store";
 import { actions } from "redux/slices/global";
 import { client } from "call/actions";
 import { GET_SURVEY_BY_SLUG, UPDATE_ORDER } from "call/queries/survey";
+import { CHECK_SURVEY } from "call/queries/formBuilder/condition";
 
 // Watches over "initialize" currentsurvey
 const initializeEpic: Epic = (action$) =>
@@ -35,4 +36,23 @@ const updateOrderEpic: Epic = (action$, state$) =>
     })
   );
 
-export const surveyEpics = combineEpics(initializeEpic, updateOrderEpic);
+const TestEpic: Epic = (action$, state$) =>
+  action$.pipe(
+    ofType(actions.checkSurvey.type),
+    map((action) => action.payload),
+    switchMap(() => {
+      const selectedSurveyId = state$.value.global.survey.selectedSurvey;
+      return client.request(CHECK_SURVEY, {
+        surveyId: selectedSurveyId,
+      });
+    }),
+    map((payload) => {
+      return actions.checkedSurvey(payload);
+    })
+  );
+
+export const surveyEpics = combineEpics(
+  initializeEpic,
+  updateOrderEpic,
+  TestEpic
+);

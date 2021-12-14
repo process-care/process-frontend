@@ -1,18 +1,26 @@
 import { Box, Text } from "@chakra-ui/react";
-import { useCheckSurvey } from "call/actions/formBuider/condition";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useAppSelector } from "redux/hooks";
 
 export const Banner: React.FC = () => {
-  const { condition_status } = useAppSelector((state) => state.formBuilder);
-  const { data, isLoading } = useCheckSurvey(condition_status);
-  console.log(data);
+  const { status, isChecking } = useAppSelector((state) => state.global.survey);
+  const [open, setOpen] = useState(false);
 
-  if (!condition_status || data === undefined) {
+  useEffect(() => {
+    if (isChecking) {
+      setOpen(true);
+    } else {
+      setTimeout(() => {
+        setOpen(false);
+      }, 6000);
+    }
+  }, [isChecking]);
+
+  if (!open) {
     return <></>;
   }
 
-  if (isLoading) {
+  if (open && isChecking) {
     return (
       <Box
         w="100%"
@@ -26,7 +34,7 @@ export const Banner: React.FC = () => {
       </Box>
     );
   }
-  if (data?.checkSurvey?.valid) {
+  if (status?.checkSurvey?.valid) {
     return (
       <Box w="100%" p="5px" backgroundColor="brand.green">
         <Text variant="current" color="white">
@@ -37,7 +45,7 @@ export const Banner: React.FC = () => {
   } else
     return (
       <Box w="100%" p="5px" backgroundColor="brand.alert">
-        {data?.checkSurvey?.errors.map((error: any) => {
+        {status?.checkSurvey?.errors?.map((error: any) => {
           return (
             <Box textAlign="left" pl="10%">
               <Text variant="current" color="brand.red">

@@ -22,6 +22,7 @@ interface Props {
   isCollapsed?: boolean;
   isDisabled?: boolean;
   appearance?: "light";
+  autoComplete?: string;
 }
 export const CustomTextarea: React.FC<Props> = ({
   label,
@@ -35,6 +36,7 @@ export const CustomTextarea: React.FC<Props> = ({
   isCollapsed,
   isDisabled,
   appearance,
+  autoComplete,
 }) => {
   const [field, meta] = useField(id);
   const isLight = appearance === "light";
@@ -71,6 +73,7 @@ export const CustomTextarea: React.FC<Props> = ({
             maxLength={getRows(rows) * 145}
             isRequired={isRequired === "true"}
             {...field}
+            autoComplete={autoComplete}
           />
           {meta.error && (
             <Text fontSize="10px" color="red" textAlign="right">

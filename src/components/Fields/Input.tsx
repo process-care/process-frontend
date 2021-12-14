@@ -24,6 +24,7 @@ interface Props {
   isRequired?: any;
   isCollapsed?: boolean;
   ref?: any;
+  autoComplete?: string;
 }
 
 export const CustomInput: React.FC<Props> = ({
@@ -37,6 +38,7 @@ export const CustomInput: React.FC<Props> = ({
   isRequired,
   isCollapsed,
   ref,
+  autoComplete,
 }) => {
   const [field, meta] = useField(name);
   return (
@@ -61,6 +63,7 @@ export const CustomInput: React.FC<Props> = ({
               size="md"
               placeholder={placeholder}
               {...field}
+              autoComplete={autoComplete}
             />
             {inputRightAddon && (
               <InputRightAddon children={inputRightAddon} h="40px" />

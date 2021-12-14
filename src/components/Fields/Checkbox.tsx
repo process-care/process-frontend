@@ -48,9 +48,10 @@ export const CustomCheckbox: React.FC<Props> = ({
                 checkbox.map(({ value, label }) => {
                   return (
                     <CheckboxControl
+                      key={value}
                       name={id}
                       value={value}
-                      isRequired={isRequired}
+                      isRequired={isRequired === "true"}
                     >
                       {label}
                     </CheckboxControl>

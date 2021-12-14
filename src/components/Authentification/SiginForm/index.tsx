@@ -2,7 +2,6 @@ import React from "react";
 import { Formik, Form } from "formik";
 import { Box, Flex, Text, Button } from "@chakra-ui/react";
 import { Textarea, Input, Checkbox } from "components/Fields";
-
 import { NavLink } from "react-router-dom";
 import { SuccessPage } from "../SucessPage";
 import { useSignin } from "call/actions/auth";
@@ -22,6 +21,7 @@ export const SigninForm: React.FC = () => {
   if (isSuccessPage) {
     return <SuccessPage />;
   }
+
   return (
     <Formik
       validateOnMount={false}
@@ -39,7 +39,7 @@ export const SigninForm: React.FC = () => {
         validateForm(data);
         setSubmitting(true);
         signin(formatData(data)).then((res: any) => {
-          if (res.register.jwt) {
+          if (res?.register?.user?.id) {
             seIsSuccessPage(true);
             localStorage.setItem("process__user", JSON.stringify(res.register));
           }
@@ -61,7 +61,7 @@ export const SigninForm: React.FC = () => {
               backgroundColor="white"
               d="flex"
               flexDir="column"
-              w="40%"
+              w="60%"
             >
               <Text>Création de compte</Text>
               {error && <p>{error.name}</p>}
@@ -79,6 +79,7 @@ export const SigninForm: React.FC = () => {
                   placeholder="Renseigner votre prénom"
                   id="firstName"
                   isRequired="true"
+                  autoComplete="given-name"
                 />
                 <Textarea
                   isCollapsed={false}
@@ -87,6 +88,7 @@ export const SigninForm: React.FC = () => {
                   placeholder="Renseigner votre nom"
                   id="name"
                   isRequired="true"
+                  autoComplete="family-name"
                 />
 
                 <Textarea
@@ -95,6 +97,7 @@ export const SigninForm: React.FC = () => {
                   label="Profession"
                   placeholder="Renseigner votre profession"
                   id="job"
+                  autoComplete="organization-title"
                 />
                 <Textarea
                   isCollapsed={false}
@@ -102,6 +105,7 @@ export const SigninForm: React.FC = () => {
                   label="Institution"
                   placeholder="Renseigner votre institution"
                   id="institution"
+                  autoComplete="organization"
                 />
                 <br />
                 <Textarea
@@ -111,6 +115,7 @@ export const SigninForm: React.FC = () => {
                   placeholder="Renseigner votre email"
                   id="email"
                   isRequired="true"
+                  autoComplete="email"
                 />
                 <Input
                   isCollapsed={false}
@@ -119,6 +124,7 @@ export const SigninForm: React.FC = () => {
                   name="password"
                   type="password"
                   isRequired="true"
+                  autoComplete="new-password"
                 />
 
                 <Input

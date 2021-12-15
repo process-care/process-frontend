@@ -19,6 +19,7 @@ import participation from "redux/slices/participation";
 import surveyBuilder from "redux/slices/surveyBuilder";
 import landingEditor from "redux/slices/landing-editor";
 import surveyEditor from "redux/slices/survey-editor";
+
 import surveys from "redux/slices/my-surveys";
 import global from "redux/slices/global";
 
@@ -27,6 +28,7 @@ import { surveyEditorEpics } from "redux/epics/survey-editor";
 import { surveysEpics } from "redux/epics/my-surveys";
 import { surveyEpics } from "redux/epics/global/survey";
 import { conditionsEditorEpics } from "redux/epics/global/condition-editor";
+import { authEpics } from "redux/epics/global/auth";
 
 import { pageEditorEpic } from "redux/epics/global/page-editor";
 import { questionEditorEpic } from "redux/epics/global/question-editor";
@@ -48,7 +50,8 @@ export const rootEpic = combineEpics(
   questionEditorEpic,
   surveysEpics,
   surveyEpics,
-  conditionsEditorEpics
+  conditionsEditorEpics,
+  authEpics
 );
 
 // Create a middleware to set in the store

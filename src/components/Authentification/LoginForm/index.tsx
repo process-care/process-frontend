@@ -5,14 +5,17 @@ import { ReactComponent as Logo } from "assets/black_logo.svg";
 import { Form, Formik } from "formik";
 import { Input, Textarea } from "components/Fields";
 import { NavLink, useHistory } from "react-router-dom";
-import { useLogin } from "call/actions/auth";
+import { useDispatch } from "react-redux";
+import { actions } from "redux/slices/global";
+import { useAppSelector } from "redux/hooks";
 
 export const LoginForm: React.FC = () => {
-  const { mutateAsync: login, error } = useLogin();
+  const dispatch = useDispatch();
   const history = useHistory();
+  const isConnected = useAppSelector((state) => state.global.auth.isConnected);
+  const errors = useAppSelector((state) => state.global.auth.data?.errors);
 
   // For dev facilities
-
   const initialValues =
     process.env.NODE_ENV === "development"
       ? { identifier: "dev@dev.com", password: "testtest" }
@@ -21,6 +24,15 @@ export const LoginForm: React.FC = () => {
           password: "bot-mangly-WOLVES-canopee",
         };
 
+  function handleSubmit({ identifier, password }: any) {
+    dispatch(actions.login({ identifier, password }));
+  }
+
+  if (isConnected) {
+    history.push("/dashboard");
+  }
+
+  console.log(errors);
   return (
     <Box backgroundColor="white" p="110px 50px" w="480px">
       <Box d="flex" justifyContent="center">
@@ -33,15 +45,7 @@ export const LoginForm: React.FC = () => {
         onSubmit={async (data, { setSubmitting, validateForm }) => {
           validateForm(data);
           setSubmitting(true);
-          const loginPromise = await login(data);
-
-          if (loginPromise.login) {
-            localStorage.setItem(
-              "process__user",
-              JSON.stringify(loginPromise.login)
-            );
-            history.push(`/dashboard`);
-          }
+          handleSubmit(data);
           setSubmitting(false);
         }}
       >
@@ -50,7 +54,7 @@ export const LoginForm: React.FC = () => {
             <Form>
               <Box w="100%" pt="90px" textAlign="left">
                 <Flex justifyContent="center" flexDirection="column" w="100%">
-                  {error && <p>{error.name}</p>}
+                  {/* {errors && <p>{error.name}</p>} */}
                   <Textarea
                     isCollapsed={false}
                     rows="small"
@@ -58,6 +62,7 @@ export const LoginForm: React.FC = () => {
                     placeholder="Renseigner votre identifiant"
                     id="identifier"
                     isRequired
+                    autoComplete="email"
                   />
                   <Input
                     isCollapsed={false}

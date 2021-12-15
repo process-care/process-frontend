@@ -23,8 +23,8 @@ interface Item {
 
 export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
-  const { user } = useAuth();
-  const { data, isLoading } = useGetMe(user.id);
+  const { cookies } = useAuth();
+  const { data, isLoading } = useGetMe(cookies?.user.id);
   const dispatch = useDispatch();
   const handleClick = () => {
     setIsOpen((prev) => !prev);

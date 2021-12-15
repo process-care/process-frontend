@@ -27,7 +27,7 @@ import {
 import ISurvey from "types/survey";
 
 export const Dashboard: React.FC<IRoute> = () => {
-  const { user } = useAuth();
+  const { cookies } = useAuth();
   const history = useHistory();
   const { location } = history;
   const dispatch = useDispatch();
@@ -109,8 +109,8 @@ export const Dashboard: React.FC<IRoute> = () => {
   };
 
   useEffect(() => {
-    dispatch(actionsMySurveys.initialize(user.id));
-  }, [user.id]);
+    dispatch(actionsMySurveys.initialize(cookies.user.id));
+  }, [cookies.user.id]);
 
   if (isLoading || surveys === undefined) {
     return <Loader />;

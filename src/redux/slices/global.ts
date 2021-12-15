@@ -3,6 +3,7 @@ import ICondition, { CheckSurvey } from "types/form/condition";
 
 import IPage from "types/form/page";
 import IQuestion from "types/form/question";
+import { authReducers, AuthState, initialAuthState } from "./global/auth";
 import {
   conditionAdapter,
   ConditionEditor,
@@ -42,6 +43,7 @@ export interface GlobalState {
   questions: EntityState<IQuestion> & QuestionEditor;
   conditions: EntityState<ICondition> & ConditionEditor;
   survey: SurveyEditor;
+  auth: AuthState;
 }
 
 // ----- SLICE
@@ -55,12 +57,14 @@ export const globalSlice = createSlice({
     questions: questionAdapter.getInitialState(initialQuestionState),
     conditions: conditionAdapter.getInitialState(initialConditionState),
     survey: initialSurveyState,
+    auth: initialAuthState,
   },
   reducers: {
     ...pageReducer,
     ...surveyReducers,
     ...questionsReducers,
     ...conditionsReducers,
+    ...authReducers,
 
     initializeSurvey: (
       state: GlobalState,

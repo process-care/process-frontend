@@ -235,17 +235,20 @@ export const ProjectMenu: React.FC<Props> = ({
                 top
                 right
                 bottom
-                label={"Dupliquer"}
-                onClick={nyi}
-              />
-              <ActionButton
-                top
-                right
-                bottom
                 label={"Archiver"}
                 onClick={handleArchive}
               />
               <ActionButton
+                disabled
+                top
+                right
+                bottom
+                label={"Dupliquer"}
+                onClick={nyi}
+              />
+
+              <ActionButton
+                disabled
                 top
                 bottom
                 label={"Archiver & Dupliquer"}

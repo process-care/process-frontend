@@ -13,19 +13,28 @@ const loginEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.login.type),
     switchMap(async (action) => {
-      const { identifier, password } = action.payload;
-      const res: LoginRes = await client.request(LOGIN, {
-        identifier,
-        password,
-      });
-      if (res) {
-        localStorage.setItem("process__user", JSON.stringify(res.login));
+      try {
+        const { identifier, password } = action.payload;
+        const res: LoginRes = await client.request(LOGIN, {
+          identifier,
+          password,
+        });
+        if (res) {
+          localStorage.setItem("process__user", JSON.stringify(res.login));
+        }
+        return res;
+      } catch (error: any) {
+        return error;
       }
-      return res;
     }),
 
     map((res) => {
-      return actions.logged(res);
+      console.log(res);
+      if (res?.response?.errors) {
+        return actions.authFailed(res?.response?.errors);
+      } else {
+        return actions.logged(res);
+      }
     })
   );
 

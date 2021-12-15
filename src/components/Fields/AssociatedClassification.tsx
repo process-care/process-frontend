@@ -36,16 +36,20 @@ export const AssociatedClassification: React.FC<Props> = ({
     filteredFactors,
     totalClick,
     maxVariations,
+    field,
   } = useAssociatedLogic(factors, name);
   const drawerIsOpen = useAppSelector(
     (state) => state.application.drawerIsOpen
   );
 
+  // TODO: refactor this
   const isFinished =
     totalClick ===
-    (maxVariations - 1 > (maxLoop && parseInt(maxLoop))
-      ? maxLoop && parseInt(maxLoop)
-      : maxVariations);
+      (maxVariations - 1 > (maxLoop && parseInt(maxLoop))
+        ? maxLoop && parseInt(maxLoop)
+        : maxVariations) ||
+    field.value?.length - 1 ===
+      ((maxLoop && parseInt(maxLoop)) || maxVariations);
 
   const Card = ({ index }: { index: number }) => {
     if (filteredFactors === undefined) {
@@ -108,7 +112,11 @@ export const AssociatedClassification: React.FC<Props> = ({
   }, [drawerIsOpen]);
 
   if (isFinished) {
-    return <Text variant="smallTitle">Merci !</Text>;
+    return (
+      <Text variant="smallTitle">
+        Nous avons bien pris en compte votre sélection !
+      </Text>
+    );
   }
   return (
     <Box>
@@ -258,5 +266,6 @@ export const useAssociatedLogic = (
     filteredFactors,
     totalClick,
     maxVariations,
+    field,
   };
 };

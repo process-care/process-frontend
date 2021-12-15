@@ -21,8 +21,8 @@ const t = {
 
 export const ProfilForm: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { user } = useAuth();
-  const { data, isLoading } = useGetMe(user.id);
+  const { cookies } = useAuth();
+  const { data, isLoading } = useGetMe(cookies.user.id);
   const { mutateAsync: updateMe } = useUpdateMe();
 
   const history = useHistory();
@@ -85,7 +85,7 @@ export const ProfilForm: React.FC = () => {
           );
         }
         updateMe({
-          id: user.id,
+          id: cookies.user.id,
           data: formatValues(data),
         });
         setSubmitting(false);

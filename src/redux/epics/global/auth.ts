@@ -4,8 +4,8 @@ import { Epic } from "redux/store";
 import { actions } from "redux/slices/global";
 import { client } from "call/actions";
 
-import { LOGIN } from "call/queries/auth";
-import { LoginRes } from "call/actions/auth";
+import { LOGIN, SIGNIN } from "call/queries/auth";
+import { LoginRes, SigninRes } from "call/actions/auth";
 
 // // ----  LOGIN
 
@@ -29,7 +29,6 @@ const loginEpic: Epic = (action$) =>
     }),
 
     map((res) => {
-      console.log(res);
       if (res?.response?.errors) {
         return actions.authFailed(res?.response?.errors);
       } else {
@@ -38,4 +37,35 @@ const loginEpic: Epic = (action$) =>
     })
   );
 
-export const authEpics = combineEpics(loginEpic);
+// // ----  SIGNIN
+
+const signinEpic: Epic = (action$) =>
+  action$.pipe(
+    ofType(actions.signin.type),
+    switchMap(async (action) => {
+      try {
+        const { email, username, password } = action.payload;
+        const res: SigninRes = await client.request(SIGNIN, {
+          email,
+          username,
+          password,
+        });
+        if (res) {
+          localStorage.setItem("process__user", JSON.stringify(res.register));
+        }
+        return res;
+      } catch (error: any) {
+        return error;
+      }
+    }),
+
+    map((res) => {
+      if (res?.response?.errors) {
+        return actions.authFailed(res?.response?.errors);
+      } else {
+        return actions.signed(res.register);
+      }
+    })
+  );
+
+export const authEpics = combineEpics(loginEpic, signinEpic);

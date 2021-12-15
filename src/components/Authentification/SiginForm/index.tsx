@@ -4,12 +4,16 @@ import { Box, Flex, Text, Button } from "@chakra-ui/react";
 import { Textarea, Input, Checkbox } from "components/Fields";
 import { NavLink } from "react-router-dom";
 import { SuccessPage } from "../SucessPage";
-import { useSignin } from "call/actions/auth";
 import { SigninSchema } from "./validationSchema";
+import { actions } from "redux/slices/global";
+import { useDispatch } from "react-redux";
+import { Errors } from "../Errors";
+import { useAppSelector } from "redux/hooks";
 
 export const SigninForm: React.FC = () => {
-  const [isSuccessPage, seIsSuccessPage] = React.useState<boolean>(false);
-  const { mutateAsync: signin, error } = useSignin();
+  const isSuccess = useAppSelector((state) => state.global.auth.data?.user?.id);
+
+  const dispatch = useDispatch();
   const formatData = (data: any) => {
     return {
       email: data.email,
@@ -18,8 +22,13 @@ export const SigninForm: React.FC = () => {
     };
   };
 
-  if (isSuccessPage) {
+  console.log(isSuccess);
+  if (isSuccess) {
     return <SuccessPage />;
+  }
+
+  function handleSubmit(data: any) {
+    dispatch(actions.signin(formatData(data)));
   }
 
   return (
@@ -38,13 +47,8 @@ export const SigninForm: React.FC = () => {
       onSubmit={(data, { setSubmitting, validateForm }) => {
         validateForm(data);
         setSubmitting(true);
-        signin(formatData(data)).then((res: any) => {
-          if (res?.register?.user?.id) {
-            seIsSuccessPage(true);
-            localStorage.setItem("process__user", JSON.stringify(res.register));
-          }
-          setSubmitting(false);
-        });
+        handleSubmit(data);
+        setSubmitting(false);
       }}
     >
       {({ isValid, isSubmitting, dirty }) => {
@@ -64,7 +68,6 @@ export const SigninForm: React.FC = () => {
               w="60%"
             >
               <Text>Création de compte</Text>
-              {error && <p>{error.name}</p>}
               <Flex
                 alignItems="center"
                 justifyContent="center"
@@ -149,6 +152,7 @@ export const SigninForm: React.FC = () => {
                   label=""
                 />
               </Flex>
+              <Errors />
               <Flex justifyContent="space-between" pt="60px">
                 <NavLink to="/connexion">
                   <Button variant="link">Annuler</Button>

@@ -42,9 +42,11 @@ export interface LoginRes {
 }
 
 export interface SigninRes {
-  jwt?: string;
-  user: any;
-  errors?: string[];
+  register: {
+    jwt?: string;
+    user: any;
+    errors?: string[];
+  };
 }
 
 export interface UserRes {

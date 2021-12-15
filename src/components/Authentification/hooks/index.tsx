@@ -7,7 +7,7 @@ export const useAuth: any = () => {
     const cookies: LoginRes["login"] = JSON.parse(data);
     return {
       cookies,
-      isAuthenticated: !cookies.user?.blocked,
+      isAuthenticated: !cookies.user?.blocked && !!cookies.jwt,
     };
   } else {
     return {

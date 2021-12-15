@@ -14,8 +14,6 @@ export const LoginForm: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const isConnected = useAppSelector((state) => state.global.auth.isConnected);
-  const errors = useAppSelector((state) => state.global.auth.errors);
-  console.log(errors);
   // For dev facilities
   const initialValues =
     process.env.NODE_ENV === "development"

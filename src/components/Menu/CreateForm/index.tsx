@@ -16,6 +16,7 @@ import { useGetSurvey } from "call/actions/survey";
 import { actions as globalActions } from "redux/slices/global";
 import { CheckIcon } from "@chakra-ui/icons";
 import { selectors } from "redux/slices/landing-editor";
+import { selectors as globalSelectors } from "redux/slices/global";
 
 // ---- STATIC
 
@@ -42,7 +43,7 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
 
   const { data, isLoading, error } = useGetSurvey(surveyId);
   const { previewMode } = useAppSelector((state) => state.application);
-  const { inProgress, done } = useChangesNotifier();
+  const { inProgress, done } = useChangesNotifier(isLanding);
 
   if (isLoading) {
     return <Loader />;
@@ -55,6 +56,8 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
   const handleVerify = () => {
     dispatch(globalActions.checkSurvey(true));
   };
+
+  console.log(inProgress);
 
   return (
     <>
@@ -154,8 +157,12 @@ function ChangesSaved() {
 
 // ---- HOOKS
 
-function useChangesNotifier() {
-  const hasUnsavedChanges = useAppSelector(selectors.hasChanges);
+function useChangesNotifier(isLanding: boolean | undefined) {
+  const hasUnsavedChanges = useAppSelector(
+    isLanding
+      ? selectors.landingHasChanges
+      : globalSelectors.questions.questionsHasChanges
+  );
 
   const [inProgress, setInProgress] = useState(false);
   const [done, setDone] = useState(false);

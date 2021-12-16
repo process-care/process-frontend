@@ -73,7 +73,7 @@ export const error = (state: RootState): string | undefined =>
   state.landingEditor.error;
 export const isLoading = (state: RootState): boolean =>
   state.landingEditor.isLoading;
-export const hasChanges = (state: RootState): boolean => {
+export const landingHasChanges = (state: RootState): boolean => {
   const updated = DateTime.fromISO(state.landingEditor.lastUpdated);
   const saved = DateTime.fromISO(state.landingEditor.lastSaved);
   return updated > saved;
@@ -109,7 +109,7 @@ export const headerData = (state: RootState): HeaderData | undefined => {
 export const selectors = {
   error,
   isLoading,
-  hasChanges,
+  landingHasChanges,
   isEditingAbout,
   hasMembers,
   headerData,

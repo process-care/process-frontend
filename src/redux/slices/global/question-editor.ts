@@ -83,7 +83,7 @@ export const error = (state: RootState): string | undefined =>
   state.global.questions.error;
 export const isLoading = (state: RootState): boolean =>
   state.global.questions.isLoading;
-export const hasChanges = (state: RootState): boolean => {
+export const questionsHasChanges = (state: RootState): boolean => {
   const updated = DateTime.fromISO(state.global.questions.lastUpdated);
   const saved = DateTime.fromISO(state.global.questions.lastSaved);
   return updated > saved;
@@ -116,7 +116,7 @@ const getSelectedQuestion = (state: RootState): IQuestion | any =>
 export const questionsSelectors = {
   error,
   isLoading,
-  hasChanges,
+  questionsHasChanges,
   questions,
   getSelectedQuestionId,
   getSelectedQuestion,

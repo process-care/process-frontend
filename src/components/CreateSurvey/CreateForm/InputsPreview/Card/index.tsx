@@ -53,8 +53,6 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
     dispatch(actions.deleteQuestion(input.id));
   };
 
-  console.log(status);
-
   const ErrorsListId = status?.checkSurvey?.errors
     ?.map((e) => e?.errors.map((el) => el?.questionId))
     .flat();

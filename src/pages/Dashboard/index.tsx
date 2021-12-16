@@ -25,6 +25,7 @@ import {
 } from "redux/slices/my-surveys";
 
 import ISurvey from "types/survey";
+import { NoData } from "components/SurveyGrid/noData";
 
 export const Dashboard: React.FC<IRoute> = () => {
   const { cookies } = useAuth();
@@ -121,7 +122,7 @@ export const Dashboard: React.FC<IRoute> = () => {
   }
 
   const surveysLenght = surveys.length;
-
+  const hadSurveys = surveysLenght > 0;
   return (
     <Box d="flex" justifyContent="space-around" w="100%">
       <Box h="80vh">
@@ -136,24 +137,34 @@ export const Dashboard: React.FC<IRoute> = () => {
       <div className="background__grid">
         <Container textAlign="left" pt="9" maxW="90%">
           <Flex justifyContent="space-between" alignItems="center">
-            <Text variant="xl" mb={7}>
-              {surveysLenght > 1
-                ? `Mes ${surveysLenght} enquêtes`
-                : "Mon enquête"}
-            </Text>
+            {hadSurveys && (
+              <Text variant="xl" mb={7}>
+                {surveysLenght > 1
+                  ? `Mes ${surveysLenght} enquêtes`
+                  : "Mon enquête"}
+              </Text>
+            )}
             <Button onClick={goToCreateSurvey} variant="roundedBlue" zIndex="0">
               {t.cta}
             </Button>
           </Flex>
 
-          <Filters
-            filters={t.filters}
-            handleClick={(id) => setCurrentFilter(id)}
-            currentFilter={currentFilter}
-          />
-          <Box mt={8}>
-            <Table columns={columns} data={data} onClick={toggleMenu} />
-          </Box>
+          {hadSurveys ? (
+            <>
+              <Filters
+                filters={t.filters}
+                handleClick={(id) => setCurrentFilter(id)}
+                currentFilter={currentFilter}
+              />
+              <Box mt={8}>
+                <Table columns={columns} data={data} onClick={toggleMenu} />
+              </Box>
+            </>
+          ) : (
+            <Box w="50%" m="0 auto">
+              <NoData content="Vous n'avez pas encore d'enquêtes" />
+            </Box>
+          )}
         </Container>
       </div>
       <ProjectMenu

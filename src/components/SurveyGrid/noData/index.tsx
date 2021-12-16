@@ -12,6 +12,7 @@ export const NoData: React.FC<Props> = ({ content }) => {
       w="80%"
       m="50px auto"
       borderRadius="5px"
+      textAlign="center"
     >
       <Text variant="xl" mb="20px">
         🤌

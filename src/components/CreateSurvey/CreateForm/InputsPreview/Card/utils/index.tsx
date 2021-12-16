@@ -14,6 +14,8 @@ import {
 } from "components/Fields";
 import IQuestion from "types/form/question";
 import { t } from "static/input";
+import { useAppSelector } from "redux/hooks";
+import { useLocation } from "react-router-dom";
 
 interface Options {
   value: string;
@@ -21,10 +23,14 @@ interface Options {
 }
 
 export const renderInput = (input: IQuestion): React.ReactNode => {
-  // const isCollapsed = useAppSelector(
-  //   (state) => state.formBuilder.is_collapse_view
-  // );
-  const isCollapsed = false;
+  const location = useLocation();
+  console.log(location);
+
+  const isCollapsed =
+    useAppSelector((state) => state.formBuilder.is_collapse_view) &&
+    !location.pathname.includes("/participate");
+
+  console.log(isCollapsed);
 
   const formatOptions = (): Options[] => {
     if (input.options) {

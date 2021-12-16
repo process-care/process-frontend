@@ -53,7 +53,6 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
   }
 
   const handleVerify = () => {
-    console.log("verify");
     dispatch(globalActions.checkSurvey(true));
   };
 

@@ -15,9 +15,21 @@ export const LOGIN = gql`
 `;
 
 export const SIGNIN = gql`
-  mutation register($email: String!, $username: String!, $password: String!) {
+  mutation register(
+    $email: String!
+    $username: String!
+    $password: String!
+    $job: String!
+    $institution: String!
+  ) {
     register(
-      input: { email: $email, username: $username, password: $password }
+      input: {
+        email: $email
+        username: $username
+        password: $password
+        job: $job
+        institution: $institution
+      }
     ) {
       jwt
       user {

@@ -8,6 +8,9 @@ import { motion } from "framer-motion";
 import { useAuth } from "components/Authentification/hooks";
 import { useDispatch } from "react-redux";
 import { actions } from "redux/slices/application";
+import { actions as appActions } from "redux/slices/global";
+import { useHistory } from "react-router-dom";
+
 import { useGetMe } from "call/actions/auth";
 import { Loader } from "components/Spinner";
 
@@ -22,6 +25,7 @@ interface Item {
 }
 
 export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
+  const history = useHistory();
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const { cookies } = useAuth();
   const { data, isLoading } = useGetMe(cookies?.user.id);
@@ -36,7 +40,9 @@ export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
   };
 
   const logout = () => {
+    () => history.push("/connexion");
     localStorage.removeItem("process__user");
+    dispatch(appActions.logout());
   };
 
   const handleDrawer = () => {

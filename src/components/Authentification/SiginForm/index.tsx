@@ -19,10 +19,11 @@ export const SigninForm: React.FC = () => {
       email: data.email,
       password: data.password,
       username: data.name,
+      job: data.job,
+      institution: data.institution,
     };
   };
 
-  console.log(isSuccess);
   if (isSuccess) {
     return <SuccessPage />;
   }

@@ -54,7 +54,8 @@ export const authReducers = {
     state.auth.isConnected = false;
     state.auth.errors = action.payload;
   },
-  logout: (): void => {
-    () => initialAuthState;
+  logout: (state: GlobalState): void => {
+    state.auth.isConnected = false;
+    state.auth.data = null;
   },
 };

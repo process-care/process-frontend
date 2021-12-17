@@ -21,7 +21,7 @@ export interface ILanding {
   id: string;
   color_theme: IColor;
   image_cover: string;
-  cover?: Media;
+  cover?: string;
   partners: Media[];
   logo: string;
   members: IMember[];

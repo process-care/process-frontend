@@ -60,6 +60,7 @@ export const questionFragment = gql`
     units
     factors
     max_loop
+    wysiwyg
     step
     internal_title
     page {

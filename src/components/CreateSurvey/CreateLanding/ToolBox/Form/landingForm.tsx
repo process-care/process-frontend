@@ -96,6 +96,13 @@ export const LandingForm: React.FC = () => {
                 id="logo"
                 helpText={t.logo_helptext}
               />
+              <UploadFile
+                // QUESTION: console log only ?
+                onChange={logOnChange}
+                label={t.logo_cta}
+                id="cover"
+                helpText={t.logo_helptext}
+              />
 
               <Text variant="currentBold" mt={9}>
                 {t.theme_label}
@@ -135,7 +142,7 @@ export const LandingForm: React.FC = () => {
                 helpText={t.logo_helptext}
               /> */}
               {/* TODO: Fix when api is ready */}
-              <UploadFileRemote
+              {/* <UploadFileRemote
                 accept=".png,.jpeg"
                 target={targets.cover}
                 content={values.cover}
@@ -144,7 +151,7 @@ export const LandingForm: React.FC = () => {
                 isDisabled={Boolean(values.video_url)}
                 // QUESTION: console log only ?
                 onChange={logOnChange}
-              />
+              /> */}
 
               <Flex alignItems="center">
                 <Textarea

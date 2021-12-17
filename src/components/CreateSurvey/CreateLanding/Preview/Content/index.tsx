@@ -2,7 +2,6 @@ import React from "react";
 import { Box, Text, Flex, Button } from "@chakra-ui/react";
 import { Video } from "components/Video";
 import { t } from "static/createLanding";
-import { API_URL_ROOT } from "constants/api";
 import { ILanding } from "types/landing";
 
 interface Props {
@@ -51,9 +50,7 @@ export const Content: React.FC<Props> = ({ data, onParticipate }) => {
         {hasMedia && (
           <Box w="40%">
             {hasVideo && <Video url={video_url ?? ""} />}
-            {cover?.url && (
-              <img src={`${API_URL_ROOT}${cover.url}`} alt={cover?.name} />
-            )}
+            {cover && <img src={cover} alt={cover} />}
           </Box>
         )}
         <Box

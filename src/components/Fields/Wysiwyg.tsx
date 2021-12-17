@@ -10,6 +10,7 @@ interface Props {
 
 export const Wysiwyg: React.FC<Props> = ({ id, simpleMode }) => {
   const { setFieldValue, values } = useFormikContext();
+
   return React.useMemo(
     () => (
       <FormControl id={id} textAlign="left">

@@ -3,10 +3,10 @@ import { Button, Flex, Text } from "@chakra-ui/react";
 import { IColor } from "types/landing";
 
 interface Props {
-  title?: string,
-  logo?: string,
-  color_theme?: IColor,
-  onParticipate: () => void
+  title?: string;
+  logo?: string;
+  color_theme?: IColor;
+  onParticipate: () => void;
 }
 
 export const Header: React.FC<Props> = ({

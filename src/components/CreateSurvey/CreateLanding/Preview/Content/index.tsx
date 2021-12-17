@@ -6,16 +6,14 @@ import { API_URL_ROOT } from "constants/api";
 import { ILanding } from "types/landing";
 
 interface Props {
-  data?: Partial<ILanding>,
-  onParticipate: () => void,
+  data?: Partial<ILanding>;
+  onParticipate: () => void;
 }
 
 const placeholder =
   "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.";
 const big_placeholder =
   "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et. <br/> <br/> quo velit tenetur labore at reprehenderit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.<br/> <br/> Blanditiis et, quo velit tenetur labore at reprehenderit.";
-
-const imgStyle = { maxWidth: "400px", width: "400px" };
 
 export const Content: React.FC<Props> = ({ data, onParticipate }) => {
   // Safety check
@@ -51,19 +49,15 @@ export const Content: React.FC<Props> = ({ data, onParticipate }) => {
 
       <Flex px="12%" py="10%">
         {hasMedia && (
-          <Box w="100%">
-            {hasVideo && <Video url={video_url ?? ''} />}
+          <Box w="40%">
+            {hasVideo && <Video url={video_url ?? ""} />}
             {cover?.url && (
-              <img
-                src={`${API_URL_ROOT}${cover.url}`}
-                style={imgStyle}
-                alt={cover?.name}
-              />
+              <img src={`${API_URL_ROOT}${cover.url}`} alt={cover?.name} />
             )}
           </Box>
         )}
         <Box
-          w={hasMedia ? "100%" : "80%"}
+          w={hasMedia ? "100%" : "60%"}
           m={hasMedia ? "inherit" : "auto"}
           pl={10}
         >

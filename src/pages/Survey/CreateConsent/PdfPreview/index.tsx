@@ -16,7 +16,6 @@ export const PdfPreview: React.FC<Props> = ({ url }) => {
     setNumPages(numPages);
   };
 
-  console.log(url);
   return (
     <div>
       <Document file={url} onLoadSuccess={onDocumentLoadSuccess}>

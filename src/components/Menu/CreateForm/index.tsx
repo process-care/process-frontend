@@ -57,8 +57,6 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
     dispatch(globalActions.checkSurvey(true));
   };
 
-  console.log(inProgress);
-
   return (
     <>
       {previewMode === "landing" && (
@@ -156,7 +154,7 @@ function ChangesSaved() {
 }
 
 // ---- HOOKS
-
+// TODO: make it global
 function useChangesNotifier(isLanding: boolean | undefined) {
   const hasUnsavedChanges = useAppSelector(
     isLanding

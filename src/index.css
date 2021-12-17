@@ -57,7 +57,7 @@ body {
 }
 
 .jodit-status-bar {
-  display: none;
+  display: none !important;
 }
 .jodit-toolbar__box:not(:empty) {
   background-color: transparent;

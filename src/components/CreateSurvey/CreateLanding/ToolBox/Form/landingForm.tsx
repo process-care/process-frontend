@@ -69,8 +69,8 @@ export const LandingForm: React.FC = () => {
 
         // Delete video handler
         const onDeleteVideo = useCallback(() => {
-          dispatch(actions.update({ video_url: '' }));
-          setFieldValue('video_url', '');
+          dispatch(actions.update({ video_url: "" }));
+          setFieldValue("video_url", "");
         }, []);
 
         // Components
@@ -128,6 +128,13 @@ export const LandingForm: React.FC = () => {
               <Container variant="hr" my={10} />
 
               <Text variant="currentBold">{t.add_image}</Text>
+              {/* <UploadFile
+                onChange={logOnChange}
+                label={t.logo_cta}
+                id="cover"
+                helpText={t.logo_helptext}
+              /> */}
+              {/* TODO: Fix when api is ready */}
               <UploadFileRemote
                 accept=".png,.jpeg"
                 target={targets.cover}
@@ -149,9 +156,7 @@ export const LandingForm: React.FC = () => {
                 />
                 <Box mt={7} ml={4}>
                   <SvgHover>
-                    <Delete
-                      onClick={onDeleteVideo}
-                    />
+                    <Delete onClick={onDeleteVideo} />
                   </SvgHover>
                 </Box>
               </Flex>

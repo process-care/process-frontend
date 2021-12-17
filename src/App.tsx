@@ -16,6 +16,7 @@ import "index.css";
 import { ProtectedRoutes } from "routes/ProtectedRoutes";
 import { ConnectedRouter } from "connected-react-router";
 import { history } from "redux/store/history";
+import "jodit/build/jodit.min.css";
 
 export const queryClient = new QueryClient();
 

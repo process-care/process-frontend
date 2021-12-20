@@ -11,7 +11,7 @@ export const t = {
   member_placeholder: "Nom, prénom",
   member_placeholder_2: "Fonction",
   logos_label: "Les logos des partenaires",
-  logos_cta: "Importer les logos des partenaires",
+  logo_partner_cta: "Importer un logo",
   see_more_cta: "Editer une page en savoir plus",
   video_url_placeholder: "(copier ici le lien de votre vidéo)",
   logo_helptext: "png, svg max 100 ko format 60x60px",

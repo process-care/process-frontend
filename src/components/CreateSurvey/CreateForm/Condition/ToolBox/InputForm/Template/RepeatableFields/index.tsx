@@ -9,9 +9,15 @@ import { SvgHover } from "components/SvgHover";
 import { selectors as selectorsApplication } from "redux/slices/application";
 interface Props {
   name: string;
+  onlyUpload?: boolean;
+  cta: string;
 }
 
-export const RepeatableFields: React.FC<Props> = ({ name }) => {
+export const RepeatableFields: React.FC<Props> = ({
+  name,
+  onlyUpload,
+  cta,
+}) => {
   const [field, meta] = useField(name);
   const { setFieldValue } = useFormikContext();
   const isEditing = useAppSelector(selectorsApplication.isEditing);
@@ -20,7 +26,7 @@ export const RepeatableFields: React.FC<Props> = ({ name }) => {
   return (
     <Box w="100%">
       <FieldArray
-        name="members"
+        name={name}
         render={(arrayHelpers) => (
           <Box w="100%">
             {fields?.length > 0 ? (
@@ -28,28 +34,32 @@ export const RepeatableFields: React.FC<Props> = ({ name }) => {
                 <Box key={index} w="100%">
                   <Flex w="100%" alignItems="flex-start">
                     <Box w="70%">
-                      <Textarea
-                        id={`members.${index}.name`}
-                        label="Nom"
-                        placeholder="Renseigner le nom"
-                        rows="small"
-                        isRequired
-                        isCollapsed={false}
-                        {...field}
-                      />
-                      <Textarea
-                        id={`members.${index}.job`}
-                        label="Job"
-                        placeholder="Renseigner l'emploi"
-                        rows="small"
-                        isRequired
-                        isCollapsed={false}
-                        {...field}
-                      />
+                      {!onlyUpload && (
+                        <>
+                          <Textarea
+                            id={`${name}.${index}.name`}
+                            label="Nom"
+                            placeholder="Renseigner le nom"
+                            rows="small"
+                            isRequired
+                            isCollapsed={false}
+                            {...field}
+                          />
+                          <Textarea
+                            id={`${name}.${index}.job`}
+                            label="Job"
+                            placeholder="Renseigner l'emploi"
+                            rows="small"
+                            isRequired
+                            isCollapsed={false}
+                            {...field}
+                          />
+                        </>
+                      )}
                       <UploadFile
                         onChange={(e) => console.log(e)}
                         label="Ajouter une photo"
-                        id={`members.${index}.image`}
+                        id={`${name}.${index}.image`}
                       />
                     </Box>
 
@@ -58,7 +68,7 @@ export const RepeatableFields: React.FC<Props> = ({ name }) => {
                         <Delete
                           onClick={() => {
                             arrayHelpers.remove(index);
-                            setFieldValue(`members.${index}`, undefined);
+                            setFieldValue(`${name}.${index}`, undefined);
                           }}
                         />
                       </SvgHover>
@@ -90,7 +100,7 @@ export const RepeatableFields: React.FC<Props> = ({ name }) => {
                   type="button"
                   mt={4}
                 >
-                  Ajouter un membre de l'équipe
+                  {cta}
                 </Button>
                 <Text mt={1} fontSize="10px" color="red">
                   {meta.error}

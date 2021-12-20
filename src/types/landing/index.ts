@@ -29,7 +29,7 @@ export interface ILanding {
   title: string;
   video_url: string;
   wysiwyg: string;
-  partner_logos: IBase64[];
+  partners_logos: string[];
   about_page: string;
 }
 

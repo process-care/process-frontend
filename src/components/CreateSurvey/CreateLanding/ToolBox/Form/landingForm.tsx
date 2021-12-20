@@ -1,10 +1,10 @@
 import { Box, Button, Text, Container, Flex } from "@chakra-ui/react";
 import { Textarea } from "components/Fields";
 import { UploadFile } from "components/Fields/Uploadfile";
-import { UploadFileRemote } from "components/Fields/UploadFileRemote";
+// import { UploadFileRemote } from "components/Fields/UploadFileRemote";
 import { Wysiwyg } from "components/Fields/Wysiwyg";
 import { Formik, Form } from "formik";
-import React, { useCallback, useMemo, useRef } from "react";
+import React, { useCallback, useRef } from "react";
 
 import { t } from "static/createLanding";
 import { ColorPicker } from "../ColorPicker";
@@ -59,13 +59,13 @@ export const LandingForm: React.FC = () => {
         }, [values]);
 
         // Target params for various uploads (cover, partners)
-        const targets = useMemo(() => {
-          const base = { refId: values.id, ref: "landing" };
-          return {
-            partners: { ...base, field: "partners" },
-            // cover: { ...base, field: "cover" },
-          };
-        }, [values.id]);
+        // const targets = useMemo(() => {
+        //   const base = { refId: values.id, ref: "landing" };
+        //   return {
+        //     partners: { ...base, field: "partners" },
+        //     // cover: { ...base, field: "cover" },
+        //   };
+        // }, [values.id]);
 
         // Delete video handler
         const onDeleteVideo = useCallback(() => {
@@ -155,22 +155,20 @@ export const LandingForm: React.FC = () => {
               <Text variant="currentBold" mt={9}>
                 {t.team_label}
               </Text>
-              <RepeatableFields name="members" />
+              <RepeatableFields
+                name="members"
+                cta="Ajouter un membre de l'équipe"
+              />
 
               <Container variant="hr" my={10} />
 
               <Text variant="currentBold">{t.logos_label}</Text>
-              <UploadFileRemote
-                accept=".png,.jpeg"
-                target={targets.partners}
-                content={values.partners}
-                label={t.logos_cta}
-                helpText={t.image_helptext}
-                multiple
-                // QUESTION: console log only ?
-                onChange={logOnChange}
-              />
 
+              <RepeatableFields
+                name="partners_logos"
+                onlyUpload
+                cta="Ajouter un logo partenaire"
+              />
               <Container variant="hr" my={10} />
 
               <Text variant="currentBold">{t.see_more_cta}</Text>
@@ -180,7 +178,7 @@ export const LandingForm: React.FC = () => {
                 mb="100px"
                 onClick={onEditAbout}
               >
-                {t.see_more_cta}
+                {t.cta_show_more}
               </Button>
             </Form>
           </Box>

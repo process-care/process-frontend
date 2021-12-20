@@ -12,6 +12,6 @@ export const initialValues: ILanding = {
   video_url: "",
   wysiwyg: "",
   partners: [],
-  partner_logos: [],
+  partners_logos: [],
   about_page: "",
 };

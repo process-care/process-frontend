@@ -15,13 +15,13 @@ export interface IMember {
   name: string;
   job: string;
   image: IBase64["base64"];
+  color?: string;
 }
 
 export interface ILanding {
   id: string;
   color_theme: IColor;
-  image_cover: string;
-  cover?: string;
+  cover: string;
   partners: Media[];
   logo: string;
   members: IMember[];

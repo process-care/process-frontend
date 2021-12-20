@@ -63,7 +63,7 @@ export const LandingForm: React.FC = () => {
           const base = { refId: values.id, ref: "landing" };
           return {
             partners: { ...base, field: "partners" },
-            cover: { ...base, field: "cover" },
+            // cover: { ...base, field: "cover" },
           };
         }, [values.id]);
 
@@ -94,13 +94,6 @@ export const LandingForm: React.FC = () => {
                 onChange={logOnChange}
                 label={t.logo_cta}
                 id="logo"
-                helpText={t.logo_helptext}
-              />
-              <UploadFile
-                // QUESTION: console log only ?
-                onChange={logOnChange}
-                label={t.logo_cta}
-                id="cover"
                 helpText={t.logo_helptext}
               />
 
@@ -135,23 +128,12 @@ export const LandingForm: React.FC = () => {
               <Container variant="hr" my={10} />
 
               <Text variant="currentBold">{t.add_image}</Text>
-              {/* <UploadFile
+              <UploadFile
                 onChange={logOnChange}
-                label={t.logo_cta}
+                label={t.image_cta}
                 id="cover"
                 helpText={t.logo_helptext}
-              /> */}
-              {/* TODO: Fix when api is ready */}
-              {/* <UploadFileRemote
-                accept=".png,.jpeg"
-                target={targets.cover}
-                content={values.cover}
-                label={t.image_cta}
-                helpText={t.image_helptext}
-                isDisabled={Boolean(values.video_url)}
-                // QUESTION: console log only ?
-                onChange={logOnChange}
-              /> */}
+              />
 
               <Flex alignItems="center">
                 <Textarea
@@ -159,7 +141,7 @@ export const LandingForm: React.FC = () => {
                   rows="small"
                   placeholder={t.video_url_placeholder}
                   label={t.video_url_label}
-                  isDisabled={Boolean(values.image_cover)}
+                  isDisabled={Boolean(values.cover)}
                 />
                 <Box mt={7} ml={4}>
                   <SvgHover>

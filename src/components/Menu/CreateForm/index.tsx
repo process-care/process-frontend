@@ -43,7 +43,7 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
 
   const { data, isLoading, error } = useGetSurvey(surveyId);
   const { previewMode } = useAppSelector((state) => state.application);
-  // const { inProgress, done } = useChangesNotifier(isLanding);
+  const { inProgress, done } = useChangesNotifier(isLanding);
 
   if (isLoading) {
     return <Loader />;
@@ -103,8 +103,8 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
             {data?.survey?.title}
           </Text>
           <Flex pos="absolute" right="10px">
-            {/* {inProgress && <ChangesInProgress />}
-            {done && <ChangesSaved />} */}
+            {inProgress && <ChangesInProgress />}
+            {done && <ChangesSaved />}
             {isLanding ? (
               <Button
                 variant="roundedBlue"
@@ -135,23 +135,23 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
 
 // ---- SUB COMPONENTS
 
-// function ChangesInProgress() {
-//   return (
-//     <Text variant="xs" mr="40px" color="brand.blue" top="10px" pos="relative">
-//       <CircularProgress mr={2} isIndeterminate color="brand.blue" size="2" />
-//       {nl.msg.hasChanges}
-//     </Text>
-//   );
-// }
+function ChangesInProgress() {
+  return (
+    <Text variant="xs" mr="40px" color="brand.blue" top="10px" pos="relative">
+      <CircularProgress mr={2} isIndeterminate color="brand.blue" size="2" />
+      {nl.msg.hasChanges}
+    </Text>
+  );
+}
 
-// function ChangesSaved() {
-//   return (
-//     <Text variant="xs" mr="40px" color="brand.green" top="10px" pos="relative">
-//       <CheckIcon mr="7px" />
-//       {nl.msg.changesSaved}
-//     </Text>
-//   );
-// }
+function ChangesSaved() {
+  return (
+    <Text variant="xs" mr="40px" color="brand.green" top="10px" pos="relative">
+      <CheckIcon mr="7px" />
+      {nl.msg.changesSaved}
+    </Text>
+  );
+}
 
 // ---- HOOKS
 // TODO: make it global

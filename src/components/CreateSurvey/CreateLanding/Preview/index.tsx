@@ -79,7 +79,9 @@ export const Preview: React.FC<Props> = ({ isUserView, data }) => {
         onParticipate={onParticipate}
       />
       <Content data={data} onParticipate={onParticipate} />
-      {data?.members && <Team members={data.members} />}
+      {data?.members && (
+        <Team members={data.members} color_theme={data?.color_theme} />
+      )}
       <Footer partners={data?.partners ?? []} />
     </Box>
   );

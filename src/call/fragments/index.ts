@@ -86,12 +86,7 @@ export const landingFragment = gql`
     subtitle
     wysiwyg
     members
-    image_cover
-    cover {
-      id
-      name
-      url
-    }
+    cover
     partners {
       id
       name

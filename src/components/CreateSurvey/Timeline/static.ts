@@ -32,10 +32,5 @@ export const t = {
       label: "Mail de contact",
       pos: 6,
     },
-    {
-      id: "categories",
-      label: "Categories du projet",
-      pos: 7,
-    },
   ],
 };

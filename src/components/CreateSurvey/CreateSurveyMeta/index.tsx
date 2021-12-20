@@ -83,7 +83,7 @@ export const CreateSurveyForm: React.FC = () => {
                     justifyContent="space-between"
                     w="100%"
                   >
-                    {step !== 1 && step !== 8 && (
+                    {step !== 1 && (
                       <Navigatebtn
                         step={step}
                         previous

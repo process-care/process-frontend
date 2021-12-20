@@ -1,7 +1,10 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import { Formik, Form } from "formik";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
-
+import {
+  Errors,
+  renderSurveyMessage,
+} from "components/Authentification/Errors";
 import { createSurveySchema } from "../validationSchema";
 import { useAppSelector, useAppDispatch } from "redux/hooks";
 
@@ -32,6 +35,8 @@ export const CreateSurveyForm: React.FC = () => {
   // Flag to avoid saving the initial values injected into Formik
   const firstRender = useRef(true);
   const data = useAppSelector(selectors.survey);
+  const error = useAppSelector(selectors.error);
+
   const step = useAppSelector(selectors.step);
 
   const onSubmit = useCallback((data, { setSubmitting, validateForm }) => {
@@ -92,7 +97,7 @@ export const CreateSurveyForm: React.FC = () => {
                       />
                     )}
                     {renderInputs(step)}
-                    {step !== 7 && (
+                    {step !== 6 && (
                       <Navigatebtn
                         step={step}
                         errors={errors}
@@ -100,13 +105,14 @@ export const CreateSurveyForm: React.FC = () => {
                       />
                     )}
                   </Flex>
-                  <Flex mt="50px">
-                    {step === 7 && (
-                      <Button type="submit" variant="rounded">
+                  <Box mt="50px">
+                    <Errors message={renderSurveyMessage(error)} />
+                    {step === 6 && (
+                      <Button mt="10px" type="submit" variant="rounded">
                         Valider
                       </Button>
                     )}
-                  </Flex>
+                  </Box>
                 </Flex>
               </Form>
             </Box>

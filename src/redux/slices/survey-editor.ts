@@ -14,7 +14,7 @@ export interface SurveyEditor {
   isLoading: boolean;
   isPosting: boolean;
   isFailed: boolean;
-  error?: string;
+  error?: any[];
   lastUpdated: string;
   lastSaved: string;
   lastPosted: string;
@@ -97,7 +97,7 @@ export const surveyEditorSlice = createSlice({
         history.push(`/dashboard`);
       }, 1);
     },
-    failed: (state, action: PayloadAction<string>) => {
+    failed: (state, action: PayloadAction<any[]>) => {
       state.isFailed = true;
       state.error = action.payload;
     },
@@ -111,7 +111,7 @@ export const surveyEditorSlice = createSlice({
 
 // ---- SELECTORS
 
-export const error = (state: RootState): string | undefined =>
+export const error = (state: RootState): any[] | undefined =>
   state.surveyEditor.error;
 export const isLoading = (state: RootState): boolean =>
   state.surveyEditor.isLoading;

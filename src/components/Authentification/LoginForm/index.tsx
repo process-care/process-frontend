@@ -8,12 +8,14 @@ import { NavLink, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { actions } from "redux/slices/global";
 import { useAppSelector } from "redux/hooks";
-import { Errors } from "../Errors";
+import { Errors, renderAuthMessage } from "../Errors";
 
 export const LoginForm: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const isConnected = useAppSelector((state) => state.global.auth.isConnected);
+  const errors = useAppSelector((state) => state.global.auth.errors);
+
   // For dev facilities
   const initialValues =
     process.env.NODE_ENV === "development"
@@ -73,7 +75,7 @@ export const LoginForm: React.FC = () => {
                   <NavLink to="/mot-de-passe-oublie">
                     <Button variant="link">Mot de passe oublié ? </Button>
                   </NavLink>
-                  <Errors />
+                  <Errors message={renderAuthMessage(errors)} />
                   <Flex justifyContent="space-between" pt="90px">
                     <NavLink to="/inscription">
                       <Button variant="rounded">Créer un compte</Button>

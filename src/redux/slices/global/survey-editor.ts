@@ -55,7 +55,7 @@ type PostedPayload = {
 
 // ---- SELECTORS
 
-export const error = (state: RootState): string | undefined =>
+export const error = (state: RootState): any[] | undefined =>
   state.surveyEditor.error;
 export const isLoading = (state: RootState): boolean =>
   state.global.survey.isLoading;

@@ -7,11 +7,12 @@ import { SuccessPage } from "../SucessPage";
 import { SigninSchema } from "./validationSchema";
 import { actions } from "redux/slices/global";
 import { useDispatch } from "react-redux";
-import { Errors } from "../Errors";
+import { Errors, renderAuthMessage } from "../Errors";
 import { useAppSelector } from "redux/hooks";
 
 export const SigninForm: React.FC = () => {
   const isSuccess = useAppSelector((state) => state.global.auth.data?.user?.id);
+  const errors = useAppSelector((state) => state.global.auth.errors);
 
   const dispatch = useDispatch();
   const formatData = (data: any) => {
@@ -153,7 +154,7 @@ export const SigninForm: React.FC = () => {
                   label=""
                 />
               </Flex>
-              <Errors />
+              <Errors message={renderAuthMessage(errors)} />
               <Flex justifyContent="space-between" pt="60px">
                 <NavLink to="/connexion">
                   <Button variant="link">Annuler</Button>

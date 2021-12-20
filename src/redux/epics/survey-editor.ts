@@ -50,34 +50,39 @@ const postEpic: Epic = (action$, state$) =>
       return !surveyId;
     }),
     switchMap(async () => {
-      const postedAt = new Date().toISOString();
       const data = state$.value.surveyEditor.data;
       // Create survey and its first page
-      const surveyRes = await client.request(ADD_SURVEY, {
-        values: {
-          ...data,
-          status: "draft",
-        },
-      });
-
-      const surveyId = surveyRes?.createSurvey?.survey.id;
-      if (surveyId) {
-        await client.request(ADD_PAGE, {
+      try {
+        const surveyRes = await client.request(ADD_SURVEY, {
           values: {
-            name: `Page 1`,
-            is_locked: false,
-            short_name: `P1`,
-            survey: surveyId,
+            ...data,
+            status: "draft",
           },
         });
-      } else {
-        map(() => actions.failed(surveyRes.errors));
+
+        const surveyId = surveyRes?.createSurvey?.survey.id;
+        if (surveyId) {
+          await client.request(ADD_PAGE, {
+            values: {
+              name: `Page 1`,
+              is_locked: false,
+              short_name: `P1`,
+              survey: surveyId,
+            },
+          });
+        }
+        return surveyRes;
+      } catch (error: any) {
+        console.log(error);
+        return error;
       }
-      return { surveyRes, postedAt };
     }),
-    map(({ surveyRes, postedAt }) => {
-      if (surveyRes.errors) {
-        return actions.failed(surveyRes.errors);
+    map((surveyRes) => {
+      console.log("surveyRes", surveyRes);
+      const postedAt = new Date().toISOString();
+
+      if (surveyRes.response?.errors) {
+        return actions.failed(surveyRes?.response?.errors);
       } else
         return actions.posted({
           lastPosted: postedAt,

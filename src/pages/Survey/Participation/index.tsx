@@ -10,6 +10,7 @@ import {
 } from "./localstorage-handlers";
 import { NL } from "./nl";
 import { SURVEY_STATUS } from "types/survey";
+import { Loader } from "components/Spinner";
 
 // ---- COMPONENT
 
@@ -35,7 +36,11 @@ export const Participation: React.FC<unknown> = () => {
 
   // LOADING STATE
   if (isLoading || !survey) {
-    return <Box mt="60">Loading in progress...</Box>;
+    return (
+      <Center>
+        <Loader />
+      </Center>
+    );
   }
   console.log(survey);
 

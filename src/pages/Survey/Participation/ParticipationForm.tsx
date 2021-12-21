@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Center, Flex } from "@chakra-ui/react";
 
 import { ParticipationMenu } from "./ParticipationMenu";
 import { Page } from "./Form/Page";
@@ -11,6 +11,8 @@ import { finishParticipation } from "./localstorage-handlers";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { actions } from "redux/slices/participation/status";
 import { selectors } from "redux/slices/participation/page";
+import { Loader } from "components/Spinner";
+import { Error } from "components/Error";
 
 // ---- TYPES
 
@@ -32,7 +34,7 @@ export const ParticipationForm: React.FC<Props> = ({
 }) => {
   const dispatch = useAppDispatch();
 
-  const { data } = useGetSurvey(surveyId);
+  const { data, isLoading, isError } = useGetSurvey(surveyId);
   const pages = useAppSelector(selectors.selectShown);
 
   useEffect(() => {
@@ -51,9 +53,22 @@ export const ParticipationForm: React.FC<Props> = ({
   const { onFinish } = useFinishHandler(participationId, data?.survey.slug);
 
   // Missing data checks
-  if (!data?.survey) return <Box mt="60">No data for this survey</Box>;
-  if ((pages?.length ?? 0) < 1 || !selectedPage)
-    return <Box mt="60">No pages to display ! Contact the administrator !</Box>;
+
+  if (isLoading || !selectedPage)
+    return (
+      <Center>
+        <Loader />
+      </Center>
+    );
+  if (isError || !data?.survey)
+    return (
+      <Center>
+        <Error message="Il n'y a pas de donnée sur le formulaire." />
+      </Center>
+    );
+
+  // if ((pages?.length ?? 0) < 1 || !selectedPage)
+  //   return <Box mt="60">No pages to display ! Contact the administrator !</Box>;
 
   const currentColor = data.survey.landing?.color_theme?.base || "black";
   const { order } = data.survey;

@@ -42,6 +42,9 @@ export const AssociatedClassification: React.FC<Props> = ({
     (state) => state.application.drawerIsOpen
   );
 
+  console.log("maxVariations", maxVariations);
+  console.log("maxLoop", maxLoop);
+
   // TODO: refactor this
   const isFinished =
     totalClick ===
@@ -123,9 +126,9 @@ export const AssociatedClassification: React.FC<Props> = ({
       <FormLabel>{label}</FormLabel>
       {maxLoop && maxVariations && (
         <Text mt="15px" fontSize="xs">
-          {maxVariations - 1 > parseInt(maxLoop)
-            ? `${totalClick} / ${maxLoop}`
-            : `${totalClick} / ${maxVariations}`}
+          {maxVariations > parseInt(maxLoop)
+            ? `${totalClick + 1} / ${maxLoop}`
+            : `${totalClick + 1}  / ${Math.max(maxVariations)}`}
         </Text>
       )}
       {!isCollapsed && (

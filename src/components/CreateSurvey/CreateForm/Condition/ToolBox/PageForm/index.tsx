@@ -17,7 +17,7 @@ import { ReactComponent as Trash } from "assets/trash.svg";
 
 export const PageForm: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { is_removing } = useAppSelector((state) => state.builder.form);
+  const { entityToRemove } = useAppSelector((state) => state.builder.form);
 
   const selectedPageId = useAppSelector(selectors.pages.getSelectedPageId);
   const selectedPage = useAppSelector(selectors.pages.getSelectedPage);
@@ -32,7 +32,7 @@ export const PageForm: React.FC = () => {
   const isNotFirstPage =
     pages.findIndex((page) => page.id === selectedPageId) > 0;
 
-  const isRemoving = is_removing === selectedPageId;
+  const isRemoving = entityToRemove === selectedPageId;
 
   const handleSelect = (type: IQuestion["type"]) => {
     dispatch(actions.setSelectedQuestion(""));

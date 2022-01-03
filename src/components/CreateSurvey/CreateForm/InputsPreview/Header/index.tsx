@@ -7,7 +7,7 @@ import { selectors, actions } from "redux/slices/scientistData";
 export const Header: React.FC = () => {
   const dispatch = useAppDispatch();
   const isCollapse = useAppSelector(
-    (state) => state.builder.form.is_collapse_view
+    (state) => state.builder.form.isCollapseView
   );
 
   const questions = useAppSelector(

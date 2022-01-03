@@ -1,27 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import IQuestion from "types/form/question";
-import IPage from "types/form/page";
-import ICondition from "types/form/condition";
+import { RootState } from "redux/store";
 
 export interface FormBuilder {
-  selected_input: IQuestion | Record<string, any>;
-  selected_page: IPage | Record<string, any>;
-  selected_condition: ICondition | Record<string, any>;
-  is_editing: boolean;
-  is_collapse_view: boolean;
-  is_removing: ICondition["id"];
-  condition_status: string | null;
+  isEditing: boolean;
+  isCollapseView: boolean;
+  entityToRemove: string;
+  conditionStatus: string | null;
 }
 
 // Define the initial state using that type
 const initialState: FormBuilder = {
-  selected_input: {},
-  selected_page: {},
-  selected_condition: {},
-  is_editing: false,
-  is_collapse_view: false,
-  is_removing: "",
-  condition_status: null,
+  isEditing: false,
+  isCollapseView: false,
+  entityToRemove: "",
+  conditionStatus: null,
 };
 
 export const formBuilderSlice = createSlice({
@@ -29,47 +21,37 @@ export const formBuilderSlice = createSlice({
   initialState,
   reducers: {
     setConditionStatus: (state, action: PayloadAction<string>) => {
-      state.condition_status = action.payload;
-    },
-    selectInput: (state, action: PayloadAction<IQuestion>) => {
-      state.selected_input = action.payload;
+      state.conditionStatus = action.payload;
     },
 
     setIsEditing: (state, action: PayloadAction<boolean>) => {
-      state.is_editing = action.payload;
+      state.isEditing = action.payload;
     },
     setIsRemoving: (state, action: PayloadAction<string>) => {
-      state.is_removing = action.payload;
+      state.entityToRemove = action.payload;
     },
 
     toggleCollapseView: (state) => {
-      state.is_collapse_view = !state.is_collapse_view;
-    },
-
-    // Pages
-
-    selectPage: (state, action: PayloadAction<IPage>) => {
-      state.selected_page = action.payload;
-    },
-
-    // Condition
-
-    selectCondition: (
-      state,
-      action: PayloadAction<ICondition | Record<string, any>>
-    ) => {
-      state.selected_condition = action.payload;
+      state.isCollapseView = !state.isCollapseView;
     },
   },
 });
 
-export const {
-  selectInput,
-  setIsRemoving,
-  toggleCollapseView,
-  selectPage,
-  selectCondition,
-  setConditionStatus,
-} = formBuilderSlice.actions;
+// ---- SELECTORS
+
+export const isCollapseView = (state: RootState): boolean =>
+  state.builder.form.isCollapseView;
+export const isEditing = (state: RootState): boolean =>
+  state.builder.form.isEditing;
+
+export const selectors = {
+  isCollapseView,
+  isEditing,
+};
+
+export const { setIsRemoving, toggleCollapseView, setConditionStatus } =
+  formBuilderSlice.actions;
+
+export const actions = formBuilderSlice.actions;
 
 export default formBuilderSlice.reducer;

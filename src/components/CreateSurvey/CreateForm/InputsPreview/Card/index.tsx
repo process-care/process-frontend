@@ -20,6 +20,7 @@ import { ReactComponent as Condition } from "./assets/condition.svg";
 import { RemovingConfirmation } from "./../../RemovingConfirmation";
 import { actions as appActions } from "redux/slices/application";
 import { actions, selectors } from "redux/slices/scientistData";
+import { actions as formBuilderActions } from "redux/slices/formBuilder";
 
 import { t } from "static/input";
 import { SvgHover } from "components/SvgHover";
@@ -32,19 +33,19 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ input, index }) => {
   const dispatch = useAppDispatch();
-  const { is_removing } = useAppSelector((state) => state.builder.form);
+  const { entityToRemove } = useAppSelector((state) => state.builder.form);
   const { status } = useAppSelector((state) => state.scientistData.survey);
 
   const getCondition = (input: IQuestion) =>
     useAppSelector((state) =>
       selectors.conditions.getConditionsByQuestionId(state, input.id)
     );
-  const isRemoving = is_removing === input.id;
+  const isRemoving = entityToRemove === input.id;
 
   const color = useColorModeValue("gray.800", "gray.900");
 
   const handleEdit = () => {
-    dispatch(appActions.setIsEditing(true));
+    dispatch(formBuilderActions.setIsEditing(true));
     dispatch(actions.setSelectedQuestion(input.id));
     dispatch(appActions.toogleDrawer());
   };

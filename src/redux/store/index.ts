@@ -16,7 +16,7 @@ import formBuilder from "redux/slices/formBuilder";
 import application from "redux/slices/application";
 import landingBuilder from "redux/slices/landingBuilder";
 import participation from "redux/slices/participation";
-import surveyBuilder from "redux/slices/surveyBuilder";
+// import surveyBuilder from "redux/slices/surveyBuilder";
 import landingEditor from "redux/slices/landing-editor";
 import surveyEditor from "redux/slices/survey-editor";
 
@@ -66,7 +66,9 @@ const epicMiddleware = createEpicMiddleware<
 const builder = combineReducers({
   form: formBuilder,
   landing: landingBuilder,
-  survey: surveyBuilder,
+
+  // Don't need it for now
+  // survey: surveyBuilder,
 });
 
 const editor = combineReducers({

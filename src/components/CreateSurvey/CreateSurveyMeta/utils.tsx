@@ -107,22 +107,7 @@ export const renderInputs = (step: number): React.ReactElement => {
         />
       );
       break;
-    // case 7:
-    //   return (
-    //     <CustomCreatableSelect
-    //       name="categories"
-    //       id="categories"
-    //       placeholder="Catégories du projet"
-    //       label="Renseigner les catégories"
-    //       helpText="Mots clés servants uniquement à l’organisation du tableau de bord. Séparer les mots avec une virgule."
-    //       answers={t.categories}
-    //       isMulti
-    //     />
-    //   );
-    //   break;
 
-    // case 8:
-    //   return <ActionButtons />;
     default:
       return <></>;
       break;

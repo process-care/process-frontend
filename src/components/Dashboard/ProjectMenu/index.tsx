@@ -193,7 +193,9 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
               </Tooltip>
             </Flex>
           </Box>
-          <Warning hadLanding={hadLanding} hadQuestion={hadQuestion} />
+          {isDraft && (
+            <Warning hadLanding={hadLanding} hadQuestion={hadQuestion} />
+          )}
           <Box mt={4}>
             <Flex>
               <ActionButton

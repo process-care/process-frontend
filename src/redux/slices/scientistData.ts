@@ -131,6 +131,7 @@ export const globalSlice = createSlice({
       state.conditions.isLoading = false;
     },
     updateOrder: (state: GlobalState, action: PayloadAction<string[]>) => {
+      state.survey.isOrdering = true;
       state.survey.order = action.payload;
     },
     updatedOrder: (state: GlobalState, _action: PayloadAction<string>) => {

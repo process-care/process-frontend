@@ -17,10 +17,12 @@ import { Switch } from "components/Fields";
 import { t } from "static/condition";
 import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
 import { selectors, actions } from "redux/slices/scientistData";
+import { actions as appActions } from "redux/slices/application";
+
 import {
-  selectors as appSelectors,
-  actions as appActions,
-} from "redux/slices/application";
+  selectors as formBuilderSelectors,
+  actions as formBuilderAction,
+} from "redux/slices/formBuilder";
 
 interface Props {
   order: string[];
@@ -31,7 +33,7 @@ const InputForm: React.FC<Props> = ({ order }) => {
   const currentConditions = useAppSelector(
     selectors.conditions.getSelectedQuestionsConditions
   );
-  const isEditing = useAppSelector(appSelectors.isEditing);
+  const isEditing = useAppSelector(formBuilderSelectors.isEditing);
   const selectedQuestion = useAppSelector(
     selectors.questions.getSelectedQuestion
   );
@@ -55,7 +57,8 @@ const InputForm: React.FC<Props> = ({ order }) => {
         })
       );
     }
-    dispatch(appActions.setIsEditing(false));
+    dispatch(formBuilderAction.setIsEditing(false));
+    dispatch(actions.setSelectedQuestion(""));
   };
 
   // Save state to get diff

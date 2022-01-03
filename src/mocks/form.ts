@@ -163,6 +163,6 @@ import { FormBuilder } from "redux/slices/formBuilder";
 //     id: "",
 //   },
 //   is_editing: false,
-//   is_collapse_view: false,
-//   is_removing: "",
+//   isCollapseView: false,
+//   isRemoving: "",
 // };

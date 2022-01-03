@@ -7,7 +7,6 @@ import {
 // import type { RootState } from "redux/store";
 import { RootState } from "redux/store";
 import { DateTime } from "luxon";
-import IPage from "types/form/page";
 import ISurvey from "types/survey";
 
 // ----- ENTITY ADAPTER
@@ -49,7 +48,7 @@ const initialState: surveyEditor = {
 
 type UpdatePayload = {
   id: string;
-  changes: Partial<IPage>;
+  changes: Partial<ISurvey>;
 };
 
 type UpdatedPayload = {
@@ -86,6 +85,9 @@ export const surveysSlice = createSlice({
     },
     updated: (state, action: PayloadAction<UpdatedPayload>) => {
       state.lastUpdated = action.payload.lastUpdated;
+    },
+    setSelectedSurvey: (state, action: PayloadAction<string>) => {
+      state.selectedSurvey = action.payload;
     },
     delete: (state, action: PayloadAction<any>) => {
       state.isDeleting = true;

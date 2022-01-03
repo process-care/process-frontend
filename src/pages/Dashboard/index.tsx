@@ -24,7 +24,6 @@ import {
   selectors as selectorsMySurveys,
 } from "redux/slices/my-surveys";
 
-import ISurvey from "types/survey";
 import { NoData } from "components/SurveyGrid/noData";
 
 export const Dashboard: React.FC<IRoute> = () => {
@@ -40,16 +39,13 @@ export const Dashboard: React.FC<IRoute> = () => {
   const isProfilPage = location.pathname === "/profil";
 
   const [menuIsOpen, setMenuIsOpen] = useState(false);
-  const [clickedSurvey, setClickedSurvey] = useState<ISurvey | undefined>(
-    undefined
-  );
+
   const toggleOff = () => {
     setMenuIsOpen(false);
   };
 
   const toggleMenu = (survey: Survey["survey"]) => {
-    const current = surveys.find((s) => s.id === survey.id);
-    setClickedSurvey(current);
+    dispatch(actionsMySurveys.setSelectedSurvey(survey.id));
     if (!isOpen) {
       setMenuIsOpen(true);
     }
@@ -167,11 +163,7 @@ export const Dashboard: React.FC<IRoute> = () => {
           )}
         </Container>
       </div>
-      <ProjectMenu
-        menuIsOpen={menuIsOpen}
-        selectedSurvey={clickedSurvey}
-        onClose={toggleOff}
-      />
+      <ProjectMenu menuIsOpen={menuIsOpen} onClose={toggleOff} />
     </Box>
   );
 };

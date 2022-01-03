@@ -6,19 +6,17 @@ import { ReactComponent as Trash } from "./assets/trash.svg";
 
 import { API_URL_ROOT } from "constants/api";
 import { Filters } from "../Filters";
-import {
-  useDeleteSurvey,
-  useGetSurveyStats,
-  useUpdateSurvey,
-} from "call/actions/survey";
+import { useDeleteSurvey, useGetSurveyStats } from "call/actions/survey";
 import { useNavigator } from "components/CreateSurvey/hooks";
 import { RemovingConfirmation } from "components/CreateSurvey/CreateForm/Condition/ToolBox/PageForm/Status";
-import { Chart } from "../Chart";
+// import { Chart } from "../Chart";
 import { renderStatus } from "utils/application/renderStatus";
 import { Loader } from "components/Spinner";
 import { NavLink } from "react-router-dom";
 import ISurvey, { SURVEY_STATUS } from "types/survey";
-
+import { actions, selectors } from "redux/slices/my-surveys";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "redux/hooks";
 // ---- STATICS
 
 const filters = [
@@ -34,22 +32,17 @@ const filters = [
 
 interface Props {
   menuIsOpen: boolean;
-  selectedSurvey?: ISurvey | Record<string, any>;
   onClose: () => void;
 }
 
 // ---- COMPONENT
 
-export const ProjectMenu: React.FC<Props> = ({
-  menuIsOpen,
-  selectedSurvey,
-  onClose,
-}) => {
-  if (!menuIsOpen || !selectedSurvey) return <></>;
+export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
+  const selectedSurvey = useAppSelector(selectors.getSelectedSurvey);
 
+  const dispatch = useDispatch();
   const [isRemoving, setIsRemoving] = useState<boolean>(false);
   const { mutateAsync: deleteSurvey } = useDeleteSurvey();
-  const { mutateAsync: udpateSurvey } = useUpdateSurvey();
 
   const {
     title,
@@ -59,11 +52,11 @@ export const ProjectMenu: React.FC<Props> = ({
     statistics,
     exportURL,
     isLoadingStats,
-  } = useSurveyData(selectedSurvey.id);
+  } = useSurveyData(selectedSurvey?.id);
 
   const { gotToLanding, goToForm, goToConsent, goToSurveyMetadatas } =
     useNavigator(selectedSurvey);
-  const { isDraft, hadLanding, hadQuestion, canPublish } =
+  const { isDraft, isArchived, hadLanding, hadQuestion, canPublish } =
     useWarning(selectedSurvey);
 
   const [statFilter, setStatFilter] = useState(filters[0].id);
@@ -98,23 +91,27 @@ export const ProjectMenu: React.FC<Props> = ({
     onClose();
   };
 
+  const changeStatus = (status: ISurvey["status"]) => {
+    if (!selectedSurvey.id) return;
+    dispatch(
+      actions.update({
+        id: selectedSurvey.id,
+        changes: {
+          status,
+        },
+      })
+    );
+  };
+
   const handleArchive = () => {
-    udpateSurvey({
-      id: selectedSurvey.id,
-      data: {
-        status: "archived",
-      },
-    });
+    changeStatus("archived");
   };
 
   const handlePublish = () => {
-    udpateSurvey({
-      id: selectedSurvey.id,
-      data: {
-        status: "pending",
-      },
-    });
+    changeStatus("pending");
   };
+
+  if (!menuIsOpen || !selectedSurvey) return <></>;
 
   return (
     // TODO: Use a % + max-width to limit growth on big screens
@@ -208,6 +205,7 @@ export const ProjectMenu: React.FC<Props> = ({
                   hadLanding ? "Modifier" : "Créer"
                 } la page d'accueil`}
                 onClick={gotToLanding}
+                disabled={isArchived}
               />
               <ActionButton
                 top
@@ -237,6 +235,7 @@ export const ProjectMenu: React.FC<Props> = ({
                 bottom
                 label={"Archiver"}
                 onClick={handleArchive}
+                disabled={isArchived}
               />
               <ActionButton
                 disabled
@@ -274,7 +273,7 @@ export const ProjectMenu: React.FC<Props> = ({
               <BigNumber value={selectedStats.completed} label={"terminés"} />
             </Flex>
 
-            <Flex
+            {/* <Flex
               mt={55}
               ml={50}
               mr={50}
@@ -283,7 +282,7 @@ export const ProjectMenu: React.FC<Props> = ({
             >
               <div>Progression de la complétion</div>
               <Chart />
-            </Flex>
+            </Flex> */}
           </Box>
         </Box>
       )}
@@ -293,7 +292,7 @@ export const ProjectMenu: React.FC<Props> = ({
 
 // ---- HOOKS
 
-function useSurveyData(surveyId: string) {
+function useSurveyData(surveyId: string | undefined) {
   const { data, isLoading } = useGetSurveyStats(surveyId);
   const exportURL = `${API_URL_ROOT}/surveys/${surveyId}/export`;
 
@@ -313,13 +312,16 @@ function useSurveyData(surveyId: string) {
   };
 }
 
-function useWarning(selectedSurvey: ISurvey | Record<string, any>) {
-  const isDraft = selectedSurvey.status === SURVEY_STATUS.Draft;
-  const hadLanding = selectedSurvey.landing !== null;
-  const hadQuestion = selectedSurvey.order?.length > 0;
+function useWarning(selectedSurvey: ISurvey | undefined) {
+  const isDraft = selectedSurvey?.status === SURVEY_STATUS.Draft;
+  const isArchived = selectedSurvey?.status === SURVEY_STATUS.Archived;
+
+  const hadLanding = selectedSurvey?.landing !== null;
+  const hadQuestion = selectedSurvey && selectedSurvey?.order?.length > 0;
   const canPublish = !isDraft && hadLanding && hadQuestion;
   return {
     isDraft,
+    isArchived,
     hadLanding,
     hadQuestion,
     canPublish,
@@ -351,7 +353,7 @@ const Warning = ({
   hadQuestion,
 }: {
   hadLanding: boolean;
-  hadQuestion: boolean;
+  hadQuestion: boolean | undefined;
 }) => {
   if (!hadLanding) {
     return (

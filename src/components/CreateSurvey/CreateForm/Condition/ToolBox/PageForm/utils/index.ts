@@ -5,7 +5,7 @@
 import { RootState } from "redux/store";
 
 export const getNewOrder: any = (
-  global: RootState["global"],
+  global: RootState["scientistData"],
   new_question_id: string
 ) => {
   const pagesIds = global.pages.ids;

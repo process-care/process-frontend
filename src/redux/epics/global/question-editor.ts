@@ -1,7 +1,7 @@
 import { map, switchMap } from "rxjs";
 import { combineEpics, ofType } from "redux-observable";
 import { Epic } from "redux/store";
-import { actions } from "redux/slices/global";
+import { actions } from "redux/slices/scientistData";
 
 import { client } from "call/actions";
 
@@ -20,7 +20,7 @@ const createEpic: Epic = (action$, state$) =>
     switchMap(async (action) => {
       const { type } = action.payload;
       const createdAt = new Date().toISOString();
-      const selectedPageId = state$.value.global.pages.selectedPage;
+      const selectedPageId = state$.value.scientistData.pages.selectedPage;
       const newQuestion = await client.request(ADD_QUESTION, {
         values: {
           type,
@@ -38,7 +38,7 @@ const createEpic: Epic = (action$, state$) =>
         newQuestion: Record<string, any>;
         createdAt: string;
       }) => {
-        const global = state$.value.global;
+        const global = state$.value.scientistData;
         const { type, id } = newQuestion.createQuestion.question;
         return actions.createdQuestion({
           question: {
@@ -59,11 +59,12 @@ const saveEpic: Epic = (action$, state$) =>
     ofType(actions.saveQuestion.type),
     switchMap(async (action) => {
       const savedAt: string = new Date().toISOString();
-      const selectedQuestionId = state$.value.global.questions.selectedQuestion;
+      const selectedQuestionId =
+        state$.value.scientistData.questions.selectedQuestion;
       const selectedQuestion =
-        state$.value.global.questions.entities[selectedQuestionId];
-      const selectedSurvey = state$.value.global.survey.selectedSurvey;
-      const order = state$.value.global.survey.order;
+        state$.value.scientistData.questions.entities[selectedQuestionId];
+      const selectedSurvey = state$.value.scientistData.survey.selectedSurvey;
+      const order = state$.value.scientistData.survey.order;
 
       const changes = { ...action.payload.changes };
       changes.page = changes.page.id;
@@ -103,8 +104,8 @@ const deleteEpic: Epic = (action$, state$) =>
       return deletedAt;
     }),
     switchMap(async (deletedAt) => {
-      const selectedSurvey = state$.value.global.survey.selectedSurvey;
-      const order = state$.value.global.survey.order;
+      const selectedSurvey = state$.value.scientistData.survey.selectedSurvey;
+      const order = state$.value.scientistData.survey.order;
       await client.request(UPDATE_ORDER, {
         id: selectedSurvey,
         new_order: order,

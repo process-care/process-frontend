@@ -1,7 +1,7 @@
 import { map, switchMap } from "rxjs";
 import { combineEpics, ofType } from "redux-observable";
 import { Epic, store } from "redux/store";
-import { actions } from "redux/slices/global";
+import { actions } from "redux/slices/scientistData";
 import { v4 as uuidv4 } from "uuid";
 import { client } from "call/actions";
 
@@ -18,7 +18,7 @@ const createEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.createCondition.type),
     switchMap(async (action) => {
-      const redirectToPage = store.getState().global.pages.selectedPage;
+      const redirectToPage = store.getState().scientistData.pages.selectedPage;
       const { type, refererId, group } = action.payload;
       const createdAt = new Date().toISOString();
       const newGroup = `group-${uuidv4()}`;
@@ -103,10 +103,10 @@ const saveEpic: Epic = (action$, state$) =>
     switchMap(async () => {
       const savedAt: string = new Date().toISOString();
       const selectedConditionId =
-        state$.value.global.conditions.selectedCondition;
+        state$.value.scientistData.conditions.selectedCondition;
 
       const conditions = Object.entries(
-        state$.value.global.conditions.entities
+        state$.value.scientistData.conditions.entities
       );
       const changes = conditions.filter((c) => c[0] === selectedConditionId)[0];
       // We need to send target : id, referer_question:id, but Icondition have full Question object adn we use it in frontend

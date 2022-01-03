@@ -7,7 +7,7 @@ import { client } from "call/actions";
 import { GET_SURVEY, UPDATE_SURVEY, ADD_SURVEY } from "call/queries/survey";
 import { ADD_PAGE } from "call/queries/formBuilder/page";
 
-// Watches over "load" landing
+// Watches over "load" survey
 const loadEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.initialize.type),
@@ -24,7 +24,7 @@ const updateEpic: Epic = (action$, state$) =>
     ofType(actions.update.type),
     filter(() => {
       // If surveyId is undefined, it means we are creating a new survey and we don't need to update it
-      const surveyId = state$.value.surveyEditor.data?.id;
+      const surveyId = state$.value.editor.survey.data?.id;
       return Boolean(surveyId);
     }),
     map((action) => action.payload),
@@ -33,7 +33,7 @@ const updateEpic: Epic = (action$, state$) =>
     switchMap(async (accumulated) => {
       const savingAt = new Date().toISOString();
       const data = { ...accumulated, id: undefined };
-      const surveyId = state$.value.surveyEditor.data?.id;
+      const surveyId = state$.value.editor.survey.data?.id;
       await client.request(UPDATE_SURVEY, { id: surveyId, data });
       return savingAt;
     }),
@@ -46,11 +46,11 @@ const postEpic: Epic = (action$, state$) =>
     ofType(actions.post.type),
     filter(() => {
       // If surveyId is defined, it means we don't need to create it
-      const surveyId = state$.value.surveyEditor.data?.id;
+      const surveyId = state$.value.editor.survey.data?.id;
       return !surveyId;
     }),
     switchMap(async () => {
-      const data = state$.value.surveyEditor.data;
+      const data = state$.value.editor.survey.data;
       // Create survey and its first page
       try {
         const surveyRes = await client.request(ADD_SURVEY, {

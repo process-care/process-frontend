@@ -3,35 +3,47 @@ import ICondition, { CheckSurvey } from "types/form/condition";
 
 import IPage from "types/form/page";
 import IQuestion from "types/form/question";
-import { authReducers, AuthState, initialAuthState } from "./global/auth";
+import ISurvey from "types/survey";
+import {
+  authReducers,
+  AuthState,
+  initialAuthState,
+} from "./scientistData/auth";
 import {
   conditionAdapter,
   ConditionEditor,
   conditionsReducers,
   conditionsSelectors,
   initialConditionState,
-} from "./global/condition-editor";
+} from "./scientistData/condition-editor";
+import {
+  initialSurveysState,
+  surveysAdapter,
+  SurveysEditor,
+  surveysReducers,
+  surveysSelectors,
+} from "./scientistData/surveys";
 
 import {
   pageAdapter,
   PageEditor,
   pageReducer,
   pageSelectors,
-} from "./global/page-editor";
-import { initialPageState } from "./global/page-editor";
+  initialPageState,
+} from "./scientistData/page-editor";
 import {
   initialQuestionState,
   questionAdapter,
   QuestionEditor,
   questionsReducers,
   questionsSelectors,
-} from "./global/question-editor";
+} from "./scientistData/question-editor";
 import {
   initialSurveyState,
   SurveyEditor,
   surveyReducers,
   surveySelectors,
-} from "./global/survey-editor";
+} from "./scientistData/survey-editor";
 import { Survey } from "./surveyBuilder";
 
 type LoadedPayload = Survey["survey"];
@@ -44,11 +56,12 @@ export interface GlobalState {
   conditions: EntityState<ICondition> & ConditionEditor;
   survey: SurveyEditor;
   auth: AuthState;
+  mySurveys: EntityState<ISurvey> & SurveysEditor;
 }
 
 // ----- SLICE
 
-const SLICE_NAME = "global";
+const SLICE_NAME = "scientistData";
 
 export const globalSlice = createSlice({
   name: SLICE_NAME,
@@ -58,6 +71,7 @@ export const globalSlice = createSlice({
     conditions: conditionAdapter.getInitialState(initialConditionState),
     survey: initialSurveyState,
     auth: initialAuthState,
+    mySurveys: surveysAdapter.getInitialState(initialSurveysState),
   },
   reducers: {
     ...pageReducer,
@@ -65,6 +79,7 @@ export const globalSlice = createSlice({
     ...questionsReducers,
     ...conditionsReducers,
     ...authReducers,
+    ...surveysReducers,
 
     initializeSurvey: (
       state: GlobalState,
@@ -136,6 +151,7 @@ export const selectors = {
   survey: surveySelectors,
   questions: questionsSelectors,
   conditions: conditionsSelectors,
+  mySurveys: surveysSelectors,
 };
 
 export const actions = globalSlice.actions;

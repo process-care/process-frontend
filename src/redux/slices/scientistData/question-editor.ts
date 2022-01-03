@@ -3,7 +3,7 @@ import { createEntityAdapter, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "redux/store";
 import { DateTime } from "luxon";
 import IQuestion from "types/form/question";
-import { GlobalState } from "../global";
+import { GlobalState } from "../scientistData";
 import { getNewOrder } from "components/CreateSurvey/CreateForm/Condition/ToolBox/PageForm/utils";
 
 // ----- ENTITY ADAPTER
@@ -80,24 +80,24 @@ type CreatedPayload = {
 // ---- SELECTORS
 
 export const error = (state: RootState): string | undefined =>
-  state.global.questions.error;
+  state.scientistData.questions.error;
 export const isLoading = (state: RootState): boolean =>
-  state.global.questions.isLoading;
+  state.scientistData.questions.isLoading;
 export const questionsHasChanges = (state: RootState): boolean => {
-  const updated = DateTime.fromISO(state.global.questions.lastUpdated);
-  const saved = DateTime.fromISO(state.global.questions.lastSaved);
+  const updated = DateTime.fromISO(state.scientistData.questions.lastUpdated);
+  const saved = DateTime.fromISO(state.scientistData.questions.lastSaved);
   return updated > saved;
 };
 
 export const questions = (state: RootState): IQuestion[] =>
-  questionAdapter.getSelectors().selectAll(state.global.questions);
+  questionAdapter.getSelectors().selectAll(state.scientistData.questions);
 
 const getSelectedQuestionId = (state: RootState): string =>
-  state.global.questions.selectedQuestion;
+  state.scientistData.questions.selectedQuestion;
 
 const getSelectedPageQuestions = (state: RootState): IQuestion[] => {
   return questions(state).filter(
-    (question) => question.page?.id === state.global.pages.selectedPage
+    (question) => question.page?.id === state.scientistData.pages.selectedPage
   );
 };
 
@@ -111,7 +111,7 @@ const getQuestionsByPageId = (
 const getSelectedQuestion = (state: RootState): IQuestion | any =>
   questionAdapter
     .getSelectors()
-    .selectById(state.global.questions, getSelectedQuestionId(state));
+    .selectById(state.scientistData.questions, getSelectedQuestionId(state));
 
 export const questionsSelectors = {
   error,

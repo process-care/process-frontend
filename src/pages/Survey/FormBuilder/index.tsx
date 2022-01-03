@@ -17,7 +17,7 @@ import { Error } from "components/Error";
 import { Banner } from "components/Banner";
 import { useDispatch } from "react-redux";
 
-import { actions, selectors } from "redux/slices/global";
+import { actions, selectors } from "redux/slices/scientistData";
 
 import { Loader } from "components/Spinner";
 

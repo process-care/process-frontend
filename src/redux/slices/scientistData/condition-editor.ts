@@ -8,7 +8,7 @@ import {
 import { RootState } from "redux/store";
 import { DateTime } from "luxon";
 import ICondition from "types/form/condition";
-import { GlobalState } from "../global";
+import { GlobalState } from "../scientistData";
 
 // ----- ENTITY ADAPTER
 
@@ -185,29 +185,30 @@ export const conditionSlice = createSlice({
 // ---- SELECTORS
 
 export const error = (state: RootState): string | undefined =>
-  state.global.questions.error;
+  state.scientistData.questions.error;
 export const isLoading = (state: RootState): boolean =>
-  state.global.questions.isLoading;
+  state.scientistData.questions.isLoading;
 export const hasChanges = (state: RootState): boolean => {
-  const updated = DateTime.fromISO(state.global.questions.lastUpdated);
-  const saved = DateTime.fromISO(state.global.questions.lastSaved);
+  const updated = DateTime.fromISO(state.scientistData.questions.lastUpdated);
+  const saved = DateTime.fromISO(state.scientistData.questions.lastSaved);
   return updated > saved;
 };
 
 export const getAllConditions = (state: RootState): ICondition[] =>
-  conditionAdapter.getSelectors().selectAll(state.global.conditions);
+  conditionAdapter.getSelectors().selectAll(state.scientistData.conditions);
 
 const getSelectedConditionId = (state: RootState): string =>
-  state.global.conditions.selectedCondition;
+  state.scientistData.conditions.selectedCondition;
 
-const getStep = (state: RootState): number => state.global.conditions.step;
+const getStep = (state: RootState): number =>
+  state.scientistData.conditions.step;
 const getValidity = (state: RootState): boolean =>
-  state.global.conditions.isValid;
+  state.scientistData.conditions.isValid;
 
 const getSelectedPageConditions = (state: RootState): ICondition[] => {
   return getAllConditions(state).filter(
     (condition) =>
-      condition.referer_page?.id === state.global.pages.selectedPage
+      condition.referer_page?.id === state.scientistData.pages.selectedPage
   );
 };
 
@@ -232,14 +233,15 @@ const getConditionsByQuestionId = (
 const getSelectedQuestionsConditions = (state: RootState): ICondition[] => {
   return getAllConditions(state).filter(
     (condition) =>
-      condition.referer_question?.id === state.global.questions.selectedQuestion
+      condition.referer_question?.id ===
+      state.scientistData.questions.selectedQuestion
   );
 };
 
 const getSelectedCondition = (state: RootState): ICondition | undefined =>
   conditionAdapter
     .getSelectors()
-    .selectById(state.global.conditions, getSelectedConditionId(state));
+    .selectById(state.scientistData.conditions, getSelectedConditionId(state));
 
 export const conditionsSelectors = {
   error,

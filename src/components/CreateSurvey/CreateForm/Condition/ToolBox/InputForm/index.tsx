@@ -16,7 +16,7 @@ import { setIsRemoving } from "redux/slices/formBuilder";
 import { Switch } from "components/Fields";
 import { t } from "static/condition";
 import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
-import { selectors, actions } from "redux/slices/global";
+import { selectors, actions } from "redux/slices/scientistData";
 import {
   selectors as appSelectors,
   actions as appActions,

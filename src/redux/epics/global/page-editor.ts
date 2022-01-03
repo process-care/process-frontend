@@ -1,7 +1,7 @@
 import { map, switchMap, scan, debounceTime } from "rxjs";
 import { combineEpics, ofType } from "redux-observable";
 import { Epic } from "redux/store";
-import { actions, selectors } from "redux/slices/global";
+import { actions, selectors } from "redux/slices/scientistData";
 
 import { client } from "call/actions";
 import {

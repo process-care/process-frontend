@@ -3,11 +3,11 @@ import React from "react";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { toggleCollapseView } from "redux/slices/formBuilder";
 import { t } from "static/input";
-import { selectors, actions } from "redux/slices/global";
+import { selectors, actions } from "redux/slices/scientistData";
 export const Header: React.FC = () => {
   const dispatch = useAppDispatch();
   const isCollapse = useAppSelector(
-    (state) => state.formBuilder.is_collapse_view
+    (state) => state.builder.form.is_collapse_view
   );
 
   const questions = useAppSelector(

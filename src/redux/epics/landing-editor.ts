@@ -25,7 +25,7 @@ const updateEpic: Epic = (action$, state$) =>
     scan((acc, payload) => Object.assign({}, acc, payload), {}),
     debounceTime(5000),
     switchMap(async (accumulated) => {
-      const currentLandingId = state$.value.landingEditor.data?.id;
+      const currentLandingId = state$.value.editor.landing.data?.id;
 
       if (!currentLandingId) {
         throw new Error("No Landing ID to save the modifications to.");

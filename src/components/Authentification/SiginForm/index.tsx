@@ -5,14 +5,16 @@ import { Textarea, Input, Checkbox } from "components/Fields";
 import { NavLink } from "react-router-dom";
 import { SuccessPage } from "../SucessPage";
 import { SigninSchema } from "./validationSchema";
-import { actions } from "redux/slices/global";
+import { actions } from "redux/slices/scientistData";
 import { useDispatch } from "react-redux";
 import { Errors, renderAuthMessage } from "../Errors";
 import { useAppSelector } from "redux/hooks";
 
 export const SigninForm: React.FC = () => {
-  const isSuccess = useAppSelector((state) => state.global.auth.data?.user?.id);
-  const errors = useAppSelector((state) => state.global.auth.errors);
+  const isSuccess = useAppSelector(
+    (state) => state.scientistData.auth.data?.user?.id
+  );
+  const errors = useAppSelector((state) => state.scientistData.auth.errors);
 
   const dispatch = useDispatch();
   const formatData = (data: any) => {

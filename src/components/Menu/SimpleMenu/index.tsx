@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 import { useAuth } from "components/Authentification/hooks";
 import { useDispatch } from "react-redux";
 import { actions } from "redux/slices/application";
-import { actions as appActions } from "redux/slices/global";
+import { actions as appActions } from "redux/slices/scientistData";
 import { useHistory } from "react-router-dom";
 
 import { useGetMe } from "call/actions/auth";

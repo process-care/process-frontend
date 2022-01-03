@@ -2,10 +2,10 @@ import { PayloadAction } from "@reduxjs/toolkit";
 
 import { RootState } from "redux/store";
 import { DateTime } from "luxon";
-import { Survey } from "./../surveyBuilder";
+import { Survey } from "../surveyBuilder";
 import slugify from "slugify";
 import { history } from "redux/store/history";
-import { GlobalState } from "../global";
+import { GlobalState } from "../scientistData";
 import { CheckSurvey } from "types/form/condition";
 
 // ---- STATE
@@ -56,25 +56,25 @@ type PostedPayload = {
 // ---- SELECTORS
 
 export const error = (state: RootState): any[] | undefined =>
-  state.surveyEditor.error;
+  state.editor.survey.error;
 export const isLoading = (state: RootState): boolean =>
-  state.global.survey.isLoading;
-export const step = (state: RootState): number => state.surveyEditor.step;
+  state.scientistData.survey.isLoading;
+export const step = (state: RootState): number => state.editor.survey.step;
 export const hasChanges = (state: RootState): boolean => {
-  const updated = DateTime.fromISO(state.surveyEditor.lastUpdated);
-  const saved = DateTime.fromISO(state.surveyEditor.lastSaved);
+  const updated = DateTime.fromISO(state.editor.survey.lastUpdated);
+  const saved = DateTime.fromISO(state.editor.survey.lastSaved);
   return updated > saved;
 };
 
 export const getSelectedSurvey = (
   state: RootState
-): Partial<Survey["survey"]> => state.global.survey.data;
+): Partial<Survey["survey"]> => state.scientistData.survey.data;
 
 export const getSelectedSurveyId = (state: RootState): string =>
-  state.global.survey.selectedSurvey;
+  state.scientistData.survey.selectedSurvey;
 
 export const getOrder = (state: RootState): string[] =>
-  state.global.survey.order;
+  state.scientistData.survey.order;
 
 export const surveySelectors = {
   error,

@@ -14,7 +14,7 @@ import { renderStatus } from "utils/application/renderStatus";
 import { Loader } from "components/Spinner";
 import { NavLink } from "react-router-dom";
 import ISurvey, { SURVEY_STATUS } from "types/survey";
-import { actions, selectors } from "redux/slices/my-surveys";
+import { actions, selectors } from "redux/slices/scientistData";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "redux/hooks";
 // ---- STATICS
@@ -40,7 +40,7 @@ interface Props {
 export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
   const dispatch = useDispatch();
   const [isRemoving, setIsRemoving] = useState(false);
-  const selectedSurvey = useAppSelector(selectors.getSelectedSurvey);
+  const selectedSurvey = useAppSelector(selectors.mySurveys.getSelectedSurvey);
 
   const {
     title,
@@ -85,14 +85,14 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
   };
 
   const handleDelete = () => {
-    dispatch(actions.delete(selectedSurvey.id));
+    dispatch(actions.deleteSurvey(selectedSurvey.id));
     onClose();
   };
 
   const changeStatus = (status: ISurvey["status"]) => {
     if (!selectedSurvey.id) return;
     dispatch(
-      actions.update({
+      actions.updateSurveys({
         id: selectedSurvey.id,
         changes: {
           status,
@@ -316,7 +316,7 @@ function useWarning(selectedSurvey: ISurvey | undefined) {
 
   const hadLanding = selectedSurvey?.landing !== null;
   const hadQuestion = selectedSurvey && selectedSurvey?.order?.length > 0;
-  const canPublish = !isDraft && hadLanding && hadQuestion;
+  const canPublish = isDraft && hadLanding && hadQuestion;
   return {
     isDraft,
     isArchived,
@@ -353,20 +353,19 @@ const Warning = ({
   hadLanding: boolean;
   hadQuestion: boolean | undefined;
 }) => {
-  if (!hadLanding) {
+  const Message = ({ content }: { content: string }) => {
     return (
       <Box pl={5} d="flex" alignContent="flex-start">
-        <Text variant="current">⚠️ L'enquête n'a pas de page d'accueil</Text>
+        <Text variant="current">⚠️ {content}</Text>
       </Box>
     );
-  }
-  if (!hadQuestion) {
-    return (
-      <Box pl={5} d="flex" alignContent="flex-start">
-        <Text variant="current">⚠️ Le formulaire est vide</Text>
-      </Box>
-    );
-  } else return <></>;
+  };
+  return (
+    <Box>
+      {!hadLanding && <Message content="L'enquête n'a pas de page d'accueil" />}
+      {!hadQuestion && <Message content="Le formulaire est vide" />}
+    </Box>
+  );
 };
 
 // -- Actions

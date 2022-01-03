@@ -13,10 +13,10 @@ import { t } from "static/input";
 import { actions as appActions } from "redux/slices/application";
 import { Loader } from "components/Spinner";
 import { useGetSurvey } from "call/actions/survey";
-import { actions as globalActions } from "redux/slices/global";
+import { actions as globalActions } from "redux/slices/scientistData";
 import { CheckIcon } from "@chakra-ui/icons";
 import { selectors } from "redux/slices/landing-editor";
-import { selectors as globalSelectors } from "redux/slices/global";
+import { selectors as globalSelectors } from "redux/slices/scientistData";
 
 // ---- STATIC
 

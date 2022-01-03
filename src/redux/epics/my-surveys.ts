@@ -3,7 +3,11 @@ import { combineEpics, ofType } from "redux-observable";
 import { Epic } from "redux/store";
 import { actions } from "redux/slices/my-surveys";
 import { client } from "call/actions";
-import { GET_MY_SURVEYS, UPDATE_SURVEY } from "call/queries/survey";
+import {
+  DELETE_SURVEY,
+  GET_MY_SURVEYS,
+  UPDATE_SURVEY,
+} from "call/queries/survey";
 
 // Watches over "initialize" surveys
 const initializeEpic: Epic = (action$) =>
@@ -37,4 +41,27 @@ const updateEpic: Epic = (action$) =>
     })
   );
 
-export const surveysEpics = combineEpics(initializeEpic, updateEpic);
+const deleteEpic: Epic = (action$) =>
+  action$.pipe(
+    ofType(actions.delete.type),
+    switchMap(async (action) => {
+      const id: string = action.payload;
+      const deletedAt = new Date().toISOString();
+      await client.request(DELETE_SURVEY, {
+        id,
+      });
+
+      return deletedAt;
+    }),
+    switchMap(async (deletedAt) => {
+      return actions.deleted({
+        lastDeleted: deletedAt,
+      });
+    })
+  );
+
+export const surveysEpics = combineEpics(
+  initializeEpic,
+  updateEpic,
+  deleteEpic
+);

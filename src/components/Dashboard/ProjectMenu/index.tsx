@@ -6,7 +6,7 @@ import { ReactComponent as Trash } from "./assets/trash.svg";
 
 import { API_URL_ROOT } from "constants/api";
 import { Filters } from "../Filters";
-import { useDeleteSurvey, useGetSurveyStats } from "call/actions/survey";
+import { useGetSurveyStats } from "call/actions/survey";
 import { useNavigator } from "components/CreateSurvey/hooks";
 import { RemovingConfirmation } from "components/CreateSurvey/CreateForm/Condition/ToolBox/PageForm/Status";
 // import { Chart } from "../Chart";
@@ -38,11 +38,9 @@ interface Props {
 // ---- COMPONENT
 
 export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
-  const selectedSurvey = useAppSelector(selectors.getSelectedSurvey);
-
   const dispatch = useDispatch();
-  const [isRemoving, setIsRemoving] = useState<boolean>(false);
-  const { mutateAsync: deleteSurvey } = useDeleteSurvey();
+  const [isRemoving, setIsRemoving] = useState(false);
+  const selectedSurvey = useAppSelector(selectors.getSelectedSurvey);
 
   const {
     title,
@@ -87,7 +85,7 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
   };
 
   const handleDelete = () => {
-    deleteSurvey(selectedSurvey.id);
+    dispatch(actions.delete(selectedSurvey.id));
     onClose();
   };
 

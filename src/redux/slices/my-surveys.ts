@@ -89,7 +89,7 @@ export const surveysSlice = createSlice({
     setSelectedSurvey: (state, action: PayloadAction<string>) => {
       state.selectedSurvey = action.payload;
     },
-    delete: (state, action: PayloadAction<any>) => {
+    delete: (state, action: PayloadAction<string>) => {
       state.isDeleting = true;
       surveyAdapter.removeOne(state, action.payload);
       const lastPageId = state.ids.length - 1;

@@ -21,8 +21,8 @@ import { useAuth } from "components/Authentification/hooks";
 import { actions } from "redux/slices/survey-editor";
 import {
   actions as actionsMySurveys,
-  selectors as selectorsMySurveys,
-} from "redux/slices/my-surveys";
+  selectors,
+} from "redux/slices/scientistData";
 
 import { NoData } from "components/SurveyGrid/noData";
 
@@ -31,9 +31,9 @@ export const Dashboard: React.FC<IRoute> = () => {
   const history = useHistory();
   const { location } = history;
   const dispatch = useDispatch();
-  const surveys = useAppSelector(selectorsMySurveys.getAllSurveys);
-  const error = useAppSelector(selectorsMySurveys.error);
-  const isLoading = useAppSelector(selectorsMySurveys.isLoading);
+  const surveys = useAppSelector(selectors.mySurveys.getAllSurveys);
+  const error = useAppSelector(selectors.mySurveys.error);
+  const isLoading = useAppSelector(selectors.mySurveys.isLoading);
 
   const isOpen = useAppSelector((state) => state.application.drawerIsOpen);
   const isProfilPage = location.pathname === "/profil";
@@ -106,7 +106,7 @@ export const Dashboard: React.FC<IRoute> = () => {
   };
 
   useEffect(() => {
-    dispatch(actionsMySurveys.initialize(cookies.user.id));
+    dispatch(actionsMySurveys.initializeSurveys(cookies.user.id));
   }, [cookies.user.id]);
 
   if (isLoading || surveys === undefined) {

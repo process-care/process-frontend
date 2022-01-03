@@ -1,7 +1,7 @@
 import { map, switchMap } from "rxjs";
 import { combineEpics, ofType } from "redux-observable";
 import { Epic } from "redux/store";
-import { actions } from "redux/slices/global";
+import { actions } from "redux/slices/scientistData";
 import { client } from "call/actions";
 
 import { LOGIN, SIGNIN } from "call/queries/auth";

@@ -6,15 +6,17 @@ import { Form, Formik } from "formik";
 import { Input, Textarea } from "components/Fields";
 import { NavLink, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { actions } from "redux/slices/global";
+import { actions } from "redux/slices/scientistData";
 import { useAppSelector } from "redux/hooks";
 import { Errors, renderAuthMessage } from "../Errors";
 
 export const LoginForm: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const isConnected = useAppSelector((state) => state.global.auth.isConnected);
-  const errors = useAppSelector((state) => state.global.auth.errors);
+  const isConnected = useAppSelector(
+    (state) => state.scientistData.auth.isConnected
+  );
+  const errors = useAppSelector((state) => state.scientistData.auth.errors);
 
   // For dev facilities
   const initialValues =

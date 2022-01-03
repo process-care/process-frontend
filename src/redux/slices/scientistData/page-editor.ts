@@ -3,7 +3,7 @@ import { PayloadAction, createEntityAdapter } from "@reduxjs/toolkit";
 import { RootState } from "redux/store";
 import { DateTime } from "luxon";
 import IPage from "types/form/page";
-import { GlobalState } from "../global";
+import { GlobalState } from "../scientistData";
 
 // ----- ENTITY ADAPTER
 
@@ -74,31 +74,31 @@ type CreatedPayload = {
 // ---- SELECTORS
 
 export const error = (state: RootState): string | undefined =>
-  state.global.pages.error;
+  state.scientistData.pages.error;
 export const isLoading = (state: RootState): boolean =>
-  state.global.pages.isLoading;
+  state.scientistData.pages.isLoading;
 export const hasChanges = (state: RootState): boolean => {
-  const updated = DateTime.fromISO(state.global.questions.lastUpdated);
-  const saved = DateTime.fromISO(state.global.questions.lastSaved);
+  const updated = DateTime.fromISO(state.scientistData.questions.lastUpdated);
+  const saved = DateTime.fromISO(state.scientistData.questions.lastSaved);
   return updated > saved;
 };
 
 export const pages = (state: RootState): IPage[] =>
-  pageAdapter.getSelectors().selectAll(state.global.pages);
+  pageAdapter.getSelectors().selectAll(state.scientistData.pages);
 
 const getAllPages = (state: RootState): IPage[] => {
   return pages(state).filter(
-    (page) => page?.survey?.id === state.global.survey.selectedSurvey
+    (page) => page?.survey?.id === state.scientistData.survey.selectedSurvey
   );
 };
 
 const getSelectedPageId = (state: RootState): string =>
-  state.global.pages.selectedPage;
+  state.scientistData.pages.selectedPage;
 
 const getSelectedPage = (state: RootState): IPage | undefined =>
   pageAdapter
     .getSelectors()
-    .selectById(state.global.pages, getSelectedPageId(state));
+    .selectById(state.scientistData.pages, getSelectedPageId(state));
 
 // ---- EXPORTS
 

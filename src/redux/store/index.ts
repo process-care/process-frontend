@@ -20,8 +20,7 @@ import surveyBuilder from "redux/slices/surveyBuilder";
 import landingEditor from "redux/slices/landing-editor";
 import surveyEditor from "redux/slices/survey-editor";
 
-import surveys from "redux/slices/my-surveys";
-import global from "redux/slices/global";
+import scientistData from "redux/slices/scientistData";
 
 import { landingEditorEpics } from "redux/epics/landing-editor";
 import { surveyEditorEpics } from "redux/epics/survey-editor";
@@ -64,16 +63,23 @@ const epicMiddleware = createEpicMiddleware<
 
 // ---- REDUCERS
 
+const builder = combineReducers({
+  form: formBuilder,
+  landing: landingBuilder,
+  survey: surveyBuilder,
+});
+
+const editor = combineReducers({
+  landing: landingEditor,
+  survey: surveyEditor,
+});
+
 const combinedReducer = combineReducers({
-  global,
-  formBuilder,
-  landingBuilder,
-  surveyBuilder,
   application,
+  scientistData,
+  builder,
+  editor,
   participation,
-  landingEditor,
-  surveyEditor,
-  surveys,
   router: connectRouter(history),
 });
 

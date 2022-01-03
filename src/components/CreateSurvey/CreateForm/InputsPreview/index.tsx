@@ -10,7 +10,7 @@ import { Header } from "./Header";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
-import { selectors, actions } from "redux/slices/global";
+import { selectors, actions } from "redux/slices/scientistData";
 import { NoData } from "components/SurveyGrid/noData";
 
 export interface Item {

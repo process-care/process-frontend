@@ -12,7 +12,7 @@ import { isInactive } from "./utils";
 import { SvgHover } from "components/SvgHover";
 import ISurvey from "types/survey";
 
-import { actions, selectors } from "redux/slices/global";
+import { actions, selectors } from "redux/slices/scientistData";
 
 interface Props {
   survey: ISurvey | Record<string, any>;

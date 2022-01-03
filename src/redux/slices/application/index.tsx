@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "redux/store";
-import { actions as globalActions } from "./../global";
+import { actions as globalActions } from "../scientistData";
 
 // ---- TYPES
 

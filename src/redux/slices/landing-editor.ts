@@ -70,35 +70,35 @@ export const landingEditorSlice = createSlice({
 // ---- SELECTORS
 
 export const error = (state: RootState): string | undefined =>
-  state.landingEditor.error;
+  state.editor.landing.error;
 export const isLoading = (state: RootState): boolean =>
-  state.landingEditor.isLoading;
+  state.editor.landing.isLoading;
 export const landingHasChanges = (state: RootState): boolean => {
-  const updated = DateTime.fromISO(state.landingEditor.lastUpdated);
-  const saved = DateTime.fromISO(state.landingEditor.lastSaved);
+  const updated = DateTime.fromISO(state.editor.landing.lastUpdated);
+  const saved = DateTime.fromISO(state.editor.landing.lastSaved);
   return updated > saved;
 };
 
 export const isEditingAbout = (state: RootState): boolean =>
-  state.landingEditor.isEditingAbout;
+  state.editor.landing.isEditingAbout;
 export const hasMembers = (state: RootState): boolean =>
-  (state.landingEditor.data?.members ?? []).length > 0;
+  (state.editor.landing.data?.members ?? []).length > 0;
 
 export const landing = (state: RootState): Partial<ILanding> | undefined =>
-  state.landingEditor.data;
+  state.editor.landing.data;
 export const members = (state: RootState): ILanding["members"] =>
-  state.landingEditor.data?.members ?? [];
+  state.editor.landing.data?.members ?? [];
 export const partners = (state: RootState): ILanding["partners"] =>
-  state.landingEditor.data?.partners ?? [];
+  state.editor.landing.data?.partners ?? [];
 export const about = (state: RootState): ILanding["about_page"] | undefined =>
-  state.landingEditor.data?.about_page;
+  state.editor.landing.data?.about_page;
 
 type HeaderData = Partial<Pick<ILanding, "title" | "color_theme" | "logo">>;
 
 export const headerData = (state: RootState): HeaderData | undefined => {
-  if (!state.landingEditor.data) return;
+  if (!state.editor.landing.data) return;
 
-  const { title, color_theme, logo } = state.landingEditor.data;
+  const { title, color_theme, logo } = state.editor.landing.data;
   return {
     title,
     color_theme,

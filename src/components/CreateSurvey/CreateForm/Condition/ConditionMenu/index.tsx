@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { t } from "static/condition";
 import { Group } from "./Group";
 import ICondition from "types/form/condition";
-import { selectors, actions } from "redux/slices/global";
+import { selectors, actions } from "redux/slices/scientistData";
 
 interface Props {
   selectedCondition: ICondition;
@@ -18,7 +18,7 @@ export const ConditionMenu: React.FC<Props> = ({ selectedCondition }) => {
   const currentQuestionConditions = useAppSelector(
     selectors.conditions.getSelectedQuestionsConditions
   );
-  
+
   const currentPageConditions = (selectedCondition: ICondition) => {
     // The selected page can change to we can't use the selector page's conditions.
     const id = selectedCondition.referer_page?.id;

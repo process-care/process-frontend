@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 import { setIsRemoving } from "redux/slices/formBuilder";
 import { actions as appActions } from "redux/slices/application";
-import { actions, selectors } from "redux/slices/global";
+import { actions, selectors } from "redux/slices/scientistData";
 
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { t } from "static/survey";
@@ -17,7 +17,7 @@ import { ReactComponent as Trash } from "assets/trash.svg";
 
 export const PageForm: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { is_removing } = useAppSelector((state) => state.formBuilder);
+  const { is_removing } = useAppSelector((state) => state.builder.form);
 
   const selectedPageId = useAppSelector(selectors.pages.getSelectedPageId);
   const selectedPage = useAppSelector(selectors.pages.getSelectedPage);

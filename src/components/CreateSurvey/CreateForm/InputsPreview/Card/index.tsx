@@ -19,7 +19,7 @@ import { ReactComponent as Condition } from "./assets/condition.svg";
 
 import { RemovingConfirmation } from "./../../RemovingConfirmation";
 import { actions as appActions } from "redux/slices/application";
-import { actions, selectors } from "redux/slices/global";
+import { actions, selectors } from "redux/slices/scientistData";
 
 import { t } from "static/input";
 import { SvgHover } from "components/SvgHover";
@@ -32,8 +32,8 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ input, index }) => {
   const dispatch = useAppDispatch();
-  const { is_removing } = useAppSelector((state) => state.formBuilder);
-  const { status } = useAppSelector((state) => state.global.survey);
+  const { is_removing } = useAppSelector((state) => state.builder.form);
+  const { status } = useAppSelector((state) => state.scientistData.survey);
 
   const getCondition = (input: IQuestion) =>
     useAppSelector((state) =>

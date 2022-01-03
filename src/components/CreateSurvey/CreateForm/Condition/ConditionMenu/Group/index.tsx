@@ -11,7 +11,7 @@ import { ReactComponent as Delete } from "./../assets/delete.svg";
 import { RemovingConfirmation } from "../../../RemovingConfirmation";
 import { t } from "static/condition";
 import { Operator } from "./Operator";
-import { actions, selectors } from "redux/slices/global";
+import { actions, selectors } from "redux/slices/scientistData";
 
 interface Props {
   currentConditions: ICondition[];

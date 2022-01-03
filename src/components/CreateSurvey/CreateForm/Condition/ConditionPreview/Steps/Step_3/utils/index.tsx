@@ -3,7 +3,7 @@ import { Textarea } from "components/Fields";
 import ICondition from "types/form/condition";
 import React from "react";
 import { useAppDispatch } from "redux/hooks";
-import { actions } from "redux/slices/global";
+import { actions } from "redux/slices/scientistData";
 
 export const renderInput = (
   selectedCondition: ICondition

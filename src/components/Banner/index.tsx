@@ -3,7 +3,9 @@ import React, { useEffect, useState } from "react";
 import { useAppSelector } from "redux/hooks";
 
 export const Banner: React.FC = () => {
-  const { status, isChecking } = useAppSelector((state) => state.global.survey);
+  const { status, isChecking } = useAppSelector(
+    (state) => state.scientistData.survey
+  );
   const [open, setOpen] = useState(false);
 
   useEffect(() => {

@@ -14,7 +14,7 @@ const t = {
 };
 
 export const ActionButtons: React.FC = () => {
-  const { survey } = useAppSelector((state) => state.surveyBuilder);
+  const { survey } = useAppSelector((state) => state.builder.survey);
   const { gotToLanding, goToForm, goToConsent } = useNavigator(survey);
   const { landing } = survey;
   const Btn = ({

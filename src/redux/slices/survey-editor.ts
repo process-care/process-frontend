@@ -112,19 +112,19 @@ export const surveyEditorSlice = createSlice({
 // ---- SELECTORS
 
 export const error = (state: RootState): any[] | undefined =>
-  state.surveyEditor.error;
+  state.editor.survey.error;
 export const isLoading = (state: RootState): boolean =>
-  state.surveyEditor.isLoading;
-export const step = (state: RootState): number => state.surveyEditor.step;
+  state.editor.survey.isLoading;
+export const step = (state: RootState): number => state.editor.survey.step;
 export const hasChanges = (state: RootState): boolean => {
-  const updated = DateTime.fromISO(state.surveyEditor.lastUpdated);
-  const saved = DateTime.fromISO(state.surveyEditor.lastSaved);
+  const updated = DateTime.fromISO(state.editor.survey.lastUpdated);
+  const saved = DateTime.fromISO(state.editor.survey.lastSaved);
   return updated > saved;
 };
 
 export const survey = (
   state: RootState
-): Partial<Survey["survey"]> | undefined => state.surveyEditor.data;
+): Partial<Survey["survey"]> | undefined => state.editor.survey.data;
 
 export const selectors = {
   error,

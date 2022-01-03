@@ -1,7 +1,7 @@
 import { map, switchMap } from "rxjs";
 import { combineEpics, ofType } from "redux-observable";
 import { Epic } from "redux/store";
-import { actions } from "redux/slices/my-surveys";
+import { actions } from "redux/slices/scientistData";
 import { client } from "call/actions";
 import {
   DELETE_SURVEY,
@@ -12,19 +12,19 @@ import {
 // Watches over "initialize" surveys
 const initializeEpic: Epic = (action$) =>
   action$.pipe(
-    ofType(actions.initialize.type),
+    ofType(actions.initializeSurveys.type),
     switchMap((action) => {
       return client.request(GET_MY_SURVEYS, { authorId: action.payload });
     }),
     map((result) => {
       const payload = result.surveys;
-      return actions.initialized(payload);
+      return actions.initializedSurveys(payload);
     })
   );
 
 const updateEpic: Epic = (action$) =>
   action$.pipe(
-    ofType(actions.update.type),
+    ofType(actions.updateSurveys.type),
     map((action) => action.payload),
     switchMap(async (action) => {
       const updatedAt: string = new Date().toISOString();
@@ -37,13 +37,13 @@ const updateEpic: Epic = (action$) =>
       return updatedAt;
     }),
     map((updatedAt) => {
-      return actions.updated({ lastUpdated: updatedAt });
+      return actions.updatedSurveys({ lastUpdated: updatedAt });
     })
   );
 
 const deleteEpic: Epic = (action$) =>
   action$.pipe(
-    ofType(actions.delete.type),
+    ofType(actions.deleteSurvey.type),
     switchMap(async (action) => {
       const id: string = action.payload;
       const deletedAt = new Date().toISOString();
@@ -54,7 +54,7 @@ const deleteEpic: Epic = (action$) =>
       return deletedAt;
     }),
     switchMap(async (deletedAt) => {
-      return actions.deleted({
+      return actions.deletedSurvey({
         lastDeleted: deletedAt,
       });
     })

@@ -9,7 +9,7 @@ import { StepCounter } from "./Steps/StepCounter";
 import { checkStepValidation } from "./Steps/utils";
 import ICondition from "types/form/condition";
 import { Loader } from "components/Spinner";
-import { actions, selectors } from "redux/slices/global";
+import { actions, selectors } from "redux/slices/scientistData";
 
 interface Props {
   selectedCondition: ICondition;

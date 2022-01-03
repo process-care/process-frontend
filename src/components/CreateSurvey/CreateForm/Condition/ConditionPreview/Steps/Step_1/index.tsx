@@ -8,7 +8,7 @@ import ICondition from "types/form/condition";
 import { authorizedQuestionTypes } from "./utils";
 import { t } from "static/input";
 import { InputBox } from "components/CreateSurvey/CreateForm/InputsPreview/InputBox";
-import { selectors, actions } from "redux/slices/global";
+import { selectors, actions } from "redux/slices/scientistData";
 
 interface Props {
   selectedCondition: ICondition;

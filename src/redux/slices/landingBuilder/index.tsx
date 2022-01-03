@@ -6,7 +6,6 @@ import { IBase64 } from "components/Fields/Uploadfile";
 
 export interface LandingBuilder {
   landing: ILanding;
-  is_editing_about_page: boolean;
 }
 
 interface Update {
@@ -17,7 +16,6 @@ interface Update {
 
 const initialState: LandingBuilder = {
   landing: initialValues,
-  is_editing_about_page: false,
 };
 
 export const landingBuilderSlice = createSlice({
@@ -30,12 +28,9 @@ export const landingBuilderSlice = createSlice({
         state.landing = { ...state.landing, ...data };
       }
     },
-    setEditAboutPage: (state) => {
-      state.is_editing_about_page = !state.is_editing_about_page;
-    },
   },
 });
 
-export const { updateLanding, setEditAboutPage } = landingBuilderSlice.actions;
+export const { updateLanding } = landingBuilderSlice.actions;
 
 export default landingBuilderSlice.reducer;

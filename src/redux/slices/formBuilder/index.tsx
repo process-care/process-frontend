@@ -40,9 +40,9 @@ export const formBuilderSlice = createSlice({
 // ---- SELECTORS
 
 export const isCollapseView = (state: RootState): boolean =>
-  state.builder.form.isCollapseView;
+  state.editor.form.isCollapseView;
 export const isEditing = (state: RootState): boolean =>
-  state.builder.form.isEditing;
+  state.editor.form.isEditing;
 
 export const selectors = {
   isCollapseView,

@@ -33,7 +33,7 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ input, index }) => {
   const dispatch = useAppDispatch();
-  const { entityToRemove } = useAppSelector((state) => state.builder.form);
+  const { entityToRemove } = useAppSelector((state) => state.editor.form);
   const { status } = useAppSelector((state) => state.scientistData.survey);
 
   const getCondition = (input: IQuestion) =>

@@ -17,7 +17,7 @@ import { ReactComponent as Trash } from "assets/trash.svg";
 
 export const PageForm: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { entityToRemove } = useAppSelector((state) => state.builder.form);
+  const { entityToRemove } = useAppSelector((state) => state.editor.form);
 
   const selectedPageId = useAppSelector(selectors.pages.getSelectedPageId);
   const selectedPage = useAppSelector(selectors.pages.getSelectedPage);

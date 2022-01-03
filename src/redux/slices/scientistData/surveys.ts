@@ -62,24 +62,24 @@ type SavedPayload = {
 // ---- SELECTORS
 
 export const error = (state: RootState): string | undefined =>
-  state.scientistData.mySurveys.error;
+  state.scientistData.surveys.error;
 export const isLoading = (state: RootState): boolean =>
-  state.scientistData.mySurveys.isLoading;
+  state.scientistData.surveys.isLoading;
 export const hasChanges = (state: RootState): boolean => {
-  const updated = DateTime.fromISO(state.scientistData.mySurveys.lastUpdated);
-  const saved = DateTime.fromISO(state.scientistData.mySurveys.lastSaved);
+  const updated = DateTime.fromISO(state.scientistData.surveys.lastUpdated);
+  const saved = DateTime.fromISO(state.scientistData.surveys.lastSaved);
   return updated > saved;
 };
 export const getAllSurveys = (state: RootState): ISurvey[] =>
-  surveysAdapter.getSelectors().selectAll(state.scientistData.mySurveys);
+  surveysAdapter.getSelectors().selectAll(state.scientistData.surveys);
 
 const getSelectedSurveyId = (state: RootState): string =>
-  state.scientistData.mySurveys.selectedSurvey;
+  state.scientistData.surveys.selectedSurvey;
 
 const getSelectedSurvey = (state: RootState): ISurvey | undefined =>
   surveysAdapter
     .getSelectors()
-    .selectById(state.scientistData.mySurveys, getSelectedSurveyId(state));
+    .selectById(state.scientistData.surveys, getSelectedSurveyId(state));
 
 // ---- EXPORTS
 
@@ -99,62 +99,61 @@ export const surveysReducers = {
     state: GlobalState,
     _action: PayloadAction<string>
   ): void => {
-    state.mySurveys.isLoading = true;
+    state.surveys.isLoading = true;
   },
   initializedSurveys: (
     state: GlobalState,
     action: PayloadAction<any>
   ): void => {
-    state.mySurveys.isLoading = false;
-    surveysAdapter.setMany(state.mySurveys, action.payload);
-    if (action.payload[0])
-      state.mySurveys.selectedSurvey = action.payload[0].id;
+    state.surveys.isLoading = false;
+    surveysAdapter.setMany(state.surveys, action.payload);
+    if (action.payload[0]) state.surveys.selectedSurvey = action.payload[0].id;
   },
   updateSurveys: (
     state: GlobalState,
     action: PayloadAction<UpdatePayload>
   ): void => {
-    state.mySurveys.lastUpdated = new Date().toISOString();
-    surveysAdapter.updateOne(state.mySurveys, action.payload);
+    state.surveys.lastUpdated = new Date().toISOString();
+    surveysAdapter.updateOne(state.surveys, action.payload);
   },
   updatedSurveys: (
     state: GlobalState,
     action: PayloadAction<UpdatedPayload>
   ): void => {
-    state.mySurveys.lastUpdated = action.payload.lastUpdated;
+    state.surveys.lastUpdated = action.payload.lastUpdated;
   },
   setSelectedSurvey: (
     state: GlobalState,
     action: PayloadAction<string>
   ): void => {
-    state.mySurveys.selectedSurvey = action.payload;
+    state.surveys.selectedSurvey = action.payload;
   },
   deleteSurvey: (state: GlobalState, action: PayloadAction<string>): void => {
-    state.mySurveys.isDeleting = true;
-    surveysAdapter.removeOne(state.mySurveys, action.payload);
-    const lastPageId = state.mySurveys.ids.length - 1;
-    state.mySurveys.selectedSurvey = state.mySurveys.ids[lastPageId].toString();
+    state.surveys.isDeleting = true;
+    surveysAdapter.removeOne(state.surveys, action.payload);
+    const lastPageId = state.surveys.ids.length - 1;
+    state.surveys.selectedSurvey = state.surveys.ids[lastPageId].toString();
   },
   deletedSurvey: (
     state: GlobalState,
     action: PayloadAction<DeletedPayload>
   ): void => {
-    state.mySurveys.isDeleting = false;
-    state.mySurveys.lastDeleted = action.payload.lastDeleted;
+    state.surveys.isDeleting = false;
+    state.surveys.lastDeleted = action.payload.lastDeleted;
   },
   saveSurvey: (state: GlobalState): void => {
-    state.mySurveys.isSaving = true;
+    state.surveys.isSaving = true;
   },
   savedSurvey: (
     state: GlobalState,
     action: PayloadAction<SavedPayload>
   ): void => {
-    state.mySurveys.isSaving = false;
-    state.mySurveys.lastSaved = action.payload.lastSaved;
+    state.surveys.isSaving = false;
+    state.surveys.lastSaved = action.payload.lastSaved;
   },
   failedSurvey: (state: GlobalState, action: PayloadAction<string>): void => {
-    state.mySurveys.isFailed = true;
-    state.mySurveys.error = action.payload;
+    state.surveys.isFailed = true;
+    state.surveys.error = action.payload;
   },
   resetMySurveys: (): any =>
     surveysAdapter.getInitialState(initialSurveysState),

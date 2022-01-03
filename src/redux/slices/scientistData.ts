@@ -56,7 +56,7 @@ export interface GlobalState {
   conditions: EntityState<ICondition> & ConditionEditor;
   survey: SurveyEditor;
   auth: AuthState;
-  mySurveys: EntityState<ISurvey> & SurveysEditor;
+  surveys: EntityState<ISurvey> & SurveysEditor;
 }
 
 // ----- SLICE
@@ -71,7 +71,7 @@ export const globalSlice = createSlice({
     conditions: conditionAdapter.getInitialState(initialConditionState),
     survey: initialSurveyState,
     auth: initialAuthState,
-    mySurveys: surveysAdapter.getInitialState(initialSurveysState),
+    surveys: surveysAdapter.getInitialState(initialSurveysState),
   },
   reducers: {
     ...pageReducer,

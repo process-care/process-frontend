@@ -14,9 +14,7 @@ import { connectRouter } from "connected-react-router";
 import { routerMiddleware } from "connected-react-router";
 import formBuilder from "redux/slices/formBuilder";
 import application from "redux/slices/application";
-import landingBuilder from "redux/slices/landingBuilder";
 import participation from "redux/slices/participation";
-// import surveyBuilder from "redux/slices/surveyBuilder";
 import landingEditor from "redux/slices/landing-editor";
 import surveyEditor from "redux/slices/survey-editor";
 
@@ -63,15 +61,8 @@ const epicMiddleware = createEpicMiddleware<
 
 // ---- REDUCERS
 
-const builder = combineReducers({
-  form: formBuilder,
-  landing: landingBuilder,
-
-  // Don't need it for now
-  // survey: surveyBuilder,
-});
-
 const editor = combineReducers({
+  form: formBuilder,
   landing: landingEditor,
   survey: surveyEditor,
 });
@@ -79,7 +70,6 @@ const editor = combineReducers({
 const combinedReducer = combineReducers({
   application,
   scientistData,
-  builder,
   editor,
   participation,
   router: connectRouter(history),

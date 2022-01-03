@@ -25,7 +25,7 @@ interface Options {
 export const renderInput = (input: IQuestion): React.ReactNode => {
   const location = useLocation();
   const isCollapsed =
-    useAppSelector((state) => state.builder.form.isCollapseView) &&
+    useAppSelector((state) => state.editor.form.isCollapseView) &&
     !location.pathname.includes("/participate");
 
   const formatOptions = (): Options[] => {

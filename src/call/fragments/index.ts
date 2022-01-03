@@ -202,6 +202,7 @@ export const surveyFullFragment = gql`
       id
       name
     }
+    needConsent
     pages {
       id
       name

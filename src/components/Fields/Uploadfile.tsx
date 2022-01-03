@@ -20,6 +20,7 @@ interface Props {
   isDisabled?: boolean;
   multiple?: boolean;
   onChange: (data: Record<string, any>) => void;
+  accept?: string;
 }
 
 export interface IBase64 {
@@ -34,6 +35,7 @@ export const UploadFile: React.FC<Props> = ({
   isDisabled,
   multiple,
   onChange,
+  accept,
 }) => {
   const hiddenFileInput = React.useRef<HTMLInputElement>(null);
   const [field, meta] = useField(id);
@@ -122,7 +124,7 @@ export const UploadFile: React.FC<Props> = ({
             //   );
             // }}
             onChange={(event) => handleChange(event)}
-            accept=".png,.jpeg"
+            accept={accept}
             multiple={multiple}
           />
         </Box>

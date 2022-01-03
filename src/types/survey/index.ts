@@ -3,11 +3,11 @@ import IQuestion from "types/form/question";
 import { ILanding } from "types/landing";
 
 export enum SURVEY_STATUS {
-  Draft = 'draft',
-  Running = 'pending',
-  Closed = 'closed',
-  Archived = 'archived',
-} 
+  Draft = "draft",
+  Running = "pending",
+  Closed = "closed",
+  Archived = "archived",
+}
 
 export default interface ISurvey {
   author?: {
@@ -24,6 +24,7 @@ export default interface ISurvey {
   status: "draft" | "pending" | "closed" | "archived";
   createdAt: Date;
   keywords: Record<string, any>[];
+  needConsent: boolean;
 }
 
 export interface ISurveyRes {

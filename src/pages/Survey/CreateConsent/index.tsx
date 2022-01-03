@@ -11,6 +11,8 @@ import { UploadFileRemote } from "components/Fields/UploadFileRemote";
 
 import { API_URL_ROOT } from "constants/api";
 import { PdfPreview } from "./PdfPreview";
+import { Switch } from "components/Fields";
+import ISurvey from "types/survey";
 
 const t = {
   label: "Importer un fichier de consentement",
@@ -29,6 +31,13 @@ export const CreateConsent: React.FC = () => {
 
   const goToDashboard = () => {
     history.push("/dashboard");
+  };
+
+  const formatInitialValues = (survey: ISurvey | undefined) => {
+    return {
+      consentement: survey?.consentement,
+      needConsent: survey?.needConsent || true,
+    };
   };
 
   return (
@@ -61,11 +70,7 @@ export const CreateConsent: React.FC = () => {
         <Center h="100vh">
           <Formik
             validateOnBlur={false}
-            initialValues={
-              survey?.consentement || {
-                consentement: { id: "", name: "", url: "" },
-              }
-            }
+            initialValues={formatInitialValues(survey)}
             enableReinitialize
             onSubmit={(data, { setSubmitting, validateForm }) => {
               validateForm(data);
@@ -74,27 +79,37 @@ export const CreateConsent: React.FC = () => {
           >
             {({ values }) => {
               React.useEffect(() => {
+                console.log(values);
                 dispatch(updateConsentMeta(values));
               }, [values]);
-
               const targets = React.useMemo(() => {
                 const base = { refId: survey?.id, ref: "survey" };
                 return {
                   consentement: { ...base, field: "consentement" },
                 };
               }, [values, survey]);
-
               return (
                 <Form style={{ textAlign: "left", width: "80%" }}>
-                  <Text variant="currentBold">{t.label}</Text>
-                  <UploadFileRemote
-                    accept=".pdf,.doc"
-                    target={targets.consentement}
-                    content={values}
-                    label={t.cta}
-                    helpText={t.format}
-                    onChange={(e: any) => console.log(e)}
-                  />
+                  {values.needConsent && (
+                    <>
+                      <Text variant="currentBold">{t.label}</Text>
+                      <UploadFileRemote
+                        accept=".pdf,.doc"
+                        target={targets.consentement}
+                        content={values.consentement}
+                        label={t.cta}
+                        helpText={t.format}
+                        onChange={(e: any) => console.log(e)}
+                      />
+                    </>
+                  )}
+                  <Box w="100%" mt="20">
+                    <Switch
+                      label="Demander un consentement"
+                      id="needConsent"
+                      defaultChecked={true}
+                    />
+                  </Box>
 
                   <Box pos="fixed" bottom="50px" d="flex" flexDir="column">
                     <Button

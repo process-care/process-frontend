@@ -103,7 +103,7 @@ export const FreeClassification: React.FC<Props> = ({
         helpText={helpText}
         {...field}
       />
-      <Options />
+      {!isCollapsed && <Options />}
     </>
   );
 };

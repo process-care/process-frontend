@@ -1,19 +1,19 @@
 import { Box, Center, Container, Text, Button } from "@chakra-ui/react";
-import React from "react";
+import React, { useRef } from "react";
 import { Menu } from "components/Menu/CreateSurvey";
 import { Form, Formik } from "formik";
 import { useGetSurveyBySlug } from "call/actions/survey";
 import { useHistory, useParams } from "react-router-dom";
 
 import { useDispatch } from "react-redux";
-import { updateConsentMeta } from "redux/slices/surveyBuilder";
 import { UploadFileRemote } from "components/Fields/UploadFileRemote";
 
 import { API_URL_ROOT } from "constants/api";
 import { PdfPreview } from "./PdfPreview";
 import { Switch } from "components/Fields";
 import ISurvey from "types/survey";
-
+import { actions } from "redux/slices/scientistData";
+import { Loader } from "components/Spinner";
 const t = {
   label: "Importer un fichier de consentement",
   cta: "Importer votre fichier",
@@ -23,12 +23,12 @@ const t = {
 };
 
 export const CreateConsent: React.FC = () => {
-  const { slug: surveyId } = useParams<{ slug: string }>();
-  const { data: survey } = useGetSurveyBySlug(surveyId);
+  const { slug } = useParams<{ slug: string }>();
+  const { data: survey, isLoading } = useGetSurveyBySlug(slug);
   const dispatch = useDispatch();
   const url = survey?.consentement?.url;
   const history = useHistory();
-
+  const firstRender = useRef(true);
   const goToDashboard = () => {
     history.push("/dashboard");
   };
@@ -36,9 +36,12 @@ export const CreateConsent: React.FC = () => {
   const formatInitialValues = (survey: ISurvey | undefined) => {
     return {
       consentement: survey?.consentement,
-      needConsent: survey?.needConsent || true,
+      needConsent: survey?.needConsent,
     };
   };
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <Box
@@ -79,8 +82,16 @@ export const CreateConsent: React.FC = () => {
           >
             {({ values }) => {
               React.useEffect(() => {
-                console.log(values);
-                dispatch(updateConsentMeta(values));
+                if (firstRender.current) {
+                  firstRender.current = false;
+                  return;
+                }
+                dispatch(
+                  actions.updateSurvey({
+                    id: survey?.id,
+                    needConsent: values.needConsent,
+                  })
+                );
               }, [values]);
               const targets = React.useMemo(() => {
                 const base = { refId: survey?.id, ref: "survey" };
@@ -99,7 +110,7 @@ export const CreateConsent: React.FC = () => {
                         content={values.consentement}
                         label={t.cta}
                         helpText={t.format}
-                        onChange={(e: any) => console.log(e)}
+                        onChange={(e: any) => console.log("e", e)}
                       />
                     </>
                   )}

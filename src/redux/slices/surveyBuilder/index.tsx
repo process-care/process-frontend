@@ -18,9 +18,9 @@ export interface Survey {
     pages?: IPage[];
     status?: "draft" | "pending" | "closed" | "archived";
     createdAt?: string;
+    needConsent?: boolean;
   };
   step: number;
-  hadConsent?: boolean;
   consentement?: { id: string; name: ""; url: "" };
 }
 
@@ -41,9 +41,9 @@ export const initialState: Survey = {
     email: "",
     keywords: [],
     categories: [],
+    needConsent: true,
   },
   step: 1,
-  hadConsent: false,
 };
 
 export const surveyBuilderSlice = createSlice({

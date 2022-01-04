@@ -14,7 +14,7 @@ interface Props {
 }
 
 interface IStep {
-  id: keyof Survey["survey"];
+  id: keyof Omit<Survey["survey"], "needConsent">;
   label: string;
   pos: number;
 }

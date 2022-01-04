@@ -165,6 +165,7 @@ export const UPDATE_SURVEY = gql`
         id
         title
         slug
+        needConsent
         landing {
           id
         }

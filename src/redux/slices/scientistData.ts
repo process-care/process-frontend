@@ -47,7 +47,9 @@ import {
 import { Survey } from "./surveyBuilder";
 
 type LoadedPayload = Survey["survey"];
-
+type UpdatedPayload = {
+  lastUpdated: string;
+};
 // ---- TYPES
 
 export interface GlobalState {
@@ -129,6 +131,15 @@ export const globalSlice = createSlice({
       state.pages.isLoading = false;
       state.questions.isLoading = false;
       state.conditions.isLoading = false;
+    },
+    updateSurvey: (state: GlobalState, action: PayloadAction<any>) => {
+      surveysAdapter.updateOne(state.surveys, action.payload);
+    },
+    updatedSurvey: (
+      state: GlobalState,
+      action: PayloadAction<UpdatedPayload>
+    ) => {
+      state.surveys.lastUpdated = action.payload.lastUpdated;
     },
     updateOrder: (state: GlobalState, action: PayloadAction<string[]>) => {
       state.survey.isOrdering = true;

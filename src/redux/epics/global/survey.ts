@@ -3,7 +3,11 @@ import { combineEpics, ofType } from "redux-observable";
 import { Epic } from "redux/store";
 import { actions } from "redux/slices/scientistData";
 import { client } from "call/actions";
-import { GET_SURVEY_BY_SLUG, UPDATE_ORDER } from "call/queries/survey";
+import {
+  GET_SURVEY_BY_SLUG,
+  UPDATE_ORDER,
+  UPDATE_SURVEY,
+} from "call/queries/survey";
 import { CHECK_SURVEY } from "call/queries/formBuilder/condition";
 
 // Watches over "initialize" currentsurvey
@@ -36,6 +40,26 @@ const updateOrderEpic: Epic = (action$, state$) =>
     })
   );
 
+// Watches over "update" currentsurvey => update the needConsent change
+
+const updateSurveyEpic: Epic = (action$) =>
+  action$.pipe(
+    ofType(actions.updateSurvey.type),
+    map((action) => action.payload),
+    switchMap((payload) => {
+      console.log("payload", payload);
+      return client.request(UPDATE_SURVEY, {
+        id: payload.id,
+        data: {
+          needConsent: payload.needConsent,
+        },
+      });
+    }),
+    map((payload) => {
+      return actions.updatedSurvey(payload);
+    })
+  );
+
 const TestEpic: Epic = (action$, state$) =>
   action$.pipe(
     ofType(actions.checkSurvey.type),
@@ -54,5 +78,6 @@ const TestEpic: Epic = (action$, state$) =>
 export const surveyEpics = combineEpics(
   initializeEpic,
   updateOrderEpic,
-  TestEpic
+  TestEpic,
+  updateSurveyEpic
 );

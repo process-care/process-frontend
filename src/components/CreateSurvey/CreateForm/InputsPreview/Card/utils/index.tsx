@@ -11,6 +11,7 @@ import {
   Datepicker,
   Textarea,
   AssociatedClassification,
+  FreeClassification,
 } from "components/Fields";
 import IQuestion from "types/form/question";
 import { t } from "static/input";
@@ -164,7 +165,7 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
 
     case "free_classification":
       return (
-        <Textarea
+        <FreeClassification
           isCollapsed={isCollapsed}
           isRequired={input.required}
           id={input.id || "free_classification"}

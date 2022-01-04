@@ -54,7 +54,7 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
     dispatch(actions.deleteQuestion(input.id));
   };
 
-  const ErrorsListId = status?.checkSurvey?.errors
+  const errorsListId = status?.checkSurvey?.errors
     ?.map((e) => e?.errors.map((el) => el?.questionId))
     .flat();
 
@@ -86,7 +86,7 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
               variant="inputContainer"
               padding={isRemoving ? 0 : 4}
               borderColor={
-                ErrorsListId?.includes(input.id) ? "red.500" : "gray.300"
+                errorsListId?.includes(input.id) ? "red.500" : "gray.300"
               }
             >
               <Box color={color}>

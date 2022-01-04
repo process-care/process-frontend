@@ -119,6 +119,8 @@ export const Dashboard: React.FC<IRoute> = () => {
 
   const surveysLenght = surveys.length;
   const hadSurveys = surveysLenght > 0;
+  const hadFilteredSurvys = data.length > 0;
+
   return (
     <Box d="flex" justifyContent="space-around" w="100%">
       <Box h="80vh">
@@ -152,9 +154,15 @@ export const Dashboard: React.FC<IRoute> = () => {
                 handleClick={(id) => setCurrentFilter(id)}
                 currentFilter={currentFilter}
               />
-              <Box mt={8}>
-                <Table columns={columns} data={data} onClick={toggleMenu} />
-              </Box>
+              {hadFilteredSurvys ? (
+                <Box mt={8}>
+                  <Table columns={columns} data={data} onClick={toggleMenu} />
+                </Box>
+              ) : (
+                <Box w="100%" m="0 auto">
+                  <NoData content="Vous n'avez pas d'enquêtes ayant ce status" />
+                </Box>
+              )}
             </>
           ) : (
             <Box w="50%" m="0 auto">

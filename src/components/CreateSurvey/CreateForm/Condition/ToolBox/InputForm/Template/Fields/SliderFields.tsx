@@ -42,13 +42,13 @@ export const SliderFields: React.FC = () => {
           />
         </Box>
         <Box w="45%">
-          <Input
+          {/* <Input
             type="number"
             label="Valeur par défaut"
             name="default_value"
             isCollapsed={false}
             placeholder="1"
-          />
+          /> */}
         </Box>
       </Flex>
 

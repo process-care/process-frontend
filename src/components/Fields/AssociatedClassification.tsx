@@ -184,7 +184,7 @@ export const useAssociatedLogic = (
   };
 
   const maxVariations = React.useMemo(() => {
-    if (totalVariations) return getMaxVariation(totalVariations, 2);
+    if (totalVariations) return getMaxVariation(totalVariations, TOTAL_CARDS);
   }, [totalVariations]);
 
   const generate = () => {

@@ -4,7 +4,7 @@ import { CommonFields } from "./CommonFields";
 export const DatepickerFields: React.FC = () => {
   return (
     <>
-      <CommonFields />
+      <CommonFields noPlacehoder />
     </>
   );
 };

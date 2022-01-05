@@ -5,7 +5,7 @@ import { CommonFields, RepeatedFields } from "../index";
 export const SelectFields: React.FC = () => {
   return (
     <>
-      <CommonFields />
+      <CommonFields noPlacehoder />
       <RepeatedFields name="options" />
     </>
   );

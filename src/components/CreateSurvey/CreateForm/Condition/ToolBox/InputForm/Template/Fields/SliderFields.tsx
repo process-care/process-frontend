@@ -7,7 +7,7 @@ import { CommonFields } from "../index";
 export const SliderFields: React.FC = () => {
   return (
     <>
-      <CommonFields />
+      <CommonFields noPlacehoder />
       <Flex justifyContent="space-between" w="100%">
         <Box w="45%">
           <Input

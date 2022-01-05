@@ -26,7 +26,7 @@ const CustomDrawer: React.FC<Props> = ({
           placement="right"
           isFullHeight
           isOpen={isOpen}
-          size={size}
+          size="xl"
           onOverlayClick={onOverlayClick}
           {...props}
         >

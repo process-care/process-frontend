@@ -58,6 +58,23 @@ export const CustomSlider: React.FC<Props> = ({
       return (min + max) / 2;
     } else return;
   };
+  console.log(min);
+  console.log("type", typeof min);
+
+  const cleanValue = (
+    value: string | number | undefined,
+    defaultValue: number
+  ): number => {
+    if (value === undefined || value === null || value === "") {
+      return defaultValue;
+    } else {
+      if (typeof value === "string") {
+        return parseInt(value, 10);
+      } else {
+        return value;
+      }
+    }
+  };
 
   return (
     <FormControl
@@ -77,9 +94,9 @@ export const CustomSlider: React.FC<Props> = ({
             <Range
               reverse={reverse}
               dots
-              min={min !== undefined ? min : 0}
-              max={max !== undefined ? max : 10}
-              step={step !== undefined ? step : 1}
+              min={cleanValue(min, 0)}
+              max={cleanValue(max, 10)}
+              step={cleanValue(step, 1)}
               defaultValue={
                 defaultValue !== undefined ? parseInt(defaultValue, 10) : 0
               }

@@ -40,12 +40,13 @@ export const Footer: React.FC<Props> = ({
 
       <ButtonGroup
         d="flex"
-        justifyContent="space-between"
+        justifyContent="flex-end"
         w="75%"
         mx="auto"
         pt={2}
+        pr="5"
       >
-        <Button variant="link" onClick={() => onCancel()} type="button">
+        <Button variant="link" onClick={() => onCancel()} type="button" pr="20">
           {t.cancel}
         </Button>
         <Button

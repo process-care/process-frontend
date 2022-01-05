@@ -121,7 +121,7 @@ const InputForm: React.FC<Props> = ({ order }) => {
               justifyContent="center"
               fontSize="30"
               flexDirection="column"
-              px={10}
+              px={5}
             >
               <Flex
                 borderBottom="1px solid"
@@ -152,7 +152,9 @@ const InputForm: React.FC<Props> = ({ order }) => {
                 )}
               </Flex>
 
-              <Box mb={8}>{renderFormTemplate(selectedQuestion)}</Box>
+              <Box w="100%" mb={8}>
+                {renderFormTemplate(selectedQuestion)}
+              </Box>
 
               <Flex
                 alignItems="center"

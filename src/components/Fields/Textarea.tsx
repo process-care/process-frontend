@@ -6,7 +6,7 @@ import {
   Textarea,
   Text,
 } from "@chakra-ui/react";
-import { getRows } from "./utils";
+import { getMaxLength, getRows } from "./utils";
 
 import { useField } from "formik";
 
@@ -70,7 +70,7 @@ export const CustomTextarea: React.FC<Props> = ({
             style={{ resize: "none" }}
             rows={getRows(rows)}
             placeholder={placeholder}
-            maxLength={getRows(rows) * 145}
+            maxLength={getMaxLength(rows)}
             isRequired={isRequired === "true"}
             {...field}
             autoComplete={autoComplete}

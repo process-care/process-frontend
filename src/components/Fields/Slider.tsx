@@ -58,8 +58,6 @@ export const CustomSlider: React.FC<Props> = ({
       return (min + max) / 2;
     } else return;
   };
-  console.log(min);
-  console.log("type", typeof min);
 
   const cleanValue = (
     value: string | number | undefined,

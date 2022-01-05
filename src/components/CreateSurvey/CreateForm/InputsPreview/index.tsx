@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import Card from "./Card";
 
@@ -33,13 +33,15 @@ interface Props {
 
 const InputsPreview: React.FC<Props> = ({ order }) => {
   const dispatch = useAppDispatch();
-
+  const containerRef = useRef<HTMLInputElement>(null);
   const selectedPage = useAppSelector(selectors.pages.getSelectedPage);
 
   const questions = useAppSelector(
     selectors.questions.getSelectedPageQuestions
   );
   const isLoading = useAppSelector(selectors.questions.isLoading);
+  const isCreating = useAppSelector(selectors.questions.isCreating);
+
   const error = useAppSelector(selectors.questions.error);
 
   const renderCard = (input: IQuestion, index: number) => {
@@ -69,6 +71,18 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
     }
   };
 
+  useEffect(() => {
+    if (isCreating) {
+      setTimeout(() => {
+        if (containerRef.current && isCreating) {
+          containerRef.current.scrollIntoView();
+        }
+      }, 1000);
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [isCreating]);
+
   const Container: React.FC<ContainerProps> = ({
     children,
     isDraggingOver,
@@ -79,7 +93,7 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
         d="flex"
         flexDirection="column"
         alignItems="center"
-        h="90%"
+        h="93vh"
         pb={10}
         backgroundColor={isDraggingOver ? "brand.gray.100" : "transparent"}
         overflowY="auto"
@@ -101,6 +115,9 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
                   px={10}
                 >
                   {children}
+                  <Box ref={containerRef} h="10px" border="1px solid black">
+                    plaf
+                  </Box>
                 </Flex>
               </Form>
             );

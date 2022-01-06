@@ -140,7 +140,6 @@ export const questionsReducers = {
     state: GlobalState,
     action: PayloadAction<CreatedPayload>
   ): void => {
-    state.questions.isCreating = false;
     state.questions.lastCreated = action.payload.lastCreated;
     questionAdapter.addOne(state.questions, action.payload.question);
     state.survey.order = getNewOrder(
@@ -195,6 +194,7 @@ export const questionsReducers = {
   ): void => {
     state.questions.isSaving = false;
     state.questions.lastSaved = action.payload.lastSaved;
+    state.questions.isCreating = false;
     if (state.pages.redirectToPage) {
       state.pages.selectedPage = state.pages.redirectToPage;
     }

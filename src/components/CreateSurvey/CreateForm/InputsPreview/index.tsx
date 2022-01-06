@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import Card from "./Card";
 
 import IQuestion from "types/form/question";
@@ -41,6 +41,7 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
   );
   const isLoading = useAppSelector(selectors.questions.isLoading);
   const isCreating = useAppSelector(selectors.questions.isCreating);
+  const hasChanges = useAppSelector(selectors.questions.questionsHasChanges);
 
   const error = useAppSelector(selectors.questions.error);
 
@@ -71,17 +72,21 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
     }
   };
 
-  useEffect(() => {
-    if (isCreating) {
-      setTimeout(() => {
-        if (containerRef.current && isCreating) {
-          containerRef.current.scrollIntoView();
-        }
-      }, 1000);
-    } else {
-      window.scrollTo(0, 0);
-    }
-  }, [isCreating]);
+  const goToBottom = () => {
+    setTimeout(() => {
+      if (containerRef.current) {
+        containerRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "end",
+        });
+      }
+    }, 500);
+  };
+
+  // useEffect(() => {
+  //   console.log("FIRE");
+  //   goToBottom();
+  // }, [questions]);
 
   const Container: React.FC<ContainerProps> = ({
     children,
@@ -93,7 +98,7 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
         d="flex"
         flexDirection="column"
         alignItems="center"
-        h="93vh"
+        h="100vh"
         pb={10}
         backgroundColor={isDraggingOver ? "brand.gray.100" : "transparent"}
         overflowY="auto"
@@ -107,17 +112,19 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
           {() => {
             return (
               <Form style={{ width: "100%" }}>
+                <Button onClick={() => goToBottom()}>To bottom</Button>
                 <Flex
                   alignItems="center"
                   justifyContent="center"
                   fontSize="30"
                   flexDirection="column"
                   px={10}
+                  ref={containerRef}
                 >
-                  {children}
-                  <Box ref={containerRef} h="10px" border="1px solid black">
+                  {/* <Box ref={containerRef} h="10px" border="1px solid red">
                     plaf
-                  </Box>
+                  </Box> */}
+                  {children}
                 </Flex>
               </Form>
             );

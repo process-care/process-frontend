@@ -9,7 +9,7 @@ export const Header: React.FC = () => {
   const isCollapse = useAppSelector(
     (state) => state.editor.form.isCollapseView
   );
-
+  const order = useAppSelector(selectors.survey.getOrder);
   const questions = useAppSelector(
     selectors.questions.getSelectedPageQuestions
   );
@@ -29,9 +29,11 @@ export const Header: React.FC = () => {
       pl="50px"
     >
       <ButtonGroup>
-        <Button variant="link" fontSize="10px" onClick={deleteAll}>
-          {t.delete_all_inputs}
-        </Button>
+        {order.length > 0 && (
+          <Button variant="link" fontSize="10px" onClick={deleteAll}>
+            {t.delete_all_inputs}
+          </Button>
+        )}
       </ButtonGroup>
       <ButtonGroup>
         <Button variant="ghost" onClick={() => dispatch(toggleCollapseView())}>

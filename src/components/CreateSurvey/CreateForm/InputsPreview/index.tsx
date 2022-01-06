@@ -121,7 +121,7 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
   if (!selectedPage) {
     return <p>Une erreur est survenue (pas de page séléctionnée)</p>;
   }
-  if (!isLoading && questions.length === 0) {
+  if (!isLoading && order.length === 0) {
     return <NoData content="Il n'y a pas de questions" />;
   }
 

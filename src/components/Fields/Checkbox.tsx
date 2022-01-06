@@ -36,18 +36,19 @@ export const CustomCheckbox: React.FC<Props> = ({
       id={id}
       textAlign="left"
       isRequired={isRequired === "true"}
-      display="flex"
-      flexDirection="row-reverse"
+      // display="flex"
+      // flexDirection="row-reverse"
     >
       <FormLabel>{label}</FormLabel>
       {!isCollapsed && (
         <>
-          <CheckboxContainer name={id} label="">
+          <CheckboxContainer name={id} label="" p="0">
             <Flex p="0">
               {checkbox ? (
                 checkbox.map(({ value, label }) => {
                   return (
                     <CheckboxControl
+                      style={{ paddingRight: "30px", paddingLeft: "0" }}
                       key={value}
                       name={id}
                       value={value}

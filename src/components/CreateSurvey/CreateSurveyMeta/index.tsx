@@ -25,11 +25,9 @@ export const CreateSurveyForm: React.FC = () => {
 
   // TODO: We could even do this effect when the user opens a side menu in the dashboard, so we "preload" the data
   useEffect(() => {
-    if (!survey) {
-      console.warn("No survey ID to load.");
-      return;
+    if (survey) {
+      dispatch(actions.initialize(survey.id));
     }
-    dispatch(actions.initialize(survey.id));
   }, [survey]);
 
   // Flag to avoid saving the initial values injected into Formik

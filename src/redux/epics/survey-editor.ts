@@ -11,10 +11,12 @@ import { ADD_PAGE } from "call/queries/formBuilder/page";
 const loadEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.initialize.type),
-    switchMap((action) => client.request(GET_SURVEY, { id: action.payload })),
+    switchMap((action) => {
+      return client.request(GET_SURVEY, { id: action.payload });
+    }),
     map((result) => {
       const payload = result.survey;
-      return actions.initialize(payload);
+      return actions.initialized(payload);
     })
   );
 

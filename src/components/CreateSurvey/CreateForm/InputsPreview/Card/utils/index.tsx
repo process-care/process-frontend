@@ -12,6 +12,7 @@ import {
   Textarea,
   AssociatedClassification,
   FreeClassification,
+  GradeClassification,
 } from "components/Fields";
 import IQuestion from "types/form/question";
 import { t } from "static/input";
@@ -184,6 +185,22 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
             label={input.label || t.label}
             helpText={
               input.help_text || "Cliquer sur une vignette pour la sélectionner"
+            }
+            factors={input.factors}
+            maxLoop={input.max_loop}
+          />
+        </>
+      );
+    case "grade_classification":
+      return (
+        <>
+          <GradeClassification
+            isCollapsed={isCollapsed}
+            name={input.id || "grade_classification"}
+            label={input.label || t.label}
+            helpText={
+              input.help_text ||
+              "Merci de remplir la valeur qui définit le mieux cette proposition"
             }
             factors={input.factors}
             maxLoop={input.max_loop}

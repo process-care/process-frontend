@@ -17,6 +17,7 @@ export default interface IQuestion {
     | "checkbox"
     | "date_picker"
     | "free_classification"
+    | "grade_classification"
     | "associated_classification";
   // name: string;
   id: string;

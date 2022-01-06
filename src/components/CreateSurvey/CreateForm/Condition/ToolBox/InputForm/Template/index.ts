@@ -10,7 +10,8 @@ import { RepeatedFields } from "./RepeatedFields";
 import { CommonFields } from "./Fields/CommonFields";
 import { WysiwygFields } from "./Fields/WysiwygFields";
 import { FreeclassificationFields } from "./Fields/FreeclassificationFields";
-import { AssociatedClassification } from "./Fields/AssociatedClassification";
+import { AssociatedClassificationFields } from "./Fields/AssociatedClassificationFields";
+import { GradeClassificationFields } from "./Fields/GradeClassificationFields";
 
 export {
   TextareaFields,
@@ -25,5 +26,6 @@ export {
   CommonFields,
   WysiwygFields,
   FreeclassificationFields,
-  AssociatedClassification,
+  AssociatedClassificationFields,
+  GradeClassificationFields,
 };

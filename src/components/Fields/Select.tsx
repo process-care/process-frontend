@@ -12,7 +12,7 @@ interface Options {
 interface Props {
   label: string;
   id: string;
-  placeholder: string;
+  placeholder?: string;
   helpText?: string;
   answers: Options[] | undefined;
   isRequired?: any;

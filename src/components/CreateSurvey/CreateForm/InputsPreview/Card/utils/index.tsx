@@ -204,7 +204,7 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
             }
             factors={input.factors}
             maxLoop={input.max_loop}
-            mono_thumbnail_input={input.mono_thumbnail_input || "slider"}
+            mono_thumbnail_input={input.mono_thumbnail_input?.type || "slider"}
           />
         </>
       );

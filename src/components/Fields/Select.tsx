@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect } from "react";
 import { FormControl, FormHelperText, FormLabel } from "@chakra-ui/react";
 import { t } from "static/survey";
 import { useField } from "formik";
@@ -12,12 +12,13 @@ interface Options {
 interface Props {
   label: string;
   id: string;
-  placeholder: string;
+  placeholder?: string;
   helpText?: string;
   answers: Options[] | undefined;
   isRequired?: any;
   isMulti?: boolean;
   isCollapsed?: boolean;
+  defaultValue?: string;
 }
 
 interface IProvided {
@@ -30,6 +31,7 @@ const customStyles: Record<string, unknown> = {
     padding: "10px",
     fontSize: "12px",
   }),
+
   input: (provided: IProvided) => ({
     ...provided,
 
@@ -37,7 +39,7 @@ const customStyles: Record<string, unknown> = {
   }),
   placeholder: (provided: IProvided) => ({
     ...provided,
-
+    color: "gray",
     fontSize: "12px",
   }),
   singleValue: (provided: IProvided) => ({
@@ -70,9 +72,21 @@ export const CustomSelect: React.FC<Props> = ({
   answers,
   isCollapsed,
   isMulti = false,
+  defaultValue,
 }): ReactElement => {
   const [field, , helpers] = useField(id);
   const { setValue } = helpers;
+
+  useEffect(() => {
+    if (defaultValue && !field.value) {
+      setValue(defaultValue);
+    }
+  }, []);
+  const getLabel = () => {
+    if (!answers) return;
+    const selected = answers.find((answer) => answer.value === field.value);
+    return selected?.label;
+  };
 
   return (
     <FormControl id={id} textAlign="left" isRequired={isRequired === "true"}>
@@ -89,7 +103,7 @@ export const CustomSelect: React.FC<Props> = ({
             options={answers}
             onChange={(option) => setValue(option.value)}
             defaultValue={field.value}
-            value={{ label: field.value, value: field.value }}
+            value={{ label: getLabel(), value: field.value }}
           />
           <FormHelperText fontSize="xs">{helpText}</FormHelperText>
         </>

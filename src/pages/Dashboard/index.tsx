@@ -25,6 +25,7 @@ import {
 } from "redux/slices/scientistData";
 
 import { NoData } from "components/SurveyGrid/noData";
+import { HEADER_HEIGHT } from "components/Menu/SimpleMenu";
 
 export const Dashboard: React.FC<IRoute> = () => {
   const { cookies } = useAuth();
@@ -133,7 +134,12 @@ export const Dashboard: React.FC<IRoute> = () => {
       </Box>
 
       <div className="background__grid">
-        <Container textAlign="left" pt="9" maxW="90%">
+        <Container
+          textAlign="left"
+          pt="9"
+          maxW="90%"
+          h={`calc(100vh - ${HEADER_HEIGHT})`}
+        >
           <Flex justifyContent="space-between" alignItems="center">
             {hadSurveys && (
               <Text variant="xl" mb={7}>
@@ -165,13 +171,15 @@ export const Dashboard: React.FC<IRoute> = () => {
               )}
             </>
           ) : (
-            <Box w="50%" m="0 auto">
+            <Box w="80%" m="0 auto">
               <NoData content="Vous n'avez pas encore d'enquêtes" />
             </Box>
           )}
         </Container>
       </div>
-      <ProjectMenu menuIsOpen={menuIsOpen} onClose={toggleOff} />
+      {hadSurveys && (
+        <ProjectMenu menuIsOpen={menuIsOpen} onClose={toggleOff} />
+      )}
     </Box>
   );
 };

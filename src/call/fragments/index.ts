@@ -63,6 +63,8 @@ export const questionFragment = gql`
     wysiwyg
     step
     internal_title
+    mono_thumbnail_input
+    freeclassification_responses_count
     page {
       id
     }

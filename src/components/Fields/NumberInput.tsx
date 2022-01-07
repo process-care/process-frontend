@@ -62,6 +62,7 @@ export const CustomNumberInput: React.FC<Props> = ({
               w="100%"
             >
               <NumberInputField
+                backgroundColor="white"
                 defaultValue={defaultValue}
                 {...field}
                 placeholder={placeholder}

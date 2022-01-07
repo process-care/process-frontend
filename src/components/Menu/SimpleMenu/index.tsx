@@ -14,6 +14,8 @@ import { useHistory } from "react-router-dom";
 import { useGetMe } from "call/actions/auth";
 import { Loader } from "components/Spinner";
 
+export const HEADER_HEIGHT = "65px";
+
 interface Props {
   isPortail?: boolean;
 }
@@ -116,7 +118,7 @@ export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
       w="100%"
       m="0 auto"
       fontSize="13"
-      h="fit-content"
+      h={HEADER_HEIGHT}
       borderBottom="1px solid black"
       position="sticky"
       top="0"

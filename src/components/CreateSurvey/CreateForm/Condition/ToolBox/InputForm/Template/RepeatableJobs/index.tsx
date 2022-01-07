@@ -13,11 +13,7 @@ interface Props {
   cta: string;
 }
 
-export const RepeatableFields: React.FC<Props> = ({
-  name,
-  onlyUpload,
-  cta,
-}) => {
+export const RepeatableJobs: React.FC<Props> = ({ name, onlyUpload, cta }) => {
   const [field, meta] = useField(name);
   const { setFieldValue } = useFormikContext();
   const isEditing = useAppSelector(selectorsApplication.isEditing);

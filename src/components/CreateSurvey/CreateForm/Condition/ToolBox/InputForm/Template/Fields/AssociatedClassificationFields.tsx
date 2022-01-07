@@ -15,7 +15,6 @@ export const AssociatedClassificationFields: React.FC = () => {
         name="max_loop"
         isCollapsed={false}
       />
-
       <AssociatedSubfields name="factors" />
     </>
   );

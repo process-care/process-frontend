@@ -3,8 +3,9 @@ import { NumberInput, Select } from "components/Fields";
 import React from "react";
 import IQuestion from "types/form/question";
 
-import { CommonFields } from "../index";
-import { AssociatedSubfields } from "./AssociatedSubfields";
+import { CommonFields } from "../../index";
+import { AssociatedSubfields } from "../AssociatedSubfields";
+import { GradeFields } from "./GradeFields";
 
 interface Option {
   label: string;
@@ -41,6 +42,7 @@ export const MonoThumbnailFields: React.FC = () => {
           defaultValue={answers[0].value}
         />
       </Box>
+      <GradeFields />
     </>
   );
 };

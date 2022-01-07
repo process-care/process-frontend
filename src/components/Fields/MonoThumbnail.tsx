@@ -22,6 +22,8 @@ interface State {
 
 const TOTAL_CARDS = 1;
 
+// TODO: refactor this and use the same comp as the AssociatedClassification
+
 export const MonoThumbnail: React.FC<Props> = ({
   label,
   helpText,
@@ -143,13 +145,6 @@ export const MonoThumbnail: React.FC<Props> = ({
             </Text>
             <Box mt="10">
               <p>{mono_thumbnail_input}</p>
-              {/* <Slider
-                label="De 0 à 10, à combien aimez vous cette carte ?"
-                id="..."
-                step={2}
-                min={0}
-                max={10}
-              /> */}
             </Box>
           </Box>
         </Flex>
@@ -176,7 +171,7 @@ export const useAssociatedLogic = (
     .filter((m) => m !== 0);
 
   const totalVariations = React.useMemo(
-    () => modalitiesPerFactor?.reduce((a, b) => a * b),
+    () => modalitiesPerFactor?.reduce((a, b) => a * b, 0),
     [modalitiesPerFactor]
   );
   const getMaxVariation: any = (n: number, k: number) => {

@@ -164,7 +164,7 @@ export const useAssociatedLogic = (
     .filter((m) => m !== 0);
 
   const totalVariations = React.useMemo(
-    () => modalitiesPerFactor?.reduce((a, b) => a * b),
+    () => modalitiesPerFactor?.reduce((a, b) => a * b, 0),
     [modalitiesPerFactor]
   );
   const getMaxVariation: any = (n: number, k: number) => {

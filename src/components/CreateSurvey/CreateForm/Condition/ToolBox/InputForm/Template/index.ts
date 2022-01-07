@@ -11,7 +11,7 @@ import { CommonFields } from "./Fields/CommonFields";
 import { WysiwygFields } from "./Fields/WysiwygFields";
 import { FreeclassificationFields } from "./Fields/FreeclassificationFields";
 import { AssociatedClassificationFields } from "./Fields/AssociatedClassificationFields";
-import { GradeClassificationFields } from "./Fields/GradeClassificationFields";
+import { MonoThumbnailFields } from "./Fields/MonoThumbnailFields";
 
 export {
   TextareaFields,
@@ -27,5 +27,5 @@ export {
   WysiwygFields,
   FreeclassificationFields,
   AssociatedClassificationFields,
-  GradeClassificationFields,
+  MonoThumbnailFields,
 };

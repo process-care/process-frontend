@@ -12,7 +12,7 @@ import {
   Textarea,
   AssociatedClassification,
   FreeClassification,
-  GradeClassification,
+  MonoThumbnail,
 } from "components/Fields";
 import IQuestion from "types/form/question";
 import { t } from "static/input";
@@ -191,12 +191,12 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
           />
         </>
       );
-    case "grade_classification":
+    case "mono_thumbnail":
       return (
         <>
-          <GradeClassification
+          <MonoThumbnail
             isCollapsed={isCollapsed}
-            name={input.id || "grade_classification"}
+            name={input.id || "mono_thumbnail"}
             label={input.label || t.label}
             helpText={
               input.help_text ||
@@ -204,6 +204,7 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
             }
             factors={input.factors}
             maxLoop={input.max_loop}
+            mono_thumbnail_input={input.mono_thumbnail_input || "slider"}
           />
         </>
       );

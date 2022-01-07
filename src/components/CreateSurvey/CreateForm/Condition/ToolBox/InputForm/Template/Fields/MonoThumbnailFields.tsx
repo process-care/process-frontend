@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Divider } from "@chakra-ui/react";
 import { NumberInput, Select } from "components/Fields";
 import React from "react";
 import IQuestion from "types/form/question";
@@ -12,16 +12,16 @@ interface Option {
 }
 
 const answers: Option[] = [
-  { label: "Slider", value: "slider" },
-  { label: "Input Number", value: "number_input" },
-  { label: "Checkbox", value: "checkbox" },
-  { label: "Radio", value: "radio" },
+  { label: "Question curseur", value: "slider" },
+  { label: "Question Nombre", value: "number_input" },
+  { label: "Question bouton radio", value: "radio" },
 ];
 
-export const GradeClassificationFields: React.FC = () => {
+export const MonoThumbnailFields: React.FC = () => {
   return (
     <>
       <CommonFields noPlacehoder />
+      <Divider my="5" />
       <NumberInput
         placeholder="ex: 4"
         style={{ width: "45%" }}
@@ -29,12 +29,16 @@ export const GradeClassificationFields: React.FC = () => {
         name="max_loop"
         isCollapsed={false}
       />
+
       <AssociatedSubfields name="factors" />
+      <Divider my="5" />
       <Box w="45%">
         <Select
           label="Merci de selectionner le type de question à associer"
-          id="grade_classification_input"
+          id="mono_thumbnail_input"
           answers={answers}
+          placeholder="Choisir une question"
+          defaultValue={answers[0].value}
         />
       </Box>
     </>

@@ -4,7 +4,6 @@ import IQuestion from "types/form/question";
 import { v4 as uuidv4 } from "uuid";
 import { useField } from "formik";
 import { useAppSelector } from "redux/hooks";
-import { Slider } from ".";
 
 interface Props {
   label: string;
@@ -13,6 +12,7 @@ interface Props {
   isCollapsed?: boolean;
   factors: IQuestion["factors"];
   maxLoop: string | undefined;
+  mono_thumbnail_input: "radio" | "slider" | "number_input";
 }
 
 interface State {
@@ -22,13 +22,14 @@ interface State {
 
 const TOTAL_CARDS = 1;
 
-export const GradeClassification: React.FC<Props> = ({
+export const MonoThumbnail: React.FC<Props> = ({
   label,
   helpText,
   isCollapsed,
   factors,
   maxLoop = "5",
   name,
+  mono_thumbnail_input,
 }) => {
   const {
     generate,
@@ -141,13 +142,14 @@ export const GradeClassification: React.FC<Props> = ({
               {helpText}
             </Text>
             <Box mt="10">
-              <Slider
+              <p>{mono_thumbnail_input}</p>
+              {/* <Slider
                 label="De 0 à 10, à combien aimez vous cette carte ?"
                 id="..."
                 step={2}
                 min={0}
                 max={10}
-              />
+              /> */}
             </Box>
           </Box>
         </Flex>

@@ -12,7 +12,7 @@ import {
   WysiwygFields,
   FreeclassificationFields,
   AssociatedClassificationFields,
-  GradeClassificationFields,
+  MonoThumbnailFields,
 } from "../Template";
 import {
   CommonFieldsSchema,
@@ -56,8 +56,8 @@ export const renderFormTemplate = (
       return <FreeclassificationFields />;
     case "associated_classification":
       return <AssociatedClassificationFields />;
-    case "grade_classification":
-      return <GradeClassificationFields />;
+    case "mono_thumbnail":
+      return <MonoThumbnailFields />;
     default:
       return <TextareaFields />;
       break;

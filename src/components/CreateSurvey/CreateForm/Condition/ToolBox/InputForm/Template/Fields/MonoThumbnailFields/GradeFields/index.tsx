@@ -1,15 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Flex } from "@chakra-ui/react";
 import IQuestion from "types/form/question";
-import { useAppSelector } from "redux/hooks";
-import { selectors } from "redux/slices/scientistData";
 import { Input, NumberInput, Textarea } from "components/Fields";
 import { RepeatedFields } from "../../..";
+import { useFormikContext } from "formik";
 
-export const GradeFields: React.FC = () => {
-  const selectedQuestion = useAppSelector(
-    selectors.questions.getSelectedQuestion
-  );
+const ID = "mono_thumbnail_input";
+interface Props {
+  selectedQuestion: IQuestion;
+}
+
+export const GradeFields: React.FC<Props> = ({ selectedQuestion }) => {
+  const { setFieldValue, handleReset, resetForm } = useFormikContext();
+
+  useEffect(() => {
+    const savedType = selectedQuestion.mono_thumbnail_input?.type;
+    if (savedType) {
+      console.log(savedType);
+      handleReset();
+      resetForm({ values: "" });
+      setFieldValue("mono_thumbnail_input.type", savedType);
+      // setFieldValue("mono_thumbnail_input.label", "");
+    }
+  }, [selectedQuestion.mono_thumbnail_input?.type]);
 
   return (
     <Box backgroundColor="brand.gray.100" p="10" borderRadius="5" mt="5">
@@ -18,7 +31,7 @@ export const GradeFields: React.FC = () => {
         rows="small"
         label="Label de la question"
         placeholder="Ex: Noter cette proposition de 0 à 10"
-        id="dsd"
+        id={`${ID}.label`}
         isRequired={true}
       />
       {renderTemplate(selectedQuestion)}
@@ -27,21 +40,21 @@ export const GradeFields: React.FC = () => {
 };
 
 const renderTemplate = (selectedQuestion: IQuestion) => {
-  switch (selectedQuestion?.mono_thumbnail_input) {
+  switch (selectedQuestion?.mono_thumbnail_input?.type) {
     case "number_input":
       return (
         <Flex justifyContent="space-between">
           <NumberInput
             style={{ width: "45%" }}
             label="Nombre min"
-            name="min"
+            name={`${ID}.min`}
             isCollapsed={false}
             placeholder="Ex:0"
           />
           <NumberInput
             style={{ width: "45%" }}
             label="Nombre max"
-            name="max"
+            name={`${ID}.max`}
             isCollapsed={false}
             placeholder="Ex:10"
           />
@@ -57,7 +70,7 @@ const renderTemplate = (selectedQuestion: IQuestion) => {
                 type="number"
                 isRequired
                 label="Borne min"
-                name="min"
+                name={`${ID}.min`}
                 isCollapsed={false}
                 placeholder="1"
               />
@@ -67,7 +80,7 @@ const renderTemplate = (selectedQuestion: IQuestion) => {
                 type="number"
                 isRequired
                 label="Borne max"
-                name="max"
+                name={`${ID}.max`}
                 isCollapsed={false}
                 placeholder="1"
               />
@@ -79,7 +92,7 @@ const renderTemplate = (selectedQuestion: IQuestion) => {
                 type="number"
                 isRequired
                 label="Intervalles"
-                name="step"
+                name={`${ID}.step`}
                 isCollapsed={false}
                 placeholder="1"
               />
@@ -89,7 +102,7 @@ const renderTemplate = (selectedQuestion: IQuestion) => {
       );
       break;
     case "radio":
-      return <RepeatedFields name="options" />;
+      return <RepeatedFields name={`${ID}.options`} />;
       break;
     default:
       break;

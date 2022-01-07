@@ -1,6 +1,8 @@
 import { Box, Divider } from "@chakra-ui/react";
 import { NumberInput, Select } from "components/Fields";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useAppSelector } from "redux/hooks";
+import { selectors } from "redux/slices/scientistData";
 import IQuestion from "types/form/question";
 
 import { CommonFields } from "../../index";
@@ -19,6 +21,16 @@ const answers: Option[] = [
 ];
 
 export const MonoThumbnailFields: React.FC = () => {
+  const [state, setState] = useState(true);
+  const selectedQuestion = useAppSelector(
+    selectors.questions.getSelectedQuestion
+  );
+  useEffect(() => {
+    // Force re render to reset the field on select change
+    setState(true);
+  }, [selectedQuestion.mono_thumbnail_input?.type]);
+
+  if (!state) return <></>;
   return (
     <>
       <CommonFields noPlacehoder />
@@ -36,13 +48,13 @@ export const MonoThumbnailFields: React.FC = () => {
       <Box w="45%">
         <Select
           label="Merci de selectionner le type de question à associer"
-          id="mono_thumbnail_input"
+          id="mono_thumbnail_input.type"
           answers={answers}
           placeholder="Choisir une question"
           defaultValue={answers[0].value}
         />
       </Box>
-      <GradeFields />
+      <GradeFields selectedQuestion={selectedQuestion} />
     </>
   );
 };

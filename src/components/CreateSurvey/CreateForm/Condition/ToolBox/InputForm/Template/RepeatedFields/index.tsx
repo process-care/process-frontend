@@ -20,7 +20,7 @@ export const RepeatedFields: React.FC<Props> = ({ name }) => {
     // Populate answers field on edit.
     if (isEditing) {
       fields?.map((value: string, index: number) => {
-        setFieldValue(`options.${index}`, value);
+        setFieldValue(`${name}.${index}`, value);
       });
     }
   }, [isEditing]);

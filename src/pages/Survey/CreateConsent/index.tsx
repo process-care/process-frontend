@@ -1,4 +1,4 @@
-import { Box, Center, Container, Text, Button } from "@chakra-ui/react";
+import { Box, Container, Text, Button } from "@chakra-ui/react";
 import React, { useRef } from "react";
 import { Menu } from "components/Menu/CreateSurvey";
 import { Form, Formik } from "formik";
@@ -15,11 +15,13 @@ import ISurvey from "types/survey";
 import { actions } from "redux/slices/scientistData";
 import { Loader } from "components/Spinner";
 const t = {
-  label: "Importer un fichier de consentement",
+  label: "Importer la note d'information aux participants sous format pdf",
   cta: "Importer votre fichier",
   format: "Format .pdf",
   submit: "Valider la page de consentement",
   cancel: "Annuler",
+  switchLabel:
+    "Ce projet nécessite de présenter une notice d'information et de recueillir le consentement des personnes avant participation",
 };
 
 export const CreateConsent: React.FC = () => {
@@ -70,7 +72,7 @@ export const CreateConsent: React.FC = () => {
         </div>
       </Box>
       <Container variant="rightPart">
-        <Center h="100vh">
+        <Box h="90vh" p="30">
           <Formik
             validateOnBlur={false}
             initialValues={formatInitialValues(survey)}
@@ -100,10 +102,28 @@ export const CreateConsent: React.FC = () => {
                 };
               }, [values, survey]);
               return (
-                <Form style={{ textAlign: "left", width: "80%" }}>
+                <Form
+                  style={{
+                    textAlign: "left",
+                    position: "relative",
+                    height: "100%",
+                  }}
+                >
                   {values.needConsent && (
                     <>
-                      <Text variant="currentBold">{t.label}</Text>
+                      <Box w="100%" mt="20">
+                        <Text variant="currentBold" mb="10">
+                          {t.switchLabel}
+                        </Text>
+                        <Switch
+                          label={t.label}
+                          id="needConsent"
+                          defaultChecked={true}
+                        />
+                      </Box>
+                      <Text variant="currentBold" mt="200px">
+                        {t.label}
+                      </Text>
                       <UploadFileRemote
                         accept=".pdf,.doc"
                         target={targets.consentement}
@@ -114,31 +134,28 @@ export const CreateConsent: React.FC = () => {
                       />
                     </>
                   )}
-                  <Box w="100%" mt="20">
-                    <Switch
-                      label="Demander un consentement"
-                      id="needConsent"
-                      defaultChecked={true}
-                    />
-                  </Box>
 
-                  <Box pos="fixed" bottom="50px" d="flex" flexDir="column">
-                    <Button
-                      variant="rounded"
-                      backgroundColor="black"
-                      onClick={goToDashboard}
-                    >
-                      {t.submit}
-                    </Button>
-                    <Button variant="link" onClick={goToDashboard} mt="10px">
-                      {t.cancel}
-                    </Button>
+                  <Box pos="absolute" bottom="0" w="100%" h="100px">
+                    <Box d="flex" flexDir="column">
+                      <Button
+                        m="0 auto"
+                        w="fit-content"
+                        variant="rounded"
+                        backgroundColor="black"
+                        onClick={goToDashboard}
+                      >
+                        {t.submit}
+                      </Button>
+                      <Button variant="link" onClick={goToDashboard} mt="10px">
+                        {t.cancel}
+                      </Button>
+                    </Box>
                   </Box>
                 </Form>
               );
             }}
           </Formik>
-        </Center>
+        </Box>
       </Container>
     </Box>
   );

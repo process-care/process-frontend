@@ -1,4 +1,4 @@
-import { Box, Text, Button } from "@chakra-ui/react";
+import { Text, Button } from "@chakra-ui/react";
 import React from "react";
 import { NavLink } from "react-router-dom";
 
@@ -11,7 +11,7 @@ const t = {
 
 export const SuccessPage: React.FC = () => {
   return (
-    <Box backgroundColor="white" p="100px">
+    <>
       <Text variant="xl" py="20px">
         {t.title}
       </Text>
@@ -21,6 +21,6 @@ export const SuccessPage: React.FC = () => {
           {t.cta}
         </Button>
       </NavLink>
-    </Box>
+    </>
   );
 };

@@ -3,7 +3,6 @@ import { Select, Textarea } from "components/Fields";
 import { CustomCreatableSelect } from "components/Fields/SelectCreatable";
 import { FormikErrors } from "formik";
 import { Survey } from "redux/slices/surveyBuilder";
-// import { ActionButtons } from "./ActionButtons";
 
 // TODO : Get the list of all the tags from the backend
 const t = {
@@ -93,6 +92,7 @@ export const renderInputs = (step: number): React.ReactElement => {
           placeholder="Langue de l'enquête"
           label="Renseigner la langue de l'enquête"
           answers={t.language}
+          defaultValue={t.language[0].value}
         />
       );
       break;

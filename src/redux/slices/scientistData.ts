@@ -6,6 +6,7 @@ import IQuestion from "types/form/question";
 import ISurvey from "types/survey";
 import {
   authReducers,
+  authSelectors,
   AuthState,
   initialAuthState,
 } from "./scientistData/auth";
@@ -164,6 +165,7 @@ export const selectors = {
   questions: questionsSelectors,
   conditions: conditionsSelectors,
   mySurveys: surveysSelectors,
+  auth: authSelectors,
 };
 
 export const actions = globalSlice.actions;

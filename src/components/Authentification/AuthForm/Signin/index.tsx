@@ -20,11 +20,24 @@ export const SigninForm: React.FC<Props> = ({ cancel }) => {
   const errors = useAppSelector((state) => state.scientistData.auth.errors);
 
   const dispatch = useDispatch();
-  const formatData = (data: any) => {
+
+  type Data = {
+    username: string;
+    password: string;
+    confirmPassword: string;
+  };
+
+  type Auth = {
+    email: string;
+    password: string;
+    username: string;
+  };
+
+  const formatData = (data: Data): Auth => {
     return {
-      email: data.email,
+      email: data.username,
       password: data.password,
-      username: data.name,
+      username: data.username,
     };
   };
 
@@ -32,7 +45,7 @@ export const SigninForm: React.FC<Props> = ({ cancel }) => {
     return <SuccessPage />;
   }
 
-  function handleSubmit(data: any) {
+  function handleSubmit(data: Data) {
     dispatch(actions.signin(formatData(data)));
   }
 

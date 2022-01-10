@@ -1,4 +1,4 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 import { useMemo } from "react";
 
 interface Props {
@@ -18,6 +18,12 @@ export const Errors: React.FC<Props> = ({ message }) => {
         case "Duplicate entry":
           return "Le titre de l'enquête existe déja.";
           break;
+        case "Your account has been blocked by the administrator.":
+          return "Votre compte a été bloqué par l'administrateur.";
+          break;
+        case "Bad Request":
+          return "Une erreur est survenue, merci de vérifier votre email et mot de passe.";
+          break;
 
         default:
           return "";
@@ -27,24 +33,16 @@ export const Errors: React.FC<Props> = ({ message }) => {
     [message]
   );
   return (
-    <Box mt="10px">
-      <Text variant="xs" color="brand.red" textAlign="right">
-        {renderStatus(message)}
-      </Text>
-    </Box>
+    <Text variant="xs" color="brand.red" textAlign="right" mb="-10px">
+      {renderStatus(message)}
+    </Text>
   );
 };
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const renderAuthMessage = (errors: any): string => {
-  return errors
-    ?.map((e: any) => e.extensions)
-    .map((e: any) => e.exception)
-    .map((e: any) => e?.data)
-    .map((e: any) => e?.data)
-    .map((e: any) => e)[0]
-    .map((e: any) => e.messages)[0]
-    .map((e: any) => e.id)[0];
+  if (!errors) return "";
+  return errors?.map((e: any) => e.message)[0];
 };
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types

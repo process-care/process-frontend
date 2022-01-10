@@ -44,13 +44,11 @@ const signinEpic: Epic = (action$) =>
     ofType(actions.signin.type),
     switchMap(async (action) => {
       try {
-        const { email, username, password, job, institution } = action.payload;
+        const { email, username, password } = action.payload;
         const res: SigninRes = await client.request(SIGNIN, {
           email,
           username,
           password,
-          job,
-          institution,
         });
         if (res) {
           localStorage.setItem("process__user", JSON.stringify(res.register));

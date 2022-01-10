@@ -1,5 +1,6 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import { LoginRes, SigninRes } from "call/actions/auth";
+import { RootState } from "redux/store";
 
 import { GlobalState } from "../scientistData";
 
@@ -58,4 +59,13 @@ export const authReducers = {
     state.auth.isConnected = false;
     state.auth.data = null;
   },
+};
+
+// ---- SELECTORS
+
+export const getUser = (state: RootState): any =>
+  state.scientistData.auth.data?.user;
+
+export const authSelectors = {
+  getUser,
 };

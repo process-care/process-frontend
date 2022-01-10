@@ -2,7 +2,7 @@ import { map, switchMap } from "rxjs";
 import { combineEpics, ofType } from "redux-observable";
 import { Epic } from "redux/store";
 import { actions } from "redux/slices/scientistData";
-import { client } from "call/actions";
+import { client, clientWithNoHeaders } from "call/actions";
 
 import { LOGIN, SIGNIN } from "call/queries/auth";
 import { LoginRes, SigninRes } from "call/actions/auth";
@@ -45,7 +45,7 @@ const signinEpic: Epic = (action$) =>
     switchMap(async (action) => {
       try {
         const { email, username, password } = action.payload;
-        const res: SigninRes = await client.request(SIGNIN, {
+        const res: SigninRes = await clientWithNoHeaders.request(SIGNIN, {
           email,
           username,
           password,

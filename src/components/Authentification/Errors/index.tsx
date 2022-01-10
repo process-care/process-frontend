@@ -24,6 +24,9 @@ export const Errors: React.FC<Props> = ({ message }) => {
         case "Bad Request":
           return "Une erreur est survenue, merci de vérifier votre email et mot de passe.";
           break;
+        case "User Not Found":
+          return "Utilisateur non trouvé.";
+          break;
 
         default:
           return "";

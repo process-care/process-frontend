@@ -27,7 +27,7 @@ export const AuthForm: React.FC = () => {
       border="1px solid"
       borderColor="brand.line"
     >
-      <Box d="flex" justifyContent="center">
+      <Box d="flex" justifyContent="center" w="150px" m="0 auto">
         <Logo />
       </Box>
 

@@ -6,6 +6,7 @@ import { Form, Formik } from "formik";
 import { Textarea } from "components/Fields";
 import { forgotPassword } from "call/actions/password";
 import { forgotPasswordSchema } from "./validationSchema";
+import { NavLink } from "react-router-dom";
 
 export const ForgotPasswordForm: React.FC = () => {
   const [isSuccess, setSuccess] = useState(false);
@@ -75,6 +76,18 @@ export const ForgotPasswordForm: React.FC = () => {
                   >
                     Reinitialiser mon mot de passe
                   </Button>
+                  <Box textAlign="center">
+                    <NavLink to="/connexion">
+                      <Button
+                        mt="40px"
+                        type="submit"
+                        disabled={!isValid || isSubmitting}
+                        variant="link"
+                      >
+                        Annuler
+                      </Button>
+                    </NavLink>
+                  </Box>
                 </Flex>
               </Box>
             </Form>

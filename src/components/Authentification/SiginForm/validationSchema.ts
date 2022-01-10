@@ -1,17 +1,9 @@
 import * as Yup from "yup";
 
 export const SigninSchema = Yup.object().shape({
-  firstName: Yup.string()
-    .min(2, "Texte trop court (2min)")
-    .max(200, "Texte trop long (200max)")
+  username: Yup.string()
+    .email("Email invalide")
     .required("Ce champs est requis"),
-  name: Yup.string()
-    .min(2, "Texte trop court (2min)")
-    .max(200, "Texte trop long (200max)")
-    .required("Ce champs est requis"),
-  job: Yup.string(),
-  institution: Yup.string(),
-  email: Yup.string().email("Email invalide").required("Ce champs est requis"),
   password: Yup.string()
     // .matches(
     //   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -26,4 +18,12 @@ export const SigninSchema = Yup.object().shape({
       [Yup.ref("password"), null],
       "Les mots de passe ne sont pas identiques"
     ),
+  cgv: Yup.array().length(1, "Vous devez accepter les CGV"),
+});
+
+export const LoginSchema = Yup.object().shape({
+  identifier: Yup.string()
+    .email("Identifiant invalide - ce champs doit avoir un format email")
+    .required("Ce champs est requis"),
+  password: Yup.string().required("Ce champs est requis"),
 });

@@ -8,7 +8,6 @@ import { Portail } from "pages/Portail";
 import { CreateLanding } from "pages/Survey/CreateLanding";
 import { Participation } from "pages/Survey/Participation";
 import { CreateConsent } from "pages/Survey/CreateConsent";
-import { Signin } from "pages/Auth/Signin";
 import { ForgotPassword } from "pages/Auth/ForgotPassword";
 import { NewPassword } from "pages/Auth/NewPassword";
 
@@ -17,12 +16,6 @@ export const routes: IRoute[] = [
     name: "Connexion",
     path: "/connexion",
     component: <Login />,
-    exact: true,
-  },
-  {
-    name: "Inscription",
-    path: "/inscription",
-    component: <Signin />,
     exact: true,
   },
   {

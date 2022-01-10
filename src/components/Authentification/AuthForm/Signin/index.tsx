@@ -1,16 +1,19 @@
 import React from "react";
 import { Formik, Form } from "formik";
-import { Box, Flex, Text, Button } from "@chakra-ui/react";
+import { Box, Flex, Button } from "@chakra-ui/react";
 import { Textarea, Input, Checkbox } from "components/Fields";
-import { NavLink } from "react-router-dom";
-import { SuccessPage } from "../SucessPage";
-import { SigninSchema } from "./validationSchema";
+import { SuccessPage } from "../../SucessPage";
+import { SigninSchema } from "../../SiginForm/validationSchema";
 import { actions } from "redux/slices/scientistData";
 import { useDispatch } from "react-redux";
-import { Errors, renderAuthMessage } from "../Errors";
+import { Errors, renderAuthMessage } from "../../Errors";
 import { useAppSelector } from "redux/hooks";
 
-export const SigninForm: React.FC = () => {
+interface Props {
+  cancel: () => void;
+}
+
+export const SigninForm: React.FC<Props> = ({ cancel }) => {
   const isSuccess = useAppSelector(
     (state) => state.scientistData.auth.data?.user?.id
   );
@@ -22,8 +25,6 @@ export const SigninForm: React.FC = () => {
       email: data.email,
       password: data.password,
       username: data.name,
-      job: data.job,
-      institution: data.institution,
     };
   };
 
@@ -42,11 +43,9 @@ export const SigninForm: React.FC = () => {
       validateOnBlur
       validationSchema={SigninSchema}
       initialValues={{
-        name: "",
-        firstName: "",
-        job: "",
-        email: "",
-        institution: "",
+        username: "",
+        password: "",
+        confirmPassword: "",
       }}
       onSubmit={(data, { setSubmitting, validateForm }) => {
         validateForm(data);
@@ -57,70 +56,15 @@ export const SigninForm: React.FC = () => {
     >
       {({ isValid, isSubmitting, dirty }) => {
         return (
-          <Form
-            style={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            <Box
-              p="100px 10%"
-              backgroundColor="white"
-              d="flex"
-              flexDir="column"
-              w="60%"
-            >
-              <Text>Création de compte</Text>
-              <Flex
-                alignItems="center"
-                justifyContent="center"
-                fontSize="30"
-                flexDirection="column"
-                w="100%"
-              >
+          <Form>
+            <Box w="100%" pt="90px" textAlign="left">
+              <Flex justifyContent="center" flexDirection="column" w="100%">
                 <Textarea
                   isCollapsed={false}
                   rows="small"
-                  label="Prénom"
-                  placeholder="Renseigner votre prénom"
-                  id="firstName"
-                  isRequired="true"
-                  autoComplete="given-name"
-                />
-                <Textarea
-                  isCollapsed={false}
-                  rows="small"
-                  label="Nom"
-                  placeholder="Renseigner votre nom"
-                  id="name"
-                  isRequired="true"
-                  autoComplete="family-name"
-                />
-
-                <Textarea
-                  isCollapsed={false}
-                  rows="small"
-                  label="Profession"
-                  placeholder="Renseigner votre profession"
-                  id="job"
-                  autoComplete="organization-title"
-                />
-                <Textarea
-                  isCollapsed={false}
-                  rows="small"
-                  label="Institution"
-                  placeholder="Renseigner votre institution"
-                  id="institution"
-                  autoComplete="organization"
-                />
-                <br />
-                <Textarea
-                  isCollapsed={false}
-                  rows="small"
-                  label="Email de contact"
+                  label="E-mail"
                   placeholder="Renseigner votre email"
-                  id="email"
+                  id="username"
                   isRequired="true"
                   autoComplete="email"
                 />
@@ -158,15 +102,15 @@ export const SigninForm: React.FC = () => {
               </Flex>
               <Errors message={renderAuthMessage(errors)} />
               <Flex justifyContent="space-between" pt="60px">
-                <NavLink to="/connexion">
-                  <Button variant="link">Annuler</Button>
-                </NavLink>
+                <Button variant="link" onClick={() => cancel()}>
+                  Annuler
+                </Button>
                 <Button
                   type="submit"
                   disabled={isSubmitting || !isValid || !dirty}
                   variant="roundedBlue"
                 >
-                  Valider
+                  Créer mon compte
                 </Button>
               </Flex>
             </Box>

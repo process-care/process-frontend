@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { actions } from "redux/slices/scientistData";
 import { useAppSelector } from "redux/hooks";
 import { LoginSchema } from "components/Authentification/SiginForm/validationSchema";
+import { Errors, renderAuthMessage } from "components/Authentification/Errors";
 
 export const LoginForm: React.FC = () => {
   const dispatch = useDispatch();
@@ -15,6 +16,7 @@ export const LoginForm: React.FC = () => {
   const isConnected = useAppSelector(
     (state) => state.scientistData.auth.isConnected
   );
+  const errors = useAppSelector((state) => state.scientistData.auth.errors);
 
   function handleSubmit({ identifier, password }: any) {
     dispatch(actions.login({ identifier, password }));
@@ -65,6 +67,7 @@ export const LoginForm: React.FC = () => {
                 >
                   <Button variant="link">Mot de passe oublié ? </Button>
                 </NavLink>
+                <Errors message={renderAuthMessage(errors)} />
                 <Button
                   mt="10"
                   type="submit"

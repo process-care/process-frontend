@@ -23,6 +23,7 @@ interface Props {
   isDisabled?: boolean;
   appearance?: "light";
   autoComplete?: string;
+  defaultValue?: string;
 }
 export const CustomTextarea: React.FC<Props> = ({
   label,
@@ -37,6 +38,7 @@ export const CustomTextarea: React.FC<Props> = ({
   isDisabled,
   appearance,
   autoComplete,
+  defaultValue,
 }) => {
   const [field, meta] = useField(id);
   const isLight = appearance === "light";
@@ -74,6 +76,7 @@ export const CustomTextarea: React.FC<Props> = ({
             isRequired={isRequired === "true"}
             {...field}
             autoComplete={autoComplete}
+            defaultValue={defaultValue}
           />
           {meta.error && (
             <Text fontSize="10px" color="red" textAlign="right">

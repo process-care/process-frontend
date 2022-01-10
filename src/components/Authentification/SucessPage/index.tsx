@@ -1,9 +1,9 @@
-import { Box, Text, Button } from "@chakra-ui/react";
+import { Text, Button, Center } from "@chakra-ui/react";
 import React from "react";
 import { NavLink } from "react-router-dom";
 
 const t = {
-  title: "Bienvenue sur Process",
+  title: " 👌 Bienvenue !",
   content:
     "Votre inscription sur la plateforme doit être validée par un administrateur. Vous en serez notifié par e-mail",
   cta: "Retourner à la page d'accueil",
@@ -11,7 +11,7 @@ const t = {
 
 export const SuccessPage: React.FC = () => {
   return (
-    <Box backgroundColor="white" p="100px">
+    <Center h="100%" d="flex" flexDirection="column">
       <Text variant="xl" py="20px">
         {t.title}
       </Text>
@@ -21,6 +21,6 @@ export const SuccessPage: React.FC = () => {
           {t.cta}
         </Button>
       </NavLink>
-    </Box>
+    </Center>
   );
 };

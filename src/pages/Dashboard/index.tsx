@@ -142,20 +142,21 @@ export const Dashboard: React.FC<IRoute> = () => {
         >
           <Flex justifyContent="space-between" alignItems="center">
             {hadSurveys && (
-              <Text variant="xl" mb={7}>
-                {surveysLenght > 1
-                  ? `Mes ${surveysLenght} enquêtes`
-                  : "Mon enquête"}
-              </Text>
-            )}
-            {hadSurveys && (
-              <Button
-                onClick={goToCreateSurvey}
-                variant="roundedBlue"
-                zIndex="0"
-              >
-                {t.cta}
-              </Button>
+              <>
+                <Text variant="xl" mb={7}>
+                  {surveysLenght > 1
+                    ? `Mes ${surveysLenght} enquêtes`
+                    : "Mon enquête"}
+                </Text>
+
+                <Button
+                  onClick={goToCreateSurvey}
+                  variant="roundedBlue"
+                  zIndex="0"
+                >
+                  {t.cta}
+                </Button>
+              </>
             )}
           </Flex>
 

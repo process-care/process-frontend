@@ -241,7 +241,7 @@ const theme = extendTheme({
           variant: "createformColumn",
           minW: "300px",
           overflowY: "auto",
-          w: "32%",
+          w: "60%",
           height: "100vh",
         },
       },

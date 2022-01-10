@@ -79,7 +79,7 @@ export const renderInputs = (step: number): React.ReactElement => {
           id="keywords"
           placeholder="Mots clés publics"
           label="Renseigner les mots clés"
-          helpText="Ces mots clés serviront à référencer votre projet sur la page Process.."
+          helpText="Ces mots clés serviront à référencer votre projet sur la page Process, ils sont publiques."
           answers={t.keywords}
           isMulti
         />

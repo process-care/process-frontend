@@ -142,15 +142,22 @@ export const Dashboard: React.FC<IRoute> = () => {
         >
           <Flex justifyContent="space-between" alignItems="center">
             {hadSurveys && (
-              <Text variant="xl" mb={7}>
-                {surveysLenght > 1
-                  ? `Mes ${surveysLenght} enquêtes`
-                  : "Mon enquête"}
-              </Text>
+              <>
+                <Text variant="xl" mb={7}>
+                  {surveysLenght > 1
+                    ? `Mes ${surveysLenght} enquêtes`
+                    : "Mon enquête"}
+                </Text>
+
+                <Button
+                  onClick={goToCreateSurvey}
+                  variant="roundedBlue"
+                  zIndex="0"
+                >
+                  {t.cta}
+                </Button>
+              </>
             )}
-            <Button onClick={goToCreateSurvey} variant="roundedBlue" zIndex="0">
-              {t.cta}
-            </Button>
           </Flex>
 
           {hadSurveys ? (
@@ -171,8 +178,15 @@ export const Dashboard: React.FC<IRoute> = () => {
               )}
             </>
           ) : (
-            <Box w="80%" m="0 auto">
-              <NoData content="Vous n'avez pas encore d'enquêtes" />
+            <Box w="80%" m="0 auto" textAlign="center">
+              <NoData content="Vous n'avez aucun projet" />
+              <Button
+                onClick={goToCreateSurvey}
+                variant="roundedBlue"
+                zIndex="0"
+              >
+                {t.cta}
+              </Button>
             </Box>
           )}
         </Container>

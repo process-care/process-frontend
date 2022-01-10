@@ -45,6 +45,24 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
       width="100%"
       position="relative"
     >
+      <Box
+        onClick={() => handlePage()}
+        mb="10"
+        d="flex"
+        justifyContent="center"
+        flexDirection="column"
+        alignItems="center"
+        _hover={{
+          cursor: "pointer",
+        }}
+      >
+        <SvgHover>
+          <Add />
+        </SvgHover>
+        <Text variant="xs" mt="2">
+          Ajouter une page
+        </Text>
+      </Box>
       <Box h="80%" overflowY="auto" w="100%">
         {pages?.map((page, i) => {
           const isSelected = selectedPage?.id === page.id;
@@ -106,12 +124,6 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
             </Box>
           );
         })}
-      </Box>
-
-      <Box onClick={() => handlePage()} pos="absolute" bottom="80px">
-        <SvgHover>
-          <Add />
-        </SvgHover>
       </Box>
     </Flex>
   );

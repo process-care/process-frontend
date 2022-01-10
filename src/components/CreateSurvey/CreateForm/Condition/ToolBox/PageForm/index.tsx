@@ -5,15 +5,16 @@ import { setIsRemoving } from "redux/slices/formBuilder";
 import { actions as appActions } from "redux/slices/application";
 import { actions, selectors } from "redux/slices/scientistData";
 
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import { t } from "static/survey";
 import ToolBox from "../InputsButton";
 import { Formik, Form } from "formik";
-import { Switch, Textarea } from "components/Fields";
+import { Textarea } from "components/Fields";
 import IQuestion from "types/form/question";
 import { RemovingConfirmation } from "../../../RemovingConfirmation";
 import { SvgHover } from "components/SvgHover";
 import { ReactComponent as Trash } from "assets/trash.svg";
+import { TitleDivider } from "components/TitleDivider";
 
 export const PageForm: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -102,11 +103,8 @@ export const PageForm: React.FC = () => {
       >
         {() => {
           return (
-            <Form
-              onChange={(event) => onChange(event)}
-              style={{ width: "100%" }}
-            >
-              <Flex w="100%" justifyContent="space-between">
+            <Form onChange={(event) => onChange(event)}>
+              <Flex w="100%" justifyContent="flex-end">
                 {isNotFirstPage ? (
                   <Box
                     onClick={() => {
@@ -118,9 +116,9 @@ export const PageForm: React.FC = () => {
                     </SvgHover>
                   </Box>
                 ) : (
-                  <Box mt={10} />
+                  <Box mt={5} />
                 )}
-                <Box
+                {/* <Box
                   d="flex"
                   flexDirection="column"
                   pt="14px"
@@ -133,10 +131,10 @@ export const PageForm: React.FC = () => {
                   <Text variant="xxs" mt="1">
                     Page non modifiable
                   </Text>
-                </Box>
+                </Box> */}
               </Flex>
-
-              <Box pt={10}>
+              <TitleDivider title="Informations de la page" mt="5" />
+              <Box w="90%" m="0 auto" backgroundColor="brand.gray" p="5">
                 <Textarea
                   id="name"
                   label="Nom de la page"
@@ -151,37 +149,37 @@ export const PageForm: React.FC = () => {
                   placeholder="Page 1"
                   helpText="40 signes maximum"
                 />
+
+                <Box d="flex" justifyContent="flex-end" mt="5">
+                  {isNotFirstPage &&
+                    (conditionsOnSelectedPage.length === 0 ? (
+                      <Button
+                        variant="roundedTransparent"
+                        onClick={() => createCondition()}
+                      >
+                        {t.add_condition_page}
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="roundedTransparent"
+                        onClick={() =>
+                          editCondition(conditionsOnSelectedPage?.[0].id)
+                        }
+                      >
+                        {t.edit_condition}
+                      </Button>
+                    ))}
+                  {/* TODO: Implement logic from line 131 */}
+
+                  <Button ml="5" variant="roundedTransparent">
+                    Bloquer la page
+                  </Button>
+                </Box>
+              </Box>
+              <TitleDivider title="Contenu de la page" />
+              <Box w="90%" m="0 auto" backgroundColor="brand.gray" p="5">
                 <ToolBox onSelect={(type) => handleSelect(type)} />
               </Box>
-
-              {isNotFirstPage && (
-                <Flex
-                  alignItems="center"
-                  w="100%"
-                  justifyContent="space-between"
-                  mt={5}
-                >
-                  {conditionsOnSelectedPage.length === 0 ? (
-                    <Button
-                      variant="link"
-                      color="brand.blue"
-                      onClick={() => createCondition()}
-                    >
-                      {t.add_condition_page}
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="link"
-                      color="brand.blue"
-                      onClick={() =>
-                        editCondition(conditionsOnSelectedPage?.[0].id)
-                      }
-                    >
-                      {t.edit_condition}
-                    </Button>
-                  )}
-                </Flex>
-              )}
             </Form>
           );
         }}

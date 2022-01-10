@@ -11,21 +11,13 @@ import { useAppSelector } from "redux/hooks";
 import { Errors, renderAuthMessage } from "../Errors";
 
 export const LoginForm: React.FC = () => {
+  const [isSigninPage, setIsSigninPage] = React.useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
   const isConnected = useAppSelector(
     (state) => state.scientistData.auth.isConnected
   );
   const errors = useAppSelector((state) => state.scientistData.auth.errors);
-
-  // For dev facilities
-  const initialValues =
-    process.env.NODE_ENV === "development"
-      ? { identifier: "dev@dev.com", password: "testtest" }
-      : {
-          identifier: "process-bot",
-          password: "bot-mangly-WOLVES-canopee",
-        };
 
   function handleSubmit({ identifier, password }: any) {
     dispatch(actions.login({ identifier, password }));
@@ -42,8 +34,8 @@ export const LoginForm: React.FC = () => {
       </Box>
 
       <Formik
+        initialValues={{ identifier: "", password: "" }}
         validateOnBlur={false}
-        initialValues={initialValues}
         onSubmit={async (data, { setSubmitting, validateForm }) => {
           validateForm(data);
           setSubmitting(true);

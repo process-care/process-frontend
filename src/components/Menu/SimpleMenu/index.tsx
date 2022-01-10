@@ -12,7 +12,6 @@ import { actions as appActions } from "redux/slices/scientistData";
 import { useHistory } from "react-router-dom";
 
 import { useGetMe } from "call/actions/auth";
-import { Loader } from "components/Spinner";
 
 export const HEADER_HEIGHT = "65px";
 
@@ -30,7 +29,7 @@ export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
   const history = useHistory();
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const { cookies } = useAuth();
-  const { data, isLoading } = useGetMe(cookies?.user.id);
+  const { data } = useGetMe(cookies?.user.id);
   const dispatch = useDispatch();
   const handleClick = () => {
     setIsOpen((prev) => !prev);
@@ -105,9 +104,6 @@ export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
     );
   };
 
-  if (isLoading) {
-    return <Loader />;
-  }
   return (
     <Box
       py={3}

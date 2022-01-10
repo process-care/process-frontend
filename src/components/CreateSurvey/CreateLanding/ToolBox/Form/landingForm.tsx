@@ -10,7 +10,7 @@ import { t } from "static/createLanding";
 import { ColorPicker } from "../ColorPicker";
 import { initialValues } from "./utils/initialValues";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
-import { RepeatableFields } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/RepeatableFields";
+import { RepeatableJobs } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/RepeatableJobs";
 import { SvgHover } from "components/SvgHover";
 
 import { ReactComponent as Delete } from "assets/delete.svg";
@@ -155,7 +155,7 @@ export const LandingForm: React.FC = () => {
               <Text variant="currentBold" mt={9}>
                 {t.team_label}
               </Text>
-              <RepeatableFields
+              <RepeatableJobs
                 name="members"
                 cta="Ajouter un membre de l'équipe"
               />
@@ -164,7 +164,7 @@ export const LandingForm: React.FC = () => {
 
               <Text variant="currentBold">{t.logos_label}</Text>
 
-              <RepeatableFields
+              <RepeatableJobs
                 name="partners_logos"
                 onlyUpload
                 cta="Ajouter un logo partenaire"

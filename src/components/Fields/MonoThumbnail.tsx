@@ -12,6 +12,7 @@ interface Props {
   isCollapsed?: boolean;
   factors: IQuestion["factors"];
   maxLoop: string | undefined;
+  mono_thumbnail_input: "radio" | "slider" | "number_input";
 }
 
 interface State {
@@ -19,15 +20,18 @@ interface State {
   isMounted: boolean;
 }
 
-const TOTAL_CARDS = 2;
+const TOTAL_CARDS = 1;
 
-export const AssociatedClassification: React.FC<Props> = ({
+// TODO: refactor this and use the same comp as the AssociatedClassification
+
+export const MonoThumbnail: React.FC<Props> = ({
   label,
   helpText,
   isCollapsed,
   factors,
   maxLoop = "5",
   name,
+  mono_thumbnail_input,
 }) => {
   const {
     generate,
@@ -61,7 +65,7 @@ export const AssociatedClassification: React.FC<Props> = ({
         border="1px solid #E5E5E5"
         borderRadius="5px"
         mt="30px"
-        w="40%"
+        w="60%"
         _hover={{ border: "1px solid black", cursor: "pointer" }}
         onClick={() => handleClick(index)}
       >
@@ -139,6 +143,9 @@ export const AssociatedClassification: React.FC<Props> = ({
             <Text mt="15px" fontSize="xs">
               {helpText}
             </Text>
+            <Box mt="10">
+              <p>{mono_thumbnail_input}</p>
+            </Box>
           </Box>
         </Flex>
       )}

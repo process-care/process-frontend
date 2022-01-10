@@ -20,7 +20,7 @@ export const RepeatedFields: React.FC<Props> = ({ name }) => {
     // Populate answers field on edit.
     if (isEditing) {
       fields?.map((value: string, index: number) => {
-        setFieldValue(`options.${index}`, value);
+        setFieldValue(`${name}.${index}`, value);
       });
     }
   }, [isEditing]);
@@ -36,7 +36,7 @@ export const RepeatedFields: React.FC<Props> = ({ name }) => {
                 <Box key={index} w="100%">
                   <Flex w="100%">
                     <Textarea
-                      id={`options.${index}`}
+                      id={`${name}.${index}`}
                       label={`Option ${index}`}
                       placeholder={
                         isEditing ? fields[index] : `Option ${index}`
@@ -50,7 +50,7 @@ export const RepeatedFields: React.FC<Props> = ({ name }) => {
                         type="button"
                         onClick={() => {
                           arrayHelpers.remove(index);
-                          setFieldValue(`options.${index}`, undefined);
+                          setFieldValue(`${name}.${index}`, undefined);
                         }}
                       >
                         -

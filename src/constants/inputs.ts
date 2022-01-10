@@ -45,6 +45,10 @@ export const inputs: Obj[] = [
     name: "Question libre classification",
   },
   {
+    type: "mono_thumbnail",
+    name: "Question par graduation",
+  },
+  {
     type: "associated_classification",
     name: "Question par association",
   },

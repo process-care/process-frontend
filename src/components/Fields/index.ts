@@ -9,6 +9,7 @@ import { CustomSwitch as Switch } from "components/Fields/Switch";
 import { CustomDatePicker as Datepicker } from "components/Fields/Datepicker";
 import { AssociatedClassification } from "components/Fields/AssociatedClassification";
 import { FreeClassification } from "components/Fields/FreeClassification";
+import { MonoThumbnail } from "components/Fields/MonoThumbnail";
 
 export {
   Input,
@@ -22,4 +23,5 @@ export {
   Datepicker,
   AssociatedClassification,
   FreeClassification,
+  MonoThumbnail,
 };

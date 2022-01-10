@@ -12,6 +12,7 @@ import {
   Textarea,
   AssociatedClassification,
   FreeClassification,
+  MonoThumbnail,
 } from "components/Fields";
 import IQuestion from "types/form/question";
 import { t } from "static/input";
@@ -187,6 +188,23 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
             }
             factors={input.factors}
             maxLoop={input.max_loop}
+          />
+        </>
+      );
+    case "mono_thumbnail":
+      return (
+        <>
+          <MonoThumbnail
+            isCollapsed={isCollapsed}
+            name={input.id || "mono_thumbnail"}
+            label={input.label || t.label}
+            helpText={
+              input.help_text ||
+              "Merci de remplir la valeur qui définit le mieux cette proposition"
+            }
+            factors={input.factors}
+            maxLoop={input.max_loop}
+            mono_thumbnail_input={input.mono_thumbnail_input?.type || "slider"}
           />
         </>
       );

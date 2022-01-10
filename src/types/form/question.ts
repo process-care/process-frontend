@@ -17,6 +17,7 @@ export default interface IQuestion {
     | "checkbox"
     | "date_picker"
     | "free_classification"
+    | "mono_thumbnail"
     | "associated_classification";
   // name: string;
   id: string;
@@ -38,6 +39,13 @@ export default interface IQuestion {
   page?: Partial<IPage>;
   wysiwyg?: string | undefined;
   freeclassification_responses_count?: string;
+  mono_thumbnail_input?: {
+    type: "radio" | "slider" | "number_input";
+    label?: string;
+    min?: number;
+    max?: number;
+    step?: number;
+  };
   conditions?: ICondition[];
   max_loop?: string;
   factors?: [

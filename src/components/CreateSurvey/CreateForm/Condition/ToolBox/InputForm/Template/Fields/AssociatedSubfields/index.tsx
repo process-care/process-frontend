@@ -34,7 +34,12 @@ export const AssociatedSubfields: React.FC<Props> = ({ name }) => {
           <Box w="100%">
             {fields?.length > 0 ? (
               fields.map((_: string, index: number) => (
-                <Box key={index} w="100%">
+                <Box
+                  key={index}
+                  w="100%"
+                  backgroundColor="brand.gray.100"
+                  p="5"
+                >
                   <Flex w="100%">
                     <Textarea
                       id={`${name}.${index}.title`}

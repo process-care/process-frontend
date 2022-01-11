@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 import { setIsRemoving } from "redux/slices/formBuilder";
@@ -40,23 +40,9 @@ export const PageForm: React.FC = () => {
     dispatch(actions.createQuestion({ type }));
   };
 
-  const onChange = (event: React.FormEvent<HTMLFormElement>) => {
-    const target = event.target as HTMLFormElement;
-    dispatch(
-      actions.updatePage({
-        id: selectedPageId,
-        changes: {
-          [target.id]:
-            target.checked !== undefined ? target.checked : target.value,
-        },
-      })
-    );
-  };
-
   const handleDelete = async () => {
     dispatch(actions.deletePage(selectedPageId));
     // Need to delete question with dispatch here to get the chain working well (update order etc ...)
-    // TODO: Maybe i can create an epic to dispatch all actions at once
     questionsOnSelectedPage.forEach((questionId) => {
       dispatch(actions.deleteQuestion(questionId));
     });
@@ -89,11 +75,15 @@ export const PageForm: React.FC = () => {
     );
   }
 
+  if (!selectedPage) {
+    return <></>;
+  }
+
   return (
     <Box p={4}>
       <Formik
         validateOnBlur={false}
-        initialValues={selectedPage ? selectedPage : {}}
+        initialValues={selectedPage}
         enableReinitialize
         onSubmit={(data, { setSubmitting, validateForm }) => {
           validateForm(data);
@@ -101,9 +91,24 @@ export const PageForm: React.FC = () => {
           dispatch(appActions.toogleDrawer());
         }}
       >
-        {() => {
+        {({ setFieldValue, values }) => {
+          useEffect(() => {
+            dispatch(
+              actions.updatePage({
+                id: selectedPageId,
+                changes: {
+                  short_name: values.short_name,
+                  name: values.name,
+                  is_locked: values.is_locked,
+                },
+              })
+            );
+          }, [values]);
+
+          const isLocked = values.is_locked;
+
           return (
-            <Form onChange={(event) => onChange(event)}>
+            <Form>
               <Flex w="100%" justifyContent="flex-end">
                 {isNotFirstPage ? (
                   <Box
@@ -118,20 +123,6 @@ export const PageForm: React.FC = () => {
                 ) : (
                   <Box mt={5} />
                 )}
-                {/* <Box
-                  d="flex"
-                  flexDirection="column"
-                  pt="14px"
-                  justifyContent="flex-end"
-                >
-                  <Box position="absolute" right="-10px" top="30px">
-                    <Switch size="sm" id="is_locked" label="" />
-                  </Box>
-
-                  <Text variant="xxs" mt="1">
-                    Page non modifiable
-                  </Text>
-                </Box> */}
               </Flex>
               <TitleDivider title="Informations de la page" mt="5" />
               <Box
@@ -156,7 +147,7 @@ export const PageForm: React.FC = () => {
                   helpText="40 signes maximum"
                 />
 
-                <Box d="flex" justifyContent="flex-end" mt="5">
+                <Box d="flex" justifyContent="space-between" mt="5">
                   {isNotFirstPage &&
                     (conditionsOnSelectedPage.length === 0 ? (
                       <Button
@@ -175,10 +166,15 @@ export const PageForm: React.FC = () => {
                         {t.edit_condition}
                       </Button>
                     ))}
-                  {/* TODO: Implement logic from line 131 */}
 
-                  <Button ml="5" variant="roundedTransparent">
-                    Bloquer la page
+                  <Button
+                    ml="5"
+                    variant={isLocked ? "rounded" : "roundedTransparent"}
+                    onClick={() =>
+                      setFieldValue("is_locked", !values.is_locked)
+                    }
+                  >
+                    {isLocked ? "Débloquer la page" : "Bloquer la page"}
                   </Button>
                 </Box>
               </Box>

@@ -67,13 +67,12 @@ const ToolBox: React.FC<Props> = ({ onSelect }) => {
   };
   return (
     <>
-      <Title>Questions Simples</Title>
-
-      <Category onSelect={onSelect} group="simple" />
-      <Title>Questions Complexes</Title>
-      <Category onSelect={onSelect} group="complex" />
-      <Title>Autres</Title>
+      <Title>Contenu statique</Title>
       <Category onSelect={onSelect} group="other" />
+      <Title>Questions standards</Title>
+      <Category onSelect={onSelect} group="simple" />
+      <Title>Questions complexes</Title>
+      <Category onSelect={onSelect} group="complex" />
     </>
   );
 };

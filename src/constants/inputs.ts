@@ -51,17 +51,17 @@ export const inputs: Obj[] = [
   },
   {
     type: "free_classification",
-    name: "Question libre classification",
+    name: "Classification démocratique du texte libre",
     category: "complex",
   },
   {
     type: "mono_thumbnail",
-    name: "Question par graduation",
+    name: "Vignette (évaluation d'une seule vignette)",
     category: "complex",
   },
   {
     type: "associated_classification",
-    name: "Question par association",
+    name: "Vignettes (choix parmi deux)",
     category: "complex",
   },
 ];

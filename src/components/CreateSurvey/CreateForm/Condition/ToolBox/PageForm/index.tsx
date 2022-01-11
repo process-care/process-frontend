@@ -5,7 +5,7 @@ import { setIsRemoving } from "redux/slices/formBuilder";
 import { actions as appActions } from "redux/slices/application";
 import { actions, selectors } from "redux/slices/scientistData";
 
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex, Tooltip } from "@chakra-ui/react";
 import { t } from "static/survey";
 import ToolBox from "../InputsButton";
 import { Formik, Form } from "formik";
@@ -166,16 +166,22 @@ export const PageForm: React.FC = () => {
                         {t.edit_condition}
                       </Button>
                     ))}
-
-                  <Button
-                    ml="5"
-                    variant={isLocked ? "rounded" : "roundedTransparent"}
-                    onClick={() =>
-                      setFieldValue("is_locked", !values.is_locked)
+                  <Tooltip
+                    label={
+                      "Si la page est bloquée, l'utilisateur ne peut plus modifier le contenu enregistré"
                     }
+                    placement="right"
                   >
-                    {isLocked ? "Débloquer la page" : "Bloquer la page"}
-                  </Button>
+                    <Button
+                      ml={isNotFirstPage ? "5" : "0"}
+                      variant={isLocked ? "rounded" : "roundedTransparent"}
+                      onClick={() =>
+                        setFieldValue("is_locked", !values.is_locked)
+                      }
+                    >
+                      {isLocked ? "Débloquer la page" : "Bloquer la page"}
+                    </Button>
+                  </Tooltip>
                 </Box>
               </Box>
               <TitleDivider title="Contenu de la page" />

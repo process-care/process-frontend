@@ -201,8 +201,16 @@ const theme = extendTheme({
         }),
       },
     },
+
     Container: {
       variants: {
+        hierarchy: () => ({
+          width: "100%",
+          margin: "0 auto",
+          border: "1px solid #F7F7F7F7",
+          padding: "5",
+          backgroundColor: "#fdfdfdf1",
+        }),
         inputContainer: (props: any) => ({
           margin: 5,
           border: "1px",

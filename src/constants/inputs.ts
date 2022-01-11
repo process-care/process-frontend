@@ -65,3 +65,8 @@ export const inputs: Obj[] = [
     category: "complex",
   },
 ];
+
+export const getQuestionName = (type: IQuestion["type"]): string => {
+  const question = inputs.find((q) => q.type === type);
+  return question ? question.name : "";
+};

@@ -25,7 +25,7 @@ export const GradeFields: React.FC<Props> = ({ selectedQuestion }) => {
   }, [selectedQuestion.mono_thumbnail_input?.type]);
 
   return (
-    <Box backgroundColor="brand.gray.100" p="10" borderRadius="5" mt="5">
+    <Box mt="5">
       <Textarea
         isCollapsed={false}
         rows="small"

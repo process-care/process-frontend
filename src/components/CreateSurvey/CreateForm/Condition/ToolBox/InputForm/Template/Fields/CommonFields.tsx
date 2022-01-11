@@ -1,5 +1,6 @@
 import React from "react";
 import { Textarea, Input } from "components/Fields";
+import { Box } from "@chakra-ui/react";
 
 interface Props {
   noPlacehoder?: boolean;
@@ -7,7 +8,13 @@ interface Props {
 
 export const CommonFields: React.FC<Props> = ({ noPlacehoder = false }) => {
   return (
-    <>
+    <Box
+      w="100%"
+      m="0 auto"
+      border="1px solid #F7F7F7F7"
+      p="5"
+      backgroundColor="#fdfdfdf1"
+    >
       <Textarea
         isCollapsed={false}
         rows="medium"
@@ -27,12 +34,11 @@ export const CommonFields: React.FC<Props> = ({ noPlacehoder = false }) => {
         />
       )}
 
-      <Textarea
+      <Input
         isCollapsed={false}
-        rows="medium"
         label="Champ d'aide de la question"
         placeholder="Renseigner le texte d'aide de votre question.Il s'affichera sous le champ. "
-        id="help_text"
+        name="help_text"
       />
 
       <Input
@@ -43,6 +49,6 @@ export const CommonFields: React.FC<Props> = ({ noPlacehoder = false }) => {
         helpText="Ce champ vous permet de donner un titre à la question,il n'est pas visible par les utilisateurs."
         isRequired="false"
       />
-    </>
+    </Box>
   );
 };

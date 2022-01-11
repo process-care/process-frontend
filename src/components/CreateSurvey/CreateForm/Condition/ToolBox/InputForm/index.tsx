@@ -190,13 +190,6 @@ const InputForm: React.FC<Props> = ({ order }) => {
                 {renderFormTemplate(selectedQuestion)}
               </Box>
 
-              <Flex
-                alignItems="center"
-                w="100%"
-                justifyContent="space-between"
-                mt={5}
-                pb="100px"
-              ></Flex>
               <Footer
                 onSubmit={() => console.log("submit")}
                 disabled={!isValid || isSubmitting}

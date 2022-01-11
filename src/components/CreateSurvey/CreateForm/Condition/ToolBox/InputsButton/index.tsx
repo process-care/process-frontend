@@ -1,13 +1,12 @@
 import React from "react";
-import { Box, Button, ButtonGroup } from "@chakra-ui/react";
+import { Box, Button, ButtonGroup, Text } from "@chakra-ui/react";
 import { inputs } from "constants/inputs";
 import { v4 as uuidv4 } from "uuid";
 import IQuestion from "types/form/question";
 import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
-import { TitleDivider } from "components/TitleDivider";
 
 interface Props {
-  group?: "other" | "simple" | "algo";
+  group?: "other" | "simple" | "complex";
   onSelect: (
     type: IQuestion["type"],
     id: string,
@@ -34,6 +33,7 @@ const Category: React.FC<Props> = ({ onSelect, group }) => {
               pl={2}
               onClick={() => onSelect(type, `${type}-${id}`, `${type}-${id}`)}
               fontSize="14px"
+
               // maxWidth="160px"
               // minWidth="160px"
             >
@@ -50,16 +50,29 @@ const Category: React.FC<Props> = ({ onSelect, group }) => {
 };
 
 const ToolBox: React.FC<Props> = ({ onSelect }) => {
+  const Title = ({ children }: { children: React.ReactNode }) => {
+    return (
+      <Text
+        variant="xxs"
+        fontWeight="bold"
+        textTransform="uppercase"
+        whiteSpace="normal"
+        textAlign="left"
+        mb="2"
+        mt="2"
+      >
+        {children}
+      </Text>
+    );
+  };
   return (
     <>
-      <TitleDivider title="Questions simples" mt="2" mb="2" />
-
-      <Category onSelect={onSelect} group="simple" />
-      <TitleDivider title="Questions algorithmiques" mt="2" mb="2" />
-      <Category onSelect={onSelect} group="algo" />
-      <TitleDivider title="Autres" mt="2" mb="2" />
-
+      <Title>Contenu statique</Title>
       <Category onSelect={onSelect} group="other" />
+      <Title>Questions standards</Title>
+      <Category onSelect={onSelect} group="simple" />
+      <Title>Questions complexes</Title>
+      <Category onSelect={onSelect} group="complex" />
     </>
   );
 };

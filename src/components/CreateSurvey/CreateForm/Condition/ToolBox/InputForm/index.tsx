@@ -13,7 +13,6 @@ import {
 import { fields } from "./Template/logic/initialValues";
 import { setIsRemoving } from "redux/slices/formBuilder";
 
-import { Switch } from "components/Fields";
 import { t } from "static/condition";
 import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
 import { selectors, actions } from "redux/slices/scientistData";
@@ -23,6 +22,8 @@ import {
   selectors as formBuilderSelectors,
   actions as formBuilderAction,
 } from "redux/slices/formBuilder";
+import { TitleDivider } from "components/TitleDivider";
+import { getQuestionName } from "constants/inputs";
 
 interface Props {
   order: string[];
@@ -60,7 +61,7 @@ const InputForm: React.FC<Props> = ({ order }) => {
     dispatch(formBuilderAction.setIsEditing(false));
     dispatch(actions.setSelectedQuestion(""));
   };
-
+  console.log(selectedQuestion);
   // Save state to get diff
   useEffect(() => {
     setPrevState(prevState);
@@ -99,7 +100,7 @@ const InputForm: React.FC<Props> = ({ order }) => {
       initialValues={selectedQuestion ? selectedQuestion : fields[type]}
       onSubmit={handleSubmit}
     >
-      {({ isValid, isSubmitting, values }) => {
+      {({ isValid, isSubmitting, values, setFieldValue }) => {
         useEffect(() => {
           const newChanges = getDiff(values, selectedQuestion);
           if (values) {
@@ -124,34 +125,54 @@ const InputForm: React.FC<Props> = ({ order }) => {
               px={5}
             >
               <Flex
-                borderBottom="1px solid"
-                borderColor="black"
+                alignItems="center"
                 justifyContent="space-between"
                 w="100%"
-                pt={5}
-                pb={1}
-                mb={4}
-                alignItems="start"
+                mt="5"
               >
-                <Flex alignItems="center">
+                <Text variant="smallTitle" textAlign="left">
+                  {getQuestionName(type)}
+                </Text>
+
+                <Flex ml={2} alignItems="center">
                   <InputIcon type={type} />
-                  <Box ml={2}>
-                    <Text variant="xsMedium">
-                      {order?.findIndex(
-                        (id: string) => id === selectedQuestionId
-                      ) + 1}
-                    </Text>
-                    <Text variant="xs">Question {type}</Text>
-                  </Box>
+
+                  <Text variant="xsMedium" ml="3">
+                    {order?.findIndex(
+                      (id: string) => id === selectedQuestionId
+                    ) + 1}
+                  </Text>
                 </Flex>
+              </Flex>
+              <TitleDivider title="Champs génériques" />
+              <Flex mb="7" w="100%" justifyContent="space-between">
+                {currentConditions.length === 0 ? (
+                  <Button
+                    variant="roundedTransparent"
+                    onClick={() => createCondition()}
+                  >
+                    {t.add_condition}
+                  </Button>
+                ) : (
+                  <Button
+                    variant="roundedTransparent"
+                    onClick={() => editCondition(currentConditions[0].id)}
+                  >
+                    {t.edit_condition}
+                  </Button>
+                )}
                 {type !== "wysiwyg" && (
-                  <Flex flexDirection="column">
-                    <Switch label="" id="required" size="sm" />
-                    <Text variant="xsMedium">Réponse obligatoire</Text>
-                  </Flex>
+                  <Button
+                    ml="5"
+                    variant={values.required ? "rounded" : "roundedTransparent"}
+                    onClick={() => setFieldValue("required", !values.required)}
+                  >
+                    {values.required
+                      ? "Rendre la réponse obligatoire"
+                      : "Rendre la réponse facultative"}
+                  </Button>
                 )}
               </Flex>
-
               <Box w="100%" mb={8}>
                 {renderFormTemplate(selectedQuestion)}
               </Box>
@@ -162,30 +183,7 @@ const InputForm: React.FC<Props> = ({ order }) => {
                 justifyContent="space-between"
                 mt={5}
                 pb="100px"
-              >
-                {currentConditions.length === 0 ? (
-                  <Button
-                    isDisabled={!isValid}
-                    variant="link"
-                    color="brand.blue"
-                    onClick={() => createCondition()}
-                  >
-                    {t.add_condition}
-                  </Button>
-                ) : (
-                  <Button
-                    isDisabled={!isValid}
-                    variant="link"
-                    color="brand.blue"
-                    onClick={() => editCondition(currentConditions[0].id)}
-                  >
-                    {currentConditions.length === 1
-                      ? t.edit_condition
-                      : t.edit_conditions}
-                  </Button>
-                )}
-              </Flex>
-
+              ></Flex>
               <Footer
                 onSubmit={() => console.log("submit")}
                 disabled={!isValid || isSubmitting}

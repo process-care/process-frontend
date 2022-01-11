@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 import { setIsRemoving } from "redux/slices/formBuilder";
 import { actions as appActions } from "redux/slices/application";
 import { actions, selectors } from "redux/slices/scientistData";
 
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex, Tooltip } from "@chakra-ui/react";
 import { t } from "static/survey";
 import ToolBox from "../InputsButton";
 import { Formik, Form } from "formik";
@@ -40,23 +40,9 @@ export const PageForm: React.FC = () => {
     dispatch(actions.createQuestion({ type }));
   };
 
-  const onChange = (event: React.FormEvent<HTMLFormElement>) => {
-    const target = event.target as HTMLFormElement;
-    dispatch(
-      actions.updatePage({
-        id: selectedPageId,
-        changes: {
-          [target.id]:
-            target.checked !== undefined ? target.checked : target.value,
-        },
-      })
-    );
-  };
-
   const handleDelete = async () => {
     dispatch(actions.deletePage(selectedPageId));
     // Need to delete question with dispatch here to get the chain working well (update order etc ...)
-    // TODO: Maybe i can create an epic to dispatch all actions at once
     questionsOnSelectedPage.forEach((questionId) => {
       dispatch(actions.deleteQuestion(questionId));
     });
@@ -89,11 +75,15 @@ export const PageForm: React.FC = () => {
     );
   }
 
+  if (!selectedPage) {
+    return <></>;
+  }
+
   return (
     <Box p={4}>
       <Formik
         validateOnBlur={false}
-        initialValues={selectedPage ? selectedPage : {}}
+        initialValues={selectedPage}
         enableReinitialize
         onSubmit={(data, { setSubmitting, validateForm }) => {
           validateForm(data);
@@ -101,9 +91,24 @@ export const PageForm: React.FC = () => {
           dispatch(appActions.toogleDrawer());
         }}
       >
-        {() => {
+        {({ setFieldValue, values }) => {
+          useEffect(() => {
+            dispatch(
+              actions.updatePage({
+                id: selectedPageId,
+                changes: {
+                  short_name: values.short_name,
+                  name: values.name,
+                  is_locked: values.is_locked,
+                },
+              })
+            );
+          }, [values]);
+
+          const isLocked = values.is_locked;
+
           return (
-            <Form onChange={(event) => onChange(event)}>
+            <Form>
               <Flex w="100%" justifyContent="flex-end">
                 {isNotFirstPage ? (
                   <Box
@@ -118,23 +123,15 @@ export const PageForm: React.FC = () => {
                 ) : (
                   <Box mt={5} />
                 )}
-                {/* <Box
-                  d="flex"
-                  flexDirection="column"
-                  pt="14px"
-                  justifyContent="flex-end"
-                >
-                  <Box position="absolute" right="-10px" top="30px">
-                    <Switch size="sm" id="is_locked" label="" />
-                  </Box>
-
-                  <Text variant="xxs" mt="1">
-                    Page non modifiable
-                  </Text>
-                </Box> */}
               </Flex>
               <TitleDivider title="Informations de la page" mt="5" />
-              <Box w="90%" m="0 auto" backgroundColor="brand.gray" p="5">
+              <Box
+                w="100%"
+                m="0 auto"
+                border="1px solid #F7F7F7F7"
+                backgroundColor="#fdfdfdf1"
+                p="5"
+              >
                 <Textarea
                   id="name"
                   label="Nom de la page"
@@ -150,7 +147,7 @@ export const PageForm: React.FC = () => {
                   helpText="40 signes maximum"
                 />
 
-                <Box d="flex" justifyContent="flex-end" mt="5">
+                <Box d="flex" justifyContent="space-between" mt="5">
                   {isNotFirstPage &&
                     (conditionsOnSelectedPage.length === 0 ? (
                       <Button
@@ -169,15 +166,32 @@ export const PageForm: React.FC = () => {
                         {t.edit_condition}
                       </Button>
                     ))}
-                  {/* TODO: Implement logic from line 131 */}
-
-                  <Button ml="5" variant="roundedTransparent">
-                    Bloquer la page
-                  </Button>
+                  <Tooltip
+                    label={
+                      "Si la page est bloquée, l'utilisateur ne peut plus modifier le contenu enregistré"
+                    }
+                    placement="right"
+                  >
+                    <Button
+                      ml={isNotFirstPage ? "5" : "0"}
+                      variant={isLocked ? "rounded" : "roundedTransparent"}
+                      onClick={() =>
+                        setFieldValue("is_locked", !values.is_locked)
+                      }
+                    >
+                      {isLocked ? "Débloquer la page" : "Bloquer la page"}
+                    </Button>
+                  </Tooltip>
                 </Box>
               </Box>
               <TitleDivider title="Contenu de la page" />
-              <Box w="90%" m="0 auto" backgroundColor="brand.gray" p="5">
+              <Box
+                w="100%"
+                m="0 auto"
+                border="1px solid #F7F7F7F7"
+                p="5"
+                backgroundColor="#fdfdfdf1"
+              >
                 <ToolBox onSelect={(type) => handleSelect(type)} />
               </Box>
             </Form>

@@ -109,18 +109,18 @@ export const CreateConsent: React.FC = () => {
                     height: "100%",
                   }}
                 >
+                  <Box w="100%" mt="20">
+                    <Text variant="currentBold" mb="10">
+                      {t.switchLabel}
+                    </Text>
+                    <Switch
+                      label={t.label}
+                      id="needConsent"
+                      defaultChecked={true}
+                    />
+                  </Box>
                   {values.needConsent && (
                     <>
-                      <Box w="100%" mt="20">
-                        <Text variant="currentBold" mb="10">
-                          {t.switchLabel}
-                        </Text>
-                        <Switch
-                          label={t.label}
-                          id="needConsent"
-                          defaultChecked={true}
-                        />
-                      </Box>
                       <Text variant="currentBold" mt="200px">
                         {t.label}
                       </Text>

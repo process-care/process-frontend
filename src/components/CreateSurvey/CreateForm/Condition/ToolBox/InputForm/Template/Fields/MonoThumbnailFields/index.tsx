@@ -1,5 +1,6 @@
-import { Box, Divider } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { NumberInput, Select } from "components/Fields";
+import { TitleDivider } from "components/TitleDivider";
 import React, { useState, useEffect } from "react";
 import { useAppSelector } from "redux/hooks";
 import { selectors } from "redux/slices/scientistData";
@@ -34,27 +35,36 @@ export const MonoThumbnailFields: React.FC = () => {
   return (
     <>
       <CommonFields noPlacehoder />
-      <Divider my="5" />
-      <NumberInput
-        placeholder="ex: 4"
-        style={{ width: "45%" }}
-        label="Nb de répétitions vignettes"
-        name="max_loop"
-        isCollapsed={false}
-      />
-
-      <AssociatedSubfields name="factors" />
-      <Divider my="5" />
-      <Box w="45%">
-        <Select
-          label="Merci de selectionner le type de question à associer"
-          id="mono_thumbnail_input.type"
-          answers={answers}
-          placeholder="Choisir une question"
-          defaultValue={answers[0].value}
+      <TitleDivider title="Champs particuliers" />
+      <Box
+        w="100%"
+        m="0 auto"
+        border="1px solid #F7F7F7F7"
+        p="5"
+        backgroundColor="#fdfdfdf1"
+      >
+        <NumberInput
+          placeholder="ex: 4"
+          style={{ width: "45%" }}
+          label="Nb de répétitions vignettes"
+          name="max_loop"
+          isCollapsed={false}
         />
+
+        <AssociatedSubfields name="factors" />
+        <TitleDivider title="Question associée" />
+        <Box w="45%">
+          <Select
+            label="Merci de selectionner le type de question à associer"
+            id="mono_thumbnail_input.type"
+            answers={answers}
+            placeholder="Choisir une question"
+            defaultValue={answers[0].value}
+          />
+        </Box>
+
+        <GradeFields selectedQuestion={selectedQuestion} />
       </Box>
-      <GradeFields selectedQuestion={selectedQuestion} />
     </>
   );
 };

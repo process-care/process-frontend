@@ -37,9 +37,9 @@ export const RepeatedFields: React.FC<Props> = ({ name }) => {
                   <Flex w="100%">
                     <Textarea
                       id={`${name}.${index}`}
-                      label={`Option ${index}`}
+                      label={`Option ${index + 1}`}
                       placeholder={
-                        isEditing ? fields[index] : `Option ${index}`
+                        isEditing ? fields[index] : `Option ${index + 1}`
                       }
                       rows="small"
                       isRequired

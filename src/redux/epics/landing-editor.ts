@@ -23,7 +23,7 @@ const updateEpic: Epic = (action$, state$) =>
     ofType(actions.update.type),
     map((action) => action.payload),
     scan((acc, payload) => Object.assign({}, acc, payload), {}),
-    debounceTime(5000),
+    debounceTime(500),
     switchMap(async (accumulated) => {
       const currentLandingId = state$.value.editor.landing.data?.id;
 

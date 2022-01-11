@@ -1,7 +1,6 @@
 import { Box, Button, Text, Container, Flex } from "@chakra-ui/react";
 import { Textarea } from "components/Fields";
 import { UploadFile } from "components/Fields/Uploadfile";
-// import { UploadFileRemote } from "components/Fields/UploadFileRemote";
 import { Wysiwyg } from "components/Fields/Wysiwyg";
 import { Formik, Form } from "formik";
 import React, { useCallback, useRef } from "react";
@@ -36,11 +35,13 @@ export const LandingForm: React.FC = () => {
     dispatch(actions.editAbout(true));
   }, []);
 
+  const onSave = () => {
+    dispatch(actions.update({ ...data }));
+  };
   return (
     <Formik
       validateOnBlur={false}
       initialValues={data || initialValues}
-      // enableReinitialize
       onSubmit={onSubmit}
     >
       {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment*/}
@@ -180,6 +181,24 @@ export const LandingForm: React.FC = () => {
               >
                 {t.cta_show_more}
               </Button>
+              <Box
+                pos="fixed"
+                textAlign="center"
+                width="22%"
+                backgroundColor="white"
+                h="80px"
+                margin="0 auto"
+                bottom="0px"
+              >
+                <Button
+                  minW="180px"
+                  variant="roundedTransparent"
+                  mt="5"
+                  onClick={() => onSave()}
+                >
+                  {t.cta_save}
+                </Button>
+              </Box>
             </Form>
           </Box>
         );

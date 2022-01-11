@@ -180,7 +180,7 @@ function useChangesNotifier(isLanding: boolean | undefined) {
 
     // If nothing else but done -> turn off after a while
     if (!hasUnsavedChanges && !inProgress && done) {
-      setTimeout(() => setDone(false), 1000);
+      setTimeout(() => setDone(false), 2000);
     }
   }, [hasUnsavedChanges, inProgress, done]);
 

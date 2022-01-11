@@ -3,7 +3,7 @@ import IQuestion from "types/form/question";
 type Obj = {
   type: IQuestion["type"];
   name: string;
-  category: "other" | "simple" | "algo";
+  category: "other" | "simple" | "complex";
 };
 
 export const inputs: Obj[] = [
@@ -52,16 +52,16 @@ export const inputs: Obj[] = [
   {
     type: "free_classification",
     name: "Question libre classification",
-    category: "algo",
+    category: "complex",
   },
   {
     type: "mono_thumbnail",
     name: "Question par graduation",
-    category: "algo",
+    category: "complex",
   },
   {
     type: "associated_classification",
     name: "Question par association",
-    category: "algo",
+    category: "complex",
   },
 ];

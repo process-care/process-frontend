@@ -134,7 +134,13 @@ export const PageForm: React.FC = () => {
                 </Box> */}
               </Flex>
               <TitleDivider title="Informations de la page" mt="5" />
-              <Box w="90%" m="0 auto" backgroundColor="brand.gray" p="5">
+              <Box
+                w="100%"
+                m="0 auto"
+                border="1px solid #F7F7F7F7"
+                backgroundColor="#fdfdfdf1"
+                p="5"
+              >
                 <Textarea
                   id="name"
                   label="Nom de la page"
@@ -177,7 +183,13 @@ export const PageForm: React.FC = () => {
                 </Box>
               </Box>
               <TitleDivider title="Contenu de la page" />
-              <Box w="90%" m="0 auto" backgroundColor="brand.gray" p="5">
+              <Box
+                w="100%"
+                m="0 auto"
+                border="1px solid #F7F7F7F7"
+                p="5"
+                backgroundColor="#fdfdfdf1"
+              >
                 <ToolBox onSelect={(type) => handleSelect(type)} />
               </Box>
             </Form>

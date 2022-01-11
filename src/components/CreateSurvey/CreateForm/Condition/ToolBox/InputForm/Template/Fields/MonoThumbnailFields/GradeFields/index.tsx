@@ -69,7 +69,7 @@ const renderTemplate = (selectedQuestion: IQuestion) => {
               <Input
                 type="number"
                 isRequired
-                label="Borne min"
+                label="Valeur minimale"
                 name={`${ID}.min`}
                 isCollapsed={false}
                 placeholder="1"
@@ -79,7 +79,7 @@ const renderTemplate = (selectedQuestion: IQuestion) => {
               <Input
                 type="number"
                 isRequired
-                label="Borne max"
+                label="Valeur maximale"
                 name={`${ID}.max`}
                 isCollapsed={false}
                 placeholder="1"
@@ -91,7 +91,7 @@ const renderTemplate = (selectedQuestion: IQuestion) => {
               <Input
                 type="number"
                 isRequired
-                label="Intervalles"
+                label="Intervalles entre deux graduations"
                 name={`${ID}.step`}
                 isCollapsed={false}
                 placeholder="1"

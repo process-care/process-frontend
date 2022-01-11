@@ -19,19 +19,21 @@ export const FreeclassificationFields: React.FC = () => {
       >
         <Radiobox
           p="10px 0"
-          label="Taille de la zone de réponse"
+          label="Nombre de charactères de la réponse"
           radios={[
-            { value: "small", label: "Petite" },
-            { value: "medium", label: "Moyenne" },
-            { value: "large", label: "Grande" },
+            { value: "small", label: "50" },
+            { value: "medium", label: "500" },
+            { value: "large", label: "5000" },
           ]}
           id="rows"
+          helpText="Limite du nombre de caractères"
         />
         <NumberInput
           style={{ width: "45%" }}
           name="freeclassification_responses_count"
-          label="Nombre de réponses à proposer"
+          label="Proximité avec les réponses des autres participants"
           placeholder="5"
+          helpText="Nombre de propositions affichées"
         />
       </Box>
     </>

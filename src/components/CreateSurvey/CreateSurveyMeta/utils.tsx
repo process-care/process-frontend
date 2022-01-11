@@ -35,8 +35,8 @@ export const renderInputs = (step: number): React.ReactElement => {
           appearance="light"
           id="title"
           rows="small"
-          placeholder="Titre de l'enquête"
-          label="Renseigner le titre de l'enquête"
+          placeholder="Titre du projet"
+          label="Renseigner le titre du projet"
         />
       );
       break;
@@ -46,8 +46,8 @@ export const renderInputs = (step: number): React.ReactElement => {
           appearance="light"
           id="slug"
           rows="small"
-          placeholder="Url de l'enquête"
-          label="Valider ou modifier l'url de l'enquête"
+          placeholder="Url du projet"
+          label="Valider ou modifier l'url du projet"
         />
       );
       break;
@@ -63,10 +63,10 @@ export const renderInputs = (step: number): React.ReactElement => {
           <Textarea
             appearance="light"
             id="description"
-            rows="large"
+            rows="medium"
             placeholder="Description"
-            label="Renseigner la description de l'enquête"
-            helpText="250 signes max"
+            label="Renseigner la description du projet"
+            helpText="Description publique, affichée aux utilisateurs de PROCESS. 500 signes max"
           />
         </Box>
       );
@@ -89,8 +89,8 @@ export const renderInputs = (step: number): React.ReactElement => {
       return (
         <Select
           id="language"
-          placeholder="Langue de l'enquête"
-          label="Renseigner la langue de l'enquête"
+          placeholder="Langue du projet"
+          label="Renseigner la langue du projet"
           answers={t.language}
           defaultValue={t.language[0].value}
         />

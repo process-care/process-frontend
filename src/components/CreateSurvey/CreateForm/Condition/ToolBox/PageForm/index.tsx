@@ -138,6 +138,7 @@ export const PageForm: React.FC = () => {
                   rows="small"
                   placeholder="Page 1"
                   helpText="100 signes maximum"
+                  isRequired="true"
                 />
                 <Textarea
                   id="short_name"
@@ -145,6 +146,7 @@ export const PageForm: React.FC = () => {
                   rows="small"
                   placeholder="Page 1"
                   helpText="40 signes maximum"
+                  isRequired="true"
                 />
 
                 <Box d="flex" justifyContent="space-between" mt="5">

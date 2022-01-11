@@ -21,8 +21,18 @@ export const MultipleInputFieldsSchema = CommonFieldsSchema.shape({
 // Slider
 
 export const SliderSchema = CommonFieldsSchema.shape({
-  min: Yup.number().required("Ce champs est requis"),
-  max: Yup.number().required("Ce champs est requis"),
+  min: Yup.number()
+    .required("Ce champs est requis")
+    .lessThan(
+      Yup.ref("max"),
+      "La valeur minimale doit être inférieure à la valeur maximale"
+    ),
+  max: Yup.number()
+    .required("Ce champs est requis")
+    .moreThan(
+      Yup.ref("min"),
+      "La valeur maximale doit être supérieur à la valeur minimale"
+    ),
   step: Yup.number().required("Ce champs est requis"),
 });
 
@@ -36,6 +46,5 @@ export const WysiwygSchema = Yup.object().shape({
 // Associated Classification
 
 export const AssociatedSchema = CommonFieldsSchema.shape({
-  factors: Yup.array()
-  .required("Merci de renseigner un facteur au minumum"),
+  factors: Yup.array().required("Merci de renseigner un facteur au minumum"),
 });

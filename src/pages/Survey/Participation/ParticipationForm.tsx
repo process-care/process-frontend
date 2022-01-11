@@ -129,7 +129,7 @@ function useFinishHandler(participationId: string, slug: string | undefined) {
 
   const onFinish = useCallback(async () => {
     // TODO: improve this with a better UI ?
-    const acknowledge = confirm(" Conclure votre participation à l'enquête ?");
+    const acknowledge = confirm(" Conclure votre participation au projet ?");
     if (!acknowledge) return;
 
     // Tell the API we're done and wait for it to be saved

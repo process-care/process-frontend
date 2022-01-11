@@ -56,6 +56,10 @@ export const questionFragment = gql`
     placeholder
     help_text
     options
+    min
+    max
+    reverse
+    vertical
     required
     units
     factors
@@ -161,6 +165,10 @@ export const surveyFullFragment = gql`
         units
         factors
         max_loop
+        reverse
+        vertical
+        min
+        max
         step
         internal_title
         page {

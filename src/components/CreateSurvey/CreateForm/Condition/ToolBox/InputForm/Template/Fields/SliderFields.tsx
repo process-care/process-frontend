@@ -22,7 +22,7 @@ export const SliderFields: React.FC = () => {
             <Input
               type="number"
               isRequired
-              label="Borne min"
+              label="Valeur minimale"
               name="min"
               isCollapsed={false}
               placeholder="1"
@@ -32,7 +32,7 @@ export const SliderFields: React.FC = () => {
             <Input
               type="number"
               isRequired
-              label="Borne max"
+              label="Valeur maximale"
               name="max"
               isCollapsed={false}
               placeholder="1"
@@ -44,7 +44,7 @@ export const SliderFields: React.FC = () => {
             <Input
               type="number"
               isRequired
-              label="Intervalles"
+              label="Intervalles entre deux graduations"
               name="step"
               isCollapsed={false}
               placeholder="1"

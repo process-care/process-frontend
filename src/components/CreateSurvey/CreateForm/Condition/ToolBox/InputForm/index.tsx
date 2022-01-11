@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Text, Tooltip } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 
@@ -24,6 +24,7 @@ import {
 } from "redux/slices/formBuilder";
 import { TitleDivider } from "components/TitleDivider";
 import { getQuestionName } from "constants/inputs";
+import { InfoIcon } from "@chakra-ui/icons";
 
 interface Props {
   order: string[];
@@ -130,9 +131,21 @@ const InputForm: React.FC<Props> = ({ order }) => {
                 w="100%"
                 mt="5"
               >
-                <Text variant="smallTitle" textAlign="left">
-                  {getQuestionName(type)}
-                </Text>
+                <Tooltip
+                  placement="right"
+                  label={`Description du champs ${getQuestionName(
+                    type
+                  )} lorem dsqdsqdqsdqsdqsdqsdqsdqsd`}
+                >
+                  <Text
+                    variant="smallTitle"
+                    textAlign="left"
+                    _hover={{ cursor: "pointer" }}
+                  >
+                    {getQuestionName(type)}
+                    <InfoIcon color="gray.300" />
+                  </Text>
+                </Tooltip>
 
                 <Flex ml={2} alignItems="center">
                   <InputIcon type={type} />

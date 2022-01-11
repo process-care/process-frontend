@@ -80,7 +80,7 @@ export const RepeatedFields: React.FC<Props> = ({ name }) => {
                   variant="rounded"
                   type="button"
                 >
-                  Ajouter une réponse
+                  Ajouter une option de réponse
                 </Button>
                 <Text mt={1} fontSize="10px" color="red">
                   {meta.error}

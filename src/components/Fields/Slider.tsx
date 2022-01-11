@@ -50,15 +50,6 @@ export const CustomSlider: React.FC<Props> = ({
     }
   }, [defaultValue]);
 
-  const getMiddleValue = (
-    min: number | undefined,
-    max: number | undefined
-  ): number | undefined => {
-    if (min !== undefined && max !== undefined) {
-      return (min + max) / 2;
-    } else return;
-  };
-
   const cleanValue = (
     value: string | number | undefined,
     defaultValue: number
@@ -74,6 +65,7 @@ export const CustomSlider: React.FC<Props> = ({
     }
   };
 
+  console.log(min, max);
   return (
     <FormControl
       isRequired={isRequired === "true"}
@@ -112,9 +104,7 @@ export const CustomSlider: React.FC<Props> = ({
                 {reverse || vertical ? max : min}
               </Text>
 
-              <Text fontSize="10px" ml="4px">
-                {getMiddleValue(min, max)}
-              </Text>
+              <Text fontSize="10px" ml="4px"></Text>
 
               <Text fontSize="10px" mr="-5px">
                 {reverse || vertical ? min : max}

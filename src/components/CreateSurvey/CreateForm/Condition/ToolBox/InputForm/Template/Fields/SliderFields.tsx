@@ -16,6 +16,7 @@ export const SliderFields: React.FC = () => {
         border="1px solid #F7F7F7F7"
         p="5"
         backgroundColor="#fdfdfdf1"
+        mb="20"
       >
         <Flex justifyContent="space-between" w="100%">
           <Box w="45%">

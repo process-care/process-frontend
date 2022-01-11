@@ -49,7 +49,7 @@ export const Table: React.FC<Props> = ({ columns, data, onClick }) => {
         ))}
       </thead>
       <Tooltip
-        label="Cliquer pour éditer les paramètres de l'enquête"
+        label="Cliquer pour éditer les paramètres du projet"
         placement="top-start"
       >
         <tbody {...getTableBodyProps()}>

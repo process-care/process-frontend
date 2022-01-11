@@ -3,17 +3,17 @@ export const t = {
   steps: [
     {
       id: "title",
-      label: "Titre de l'enquête",
+      label: "Titre du projet",
       pos: 1,
     },
     {
       id: "slug",
-      label: "Url de l'enquête",
+      label: "Url du projet",
       pos: 2,
     },
     {
       id: "description",
-      label: "Description de l'enquête",
+      label: "Description du projet",
       pos: 3,
     },
     {
@@ -24,7 +24,7 @@ export const t = {
 
     {
       id: "language",
-      label: "Langue de l'enquête",
+      label: "Langue du projet",
       pos: 5,
     },
     {

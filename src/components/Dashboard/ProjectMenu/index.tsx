@@ -125,7 +125,7 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
         <RemovingConfirmation
           confirm={handleDelete}
           close={() => setIsRemoving(false)}
-          content={`Voulez-vous vraiment supprimer l'enquête "${selectedSurvey.title}" ?`}
+          content={`Voulez-vous vraiment supprimer le projet"${selectedSurvey.title}" ?`}
         />
       ) : (
         <Box>
@@ -136,7 +136,7 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
               </Button>
             </Tooltip>
             <Box>
-              <Tooltip label="Supprimer l'enquête">
+              <Tooltip label="Supprimer le projet">
                 <Button onClick={handleTrash} variant="link">
                   <Trash />
                 </Button>
@@ -224,7 +224,7 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
                 disabled={!isDraft}
                 top
                 left
-                label={"Modifier les données de l'enquête"}
+                label={"Modifier les données de le projet"}
                 onClick={goToSurveyMetadatas}
               />
             </Flex>
@@ -364,7 +364,7 @@ const Warning = ({
   };
   return (
     <Box>
-      {!hadLanding && <Message content="L'enquête n'a pas de page d'accueil" />}
+      {!hadLanding && <Message content="Le projet n'a pas de page d'accueil" />}
       {!hadQuestion && <Message content="Le formulaire est vide" />}
     </Box>
   );

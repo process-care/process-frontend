@@ -16,7 +16,7 @@ export const Errors: React.FC<Props> = ({ message }) => {
           return "Un compte existe déja avec cet email de contact ou ce nom d'utilisateur";
           break;
         case "Duplicate entry":
-          return "Le titre de l'enquête existe déja.";
+          return "Le titre du projet existe déja.";
           break;
         case "Your account has been blocked by the administrator.":
           return "Votre compte a été bloqué par l'administrateur.";

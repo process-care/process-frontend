@@ -1,4 +1,4 @@
-import { Box, Text, Center } from "@chakra-ui/react";
+import { Box, Text, Center, Input } from "@chakra-ui/react";
 import { SurveyGrid } from "components/SurveyGrid";
 import React, { useState, useMemo } from "react";
 import IRoute from "types/routes/route";
@@ -28,12 +28,20 @@ const t = {
 export const Portail: React.FC<IRoute> = () => {
   const { data: surveys, isLoading } = useGetPublishedSurvey();
   const [currentFilter, setCurrentFilter] = useState<string>(t.filters[0].id);
+  const [query, setQuery] = useState<string>("");
 
   const filteredSurveys = useMemo(
-    () => surveys?.surveys?.filter((survey) => currentFilter === 'all' || survey.status === currentFilter),
-    [currentFilter, surveys]
+    () =>
+      surveys?.surveys
+        ?.filter(
+          (survey) => currentFilter === "all" || survey.status === currentFilter
+        )
+        .filter((survey) =>
+          survey.title.toLowerCase().includes(query.toLowerCase())
+        ),
+    [currentFilter, surveys, query]
   );
-    
+
   return (
     <Box>
       <Box>
@@ -79,12 +87,26 @@ export const Portail: React.FC<IRoute> = () => {
       </Box>
 
       <Box pb="80px">
-        <Box px="10%" pt="20px">
+        <Box
+          px="10%"
+          pt="20px"
+          d="flex"
+          alignItems="center"
+          justifyContent="space-between"
+        >
           <Filters
             filters={t.filters}
             handleClick={(id) => setCurrentFilter(id)}
             currentFilter={currentFilter}
           />
+          <Box w="50%">
+            <Input
+              name="search"
+              label="Recherche de projet par titre"
+              placeholder="Recherche de projet par titre"
+              onChange={(e) => setQuery(e.target.value)}
+            />
+          </Box>
         </Box>
 
         {filteredSurveys && filteredSurveys.length > 0 ? (

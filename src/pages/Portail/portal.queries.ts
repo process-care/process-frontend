@@ -1,20 +1,24 @@
 import { gql } from "graphql-request";
-import { client } from 'call/actions';
-import {
-  useQuery,
-  UseQueryResult,
-} from "react-query";
+import { client } from "call/actions";
+import { useQuery, UseQueryResult } from "react-query";
 import { ISurveysRes } from "types/survey";
 
 // ---- REFERENCES
 
 const STATUS_PUBLISHED = ["pending", "closed", "archived"];
+export const ITEMS_PER_PAGE = 10;
 
 // ---- GQL
 
 export const WHERE_SURVEYS = gql`
-  query getSurveys($where: JSON!) {
-    surveys(where: $where) {
+  query getSurveys($where: JSON!, $pagination: Int, $limit: Int) {
+    surveysConnection(where: $where) {
+      aggregate {
+        totalCount
+        count
+      }
+    }
+    surveys(where: $where, limit: $limit, start: $pagination) {
       id
       description
       title
@@ -37,8 +41,31 @@ export const WHERE_SURVEYS = gql`
 // ---- QUERIES
 
 // Get surveys by status
-export const useGetPublishedSurvey = (): UseQueryResult<ISurveysRes, Error> =>
-useQuery<ISurveysRes, Error>(
-  "getPublishedSurveys",
-  () => client.request(WHERE_SURVEYS, { where: { status: STATUS_PUBLISHED }})
-);
+export const useGetPublishedSurvey = (
+  pagination: number
+): UseQueryResult<ISurveysRes, Error> => {
+  return useQuery<ISurveysRes, Error>(
+    ["getPublishedSurveys", pagination],
+    async () => {
+      return await client.request(WHERE_SURVEYS, {
+        where: { status: STATUS_PUBLISHED },
+        limit: ITEMS_PER_PAGE,
+        pagination,
+      });
+    }
+  );
+};
+
+export const useSearchSurvey = (
+  query: string
+): UseQueryResult<ISurveysRes, Error> => {
+  return useQuery<ISurveysRes, Error>(
+    ["getPublishedSurveys", query],
+    async () => {
+      return await client.request(WHERE_SURVEYS, {
+        where: { status: STATUS_PUBLISHED, title_contains: query },
+        pagination: 0,
+      });
+    }
+  );
+};

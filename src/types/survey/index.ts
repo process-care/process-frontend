@@ -33,4 +33,10 @@ export interface ISurveyRes {
 
 export interface ISurveysRes {
   surveys: ISurvey[];
+  surveysConnection?: {
+    aggregate: {
+      totalCount: number;
+      count: number;
+    };
+  };
 }

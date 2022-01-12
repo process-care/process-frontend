@@ -1,14 +1,20 @@
 import { Box, Text, Center, Input } from "@chakra-ui/react";
 import { SurveyGrid } from "components/SurveyGrid";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import IRoute from "types/routes/route";
 import { Image } from "@chakra-ui/react";
 
 import Hero from "assets/hero.jpg";
 import { Filters } from "components/Dashboard/Filters";
 import { NoData } from "components/SurveyGrid/noData";
-import { useGetPublishedSurvey } from "./portal.queries";
+import {
+  ITEMS_PER_PAGE,
+  useGetPublishedSurvey,
+  useSearchSurvey,
+} from "./portal.queries";
+import { Loader } from "components/Spinner";
 
+import { ReactComponent as ShowMore } from "./assets/ShowMore.svg";
 // ---- STATIC
 
 const t = {
@@ -26,21 +32,30 @@ const t = {
 // ---- COMPONENT
 
 export const Portail: React.FC<IRoute> = () => {
-  const { data: surveys, isLoading } = useGetPublishedSurvey();
   const [currentFilter, setCurrentFilter] = useState<string>(t.filters[0].id);
   const [query, setQuery] = useState<string>("");
+  const [pagination, setPagination] = useState<number>(0);
 
-  const filteredSurveys = useMemo(
-    () =>
-      surveys?.surveys
-        ?.filter(
-          (survey) => currentFilter === "all" || survey.status === currentFilter
-        )
-        .filter((survey) =>
-          survey.title.toLowerCase().includes(query.toLowerCase())
-        ),
-    [currentFilter, surveys, query]
-  );
+  const { data: surveys, isLoading } = useGetPublishedSurvey(pagination);
+  const { data: surveysFound, isLoading: loadingSearch } =
+    useSearchSurvey(query);
+
+  const [state, setState] = useState<any>([]);
+
+  const filteredSurveys = useMemo(() => {
+    return surveys?.surveys?.filter(
+      (survey) => currentFilter === "all" || survey.status === currentFilter
+    );
+  }, [currentFilter, surveys]);
+
+  useEffect(() => {
+    if (state !== surveys?.surveys && filteredSurveys) {
+      setState([...state, ...filteredSurveys]);
+    }
+  }, [filteredSurveys]);
+
+  const totalCount = surveys?.surveysConnection?.aggregate.count;
+  const isSearching = query !== "";
 
   return (
     <Box>
@@ -80,9 +95,9 @@ export const Portail: React.FC<IRoute> = () => {
       <Box py="40px" maxW="800px" margin="0 auto">
         <Text>
           Une plateforme de curation scientifique{" "}
-          <strong>{surveys?.surveys.length} projets en cours</strong> tempus
-          porttitor. Duis mollis, est non commodo luctus, nisi erat porttitor
-          ligula, eget lacinia odio sem nec elit.
+          <strong>{totalCount} projets en cours</strong> tempus porttitor. Duis
+          mollis, est non commodo luctus, nisi erat porttitor ligula, eget
+          lacinia odio sem nec elit.
         </Text>
       </Box>
 
@@ -109,12 +124,40 @@ export const Portail: React.FC<IRoute> = () => {
           </Box>
         </Box>
 
-        {filteredSurveys && filteredSurveys.length > 0 ? (
-          <SurveyGrid surveys={filteredSurveys} isLoading={isLoading} />
+        {isSearching ? (
+          surveysFound && surveysFound?.surveys?.length > 0 ? (
+            <SurveyGrid
+              surveys={surveysFound?.surveys}
+              isLoading={loadingSearch}
+            />
+          ) : loadingSearch ? (
+            <Loader />
+          ) : (
+            <NoData content="Nous n'avons pas trouvé d'enquêtes pour votre recherche." />
+          )
+        ) : state.length > 0 ? (
+          <SurveyGrid surveys={state} isLoading={isLoading} />
+        ) : isLoading ? (
+          <Loader />
         ) : (
           <NoData content="Nous n'avons pas trouvé d'enquêtes pour votre recherche." />
         )}
       </Box>
+      {totalCount && state.length < totalCount && (
+        <Box
+          pos="relative"
+          margin="0 auto"
+          textAlign="center"
+          mb="50px"
+          onClick={() => setPagination(pagination + ITEMS_PER_PAGE)}
+          _hover={{ cursor: "pointer", opacity: 0.6 }}
+        >
+          <Text variant="current">Afficher plus de Projets</Text>
+          <Box margin="0 auto" d="flex" justifyContent="center">
+            <ShowMore />
+          </Box>
+        </Box>
+      )}
     </Box>
   );
 };

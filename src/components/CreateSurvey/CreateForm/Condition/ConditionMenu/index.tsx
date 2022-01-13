@@ -33,7 +33,6 @@ export const ConditionMenu: React.FC<Props> = ({ selectedCondition }) => {
     : currentQuestionConditions;
   const groups = currentConditions.map((c: ICondition) => c.group);
 
-  console.log(isValid);
   return (
     <Box
       h="100%"

@@ -28,7 +28,6 @@ export const Group: React.FC<Props> = ({
   groups,
   selectedCondition,
 }) => {
-  console.log(currentConditions);
   const dispatch = useAppDispatch();
   const isValid = useAppSelector(selectors.conditions.getValidity);
 
@@ -66,7 +65,7 @@ export const Group: React.FC<Props> = ({
 
   const goToFirstStep = (id: string) => {
     dispatch(actions.setSelectedCondition(id));
-    dispatch(actions.setStep(1));
+    dispatch(actions.setStep(0));
   };
 
   const createCondition = (newGroup?: boolean) => {

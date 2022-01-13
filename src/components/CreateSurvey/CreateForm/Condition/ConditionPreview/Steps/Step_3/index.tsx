@@ -25,7 +25,7 @@ export const Step_3: React.FC<Props> = ({ selectedCondition, updateStep }) => {
   };
 
   return (
-    <Container w="90%" maxW="unset">
+    <Container w="100%" maxW="unset" p="0">
       <Formik
         validateOnBlur={false}
         initialValues={{ target_value: selectedCondition.target_value }}
@@ -56,7 +56,6 @@ export const Step_3: React.FC<Props> = ({ selectedCondition, updateStep }) => {
                 {renderInput(selectedCondition)}
                 <Box
                   pt={6}
-                  ml={5}
                   onClick={() => {
                     if (isNotEmpty) {
                       handleValidity(true);

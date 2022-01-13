@@ -20,9 +20,8 @@ export const Step_2: React.FC<Props> = ({ selectedCondition, updateStep }) => {
   return (
     <Flex
       flexWrap="wrap"
-      w="90%"
+      w="100%"
       justifyContent="center"
-      h="0"
       alignItems="center"
       pt="10%"
     >

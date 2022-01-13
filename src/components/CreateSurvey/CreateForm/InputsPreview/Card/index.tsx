@@ -69,7 +69,6 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
-          // isDragging={snapshot.isDragging}
         >
           <Box
             onClick={() => dispatch(setIsRemoving(input.id))}
@@ -81,7 +80,7 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
             </SvgHover>
           </Box>
 
-          <Box _hover={{ cursor: "grab" }} key={input.id} w="100%">
+          <Box key={input.id} w="100%">
             <Container
               variant="inputContainer"
               padding={isRemoving ? 0 : 4}
@@ -118,12 +117,25 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
               </Box>
             </Container>
           </Box>
-          <Box onClick={() => handleEdit()} position="absolute" right="-16px">
-            <SvgHover target="circle">
-              <Edit />
-            </SvgHover>
-
-            {getCondition(input).length > 0 && <Condition />}
+          <Box d="flex" flexDirection="row">
+            <Box
+              onClick={() => handleEdit()}
+              position="absolute"
+              right="-16px"
+              _hover={{ cursor: "pointer" }}
+            >
+              <SvgHover target="circle">
+                <Edit />
+              </SvgHover>
+            </Box>
+            <Box
+              _hover={{ cursor: "initial" }}
+              position="absolute"
+              top="10px"
+              right="4px"
+            >
+              {getCondition(input).length > 0 && <Condition />}
+            </Box>
           </Box>
         </Flex>
       )}

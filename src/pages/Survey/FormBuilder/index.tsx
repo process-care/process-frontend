@@ -11,15 +11,14 @@ import { Menu } from "components/Menu/CreateForm";
 
 import { useAppSelector } from "redux/hooks";
 
-import { ConditionPreview } from "components/CreateSurvey/CreateForm/Condition/ConditionPreview";
 import { RightPart } from "components/Layout/RightPart";
 import { Error } from "components/Error";
 import { Banner } from "components/Banner";
 import { useDispatch } from "react-redux";
 
 import { actions, selectors } from "redux/slices/scientistData";
-
 import { Loader } from "components/Spinner";
+import { ConditionMenu } from "components/CreateSurvey/CreateForm/Condition/ConditionMenu";
 
 export const CreateForm: React.FC<IRoute> = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -80,13 +79,14 @@ export const CreateForm: React.FC<IRoute> = () => {
               flexDirection="column"
             >
               <Banner />
-              <div className="background__grid">
-                {selectedCondition !== undefined ? (
-                  <ConditionPreview selectedCondition={selectedCondition} />
-                ) : (
+
+              {selectedCondition !== undefined ? (
+                <ConditionMenu selectedCondition={selectedCondition} />
+              ) : (
+                <div className="background__grid">
                   <InputsPreview order={order} surveyId={selectedSurveyId} />
-                )}
-              </div>
+                </div>
+              )}
             </Container>
           </Box>
         </Box>

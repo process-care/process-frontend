@@ -18,6 +18,7 @@ interface Props {
 export const ConditionPreview: React.FC<Props> = ({ selectedCondition }) => {
   const dispatch = useAppDispatch();
   const step = useAppSelector(selectors.conditions.getStep);
+  const isValid = useAppSelector(selectors.conditions.getValidity);
 
   const handleUpdate = (changes: Record<string, any>) => {
     dispatch(
@@ -74,19 +75,27 @@ export const ConditionPreview: React.FC<Props> = ({ selectedCondition }) => {
     dispatch(actions.saveCondition());
   };
 
+  const onCancel = () => {
+    if (!isValid) {
+      dispatch(actions.deleteCondition(selectedCondition.id));
+    } else {
+      dispatch(actions.setSelectedCondition(""));
+    }
+  };
+
   return (
-    <Container w="90%" maxW="unset" h="100%" pos="relative">
+    <Container w="100%" maxW="unset" h="100%" pos="relative">
       <StepCounter
         step={step}
         isDisabled={checkStepValidation()}
         navigateTo={(to) => handleNavigation(to)}
       />
-      <Box h="80%" pt={10} w="100%" d="flex" justifyContent="center">
+      <Box h="fit-content" pt={10} w="100%" d="flex" justifyContent="center">
         {renderStep()}
       </Box>
 
-      <Box pos="relative" bottom="110px" left="0" right="0" w="100%">
-        <ButtonGroup justifyContent="space-between" w="70%">
+      <Box pos="relative" pt="40px" w="100%">
+        <ButtonGroup justifyContent="space-between" w="100%">
           <Button
             visibility={step !== 1 ? "visible" : "hidden"}
             variant="link"
@@ -114,6 +123,11 @@ export const ConditionPreview: React.FC<Props> = ({ selectedCondition }) => {
             </Button>
           )}
         </ButtonGroup>
+        <Box pos="fixed" bottom="40px" right="1%" textAlign="right">
+          <Button variant="link" onClick={onCancel}>
+            Quitter et revenir au formulaire
+          </Button>
+        </Box>
       </Box>
     </Container>
   );

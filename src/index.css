@@ -23,6 +23,26 @@ body {
       rgba(234, 234, 234, 1) 80px
     );
 }
+.background__grid--blue {
+  height: 100%;
+  width: 100%;
+  background-size: auto auto;
+  background-color: white;
+  background-image: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 80px,
+      rgb(69, 108, 235) 81px,
+      rgb(69, 108, 235) 81px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 80px,
+      rgb(69, 108, 235) 81px,
+      rgb(69, 108, 235) 80px
+    );
+}
 .background__grid--black {
   height: 100%;
   width: 100%;

@@ -62,7 +62,7 @@ const InputForm: React.FC<Props> = ({ order }) => {
     dispatch(formBuilderAction.setIsEditing(false));
     dispatch(actions.setSelectedQuestion(""));
   };
-  console.log(selectedQuestion);
+
   // Save state to get diff
   useEffect(() => {
     setPrevState(prevState);

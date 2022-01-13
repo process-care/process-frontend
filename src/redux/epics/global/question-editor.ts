@@ -11,6 +11,7 @@ import {
   UPDATE_QUESTION,
 } from "call/queries/formBuilder/question";
 import { UPDATE_ORDER } from "call/queries/survey";
+import ICondition from "types/form/condition";
 
 // ----  CREATE QUESTION
 
@@ -69,6 +70,9 @@ const saveEpic: Epic = (action$, state$) =>
       const changes = { ...action.payload.changes };
       changes.page = changes.page.id;
       changes.id = undefined;
+      changes.conditions = changes.conditions?.map(
+        (cond: ICondition) => cond.id
+      );
 
       console.log("SAVE QUESTION", action.payload.changes);
       // TODO: change the hack to send the internal title only when it is modify

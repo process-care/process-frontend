@@ -1,18 +1,18 @@
-import { Box, Button, Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import React from "react";
-import { useAppDispatch, useAppSelector } from "redux/hooks";
+import { useAppSelector } from "redux/hooks";
 import { t } from "static/condition";
 import { Group } from "./Group";
 import ICondition from "types/form/condition";
-import { selectors, actions } from "redux/slices/scientistData";
+import { selectors } from "redux/slices/scientistData";
 
 interface Props {
   selectedCondition: ICondition;
 }
 export const ConditionMenu: React.FC<Props> = ({ selectedCondition }) => {
-  const dispatch = useAppDispatch();
-
-  const isValid = useAppSelector(selectors.conditions.getValidity);
+  const isValid = useAppSelector(
+    (state) => state.scientistData.conditions.isValid
+  );
   const isTypePage = selectedCondition.type === "page";
 
   const currentQuestionConditions = useAppSelector(
@@ -33,17 +33,26 @@ export const ConditionMenu: React.FC<Props> = ({ selectedCondition }) => {
     : currentQuestionConditions;
   const groups = currentConditions.map((c: ICondition) => c.group);
 
-  const onCancel = () => {
-    if (!isValid) {
-      dispatch(actions.deleteCondition(selectedCondition.id));
-    } else {
-      dispatch(actions.setSelectedCondition(""));
-    }
-  };
-
+  console.log(isValid);
   return (
-    <Box h="100%" pos="relative">
-      <Box px={4} pt={4} mb="100px">
+    <Box
+      h="100%"
+      pos="relative"
+      w="100%"
+      margin="0 auto"
+      pt="10"
+      className="background__grid--blue"
+    >
+      <Box
+        px={4}
+        pt={4}
+        pb={10}
+        mb="100px"
+        backgroundColor="white"
+        w="80%"
+        margin="0 auto"
+        border="1px solid"
+      >
         <Text variant="current" textTransform="uppercase">
           {isTypePage ? t.show_page : t.show_input}
         </Text>
@@ -62,12 +71,6 @@ export const ConditionMenu: React.FC<Props> = ({ selectedCondition }) => {
           currentConditions={currentConditions}
           groups={groups}
         />
-      </Box>
-
-      <Box pos="absolute" bottom="30px" w="100%">
-        <Button variant="rounded" onClick={onCancel}>
-          Revenir au formulaire
-        </Button>
       </Box>
     </Box>
   );

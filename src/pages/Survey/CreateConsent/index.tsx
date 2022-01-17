@@ -119,7 +119,16 @@ export const CreateConsent: React.FC = () => {
                     height: "100%",
                   }}
                 >
-                  <Box w="100%" mt="20">
+                  <Box w="100%" mb="50px">
+                    <Text
+                      variant="baseline"
+                      fontWeight="bold"
+                      textAlign="left"
+                      _hover={{ cursor: "pointer" }}
+                      mb="5"
+                    >
+                      Import du consentement
+                    </Text>
                     <Text variant="currentBold" mb="10">
                       {t.switchLabel}
                     </Text>
@@ -131,9 +140,6 @@ export const CreateConsent: React.FC = () => {
                   </Box>
                   {values.needConsent && (
                     <>
-                      <Text variant="currentBold" mt="200px">
-                        {t.label}
-                      </Text>
                       <UploadFileRemote
                         accept=".pdf,.doc"
                         target={targets.consentement}

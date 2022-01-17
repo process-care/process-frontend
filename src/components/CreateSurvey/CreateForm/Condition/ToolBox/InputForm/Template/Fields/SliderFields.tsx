@@ -8,7 +8,7 @@ import { CommonFields } from "../index";
 export const SliderFields: React.FC = () => {
   return (
     <>
-      <TitleDivider title="Champs particuliers" />
+      <TitleDivider title="Contenu" />
       <Box
         w="100%"
         m="0 auto"

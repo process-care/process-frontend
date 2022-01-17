@@ -66,7 +66,7 @@ export const CustomInput: React.FC<Props> = ({
               _focus={{ outline: "none" }}
             >
               <FormLabel _hover={{ cursor: "pointer" }}>{label}</FormLabel>
-              <AccordionIcon mt="5px" mr="5px" color="gray.200" />
+              <AccordionIcon mt="5px" mr="5px" color="gray.600" />
             </AccordionButton>
             <AccordionPanel px="0" py="0">
               {!isCollapsed && (

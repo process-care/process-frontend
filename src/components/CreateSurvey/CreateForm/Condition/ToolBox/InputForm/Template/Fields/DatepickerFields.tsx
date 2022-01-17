@@ -6,7 +6,7 @@ import { CommonFields } from "./CommonFields";
 export const DatepickerFields: React.FC = () => {
   return (
     <>
-      <TitleDivider title="Champs particuliers" />
+      <TitleDivider title="Contenu" />
       <Box
         w="100%"
         m="0 auto"

@@ -101,8 +101,8 @@ export const LandingForm: React.FC = () => {
         // Components
         return (
           <Box
+            borderLeft="1px solid"
             pos="relative"
-            mt="80px"
             p={4}
             d="flex"
             alignItems="flex-start"
@@ -113,6 +113,15 @@ export const LandingForm: React.FC = () => {
               // onBlur={autoSaveDebounce}
               style={{ width: "100%" }}
             >
+              <Text
+                variant="baseline"
+                fontWeight="bold"
+                textAlign="left"
+                _hover={{ cursor: "pointer" }}
+                mb="5"
+              >
+                Edition de la page d'accueil
+              </Text>
               <Text variant="currentBold">{t.label_logo}</Text>
               <UploadFile
                 // QUESTION: console log only ?

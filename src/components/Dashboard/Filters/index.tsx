@@ -32,11 +32,12 @@ export const Filters: React.FC<Props> = ({
             backgroundColor={isSelected ? "brand.line" : "transparent"}
             color={isSelected ? "black" : "brand.gray.200"}
             borderRadius="50px"
-            px={3}
+            px="10px"
+            py="5px"
             transition="all 200ms"
             _hover={{ cursor: "pointer" }}
           >
-            <Text variant="current">{label}</Text>
+            <Text variant="xs">{label}</Text>
           </Box>
         );
       })}

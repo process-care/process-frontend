@@ -8,7 +8,6 @@ import { CommonFields } from "../index";
 export const SliderFields: React.FC = () => {
   return (
     <>
-      <CommonFields noPlacehoder />
       <TitleDivider title="Champs particuliers" />
       <Box
         w="100%"
@@ -18,6 +17,8 @@ export const SliderFields: React.FC = () => {
         backgroundColor="#fdfdfdf1"
         mb="20"
       >
+        <CommonFields noPlacehoder />
+
         <Flex justifyContent="space-between" w="100%">
           <Box w="45%">
             <Input

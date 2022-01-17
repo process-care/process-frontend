@@ -5,7 +5,7 @@ import { setIsRemoving } from "redux/slices/formBuilder";
 import { actions as appActions } from "redux/slices/application";
 import { actions, selectors } from "redux/slices/scientistData";
 
-import { Box, Button, Flex, Tooltip } from "@chakra-ui/react";
+import { Box, Button, Flex, Tooltip, Text } from "@chakra-ui/react";
 import { t } from "static/survey";
 import ToolBox from "../InputsButton";
 import { Formik, Form } from "formik";
@@ -128,6 +128,15 @@ export const PageForm: React.FC = () => {
                   <Box mt={5} />
                 )}
               </Flex>
+
+              <Text
+                variant="baseline"
+                fontWeight="bold"
+                textAlign="left"
+                _hover={{ cursor: "pointer" }}
+              >
+                Edition d'une page
+              </Text>
               <TitleDivider title="Informations de la page" mt="5" />
               <Box
                 w="100%"

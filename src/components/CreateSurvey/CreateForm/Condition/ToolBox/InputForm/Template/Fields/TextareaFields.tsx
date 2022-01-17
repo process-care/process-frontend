@@ -1,14 +1,13 @@
 import React from "react";
 
 import { Radiobox } from "components/Fields";
-import { CommonFields } from "../index";
 import { TitleDivider } from "components/TitleDivider";
 import { Box } from "@chakra-ui/react";
+import { CommonFields } from "..";
 
 export const TextareaFields: React.FC = () => {
   return (
     <>
-      <CommonFields />
       <TitleDivider title="Champs particuliers" />
       <Box
         w="100%"
@@ -17,6 +16,8 @@ export const TextareaFields: React.FC = () => {
         p="5"
         backgroundColor="#fdfdfdf1"
       >
+        <CommonFields />
+
         <Radiobox
           p="10px 0"
           label="Taille de la zone de réponse"

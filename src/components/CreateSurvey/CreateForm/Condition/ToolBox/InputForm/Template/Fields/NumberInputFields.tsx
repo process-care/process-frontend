@@ -3,14 +3,14 @@ import React from "react";
 import { Box, Flex } from "@chakra-ui/react";
 import { NumberInput, Input } from "components/Fields";
 
-import { CommonFields } from "../index";
 import { TitleDivider } from "components/TitleDivider";
+import { CommonFields } from "..";
 
 export const NumberInputFields: React.FC = () => {
   return (
     <>
-      <CommonFields />
-      <TitleDivider title="Champs particuliers" />
+      <TitleDivider title="Contenu" />
+
       <Box
         w="100%"
         m="0 auto"
@@ -18,6 +18,8 @@ export const NumberInputFields: React.FC = () => {
         p="5"
         backgroundColor="#fdfdfdf1"
       >
+        <CommonFields />
+
         <Input
           style={{ width: "45%" }}
           type="text"

@@ -29,8 +29,8 @@ export const Card: React.FC<Props> = ({ data }) => {
   const attributes = data?.attributes;
   return (
     <GridItem
+      pb="160px"
       w="100%"
-      p="10px 50px 80px 10px"
       textAlign="left"
       _hover={{
         opacity: "0.8",
@@ -75,7 +75,7 @@ export const Card: React.FC<Props> = ({ data }) => {
       ) : (
         <Box minH="20px" />
       )}
-      <Flex justifyContent="space-between" pt="10px" alignItems="center">
+      <Flex justifyContent="space-between" pt="40px" alignItems="center">
         <Badge
           mt="10px"
           color="black"

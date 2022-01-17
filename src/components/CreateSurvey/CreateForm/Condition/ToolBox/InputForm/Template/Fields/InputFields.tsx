@@ -3,12 +3,9 @@ import React from "react";
 import { Input, NumberInput } from "components/Fields";
 import { Flex } from "@chakra-ui/react";
 
-import { CommonFields } from "../index";
-
 export const InputFields: React.FC = () => {
   return (
     <>
-      <CommonFields />
       <Flex justifyContent="space-between">
         <NumberInput
           style={{ width: "45%" }}

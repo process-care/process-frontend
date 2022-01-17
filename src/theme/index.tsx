@@ -321,6 +321,11 @@ const theme = extendTheme({
           fontSize: "75px",
           lineHeight: "97.5px",
         }),
+        xxlMobile: () => ({
+          fontWeight: 300,
+          fontSize: "25px",
+          lineHeight: "32.5px",
+        }),
       },
     },
   },

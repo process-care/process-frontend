@@ -71,5 +71,5 @@ export const getQuestionName = (
   type: QuestionRedux["attributes"]["type"]
 ): string => {
   const question = inputs.find((q) => q.type === type);
-  return question ? question.name : "";
+  return question ? question.name.toLowerCase() : "";
 };

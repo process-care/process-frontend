@@ -8,7 +8,6 @@ import { Box } from "@chakra-ui/react";
 export const FreeclassificationFields: React.FC = () => {
   return (
     <>
-      <CommonFields />
       <TitleDivider title="Champs particuliers" />
       <Box
         w="100%"
@@ -17,6 +16,7 @@ export const FreeclassificationFields: React.FC = () => {
         p="5"
         backgroundColor="#fdfdfdf1"
       >
+        <CommonFields />
         <Radiobox
           p="10px 0"
           label="Nombre de charactères de la réponse"

@@ -86,15 +86,10 @@ export const Portail: React.FC<IRoute> = () => {
           <Text variant="xxl" maxW="1000px">
             {t.title}
           </Text>
-          <Text variant="current" maxW="1000px">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt
-            doloremque unde excepturi similique fugit, voluptatum, veniam rerum
-            itaque pariatur perspiciatis quas veritatis necessitatibus,
-            praesentium laborum magnam esse cum et repudiandae. Lorem ipsum
-            dolor sit amet consectetur adipisicing elit. Deserunt doloremque
-            unde excepturi similique fugit, voluptatum, veniam rerum itaque
-            pariatur perspiciatis quas veritatis necessitatibus, praesentium
-            laborum magnam esse cum et repudiandae.
+          <Text variant="baseline" maxW="1000px" pt="15px">
+            Nullam id dolor id nibh ultricies vehicula ut id elit. Maecenas sed
+            diam eget risus varius blandit sit amet non magna. Aenean eu leo
+            quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.
           </Text>
         </Center>
         <Image
@@ -106,8 +101,8 @@ export const Portail: React.FC<IRoute> = () => {
         />
       </Box>
 
-      <Box py="40px" maxW="800px" margin="0 auto">
-        <Text>
+      <Box pt="110px" pb="160px" maxW="80%" margin="0 auto">
+        <Text variant="xl">
           Une plateforme de curation scientifique{" "}
           <strong>{totalCount} projets en cours</strong> tempus porttitor. Duis
           mollis, est non commodo luctus, nisi erat porttitor ligula, eget
@@ -118,7 +113,6 @@ export const Portail: React.FC<IRoute> = () => {
       <Box pb="80px">
         <Box
           px="10%"
-          pt="20px"
           d="flex"
           alignItems="center"
           justifyContent="space-between"
@@ -130,6 +124,7 @@ export const Portail: React.FC<IRoute> = () => {
           />
           <Box w="50%">
             <Input
+              height="55px"
               name="search"
               label="Recherche de projet par titre"
               placeholder="Recherche de projet par titre"

@@ -7,7 +7,7 @@ import { CommonFields, RepeatedFields } from "../index";
 export const SelectFields: React.FC = () => {
   return (
     <>
-      <TitleDivider title="Champs particuliers" />
+      <TitleDivider title="Contenu" />
       <Box
         w="100%"
         m="0 auto"

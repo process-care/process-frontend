@@ -35,7 +35,7 @@ export const MonoThumbnailFields: React.FC = () => {
   if (!state) return <></>;
   return (
     <>
-      <TitleDivider title="Champs particuliers" />
+      <TitleDivider title="Contenu" />
       <Box
         w="100%"
         m="0 auto"

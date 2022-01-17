@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import { Footer } from "../Footer";
 
 import { Wysiwyg } from "components/Fields/Wysiwyg";
@@ -36,16 +36,27 @@ export const AboutForm: React.FC = () => {
         return (
           <Form>
             <Box
-              w="90%"
+              borderLeft="1px solid"
+              px="4%"
+              w="100%"
               mx="auto"
-              mt="130px"
-              h="80%"
+              pt="4"
+              h="100%"
               sx={{
                 ".jodit-workplace": {
                   height: "60vh !important",
                 },
               }}
             >
+              <Text
+                variant="baseline"
+                fontWeight="bold"
+                textAlign="left"
+                _hover={{ cursor: "pointer" }}
+                mb="5"
+              >
+                Edition de la page d'accueil
+              </Text>
               <Wysiwyg id="about_page" />
               <Footer
                 // TODO: It's the same... ?

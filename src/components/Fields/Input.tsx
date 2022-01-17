@@ -7,6 +7,11 @@ import {
   InputGroup,
   InputRightAddon,
   FormErrorMessage,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
 } from "@chakra-ui/react";
 
 import { useField } from "formik";
@@ -25,6 +30,7 @@ interface Props {
   isCollapsed?: boolean;
   ref?: any;
   autoComplete?: string;
+  isAccordion?: boolean;
 }
 
 export const CustomInput: React.FC<Props> = ({
@@ -39,6 +45,7 @@ export const CustomInput: React.FC<Props> = ({
   isCollapsed,
   ref,
   autoComplete,
+  isAccordion,
 }) => {
   const [field, meta] = useField(name);
   return (
@@ -49,30 +56,81 @@ export const CustomInput: React.FC<Props> = ({
       style={style}
       isInvalid={!!meta.error}
     >
-      <FormLabel>{label}</FormLabel>
-
-      {/*  TO DO MODIFY LATER - THE LIB WHO BIND FORMIK DONT LET PASS TYPE="PASSWORD" */}
-      {!isCollapsed && (
+      {isAccordion ? (
+        <Accordion allowToggle>
+          <AccordionItem border="none" _hover={{ cursor: "pointer" }}>
+            <AccordionButton
+              p="0"
+              justifyContent="flex-start"
+              _hover={{ cursor: "pointer" }}
+              _focus={{ outline: "none" }}
+            >
+              <FormLabel _hover={{ cursor: "pointer" }}>{label}</FormLabel>
+              <AccordionIcon mt="5px" mr="5px" color="gray.200" />
+            </AccordionButton>
+            <AccordionPanel px="0" py="0">
+              {!isCollapsed && (
+                <>
+                  <InputGroup size="sm">
+                    <Input
+                      ref={ref}
+                      backgroundColor="white"
+                      borderRadius="7px"
+                      type={type}
+                      size="md"
+                      placeholder={placeholder}
+                      {...field}
+                      autoComplete={autoComplete}
+                    />
+                    {inputRightAddon && (
+                      <InputRightAddon children={inputRightAddon} h="40px" />
+                    )}
+                  </InputGroup>
+                  <FormErrorMessage
+                    mt={1}
+                    justifyContent="flex-end"
+                    fontSize="10px"
+                  >
+                    {meta.error}
+                  </FormErrorMessage>
+                  <FormHelperText fontSize="xs">{helpText}</FormHelperText>
+                </>
+              )}
+            </AccordionPanel>
+          </AccordionItem>
+        </Accordion>
+      ) : (
         <>
-          <InputGroup size="sm">
-            <Input
-              ref={ref}
-              backgroundColor="white"
-              borderRadius="7px"
-              type={type}
-              size="md"
-              placeholder={placeholder}
-              {...field}
-              autoComplete={autoComplete}
-            />
-            {inputRightAddon && (
-              <InputRightAddon children={inputRightAddon} h="40px" />
-            )}
-          </InputGroup>
-          <FormErrorMessage mt={1} justifyContent="flex-end" fontSize="10px">
-            {meta.error}
-          </FormErrorMessage>
-          <FormHelperText fontSize="xs">{helpText}</FormHelperText>
+          <FormLabel>{label}</FormLabel>
+
+          {/*  TO DO MODIFY LATER - THE LIB WHO BIND FORMIK DONT LET PASS TYPE="PASSWORD" */}
+          {!isCollapsed && (
+            <>
+              <InputGroup size="sm">
+                <Input
+                  ref={ref}
+                  backgroundColor="white"
+                  borderRadius="7px"
+                  type={type}
+                  size="md"
+                  placeholder={placeholder}
+                  {...field}
+                  autoComplete={autoComplete}
+                />
+                {inputRightAddon && (
+                  <InputRightAddon children={inputRightAddon} h="40px" />
+                )}
+              </InputGroup>
+              <FormErrorMessage
+                mt={1}
+                justifyContent="flex-end"
+                fontSize="10px"
+              >
+                {meta.error}
+              </FormErrorMessage>
+              <FormHelperText fontSize="xs">{helpText}</FormHelperText>
+            </>
+          )}
         </>
       )}
     </FormControl>

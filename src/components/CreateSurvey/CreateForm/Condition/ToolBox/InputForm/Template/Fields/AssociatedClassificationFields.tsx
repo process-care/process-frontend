@@ -9,7 +9,6 @@ import { AssociatedSubfields } from "./AssociatedSubfields";
 export const AssociatedClassificationFields: React.FC = () => {
   return (
     <>
-      <CommonFields noPlacehoder />
       <TitleDivider title="Champs particuliers" />
       <Box
         w="100%"
@@ -18,6 +17,7 @@ export const AssociatedClassificationFields: React.FC = () => {
         p="5"
         backgroundColor="#fdfdfdf1"
       >
+        <CommonFields noPlacehoder />
         <NumberInput
           placeholder="ex: 4"
           style={{ width: "45%" }}

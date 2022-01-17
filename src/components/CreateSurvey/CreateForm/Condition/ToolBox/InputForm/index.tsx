@@ -26,6 +26,8 @@ import { TitleDivider } from "components/TitleDivider";
 import { getQuestionName } from "constants/inputs";
 import { InfoIcon } from "@chakra-ui/icons";
 
+import { Input, Textarea } from "components/Fields";
+
 interface Props {
   order: string[];
 }
@@ -137,14 +139,18 @@ const InputForm: React.FC<Props> = ({ order }) => {
                     type
                   )} lorem dsqdsqdqsdqsdqsdqsdqsdqsd`}
                 >
-                  <Text
-                    variant="smallTitle"
-                    textAlign="left"
-                    _hover={{ cursor: "pointer" }}
-                  >
-                    {getQuestionName(type)}
-                    <InfoIcon color="gray.300" />
-                  </Text>
+                  <Box d="flex" alignItems="center">
+                    <Text
+                      variant="baseline"
+                      fontWeight="bold"
+                      textAlign="left"
+                      _hover={{ cursor: "pointer" }}
+                    >
+                      {isEditing ? "Edition" : "Création"} d'une{" "}
+                      {getQuestionName(type)}
+                    </Text>
+                    <InfoIcon color="gray.300" ml="4" mt="-2" w="3" h="3" />
+                  </Box>
                 </Tooltip>
 
                 <Flex ml={2} alignItems="center">
@@ -157,36 +163,65 @@ const InputForm: React.FC<Props> = ({ order }) => {
                   </Text>
                 </Flex>
               </Flex>
-              <TitleDivider title="Champs génériques" />
-              <Flex mb="7" w="100%" justifyContent="space-between">
-                {currentConditions.length === 0 ? (
-                  <Button
-                    variant="roundedTransparent"
-                    onClick={() => createCondition()}
-                  >
-                    {t.add_condition}
-                  </Button>
-                ) : (
-                  <Button
-                    variant="roundedTransparent"
-                    onClick={() => editCondition(currentConditions[0].id)}
-                  >
-                    {t.edit_condition}
-                  </Button>
-                )}
-                {type !== "wysiwyg" && (
-                  <Button
-                    ml="5"
-                    variant={values.required ? "rounded" : "roundedTransparent"}
-                    onClick={() => setFieldValue("required", !values.required)}
-                  >
-                    {values.required
-                      ? "Rendre la réponse obligatoire"
-                      : "Rendre la réponse facultative"}
-                  </Button>
-                )}
-              </Flex>
-              <Box w="100%" mb={8}>
+              <TitleDivider title="Paramètres de la question" mt="3" />
+              <Box
+                w="100%"
+                m="0 auto"
+                border="1px solid #F7F7F7F7"
+                p="5"
+                backgroundColor="#fdfdfdf1"
+              >
+                <Textarea
+                  isCollapsed={false}
+                  rows="medium"
+                  label="Label"
+                  placeholder="Renseigner le label de votre question"
+                  id="label"
+                  isRequired="true"
+                />
+                <Input
+                  isCollapsed={false}
+                  label="Id dans la base de donnée"
+                  placeholder="Renseigner le nom interne de votre question"
+                  name="internal_title"
+                  helpText="Ce champ vous permet de donner un titre à la question,il n'est pas visible par les utilisateurs."
+                  isRequired="false"
+                  isAccordion
+                />
+                <Flex mb="4" mt="4" w="100%" justifyContent="space-between">
+                  {currentConditions.length === 0 ? (
+                    <Button
+                      variant="roundedTransparent"
+                      onClick={() => createCondition()}
+                    >
+                      {t.add_condition}
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="roundedTransparent"
+                      onClick={() => editCondition(currentConditions[0].id)}
+                    >
+                      {t.edit_condition}
+                    </Button>
+                  )}
+                  {type !== "wysiwyg" && (
+                    <Button
+                      ml="5"
+                      variant={
+                        values.required ? "rounded" : "roundedTransparent"
+                      }
+                      onClick={() =>
+                        setFieldValue("required", !values.required)
+                      }
+                    >
+                      {values.required
+                        ? "Rendre la réponse obligatoire"
+                        : "Rendre la réponse facultative"}
+                    </Button>
+                  )}
+                </Flex>
+              </Box>
+              <Box w="100%" mb="100px">
                 {renderFormTemplate(selectedQuestion)}
               </Box>
 

@@ -19,7 +19,7 @@ export const inputs: Obj[] = [
   },
   {
     type: "select",
-    name: "Questions liste déroulante",
+    name: "Question liste déroulante",
     category: "simple",
   },
   {
@@ -56,17 +56,17 @@ export const inputs: Obj[] = [
   },
   {
     type: "mono_thumbnail",
-    name: "Vignette (évaluation d'une seule vignette)",
+    name: "Vignette simple",
     category: "complex",
   },
   {
     type: "associated_classification",
-    name: "Vignettes (choix parmi deux)",
+    name: "Vignette double",
     category: "complex",
   },
 ];
 
 export const getQuestionName = (type: IQuestion["type"]): string => {
   const question = inputs.find((q) => q.type === type);
-  return question ? question.name : "";
+  return question ? question.name.toLowerCase() : "";
 };

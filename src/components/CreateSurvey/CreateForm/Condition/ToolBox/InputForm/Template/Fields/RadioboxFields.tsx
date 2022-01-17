@@ -7,7 +7,6 @@ import { CommonFields, RepeatedFields } from "../index";
 export const RadioboxFields: React.FC = () => {
   return (
     <>
-      <CommonFields noPlacehoder />
       <TitleDivider title="Champs particuliers" />
       <Box
         w="100%"
@@ -16,6 +15,7 @@ export const RadioboxFields: React.FC = () => {
         p="5"
         backgroundColor="#fdfdfdf1"
       >
+        <CommonFields noPlacehoder />
         <RepeatedFields name="options" />
       </Box>
     </>

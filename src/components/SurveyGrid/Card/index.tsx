@@ -27,8 +27,8 @@ interface Props {
 export const Card: React.FC<Props> = ({ data }) => {
   return (
     <GridItem
+      pb="160px"
       w="100%"
-      p="10px 50px 80px 10px"
       textAlign="left"
       _hover={{
         opacity: "0.8",
@@ -45,7 +45,7 @@ export const Card: React.FC<Props> = ({ data }) => {
         <Text variant="titleParaLight">{data.title}</Text>
       </Flex>
       <Box minH="140px">
-        <Text variant="currentLight" mt="10px" noOfLines={5}>
+        <Text variant="currentLight" mt="30px" noOfLines={5}>
           {data.landing?.subtitle ||
             "Lorem, ipsum dolor sit amet consectetur adipisicing elit.Doloribus, impedit non. Sequi asperiores amet sunt. Consequunturvitae aliquam quasi laudantium, voluptas repellendus sapiente sit esse! Id mollitia deleniti ea nisi."}
         </Text>
@@ -67,7 +67,7 @@ export const Card: React.FC<Props> = ({ data }) => {
       ) : (
         <Box minH="20px" />
       )}
-      <Flex justifyContent="space-between" pt="10px" alignItems="center">
+      <Flex justifyContent="space-between" pt="40px" alignItems="center">
         <Badge
           mt="10px"
           color="black"

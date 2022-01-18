@@ -18,6 +18,7 @@ import { actions, selectors } from "redux/slices/landing-editor";
 import { Enum_Question_Rows } from "api/graphql/types.generated";
 import { Footer } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer";
 import { useHistory } from "react-router-dom";
+import { TitleDivider } from "components/TitleDivider";
 
 export const LandingForm: React.FC = () => {
   const history = useHistory();
@@ -174,43 +175,96 @@ export const LandingForm: React.FC = () => {
                   label={t.video_url_label}
                   isDisabled={Boolean(values?.attributes?.cover)}
                 />
-                <Box mt={7} ml={4}>
-                  <SvgHover>
-                    <Delete onClick={onDeleteVideo} />
-                  </SvgHover>
-                </Box>
+
+                <Textarea
+                  id="subtitle"
+                  rows={Enum_Question_Rows.Large}
+                  placeholder={t.subtitle_input}
+                  label={t.subtitle_input}
+                  helpText={t.subtitle_helptext}
+                />
+                <Text variant="currentBold" mt="5">
+                  {t.label_logo}
+                </Text>
+                <UploadFile
+                  onChange={logOnChange}
+                  label={t.logo_cta}
+                  id="logo"
+                  helpText={t.logo_helptext}
+                />
+
+                <Text variant="currentBold" mt={9}>
+                  {t.theme_label}
+                </Text>
+                <ColorPicker />
               </Flex>
 
-              <Container variant="hr" my={10} />
-
-              <Text variant="currentBold" mt={9}>
-                {t.team_label}
-              </Text>
-              <RepeatableJobs
-                name="members"
-                cta="Ajouter un membre de l'équipe"
-              />
-
-              <Container variant="hr" my={10} />
-
-              <Text variant="currentBold">{t.logos_label}</Text>
-
-              <RepeatableJobs
-                name="partners_logos"
-                onlyUpload
-                cta="Ajouter un logo partenaire"
-              />
-              <Container variant="hr" my={10} />
-
-              <Text variant="currentBold">{t.see_more_cta}</Text>
-              <Button
-                variant="roundedTransparent"
-                mt={4}
-                mb="100px"
-                onClick={onEditAbout}
+              <TitleDivider title="Corps" />
+              <Box
+                border="1px solid #F7F7F7F7"
+                p="5"
+                backgroundColor="#fdfdfdf1"
               >
-                {t.cta_show_more}
-              </Button>
+                <Text variant="currentBold" mt={2} mb={2}>
+                  {t.content_label}
+                </Text>
+                <Wysiwyg id="wysiwyg" simpleMode />
+
+                <Text variant="currentBold" mt="5">
+                  {t.add_image}
+                </Text>
+                <UploadFile
+                  onChange={logOnChange}
+                  label={t.image_cta}
+                  id="cover"
+                  helpText={t.logo_helptext}
+                />
+
+                <Flex alignItems="center">
+                  <Textarea
+                    id="video_url"
+                    rows={Enum_Question_Rows.Small}
+                    placeholder={t.video_url_placeholder}
+                    label={t.video_url_label}
+                    isDisabled={Boolean(values?.attributes?.cover)}
+                  />
+                  <Box mt={7} ml={4}>
+                    <SvgHover>
+                      <Delete onClick={onDeleteVideo} />
+                    </SvgHover>
+                  </Box>
+                </Flex>
+                <Text variant="currentBold" mt="5">
+                  {t.see_more_cta}
+                </Text>
+                <Button
+                  variant="roundedTransparent"
+                  mt={4}
+                  onClick={onEditAbout}
+                >
+                  {t.cta_show_more}
+                </Button>
+              </Box>
+
+              <TitleDivider title="Pied de page" />
+              <Box
+                border="1px solid #F7F7F7F7"
+                p="5"
+                backgroundColor="#fdfdfdf1"
+                mb="100px"
+              >
+                <RepeatableJobs
+                  name="members"
+                  cta="Ajouter un membre de l'équipe"
+                />
+
+                <RepeatableJobs
+                  name="partners_logos"
+                  onlyUpload
+                  cta="Ajouter un logo partenaire"
+                />
+              </Box>
+
               <Footer
                 w="43%"
                 onSubmit={() => onSave()}

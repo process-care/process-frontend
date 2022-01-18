@@ -91,7 +91,7 @@ export const UploadFile: React.FC<Props> = ({
       setFilesName(filtered_names);
       setFieldValue(id, filtered_values);
     } else {
-      setFieldValue(id, "");
+      setFieldValue(id, undefined);
       setFilesName([]);
     }
     onChange({
@@ -100,6 +100,10 @@ export const UploadFile: React.FC<Props> = ({
       },
     });
   };
+  console.log("FN", filesName);
+
+  const hasFilesName = Boolean(filesName[0]);
+  console.log("hasFilesName", hasFilesName);
   return (
     <FormControl my={4}>
       <Flex alignItems="center" justifyContent="space-between">
@@ -137,7 +141,7 @@ export const UploadFile: React.FC<Props> = ({
             ))}
           </Flex>
         )}
-        {filesName.length > 0 && !multiple && (
+        {hasFilesName && !multiple && (
           <SvgHover>
             <Delete onClick={() => handleDelete()} />
           </SvgHover>
@@ -147,11 +151,11 @@ export const UploadFile: React.FC<Props> = ({
         <Flex flexDirection="column" mt={2}>
           {filesName.map((name: string) => {
             return (
-              <Flex key={name}>
+              <Flex key={name} w="fit-content">
                 <Text my={1} variant="xsMedium" isTruncated maxWidth="150px">
                   {name}
                 </Text>
-                {filesName.length > 0 && (
+                {hasFilesName && (
                   <SvgHover>
                     <Delete onClick={() => handleDelete(name)} />
                   </SvgHover>

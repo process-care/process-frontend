@@ -75,11 +75,6 @@ export const Step_1: React.FC<Props> = ({ selectedCondition, updateStep }) => {
 
   return (
     <Container w="100%" maxW="unset" p={0}>
-      {!isEmpty && (
-        <Text textAlign="center" variant="xs" mt={5} color="brand.gray.200">
-          {t.help}
-        </Text>
-      )}
       {isEmpty && (
         <Text mt={10} variant="xs">
           {t.no_results}

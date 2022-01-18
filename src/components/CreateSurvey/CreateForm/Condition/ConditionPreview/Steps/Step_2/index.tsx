@@ -18,13 +18,7 @@ export const Step_2: React.FC<Props> = ({ selectedCondition, updateStep }) => {
   };
 
   return (
-    <Flex
-      flexWrap="wrap"
-      w="100%"
-      justifyContent="center"
-      alignItems="center"
-      pt="10%"
-    >
+    <Flex flexWrap="wrap" w="100%" justifyContent="center" alignItems="center">
       {authorizedOperators().map(({ id, name }) => {
         const isSelected = id === selectedCondition?.attributes?.operator;
 

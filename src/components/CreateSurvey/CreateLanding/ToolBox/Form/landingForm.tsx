@@ -1,4 +1,4 @@
-import { Box, Button, Text, Container, Flex } from "@chakra-ui/react";
+import { Box, Button, Text, Flex } from "@chakra-ui/react";
 import { Textarea } from "components/Fields";
 import { UploadFile } from "components/Fields/Uploadfile";
 import { Wysiwyg } from "components/Fields/Wysiwyg";
@@ -150,14 +150,10 @@ export const LandingForm: React.FC = () => {
                 helpText={t.subtitle_helptext}
               />
 
-              <Container variant="hr" my={10} />
-
               <Text variant="currentBold" mt={9} mb={2}>
                 {t.content_label}
               </Text>
               <Wysiwyg id="wysiwyg" simpleMode />
-
-              <Container variant="hr" my={10} />
 
               <Text variant="currentBold">{t.add_image}</Text>
               <UploadFile

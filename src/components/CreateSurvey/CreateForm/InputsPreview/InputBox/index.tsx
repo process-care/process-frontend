@@ -31,7 +31,7 @@ export const InputBox: React.FC<Props> = ({
       borderRadius="5px"
       padding="5"
       textAlign="left"
-      mt={10}
+      my={5}
       backgroundColor={isSelected ? "brand.blue" : "white"}
       color={isSelected ? "white" : "black"}
     >

@@ -5,10 +5,11 @@ import React from "react";
 import { useAppDispatch } from "redux/hooks";
 import { actions } from "redux/slices/scientistData";
 import { Enum_Question_Rows } from "api/graphql/types.generated";
+import { Box } from "@chakra-ui/react";
 
 export const renderInput = (
   selectedCondition: ConditionRedux
-): React.ReactElement => {
+): React.ReactElement | undefined => {
   const dispatch = useAppDispatch();
 
   const handleUpdate = (changes: Record<string, any>) => {
@@ -54,33 +55,30 @@ export const renderInput = (
     }
   };
 
+  const InputNumber = () => {
+    return (
+      <Box w="45%" mr="5">
+        <Textarea
+          rows={Enum_Question_Rows.Small}
+          id="target_value"
+          label="Indiquer la valeur numérique"
+          placeholder="Ex 5"
+          isRequired
+        />
+      </Box>
+    );
+  };
+
   switch (target_question?.data?.attributes?.type) {
     case "select":
       return <Options />;
       break;
     case "slider":
-      return (
-        <Textarea
-          rows={Enum_Question_Rows.Small}
-          id="target_value"
-          label="Indiquer la valeur numérique"
-          placeholder="Ex 5"
-          isRequired
-        />
-      );
+      return <InputNumber />;
       break;
     case "number_input":
-      return (
-        <Textarea
-          rows={Enum_Question_Rows.Small}
-          id="target_value"
-          label="Indiquer la valeur numérique"
-          placeholder="Ex 5"
-          isRequired
-        />
-      );
+      return <InputNumber />;
       break;
-
     case "radio":
       return <Options />;
       break;
@@ -89,15 +87,7 @@ export const renderInput = (
       break;
 
     default:
-      return (
-        <Textarea
-          rows={Enum_Question_Rows.Small}
-          id="target_value"
-          label="Indiquer la valeur numérique"
-          placeholder="Ex 5"
-          isRequired
-        />
-      );
+      return <InputNumber />;
       break;
   }
 };

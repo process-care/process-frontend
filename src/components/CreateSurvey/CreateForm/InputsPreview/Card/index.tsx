@@ -58,13 +58,17 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
     ?.map((e) => e?.errors.map((el) => el?.questionId))
     .flat();
 
-  const editCondition = (q: IQuestion) => {
-    console.log(q);
-    const conditions = getCondition(q);
-    console.log(conditions);
-    // dispatch(actions.setSelectedCondition(id));
-    // dispatch(actions.setValidityCondition(true));
-    // dispatch(appActions.toogleDrawer());
+  const editCondition = (currentInput: IQuestion) => {
+    if (!currentInput) {
+      return;
+    }
+
+    const firstCondition = currentInput.conditions?.[0]?.id;
+    if (firstCondition) {
+      dispatch(actions.setSelectedQuestion(currentInput.id));
+      dispatch(actions.setSelectedCondition(firstCondition));
+      dispatch(actions.setValidityCondition(true));
+    }
   };
   return (
     <Draggable draggableId={input.id} index={index}>

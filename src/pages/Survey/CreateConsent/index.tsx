@@ -1,4 +1,4 @@
-import { Box, Container, Text, Button } from "@chakra-ui/react";
+import { Box, Container, Text } from "@chakra-ui/react";
 import React, { useRef } from "react";
 import { Menu } from "components/Menu/CreateSurvey";
 import { Form, Formik } from "formik";
@@ -17,7 +17,7 @@ import {
   useSurveyBySlugQuery,
 } from "api/graphql/queries/survey.gql.generated";
 import { client } from "api/gql-client";
-
+import { Footer } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer";
 // ---- STATICS
 
 const t = {
@@ -51,6 +51,7 @@ export const CreateConsent: React.FC = () => {
       needConsent: survey?.surveys?.data[0]?.attributes?.need_consent,
     };
   };
+
   if (isLoading) {
     return <Loader />;
   }
@@ -92,7 +93,7 @@ export const CreateConsent: React.FC = () => {
               setSubmitting(true);
             }}
           >
-            {({ values }) => {
+            {({ values, isValid, isSubmitting }) => {
               React.useEffect(() => {
                 if (firstRender.current) {
                   firstRender.current = false;
@@ -151,22 +152,13 @@ export const CreateConsent: React.FC = () => {
                     </>
                   )}
 
-                  <Box pos="absolute" bottom="0" w="100%" h="100px">
-                    <Box d="flex" flexDir="column">
-                      <Button
-                        m="0 auto"
-                        w="fit-content"
-                        variant="rounded"
-                        backgroundColor="black"
-                        onClick={goToDashboard}
-                      >
-                        {t.submit}
-                      </Button>
-                      <Button variant="link" onClick={goToDashboard} mt="10px">
-                        {t.cancel}
-                      </Button>
-                    </Box>
-                  </Box>
+                  <Footer
+                    w="50%"
+                    onSubmit={() => goToDashboard()}
+                    disabled={!isValid || isSubmitting}
+                    onCancel={goToDashboard}
+                    hideDelete={true}
+                  />
                 </Form>
               );
             }}

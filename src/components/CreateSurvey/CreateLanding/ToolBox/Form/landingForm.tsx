@@ -16,8 +16,11 @@ import { ReactComponent as Delete } from "assets/delete.svg";
 import { goTop } from "utils/application/scrollTo";
 import { actions, selectors } from "redux/slices/landing-editor";
 import { Enum_Question_Rows } from "api/graphql/types.generated";
+import { Footer } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer";
+import { useHistory } from "react-router-dom";
 
 export const LandingForm: React.FC = () => {
+  const history = useHistory();
   const dispatch = useAppDispatch();
 
   // Flag to avoid saving the initial values injected into Formik
@@ -50,6 +53,11 @@ export const LandingForm: React.FC = () => {
       })
     );
   };
+
+  const handleCancel = () => {
+    history.push("/dashboard");
+  };
+
   return (
     <Formik
       validateOnBlur={false}
@@ -58,9 +66,7 @@ export const LandingForm: React.FC = () => {
     >
       {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment*/}
       {/* @ts-ignore */}
-      {(formProps) => {
-        const { values, setFieldValue } = formProps;
-
+      {({ values, setFieldValue, isValid, isSubmitting }) => {
         // Handle update value
         React.useEffect(() => {
           if (firstRender.current) {
@@ -100,15 +106,7 @@ export const LandingForm: React.FC = () => {
 
         // Components
         return (
-          <Box
-            borderLeft="1px solid"
-            pos="relative"
-            p={4}
-            d="flex"
-            alignItems="flex-start"
-            flexDirection="column"
-            textAlign="left"
-          >
+          <Box pos="relative" p={4} d="flex" textAlign="left">
             <Form
               // onBlur={autoSaveDebounce}
               style={{ width: "100%" }}
@@ -124,7 +122,6 @@ export const LandingForm: React.FC = () => {
               </Text>
               <Text variant="currentBold">{t.label_logo}</Text>
               <UploadFile
-                // QUESTION: console log only ?
                 onChange={logOnChange}
                 label={t.logo_cta}
                 id="logo"
@@ -214,24 +211,13 @@ export const LandingForm: React.FC = () => {
               >
                 {t.cta_show_more}
               </Button>
-              <Box
-                pos="fixed"
-                textAlign="center"
-                width="22%"
-                backgroundColor="white"
-                h="80px"
-                margin="0 auto"
-                bottom="0px"
-              >
-                <Button
-                  minW="180px"
-                  variant="roundedTransparent"
-                  mt="5"
-                  onClick={() => onSave()}
-                >
-                  {t.cta_save}
-                </Button>
-              </Box>
+              <Footer
+                w="43%"
+                onSubmit={() => onSave()}
+                disabled={!isValid || isSubmitting}
+                onCancel={handleCancel}
+                hideDelete={true}
+              />
             </Form>
           </Box>
         );

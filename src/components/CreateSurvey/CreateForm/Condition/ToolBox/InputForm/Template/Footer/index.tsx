@@ -1,4 +1,4 @@
-import { ButtonGroup, Button, Center, Box } from "@chakra-ui/react";
+import { Button, Box, Flex } from "@chakra-ui/react";
 import { SvgHover } from "components/SvgHover";
 import React from "react";
 import { t } from "static/global";
@@ -11,6 +11,7 @@ interface Props {
   disabled?: boolean;
   onDelete?: () => void;
   hideDelete?: boolean;
+  w?: string;
 }
 
 export const Footer: React.FC<Props> = ({
@@ -19,33 +20,28 @@ export const Footer: React.FC<Props> = ({
   onSubmit,
   onDelete,
   hideDelete,
+  w = "43%",
 }) => {
   return (
-    <Center
-      w="100%"
-      position="absolute"
+    <Box
+      w={w}
+      position="fixed"
       bottom="0"
       backgroundColor="white"
       borderTop="1px solid"
-      p={1}
-      pb={3}
+      px={6}
+      py={4}
+      right="-1px"
     >
-      {!hideDelete && (
-        <Box w="70%" pl={4}>
-          <SvgHover>
-            <Trash onClick={() => !!onDelete && onDelete()} />
-          </SvgHover>
-        </Box>
-      )}
+      <Flex justifyContent="space-between" alignItems="center">
+        {!hideDelete && (
+          <Box w="70%" pl={4}>
+            <SvgHover>
+              <Trash onClick={() => !!onDelete && onDelete()} />
+            </SvgHover>
+          </Box>
+        )}
 
-      <ButtonGroup
-        d="flex"
-        justifyContent="flex-end"
-        w="75%"
-        mx="auto"
-        pt={2}
-        pr="5"
-      >
         <Button variant="link" onClick={() => onCancel()} type="button" pr="20">
           {t.cancel}
         </Button>
@@ -57,7 +53,7 @@ export const Footer: React.FC<Props> = ({
         >
           {t.validate}
         </Button>
-      </ButtonGroup>
-    </Center>
+      </Flex>
+    </Box>
   );
 };

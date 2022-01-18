@@ -87,13 +87,12 @@ const InputForm: React.FC<Props> = ({ order }) => {
     dispatch(appActions.toogleDrawer());
   };
 
-   const editCondition = (id: string) => {
+  const editCondition = (id: string) => {
     dispatch(actions.setSelectedCondition(id));
     dispatch(actions.setValidityCondition(true));
     dispatch(appActions.toogleDrawer());
   };
 
-  
   if (!selectedQuestion) {
     return <p>no selectedQuestion</p>;
   }
@@ -228,6 +227,7 @@ const InputForm: React.FC<Props> = ({ order }) => {
               </Box>
 
               <Footer
+                w="100%"
                 onSubmit={() => console.log("submit")}
                 disabled={!isValid || isSubmitting}
                 onCancel={handleCancel}

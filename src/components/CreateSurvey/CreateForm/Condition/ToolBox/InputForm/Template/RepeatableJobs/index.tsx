@@ -29,7 +29,7 @@ export const RepeatableJobs: React.FC<Props> = ({ name, onlyUpload, cta }) => {
               fields.map((_: string, index: number) => (
                 <Box key={index} w="100%">
                   <Flex w="100%" alignItems="flex-start">
-                    <Box w="70%">
+                    <Box w="45%">
                       {!onlyUpload && (
                         <>
                           <Textarea
@@ -60,14 +60,26 @@ export const RepeatableJobs: React.FC<Props> = ({ name, onlyUpload, cta }) => {
                     </Box>
 
                     <Flex ml={3} mt={8} alignItems="center">
-                      <SvgHover>
+                      <Button
+                        ml={3}
+                        type="button"
+                        onClick={() => {
+                          arrayHelpers.remove(index);
+                          setFieldValue(`${name}.${index}`, undefined);
+                        }}
+                        variant="link"
+                        color="brand.blue"
+                      >
+                        Supprimer
+                      </Button>
+                      {/* <SvgHover>
                         <Delete
                           onClick={() => {
                             arrayHelpers.remove(index);
                             setFieldValue(`${name}.${index}`, undefined);
                           }}
                         />
-                      </SvgHover>
+                      </SvgHover> */}
 
                       {(index + 1 === field.value.length ||
                         (index + 1 !== 1 && isEditing)) && (
@@ -95,6 +107,7 @@ export const RepeatableJobs: React.FC<Props> = ({ name, onlyUpload, cta }) => {
                   variant="rounded"
                   type="button"
                   mt={4}
+                  minW="280px"
                 >
                   {cta}
                 </Button>

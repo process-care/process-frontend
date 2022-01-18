@@ -17,6 +17,7 @@ import { goTop } from "utils/application/scrollTo";
 import { actions, selectors } from "redux/slices/landing-editor";
 import { Footer } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer";
 import { useHistory } from "react-router-dom";
+import { TitleDivider } from "components/TitleDivider";
 
 export const LandingForm: React.FC = () => {
   const history = useHistory();
@@ -96,97 +97,109 @@ export const LandingForm: React.FC = () => {
               >
                 Edition de la page d'accueil
               </Text>
-              <Text variant="currentBold">{t.label_logo}</Text>
-              <UploadFile
-                onChange={logOnChange}
-                label={t.logo_cta}
-                id="logo"
-                helpText={t.logo_helptext}
-              />
-
-              <Text variant="currentBold" mt={9}>
-                {t.theme_label}
-              </Text>
-              <ColorPicker />
-
-              <Textarea
-                id="title"
-                rows="medium"
-                placeholder={t.title_input}
-                label={t.title_input}
-                helpText={t.title_helptext}
-              />
-
-              <Textarea
-                id="subtitle"
-                rows="large"
-                placeholder={t.subtitle_input}
-                label={t.subtitle_input}
-                helpText={t.subtitle_helptext}
-              />
-
-              <Container variant="hr" my={10} />
-
-              <Text variant="currentBold" mt={9} mb={2}>
-                {t.content_label}
-              </Text>
-              <Wysiwyg id="wysiwyg" simpleMode />
-
-              <Container variant="hr" my={10} />
-
-              <Text variant="currentBold">{t.add_image}</Text>
-              <UploadFile
-                onChange={logOnChange}
-                label={t.image_cta}
-                id="cover"
-                helpText={t.logo_helptext}
-              />
-
-              <Flex alignItems="center">
-                <Textarea
-                  id="video_url"
-                  rows="small"
-                  placeholder={t.video_url_placeholder}
-                  label={t.video_url_label}
-                  isDisabled={Boolean(values.cover)}
-                />
-                <Box mt={7} ml={4}>
-                  <SvgHover>
-                    <Delete onClick={onDeleteVideo} />
-                  </SvgHover>
-                </Box>
-              </Flex>
-
-              <Container variant="hr" my={10} />
-
-              <Text variant="currentBold" mt={9}>
-                {t.team_label}
-              </Text>
-              <RepeatableJobs
-                name="members"
-                cta="Ajouter un membre de l'équipe"
-              />
-
-              <Container variant="hr" my={10} />
-
-              <Text variant="currentBold">{t.logos_label}</Text>
-
-              <RepeatableJobs
-                name="partners_logos"
-                onlyUpload
-                cta="Ajouter un logo partenaire"
-              />
-              <Container variant="hr" my={10} />
-
-              <Text variant="currentBold">{t.see_more_cta}</Text>
-              <Button
-                variant="roundedTransparent"
-                mt={4}
-                mb="100px"
-                onClick={onEditAbout}
+              <TitleDivider title="Bandeau" />
+              <Box
+                border="1px solid #F7F7F7F7"
+                p="5"
+                backgroundColor="#fdfdfdf1"
               >
-                {t.cta_show_more}
-              </Button>
+                <Textarea
+                  id="title"
+                  rows="medium"
+                  placeholder={t.title_input}
+                  label={t.title_input}
+                  helpText={t.title_helptext}
+                />
+
+                <Textarea
+                  id="subtitle"
+                  rows="large"
+                  placeholder={t.subtitle_input}
+                  label={t.subtitle_input}
+                  helpText={t.subtitle_helptext}
+                />
+                <Text variant="currentBold" mt="5">
+                  {t.label_logo}
+                </Text>
+                <UploadFile
+                  onChange={logOnChange}
+                  label={t.logo_cta}
+                  id="logo"
+                  helpText={t.logo_helptext}
+                />
+
+                <Text variant="currentBold" mt={9}>
+                  {t.theme_label}
+                </Text>
+                <ColorPicker />
+              </Box>
+
+              <TitleDivider title="Corps" />
+              <Box
+                border="1px solid #F7F7F7F7"
+                p="5"
+                backgroundColor="#fdfdfdf1"
+              >
+                <Text variant="currentBold" mt={2} mb={2}>
+                  {t.content_label}
+                </Text>
+                <Wysiwyg id="wysiwyg" simpleMode />
+
+                <Text variant="currentBold" mt="5">
+                  {t.add_image}
+                </Text>
+                <UploadFile
+                  onChange={logOnChange}
+                  label={t.image_cta}
+                  id="cover"
+                  helpText={t.logo_helptext}
+                />
+
+                <Flex alignItems="center">
+                  <Textarea
+                    id="video_url"
+                    rows="small"
+                    placeholder={t.video_url_placeholder}
+                    label={t.video_url_label}
+                    isDisabled={Boolean(values.cover)}
+                  />
+                  <Box mt={7} ml={4}>
+                    <SvgHover>
+                      <Delete onClick={onDeleteVideo} />
+                    </SvgHover>
+                  </Box>
+                </Flex>
+                <Text variant="currentBold" mt="5">
+                  {t.see_more_cta}
+                </Text>
+                <Button
+                  variant="roundedTransparent"
+                  mt={4}
+                  onClick={onEditAbout}
+                >
+                  {t.cta_show_more}
+                </Button>
+              </Box>
+
+              <TitleDivider title="Pied de page" />
+              <Box
+                border="1px solid #F7F7F7F7"
+                p="5"
+                backgroundColor="#fdfdfdf1"
+                mb="100px"
+              >
+                <RepeatableJobs
+                  name="members"
+                  cta="Ajouter un membre de l'équipe"
+                />
+
+                <RepeatableJobs
+                  name="partners_logos"
+                  onlyUpload
+                  cta="Ajouter un logo partenaire"
+                />
+              </Box>
+
               <Footer
                 w="43%"
                 onSubmit={() => onSave()}

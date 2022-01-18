@@ -141,13 +141,17 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
               </SvgHover>
             </Box>
             <Box
-              _hover={{ cursor: "initial" }}
+              _hover={{ cursor: "pointer" }}
               position="absolute"
               top="10px"
               right="4px"
               onClick={() => editCondition(input)}
             >
-              {getCondition(input).length > 0 && <Condition />}
+              {getCondition(input).length > 0 && (
+                <SvgHover target="circle">
+                  <Condition />
+                </SvgHover>
+              )}
             </Box>
           </Box>
         </Flex>

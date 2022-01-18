@@ -10,6 +10,7 @@ import { checkStepValidation } from "./Steps/utils";
 import ICondition from "types/form/condition";
 import { Loader } from "components/Spinner";
 import { actions, selectors } from "redux/slices/scientistData";
+import { Footer } from "../ToolBox/InputForm/Template/Footer";
 
 interface Props {
   selectedCondition: ICondition;
@@ -95,25 +96,16 @@ export const ConditionPreview: React.FC<Props> = ({ selectedCondition }) => {
       </Box>
 
       <Box pos="relative" pt="40px" w="100%">
-        <ButtonGroup justifyContent="space-between" w="100%">
+        <ButtonGroup justifyContent="space-between" w="90%">
           <Button
             visibility={step !== 1 ? "visible" : "hidden"}
-            variant="link"
+            variant="roundedTransparent"
             onClick={() => handleNavigation(step - 1)}
           >
-            Retour
+            Précédent
           </Button>
 
-          {step === 3 ? (
-            <Button
-              variant="rounded"
-              backgroundColor="green.400"
-              isDisabled={checkStepValidation()}
-              onClick={saveCondition}
-            >
-              Enregistrer la condition
-            </Button>
-          ) : (
+          {step !== 3 ? (
             <Button
               variant="roundedBlue"
               isDisabled={checkStepValidation()}
@@ -121,14 +113,26 @@ export const ConditionPreview: React.FC<Props> = ({ selectedCondition }) => {
             >
               Suivant
             </Button>
+          ) : (
+            <Box d="none">
+              <Button
+                variant="roundedBlue"
+                isDisabled={checkStepValidation()}
+                onClick={() => handleNavigation(step + 1)}
+              >
+                Suivant
+              </Button>
+            </Box>
           )}
         </ButtonGroup>
-        <Box pos="fixed" bottom="40px" right="1%" textAlign="right">
-          <Button variant="link" onClick={onCancel}>
-            Quitter et revenir au formulaire
-          </Button>
-        </Box>
       </Box>
+      <Footer
+        w="50%"
+        onSubmit={saveCondition}
+        disabled={!isValid}
+        onCancel={onCancel}
+        hideDelete={true}
+      />
     </Container>
   );
 };

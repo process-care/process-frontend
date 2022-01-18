@@ -1,33 +1,29 @@
 import { gql } from "graphql-request";
-import { landingFragment } from "call/fragments";
+import { landingEntityFragment } from "call/fragments/landing";
 
 export const ADD_LANDING = gql`
-  ${landingFragment}
+  ${landingEntityFragment}
   mutation addLanding($data: LandingInput) {
-    createLanding(input: { data: $data }) {
-      landing {
-        ...landingFragment
-      }
+    createLanding(data: $data) {
+      data { ...landingFragment }
     }
   }
 `;
 
 export const GET_LANDING = gql`
-  ${landingFragment}
+  ${landingEntityFragment}
   query getLanding($id: ID!) {
     landing(id: $id) {
-      ...landingFragment
+      data { ...landingFragment }
     }
   }
 `;
 
 export const UPDATE_LANDING = gql`
-  ${landingFragment}
+  ${landingEntityFragment}
   mutation updateLanding($id: ID!, $data: editLandingInput) {
-    updateLanding(input: { where: { id: $id }, data: $data }) {
-      landing {
-        ...landingFragment
-      }
+    updateLanding(id: $id, data: $data) {
+      data { ...landingFragment }
     }
   }
 `;

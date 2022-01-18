@@ -1,46 +1,54 @@
 import { gql } from "graphql-request";
-
-import { pageFragment, questionFragment } from "call/fragments";
+import { pageEntityFragment } from "call/fragments/page";
+import { questionEntityFragment } from "call/fragments/question";
 
 export const GET_PAGE_BY_SURVEY = gql`
-  ${pageFragment}
+  ${pageEntityFragment}
   query getPage($slug: ID!) {
-    pages(where: { survey: { slug: $slug } }) {
-      ...pageFragment
+    pages(filters: { survey: { slug: { eq: $slug }}}) {
+      data { ...pageEntityFragment }
     }
   }
 `;
 
+// FIXME: Test this one (not sure about the 'questions' part)
 export const GET_PAGE = gql`
-  ${pageFragment}
-  ${questionFragment}
+  ${pageEntityFragment}
+  ${questionEntityFragment}
+
   query getPage($id: ID!) {
     page(id: $id) {
-      ...pageFragment
-      questions {
-        ...questionFragment
+      ...pageEntityFragment
+      # Include questions
+      data {
+        attributes {
+          questions {
+            ...questionEntityFragment
+          }
+        }
       }
     }
   }
 `;
 
 export const ADD_PAGE = gql`
-  ${pageFragment}
+  ${pageEntityFragment}
+
   mutation addPage($values: PageInput) {
-    createPage(input: { data: $values }) {
-      page {
-        ...pageFragment
+    createPage(data: $values) {
+      data {
+        ...pageEntityFragment
       }
     }
   }
 `;
 
 export const UPDATE_PAGE = gql`
-  ${pageFragment}
-  mutation updatePage($id: ID!, $data: editPageInput) {
-    updatePage(input: { where: { id: $id }, data: $data }) {
-      page {
-        ...pageFragment
+  ${pageEntityFragment}
+  mutation updatePage($id: ID!, $data: PageInput) {
+    updatePage(id: $id, data: $data) {
+      data {
+        ...pageEntityFragment
       }
     }
   }
@@ -48,8 +56,8 @@ export const UPDATE_PAGE = gql`
 
 export const DELETE_PAGE = gql`
   mutation deletePage($id: ID!) {
-    deletePage(input: { where: { id: $id } }) {
-      page {
+    deletePage(id: $id) {
+      data {
         id
       }
     }

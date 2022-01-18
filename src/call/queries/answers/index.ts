@@ -3,10 +3,12 @@ import { gql } from "graphql-request";
 // FRAGMENT
 
 const answerFragment = gql`
-  fragment answerFragment on Answer {
-    id
-    question {id}
-    value
+  fragment answerFragment on AnswerEntity {
+    id 
+    attributes {
+      question { data { id } }
+      value
+    }
   }
 `;
 
@@ -16,11 +18,11 @@ export const GET_ANSWERS = gql`
   ${answerFragment}
 
   query getAnswers($participationId: ID!, $questionsId: [ID]!) {
-    answers(where: {
-      participation: $participationId,
-      question_in: $questionsId
+    answers(filters: {
+      participation: { id: { eq: $participationId } },
+      question: { id: { in: $questionsId } },
     }) {
-      ...answerFragment
+      data { ...answerFragment }
     }
   }
 `;
@@ -29,9 +31,8 @@ export const GET_ANSWERS_BY_PARTICIPATION = gql`
   ${answerFragment}
 
   query getAnswersByParticipation($participationId: ID!) {
-    answers(where: { participation: $participationId })
-    {
-      ...answerFragment
+    answers(filters: { participation: { id: { eq: $participationId } } }) {
+      data { ...answerFragment }
     }
   }
 `;
@@ -42,12 +43,8 @@ export const CREATE_ANSWER = gql`
   ${answerFragment}
 
   mutation createAnswer ($data: AnswerInput!) {
-    createAnswer(input: {
-      data: $data
-    }) {
-      answer {
-        ...answerFragment
-      }
+    createAnswer(data: $data) {
+      data { ...answerFragment }
     }
   }
 `
@@ -55,14 +52,9 @@ export const CREATE_ANSWER = gql`
 export const UPDATE_ANSWER = gql`
   ${answerFragment}
 
-  mutation updateAnswer ($id: ID!, $data: editAnswerInput!) {
-    updateAnswer(input: {
-      where: { id: $id }
-      data: $data
-    }) {
-      answer {
-        ...answerFragment
-      }
+  mutation updateAnswer ($id: ID!, $data: AnswerInput!) {
+    updateAnswer(id: $id, data: $data) {
+      data { ...answerFragment }
     }
   }
 `

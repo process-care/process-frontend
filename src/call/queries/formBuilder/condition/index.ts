@@ -1,11 +1,13 @@
+import { conditionEntityFragment } from "call/fragments/condition";
 import { gql } from "graphql-request";
-import { conditionFragment } from "../../../fragments";
 
 export const GET_CONDITION = gql`
-  ${conditionFragment}
+  ${conditionEntityFragment}
   query getCondition($id: ID!) {
     condition(id: $id) {
-      ...conditionFragment
+      data {
+        ...conditionEntityFragment
+      }
     }
   }
 `;
@@ -13,49 +15,55 @@ export const GET_CONDITION = gql`
 export const GET_CONDITIONS: any = (type: string) => {
   const target = type === "page" ? "referer_page" : "referer_question";
   return gql`
-  ${conditionFragment}
+    ${conditionEntityFragment}
     query getConditions($id: ID!) {
-      conditions(where: { ${target}: $id }) {
-       ...conditionFragment
+      conditions(filters: { ${target}: { id: { eq: $id } } }) {
+        data {
+          ...conditionEntityFragment
+        }
       }
     }
   `;
 };
 
 export const GET_CONDITIONS_BY_QUESTION = gql`
-  ${conditionFragment}
+  ${conditionEntityFragment}
   query getConditons($referer_question: [ID]) {
-    conditions(where: { referer_question: $referer_question }) {
-      ...conditionFragment
+    conditions(filters: { referer_question: { id: { eq: $referer_question }}}) {
+      data {
+        ...conditionEntityFragment
+      }
     }
   }
 `;
 export const GET_CONDITIONS_BY_PAGE = gql`
-  ${conditionFragment}
+  ${conditionEntityFragment}
   query getConditons($referer_page: [ID]) {
-    conditions(where: { referer_page: $referer_page }) {
-      ...conditionFragment
+    conditions(filters: { referer_page: { id: { eq: $referer_page }}}) {
+      data {
+        ...conditionEntityFragment
+      }
     }
   }
 `;
 
 export const ADD_CONDITION = gql`
-  ${conditionFragment}
+  ${conditionEntityFragment}
   mutation addcondition($newCondition: ConditionInput) {
-    createCondition(input: { data: $newCondition }) {
-      condition {
-        ...conditionFragment
+    createCondition(data: $newCondition) {
+      data {
+        ...conditionEntityFragment
       }
     }
   }
 `;
 
 export const UPDATE_CONDITION = gql`
-  ${conditionFragment}
+  ${conditionEntityFragment}
   mutation updatecondition($id: ID!, $data: editConditionInput) {
-    updateCondition(input: { where: { id: $id }, data: $data }) {
-      condition {
-        ...conditionFragment
+    updateCondition(id: $id, data: $data) {
+      data {
+        ...conditionEntityFragment
       }
     }
   }
@@ -69,14 +77,15 @@ export const DELETE_GROUP_CONDITION = gql`
 
 export const DELETE_CONDITION = gql`
   mutation deletecondition($id: ID!) {
-    deleteCondition(input: { where: { id: $id } }) {
-      condition {
+    deleteCondition(id: $id) {
+      data {
         id
       }
     }
   }
 `;
 
+// FIXME: Check with the backend
 export const CHECK_SURVEY = gql`
   query checkSurvey($surveyId: ID!) {
     checkSurvey(id: $surveyId) {

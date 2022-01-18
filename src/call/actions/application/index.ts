@@ -4,7 +4,7 @@ import {
   DELETE_FILE,
   UPLOAD_FILE_MULTIPLE,
   UPLOAD_FILE_SINGLE,
-} from "call/queries/application";
+} from "call/queries/files";
 import { client } from "..";
 
 // ---- TYPES

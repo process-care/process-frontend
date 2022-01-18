@@ -1,5 +1,5 @@
 import { gql } from "graphql-request";
-import { questionFragment } from "call/fragments";
+import { questionFragment, questionEntityFragment } from "call/fragments/question";
 
 // ---- QUERIES
 
@@ -12,6 +12,7 @@ import { questionFragment } from "call/fragments";
 //   }
 // `;
 
+// FIXME: Check with the backend
 export const GET_QUESTIONS_BY_SURVEY = gql`
   ${questionFragment}
 
@@ -22,24 +23,32 @@ export const GET_QUESTIONS_BY_SURVEY = gql`
   }
 `;
 
+// FIXME: What is the argument ? Is it really an array ?
 export const GET_QUESTIONS_BY_PAGE = gql`
-  ${questionFragment}
+  ${questionEntityFragment}
+
   query getQuestions($page: [ID]) {
-    questions(where: { page: $page }) {
-      ...questionFragment
+    questions(filters: { page: { in: $page }}) {
+      data {
+        ...questionEntityFragment
+      }
     }
   }
 `;
 
 export const GET_QUESTION = gql`
-  ${questionFragment}
+  ${questionEntityFragment}
+
   query getQuestion($id: ID!) {
     question(id: $id) {
-      ...questionFragment
+      data {
+        ...questionEntityFragment
+      }
     }
   }
 `;
 
+// FIXME: Check with the backend
 export const GET_QUESTION_EVALUATION = gql`
   query getQuestionEvaluation($questionId: ID!, $participationId: ID!) {
     evaluation: questionEvaluation(
@@ -62,12 +71,14 @@ export const GET_QUESTION_EVALUATION = gql`
 
 export const ADD_QUESTION = gql`
   mutation addQuestion($values: QuestionInput) {
-    createQuestion(input: { data: $values }) {
-      question {
+    createQuestion(data: $values) {
+      data {
         id
-        type
-        page {
-          id
+        attributes {
+          type
+          page {
+            data { id }
+          }
         }
       }
     }
@@ -75,12 +86,14 @@ export const ADD_QUESTION = gql`
 `;
 
 export const UPDATE_QUESTION = gql`
-  mutation updateQuestion($id: ID!, $data: editQuestionInput) {
-    updateQuestion(input: { where: { id: $id }, data: $data }) {
-      question {
+  mutation updateQuestion($id: ID!, $data: QuestionInput) {
+    updateQuestion(id: $id, data: $data) {
+      data {
         id
-        type
-        internal_title
+        attributes {
+          type
+          internal_title
+        }
       }
     }
   }
@@ -88,8 +101,8 @@ export const UPDATE_QUESTION = gql`
 
 export const DELETE_QUESTION = gql`
   mutation deleteQuestion($id: ID!) {
-    deleteQuestion(input: { where: { id: $id } }) {
-      question {
+    deleteQuestion(id: $id) {
+      data {
         id
       }
     }

@@ -2,10 +2,12 @@ import { gql } from "graphql-request";
 
 export const CREATE_PARTICIPATION = gql`
   mutation createParticipation($values: ParticipationInput) {
-    createParticipation(input: { data: $values }) {
-      participation {
+    createParticipation(data: $values) {
+      data {
         id
-        startedAt
+        attributes {
+          startedAt
+        }
       }
     }
   }
@@ -13,16 +15,15 @@ export const CREATE_PARTICIPATION = gql`
 
 export const UPDATE_PARTICIPATION = gql`
   mutation updateParticipation($id: ID!, $data: editParticipationInput) {
-    updateParticipation(input: {
-      where: { id: $id }
-      data: $data
-    }) {
-      participation {
+    updateParticipation(id: $id, data: $data) {
+      data {
         id
-        survey { id }
-        contact
-        consent
-        completed
+        attributes {
+          survey { data { id } }
+          contact
+          consent
+          completed
+        }
       }
     }
   }

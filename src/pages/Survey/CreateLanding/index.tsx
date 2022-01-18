@@ -1,4 +1,4 @@
-import { Box, Collapse, Container } from "@chakra-ui/react";
+import { Box, Container } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
@@ -49,16 +49,16 @@ export const CreateLanding: React.FC<IRoute> = () => {
     <Box overflow="auto">
       <Box
         d="flex"
-        justifyContent="space-around"
+        justifyContent="space-between"
         w="100%"
         overflow="hidden"
         h="100%"
       >
-        <Box w="100%" pos="relative">
+        <Box w="57%" pos="relative">
           <Box
             position="fixed"
             top="0"
-            w="75.8%"
+            w="inherit"
             backgroundColor="white"
             zIndex="10"
           >
@@ -86,9 +86,9 @@ export const CreateLanding: React.FC<IRoute> = () => {
             </Container>
           </Box>
         </Box>
-        <Collapse in={previewMode !== "landing"} style={{ width: "32%" }}>
-          <ToolBox />
-        </Collapse>
+        {/* <Collapse in={previewMode !== "landing"} style={{ width: "32%" }}> */}
+        <ToolBox />
+        {/* </Collapse> */}
       </Box>
     </Box>
   );

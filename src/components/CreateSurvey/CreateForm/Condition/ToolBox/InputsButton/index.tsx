@@ -22,7 +22,7 @@ const Category: React.FC<Props> = ({ onSelect, group }) => {
         if (category === group) {
           return (
             <Button
-              flex="30%"
+              flex={["100%", "100%", "30%"]}
               d="flex"
               justifyContent="flex-start"
               variant="box"
@@ -33,7 +33,7 @@ const Category: React.FC<Props> = ({ onSelect, group }) => {
               pl={2}
               onClick={() => onSelect(type, `${type}-${id}`, `${type}-${id}`)}
               fontSize="14px"
-
+              maxWidth={["10px", "100%", "150px"]}
               // maxWidth="160px"
               // minWidth="160px"
             >

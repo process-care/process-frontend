@@ -11,12 +11,14 @@ import { client } from "..";
 import { optimisticUpdate } from "call/optimisiticUpdate";
 
 export interface User {
+  id: string;
   email: string;
   lastName: string;
   firstName: string;
   job: string;
   institution: string;
 }
+
 export interface Login {
   identifier: string;
   password: string;
@@ -72,13 +74,23 @@ export const useSignin = (): UseMutationResult<SigninRes, Error> =>
       })
   );
 
-export const useGetMe = (userId: string): UseQueryResult<UserRes, Error> => {
-  return useQuery<UserRes, Error>(
+export const useGetMe = (userId: string): UseQueryResult<User, Error> => {
+  return useQuery<User, Error>(
     ["getMe", userId],
     async () => {
-      return await client.request(GET_ME, {
+      const res = await client.request(GET_ME, {
         userId,
       });
+
+      // Flatten the data
+      const user = {
+        id: res.usersPermissionsUser.data.id,
+        ...res.usersPermissionsUser.data.attributes,
+        lastName: res.usersPermissionsUser.data.attributes.last_name,
+        firstName: res.usersPermissionsUser.data.attributes.first_name,
+      };
+
+      return user;
     },
     { enabled: !!userId }
   );

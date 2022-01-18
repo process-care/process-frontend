@@ -6,9 +6,11 @@ import { Survey } from "redux/slices/surveyBuilder";
 import { SURVEY_STATUS } from "types/survey";
 
 export const useNavigator: any = (survey: Survey["survey"]) => {
+  const history = useHistory();
+
   const { mutateAsync: addLanding } = useAddLanding();
   const { mutateAsync: updateSurvey } = useUpdateSurvey();
-  const history = useHistory();
+
   const { landing, title, id, slug } = survey;
 
   const gotToLanding = useCallback(async () => {

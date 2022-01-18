@@ -25,19 +25,22 @@ interface Item {
   action?: () => void;
 }
 
+const variants = {
+  open: { opacity: 1 },
+  closed: { opacity: 0 },
+};
+
 export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
   const history = useHistory();
-  const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const { cookies } = useAuth();
-  const { data } = useGetMe(cookies?.user.id);
   const dispatch = useDispatch();
+  
+  const { data: user } = useGetMe(cookies?.user.id);
+
+  const [isOpen, setIsOpen] = React.useState<boolean>(false);
+  
   const handleClick = () => {
     setIsOpen((prev) => !prev);
-  };
-
-  const variants = {
-    open: { opacity: 1 },
-    closed: { opacity: 0 },
   };
 
   const logout = () => {
@@ -132,13 +135,12 @@ export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
           _hover={{ cursor: "pointer" }}
           onClick={handleClick}
           ml="20px"
-          name={data?.users[0].firstName + " " + data?.users[0].lastName}
+          name={user?.firstName + " " + user?.lastName}
           w="40px"
           h="40px"
           color="white"
           fontSize="14px"
-          background="linear-gradient(rgba(194, 165, 249, 1),
-rgba(0, 132, 255, 1))"
+          background="linear-gradient(rgba(194, 165, 249, 1), rgba(0, 132, 255, 1))"
         />
       </Flex>
     </Box>

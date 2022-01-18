@@ -9,10 +9,9 @@ import { Textarea, Input } from "components/Fields";
 import { Footer } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "components/Authentification/hooks";
-import { useGetMe, User, UserRes, useUpdateMe } from "call/actions/auth";
+import { useGetMe, User, useUpdateMe } from "call/actions/auth";
 import { Loader } from "components/Spinner";
 import { changePassword } from "call/actions/password";
-// import { useGetMe } from "call/actions/auth";
 
 const t = {
   title: "Mon profil",
@@ -45,7 +44,7 @@ export const ProfilForm: React.FC = () => {
     };
   };
 
-  const formatInitialValues = (data: UserRes | undefined) => {
+  const formatInitialValues = (data: User | undefined) => {
     if (!data) {
       return {
         currentPassword: "",
@@ -53,12 +52,13 @@ export const ProfilForm: React.FC = () => {
         confirmNewPassword: "",
       };
     }
+
     return {
-      firstName: data.users[0].firstName,
-      lastName: data.users[0].lastName,
-      email: data.users[0].email,
-      job: data.users[0].job,
-      institution: data.users[0].institution,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      job: data.job,
+      institution: data.institution,
       currentPassword: "",
       newPassword: "",
       confirmNewPassword: "",
@@ -107,7 +107,7 @@ export const ProfilForm: React.FC = () => {
                   _hover={{ cursor: "pointer" }}
                   ml="20px"
                   name={
-                    data?.users[0].firstName + " " + data?.users[0].lastName
+                    data?.firstName + " " + data?.lastName
                   }
                   w="104px"
                   h="104px"
@@ -118,10 +118,10 @@ rgba(0, 132, 255, 1))"
                 />
                 <Flex flexDir="column" alignItems="flex-start" ml="40px">
                   <Text variant="smallTitle" fontWeight="bold">
-                    {data?.users[0].firstName} {data?.users[0].lastName}
+                    {data?.firstName} {data?.lastName}
                   </Text>
                   <Text variant="current" color="brand.gray.200">
-                    {data?.users[0].job}
+                    {data?.job}
                   </Text>
                 </Flex>
               </Flex>

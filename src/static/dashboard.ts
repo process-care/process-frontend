@@ -17,3 +17,18 @@ export const t = {
     { Header: "Participants", accessor: "total" },
   ],
 };
+
+export const getLabelStatus = (status: string): string => {
+  switch (status) {
+    case "draft":
+      return "Brouillon";
+    case "pending":
+      return "En cours";
+    case "closed":
+      return "Fermé";
+    case "archived":
+      return "Archivé";
+    default:
+      return "";
+  }
+};

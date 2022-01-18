@@ -17,11 +17,11 @@ import { Loader } from "components/Spinner";
 const t = {
   label: "Importer la note d'information aux participants sous format pdf",
   cta: "Importer votre fichier",
-  format: "Format .pdf",
+  format: "Le formulaire de consentement doit être sous format .pdf",
   submit: "Valider la page de consentement",
   cancel: "Annuler",
   switchLabel:
-    "Ce projet nécessite de présenter une notice d'information et de recueillir le consentement des personnes avant participation",
+    "Indiquez ici si ce projet nécessite de présenter une notice d'information et de recueillir le consentement des personnes avant participation.",
 };
 
 export const CreateConsent: React.FC = () => {

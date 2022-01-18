@@ -63,7 +63,6 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
     return (
       <Container
         variant="rightPart"
-        w="50%"
         h="93vh"
         overflow="scroll"
         pos="sticky"
@@ -115,7 +114,7 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
     // TODO: Use a % + max-width to limit growth on big screens
     <Container
       variant="rightPart"
-      w="50%"
+      w="53%"
       h="93vh"
       overflow="scroll"
       pos="sticky"

@@ -51,15 +51,10 @@ export const CreateForm: React.FC<IRoute> = () => {
     <Box h="100vh" overflow="hidden">
       <Drawer isOpen={isOpen} size="md" content={<InputForm order={order} />} />
       <Box d="flex" justifyContent="space-around" w="100%" overflow="hidden">
-        <Box w="100%">
+        <Box w="47%">
           <Menu surveyId={selectedSurveyId} />
 
-          <Box
-            d="flex"
-            justifyContent="space-around"
-            overflow="hidden"
-            w="100%"
-          >
+          <Box d="flex" overflow="hidden" w="100%">
             <Container
               variant="createformColumn"
               w="6%"

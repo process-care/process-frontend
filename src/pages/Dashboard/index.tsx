@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import IRoute from "types/routes/route";
 import { Box, Container, Text, Flex, Button } from "@chakra-ui/react";
 import { useHistory } from "react-router";
-import { t } from "static/dashboard";
+import { getLabelStatus, t } from "static/dashboard";
 import { Filters } from "components/Dashboard/Filters";
 import { Table } from "components/Table";
 import { Loader } from "components/Spinner";
@@ -71,6 +71,12 @@ export const Dashboard: React.FC<IRoute> = () => {
   const columns = React.useMemo(
     () =>
       t.header.map(({ Header, accessor }) => {
+        if (accessor === "status") {
+          return {
+            Header,
+            accessor: (d: any) => getLabelStatus(d.status),
+          };
+        }
         if (accessor === "createdAt") {
           return {
             Header,
@@ -133,7 +139,10 @@ export const Dashboard: React.FC<IRoute> = () => {
         />
       </Box>
 
-      <div className="background__grid">
+      <div
+        className="background__grid"
+        style={{ width: menuIsOpen ? "47%" : "100%" }}
+      >
         <Container
           textAlign="left"
           pt="9"

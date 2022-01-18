@@ -190,7 +190,9 @@ export const PageForm: React.FC = () => {
                         setFieldValue("is_locked", !values.is_locked)
                       }
                     >
-                      {isLocked ? "Débloquer la page" : "Bloquer la page"}
+                      {isLocked
+                        ? "Autoriser la modification après validation"
+                        : "Interdire la modification après validation"}
                     </Button>
                   </Tooltip>
                 </Box>

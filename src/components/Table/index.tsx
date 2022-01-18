@@ -26,7 +26,11 @@ interface Props {
 // ---- STYLE
 
 const styles = {
-  thead: { width: "100%", backgroundColor: "white" },
+  thead: {
+    width: "100%",
+    backgroundColor: "white",
+    border: "1px solid #e7e7e7",
+  },
   tr: { border: "1px solid #e7e7e7" },
   td: { backgroundColor: "#F6F6F6" },
 };

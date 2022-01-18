@@ -3,7 +3,7 @@ export const t = {
   help_text: "",
   placeholder: "Renseigner votre réponse",
   removing_confirmation: "Voulez vous supprimer le champs",
-  delete_all_inputs: "Tout supprimer",
+  delete_all_inputs: "Supprimer toutes les questions de cette page",
   verify: "Tester",
   publish: "Publier",
   preview: "Prévisualiser",

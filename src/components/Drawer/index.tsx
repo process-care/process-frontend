@@ -26,11 +26,11 @@ const CustomDrawer: React.FC<Props> = ({
           placement="right"
           isFullHeight
           isOpen={isOpen}
-          size="xl"
+          size="full"
           onOverlayClick={onOverlayClick}
           {...props}
         >
-          <DrawerContent background="white">
+          <DrawerContent background="white" maxW="53%">
             <DrawerBody p="0 10px">{content}</DrawerBody>
           </DrawerContent>
         </Drawer>

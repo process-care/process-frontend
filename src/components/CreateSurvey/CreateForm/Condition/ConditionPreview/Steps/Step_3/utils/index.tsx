@@ -4,6 +4,7 @@ import ICondition from "types/form/condition";
 import React from "react";
 import { useAppDispatch } from "redux/hooks";
 import { actions } from "redux/slices/scientistData";
+import { Box } from "@chakra-ui/react";
 
 export const renderInput = (
   selectedCondition: ICondition
@@ -53,31 +54,29 @@ export const renderInput = (
     }
   };
 
+  const InputNumber = () => {
+    return (
+      <Box w="45%" mr="5">
+        <Textarea
+          rows="small"
+          id="target_value"
+          label="Indiquer la valeur numérique"
+          placeholder="Ex 5"
+          isRequired
+        />
+      </Box>
+    );
+  };
+
   switch (target_question?.type) {
     case "select":
       return <Options />;
       break;
     case "slider":
-      return (
-        <Textarea
-          rows="small"
-          id="target_value"
-          label="Indiquer la valeur numérique"
-          placeholder="Ex 5"
-          isRequired
-        />
-      );
+      return <InputNumber />;
       break;
     case "number_input":
-      return (
-        <Textarea
-          rows="small"
-          id="target_value"
-          label="Indiquer la valeur numérique"
-          placeholder="Ex 5"
-          isRequired
-        />
-      );
+      return <InputNumber />;
       break;
 
     case "radio":
@@ -88,15 +87,7 @@ export const renderInput = (
       break;
 
     default:
-      return (
-        <Textarea
-          rows="small"
-          id="target_value"
-          label="Indiquer la valeur numérique"
-          placeholder="Ex 5"
-          isRequired
-        />
-      );
+      return <InputNumber />;
       break;
   }
 };

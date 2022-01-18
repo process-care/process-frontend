@@ -75,10 +75,10 @@ export const Step_3: React.FC<Props> = ({ selectedCondition, updateStep }) => {
               {isValid && isNotEmpty && (
                 <Flex
                   alignItems="center"
-                  justifyContent="flex-end"
-                  mt="2"
+                  justifyContent="flex-start"
                   w="100%"
                   mx="auto"
+                  mt="2"
                 >
                   <Check />
                   <Text fontSize="14px" color="brand.green" ml={2}>

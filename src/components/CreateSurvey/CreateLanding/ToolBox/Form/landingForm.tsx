@@ -1,4 +1,4 @@
-import { Box, Button, Text, Container, Flex } from "@chakra-ui/react";
+import { Box, Button, Text, Flex } from "@chakra-ui/react";
 import { Textarea } from "components/Fields";
 import { UploadFile } from "components/Fields/Uploadfile";
 import { Wysiwyg } from "components/Fields/Wysiwyg";

@@ -33,7 +33,6 @@ export const ConditionMenu: React.FC<Props> = ({ selectedCondition }) => {
     : currentQuestionConditions;
   const groups = currentConditions.map((c: ICondition) => c.group);
 
-  console.log(isValid);
   return (
     <Box
       h="100%"
@@ -41,7 +40,7 @@ export const ConditionMenu: React.FC<Props> = ({ selectedCondition }) => {
       w="100%"
       margin="0 auto"
       pt="10"
-      className="background__grid--blue"
+      className="background__grid"
     >
       <Box
         px={4}

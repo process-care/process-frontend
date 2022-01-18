@@ -4,9 +4,8 @@ import { Textarea } from "components/Fields";
 import { Flex, Box, Button, Text } from "@chakra-ui/react";
 import { useAppSelector } from "redux/hooks";
 import { UploadFile } from "components/Fields/Uploadfile";
-import { ReactComponent as Delete } from "assets/delete.svg";
-import { SvgHover } from "components/SvgHover";
 import { selectors as selectorsApplication } from "redux/slices/application";
+
 interface Props {
   name: string;
   onlyUpload?: boolean;

@@ -32,27 +32,33 @@ export const SIGNIN = gql`
 
 export const GET_ME = gql`
   query me($userId: ID!) {
-    users(where: { id: $userId }) {
-      email
-      id
-      firstName
-      lastName
-      job
-      institution
+    usersPermissionsUser(id: $userId) {
+      data {
+        id
+        attributes {
+          email
+          first_name
+          last_name
+          job
+          institution
+        }
+      }
     }
   }
 `;
 
 export const UPDATE_ME = gql`
-  mutation updateUser($id: ID!, $data: editUserInput) {
-    updateUser(input: { where: { id: $id }, data: $data }) {
-      user {
-        email
+  mutation updateUser($id: ID!, $data: UsersPermissionsUserInput!) {
+    updateUsersPermissionsUser(id: $id, data: $data) {
+      data {
         id
-        firstName
-        lastName
-        job
-        institution
+        attributes {
+          email
+          first_name
+          last_name
+          job
+          institution
+        }
       }
     }
   }

@@ -132,7 +132,7 @@ export const surveysReducers = {
     state.surveys.isDeleting = true;
     surveysAdapter.removeOne(state.surveys, action.payload);
     const lastPageId = state.surveys.ids.length - 1;
-    state.surveys.selectedSurvey = state.surveys.ids[lastPageId].toString();
+    state.surveys.selectedSurvey = state.surveys.ids[lastPageId]?.toString();
   },
   deletedSurvey: (
     state: GlobalState,

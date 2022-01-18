@@ -143,7 +143,7 @@ export const pageReducer = {
     state.pages.isDeleting = true;
     pageAdapter.removeOne(state.pages, action.payload);
     const lastPageId = state.pages.ids.length - 1;
-    state.pages.selectedPage = state.pages.ids[lastPageId].toString();
+    state.pages.selectedPage = state.pages.ids[lastPageId]?.toString();
   },
   deletedPage: (
     state: GlobalState,

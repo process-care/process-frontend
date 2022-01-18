@@ -127,7 +127,7 @@ export const ConditionPreview: React.FC<Props> = ({ selectedCondition }) => {
         </ButtonGroup>
       </Box>
       <Footer
-        w="50%"
+        w="53%"
         onSubmit={saveCondition}
         disabled={!isValid}
         onCancel={onCancel}

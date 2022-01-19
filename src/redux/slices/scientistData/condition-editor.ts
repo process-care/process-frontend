@@ -197,6 +197,17 @@ export const hasChanges = (state: RootState): boolean => {
 export const getAllConditions = (state: RootState): ICondition[] =>
   conditionAdapter.getSelectors().selectAll(state.scientistData.conditions);
 
+export const getAllQuestionsConditionsInSelectedPage = (
+  state: RootState
+): ICondition[] => {
+  return getAllConditions(state).filter(
+    (condition) =>
+      condition.type === "question" &&
+      condition.referer_question?.page?.id ===
+        state.scientistData.pages.selectedPage
+  );
+};
+
 const getSelectedConditionId = (state: RootState): string =>
   state.scientistData.conditions.selectedCondition;
 
@@ -256,6 +267,7 @@ export const conditionsSelectors = {
   getValidity,
   getConditionsByPageId,
   getConditionsByQuestionId,
+  getAllQuestionsConditionsInSelectedPage,
 };
 
 // ---- EXPORTS

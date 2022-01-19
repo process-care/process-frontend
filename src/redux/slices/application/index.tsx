@@ -63,7 +63,7 @@ export const applicationSlice = createSlice({
       }
     });
     builder.addCase(globalActions.deletedCondition, (state) => {
-      state.drawerIsOpen = true;
+      state.drawerIsOpen = false;
     });
   },
 });

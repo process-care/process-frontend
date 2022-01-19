@@ -13,10 +13,18 @@ export const Header: React.FC = () => {
   const questions = useAppSelector(
     selectors.questions.getSelectedPageQuestions
   );
+  const conditions = useAppSelector(
+    selectors.conditions.getAllQuestionsConditionsInSelectedPage
+  );
+
   const idsToDelete = questions.map((q) => q.id);
+
   const deleteAll = () => {
     idsToDelete.forEach((id) => {
       dispatch(actions.deleteQuestion(id));
+    });
+    conditions.forEach((c) => {
+      dispatch(actions.deleteCondition(c.id));
     });
   };
 

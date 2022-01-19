@@ -94,9 +94,8 @@ const InputForm: React.FC<Props> = ({ order }) => {
   };
 
   if (!selectedQuestion) {
-    return <p>no selectedQuestion</p>;
+    return <> </>;
   }
-
   return (
     <Formik
       validateOnBlur
@@ -209,13 +208,13 @@ const InputForm: React.FC<Props> = ({ order }) => {
                     <Button
                       ml="5"
                       variant={
-                        values.required ? "rounded" : "roundedTransparent"
+                        values?.required ? "rounded" : "roundedTransparent"
                       }
                       onClick={() =>
                         setFieldValue("required", !values.required)
                       }
                     >
-                      {values.required
+                      {values?.required
                         ? "Rendre la réponse obligatoire"
                         : "Rendre la réponse facultative"}
                     </Button>

@@ -20,6 +20,7 @@ const createEpic: Epic = (action$) =>
     switchMap(async (action) => {
       const redirectToPage = store.getState().scientistData.pages.selectedPage;
       const { type, refererId, group } = action.payload;
+
       const createdAt = new Date().toISOString();
       const newGroup = `group-${uuidv4()}`;
       const newCondition = await client.request(ADD_CONDITION, {
@@ -44,6 +45,7 @@ const createEpic: Epic = (action$) =>
         redirectToPage: string;
       }) => {
         const data = newCondition.createCondition.condition;
+        console.log("createdCondition", data);
         return actions.createdCondition({
           lastCreated: createdAt,
           condition: data,

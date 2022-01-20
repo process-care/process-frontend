@@ -18,7 +18,13 @@ import { ConnectedRouter } from "connected-react-router";
 import { history } from "redux/store/history";
 import "jodit/build/jodit.min.css";
 
-export const queryClient = new QueryClient();
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 const App: React.FC = () => {
   return (

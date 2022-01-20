@@ -28,7 +28,7 @@ export const Group: React.FC<Props> = ({
   groups,
   selectedCondition,
 }) => {
-  console.log(currentConditions);
+  console.log("currentConditions", currentConditions);
   const dispatch = useAppDispatch();
   const isValid = useAppSelector(selectors.conditions.getValidity);
 
@@ -69,13 +69,15 @@ export const Group: React.FC<Props> = ({
     dispatch(actions.setStep(1));
   };
 
+  console.log("refererId", refererId);
+
   const createCondition = (newGroup?: boolean) => {
     if (!currentCondition) return;
     dispatch(
       actions.createCondition({
         refererId,
         type: currentCondition.type,
-        group: newGroup ? uuidv4() : currentCondition.group,
+        group: newGroup ? `group-${uuidv4()}` : currentCondition.group,
       })
     );
   };
@@ -106,7 +108,7 @@ export const Group: React.FC<Props> = ({
                 textTransform="uppercase"
                 mr={2}
               >
-                {t.group_condition} #{i + 1}
+                {t.group_condition} #{i + 1} {groupId}
               </Box>
               <Button
                 onClick={() => {

@@ -35,18 +35,19 @@ export const ConditionMenu: React.FC<Props> = ({ selectedCondition }) => {
 
   return (
     <Box
+      border="1px solid"
       h="100%"
       pos="relative"
       w="100%"
       margin="0 auto"
-      pt="10"
       className="background__grid"
+      pt="50px"
+      overflowY="auto"
     >
       <Box
-        px={4}
         pt={4}
-        pb={10}
-        mb="100px"
+        px={4}
+        mb="400px"
         backgroundColor="white"
         w="80%"
         margin="0 auto"

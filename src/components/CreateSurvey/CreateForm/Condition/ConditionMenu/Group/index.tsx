@@ -67,6 +67,8 @@ export const Group: React.FC<Props> = ({
     dispatch(actions.setStep(1));
   };
 
+  console.log("refererId", refererId);
+
   const createCondition = (newGroup?: boolean) => {
     if (!currentCondition) return;
     dispatch(
@@ -104,7 +106,7 @@ export const Group: React.FC<Props> = ({
                 textTransform="uppercase"
                 mr={2}
               >
-                {t.group_condition} #{i + 1}
+                {t.group_condition} #{i + 1} {groupId}
               </Box>
               <Button
                 onClick={() => {

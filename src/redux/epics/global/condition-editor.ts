@@ -13,35 +13,37 @@ const createEpic: Epic = (action$) =>
     ofType(actions.createCondition.type),
     switchMap(async (action) => {
       const { type, refererId, group } = action.payload;
+
       const createdAt = new Date().toISOString();
       const newGroup = `group-${uuidv4()}`;
 
-      const newCondition = await sdk.createCondition({ newCondition: {
-        type,
+      const newCondition = await sdk.createCondition({
+        newCondition: {
+          type,
           [type === "question" ? "referer_question" : "referer_page"]:
             refererId,
           group: group === undefined ? newGroup : group,
-      }});
+        },
+      });
 
       return { createdAt, newCondition };
     }),
     map(({ newCondition, createdAt }) => {
-        const redirectToPage = store.getState().scientistData.pages.selectedPage;
-        const data = newCondition?.createCondition?.data;
+      const redirectToPage = store.getState().scientistData.pages.selectedPage;
+      const data = newCondition?.createCondition?.data;
 
-        // TODO:ERROR: Handle the error and use case better
-        // Can `redirectToPage` really be undefined ? If yes, what does it mean ?
-        if (!hasAttributes(data) || !redirectToPage) return actions.error({});
+      // TODO:ERROR: Handle the error and use case better
+      // Can `redirectToPage` really be undefined ? If yes, what does it mean ?
+      if (!hasAttributes(data) || !redirectToPage) return actions.error({});
 
-        return actions.createdCondition({
-          lastCreated: createdAt,
-          condition: data,
-          isValid: false,
-          step: 1,
-          redirectToPage,
-        });
-      }
-    )
+      return actions.createdCondition({
+        lastCreated: createdAt,
+        condition: data,
+        isValid: false,
+        step: 1,
+        redirectToPage,
+      });
+    })
   );
 
 // // ----  DELETE CONDITION

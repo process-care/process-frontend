@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { Footer } from "./Template/Footer";
 import {
   getDiff,
+  removeEmpty,
   renderFormTemplate,
   renderFormValidationSchema,
 } from "./utils";
@@ -96,11 +97,15 @@ const InputForm: React.FC<Props> = ({ order }) => {
   if (!selectedQuestion) {
     return <> </>;
   }
+
+  console.log(removeEmpty(selectedQuestion));
   return (
     <Formik
       validateOnBlur
       validationSchema={renderFormValidationSchema(selectedQuestion)}
-      initialValues={selectedQuestion ? selectedQuestion : fields[type]}
+      initialValues={
+        selectedQuestion ? removeEmpty(selectedQuestion) : fields[type]
+      }
       onSubmit={handleSubmit}
     >
       {({ isValid, isSubmitting, values, setFieldValue }) => {

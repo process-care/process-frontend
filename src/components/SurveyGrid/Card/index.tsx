@@ -10,6 +10,7 @@ import {
 import React from "react";
 import ISurvey from "types/survey";
 import { renderStatus } from "utils/application/renderStatus";
+import { useMediaQueries } from "utils/hooks/mediaqueries";
 
 // STATIC
 
@@ -25,9 +26,11 @@ interface Props {
 // COMPONENT
 
 export const Card: React.FC<Props> = ({ data }) => {
+  const { isTablet } = useMediaQueries();
+
   return (
     <GridItem
-      pb="160px"
+      pb={isTablet ? "50px" : "160px"}
       w="100%"
       textAlign="left"
       _hover={{
@@ -45,7 +48,7 @@ export const Card: React.FC<Props> = ({ data }) => {
         <Text variant="titleParaLight">{data.title}</Text>
       </Flex>
       <Box minH="140px">
-        <Text variant="currentLight" mt="30px" noOfLines={5}>
+        <Text variant="current" mt="30px" noOfLines={5}>
           {data.landing?.subtitle ||
             "Lorem, ipsum dolor sit amet consectetur adipisicing elit.Doloribus, impedit non. Sequi asperiores amet sunt. Consequunturvitae aliquam quasi laudantium, voluptas repellendus sapiente sit esse! Id mollitia deleniti ea nisi."}
         </Text>
@@ -57,7 +60,7 @@ export const Card: React.FC<Props> = ({ data }) => {
             <Text
               mr="20px"
               key={keyword.label}
-              variant="xs"
+              variant="xsRegular"
               color={data.landing?.color_theme?.button || "black"}
             >
               {keyword.label}
@@ -69,7 +72,6 @@ export const Card: React.FC<Props> = ({ data }) => {
       )}
       <Flex justifyContent="space-between" pt="40px" alignItems="center">
         <Badge
-          mt="10px"
           color="black"
           backgroundColor="transparent"
           border="1px solid black"

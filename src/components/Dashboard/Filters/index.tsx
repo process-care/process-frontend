@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Flex, Text } from "@chakra-ui/react";
+import { useMediaQueries } from "utils/hooks/mediaqueries";
 
 export interface Filter {
   label: string;
@@ -19,14 +20,15 @@ export const Filters: React.FC<Props> = ({
   currentFilter,
   center,
 }) => {
+  const { isTablet } = useMediaQueries();
   return (
-    <Flex justifyContent={center ? "center" : undefined}>
+    <Flex justifyContent={center ? "center" : undefined} w="100%">
       {filters.map(({ label, id }) => {
         const isSelected = currentFilter === id;
 
         return (
           <Box
-            mr="3"
+            mr={isTablet ? "unset" : "3"}
             key={id}
             onClick={() => handleClick(id)}
             backgroundColor={isSelected ? "brand.line" : "transparent"}
@@ -37,7 +39,7 @@ export const Filters: React.FC<Props> = ({
             transition="all 200ms"
             _hover={{ cursor: "pointer" }}
           >
-            <Text variant="xs">{label}</Text>
+            <Text variant="current">{label}</Text>
           </Box>
         );
       })}

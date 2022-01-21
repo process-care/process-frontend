@@ -7,8 +7,7 @@ import { Header } from "./Header";
 import { Team } from "./Team";
 import { useAppSelector } from "redux/hooks";
 import { selectors } from "redux/slices/landing-editor";
-// import { LandingRedux } from "redux/slices/types";
-// import { SurveyBySlugQuery } from "api/graphql/sdk.generated";
+import { CtaMobil } from "./Cta";
 
 // ---- STATICS
 
@@ -28,9 +27,7 @@ interface Props {
 export const Preview: React.FC<Props> = ({ isUserView, data }) => {
   const { slug } = useParams<{ slug: string }>();
   const history = useHistory();
-
   const { previewMode } = useAppSelector((state) => state.application);
-
   const aboutPage = useAppSelector(selectors.about);
   const isEditingAbout = useAppSelector(selectors.isEditingAbout);
 
@@ -41,7 +38,6 @@ export const Preview: React.FC<Props> = ({ isUserView, data }) => {
       alert("Bouton désactivé pendant la prévisualisation.");
       return;
     }
-
     history.push(`/survey/${slug}/consent`);
   }, [slug, isUserView]);
 
@@ -81,6 +77,7 @@ export const Preview: React.FC<Props> = ({ isUserView, data }) => {
         color_theme={attributes?.color_theme}
         onParticipate={onParticipate}
       />
+
       <Content data={data} onParticipate={onParticipate} />
       {attributes?.members && (
         <Team
@@ -92,6 +89,7 @@ export const Preview: React.FC<Props> = ({ isUserView, data }) => {
         partners_logos={attributes?.partners_logos ?? []}
         color_theme={attributes?.color_theme}
       />
+      <CtaMobil data={data} onParticipate={onParticipate} />
     </Box>
   );
 };

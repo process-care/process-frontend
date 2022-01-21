@@ -29,6 +29,7 @@ import { InfoIcon } from "@chakra-ui/icons";
 import { QuestionRedux } from "redux/slices/types";
 
 import { Input, Textarea } from "components/Fields";
+import { Enum_Question_Rows } from "api/graphql/types.generated";
 
 interface Props {
   order: string[];
@@ -178,7 +179,7 @@ const InputForm: React.FC<Props> = ({ order }) => {
               >
                 <Textarea
                   isCollapsed={false}
-                  rows="medium"
+                  rows={Enum_Question_Rows.Medium}
                   label="Label"
                   placeholder="Renseigner le label de votre question"
                   id="label"

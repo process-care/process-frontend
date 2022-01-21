@@ -10,13 +10,13 @@ import { NoData } from "components/SurveyGrid/noData";
 import { Loader } from "components/Spinner";
 
 import { ReactComponent as ShowMore } from "./assets/ShowMore.svg";
+import { useMediaQueries } from "utils/hooks/mediaqueries";
+import { client } from "api/gql-client";
+import { SurveyRedux } from "redux/slices/types";
 import {
   useSurveyPublishedQuery,
   useSurveySearchQuery,
 } from "./portal.gql.generated";
-import { client } from "api/gql-client";
-import { SurveyRedux } from "redux/slices/types";
-
 // ---- STATIC
 
 const t = {
@@ -39,6 +39,7 @@ export const Portail: React.FC<IRoute> = () => {
   const [currentFilter, setCurrentFilter] = useState<string>(t.filters[0].id);
   const [query, setQuery] = useState<string>("");
   const [pagination, setPagination] = useState<number>(0);
+  const { isTablet } = useMediaQueries();
 
   // Get all published surveys
   const { data: publishedResult, isLoading } = useSurveyPublishedQuery(client, {
@@ -72,21 +73,22 @@ export const Portail: React.FC<IRoute> = () => {
 
   const results = searchResult?.surveys?.data as SurveyRedux[];
   return (
-    <Box>
+    <Box w="100%">
       <Box>
         <Center
           position="absolute"
           color="white"
           textAlign="left"
-          p="10%"
+          px="5%"
           h="90vh"
           d="flex"
           flexDir="column"
+          w="100%"
         >
           <Text variant="xxl" maxW="1000px">
             {t.title}
           </Text>
-          <Text variant="baseline" maxW="1000px" pt="15px">
+          <Text variant="xs" maxW="1000px" pt="15px">
             Nullam id dolor id nibh ultricies vehicula ut id elit. Maecenas sed
             diam eget risus varius blandit sit amet non magna. Aenean eu leo
             quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.
@@ -101,8 +103,14 @@ export const Portail: React.FC<IRoute> = () => {
         />
       </Box>
 
-      <Box pt="110px" pb="160px" maxW="80%" margin="0 auto">
-        <Text variant="xl">
+      <Box
+        pt={isTablet ? "50px" : "110px"}
+        pb={isTablet ? "50px" : "160px"}
+        maxW={isTablet ? "unset" : "80%"}
+        margin="0 auto"
+        px="5%"
+      >
+        <Text variant="xl" textAlign={isTablet ? "left" : "center"}>
           Une plateforme de curation scientifique{" "}
           <strong>{totalCount} projets en cours</strong> tempus porttitor. Duis
           mollis, est non commodo luctus, nisi erat porttitor ligula, eget
@@ -112,17 +120,18 @@ export const Portail: React.FC<IRoute> = () => {
 
       <Box pb="80px">
         <Box
-          px="10%"
+          px="5%"
           d="flex"
           alignItems="center"
           justifyContent="space-between"
+          flexDir={isTablet ? "column" : "row"}
         >
           <Filters
             filters={t.filters}
             handleClick={(id) => setCurrentFilter(id)}
             currentFilter={currentFilter}
           />
-          <Box w="50%">
+          <Box w={isTablet ? "100%" : "50%"} mt={isTablet ? "30px" : "unset"}>
             <Input
               height="55px"
               name="search"

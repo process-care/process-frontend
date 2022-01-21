@@ -121,7 +121,7 @@ const theme = extendTheme({
           color: "white",
           padding: "25px 30px",
           border: "1px solid",
-          fontWeight: "bold",
+          fontWeight: "300",
           fontSize: "12px",
           _hover: {
             bg: "gray.700",
@@ -129,7 +129,6 @@ const theme = extendTheme({
           },
           [`@media screen and (max-width: ${tablet})`]: {
             fontSize: "14px",
-            fontWeight: "300",
             lineHeight: "18,2px",
           },
         }),
@@ -225,18 +224,29 @@ const theme = extendTheme({
         }),
         xs: () => ({
           fontWeight: 300,
-          fontSize: "12px",
-          lineHeight: "15.6px",
+          fontSize: "25px",
+          lineHeight: "32px",
+          [`@media screen and (max-width: ${tablet})`]: {
+            fontSize: "12px",
+            lineHeight: "15.6px",
+          },
         }),
         xsRegular: () => ({
           fontWeight: 400,
           fontSize: "12px",
           lineHeight: "18px",
+          [`@media screen and (max-width: ${tablet})`]: {
+            fontSize: "14px",
+            lineHeight: "21px",
+          },
         }),
         xsMedium: () => ({
           fontWeight: 500,
           fontSize: "12px",
           lineHeight: "15.6px",
+          [`@media screen and (max-width: ${tablet})`]: {
+            fontSize: "5px",
+          },
         }),
         currentLight: () => ({
           fontWeight: 300,
@@ -248,7 +258,7 @@ const theme = extendTheme({
           // },
         }),
         current: () => ({
-          fontWeight: 300,
+          fontWeight: 400,
           fontSize: "14px",
           lineHeight: "21.2px",
         }),
@@ -276,6 +286,10 @@ const theme = extendTheme({
           fontWeight: "300",
           fontSize: "35px",
           lineHeight: "45.5px",
+          [`@media screen and (max-width: ${tablet})`]: {
+            fontSize: "20px",
+            lineHeight: "26px",
+          },
         }),
         statsDashboard: () => ({
           fontWeight: 300,
@@ -286,11 +300,11 @@ const theme = extendTheme({
           fontWeight: 300,
           fontSize: "75px",
           lineHeight: "97.5px",
-        }),
-        xxlMobile: () => ({
-          fontWeight: 300,
-          fontSize: "25px",
-          lineHeight: "32.5px",
+          [`@media screen and (max-width: ${tablet})`]: {
+            fontWeight: 300,
+            fontSize: "25px",
+            lineHeight: "32.5px",
+          },
         }),
       },
     },

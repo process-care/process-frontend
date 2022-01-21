@@ -239,12 +239,12 @@ export const getAllConditions = (state: RootState): ConditionRedux[] =>
 
 export const getAllQuestionsConditionsInSelectedPage = (
   state: RootState
-): ICondition[] => {
+): ConditionRedux[] => {
   return getAllConditions(state).filter(
     (condition) =>
-      condition.type === "question" &&
-      condition.referer_question?.page?.id ===
-        state.scientistData.pages.selectedPage
+      condition?.attributes.type === "question" &&
+      condition?.attributes.referer_question?.data?.attributes?.page?.data
+        ?.id === state.scientistData.pages.selectedPage
   );
 };
 

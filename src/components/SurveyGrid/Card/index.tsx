@@ -10,6 +10,7 @@ import {
 import React from "react";
 import { SurveyRedux } from "redux/slices/types";
 import { renderStatus } from "utils/application/renderStatus";
+import { useMediaQueries } from "utils/hooks/mediaqueries";
 
 // STATIC
 
@@ -27,9 +28,11 @@ interface Props {
 
 export const Card: React.FC<Props> = ({ data }) => {
   const attributes = data?.attributes;
+  const { isTablet } = useMediaQueries();
+
   return (
     <GridItem
-      pb="160px"
+      pb={isTablet ? "50px" : "160px"}
       w="100%"
       textAlign="left"
       _hover={{
@@ -77,7 +80,6 @@ export const Card: React.FC<Props> = ({ data }) => {
       )}
       <Flex justifyContent="space-between" pt="40px" alignItems="center">
         <Badge
-          mt="10px"
           color="black"
           backgroundColor="transparent"
           border="1px solid black"

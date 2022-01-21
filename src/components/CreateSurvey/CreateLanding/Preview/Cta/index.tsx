@@ -1,10 +1,10 @@
 import React from "react";
 import { Button } from "@chakra-ui/react";
-import { ILanding } from "types/landing";
 import { useMediaQueries } from "utils/hooks/mediaqueries";
+import { LandingRedux } from "redux/slices/types";
 
 interface Props {
-  data?: Partial<ILanding>;
+  data?: LandingRedux;
   onParticipate: () => void;
 }
 
@@ -16,7 +16,7 @@ export const CtaMobil: React.FC<Props> = ({ data, onParticipate }) => {
   return (
     <Button
       variant="rounded"
-      backgroundColor={data?.color_theme?.button || "brand.blue"}
+      backgroundColor={data?.attributes?.color_theme?.button || "brand.blue"}
       color="white"
       onClick={onParticipate}
       position="fixed"

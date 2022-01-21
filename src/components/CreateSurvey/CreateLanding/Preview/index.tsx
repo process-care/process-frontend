@@ -8,7 +8,7 @@ import { Team } from "./Team";
 import { useAppSelector } from "redux/hooks";
 import { selectors } from "redux/slices/landing-editor";
 import { ILanding } from "types/landing";
-
+import { CtaMobil } from "./Cta";
 // ---- STATICS
 
 const big_placeholder =
@@ -26,9 +26,7 @@ interface Props {
 export const Preview: React.FC<Props> = ({ isUserView, data }) => {
   const { slug } = useParams<{ slug: string }>();
   const history = useHistory();
-
   const { previewMode } = useAppSelector((state) => state.application);
-
   const aboutPage = useAppSelector(selectors.about);
   const isEditingAbout = useAppSelector(selectors.isEditingAbout);
 
@@ -39,7 +37,6 @@ export const Preview: React.FC<Props> = ({ isUserView, data }) => {
       alert("Bouton désactivé pendant la prévisualisation.");
       return;
     }
-
     history.push(`/survey/${slug}/consent`);
   }, [slug, isUserView]);
 
@@ -63,7 +60,7 @@ export const Preview: React.FC<Props> = ({ isUserView, data }) => {
       </Box>
     );
   }
-  console.log(data);
+
   return (
     <Box
       h={isFullView ? "100%" : "fit-content"}
@@ -78,6 +75,7 @@ export const Preview: React.FC<Props> = ({ isUserView, data }) => {
         color_theme={data?.color_theme}
         onParticipate={onParticipate}
       />
+
       <Content data={data} onParticipate={onParticipate} />
       {data?.members && (
         <Team members={data.members} color_theme={data?.color_theme} />
@@ -86,6 +84,7 @@ export const Preview: React.FC<Props> = ({ isUserView, data }) => {
         partners_logos={data?.partners_logos ?? []}
         color_theme={data?.color_theme}
       />
+      <CtaMobil data={data} onParticipate={onParticipate} />
     </Box>
   );
 };

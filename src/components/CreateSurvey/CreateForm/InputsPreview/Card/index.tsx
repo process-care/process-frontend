@@ -40,8 +40,8 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
     useAppSelector((state) =>
       selectors.conditions.getConditionsByQuestionId(state, input.id)
     );
-  const isRemoving = entityToRemove === input.id;
 
+  const isRemoving = entityToRemove === input.id;
   const color = useColorModeValue("gray.800", "gray.900");
 
   const handleEdit = () => {
@@ -58,17 +58,18 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
     ?.map((e) => e?.errors.map((el) => el?.questionId))
     .flat();
 
-  const editCondition = (currentInput: IQuestion) => {
-    if (!currentInput) {
-      return;
-    }
-
-    const firstCondition = currentInput.conditions?.[0]?.id;
-    if (firstCondition) {
-      dispatch(actions.setSelectedQuestion(currentInput.id));
-      dispatch(actions.setSelectedCondition(firstCondition));
-      dispatch(actions.setValidityCondition(true));
-    }
+  const editCondition = async () => {
+    // TODO: Open the conditions drawer
+    handleEdit();
+    // if (currentInput) {
+    //   dispatch(actions.setSelectedQuestion(currentInput.id));
+    //   const firstCondition =
+    //     currentInput?.conditions && currentInput?.conditions[0].id;
+    //   if (firstCondition) {
+    //     dispatch(actions.setSelectedCondition(firstCondition));
+    //     dispatch(actions.setValidityCondition(true));
+    //   }
+    // }
   };
   return (
     <Draggable draggableId={input.id} index={index}>
@@ -145,7 +146,7 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
               position="absolute"
               top="10px"
               right="4px"
-              onClick={() => editCondition(input)}
+              onClick={() => editCondition()}
             >
               {getCondition(input).length > 0 && (
                 <SvgHover target="circle">

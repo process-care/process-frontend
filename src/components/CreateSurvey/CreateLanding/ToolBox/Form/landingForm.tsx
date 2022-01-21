@@ -41,6 +41,7 @@ export const LandingForm: React.FC = () => {
 
   const onSave = () => {
     dispatch(actions.update({ ...data }));
+    history.push("/dashboard");
   };
 
   const handleCancel = () => {

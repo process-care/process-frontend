@@ -18,6 +18,9 @@ import { ConnectedRouter } from "connected-react-router";
 import { history } from "redux/store/history";
 import "jodit/build/jodit.min.css";
 
+import "@fontsource/ibm-plex-sans/300.css";
+import "@fontsource/ibm-plex-sans/500.css";
+
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

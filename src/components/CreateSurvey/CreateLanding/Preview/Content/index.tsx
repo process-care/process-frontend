@@ -3,6 +3,8 @@ import { Box, Text, Flex, Button } from "@chakra-ui/react";
 import { Video } from "components/Video";
 import { t } from "static/createLanding";
 import { ILanding } from "types/landing";
+import { useMediaQueries } from "utils/hooks/mediaqueries";
+import { Loader } from "components/Spinner";
 
 interface Props {
   data?: Partial<ILanding>;
@@ -15,8 +17,8 @@ const big_placeholder =
   "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et. <br/> <br/> quo velit tenetur labore at reprehenderit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.<br/> <br/> Blanditiis et, quo velit tenetur labore at reprehenderit.";
 
 export const Content: React.FC<Props> = ({ data, onParticipate }) => {
-  // Safety check
-  if (!data) return <div>Loading... I guess 🤔</div>;
+  const { isMobile } = useMediaQueries();
+  if (!data) return <Loader />;
 
   const {
     title,
@@ -35,18 +37,18 @@ export const Content: React.FC<Props> = ({ data, onParticipate }) => {
     <Box>
       <Box
         backgroundColor={theme?.base || "black"}
-        py="70px"
+        py="100px"
         color="white"
         textAlign="left"
-        px="10%"
+        px="5%"
       >
         <Text variant="xl">{title || "Titre à remplacer"}</Text>
-        <Text variant="smallTitle" mt="30px">
+        <Text variant="current" mt="30px">
           {subtitle || `Sous titre à remplacer. ${placeholder}`}
         </Text>
       </Box>
 
-      <Flex px="12%" py="10%">
+      <Flex px="5%" py="10%">
         {hasMedia && (
           <Box w="40%">
             {hasVideo && <Video url={video_url ?? ""} />}
@@ -54,9 +56,9 @@ export const Content: React.FC<Props> = ({ data, onParticipate }) => {
           </Box>
         )}
         <Box
-          w={hasMedia ? "100%" : "60%"}
+          w={hasMedia ? "100%" : isMobile ? "100%" : "60%"}
           m={hasMedia ? "inherit" : "auto"}
-          pl={10}
+          pl={isMobile ? "unset" : "10px"}
         >
           <Text
             textAlign="left"
@@ -65,7 +67,11 @@ export const Content: React.FC<Props> = ({ data, onParticipate }) => {
               __html: wysiwyg || big_placeholder,
             }}
           ></Text>
-          <Flex mt={10} justifyContent="space-between">
+          <Flex
+            mt={10}
+            justifyContent="space-between"
+            flexDirection={isMobile ? "column" : "row"}
+          >
             <Button
               variant="rounded"
               backgroundColor={theme?.button || "brand.blue"}
@@ -74,6 +80,7 @@ export const Content: React.FC<Props> = ({ data, onParticipate }) => {
               {t.cta_participate}
             </Button>
             <Button
+              mt={isMobile ? "20px" : "unset"}
               variant="rounded"
               color={theme?.button}
               border={`1px solid ${theme?.button}`}

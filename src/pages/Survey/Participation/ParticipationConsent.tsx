@@ -42,7 +42,7 @@ export const ParticipationConsent: React.FC<Props> = ({
     onRefuse();
   }, []);
 
-  const url = survey?.survey?.consentement?.url;
+  const url = survey?.consentement?.url;
 
   if (isLoading) <Box mt="20">Please wait...</Box>;
 
@@ -55,7 +55,7 @@ export const ParticipationConsent: React.FC<Props> = ({
       h="100vh"
     >
       <Box w="100%">
-        <Menu surveyTitle={survey?.survey.title} />
+        <Menu surveyTitle={survey?.title} />
 
         <div className="background__grid">
           <Box

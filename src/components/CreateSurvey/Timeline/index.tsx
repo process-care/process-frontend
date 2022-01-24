@@ -3,18 +3,18 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "redux/hooks";
 import { actions, selectors } from "redux/slices/survey-editor";
-import { Survey } from "redux/slices/surveyBuilder";
+import { SurveyBuilder } from "redux/slices/surveyBuilder";
 import { t } from "./static";
 
 // ---- TYPES
 
 interface Props {
-  survey: Partial<Survey["survey"]> | undefined;
+  survey: Partial<SurveyBuilder["survey"]> | undefined;
   step: number;
 }
 
 interface IStep {
-  id: keyof Omit<Survey["survey"], "needConsent">;
+  id: keyof Omit<SurveyBuilder["survey"], "needConsent">;
   label: string;
   pos: number;
 }

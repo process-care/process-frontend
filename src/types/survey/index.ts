@@ -1,7 +1,9 @@
 import IPage from "types/form/page";
 import IQuestion from "types/form/question";
 import { ILanding } from "types/landing";
+import { MetaInformations } from "./api";
 
+// Status of a survey
 export enum SURVEY_STATUS {
   Draft = "draft",
   Running = "pending",
@@ -9,13 +11,13 @@ export enum SURVEY_STATUS {
   Archived = "archived",
 }
 
-export default interface ISurvey {
+// Single Entity
+export interface Survey {
+  id: string;
   author?: {
     email: string;
   };
-  id: string;
   order: IQuestion["id"][];
-  consentement?: any;
   description: string;
   pages: IPage[];
   landing?: ILanding;
@@ -23,20 +25,14 @@ export default interface ISurvey {
   slug: string;
   status: "draft" | "pending" | "closed" | "archived";
   createdAt: Date;
-  keywords: Record<string, any>[];
+  keywords: Record<string, string>[];
   needConsent: boolean;
+  // FIXME: change the name of this field
+  consentement?: any;
 }
 
-export interface ISurveyRes {
-  survey: ISurvey;
-}
-
-export interface ISurveysRes {
-  surveys: ISurvey[];
-  surveysConnection?: {
-    aggregate: {
-      totalCount: number;
-      count: number;
-    };
-  };
+// Collection with pagination
+export type SurveyCollection = {
+  data: Survey[]
+  meta: MetaInformations
 }

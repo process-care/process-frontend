@@ -17,6 +17,7 @@ export const CreateLanding: React.FC<IRoute> = () => {
   const { previewMode } = useAppSelector((state) => state.application);
 
   const { data: survey } = useGetSurveyBySlug(slug);
+  console.log(survey);
   const landingId = survey?.landing?.id;
 
   const dispatch = useAppDispatch();
@@ -30,6 +31,7 @@ export const CreateLanding: React.FC<IRoute> = () => {
       console.warn("No landing ID to load.");
       return;
     }
+
     dispatch(actions.load(landingId));
   }, [landingId]);
 

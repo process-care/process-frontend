@@ -1,7 +1,8 @@
 import { gql } from "graphql-request";
 import { client } from "call/actions";
 import { useQuery, UseQueryResult } from "react-query";
-import { ISurveysRes } from "types/survey";
+import { shapeSurveys } from "call/shapers/survey";
+import { SurveyCollection } from "types/survey";
 
 // ---- REFERENCES
 
@@ -11,29 +12,40 @@ export const ITEMS_PER_PAGE = 10;
 // ---- GQL
 
 export const WHERE_SURVEYS = gql`
-  query getSurveys($where: JSON!, $pagination: Int, $limit: Int) {
-    surveysConnection(where: $where) {
-      aggregate {
-        totalCount
-        count
-      }
-    }
-    surveys(where: $where, limit: $limit, start: $pagination) {
-      id
-      description
-      title
-      slug
-      status
-      participations {
+  query getSurveys($filters: SurveyFiltersInput, $pagination: PaginationArg, $sort: [String]) {
+    surveys(filters: $filters, pagination: $pagination, sort: $sort) {
+      data {
         id
+        attributes {
+          description
+          title
+          slug
+          status
+          participations {
+            data { id }
+          }
+          landing {
+            data {
+              id
+              attributes {
+                color_theme
+                subtitle
+              }
+            }
+          }
+          keywords
+          createdAt
+        }
       }
-      landing {
-        id
-        color_theme
-        subtitle
+
+      meta {
+        pagination {
+          total
+          page
+          pageSize
+          pageCount
+        }
       }
-      keywords
-      createdAt
     }
   }
 `;
@@ -41,31 +53,27 @@ export const WHERE_SURVEYS = gql`
 // ---- QUERIES
 
 // Get surveys by status
-export const useGetPublishedSurvey = (
-  pagination: number
-): UseQueryResult<ISurveysRes, Error> => {
-  return useQuery<ISurveysRes, Error>(
+export const useGetPublishedSurvey = (pagination: number): UseQueryResult<SurveyCollection, Error> => {
+  return useQuery(
     ["getPublishedSurveys", pagination],
-    async () => {
-      return await client.request(WHERE_SURVEYS, {
-        where: { status: STATUS_PUBLISHED },
-        limit: ITEMS_PER_PAGE,
-        pagination,
-      });
+    () => client.request(WHERE_SURVEYS, {
+      filters: { status: { in: STATUS_PUBLISHED }},
+      pagination: { page: pagination, pageSize: ITEMS_PER_PAGE },
+    }),
+    {
+      select: shapeSurveys,
     }
   );
 };
 
-export const useSearchSurvey = (
-  query: string
-): UseQueryResult<ISurveysRes, Error> => {
-  return useQuery<ISurveysRes, Error>(
+export const useSearchSurvey = (query: string): UseQueryResult<SurveyCollection, Error> => {
+  return useQuery(
     ["getPublishedSurveys", query],
-    async () => {
-      return await client.request(WHERE_SURVEYS, {
-        where: { status: STATUS_PUBLISHED, title_contains: query },
-        pagination: 0,
-      });
+    () => client.request(WHERE_SURVEYS, {
+      filters: { status: { in: STATUS_PUBLISHED }, title: { contains: query }},
+    }),
+    {
+      select: shapeSurveys,
     }
   );
 };

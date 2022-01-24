@@ -2,7 +2,7 @@ import { Box } from "@chakra-ui/react";
 import { Select, Textarea } from "components/Fields";
 import { CustomCreatableSelect } from "components/Fields/SelectCreatable";
 import { FormikErrors } from "formik";
-import { Survey } from "redux/slices/surveyBuilder";
+import { SurveyBuilder } from "redux/slices/surveyBuilder";
 
 // TODO : Get the list of all the tags from the backend
 const t = {
@@ -116,8 +116,8 @@ export const renderInputs = (step: number): React.ReactElement => {
 
 export const checkValidity = (
   step: number,
-  values: Survey["survey"],
-  errors: FormikErrors<Survey["survey"]>
+  values: SurveyBuilder["survey"],
+  errors: FormikErrors<SurveyBuilder["survey"]>
 ): boolean => {
   const { title, description, keywords, language, email, categories, slug } =
     values;
@@ -147,8 +147,8 @@ export const checkValidity = (
 
 // remove unused values
 export const formatValues = (
-  data: Partial<Survey["survey"]> | undefined
-): Partial<Survey["survey"]> => {
+  data: Partial<SurveyBuilder["survey"]> | undefined
+): Partial<SurveyBuilder["survey"]> => {
   return {
     title: data?.title,
     slug: data?.slug,

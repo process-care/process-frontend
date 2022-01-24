@@ -9,13 +9,13 @@ import {
 } from "react-table";
 import { Box, Text, Tooltip } from "@chakra-ui/react";
 import { useCallback } from "react";
-import { Survey } from "redux/slices/surveyBuilder";
+import { SurveyBuilder } from "redux/slices/surveyBuilder";
 
 // ---- TYPES
 
 // FIXME: If table is generic, then this is a hack, because if we expect a project ID
 // it means that we will use this component only for a table displaying Projects
-type ClickAction = (survey: Survey["survey"]) => void;
+type ClickAction = (survey: SurveyBuilder["survey"]) => void;
 
 interface Props {
   columns: Array<Column<any>>;
@@ -106,7 +106,7 @@ const TableRow = ({ row, prepareRow, onClick }: TableRowProps) => {
   // FIXME: Obviously both lines below are bad ⤵️
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore : ID does exist
-  const survey: Survey["survey"] = row.original;
+  const survey: SurveyBuilder["survey"] = row.original;
   const click = useCallback(() => onClick(survey), [survey, onClick]);
 
   return (

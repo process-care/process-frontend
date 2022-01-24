@@ -2,11 +2,11 @@ import { useDeleteCondition } from "call/actions/formBuider/condition";
 import { useDeleteQuestion } from "call/actions/formBuider/question";
 import { useUpdateOrder } from "call/actions/survey";
 import IQuestion from "types/form/question";
-import ISurvey from "types/survey";
+import { Survey } from "types/survey";
 
 export const useQuestionChain: any = (
   selectedQuestion: IQuestion,
-  survey: ISurvey
+  survey: Survey
 ) => {
   const { mutateAsync: deleteQuestion } = useDeleteQuestion();
   const { mutateAsync: deleteCondition } = useDeleteCondition();

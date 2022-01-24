@@ -2,18 +2,32 @@ import { useCallback } from "react";
 import { useAddLanding } from "call/actions/landing";
 import { useUpdateSurvey } from "call/actions/survey";
 import { useHistory } from "react-router-dom";
-import { Survey } from "redux/slices/surveyBuilder";
-import { SURVEY_STATUS } from "types/survey";
+import { Survey, SURVEY_STATUS } from "types/survey";
 
-export const useNavigator: any = (survey: Survey["survey"]) => {
+// ---- TYPES
+
+type Navigators = {
+  gotToLanding: () => Promise<void>,
+  goToForm: () => void,
+  goToConsent: () => void,
+  goToSurveyMetadatas: () => void,
+};
+
+// ---- HOOKS
+
+export const useNavigator = (survey: Survey | undefined): Navigators => {
   const history = useHistory();
 
   const { mutateAsync: addLanding } = useAddLanding();
   const { mutateAsync: updateSurvey } = useUpdateSurvey();
 
-  const { landing, title, id, slug } = survey;
-
+  // Take you to the landing
   const gotToLanding = useCallback(async () => {
+    // If no survey, don't do anything
+    if (!survey) return;
+
+    const { id, landing, title, slug } = survey;
+
     // If the landing is not created yet, create it
     if (!landing) {
       const newLanding: Record<string, any> = await addLanding({
@@ -26,13 +40,18 @@ export const useNavigator: any = (survey: Survey["survey"]) => {
         data: { landing: newLanding.createLanding.landing.id },
       });
     }
+
+    // Navigate to the landing
     history.push(`/survey/${slug}/create/landing`);
-  }, [id, slug]);
+  }, [survey?.id, survey?.slug]);
 
   // Take you to the form editor
   const goToForm = useCallback(() => {
+    if (!survey) return;
+
+    const { status, slug } = survey;
     if (
-      survey.status !== SURVEY_STATUS.Draft &&
+      status !== SURVEY_STATUS.Draft &&
       process.env.NODE_ENV !== "development"
     ) {
       alert(
@@ -42,16 +61,19 @@ export const useNavigator: any = (survey: Survey["survey"]) => {
     }
 
     history.push(`/survey/${slug}/create/form`);
-  }, [id]);
+  }, [survey?.id]);
 
   // Take you to the consent page
   const goToConsent = useCallback(() => {
-    history.push(`/survey/${slug}/create/consent`);
-  }, [id]);
+    if (!survey) return;
+    history.push(`/survey/${survey.slug}/create/consent`);
+  }, [survey?.id]);
 
+  // Take you to the survey metadatas page
   const goToSurveyMetadatas = useCallback(() => {
-    history.push(`/survey/${slug}/create/metadatas`);
-  }, [id]);
+    if (!survey) return;
+    history.push(`/survey/${survey.slug}/create/metadatas`);
+  }, [survey?.id]);
 
   return {
     gotToLanding,

@@ -64,12 +64,23 @@ export const GET_SURVEYS = gql`
 `;
 
 // Search for a survey
+// FIXME: this has a depth problem with the fragment
 export const WHERE_SURVEYS = gql`
   ${surveyEntityFragment}
-  query getSurveys($filters: JSON!) {
-    surveys(filters: $filters) {
+
+  query getSurveys($filters: SurveyFiltersInput, $pagination: PaginationArg, $sort: [String]) {
+    surveys(filters: $filters, pagination: $pagination, sort: $sort) {
       data {
         ...surveyEntityFragment
+      }
+
+      meta {
+        pagination {
+          total
+          page
+          pageSize
+          pageCount
+        }
       }
     }
   }
@@ -78,6 +89,7 @@ export const WHERE_SURVEYS = gql`
 // Get one specific survey
 export const GET_SURVEY = gql`
   ${surveyEntityFragment}
+
   query getSurvey($id: ID!) {
     survey(id: $id) {
       data {
@@ -90,6 +102,7 @@ export const GET_SURVEY = gql`
 // Get one specific survey
 export const GET_SURVEY_BY_SLUG = gql`
   ${surveyEntityFragment}
+  
   query getSurveyBySlug($slug: String!) {
     surveys(filters: { slug: { eq: $slug } }) {
       data {
@@ -126,45 +139,40 @@ export const GET_SURVEY_METADATAS = gql`
 export const GET_SURVEY_STATS = gql`
   query getSurveyStats($id: ID!) {
     surveyStats(id: $id) {
-      data {
-        id
-        attributes {
-          title
-          description
-          publishedAt
-          createdAt
-          statistics {
-            day {
-              visits
-              consented
-              completed
-            }
-            week {
-              visits
-              consented
-              completed
-            }
-            month {
-              visits
-              consented
-              completed
-            }
-            semester {
-              visits
-              consented
-              completed
-            }
-            year {
-              visits
-              consented
-              completed
-            }
-            all {
-              visits
-              consented
-              completed
-            }
-          }
+      title
+      description
+      publishedAt
+      createdAt
+      statistics {
+        day {
+          visits
+          consented
+          completed
+        }
+        week {
+          visits
+          consented
+          completed
+        }
+        month {
+          visits
+          consented
+          completed
+        }
+        semester {
+          visits
+          consented
+          completed
+        }
+        year {
+          visits
+          consented
+          completed
+        }
+        all {
+          visits
+          consented
+          completed
         }
       }
     }
@@ -175,7 +183,7 @@ export const GET_SURVEY_STATS = gql`
 
 // Create survey
 export const ADD_SURVEY = gql`
-  mutation addSurvey($values: SurveyInput) {
+  mutation addSurvey($values: SurveyInput!) {
     createSurvey(data: $values) {
       data {
         id

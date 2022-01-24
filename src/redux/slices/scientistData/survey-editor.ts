@@ -2,7 +2,7 @@ import { PayloadAction } from "@reduxjs/toolkit";
 
 import { RootState } from "redux/store";
 import { DateTime } from "luxon";
-import { Survey } from "../surveyBuilder";
+import { SurveyBuilder } from "../surveyBuilder";
 import slugify from "slugify";
 import { history } from "redux/store/history";
 import { GlobalState } from "../scientistData";
@@ -21,7 +21,7 @@ export interface SurveyEditor {
   lastUpdated: string;
   lastSaved: string;
   lastPosted: string;
-  data: Partial<Survey["survey"]>;
+  data: Partial<SurveyBuilder["survey"]>;
   step: number;
   selectedSurvey: string;
   order: string[];
@@ -44,7 +44,7 @@ export const initialSurveyState: SurveyEditor = {
 
 // ---- ACTIONS
 
-type UpdatePayload = Partial<Survey["survey"]>;
+type UpdatePayload = Partial<SurveyBuilder["survey"]>;
 
 type UpdatedPayload = {
   lastSaved: string;
@@ -68,7 +68,7 @@ export const hasChanges = (state: RootState): boolean => {
 
 export const getSelectedSurvey = (
   state: RootState
-): Partial<Survey["survey"]> => state.scientistData.survey.data;
+): Partial<SurveyBuilder["survey"]> => state.scientistData.survey.data;
 
 export const getSelectedSurveyId = (state: RootState): string =>
   state.scientistData.survey.selectedSurvey;

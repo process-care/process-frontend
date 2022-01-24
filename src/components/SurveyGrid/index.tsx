@@ -2,15 +2,15 @@ import { Grid } from "@chakra-ui/react";
 import React from "react";
 import { Loader } from "components/Spinner";
 import { NavLink } from "react-router-dom";
-import ISurvey from "types/survey";
 import { Card } from "./Card";
+import { Survey } from "types/survey";
 
 const t = {
   noData: "No surveys here ....",
 };
 
 interface Props {
-  surveys: ISurvey[] | undefined;
+  surveys: Survey[] | undefined;
   isLoading: boolean;
 }
 

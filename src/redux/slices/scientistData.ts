@@ -3,7 +3,6 @@ import ICondition, { CheckSurvey } from "types/form/condition";
 
 import IPage from "types/form/page";
 import IQuestion from "types/form/question";
-import ISurvey from "types/survey";
 import {
   authReducers,
   authSelectors,
@@ -45,9 +44,10 @@ import {
   surveyReducers,
   surveySelectors,
 } from "./scientistData/survey-editor";
-import { Survey } from "./surveyBuilder";
+import { SurveyBuilder } from "./surveyBuilder";
+import { Survey } from "types/survey";
 
-type LoadedPayload = Survey["survey"];
+type LoadedPayload = SurveyBuilder["survey"];
 type UpdatedPayload = {
   lastUpdated: string;
 };
@@ -59,7 +59,7 @@ export interface GlobalState {
   conditions: EntityState<ICondition> & ConditionEditor;
   survey: SurveyEditor;
   auth: AuthState;
-  surveys: EntityState<ISurvey> & SurveysEditor;
+  surveys: EntityState<Survey> & SurveysEditor;
 }
 
 // ----- SLICE

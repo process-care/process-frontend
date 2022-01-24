@@ -37,8 +37,8 @@ export const GET_ME = gql`
         id
         attributes {
           email
-          first_name
-          last_name
+          firstName
+          lastName
           job
           institution
         }
@@ -54,8 +54,8 @@ export const UPDATE_ME = gql`
         id
         attributes {
           email
-          first_name
-          last_name
+          firstName
+          lastName
           job
           institution
         }

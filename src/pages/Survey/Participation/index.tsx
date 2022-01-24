@@ -9,8 +9,8 @@ import {
   storeParticipation,
 } from "./localstorage-handlers";
 import { NL } from "./nl";
-import { SURVEY_STATUS } from "types/survey";
 import { Loader } from "components/Spinner";
+import { SURVEY_STATUS } from "types/survey";
 
 // ---- COMPONENT
 

@@ -11,9 +11,12 @@ import { UploadFileRemote } from "components/Fields/UploadFileRemote";
 import { API_URL_ROOT } from "constants/api";
 import { PdfPreview } from "./PdfPreview";
 import { Switch } from "components/Fields";
-import ISurvey from "types/survey";
 import { actions } from "redux/slices/scientistData";
 import { Loader } from "components/Spinner";
+import { Survey } from "types/survey";
+
+// ---- STATICS
+
 const t = {
   label: "Importer la note d'information aux participants sous format pdf",
   cta: "Importer votre fichier",
@@ -23,6 +26,8 @@ const t = {
   switchLabel:
     "Ce projet nécessite de présenter une notice d'information et de recueillir le consentement des personnes avant participation",
 };
+
+// ---- COMPONENT
 
 export const CreateConsent: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -35,7 +40,7 @@ export const CreateConsent: React.FC = () => {
     history.push("/dashboard");
   };
 
-  const formatInitialValues = (survey: ISurvey | undefined) => {
+  const formatInitialValues = (survey: Survey | undefined) => {
     return {
       consentement: survey?.consentement,
       needConsent: survey?.needConsent,

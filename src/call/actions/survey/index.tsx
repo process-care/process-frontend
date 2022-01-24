@@ -3,11 +3,11 @@ import {
   GET_SURVEY_STATS,
   GET_SURVEYS,
   GET_MY_SURVEYS,
-  GET_SURVEY_METADATAS,
+  // GET_SURVEY_METADATAS,
   DELETE_SURVEY,
   ADD_SURVEY,
   UPDATE_SURVEY,
-  WHERE_SURVEYS,
+  GET_SURVEY_BY_SLUG,
 } from "call/queries/survey";
 import { UPDATE_ORDER } from "call/queries/survey";
 import {
@@ -17,85 +17,96 @@ import {
   UseQueryResult,
 } from "react-query";
 import { optimisticUpdate } from "call/optimisiticUpdate";
-import ISurvey, { ISurveyRes, ISurveysRes } from "types/survey";
-import { Survey } from "redux/slices/surveyBuilder";
+import { SurveysResult } from "types/survey/api";
+// import { SurveyBuilder } from "redux/slices/surveyBuilder";
+import { Survey, SurveyCollection } from "types/survey";
 import { client } from "..";
+import { shapeSurvey, shapeSurveys } from "call/shapers/survey";
 
 // ---- QUERIES
 
 // Get one by ID
-export const useGetSurvey = (id: string): UseQueryResult<ISurveyRes, Error> =>
-  useQuery<ISurveyRes, Error>(
+export const useGetSurvey = (id: string): UseQueryResult<Survey, Error> =>
+  useQuery(
     ["getSurvey", id],
-    () =>
-      client.request(GET_SURVEY, {
-        id,
-      }),
-    { enabled: !!id }
+    () => client.request(GET_SURVEY, { id }).then(res => res.survey),
+    {
+      enabled: !!id,
+      select: shapeSurvey
+    }
   );
 
 // Get metadata of a survey by ID
-export const useGetSurveyMetadas = (
-  id: string
-): UseQueryResult<Survey, Error> =>
-  useQuery<Survey, Error>(
-    ["getSurveyMetadas", id],
-    () =>
-      client.request(GET_SURVEY_METADATAS, {
-        id,
-      }),
-    { enabled: !!id }
-  );
+// export const useGetSurveyMetadas = (
+//   id: string
+// ): UseQueryResult<SurveyBuilder, Error> =>
+//   useQuery(
+//     ["getSurveyMetadas", id],
+//     () => client.request(GET_SURVEY_METADATAS, { id }),
+//     {
+//       enabled: !!id,
+//       select: shapeSurvey
+//     }
+//   );
 
 // Get stats of a survey by ID
 export const useGetSurveyStats: any = (id: string) =>
   useQuery(
     ["getSurveyStats", id],
-    () =>
-      client.request(GET_SURVEY_STATS, {
-        id,
-      }),
-    { enabled: !!id }
+    () => client.request(GET_SURVEY_STATS, { id }),
+    {
+      enabled: !!id,
+    }
   );
 
 // Get only my on surveys  
 export const useGetMySurveys = (
   authorId: string
-): UseQueryResult<ISurveysRes, Error> =>
-  useQuery<ISurveysRes, Error, any>(
+): UseQueryResult<SurveyCollection, Error> =>
+  useQuery<SurveysResult, Error, any>(
     "getSurveys",
-    () => client.request(GET_MY_SURVEYS, { authorId }),
-    { enabled: !!authorId }
+    () => client.request(GET_MY_SURVEYS, { authorId }).then(res => res.surveys),
+    {
+      enabled: !!authorId,
+      select: shapeSurveys
+    }
   );
 
 // Get one by slug  
-export const useGetSurveyBySlug = (slug: string): UseQueryResult<ISurvey, Error> =>
-  useQuery<ISurvey, Error>(
+export const useGetSurveyBySlug = (slug: string): UseQueryResult<Survey, Error> =>
+  useQuery(
     ["getSurveyBySlug", slug],
-    () => client.request(WHERE_SURVEYS, { where: { slug } }).then(res => {
-      return res.surveys[0];
+    () => client.request(GET_SURVEY_BY_SLUG, { slug }).then(res => {
+      console.log('getting a survey by its slug: ', res.surveys.data[0]);
+      return { data: res.surveys.data[0] };
     }),
-    { enabled: Boolean(slug) }
+    {
+      enabled: Boolean(slug),
+      select: shapeSurvey
+    }
   );
 
 // Get all surveys  
-export const useGetSurveys = (): UseQueryResult<ISurveysRes, Error> =>
-  useQuery<ISurveysRes, Error>("getMySurveys", () =>
-    client.request(GET_SURVEYS)
+export const useGetSurveys = (): UseQueryResult<SurveyCollection, Error> =>
+  useQuery(
+    "getMySurveys",
+    () => client.request(GET_SURVEYS).then(res => res.surveys),
+    {
+      select: shapeSurveys
+    }
   );
 
-  // ---- MUTATIONS
+// ---- MUTATIONS
 
-  export const useAddSurvey: any = (): UseMutationResult<ISurvey, Error> =>
-  useMutation<ISurvey, Error, any>(
-    async (values: Partial<ISurvey>) =>
-      await client.request(ADD_SURVEY, { values }),
-    optimisticUpdate(["getSurvey"])
-  );
+export const useAddSurvey: any = (): UseMutationResult<Survey, Error> =>
+useMutation<Survey, Error, any>(
+  (values: Partial<Survey>) => client.request(ADD_SURVEY, { values }),
+  optimisticUpdate(["getSurvey"]),
+);
 
-export const useUpdateSurvey = (): UseMutationResult<ISurvey, Error> =>
-  useMutation<ISurvey, Error, any>(
-    async ({ id, data }: { id: string; data: Partial<ISurvey> }) =>
+export const useUpdateSurvey = (): UseMutationResult<Survey, Error> =>
+  useMutation<Survey, Error, any>(
+    async ({ id, data }: { id: string; data: Partial<Survey> }) =>
       await client.request(UPDATE_SURVEY, {
         id,
         data,
@@ -103,8 +114,8 @@ export const useUpdateSurvey = (): UseMutationResult<ISurvey, Error> =>
     optimisticUpdate(["getSurvey", "getSurveys"])
   );
 
-export const useDeleteSurvey = (): UseMutationResult<ISurvey, Error> =>
-  useMutation<ISurvey, Error, any>(
+export const useDeleteSurvey = (): UseMutationResult<Survey, Error> =>
+  useMutation<Survey, Error, any>(
     async (id: string) =>
       await client.request(DELETE_SURVEY, {
         id,

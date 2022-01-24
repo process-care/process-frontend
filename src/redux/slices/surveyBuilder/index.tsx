@@ -3,7 +3,7 @@ import slugify from "slugify";
 import IPage from "types/form/page";
 import IQuestion from "types/form/question";
 
-export interface Survey {
+export interface SurveyBuilder {
   survey: {
     id: string;
     slug: string;
@@ -30,7 +30,7 @@ interface Update {
   };
 }
 
-export const initialState: Survey = {
+export const initialState: SurveyBuilder = {
   survey: {
     order: [],
     id: "",

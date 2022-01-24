@@ -12,7 +12,7 @@ import Drawer from "components/Drawer";
 
 import dayjs from "dayjs";
 
-import { Survey } from "redux/slices/surveyBuilder";
+import { SurveyBuilder } from "redux/slices/surveyBuilder";
 import { useAppSelector } from "redux/hooks";
 import { actions as actionsApplication } from "redux/slices/application";
 import { useDispatch } from "react-redux";
@@ -45,7 +45,7 @@ export const Dashboard: React.FC<IRoute> = () => {
     setMenuIsOpen(false);
   };
 
-  const toggleMenu = (survey: Survey["survey"]) => {
+  const toggleMenu = (survey: SurveyBuilder["survey"]) => {
     dispatch(actionsMySurveys.setSelectedSurvey(survey.id));
     if (!isOpen) {
       setMenuIsOpen(true);
@@ -122,6 +122,9 @@ export const Dashboard: React.FC<IRoute> = () => {
   const hadSurveys = surveysLenght > 0;
   const hadFilteredSurvys = data.length > 0;
 
+  console.log(surveys);
+  console.log(surveysLenght);
+  
   return (
     <Box d="flex" justifyContent="space-around" w="100%">
       <Box h="80vh">

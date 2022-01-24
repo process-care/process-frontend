@@ -43,18 +43,21 @@ export const Portail: React.FC<IRoute> = () => {
   const [state, setState] = useState<any>([]);
 
   const filteredSurveys = useMemo(() => {
-    return surveys?.surveys?.filter(
+    console.log(surveys);
+    if (!surveys) return [];
+
+    return surveys?.data?.filter(
       (survey) => currentFilter === "all" || survey.status === currentFilter
     );
   }, [currentFilter, surveys]);
 
   useEffect(() => {
-    if (state !== surveys?.surveys && filteredSurveys) {
+    if (state !== surveys?.data && filteredSurveys) {
       setState([...state, ...filteredSurveys]);
     }
   }, [filteredSurveys]);
 
-  const totalCount = surveys?.surveysConnection?.aggregate.count;
+  const totalCount = surveys?.meta.pagination.total;
   const isSearching = query !== "";
 
   return (
@@ -125,9 +128,9 @@ export const Portail: React.FC<IRoute> = () => {
         </Box>
 
         {isSearching ? (
-          surveysFound && surveysFound?.surveys?.length > 0 ? (
+          surveysFound && surveysFound?.data?.length > 0 ? (
             <SurveyGrid
-              surveys={surveysFound?.surveys}
+              surveys={surveysFound?.data}
               isLoading={loadingSearch}
             />
           ) : loadingSearch ? (

@@ -50,7 +50,7 @@ export const ParticipationForm: React.FC<Props> = ({
     selectIndex,
   } = useNavigationHandlers(pages);
 
-  const { onFinish } = useFinishHandler(participationId, data?.survey.slug);
+  const { onFinish } = useFinishHandler(participationId, data?.slug);
 
   // Missing data checks
 
@@ -60,7 +60,7 @@ export const ParticipationForm: React.FC<Props> = ({
         <Loader />
       </Center>
     );
-  if (isError || !data?.survey)
+  if (isError || !data)
     return (
       <Center>
         <Error message="Il n'y a pas de donnée sur le formulaire." />
@@ -70,19 +70,19 @@ export const ParticipationForm: React.FC<Props> = ({
   // if ((pages?.length ?? 0) < 1 || !selectedPage)
   //   return <Box mt="60">No pages to display ! Contact the administrator !</Box>;
 
-  const currentColor = data.survey.landing?.color_theme?.base || "black";
-  const { order } = data.survey;
+  const currentColor = data.landing?.color_theme?.base || "black";
+  const { order } = data;
 
   return (
     <Box>
       <Flex direction="row" h="100vh">
         <Box w="20%">
           <ParticipationMenu
-            author={data.survey.author?.email}
+            author={data.author?.email}
             pages={pages}
             selectIndex={selectIndex}
             color={currentColor}
-            logo={data.survey.landing?.logo}
+            logo={data.landing?.logo}
             selectedPage={selectedPage}
           />
         </Box>
@@ -102,7 +102,7 @@ export const ParticipationForm: React.FC<Props> = ({
             color="white"
             textAlign="left"
           >
-            {data.survey.title}
+            {data.title}
           </Box>
           <Page
             isFirstPage={isFirstPage}

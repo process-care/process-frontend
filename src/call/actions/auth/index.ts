@@ -86,8 +86,6 @@ export const useGetMe = (userId: string): UseQueryResult<User, Error> => {
       const user = {
         id: res.usersPermissionsUser.data.id,
         ...res.usersPermissionsUser.data.attributes,
-        lastName: res.usersPermissionsUser.data.attributes.last_name,
-        firstName: res.usersPermissionsUser.data.attributes.first_name,
       };
 
       return user;

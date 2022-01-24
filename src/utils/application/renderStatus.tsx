@@ -1,11 +1,11 @@
-import { Survey } from "redux/slices/surveyBuilder";
+import { SurveyBuilder } from "redux/slices/surveyBuilder";
 
 interface StatusTrad {
   trad: "Non publié" | "Finalisé" | "Archivé" | "En cours";
 }
 
 export const renderStatus = (
-  status: Survey["survey"]["status"]
+  status: SurveyBuilder["survey"]["status"]
 ): StatusTrad["trad"] => {
   switch (status) {
     case "draft":

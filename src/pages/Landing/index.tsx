@@ -15,8 +15,8 @@ import { useGetSurveyBySlug } from "call/actions/survey";
 
 export const Landing: React.FC<IRoute> = () => {
   const { slug } = useParams<{ slug: string }>();
-
   const { data: survey } = useGetSurveyBySlug(slug);
+  
   const {
     data: landing,
     isLoading,

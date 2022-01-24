@@ -8,7 +8,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React from "react";
-import ISurvey from "types/survey";
+import { Survey } from "types/survey";
 import { renderStatus } from "utils/application/renderStatus";
 
 // STATIC
@@ -18,8 +18,9 @@ const t = {
 };
 
 // TYPES
+
 interface Props {
-  data: ISurvey;
+  data: Survey;
 }
 
 // COMPONENT

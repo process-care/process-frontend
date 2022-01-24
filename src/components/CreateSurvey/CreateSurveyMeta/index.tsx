@@ -13,22 +13,19 @@ import { checkValidity, formatValues, renderInputs } from "./utils";
 
 import { useParams } from "react-router-dom";
 import { selectors, actions } from "redux/slices/survey-editor";
-import { useGetSurveyBySlug } from "call/actions/survey";
 
 // COMPONENT
 
 export const CreateSurveyForm: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { data: survey } = useGetSurveyBySlug(slug);
-
   const dispatch = useAppDispatch();
 
   // TODO: We could even do this effect when the user opens a side menu in the dashboard, so we "preload" the data
   useEffect(() => {
-    if (survey) {
-      dispatch(actions.initialize(survey.id));
+    if (slug) {
+      dispatch(actions.initialize(slug));
     }
-  }, [survey]);
+  }, [slug]);
 
   // Flag to avoid saving the initial values injected into Formik
   const firstRender = useRef(true);
@@ -42,6 +39,8 @@ export const CreateSurveyForm: React.FC = () => {
     setSubmitting(true);
     dispatch(actions.post(data));
   }, []);
+
+  console.log(data, error, step);
 
   return (
     <>

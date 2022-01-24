@@ -10,12 +10,12 @@ import { ReactComponent as Add } from "./assets/add.svg";
 
 import { isInactive } from "./utils";
 import { SvgHover } from "components/SvgHover";
-import ISurvey from "types/survey";
 
 import { actions, selectors } from "redux/slices/scientistData";
+import { Survey } from "types/survey";
 
 interface Props {
-  survey: ISurvey | Record<string, any>;
+  survey: Survey | Record<string, any>;
 }
 
 const PageBuilder: React.FC<Props> = ({ survey }) => {

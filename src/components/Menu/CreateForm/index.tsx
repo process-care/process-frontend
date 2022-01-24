@@ -100,7 +100,7 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
             isTruncated
             maxWidth="250px"
           >
-            {data?.survey?.title}
+            {data?.title}
           </Text>
           <Flex pos="absolute" right="10px">
             {inProgress && <ChangesInProgress />}

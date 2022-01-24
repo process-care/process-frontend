@@ -8,16 +8,18 @@ import {
   GET_MY_SURVEYS,
   UPDATE_SURVEY,
 } from "call/queries/survey";
+import { shapeSurveys } from "call/shapers/survey";
 
 // Watches over "initialize" surveys
 const initializeEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.initializeSurveys.type),
-    switchMap((action) => {
-      return client.request(GET_MY_SURVEYS, { authorId: action.payload });
+    switchMap(async (action) => {
+      const res = await client.request(GET_MY_SURVEYS, { authorId: action.payload });
+      return shapeSurveys(res);
     }),
     map((result) => {
-      const payload = result.surveys;
+      const payload = result.data;
       return actions.initializedSurveys(payload);
     })
   );

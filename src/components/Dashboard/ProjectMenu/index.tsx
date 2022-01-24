@@ -13,10 +13,11 @@ import { RemovingConfirmation } from "components/CreateSurvey/CreateForm/Conditi
 import { renderStatus } from "utils/application/renderStatus";
 import { Loader } from "components/Spinner";
 import { NavLink } from "react-router-dom";
-import ISurvey, { SURVEY_STATUS } from "types/survey";
 import { actions, selectors } from "redux/slices/scientistData";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "redux/hooks";
+import { Survey, SURVEY_STATUS } from "types/survey";
+
 // ---- STATICS
 
 const filters = [
@@ -58,6 +59,7 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
     useWarning(selectedSurvey);
 
   const [statFilter, setStatFilter] = useState(filters[0].id);
+
   // We should be doing that much better :/
   if (isLoadingStats) {
     return (
@@ -74,11 +76,16 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
     );
   }
 
-  const selectedStats = statistics[statFilter];
-
-  if (!menuIsOpen || !selectedSurvey) {
+  // FIXME: Why is it an array ?
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore  
+  if (!menuIsOpen || !selectedSurvey || selectedSurvey.length < 1) {
     return <></>;
   }
+  
+  console.log(selectedSurvey);
+  console.log(statistics);
+  const selectedStats = statistics[statFilter];
 
   const handleTrash = () => {
     setIsRemoving(true);
@@ -89,7 +96,7 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
     onClose();
   };
 
-  const changeStatus = (status: ISurvey["status"]) => {
+  const changeStatus = (status: Survey["status"]) => {
     if (!selectedSurvey.id) return;
     dispatch(
       actions.updateSurveys({
@@ -108,8 +115,6 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
   const handlePublish = () => {
     changeStatus("pending");
   };
-
-  if (!menuIsOpen || !selectedSurvey) return <></>;
 
   return (
     // TODO: Use a % + max-width to limit growth on big screens
@@ -312,13 +317,14 @@ function useSurveyData(surveyId: string | undefined) {
   };
 }
 
-function useWarning(selectedSurvey: ISurvey | undefined) {
+function useWarning(selectedSurvey: Survey | undefined) {
   const isDraft = selectedSurvey?.status === SURVEY_STATUS.Draft;
   const isArchived = selectedSurvey?.status === SURVEY_STATUS.Archived;
 
   const hadLanding = selectedSurvey?.landing !== null;
   const hadQuestion = selectedSurvey && selectedSurvey?.order?.length > 0;
   const canPublish = isDraft && hadLanding && hadQuestion;
+
   return {
     isDraft,
     isArchived,

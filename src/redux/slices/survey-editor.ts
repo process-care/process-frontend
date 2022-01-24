@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 // import type { RootState } from "redux/store";
 import { RootState } from "redux/store";
 import { DateTime } from "luxon";
-import { Survey } from "./surveyBuilder";
+import { SurveyBuilder } from "./surveyBuilder";
 import slugify from "slugify";
 import { history } from "redux/store/history";
 
@@ -18,7 +18,7 @@ export interface SurveyEditor {
   lastUpdated: string;
   lastSaved: string;
   lastPosted: string;
-  data?: Partial<Survey["survey"]>;
+  data?: Partial<SurveyBuilder["survey"]>;
   step: number;
 }
 
@@ -43,9 +43,9 @@ const initialState: SurveyEditor = {
 
 // ---- ACTIONS
 
-type LoadedPayload = Survey["survey"];
+type LoadedPayload = SurveyBuilder["survey"];
 
-type UpdatePayload = Partial<Survey["survey"]>;
+type UpdatePayload = Partial<SurveyBuilder["survey"]>;
 
 type UpdatedPayload = {
   lastSaved: string;
@@ -124,7 +124,7 @@ export const hasChanges = (state: RootState): boolean => {
 
 export const survey = (
   state: RootState
-): Partial<Survey["survey"]> | undefined => state.editor.survey.data;
+): Partial<SurveyBuilder["survey"]> | undefined => state.editor.survey.data;
 
 export const selectors = {
   error,

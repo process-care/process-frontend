@@ -4,19 +4,26 @@ import { Epic } from "redux/store";
 import { actions } from "redux/slices/survey-editor";
 
 import { client } from "call/actions";
-import { GET_SURVEY, UPDATE_SURVEY, ADD_SURVEY } from "call/queries/survey";
+import { GET_SURVEY_BY_SLUG, UPDATE_SURVEY, ADD_SURVEY } from "call/queries/survey";
 import { ADD_PAGE } from "call/queries/formBuilder/page";
+import { shapeSurvey } from "call/shapers/survey";
 
 // Watches over "load" survey
 const loadEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.initialize.type),
     switchMap((action) => {
-      return client.request(GET_SURVEY, { id: action.payload });
+      console.log('Yoloing the yolo');
+      return client.request(GET_SURVEY_BY_SLUG, { slug: action.payload }).then((res) => {
+        console.log('Bidum: ', res);
+        return shapeSurvey(res.surveys[0]);
+      });
     }),
     map((result) => {
-      const payload = result.survey;
-      return actions.initialized(payload);
+      console.log("loadEpic", result);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      return actions.initialized(result);
     })
   );
 
@@ -62,7 +69,7 @@ const postEpic: Epic = (action$, state$) =>
           },
         });
 
-        const surveyId = surveyRes?.createSurvey?.survey.id;
+        const surveyId = surveyRes?.createSurvey?.data.id;
         if (surveyId) {
           await client.request(ADD_PAGE, {
             values: {

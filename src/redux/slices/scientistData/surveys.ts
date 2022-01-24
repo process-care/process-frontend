@@ -2,12 +2,12 @@ import { PayloadAction, createEntityAdapter } from "@reduxjs/toolkit";
 
 import { RootState } from "redux/store";
 import { DateTime } from "luxon";
-import ISurvey from "types/survey";
 import { GlobalState } from "../scientistData";
+import { Survey } from "types/survey";
 
 // ----- ENTITY ADAPTER
 
-export const surveysAdapter = createEntityAdapter<ISurvey>({
+export const surveysAdapter = createEntityAdapter<Survey>({
   selectId: (survey) => survey.id,
 });
 
@@ -44,7 +44,7 @@ export const initialSurveysState: SurveysEditor = {
 
 type UpdatePayload = {
   id: string;
-  changes: Partial<ISurvey>;
+  changes: Partial<Survey>;
 };
 
 type UpdatedPayload = {
@@ -63,20 +63,23 @@ type SavedPayload = {
 
 export const error = (state: RootState): string | undefined =>
   state.scientistData.surveys.error;
+
 export const isLoading = (state: RootState): boolean =>
   state.scientistData.surveys.isLoading;
+
 export const hasChanges = (state: RootState): boolean => {
   const updated = DateTime.fromISO(state.scientistData.surveys.lastUpdated);
   const saved = DateTime.fromISO(state.scientistData.surveys.lastSaved);
   return updated > saved;
 };
-export const getAllSurveys = (state: RootState): ISurvey[] =>
+
+export const getAllSurveys = (state: RootState): Survey[] =>
   surveysAdapter.getSelectors().selectAll(state.scientistData.surveys);
 
 const getSelectedSurveyId = (state: RootState): string =>
   state.scientistData.surveys.selectedSurvey;
 
-const getSelectedSurvey = (state: RootState): ISurvey | undefined =>
+const getSelectedSurvey = (state: RootState): Survey | undefined =>
   surveysAdapter
     .getSelectors()
     .selectById(state.scientistData.surveys, getSelectedSurveyId(state));

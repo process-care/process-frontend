@@ -63,7 +63,9 @@ export const Preview: React.FC<Props> = ({ isUserView, data }) => {
       </Box>
     );
   }
+
   console.log(data);
+  
   return (
     <Box
       h={isFullView ? "100%" : "fit-content"}

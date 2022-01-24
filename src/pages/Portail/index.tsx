@@ -138,14 +138,20 @@ export const Portail: React.FC<IRoute> = () => {
           ) : loadingSearch ? (
             <Loader />
           ) : (
-            <NoData content="Nous n'avons pas trouvé d'enquêtes pour votre recherche." />
+            <NoData
+              content="Nous n'avons pas trouvé d'enquêtes pour votre recherche."
+              w="90%"
+            />
           )
         ) : state.length > 0 ? (
           <SurveyGrid surveys={state} isLoading={isLoading} />
         ) : isLoading ? (
           <Loader />
         ) : (
-          <NoData content="Nous n'avons pas trouvé d'enquêtes pour votre recherche." />
+          <NoData
+            content="Nous n'avons pas trouvé d'enquêtes pour votre recherche."
+            w="90%"
+          />
         )}
       </Box>
       {totalCount && state.length < totalCount && (

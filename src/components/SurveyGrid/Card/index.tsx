@@ -47,7 +47,7 @@ export const Card: React.FC<Props> = ({ data }) => {
         />
         <Text variant="titleParaLight">{data.title}</Text>
       </Flex>
-      <Box minH="140px">
+      <Box minH="100px">
         <Text variant="current" mt="30px" noOfLines={5}>
           {data.landing?.subtitle ||
             "Lorem, ipsum dolor sit amet consectetur adipisicing elit.Doloribus, impedit non. Sequi asperiores amet sunt. Consequunturvitae aliquam quasi laudantium, voluptas repellendus sapiente sit esse! Id mollitia deleniti ea nisi."}
@@ -81,6 +81,7 @@ export const Card: React.FC<Props> = ({ data }) => {
         </Badge>
         <Button
           variant="rounded"
+          padding="15px 20px"
           bg={data.landing?.color_theme?.button || "black"}
         >
           {t.cta}

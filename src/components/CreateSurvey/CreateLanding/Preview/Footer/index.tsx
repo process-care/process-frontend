@@ -3,6 +3,7 @@ import { Flex, Box, Button, Text, Container, Image } from "@chakra-ui/react";
 import { t } from "static/createLanding";
 import { NavLink } from "react-router-dom";
 import { Color } from "types/landing";
+import { useMediaQueries } from "utils/hooks/mediaqueries";
 
 type Props = {
   partners_logos: string[];
@@ -10,10 +11,16 @@ type Props = {
 };
 
 export const Footer: React.FC<Props> = ({ partners_logos, color_theme }) => {
+  const { isTablet } = useMediaQueries();
+
   return (
     <>
       <Container variant="hr" w="100%" maxW="unset" />
-      <Flex py={10} justifyContent="space-between">
+      <Flex
+        py={10}
+        justifyContent={isTablet ? "center" : "space-between"}
+        flexDir={isTablet ? "column" : "row"}
+      >
         <Box d="flex" pl={8}>
           {partners_logos.map((img: any, idx) => (
             <Image
@@ -29,11 +36,18 @@ export const Footer: React.FC<Props> = ({ partners_logos, color_theme }) => {
             />
           ))}
         </Box>
-        <Box px={4}>
+        <Box
+          px={4}
+          d="flex"
+          justifyContent={isTablet ? "center" : "space-between"}
+          flexDir={isTablet ? "column" : "row"}
+        >
           <Button mr={4} variant="link">
             georgesabitbol@aphp.com
           </Button>
-          <Button variant="link">mentions légales</Button>
+          <Button mt={isTablet ? "20px" : "unset"} variant="link">
+            mentions légales
+          </Button>
         </Box>
       </Flex>
       <NavLink to="/">

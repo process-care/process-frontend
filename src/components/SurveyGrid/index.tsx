@@ -11,7 +11,7 @@ const t = {
 };
 
 interface Props {
-  surveys: SurveyRedux[] | undefined;
+  surveys: SurveyRedux[] | any | undefined;
   isLoading: boolean;
 }
 
@@ -39,7 +39,7 @@ export const SurveyGrid: React.FC<Props> = ({ surveys, isLoading }) => {
       paddingInlineStart="5%"
       paddingInlineEnd="5%"
     >
-      {surveys.map((survey) => {
+      {surveys.map((survey: SurveyRedux) => {
         return (
           <NavLink key={survey?.id} to={`/survey/${survey?.attributes?.slug}`}>
             <Card data={survey} />

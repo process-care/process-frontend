@@ -2,14 +2,13 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import React from "react";
 
 import { Form, Formik } from "formik";
-import { Input, Textarea } from "components/Fields";
+import { Input } from "components/Fields";
 import { NavLink, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { actions } from "redux/slices/scientistData";
 import { useAppSelector } from "redux/hooks";
 import { LoginSchema } from "components/Authentification/SiginForm/validationSchema";
 import { Errors, renderAuthMessage } from "components/Authentification/Errors";
-import { Enum_Question_Rows } from "api/graphql/types.generated";
 
 export const LoginForm: React.FC = () => {
   const dispatch = useDispatch();
@@ -45,12 +44,11 @@ export const LoginForm: React.FC = () => {
             <Box w="100%" pt="90px" textAlign="left">
               <Flex justifyContent="center" flexDirection="column" w="100%">
                 {/* {errors && <p>{error.name}</p>} */}
-                <Textarea
+                <Input
                   isCollapsed={false}
-                  rows={Enum_Question_Rows.Small}
                   label="E-mail"
                   placeholder="Renseigner votre email"
-                  id="identifier"
+                  name="identifier"
                   isRequired="true"
                   autoComplete="email"
                 />

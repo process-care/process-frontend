@@ -9,8 +9,8 @@ interface Props {
 }
 
 export const CtaMobil: React.FC<Props> = ({ data, onParticipate }) => {
-  const { isMobile } = useMediaQueries();
-  if (!isMobile) {
+  const { isTablet } = useMediaQueries();
+  if (!isTablet) {
     return <></>;
   }
   return (

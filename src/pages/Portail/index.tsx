@@ -12,10 +12,10 @@ import { Loader } from "components/Spinner";
 import { ReactComponent as ShowMore } from "./assets/ShowMore.svg";
 import { useMediaQueries } from "utils/hooks/mediaqueries";
 import { client } from "api/gql-client";
-import { SurveyRedux } from "redux/slices/types";
+// import { SurveyRedux } from "redux/slices/types";
 import {
   useSurveyPublishedQuery,
-  useSurveySearchQuery,
+  // useSurveySearchQuery,
 } from "./portal.gql.generated";
 // ---- STATIC
 
@@ -37,7 +37,7 @@ const ITEMS_PER_PAGE = 10;
 
 export const Portail: React.FC<IRoute> = () => {
   const [currentFilter, setCurrentFilter] = useState<string>(t.filters[0].id);
-  const [query, setQuery] = useState<string>("");
+  // const [query, setQuery] = useState<string>("");
   const [pagination, setPagination] = useState<number>(0);
   const { isTablet } = useMediaQueries();
 
@@ -46,10 +46,10 @@ export const Portail: React.FC<IRoute> = () => {
     page: pagination,
   });
   // Get surveys related to the searched query
-  const { data: searchResult, isLoading: loadingSearch } = useSurveySearchQuery(
-    client,
-    { query }
-  );
+  // const { data: searchResult, isLoading: loadingSearch } = useSurveySearchQuery(
+  //   client,
+  //   { query }
+  // );
 
   const [state, setState] = useState<any>([]);
 
@@ -69,9 +69,9 @@ export const Portail: React.FC<IRoute> = () => {
   }, [filteredSurveys]);
 
   const totalCount = publishedResult?.surveys?.meta.pagination.total;
-  const isSearching = query !== "";
+  // const isSearching = query !== "";
 
-  const results = searchResult?.surveys?.data as SurveyRedux[];
+  // const results = searchResult?.surveys?.data as SurveyRedux[];
   return (
     <Box w="100%">
       <Box>
@@ -137,12 +137,12 @@ export const Portail: React.FC<IRoute> = () => {
               name="search"
               label="Recherche de projet par titre"
               placeholder="Recherche de projet par titre"
-              onChange={(e) => setQuery(e.target.value)}
+              // onChange={(e) => setQuery(e.target.value)}
             />
           </Box>
         </Box>
 
-        {isSearching ? (
+        {/* {isSearching ? (
           results.length > 0 ? (
             <SurveyGrid surveys={results} isLoading={loadingSearch} />
           ) : loadingSearch ? (
@@ -155,6 +155,16 @@ export const Portail: React.FC<IRoute> = () => {
           )
         ) : state.length > 0 ? (
           <SurveyGrid surveys={state} isLoading={isLoading} />
+        ) : isLoading ? (
+          <Loader />
+        ) : (
+          <NoData
+            content="Nous n'avons pas trouvé d'enquêtes pour votre recherche."
+            w="90%"
+          />
+        )} */}
+        {filteredSurveys && filteredSurveys?.length > 0 ? (
+          <SurveyGrid surveys={filteredSurveys} isLoading={isLoading} />
         ) : isLoading ? (
           <Loader />
         ) : (

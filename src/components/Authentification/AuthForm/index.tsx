@@ -6,6 +6,7 @@ import { LoginForm } from "./Login";
 import { SigninForm } from "./Signin";
 import { useAppSelector } from "redux/hooks";
 import { useHistory } from "react-router-dom";
+import { useMediaQueries } from "utils/hooks/mediaqueries";
 
 export const AuthForm: React.FC = () => {
   const history = useHistory();
@@ -13,7 +14,7 @@ export const AuthForm: React.FC = () => {
   const isConnected = useAppSelector(
     (state) => state.scientistData.auth.isConnected
   );
-
+  const { isTablet } = useMediaQueries();
   if (isConnected) {
     history.push("/dashboard");
   }
@@ -22,10 +23,10 @@ export const AuthForm: React.FC = () => {
     <Box
       backgroundColor="white"
       p="50px 50px"
-      w="480px"
       h="600px"
       border="1px solid"
       borderColor="brand.line"
+      w={isTablet ? "90%" : "480px"}
     >
       <Box d="flex" justifyContent="center" w="150px" m="0 auto">
         <Logo />

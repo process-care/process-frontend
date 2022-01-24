@@ -16,32 +16,35 @@ export const Header: React.FC<Props> = ({
   color_theme,
   onParticipate,
 }) => {
-  const { isMobile } = useMediaQueries();
+  const { isTablet } = useMediaQueries();
   return (
     <Flex
       justifyContent="space-between"
-      p={isMobile ? "2" : "5"}
+      p={isTablet ? "2" : "5"}
       alignItems="center"
+      position="sticky"
+      top="0px"
+      backgroundColor="white"
     >
       {!!logo && logo.length !== 0 && (
         <img
           src={logo}
           alt="Logo"
           style={{
-            maxHeight: isMobile ? "25px" : "40px",
-            marginRight: isMobile ? "15px" : "unset",
+            maxHeight: isTablet ? "25px" : "40px",
+            marginRight: isTablet ? "15px" : "unset",
           }}
         />
       )}
       <Text
-        variant={isMobile ? "smallTitle" : "currentLight"}
-        textTransform={isMobile ? "initial" : "uppercase"}
+        variant={isTablet ? "smallTitle" : "currentLight"}
+        textTransform={isTablet ? "initial" : "uppercase"}
         noOfLines={1}
-        isTruncated={isMobile}
+        isTruncated={isTablet}
       >
         {title}
       </Text>
-      {!isMobile && (
+      {!isTablet && (
         <Button
           variant="rounded"
           backgroundColor={color_theme?.button || "brand.blue"}

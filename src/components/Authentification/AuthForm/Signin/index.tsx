@@ -1,14 +1,13 @@
 import React from "react";
 import { Formik, Form } from "formik";
 import { Box, Flex, Button } from "@chakra-ui/react";
-import { Textarea, Input, Checkbox } from "components/Fields";
+import { Input, Checkbox } from "components/Fields";
 import { SuccessPage } from "../../SucessPage";
 import { SigninSchema } from "../../SiginForm/validationSchema";
 import { actions } from "redux/slices/scientistData";
 import { useDispatch } from "react-redux";
 import { Errors, renderAuthMessage } from "../../Errors";
 import { useAppSelector } from "redux/hooks";
-import { Enum_Question_Rows } from "api/graphql/types.generated";
 
 interface Props {
   cancel: () => void;
@@ -73,12 +72,11 @@ export const SigninForm: React.FC<Props> = ({ cancel }) => {
           <Form>
             <Box w="100%" pt="90px" textAlign="left">
               <Flex justifyContent="center" flexDirection="column" w="100%">
-                <Textarea
+                <Input
                   isCollapsed={false}
-                  rows={Enum_Question_Rows.Small}
                   label="E-mail"
                   placeholder="Renseigner votre email"
-                  id="username"
+                  name="username"
                   isRequired="true"
                   autoComplete="email"
                 />

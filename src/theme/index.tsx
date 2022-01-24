@@ -64,7 +64,8 @@ const theme = extendTheme({
           color: "black",
           textDecoration: "underline",
           fontWeight: "regular",
-          fontSize: "12px",
+          fontSize: "14px",
+          lineHeight: "21px",
           _hover: {
             color: "gray.600",
           },
@@ -272,6 +273,11 @@ const theme = extendTheme({
           fontSize: "18px",
           lineHeight: "23.4px",
         }),
+        smallTitleBold: () => ({
+          fontWeight: 500,
+          fontSize: "18px",
+          lineHeight: "23.4px",
+        }),
         titleParaLight: () => ({
           fontWeight: 300,
           fontSize: "20px",
@@ -290,6 +296,11 @@ const theme = extendTheme({
             fontSize: "20px",
             lineHeight: "26px",
           },
+        }),
+        xlNoMobilVariant: () => ({
+          fontWeight: "300",
+          fontSize: "35px",
+          lineHeight: "45.5px",
         }),
         statsDashboard: () => ({
           fontWeight: 300,

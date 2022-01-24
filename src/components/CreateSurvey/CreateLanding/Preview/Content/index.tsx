@@ -17,7 +17,7 @@ const big_placeholder =
   "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et. <br/> <br/> quo velit tenetur labore at reprehenderit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.<br/> <br/> Blanditiis et, quo velit tenetur labore at reprehenderit.";
 
 export const Content: React.FC<Props> = ({ data, onParticipate }) => {
-  const { isMobile } = useMediaQueries();
+  const { isTablet } = useMediaQueries();
   if (!data) return <Loader />;
 
   const {
@@ -56,9 +56,9 @@ export const Content: React.FC<Props> = ({ data, onParticipate }) => {
           </Box>
         )}
         <Box
-          w={hasMedia ? "100%" : isMobile ? "100%" : "60%"}
+          w={hasMedia ? "100%" : isTablet ? "100%" : "80%"}
           m={hasMedia ? "inherit" : "auto"}
-          pl={isMobile ? "unset" : "10px"}
+          pl={isTablet ? "unset" : "10px"}
         >
           <Text
             textAlign="left"
@@ -70,7 +70,7 @@ export const Content: React.FC<Props> = ({ data, onParticipate }) => {
           <Flex
             mt={10}
             justifyContent="space-between"
-            flexDirection={isMobile ? "column" : "row"}
+            flexDirection={isTablet ? "column" : "row"}
           >
             <Button
               variant="rounded"
@@ -80,7 +80,7 @@ export const Content: React.FC<Props> = ({ data, onParticipate }) => {
               {t.cta_participate}
             </Button>
             <Button
-              mt={isMobile ? "20px" : "unset"}
+              mt={isTablet ? "20px" : "unset"}
               variant="rounded"
               color={theme?.button}
               border={`1px solid ${theme?.button}`}

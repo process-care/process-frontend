@@ -10,7 +10,7 @@ import { NoData } from "components/SurveyGrid/noData";
 import {
   ITEMS_PER_PAGE,
   useGetPublishedSurvey,
-  useSearchSurvey,
+  // useSearchSurvey,
 } from "./portal.queries";
 import { Loader } from "components/Spinner";
 
@@ -34,13 +34,13 @@ const t = {
 
 export const Portail: React.FC<IRoute> = () => {
   const [currentFilter, setCurrentFilter] = useState<string>(t.filters[0].id);
-  const [query, setQuery] = useState<string>("");
+  // const [query, setQuery] = useState<string>("");
   const [pagination, setPagination] = useState<number>(0);
   const { isTablet } = useMediaQueries();
 
   const { data: surveys, isLoading } = useGetPublishedSurvey(pagination);
-  const { data: surveysFound, isLoading: loadingSearch } =
-    useSearchSurvey(query);
+  // const { data: surveysFound, isLoading: loadingSearch } =
+  //   useSearchSurvey(query);
 
   const [state, setState] = useState<any>([]);
 
@@ -57,7 +57,7 @@ export const Portail: React.FC<IRoute> = () => {
   }, [filteredSurveys]);
 
   const totalCount = surveys?.surveysConnection?.aggregate.count;
-  const isSearching = query !== "";
+  // const isSearching = query !== "";
 
   return (
     <Box w="100%">
@@ -124,12 +124,12 @@ export const Portail: React.FC<IRoute> = () => {
               name="search"
               label="Recherche de projet par titre"
               placeholder="Recherche de projet par titre"
-              onChange={(e) => setQuery(e.target.value)}
+              // onChange={(e) => setQuery(e.target.value)}
             />
           </Box>
         </Box>
 
-        {isSearching ? (
+        {/* {isSearching ? (
           surveysFound && surveysFound?.surveys?.length > 0 ? (
             <SurveyGrid
               surveys={surveysFound?.surveys}
@@ -145,6 +145,16 @@ export const Portail: React.FC<IRoute> = () => {
           )
         ) : state.length > 0 ? (
           <SurveyGrid surveys={state} isLoading={isLoading} />
+        ) : isLoading ? (
+          <Loader />
+        ) : (
+          <NoData
+            content="Nous n'avons pas trouvé d'enquêtes pour votre recherche."
+            w="90%"
+          />
+        )} */}
+        {filteredSurveys && filteredSurveys?.length > 0 ? (
+          <SurveyGrid surveys={filteredSurveys} isLoading={isLoading} />
         ) : isLoading ? (
           <Loader />
         ) : (

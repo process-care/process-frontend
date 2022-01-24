@@ -2,7 +2,7 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import React from "react";
 
 import { Form, Formik } from "formik";
-import { Input, Textarea } from "components/Fields";
+import { Input } from "components/Fields";
 import { NavLink, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { actions } from "redux/slices/scientistData";
@@ -44,12 +44,11 @@ export const LoginForm: React.FC = () => {
             <Box w="100%" pt="90px" textAlign="left">
               <Flex justifyContent="center" flexDirection="column" w="100%">
                 {/* {errors && <p>{error.name}</p>} */}
-                <Textarea
+                <Input
                   isCollapsed={false}
-                  rows="small"
                   label="E-mail"
                   placeholder="Renseigner votre email"
-                  id="identifier"
+                  name="identifier"
                   isRequired="true"
                   autoComplete="email"
                 />

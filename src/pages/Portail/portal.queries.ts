@@ -1,5 +1,5 @@
 import { gql } from "graphql-request";
-import { client } from "call/actions";
+import { client, clientWithNoHeaders } from "call/actions";
 import { useQuery, UseQueryResult } from "react-query";
 import { ISurveysRes } from "types/survey";
 
@@ -47,7 +47,7 @@ export const useGetPublishedSurvey = (
   return useQuery<ISurveysRes, Error>(
     ["getPublishedSurveys", pagination],
     async () => {
-      return await client.request(WHERE_SURVEYS, {
+      return await clientWithNoHeaders.request(WHERE_SURVEYS, {
         where: { status: STATUS_PUBLISHED },
         limit: ITEMS_PER_PAGE,
         pagination,

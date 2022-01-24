@@ -6,7 +6,7 @@ const jwt = cookie && JSON.parse(cookie)?.jwt;
 
 interface Header {
   headers: {
-    Authorization: string;
+    Authorization?: string;
   };
 }
 
@@ -18,7 +18,11 @@ export const getHeaders = (): Header | undefined => {
       },
     };
   } else {
-    return undefined;
+    return {
+      headers: {
+        Authorization: "",
+      },
+    };
   }
 };
 

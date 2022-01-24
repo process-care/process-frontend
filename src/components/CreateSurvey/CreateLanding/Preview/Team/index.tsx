@@ -1,6 +1,7 @@
 import { Box, Text, Flex, Container, Image } from "@chakra-ui/react";
 import { IColor, ILanding, IMember } from "types/landing";
 import React from "react";
+import { useMediaQueries } from "utils/hooks/mediaqueries";
 
 type Props = {
   members: ILanding["members"];
@@ -8,14 +9,21 @@ type Props = {
 };
 
 export const Team: React.FC<Props> = ({ members, color_theme }) => {
+  const { isTablet } = useMediaQueries();
+
   if (members.length === 0) {
     return <></>;
   }
   return (
     <Box pb={10}>
       <Container variant="hr" maxW="unset" mb={5} />
-      <Text variant="xl">L'équipe</Text>
-      <Flex w="80%" marginX="auto" justify="flex-start" mt={20}>
+      <Text variant="xlNoMobilVariant">L'équipe</Text>
+      <Flex
+        w={isTablet ? "100%" : "80%"}
+        marginX="auto"
+        justify={isTablet ? "center" : "flex-start"}
+        mt={20}
+      >
         {members.map(({ job, name, image }: any, i: number) => (
           <Member
             key={i}
@@ -31,6 +39,8 @@ export const Team: React.FC<Props> = ({ members, color_theme }) => {
 };
 
 const Member: React.FC<IMember> = ({ job, name, image, color }) => {
+  const { isTablet } = useMediaQueries();
+
   return (
     <Flex flexDirection="column" mr={6}>
       <Image
@@ -39,15 +49,15 @@ const Member: React.FC<IMember> = ({ job, name, image, color }) => {
           ""
         )}/${color?.replace("#", "")}`}
         borderRadius="full"
-        boxSize="150px"
+        boxSize={isTablet ? "230px" : "150px"}
         src={image}
         alt={name}
       />
 
-      <Text variant="currentLight" textTransform="uppercase" mt={7}>
+      <Text variant="smallTitleBold" mt={7}>
         {name}
       </Text>
-      <Text variant="xsRegular" mt={2}>
+      <Text variant="current" mt={2}>
         {job}
       </Text>
     </Flex>

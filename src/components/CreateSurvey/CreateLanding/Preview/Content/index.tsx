@@ -48,17 +48,18 @@ export const Content: React.FC<Props> = ({ data, onParticipate }) => {
         </Text>
       </Box>
 
-      <Flex px="5%" py="10%">
+      <Flex px="5%" py="10%" flexDirection={isTablet ? "column" : "row"}>
         {hasMedia && (
-          <Box w="40%">
+          <Box w={isTablet ? "100%" : "60%"}>
             {hasVideo && <Video url={video_url ?? ""} />}
             {cover && <img src={cover} alt={cover} />}
           </Box>
         )}
         <Box
-          w={hasMedia ? "100%" : isTablet ? "100%" : "80%"}
+          w={hasMedia ? (isTablet ? "100%" : "80%") : "60%"}
           m={hasMedia ? "inherit" : "auto"}
-          pl={isTablet ? "unset" : "10px"}
+          pl={isTablet ? "unset" : "30px"}
+          mt={hasMedia ? "30px" : "unset"}
         >
           <Text
             textAlign="left"

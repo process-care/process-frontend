@@ -7,12 +7,16 @@ import { useHistory } from "react-router-dom";
 import { finishParticipation } from "./localstorage-handlers";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { actions } from "redux/slices/participation/status";
-import { PageParticipationRedux, selectors } from "redux/slices/participation/page";
+import {
+  PageParticipationRedux,
+  selectors,
+} from "redux/slices/participation/page";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 import { client } from "api/gql-client";
 import { useSurveyQuery } from "api/graphql/queries/survey.gql.generated";
 import { useFinishParticipationMutation } from "api/graphql/queries/participation.gql.generated";
+import { useMediaQueries } from "utils/hooks/mediaqueries";
 
 // ---- TYPES
 
@@ -37,6 +41,7 @@ export const ParticipationForm: React.FC<Props> = ({
   const { data, isLoading, isError } = useSurveyQuery(client, { id: surveyId });
   const pages = useAppSelector(selectors.selectShown);
   const attributes = data?.survey?.data?.attributes;
+  const { isTablet } = useMediaQueries();
   useEffect(() => {
     dispatch(actions.initialize({ surveyId, participationId }));
   }, [surveyId, participationId]);
@@ -71,10 +76,27 @@ export const ParticipationForm: React.FC<Props> = ({
     attributes?.landing?.data?.attributes?.color_theme?.base || "black";
   const order = attributes?.order;
 
+  const Title = () => {
+    return (
+      <Box
+        pos="sticky"
+        top="0"
+        zIndex="10"
+        backgroundColor={currentColor}
+        p="20px"
+        color="white"
+        textAlign="left"
+      >
+        {attributes?.title}
+      </Box>
+    );
+  };
+
   return (
     <Box>
-      <Flex direction="row" h="100vh">
-        <Box w="20%">
+      <Flex direction={isTablet ? "column" : "row"} h="100vh">
+        {isTablet && <Title />}
+        <Box w={isTablet ? "100%" : "20%"}>
           <ParticipationMenu
             author={attributes?.author?.data?.attributes?.email}
             pages={pages}
@@ -91,17 +113,7 @@ export const ParticipationForm: React.FC<Props> = ({
           h="fit-content"
           minH="100vh"
         >
-          <Box
-            pos="sticky"
-            top="0"
-            zIndex="10"
-            backgroundColor={currentColor}
-            p="20px"
-            color="white"
-            textAlign="left"
-          >
-            {attributes?.title}
-          </Box>
+          {!isTablet && <Title />}
           <Page
             isFirstPage={isFirstPage}
             isLastPage={isLastPage}

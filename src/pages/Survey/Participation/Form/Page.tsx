@@ -2,13 +2,17 @@ import React, { useEffect } from "react";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 
-import { actions, selectors as pageSelectors } from "redux/slices/participation/page";
+import {
+  actions,
+  selectors as pageSelectors,
+} from "redux/slices/participation/page";
 
 import { NL } from "../nl";
 import { useInitialPageContent } from "./answer-hooks";
 import { formSchema } from "./validation";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { Questionator } from "./Questionator";
+import { useMediaQueries } from "utils/hooks/mediaqueries";
 
 // ---- TYPES
 
@@ -37,9 +41,12 @@ export const Page: React.FC<Props> = ({
   onFinish,
 }) => {
   const dispatch = useAppDispatch();
+  const { isTablet } = useMediaQueries();
 
   // Get page & content
-  const page = useAppSelector(state => pageSelectors.selectById(state, pageId));
+  const page = useAppSelector((state) =>
+    pageSelectors.selectById(state, pageId)
+  );
   const { orderInPage, initialAnswers } = useInitialPageContent(page, order);
 
   // If page is empty
@@ -73,17 +80,19 @@ export const Page: React.FC<Props> = ({
           return (
             <Form>
               {/* Questions */}
-              <Box px="10%" pt="20px">
+              <Box px={isTablet ? "5%" : "10%"} pt="20px">
                 {orderInPage.map((inputId: string) => (
-                  <Questionator
-                    key={inputId}
-                    id={inputId}
-                  />
+                  <Questionator key={inputId} id={inputId} />
                 ))}
               </Box>
 
               {/* Navigation */}
-              <Flex justifyContent="flex-end" mt="10" mb="10" pr="10%">
+              <Flex
+                justifyContent="flex-end"
+                mt="10"
+                mb="10"
+                pr={isTablet ? "5%" : "10%"}
+              >
                 {!isFirstPage && (
                   <Button
                     mr="4"
@@ -96,7 +105,7 @@ export const Page: React.FC<Props> = ({
                 {!isLastPage && (
                   <Button
                     disabled={!isValid}
-                    variant="roundedBlue"
+                    variant="rounded"
                     backgroundColor={currentColor}
                     onClick={nextPage}
                   >
@@ -105,8 +114,9 @@ export const Page: React.FC<Props> = ({
                 )}
                 {isLastPage && (
                   <Button
+                    mb="20px"
                     disabled={!isValid}
-                    variant="roundedBlue"
+                    variant="rounded"
                     backgroundColor={currentColor}
                     onClick={onFinish}
                   >

@@ -147,6 +147,10 @@ const theme = extendTheme({
               bg: "brand.blue",
             },
           },
+          [`@media screen and (max-width: ${tablet})`]: {
+            fontSize: "14px",
+            lineHeight: "18,2px",
+          },
         }),
         roundedTransparent: () => ({
           bg: "transparent",
@@ -158,6 +162,10 @@ const theme = extendTheme({
           _hover: {
             bg: "black",
             color: "white",
+          },
+          [`@media screen and (max-width: ${tablet})`]: {
+            fontSize: "14px",
+            lineHeight: "18,2px",
           },
         }),
       },

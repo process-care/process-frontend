@@ -13,6 +13,7 @@ import { actions } from "redux/slices/participation/status";
 import { selectors } from "redux/slices/participation/page";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
+import { useMediaQueries } from "utils/hooks/mediaqueries";
 
 // ---- TYPES
 
@@ -36,7 +37,7 @@ export const ParticipationForm: React.FC<Props> = ({
 
   const { data, isLoading, isError } = useGetSurvey(surveyId);
   const pages = useAppSelector(selectors.selectShown);
-
+  const { isTablet } = useMediaQueries();
   useEffect(() => {
     dispatch(actions.initialize({ surveyId, participationId }));
   }, [surveyId, participationId]);
@@ -73,10 +74,27 @@ export const ParticipationForm: React.FC<Props> = ({
   const currentColor = data.survey.landing?.color_theme?.base || "black";
   const { order } = data.survey;
 
+  const Title = () => {
+    return (
+      <Box
+        pos="sticky"
+        top="0"
+        zIndex="10"
+        backgroundColor={currentColor}
+        p="20px"
+        color="white"
+        textAlign="left"
+      >
+        {data.survey.title}
+      </Box>
+    );
+  };
+
   return (
     <Box>
-      <Flex direction="row" h="100vh">
-        <Box w="20%">
+      <Flex direction={isTablet ? "column" : "row"} h="100vh">
+        {isTablet && <Title />}
+        <Box w={isTablet ? "100%" : "20%"}>
           <ParticipationMenu
             author={data.survey.author?.email}
             pages={pages}
@@ -93,17 +111,7 @@ export const ParticipationForm: React.FC<Props> = ({
           h="fit-content"
           minH="100vh"
         >
-          <Box
-            pos="sticky"
-            top="0"
-            zIndex="10"
-            backgroundColor={currentColor}
-            p="20px"
-            color="white"
-            textAlign="left"
-          >
-            {data.survey.title}
-          </Box>
+          {!isTablet && <Title />}
           <Page
             isFirstPage={isFirstPage}
             isLastPage={isLastPage}

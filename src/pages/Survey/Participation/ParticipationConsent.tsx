@@ -7,6 +7,7 @@ import { useGetSurvey } from "call/actions/survey";
 import { PdfPreview } from "../CreateConsent/PdfPreview";
 import { API_URL_ROOT } from "constants/api";
 import { NL } from "./nl";
+import { useMediaQueries } from "utils/hooks/mediaqueries";
 
 // ---- TYPES
 
@@ -43,6 +44,7 @@ export const ParticipationConsent: React.FC<Props> = ({
   }, []);
 
   const url = survey?.survey?.consentement?.url;
+  const { isTablet } = useMediaQueries();
 
   if (isLoading) <Box mt="20">Please wait...</Box>;
 
@@ -53,6 +55,7 @@ export const ParticipationConsent: React.FC<Props> = ({
       w="100%"
       overflow="hidden"
       h="100vh"
+      flexDirection={isTablet ? "column" : "row"}
     >
       <Box w="100%">
         <Menu surveyTitle={survey?.survey.title} />
@@ -64,6 +67,9 @@ export const ParticipationConsent: React.FC<Props> = ({
             justifyContent="center"
             overflow="scroll"
             pt="40px"
+            pb={isTablet ? "50px" : "0px"}
+            w={isTablet ? "90%" : "100%"}
+            mx="auto"
           >
             {url ? (
               <PdfPreview url={`${API_URL_ROOT}${url}`} />
@@ -73,11 +79,14 @@ export const ParticipationConsent: React.FC<Props> = ({
           </Box>
         </div>
       </Box>
-      <Container variant="rightPart">
-        <Center h="100vh">
+      <Container
+        variant="rightPart"
+        className={isTablet ? "background__grid" : ""}
+      >
+        <Center h={isTablet ? "unset" : "100vh"}>
           <Box d="flex" flexDir="column">
             <Button
-              mb="50px"
+              mb={isTablet ? "20px" : "0px"}
               isFullWidth
               variant="rounded"
               onClick={onAccept}

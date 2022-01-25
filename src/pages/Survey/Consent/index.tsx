@@ -1,15 +1,13 @@
 import React, { useCallback } from "react";
 import { Box, Button } from "@chakra-ui/react";
 import { useHistory, useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { actions } from "redux/slices/participation/status";
 import { useCreateParticipation } from "call/actions/participation";
 
 // STATIC
 
 // ---- COMPONENT
 
-export const Consent = () => {
+export const Consent = (): any => {
   console.log("welcome in the desert of the real");
 
   const { slug } = useParams<{ slug: string }>();

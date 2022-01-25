@@ -24,6 +24,7 @@ export const Footer: React.FC<Props> = ({
 }) => {
   return (
     <Box
+      minW="300px"
       w={w}
       position="fixed"
       bottom="0"

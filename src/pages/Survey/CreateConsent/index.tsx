@@ -15,6 +15,7 @@ import ISurvey from "types/survey";
 import { actions } from "redux/slices/scientistData";
 import { Loader } from "components/Spinner";
 import { Footer } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer";
+
 const t = {
   label: "Importer la note d'information aux participants sous format pdf",
   cta: "Importer votre fichier",

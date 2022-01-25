@@ -109,7 +109,7 @@ export const ParticipationForm: React.FC<Props> = ({
           flexGrow={1}
           backgroundColor="brand.gray.100"
           h="fit-content"
-          minH="100vh"
+          minH="fit-content"
         >
           {!isTablet && <Title />}
           <Page

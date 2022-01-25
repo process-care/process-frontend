@@ -33,6 +33,7 @@ export const SummaryMobile: React.FC<Props> = ({
       >
         <h2>
           <AccordionButton
+            p="0"
             backgroundColor="transparent"
             _focus={{ outline: "none", backgroundColor: "transparent" }}
             _hover={{ outline: "none", backgroundColor: "transparent" }}
@@ -50,6 +51,7 @@ export const SummaryMobile: React.FC<Props> = ({
           left="0"
           right="0"
           paddingTop="20px"
+          top="60px"
         >
           <Box>
             {pages.map((p, idx) => {

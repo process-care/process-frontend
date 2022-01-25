@@ -90,7 +90,7 @@ export const Page: React.FC<Props> = ({
               <Flex
                 justifyContent="flex-end"
                 mt="10"
-                mb="10"
+                pb="20px"
                 pr={isTablet ? "5%" : "10%"}
               >
                 {!isFirstPage && (
@@ -114,7 +114,6 @@ export const Page: React.FC<Props> = ({
                 )}
                 {isLastPage && (
                   <Button
-                    mb="20px"
                     disabled={!isValid}
                     variant="rounded"
                     backgroundColor={currentColor}

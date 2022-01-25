@@ -137,7 +137,7 @@ const theme = extendTheme({
           bg: "brand.blue",
           borderRadius: "50px",
           color: "white",
-          padding: "0 30px",
+          padding: "25px 30px",
           fontWeight: "regular",
           fontSize: "12px",
           _hover: {
@@ -157,7 +157,7 @@ const theme = extendTheme({
           borderRadius: "50px",
           fontSize: "12px",
           color: "black",
-          padding: "0 20px",
+          padding: "25px 30px",
           border: "1px solid",
           _hover: {
             bg: "black",

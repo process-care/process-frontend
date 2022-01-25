@@ -44,7 +44,13 @@ export const ParticipationMenu: React.FC<MenuProps> = ({
   }, [pages]);
 
   return (
-    <Box pos="sticky" top="0">
+    <Box
+      pos="sticky"
+      top="0"
+      h={isTablet ? "60px" : "unset"}
+      d="flex"
+      alignItems="center"
+    >
       {!isTablet && (
         <Flex
           textAlign="right"
@@ -67,11 +73,12 @@ export const ParticipationMenu: React.FC<MenuProps> = ({
         </Flex>
       )}
       <Box
-        p="20px"
         d="flex"
         flexDirection={isTablet ? "row" : "column"}
-        justifyContent="space-between"
+        justifyContent={logo?.length === 0 ? "flex-end" : "space-between"}
         alignItems="center"
+        w="90%"
+        mx="auto"
       >
         {isTablet && !!logo && logo.length !== 0 ? (
           <img src={logo} alt="Logo" style={{ maxHeight: "30px" }} />

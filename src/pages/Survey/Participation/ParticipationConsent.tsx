@@ -54,7 +54,7 @@ export const ParticipationConsent: React.FC<Props> = ({
       justifyContent="space-around"
       w="100%"
       overflow="hidden"
-      h="100vh"
+      h="100%"
       flexDirection={isTablet ? "column" : "row"}
     >
       <Box w="100%">
@@ -83,10 +83,14 @@ export const ParticipationConsent: React.FC<Props> = ({
         variant="rightPart"
         className={isTablet ? "background__grid" : ""}
       >
-        <Center h={isTablet ? "unset" : "100vh"}>
-          <Box d="flex" flexDir="column">
+        <Center
+          h={isTablet ? "unset" : "100vh"}
+          mb="20px"
+          w={isTablet ? "100%" : "unset"}
+        >
+          <Box d="flex" flexDir="column" w={isTablet ? "90%" : "50%"}>
             <Button
-              mb={isTablet ? "20px" : "0px"}
+              mb="20px"
               isFullWidth
               variant="rounded"
               onClick={onAccept}

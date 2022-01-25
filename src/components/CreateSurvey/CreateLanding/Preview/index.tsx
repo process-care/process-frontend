@@ -17,7 +17,7 @@ const big_placeholder =
 // ---- TYPES
 
 interface Props {
-  isUserView?: boolean;
+  isUserView: boolean;
   data?: Partial<ILanding>;
 }
 
@@ -78,7 +78,11 @@ export const Preview: React.FC<Props> = ({ isUserView, data }) => {
 
       <Content data={data} onParticipate={onParticipate} />
       {data?.members && (
-        <Team members={data.members} color_theme={data?.color_theme} />
+        <Team
+          members={data.members}
+          color_theme={data?.color_theme}
+          isUserView={isUserView}
+        />
       )}
       <Footer
         partners_logos={data?.partners_logos ?? []}

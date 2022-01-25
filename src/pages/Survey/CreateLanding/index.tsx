@@ -79,7 +79,7 @@ export const CreateLanding: React.FC<IRoute> = () => {
               d="flex"
             >
               <div className="background__grid--black">
-                <Preview data={data} />
+                <Preview data={data} isUserView={false} />
               </div>
             </Container>
           </Box>

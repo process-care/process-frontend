@@ -17,7 +17,6 @@ export const RepeatableJobs: React.FC<Props> = ({ name, onlyUpload, cta }) => {
   const { setFieldValue } = useFormikContext();
   const isEditing = useAppSelector(selectorsApplication.isEditing);
   const fields = field.value;
-
   return (
     <Box w="100%">
       <FieldArray

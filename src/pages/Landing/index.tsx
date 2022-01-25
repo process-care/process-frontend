@@ -39,5 +39,5 @@ export const Landing: React.FC<IRoute> = () => {
     return <Error error={error} />;
   }
 
-  return <Preview data={landing?.landing} isUserView />;
+  return <Preview data={landing?.landing} isUserView={true} />;
 };

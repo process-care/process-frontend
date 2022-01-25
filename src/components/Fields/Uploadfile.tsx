@@ -100,22 +100,23 @@ export const UploadFile: React.FC<Props> = ({
       },
     });
   };
-  console.log("FN", filesName);
 
   const hasFilesName = Boolean(filesName[0]);
-  console.log("hasFilesName", hasFilesName);
   return (
     <FormControl my={4}>
       <Flex alignItems="center" justifyContent="space-between">
-        <Button
-          variant="roundedTransparent"
-          onClick={() =>
-            hiddenFileInput.current !== null && hiddenFileInput.current.click()
-          }
-          isDisabled={isDisabled}
-        >
-          {label}
-        </Button>
+        {!hasFilesName && (
+          <Button
+            variant="roundedTransparent"
+            onClick={() =>
+              hiddenFileInput.current !== null &&
+              hiddenFileInput.current.click()
+            }
+            isDisabled={isDisabled}
+          >
+            {label}
+          </Button>
+        )}
         <Box d="none">
           <input
             type="file"

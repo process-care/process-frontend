@@ -16,6 +16,7 @@ export interface IMember {
   job: string;
   image: IBase64["base64"];
   color?: string;
+  isUserView?: boolean;
 }
 
 export interface ILanding {

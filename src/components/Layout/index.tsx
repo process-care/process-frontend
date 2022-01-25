@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import { Footer } from "components/Footer";
 import { SimpleMenu } from "components/Menu/SimpleMenu";
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useAuth } from "components/Authentification/hooks";
 
@@ -26,6 +26,9 @@ export const Layout: React.FC<Props> = ({ children }) => {
     else if (isSurveyPages || isAuthPage) return null;
     else return <MainMenu />;
   };
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [location.pathname]);
 
   const renderFooter = () => {
     if (pathname === "/") return <Footer />;

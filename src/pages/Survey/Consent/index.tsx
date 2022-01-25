@@ -8,7 +8,7 @@ import { client } from "api/gql-client";
 
 // ---- COMPONENT
 
-export const Consent = () => {
+export const Consent: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const history = useHistory();
 

@@ -1,6 +1,7 @@
-import { Text, Flex, Button } from "@chakra-ui/react";
+import { Text, Flex, Button, Box } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
+import { useMediaQueries } from "utils/hooks/mediaqueries";
 
 interface Props {
   url: string;
@@ -11,21 +12,30 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 export const PdfPreview: React.FC<Props> = ({ url }) => {
   const [numPages, setNumPages] = useState(1);
   const [pageNumber, setPageNumber] = useState(1);
-
+  const { isTablet } = useMediaQueries();
   const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
     setNumPages(numPages);
   };
 
   return (
-    <div>
-      <Document file={url} onLoadSuccess={onDocumentLoadSuccess}>
-        <Page pageNumber={pageNumber} height={600} />
-      </Document>
+    <Box h="100%" overflow="scroll">
+      <Box mb="10px">
+        <Document file={url} onLoadSuccess={onDocumentLoadSuccess}>
+          <Page pageNumber={pageNumber} height={isTablet ? 400 : 900} />
+        </Document>
+      </Box>
       <Flex
         d="flex"
         justifyContent="space-between"
+        // mb="50px"
+        h="150px"
+        mt="-40px"
         alignItems="center"
-        mt="5px "
+        // pos="fixed"
+        // w="49%"
+        // bottom="0"
+        // backgroundColor="white"
+        // h="85px"
       >
         {pageNumber !== 1 ? (
           <Button
@@ -56,6 +66,6 @@ export const PdfPreview: React.FC<Props> = ({ url }) => {
           <p></p>
         )}
       </Flex>
-    </div>
+    </Box>
   );
 };

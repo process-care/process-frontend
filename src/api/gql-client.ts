@@ -6,12 +6,10 @@ const cookie = localStorage.getItem("process__user");
 const jwt = cookie && JSON.parse(cookie)?.jwt;
 
 interface Header {
-  headers: {
-    Authorization?: string;
-  };
+  headers: any;
 }
 
-export const getHeaders = (): Header | undefined => {
+export const getHeaders = (): Header | Record<string, unknown> | undefined => {
   if (jwt) {
     return {
       headers: {

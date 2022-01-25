@@ -1,31 +1,46 @@
+<<<<<<< HEAD
 import { Box, Text, Flex, Container, Image } from "@chakra-ui/react";
 import { Color, Member as MemberType } from "types/landing";
+=======
+import { Box, Text, Flex, Container, Image, Grid } from "@chakra-ui/react";
+import { IColor, ILanding, IMember } from "types/landing";
+>>>>>>> 3078117 ([mobile] Fix landing and consent)
 import React from "react";
-import { useMediaQueries } from "utils/hooks/mediaqueries";
 
 type Props = {
+<<<<<<< HEAD
   members: MemberType[];
   color_theme?: Color;
+=======
+  members: ILanding["members"];
+  color_theme?: IColor;
+  isUserView?: boolean;
+>>>>>>> 3078117 ([mobile] Fix landing and consent)
 };
 
-export const Team: React.FC<Props> = ({ members, color_theme }) => {
-  const { isTablet } = useMediaQueries();
-
+export const Team: React.FC<Props> = ({ members, color_theme, isUserView }) => {
   if (members.length === 0) {
     return <></>;
   }
   return (
     <Box pb={10}>
-      <Container variant="hr" maxW="unset" mb={5} />
-      <Text variant="xlNoMobilVariant">L'équipe</Text>
-      <Flex
-        w={isTablet ? "100%" : "80%"}
-        marginX="auto"
-        justify={isTablet ? "center" : "flex-start"}
-        mt={20}
+      <Container variant="hr" maxW="unset" />
+      <Text variant="xlNoMobilVariant" mb="80px" mt="45px">
+        L'équipe
+      </Text>
+      <Grid
+        mt="40px"
+        templateColumns={[
+          "repeat(1, 1fr)",
+          "repeat(1, 1fr)",
+          "repeat(2, 1fr)",
+          "repeat(4, 1fr)",
+        ]}
+        gap="40px 10px"
       >
         {members.map(({ job, name, image }: any, i: number) => (
           <Member
+            isUserView={isUserView}
             key={i}
             job={job}
             name={name}
@@ -33,25 +48,30 @@ export const Team: React.FC<Props> = ({ members, color_theme }) => {
             color={color_theme?.base}
           />
         ))}
-      </Flex>
+      </Grid>
     </Box>
   );
 };
 
+<<<<<<< HEAD
 const Member: React.FC<MemberType> = ({ job, name, image, color }) => {
   const { isTablet } = useMediaQueries();
 
+=======
+const Member: React.FC<IMember> = ({ job, name, image, color, isUserView }) => {
+>>>>>>> 3078117 ([mobile] Fix landing and consent)
   return (
-    <Flex flexDirection="column" mr={6}>
+    <Flex flexDirection="column" justifyContent="center">
       <Image
         fallbackSrc={`https://via.placeholder.com/150/${color?.replace(
           "#",
           ""
         )}/${color?.replace("#", "")}`}
         borderRadius="full"
-        boxSize={isTablet ? "230px" : "150px"}
+        boxSize={isUserView ? "230px" : "80px"}
         src={image}
         alt={name}
+        mx="auto"
       />
 
       <Text variant="smallTitleBold" mt={7}>

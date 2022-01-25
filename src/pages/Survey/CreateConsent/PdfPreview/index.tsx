@@ -19,7 +19,7 @@ export const PdfPreview: React.FC<Props> = ({ url }) => {
 
   return (
     <Box h="100%" overflow="scroll">
-      <Box mb="10px">
+      <Box mb="20px">
         <Document file={url} onLoadSuccess={onDocumentLoadSuccess}>
           <Page pageNumber={pageNumber} height={isTablet ? 400 : 900} />
         </Document>

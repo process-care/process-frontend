@@ -25,6 +25,7 @@ export const CtaMobil: React.FC<Props> = ({ data, onParticipate }) => {
       left="0"
       bottom="0"
       borderRadius="0"
+      borderColor={data?.color_theme?.button || "brand.blue"}
     >
       Participer à l'étude
     </Button>

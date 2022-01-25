@@ -42,7 +42,9 @@ export const Content: React.FC<Props> = ({ data, onParticipate }) => {
         textAlign="left"
         px="5%"
       >
-        <Text variant="xl">{title || "Titre à remplacer"}</Text>
+        <Text variant={isTablet ? "xlNoMobilVariant" : "xl"}>
+          {title || "Titre à remplacer"}
+        </Text>
         <Text variant="current" mt="30px">
           {subtitle || `Sous titre à remplacer. ${placeholder}`}
         </Text>
@@ -56,7 +58,7 @@ export const Content: React.FC<Props> = ({ data, onParticipate }) => {
           </Box>
         )}
         <Box
-          w={hasMedia ? (isTablet ? "100%" : "80%") : "60%"}
+          w={hasMedia ? (isTablet ? "100%" : "80%") : "100%"}
           m={hasMedia ? "inherit" : "auto"}
           pl={isTablet ? "unset" : "30px"}
           mt={hasMedia ? "30px" : "unset"}
@@ -84,8 +86,8 @@ export const Content: React.FC<Props> = ({ data, onParticipate }) => {
               mt={isTablet ? "20px" : "unset"}
               variant="rounded"
               color={theme?.button}
-              border={`1px solid ${theme?.button}`}
-              backgroundColor="transparent"
+              border={`1px solid ${theme?.base || "brand.blue"}`}
+              backgroundColor={theme?.base || "brand.blue"}
               _hover={{ backgroundColor: theme?.button, color: "white" }}
             >
               {t.cta_show_more}

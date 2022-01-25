@@ -73,6 +73,7 @@ export const CreateConsent: React.FC = () => {
             justifyContent="center"
             overflow="scroll"
             pt="40px"
+            pb="40px"
           >
             {url ? (
               <PdfPreview url={`${API_URL_ROOT}${url}`} />

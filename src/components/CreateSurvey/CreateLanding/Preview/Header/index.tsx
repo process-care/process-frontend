@@ -25,6 +25,7 @@ export const Header: React.FC<Props> = ({
       position="sticky"
       top="0px"
       backgroundColor="white"
+      borderBottom="1px solid #e6e6e6"
     >
       {!!logo && logo.length !== 0 && (
         <img

@@ -16,4 +16,5 @@ export interface Member {
   job: string;
   image: IBase64["base64"];
   color?: string;
+  isUserView?: boolean;
 }

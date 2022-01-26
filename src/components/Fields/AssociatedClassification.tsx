@@ -124,8 +124,8 @@ export const AssociatedClassification: React.FC<Props> = ({
       {maxLoop && maxVariations >= 1 && (
         <Text mt="15px" fontSize="xs">
           {maxVariations > parseInt(maxLoop)
-            ? `${totalClick + 1} / ${maxLoop}`
-            : `${totalClick + 1}  / ${Math.max(maxVariations)}`}
+            ? `${totalClick} / ${maxLoop}`
+            : `${totalClick}  / ${Math.max(maxVariations)}`}
         </Text>
       )}
       {!isCollapsed && (
@@ -162,11 +162,8 @@ export const useAssociatedLogic = (
   const modalitiesPerFactor = filteredFactors
     ?.map((f) => f.modalities?.length)
     .filter((m) => m !== 0);
+  const totalVariations = modalitiesPerFactor?.reduce((a, b) => a * b, 1);
 
-  const totalVariations = React.useMemo(
-    () => modalitiesPerFactor?.reduce((a, b) => a * b, 0),
-    [modalitiesPerFactor]
-  );
   const getMaxVariation: any = (n: number, k: number) => {
     const factorialize: any = (num: number) => {
       if (num < 0) return -1;

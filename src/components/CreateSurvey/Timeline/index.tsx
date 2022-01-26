@@ -25,7 +25,7 @@ export const Timeline: React.FC = () => {
   const survey = useAppSelector(selectors.survey);
   const step = useAppSelector(selectors.step);
   return (
-    <Box p="20px" pos="relative">
+    <Box p="5px 20px" pos="relative">
       <Flex justifyContent="flex-end">
         <NavLink to="/dashboard">
           <Button variant="link" color="gray.200">
@@ -67,7 +67,7 @@ const RenderSteps: React.FC<Props> = ({ survey, step }) => {
       >
         <Box
           zIndex={-1}
-          top="-80px"
+          top="-38px"
           h="75%"
           w="1px"
           borderColor="black"
@@ -88,7 +88,7 @@ const RenderSteps: React.FC<Props> = ({ survey, step }) => {
         >
           {pos}
         </Circle>
-        <Box mt="10px" minH="100px">
+        <Box mt="10px" minH="60px">
           <Text variant="current" textDecor="underline">
             {label}
           </Text>

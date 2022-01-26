@@ -50,6 +50,7 @@ export const ParticipationMenu: React.FC<MenuProps> = ({
       h={isTablet ? "60px" : "unset"}
       d="flex"
       alignItems="center"
+      flexDirection={isTablet ? "row" : "column"}
     >
       {!isTablet && (
         <Flex
@@ -60,6 +61,7 @@ export const ParticipationMenu: React.FC<MenuProps> = ({
           borderColor={color}
           alignItems="center"
           justifyContent="space-between"
+          width="100%"
         >
           {!!logo && logo.length !== 0 ? (
             <img src={logo} alt="Logo" style={{ maxHeight: "30px" }} />
@@ -151,6 +153,7 @@ export const PageEntry: React.FC<EntryProps> = ({
       d="flex"
       alignItems="center"
       textDecoration={isSelected ? "underline" : "none"}
+      w="100%"
     >
       <Circle backgroundColor={color} w="10px" h="10px" mr="10px" />
       {page.attributes.short_name ?? "Short name missing 😣"}

@@ -88,7 +88,11 @@ export const Portail: React.FC<IRoute> = () => {
           <Text variant="xxl" maxW="1000px">
             {t.title}
           </Text>
-          <Text variant="xs" maxW="1000px" pt="15px">
+          <Text
+            variant={isTablet ? "currentLight" : "baseline"}
+            maxW="1000px"
+            pt="15px"
+          >
             Nullam id dolor id nibh ultricies vehicula ut id elit. Maecenas sed
             diam eget risus varius blandit sit amet non magna. Aenean eu leo
             quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.

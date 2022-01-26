@@ -44,7 +44,7 @@ export const AssociatedClassification: React.FC<Props> = ({
 
   // TODO: refactor this
   const isFinished =
-    totalClick ===
+    totalClick + 1 ===
       (maxVariations - 1 > (maxLoop && parseInt(maxLoop))
         ? maxLoop && parseInt(maxLoop)
         : maxVariations) ||
@@ -124,8 +124,8 @@ export const AssociatedClassification: React.FC<Props> = ({
       {maxLoop && maxVariations >= 1 && (
         <Text mt="15px" fontSize="xs">
           {maxVariations > parseInt(maxLoop)
-            ? `${totalClick} / ${maxLoop}`
-            : `${totalClick}  / ${Math.max(maxVariations)}`}
+            ? `${totalClick} / ${parseInt(maxLoop) - 1}`
+            : `${totalClick}  / ${Math.max(maxVariations) - 1}`}
         </Text>
       )}
       {!isCollapsed && (

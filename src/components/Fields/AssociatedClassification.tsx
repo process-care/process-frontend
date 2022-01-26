@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useField } from "formik";
 import { useAppSelector } from "redux/hooks";
 import { Maybe } from "api/graphql/types.generated";
+import { useMediaQueries } from "utils/hooks/mediaqueries";
 
 interface Props {
   label: string;
@@ -37,6 +38,7 @@ export const AssociatedClassification: React.FC<Props> = ({
   maxLoop = "5",
   name,
 }) => {
+  const { isTablet } = useMediaQueries();
   const {
     generate,
     handleClick,
@@ -69,7 +71,7 @@ export const AssociatedClassification: React.FC<Props> = ({
         border="1px solid #E5E5E5"
         borderRadius="5px"
         mt="30px"
-        w="40%"
+        w={isTablet ? "100%" : "40%"}
         _hover={{ border: "1px solid black", cursor: "pointer" }}
         onClick={() => handleClick(index)}
       >
@@ -139,7 +141,12 @@ export const AssociatedClassification: React.FC<Props> = ({
       {!isCollapsed && (
         <Flex flexDir="column">
           <Box>
-            <Box d="flex" justifyContent="space-around" w="100%">
+            <Box
+              d="flex"
+              justifyContent="space-around"
+              flexDirection={isTablet ? "column" : "row"}
+              w="100%"
+            >
               {[...Array(TOTAL_CARDS)].map((_, i) => (
                 <Card index={i} key={i} />
               ))}

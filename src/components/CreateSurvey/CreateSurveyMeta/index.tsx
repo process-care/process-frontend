@@ -8,7 +8,6 @@ import {
 import { createSurveySchema } from "../validationSchema";
 import { useAppSelector, useAppDispatch } from "redux/hooks";
 
-import { ReactComponent as Submit } from "./../assets/submit.svg";
 import { checkValidity, formatValues, renderInputs } from "./utils";
 
 import { useParams } from "react-router-dom";
@@ -74,44 +73,37 @@ export const CreateSurveyForm: React.FC = () => {
                   justifyContent: "center",
                 }}
               >
-                <Flex
-                  alignItems="center"
-                  my="auto"
-                  w="60%"
-                  mt="80px"
-                  flexDir="column"
-                >
+                <Box my="auto" w="60%" mt="80px">
                   <Flex
                     alignItems="center"
-                    justifyContent="space-between"
+                    justifyContent="flex-end"
+                    flexDirection="column"
                     w="100%"
                   >
-                    {step !== 1 && (
-                      <Navigatebtn
-                        step={step}
-                        previous
-                        errors={errors}
-                        values={values}
-                      />
-                    )}
                     {renderInputs(step)}
-                    {step !== 6 && (
+                    <Flex w="100%" justifyContent={"space-between"} mt="30px">
+                      {step !== 1 ? (
+                        <Navigatebtn
+                          step={step}
+                          previous
+                          errors={errors}
+                          values={values}
+                        />
+                      ) : (
+                        <Box minW="150px"></Box>
+                      )}
+
                       <Navigatebtn
                         step={step}
                         errors={errors}
                         values={values}
                       />
-                    )}
+                    </Flex>
                   </Flex>
                   <Box mt="50px">
                     <Errors message={renderSurveyMessage(error)} />
-                    {step === 6 && (
-                      <Button mt="10px" type="submit" variant="rounded">
-                        Valider
-                      </Button>
-                    )}
                   </Box>
-                </Flex>
+                </Box>
               </Form>
             </Box>
           );
@@ -140,22 +132,23 @@ const Navigatebtn = ({
     dispatch(actions.setStep(target));
   };
 
-  return (
-    <Box mr="40px">
-      <Button
-        disabled={!previous && !checkValidity(step, values, errors)}
-        transform={previous ? "rotate(180deg)" : "inherit"}
-        onClick={() => navigateTo(target)}
-        variant="ghost"
-        right="0"
-        _hover={{
-          backgroundColor: "transparent",
-          right: "3px",
-          transition: "all 300ms",
-        }}
-      >
-        <Submit />
+  if (step === 6 && !previous) {
+    return (
+      <Button type="submit" variant="roundedBlue" minW="150px">
+        Valider
       </Button>
-    </Box>
+    );
+  }
+
+  return (
+    <Button
+      type={previous ? "button" : "submit"}
+      disabled={!previous && !checkValidity(step, values, errors)}
+      onClick={() => navigateTo(target)}
+      variant="roundedBlue"
+      minW="150px"
+    >
+      {previous ? "Précédant" : "Suivant"}
+    </Button>
   );
 };

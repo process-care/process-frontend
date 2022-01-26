@@ -16,7 +16,7 @@ export const CreateSurvey: React.FC<IRoute> = () => {
           </Center>
         </div>
       </Box>
-      <Container variant="rightPart">
+      <Container variant="rightPart" maxW="25%">
         <Timeline />
       </Container>
     </Box>

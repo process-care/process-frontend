@@ -31,6 +31,7 @@ interface Props {
   ref?: any;
   autoComplete?: string;
   isAccordion?: boolean;
+  appearance?: "light" | "big";
 }
 
 export const CustomInput: React.FC<Props> = ({
@@ -46,6 +47,7 @@ export const CustomInput: React.FC<Props> = ({
   ref,
   autoComplete,
   isAccordion,
+  appearance,
 }) => {
   const [field, meta] = useField(name);
   return (
@@ -81,6 +83,7 @@ export const CustomInput: React.FC<Props> = ({
                       placeholder={placeholder}
                       {...field}
                       autoComplete={autoComplete}
+                      p={appearance === "big" ? "30px" : "0"}
                     />
                     {inputRightAddon && (
                       <InputRightAddon children={inputRightAddon} h="40px" />
@@ -103,10 +106,9 @@ export const CustomInput: React.FC<Props> = ({
         <>
           <FormLabel>{label}</FormLabel>
 
-          {/*  TO DO MODIFY LATER - THE LIB WHO BIND FORMIK DONT LET PASS TYPE="PASSWORD" */}
           {!isCollapsed && (
             <>
-              <InputGroup size="sm">
+              <InputGroup size="sm" mt={appearance === "big" ? "10px" : "0"}>
                 <Input
                   ref={ref}
                   backgroundColor="white"
@@ -116,6 +118,7 @@ export const CustomInput: React.FC<Props> = ({
                   placeholder={placeholder}
                   {...field}
                   autoComplete={autoComplete}
+                  p={appearance === "big" ? "30px" : "0"}
                 />
                 {inputRightAddon && (
                   <InputRightAddon children={inputRightAddon} h="40px" />

@@ -3,6 +3,7 @@ import { FormControl, FormHelperText, FormLabel } from "@chakra-ui/react";
 import { t } from "static/survey";
 import { useField, useFormikContext } from "formik";
 import CreatableSelect from "react-select/creatable";
+import { useMediaQueries } from "utils/hooks/mediaqueries";
 
 interface Options {
   value: string | undefined;
@@ -19,48 +20,12 @@ interface Props {
   isMulti?: boolean;
   isCollapsed?: boolean;
   name: string;
+  appearance?: "big";
 }
 
 interface IProvided {
   provided: Record<string, unknown>;
 }
-
-const customStyles: Record<string, unknown> = {
-  option: (provided: IProvided) => ({
-    ...provided,
-    padding: "10px",
-    fontSize: "12px",
-  }),
-  input: (provided: IProvided) => ({
-    ...provided,
-
-    fontSize: "12px",
-  }),
-  placeholder: (provided: IProvided) => ({
-    ...provided,
-
-    fontSize: "12px",
-  }),
-  singleValue: (provided: IProvided) => ({
-    ...provided,
-
-    fontSize: "12px",
-  }),
-  noOptionsMessage: (provided: IProvided) => ({
-    ...provided,
-
-    fontSize: "12px",
-  }),
-  container: (provided: IProvided) => ({
-    ...provided,
-
-    padding: 0,
-  }),
-  valueContainer: (provided: IProvided) => ({
-    ...provided,
-    minHeight: "40px",
-  }),
-};
 
 export const CustomCreatableSelect: React.FC<Props> = ({
   label,
@@ -72,11 +37,45 @@ export const CustomCreatableSelect: React.FC<Props> = ({
   isCollapsed,
   isMulti,
   name,
+  appearance,
 }): ReactElement => {
   const [field, ,] = useField(id);
-
+  const { isTablet } = useMediaQueries();
+  const isBig = appearance === "big";
   const { setFieldValue } = useFormikContext();
 
+  const customStyles: Record<string, unknown> = {
+    option: (provided: IProvided) => ({
+      ...provided,
+      padding: "10px",
+      fontSize: isTablet ? "16px" : isBig ? "16px" : "12px",
+    }),
+    input: (provided: IProvided) => ({
+      ...provided,
+      fontSize: isTablet ? "16px" : isBig ? "16px" : "12px",
+      padding: isBig ? "16px" : "unset",
+    }),
+    placeholder: (provided: IProvided) => ({
+      ...provided,
+      fontSize: isTablet ? "16px" : isBig ? "16px" : "12px",
+    }),
+    singleValue: (provided: IProvided) => ({
+      ...provided,
+      fontSize: isTablet ? "16px" : isBig ? "16px" : "12px",
+    }),
+    noOptionsMessage: (provided: IProvided) => ({
+      ...provided,
+      fontSize: isTablet ? "16px" : isBig ? "16px" : "12px",
+    }),
+    container: (provided: IProvided) => ({
+      ...provided,
+      padding: 0,
+    }),
+    valueContainer: (provided: IProvided) => ({
+      ...provided,
+      minHeight: "40px",
+    }),
+  };
   return (
     <FormControl id={id} textAlign="left" isRequired={isRequired === "true"}>
       <FormLabel>{label}</FormLabel>

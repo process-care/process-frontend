@@ -1,5 +1,4 @@
-import { Box } from "@chakra-ui/react";
-import { Select, Textarea } from "components/Fields";
+import { Input, Select, Textarea } from "components/Fields";
 import { CustomCreatableSelect } from "components/Fields/SelectCreatable";
 import { FormikErrors } from "formik";
 import { Survey } from "redux/slices/surveyBuilder";
@@ -31,10 +30,9 @@ export const renderInputs = (step: number): React.ReactElement => {
   switch (step) {
     case 1:
       return (
-        <Textarea
-          appearance="light"
-          id="title"
-          rows="small"
+        <Input
+          appearance="big"
+          name="title"
           placeholder="Titre du projet"
           label="Renseigner le titre du projet"
         />
@@ -42,10 +40,9 @@ export const renderInputs = (step: number): React.ReactElement => {
       break;
     case 2:
       return (
-        <Textarea
-          appearance="light"
-          id="slug"
-          rows="small"
+        <Input
+          appearance="big"
+          name="slug"
           placeholder="Url du projet"
           label="Valider ou modifier l'url du projet"
         />
@@ -53,28 +50,21 @@ export const renderInputs = (step: number): React.ReactElement => {
       break;
     case 3:
       return (
-        <Box
-          border="1px solid black"
-          w="100%"
-          borderRadius="5px"
-          p="20px 20px 0 20px"
-          backgroundColor="white"
-        >
-          <Textarea
-            appearance="light"
-            id="description"
-            rows="medium"
-            placeholder="Description"
-            label="Renseigner la description du projet"
-            helpText="Description publique, affichée aux utilisateurs de PROCESS. 500 signes max"
-          />
-        </Box>
+        <Textarea
+          appearance="big"
+          id="description"
+          rows="medium"
+          placeholder="Description du projet"
+          label="Renseigner la description du projet"
+          helpText="Description publique, affichée aux utilisateurs de PROCESS. 500 signes max"
+        />
       );
       break;
 
     case 4:
       return (
         <CustomCreatableSelect
+          appearance="big"
           name="keywords"
           id="keywords"
           placeholder="Mots clés publics"
@@ -88,20 +78,21 @@ export const renderInputs = (step: number): React.ReactElement => {
     case 5:
       return (
         <Select
+          appearance="big"
           id="language"
           placeholder="Langue du projet"
           label="Renseigner la langue du projet"
           answers={t.language}
           defaultValue={t.language[0].value}
+          helpText="Langue affichée dans votre projet"
         />
       );
       break;
     case 6:
       return (
-        <Textarea
-          appearance="light"
-          id="email"
-          rows="small"
+        <Input
+          appearance="big"
+          name="email"
           placeholder="Email de contact"
           label="Renseigner l'email de contact"
         />

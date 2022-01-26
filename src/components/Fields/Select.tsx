@@ -20,6 +20,7 @@ interface Props {
   isMulti?: boolean;
   isCollapsed?: boolean;
   defaultValue?: string;
+  appearance?: "big";
 }
 
 interface IProvided {
@@ -36,8 +37,10 @@ export const CustomSelect: React.FC<Props> = ({
   isCollapsed,
   isMulti = false,
   defaultValue,
+  appearance,
 }): ReactElement => {
   const { isTablet } = useMediaQueries();
+  const isBig = appearance === "big";
 
   const [field, , helpers] = useField(id);
   const { setValue } = helpers;
@@ -57,27 +60,28 @@ export const CustomSelect: React.FC<Props> = ({
     option: (provided: IProvided) => ({
       ...provided,
       padding: "10px",
-      fontSize: isTablet ? "16px" : "12px",
+      fontSize: isTablet ? "16px" : isBig ? "16px" : "12px",
     }),
 
     input: (provided: IProvided) => ({
       ...provided,
-      fontSize: isTablet ? "16px" : "12px",
+      fontSize: isTablet ? "16px" : isBig ? "16px" : "12px",
+      padding: isBig ? "16px" : "unset",
     }),
     placeholder: (provided: IProvided) => ({
       ...provided,
       color: "gray",
-      fontSize: isTablet ? "16px" : "12px",
+      fontSize: isTablet ? "16px" : isBig ? "16px" : "12px",
     }),
     singleValue: (provided: IProvided) => ({
       ...provided,
 
-      fontSize: isTablet ? "16px" : "12px",
+      fontSize: isTablet ? "16px" : isBig ? "16px" : "12px",
     }),
     noOptionsMessage: (provided: IProvided) => ({
       ...provided,
 
-      fontSize: isTablet ? "16px" : "12px",
+      fontSize: isTablet ? "16px" : isBig ? "16px" : "12px",
     }),
     container: (provided: IProvided) => ({
       ...provided,
@@ -86,7 +90,7 @@ export const CustomSelect: React.FC<Props> = ({
     }),
     valueContainer: (provided: IProvided) => ({
       ...provided,
-      height: "40px",
+      minHeight: "40px",
     }),
   };
   return (

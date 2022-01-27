@@ -30,7 +30,7 @@ export const useUpdateLanding = (): UseMutationResult<ILanding, Error> =>
   );
 
 export const useGetLanding = (
-  id: string | undefined
+  id: string | null | undefined
 ): UseQueryResult<ILandingRes, Error> => {
   return useQuery<ILandingRes, Error>(
     ["getLanding", id],

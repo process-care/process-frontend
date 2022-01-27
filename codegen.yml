@@ -1,0 +1,30 @@
+overwrite: true
+schema: "http://localhost:1337/graphql"
+documents: "src/**/*.graphql"
+generates:
+  # Types & Resolvers types in general
+  src/graphql/types.generated.ts:
+    plugins:
+      - "typescript"
+    config:
+      fetcher: graphql-request
+      # More readable types
+      skipTypename: true
+      useIndexSignature: true # https://github.com/dotansimha/graphql-code-generator/issues/1133
+  # Config for each queries.gql file
+  src/:
+    preset: near-operation-file
+    presetConfig:
+      extension: .gql.generated.ts
+      baseTypesPath: graphql/types.generated.ts
+    plugins:
+      - typescript-operations
+      - typescript-react-query
+    config:
+      # More readable types
+      skipTypename: true
+      fetcher: graphql-request
+  # Introspection config
+  ./graphql.schema.json:
+    plugins:
+      - "introspection"

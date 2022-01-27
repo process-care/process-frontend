@@ -56,6 +56,16 @@ export const surveyEntityFragment = gql`
 
       # Pages
       # The content has been removed because its going too deep
+      pages {
+        data {
+          id
+          attributes {
+            name
+            short_name
+            is_locked
+          }
+        }
+      }
 
       # Consent & related
       need_consent

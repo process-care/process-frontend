@@ -6,7 +6,8 @@ import { useGetLanding } from "call/actions/landing";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 import { Preview } from "components/CreateSurvey/CreateLanding/Preview";
-import { useGetSurveyBySlug } from "call/actions/survey";
+import { client } from "call/actions";
+import { useGetBySlugQuery } from "./queries.gql.generated";
 
 // const t = {
 //   noLanding:
@@ -15,13 +16,13 @@ import { useGetSurveyBySlug } from "call/actions/survey";
 
 export const Landing: React.FC<IRoute> = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { data: survey } = useGetSurveyBySlug(slug);
-  
+  const { data: survey } = useGetBySlugQuery(client, { slug });
+
   const {
     data: landing,
     isLoading,
     error,
-  } = useGetLanding(survey?.landing?.id);
+  } = useGetLanding(survey?.surveys?.data[0].attributes?.landing?.data?.id);
 
   // if (landing?.landing === undefined) {
   //   return (

@@ -1,0 +1,52 @@
+fragment surveyEntityFragment on SurveyEntity {
+  id
+  attributes {
+    # Metadata
+    description
+    order
+    title
+    slug
+    status
+    language
+    email
+    keywords
+    categories
+    author {
+      data { attributes { email } }
+    }
+
+    # Landing
+    landing {
+      data {
+        id
+        attributes {
+          color_theme
+          logo
+        }
+      }
+    }
+
+    # Pages
+    # The content has been removed because its going too deep
+
+    # Consent & related
+    need_consent
+    notice_consent {
+      data {
+        id
+        attributes {
+          url
+          name
+        }
+      }
+    }
+  }
+}
+
+query GetBySlug ($slug: String!) {
+  surveys(filters: { slug: { eq: $slug } }) {
+      data {
+        ...surveyEntityFragment
+      }
+    }
+}

@@ -104,7 +104,7 @@ export const GET_SURVEY_BY_SLUG = gql`
   ${surveyEntityFragment}
   
   query getSurveyBySlug($slug: String!) {
-    surveys(filters: { slug: { eq: $slug } }) {
+    surveys(filters: { slug: { eq: $slug }}) {
       data {
         ...surveyEntityFragment
       }

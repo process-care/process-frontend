@@ -1,5 +1,5 @@
-import React from "react";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import React, { useEffect, useRef } from "react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import Card from "./Card";
 
 import IQuestion from "types/form/question";
@@ -33,13 +33,16 @@ interface Props {
 
 const InputsPreview: React.FC<Props> = ({ order }) => {
   const dispatch = useAppDispatch();
-
+  const containerRef = useRef<HTMLInputElement>(null);
   const selectedPage = useAppSelector(selectors.pages.getSelectedPage);
 
   const questions = useAppSelector(
     selectors.questions.getSelectedPageQuestions
   );
   const isLoading = useAppSelector(selectors.questions.isLoading);
+  const isCreating = useAppSelector(selectors.questions.isCreating);
+  const hasChanges = useAppSelector(selectors.questions.questionsHasChanges);
+
   const error = useAppSelector(selectors.questions.error);
 
   const renderCard = (input: IQuestion, index: number) => {
@@ -69,6 +72,22 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
     }
   };
 
+  const goToBottom = () => {
+    setTimeout(() => {
+      if (containerRef.current) {
+        containerRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "end",
+        });
+      }
+    }, 500);
+  };
+
+  // useEffect(() => {
+  //   console.log("FIRE");
+  //   goToBottom();
+  // }, [questions]);
+
   const Container: React.FC<ContainerProps> = ({
     children,
     isDraggingOver,
@@ -79,7 +98,7 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
         d="flex"
         flexDirection="column"
         alignItems="center"
-        h="90%"
+        h="100vh"
         pb={10}
         backgroundColor={isDraggingOver ? "brand.gray.100" : "transparent"}
         overflowY="auto"
@@ -93,13 +112,18 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
           {() => {
             return (
               <Form style={{ width: "100%" }}>
+                <Button onClick={() => goToBottom()}>To bottom</Button>
                 <Flex
                   alignItems="center"
                   justifyContent="center"
                   fontSize="30"
                   flexDirection="column"
                   px={10}
+                  ref={containerRef}
                 >
+                  {/* <Box ref={containerRef} h="10px" border="1px solid red">
+                    plaf
+                  </Box> */}
                   {children}
                 </Flex>
               </Form>

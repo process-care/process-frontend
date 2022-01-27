@@ -19,6 +19,7 @@ const createEpic: Epic = (action$, state$) =>
   action$.pipe(
     ofType(actions.createQuestion.type),
     switchMap(async (action) => {
+      console.log("createEpic", action);
       const { type } = action.payload;
       const createdAt = new Date().toISOString();
       const selectedPageId = state$.value.scientistData.pages.selectedPage;

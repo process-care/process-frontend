@@ -22,6 +22,7 @@ const CustomDrawer: React.FC<Props> = ({
     <>
       <Portal>
         <Drawer
+          // blockScrollOnMount={false}
           onClose={() => console.log("_")}
           placement="right"
           isFullHeight

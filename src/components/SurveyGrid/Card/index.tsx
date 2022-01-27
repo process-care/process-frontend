@@ -47,7 +47,7 @@ export const Card: React.FC<Props> = ({ data }) => {
         />
         <Text variant="titleParaLight">{data.title}</Text>
       </Flex>
-      <Box minH="100px">
+      <Box minH={isTablet ? "unset" : "100px"}>
         <Text variant="current" mt="30px" noOfLines={5}>
           {data.landing?.subtitle ||
             "Lorem, ipsum dolor sit amet consectetur adipisicing elit.Doloribus, impedit non. Sequi asperiores amet sunt. Consequunturvitae aliquam quasi laudantium, voluptas repellendus sapiente sit esse! Id mollitia deleniti ea nisi."}
@@ -70,7 +70,11 @@ export const Card: React.FC<Props> = ({ data }) => {
       ) : (
         <Box minH="20px" />
       )}
-      <Flex justifyContent="space-between" pt="40px" alignItems="center">
+      <Flex
+        justifyContent="space-between"
+        pt={isTablet ? "20px" : "40px"}
+        alignItems="center"
+      >
         <Badge
           color="black"
           backgroundColor="transparent"

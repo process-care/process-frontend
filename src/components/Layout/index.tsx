@@ -43,8 +43,6 @@ export const Layout: React.FC<Props> = ({ children }) => {
     if (isPortail) return <Footer />;
   };
 
-  console.log(isTablet, !isSurveyPages, !isPortail, !isAuthPage);
-
   if (isTablet && !isSurveyPages && !isPortail && !isAuthPage) {
     return (
       <Div100vh>

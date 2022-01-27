@@ -1,4 +1,4 @@
-import { Box, Text, Center, Input } from "@chakra-ui/react";
+import { Box, Text, Center } from "@chakra-ui/react";
 import { SurveyGrid } from "components/SurveyGrid";
 import React, { useState, useMemo, useEffect } from "react";
 import IRoute from "types/routes/route";
@@ -109,20 +109,19 @@ export const Portail: React.FC<IRoute> = () => {
         </Text>
       </Box>
 
-      <Box pb="80px">
-        <Box
-          px="5%"
-          d="flex"
-          alignItems="center"
-          justifyContent="space-between"
-          flexDir={isTablet ? "column" : "row"}
-        >
-          <Filters
-            filters={t.filters}
-            handleClick={(id) => setCurrentFilter(id)}
-            currentFilter={currentFilter}
-          />
-          <Box w={isTablet ? "100%" : "50%"} mt={isTablet ? "30px" : "unset"}>
+      <Box
+        px="5%"
+        d="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        flexDir={isTablet ? "column" : "row"}
+      >
+        <Filters
+          filters={t.filters}
+          handleClick={(id) => setCurrentFilter(id)}
+          currentFilter={currentFilter}
+        />
+        {/* <Box w={isTablet ? "100%" : "50%"} mt={isTablet ? "30px" : "unset"}>
             <Input
               height="55px"
               name="search"
@@ -130,10 +129,10 @@ export const Portail: React.FC<IRoute> = () => {
               placeholder="Recherche de projet par titre"
               // onChange={(e) => setQuery(e.target.value)}
             />
-          </Box>
-        </Box>
+          </Box> */}
+      </Box>
 
-        {/* {isSearching ? (
+      {/* {isSearching ? (
           surveysFound && surveysFound?.surveys?.length > 0 ? (
             <SurveyGrid
               surveys={surveysFound?.surveys}
@@ -157,17 +156,16 @@ export const Portail: React.FC<IRoute> = () => {
             w="90%"
           />
         )} */}
-        {filteredSurveys && filteredSurveys?.length > 0 ? (
-          <SurveyGrid surveys={filteredSurveys} isLoading={isLoading} />
-        ) : isLoading ? (
-          <Loader />
-        ) : (
-          <NoData
-            content="Nous n'avons pas trouvé d'enquêtes pour votre recherche."
-            w="90%"
-          />
-        )}
-      </Box>
+      {filteredSurveys && filteredSurveys?.length > 0 ? (
+        <SurveyGrid surveys={filteredSurveys} isLoading={isLoading} />
+      ) : isLoading ? (
+        <Loader />
+      ) : (
+        <NoData
+          content="Nous n'avons pas trouvé d'enquêtes pour votre recherche."
+          w="90%"
+        />
+      )}
       {totalCount && state.length < totalCount && (
         <Box
           pos="relative"

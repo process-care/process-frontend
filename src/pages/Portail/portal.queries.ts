@@ -6,7 +6,7 @@ import { ISurveysRes } from "types/survey";
 // ---- REFERENCES
 
 const STATUS_PUBLISHED = ["pending", "closed", "archived"];
-export const ITEMS_PER_PAGE = 10;
+export const ITEMS_PER_PAGE = 50;
 
 // ---- GQL
 

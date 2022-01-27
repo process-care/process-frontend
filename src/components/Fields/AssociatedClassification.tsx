@@ -58,8 +58,8 @@ export const AssociatedClassification: React.FC<Props> = ({
       (maxVariations - 1 > (typeof maxLoop === "string" && parseInt(maxLoop))
         ? maxLoop && parseInt(maxLoop)
         : maxVariations) ||
-    field.value?.length - 1 ===
-      ((maxLoop && parseInt(maxLoop)) || maxVariations);
+    field.value?.length ===
+      ((maxLoop && parseInt(maxLoop) - 1) || maxVariations);
 
   const Card = ({ index }: { index: number }) => {
     if (filteredFactors === undefined) {

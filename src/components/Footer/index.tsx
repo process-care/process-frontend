@@ -11,6 +11,7 @@ export const Footer: React.FC = () => {
 
   return (
     <Box
+      mt="80px"
       backgroundColor="black"
       h="200px"
       color="white"

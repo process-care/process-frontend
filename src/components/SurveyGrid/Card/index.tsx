@@ -78,7 +78,11 @@ export const Card: React.FC<Props> = ({ data }) => {
       ) : (
         <Box minH="20px" />
       )}
-      <Flex justifyContent="space-between" pt="40px" alignItems="center">
+      <Flex
+        justifyContent="space-between"
+        pt={isTablet ? "20px" : "40px"}
+        alignItems="center"
+      >
         <Badge
           color="black"
           backgroundColor="transparent"

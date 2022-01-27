@@ -1,15 +1,20 @@
-import { Box, Center } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
+import Div100vh from "react-div-100vh";
 import { AuthForm } from "components/Authentification/AuthForm";
 import React from "react";
 import IRoute from "types/routes/route";
 export const Login: React.FC<IRoute> = () => {
   return (
-    // <div className="background__grid">
-    <Box backgroundColor="brand.gray">
-      <Center h="100vh" justifyContent="center">
+    <Div100vh>
+      <Box
+        h="100%"
+        alignItems="center"
+        d="flex"
+        justifyContent="center"
+        className="background__grid"
+      >
         <AuthForm />
-      </Center>
-    </Box>
-    // </div>
+      </Box>
+    </Div100vh>
   );
 };

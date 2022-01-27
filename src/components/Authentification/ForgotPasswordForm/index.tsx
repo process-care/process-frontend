@@ -3,23 +3,47 @@ import React, { useState } from "react";
 
 import { ReactComponent as Logo } from "assets/black_logo.svg";
 import { Form, Formik } from "formik";
-import { Textarea } from "components/Fields";
-import { forgotPassword } from "api/actions/password";
+import { Input } from "components/Fields";
+import { forgotPassword } from "call/actions/password";
 import { forgotPasswordSchema } from "./validationSchema";
 import { NavLink } from "react-router-dom";
-import { Enum_Question_Rows } from "api/graphql/types.generated";
+import { useMediaQueries } from "utils/hooks/mediaqueries";
 
 export const ForgotPasswordForm: React.FC = () => {
   const [isSuccess, setSuccess] = useState(false);
   const [errors, setError] = useState<any>([]);
+  const { isTablet } = useMediaQueries();
 
   if (isSuccess) {
-    return <Box>✅ Un mail vient d'être envoyer à votre adresse email !</Box>;
+    return (
+      <Box
+        backgroundColor="white"
+        p={isTablet ? "30px 20px" : "50px"}
+        border="1px solid"
+        borderColor="brand.line"
+        w={isTablet ? "90%" : "480px"}
+        d="flex"
+        flexDirection="column"
+      >
+        ✅ <br /> Un mail vient d'être envoyer à votre adresse email !
+        <NavLink to="/connexion">
+          <Button mt="40px" variant="roundedBlue">
+            Revenir à la page de connexion
+          </Button>
+        </NavLink>
+      </Box>
+    );
   }
 
   return (
-    <Box backgroundColor="white" p="110px 50px" w="480px">
-      <Box d="flex" justifyContent="center">
+    <Box
+      backgroundColor="white"
+      p={isTablet ? "30px 20px" : "50px"}
+      border="1px solid"
+      borderColor="brand.line"
+      w={isTablet ? "90%" : "480px"}
+    >
+      <Box d="flex" justifyContent="center" w="150px" m="0 auto">
         <Logo />
       </Box>
 
@@ -45,19 +69,19 @@ export const ForgotPasswordForm: React.FC = () => {
         {({ isValid, isSubmitting }) => {
           return (
             <Form>
-              <Box w="100%" pt="90px" textAlign="left">
+              <Box w="100%" pt={isTablet ? "20px" : "90px"} textAlign="left">
                 <Flex justifyContent="center" flexDirection="column" w="100%">
                   <Text variant="current" mb="20px">
                     Merci de renseigner votre adresse email, vous recevrez un
                     lien vous permettant de réinitialiser votre mot de passe.
                   </Text>
-                  <Textarea
+                  <Input
                     isCollapsed={false}
-                    rows={Enum_Question_Rows.Small}
                     label="Renseigner votre email"
                     placeholder="Email"
-                    id="email"
+                    name="email"
                     isRequired
+                    autoComplete="email"
                   />
 
                   {errors.length > 0 &&
@@ -79,12 +103,7 @@ export const ForgotPasswordForm: React.FC = () => {
                   </Button>
                   <Box textAlign="center">
                     <NavLink to="/connexion">
-                      <Button
-                        mt="40px"
-                        type="submit"
-                        disabled={!isValid || isSubmitting}
-                        variant="link"
-                      >
+                      <Button mt="40px" type="submit" variant="link">
                         Annuler
                       </Button>
                     </NavLink>

@@ -7,12 +7,14 @@ import { Input } from "components/Fields";
 import { NavLink, useLocation } from "react-router-dom";
 import { resetPassword } from "api/actions/password";
 import { newPasswordSchema } from "./validationSchema";
+import { useMediaQueries } from "utils/hooks/mediaqueries";
 
 export const NewPasswordForm: React.FC = () => {
   const [isSuccess, setSuccess] = useState<boolean>(false);
   const [errors, setError] = useState<any>([]);
   const query = useQuery();
   const code = query.get("code");
+  const { isTablet } = useMediaQueries();
 
   if (isSuccess) {
     return (
@@ -28,8 +30,14 @@ export const NewPasswordForm: React.FC = () => {
   }
 
   return (
-    <Box backgroundColor="white" p="110px 50px" w="480px">
-      <Box d="flex" justifyContent="center">
+    <Box
+      backgroundColor="white"
+      p={isTablet ? "30px 20px" : "50px"}
+      border="1px solid"
+      borderColor="brand.line"
+      w={isTablet ? "90%" : "480px"}
+    >
+      <Box d="flex" justifyContent="center" w="150px" m="0 auto">
         <Logo />
       </Box>
 
@@ -57,7 +65,7 @@ export const NewPasswordForm: React.FC = () => {
         {({ isValid, isSubmitting }) => {
           return (
             <Form>
-              <Box w="100%" pt="90px" textAlign="left">
+              <Box w="100%" pt={isTablet ? "20px" : "90px"} textAlign="left">
                 <Flex justifyContent="center" flexDirection="column" w="100%">
                   <Text variant="current" mb="20px">
                     Merci de renseigner votre nouveau mot de passe.
@@ -95,6 +103,13 @@ export const NewPasswordForm: React.FC = () => {
                   >
                     Réinitialiser mon mot de passe
                   </Button>
+                  <Box textAlign="center">
+                    <NavLink to="/connexion">
+                      <Button mt="40px" variant="link">
+                        Annuler
+                      </Button>
+                    </NavLink>
+                  </Box>
                 </Flex>
               </Box>
             </Form>

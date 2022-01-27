@@ -17,11 +17,9 @@ export const LoginForm: React.FC = () => {
     (state) => state.scientistData.auth.isConnected
   );
   const errors = useAppSelector((state) => state.scientistData.auth.errors);
-
   function handleSubmit({ identifier, password }: any) {
     dispatch(actions.login({ identifier, password }));
   }
-
   if (isConnected) {
     history.push("/dashboard");
   }
@@ -41,7 +39,7 @@ export const LoginForm: React.FC = () => {
       {({ isValid, isSubmitting, dirty }) => {
         return (
           <Form>
-            <Box w="100%" pt="90px" textAlign="left">
+            <Box w="100%" textAlign="left">
               <Flex justifyContent="center" flexDirection="column" w="100%">
                 {/* {errors && <p>{error.name}</p>} */}
                 <Input
@@ -68,7 +66,7 @@ export const LoginForm: React.FC = () => {
                 </NavLink>
                 <Errors message={renderAuthMessage(errors)} />
                 <Button
-                  mt="10"
+                  mt="60px"
                   type="submit"
                   disabled={!isValid || isSubmitting || !dirty}
                   variant="roundedBlue"

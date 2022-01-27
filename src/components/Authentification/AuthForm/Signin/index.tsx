@@ -18,7 +18,6 @@ export const SigninForm: React.FC<Props> = ({ cancel }) => {
     (state) => state.scientistData.auth.data?.user?.id
   );
   const errors = useAppSelector((state) => state.scientistData.auth.errors);
-
   const dispatch = useDispatch();
 
   type Data = {
@@ -70,7 +69,7 @@ export const SigninForm: React.FC<Props> = ({ cancel }) => {
       {({ isValid, isSubmitting, dirty }) => {
         return (
           <Form>
-            <Box w="100%" pt="90px" textAlign="left">
+            <Box w="100%" textAlign="left">
               <Flex justifyContent="center" flexDirection="column" w="100%">
                 <Input
                   isCollapsed={false}
@@ -83,7 +82,7 @@ export const SigninForm: React.FC<Props> = ({ cancel }) => {
                 <Input
                   isCollapsed={false}
                   label="Mot de passe"
-                  placeholder="Renseigner votre nouveau mot de passe"
+                  placeholder="Renseigner votre mot de passe"
                   name="password"
                   type="password"
                   isRequired="true"
@@ -92,8 +91,8 @@ export const SigninForm: React.FC<Props> = ({ cancel }) => {
 
                 <Input
                   isCollapsed={false}
-                  label="Confirmation du nouveau mot de passe"
-                  placeholder="Confimer votre nouveau mot de passe"
+                  label="Confirmation du mot de passe"
+                  placeholder="Confimer votre  mot de passe"
                   name="confirmPassword"
                   type="password"
                   isRequired="true"
@@ -103,7 +102,7 @@ export const SigninForm: React.FC<Props> = ({ cancel }) => {
                   checkbox={[
                     {
                       label:
-                        "En créant votre compte vous acceptez les conditions générales d’utilisation de la plateforme",
+                        "J'accepte les conditions générales d’utilisation de la plateforme",
                       value: "accept",
                     },
                   ]}

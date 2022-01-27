@@ -25,10 +25,10 @@ export const Timeline: React.FC = () => {
   const survey = useAppSelector(selectors.survey);
   const step = useAppSelector(selectors.step);
   return (
-    <Box p="5px 20px" pos="relative">
+    <Box p="8px 20px 0 30px" pos="relative">
       <Flex justifyContent="flex-end">
         <NavLink to="/dashboard">
-          <Button variant="link" color="gray.200">
+          <Button variant="link" color="gray.600">
             {t.cancel}
           </Button>
         </NavLink>

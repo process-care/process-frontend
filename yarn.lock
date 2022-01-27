@@ -11585,6 +11585,11 @@
     "strip-ansi" "6.0.0"
     "text-table" "0.2.0"
 
+"react-div-100vh@^0.7.0":
+  "integrity" "sha512-I3d77tQyaSlOx/6vurDDLk7upb5GA2ldEtVXkk7Kn5cy+tLlS0KlqDK14xUxlxh7jz4StjgKcwFyrpymsPpomA=="
+  "resolved" "https://registry.npmjs.org/react-div-100vh/-/react-div-100vh-0.7.0.tgz"
+  "version" "0.7.0"
+
 "react-dnd-html5-backend@^14.0.0":
   "integrity" "sha512-ZDmpvFpd1NR4riw/CMbr8C3mgP6ZhsTf0c48a36kw4ZW8emgiugNlAz/qhhZ4/Pz9TO6DZ63sQohUTTl+AWGiA=="
   "resolved" "https://registry.npmjs.org/react-dnd-html5-backend/-/react-dnd-html5-backend-14.0.1.tgz"

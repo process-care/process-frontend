@@ -22,8 +22,7 @@ export const AuthForm: React.FC = () => {
   return (
     <Box
       backgroundColor="white"
-      p="50px 50px"
-      h="600px"
+      p={isTablet ? "30px 20px" : "50px"}
       border="1px solid"
       borderColor="brand.line"
       w={isTablet ? "90%" : "480px"}
@@ -31,16 +30,17 @@ export const AuthForm: React.FC = () => {
       <Box d="flex" justifyContent="center" w="150px" m="0 auto">
         <Logo />
       </Box>
-
-      {isSigninPage ? (
-        <SigninForm cancel={() => setIsSigninPage(false)} />
-      ) : (
-        <LoginForm />
-      )}
+      <Box pt={isTablet ? "20px" : "90px"}>
+        {isSigninPage ? (
+          <SigninForm cancel={() => setIsSigninPage(false)} />
+        ) : (
+          <LoginForm />
+        )}
+      </Box>
 
       {!isSigninPage && (
         <>
-          <Text my="5" variant="currentLight">
+          <Text my="3" variant="currentLight">
             OU
           </Text>
           <Button

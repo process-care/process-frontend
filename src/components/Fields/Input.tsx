@@ -118,7 +118,7 @@ export const CustomInput: React.FC<Props> = ({
                   placeholder={placeholder}
                   {...field}
                   autoComplete={autoComplete}
-                  p={appearance === "big" ? "30px" : "0"}
+                  p={appearance === "big" ? "30px" : "10px"}
                 />
                 {inputRightAddon && (
                   <InputRightAddon children={inputRightAddon} h="40px" />

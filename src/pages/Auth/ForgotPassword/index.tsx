@@ -1,14 +1,21 @@
-import { Center } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { ForgotPasswordForm } from "components/Authentification/ForgotPasswordForm";
 import React from "react";
+import Div100vh from "react-div-100vh";
 import IRoute from "types/routes/route";
 
 export const ForgotPassword: React.FC<IRoute> = () => {
   return (
-    <div className="background__grid">
-      <Center h="100vh" justifyContent="center">
+    <Div100vh>
+      <Box
+        h="100%"
+        alignItems="center"
+        d="flex"
+        justifyContent="center"
+        className="background__grid"
+      >
         <ForgotPasswordForm />
-      </Center>
-    </div>
+      </Box>
+    </Div100vh>
   );
 };

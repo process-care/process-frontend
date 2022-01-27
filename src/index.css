@@ -103,3 +103,16 @@ body {
 #cgv-label span {
   display: none;
 }
+
+.chakra-stack {
+  padding: 0 !important;
+}
+
+.chakra-checkbox__label {
+  padding-left: 10px;
+  width: 100%;
+}
+.chakra-checkbox__control {
+  width: 25px !important;
+  height: 25px !important;
+}

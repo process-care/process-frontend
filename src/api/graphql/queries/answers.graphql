@@ -1,0 +1,11 @@
+mutation createAnswer ($data: AnswerInput!) {
+  createAnswer(data: $data) {
+    data { ...answerFragment }
+  }
+}
+
+mutation updateAnswer ($id: ID!, $data: AnswerInput!) {
+  updateAnswer(id: $id, data: $data) {
+    data { ...answerFragment }
+  }
+}

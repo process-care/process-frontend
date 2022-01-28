@@ -1,13 +1,13 @@
 import React from "react";
 import IRoute from "types/routes/route";
 import { useParams } from "react-router-dom";
-import { useGetLanding } from "call/actions/landing";
 // import { Text } from "@chakra-ui/react";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 import { Preview } from "components/CreateSurvey/CreateLanding/Preview";
-import { client } from "call/actions";
-import { useGetBySlugQuery } from "./queries.gql.generated";
+import { client } from "api/gql-client";
+import { useSurveyBySlugQuery } from "api/graphql/queries/survey.gql.generated";
+import { useLandingQuery } from "api/graphql/queries/landing.gql.generated";
 
 // const t = {
 //   noLanding:
@@ -16,13 +16,16 @@ import { useGetBySlugQuery } from "./queries.gql.generated";
 
 export const Landing: React.FC<IRoute> = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { data: survey } = useGetBySlugQuery(client, { slug });
+
+  // TODO: Annoying to fetch the survey just to fetch the landing... Search landing with survey slug ?
+  const { data: survey } = useSurveyBySlugQuery(client, { slug });
+  const surveyId = survey?.surveys?.data[0].attributes?.landing?.data?.id ?? '';
 
   const {
     data: landing,
     isLoading,
     error,
-  } = useGetLanding(survey?.surveys?.data[0].attributes?.landing?.data?.id);
+  } = useLandingQuery(client, { id: surveyId}, { enabled: surveyId !== '' });
 
   // if (landing?.landing === undefined) {
   //   return (

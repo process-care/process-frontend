@@ -3,15 +3,9 @@ import { combineEpics, ofType } from "redux-observable";
 import { Epic } from "redux/store";
 import { actions } from "redux/slices/scientistData";
 
-import { client } from "call/actions";
-
-import {
-  ADD_QUESTION,
-  DELETE_QUESTION,
-  UPDATE_QUESTION,
-} from "call/queries/formBuilder/question";
-import { UPDATE_ORDER } from "call/queries/survey";
-import ICondition from "types/form/condition";
+import { client } from "api/gql-client";
+import { CreateQuestionDocument, UpdateQuestionDocument, DeleteQuestionDocument } from "api/graphql/queries/question.gql.generated";
+import { UpdateOrderDocument } from "api/graphql/queries/survey.gql.generated";
 
 // ----  CREATE QUESTION
 
@@ -22,7 +16,7 @@ const createEpic: Epic = (action$, state$) =>
       const { type } = action.payload;
       const createdAt = new Date().toISOString();
       const selectedPageId = state$.value.scientistData.pages.selectedPage;
-      const newQuestion = await client.request(ADD_QUESTION, {
+      const newQuestion = await client.request(CreateQuestionDocument, {
         values: {
           type,
           page: selectedPageId,
@@ -71,20 +65,21 @@ const saveEpic: Epic = (action$, state$) =>
       changes.page = changes.page.id;
       changes.id = undefined;
       changes.conditions = changes.conditions?.map(
-        (cond: ICondition) => cond.id
+        // TODO: fix the `any` type
+        (cond: any) => cond.id
       );
 
       console.log("SAVE QUESTION", action.payload.changes);
-      // TODO: change the hack to send the internal title only when it is modify
+      // TODO: change the hack to send the internal title only when it is modified
 
-      await client.request(UPDATE_QUESTION, {
+      await client.request(UpdateQuestionDocument, {
         id: selectedQuestionId,
         data: {
           ...changes,
           internal_title: selectedQuestion?.internal_title,
         },
       });
-      await client.request(UPDATE_ORDER, {
+      await client.request(UpdateOrderDocument, {
         id: selectedSurvey,
         new_order: order,
       });
@@ -101,7 +96,7 @@ const deleteEpic: Epic = (action$, state$) =>
     switchMap(async (action) => {
       const id: string = action.payload;
       const deletedAt = new Date().toISOString();
-      await client.request(DELETE_QUESTION, {
+      await client.request(DeleteQuestionDocument, {
         id,
       });
 
@@ -110,7 +105,7 @@ const deleteEpic: Epic = (action$, state$) =>
     switchMap(async (deletedAt) => {
       const selectedSurvey = state$.value.scientistData.survey.selectedSurvey;
       const order = state$.value.scientistData.survey.order;
-      await client.request(UPDATE_ORDER, {
+      await client.request(UpdateOrderDocument, {
         id: selectedSurvey,
         new_order: order,
       });

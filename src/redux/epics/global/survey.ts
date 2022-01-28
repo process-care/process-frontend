@@ -2,20 +2,16 @@ import { map, switchMap } from "rxjs";
 import { combineEpics, ofType } from "redux-observable";
 import { Epic } from "redux/store";
 import { actions } from "redux/slices/scientistData";
-import { client } from "call/actions";
-import {
-  GET_SURVEY_BY_SLUG,
-  UPDATE_ORDER,
-  UPDATE_SURVEY,
-} from "call/queries/survey";
-import { CHECK_SURVEY } from "call/queries/formBuilder/condition";
+import { client } from "api/gql-client";
+import { SurveyBySlugDocument, UpdateOrderDocument, UpdateSurveyDocument } from "api/graphql/queries/survey.gql.generated";
+import { CheckSurveyDocument } from "../queries/checks.gql.generated";
 
 // Watches over "initialize" currentsurvey
 const initializeEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.initializeSurvey.type),
     switchMap((action) => {
-      return client.request(GET_SURVEY_BY_SLUG, { slug: action.payload });
+      return client.request(SurveyBySlugDocument, { slug: action.payload });
     }),
     map((result) => {
       const payload = result.surveys[0];
@@ -30,7 +26,7 @@ const updateOrderEpic: Epic = (action$, state$) =>
     map((action) => action.payload),
     switchMap((payload) => {
       const selectedSurveyId = state$.value.scientistData.survey.selectedSurvey;
-      return client.request(UPDATE_ORDER, {
+      return client.request(UpdateOrderDocument, {
         id: selectedSurveyId,
         new_order: payload,
       });
@@ -48,7 +44,7 @@ const updateSurveyEpic: Epic = (action$) =>
     map((action) => action.payload),
     switchMap((payload) => {
       console.log("payload", payload);
-      return client.request(UPDATE_SURVEY, {
+      return client.request(UpdateSurveyDocument, {
         id: payload.id,
         data: {
           needConsent: payload.needConsent,
@@ -66,7 +62,7 @@ const TestEpic: Epic = (action$, state$) =>
     map((action) => action.payload),
     switchMap(() => {
       const selectedSurveyId = state$.value.scientistData.survey.selectedSurvey;
-      return client.request(CHECK_SURVEY, {
+      return client.request(CheckSurveyDocument, {
         surveyId: selectedSurveyId,
       });
     }),

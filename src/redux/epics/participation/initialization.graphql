@@ -1,0 +1,11 @@
+query QuestionsBySurvey($surveyId: ID!) {
+  questionsBySurvey(surveyId: $surveyId) {
+    ...questionFragment
+  }
+}
+
+query AnswersByParticipation($participationId: ID!) {
+  answers(filters: { participation: { id: { eq: $participationId } } }) {
+    data { ...answerFragment }
+  }
+}

@@ -1,0 +1,23 @@
+mutation addPage($values: PageInput!) {
+  createPage(data: $values) {
+    data {
+      ...pageEntityFragment
+    }
+  }
+}
+
+mutation updatePage($id: ID!, $data: PageInput!) {
+  updatePage(id: $id, data: $data) {
+    data {
+      ...pageEntityFragment
+    }
+  }
+}
+
+mutation deletePage($id: ID!) {
+  deletePage(id: $id) {
+    data {
+      id
+    }
+  }
+}

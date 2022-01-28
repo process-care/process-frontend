@@ -3,14 +3,14 @@ import { combineEpics, ofType } from "redux-observable";
 import { Epic, store } from "redux/store";
 import { actions } from "redux/slices/scientistData";
 import { v4 as uuidv4 } from "uuid";
-import { client } from "call/actions";
+import { client } from "api/gql-client";
 
 import {
-  ADD_CONDITION,
-  DELETE_CONDITION,
-  DELETE_GROUP_CONDITION,
-  UPDATE_CONDITION,
-} from "call/queries/formBuilder/condition";
+  CreateConditionDocument,
+  DeleteConditionDocument,
+  DeleteGroupConditionDocument,
+  UpdateConditionDocument,
+} from "api/graphql/queries/condition.gql.generated";
 
 // ----  CREATE CONDITION
 
@@ -22,7 +22,7 @@ const createEpic: Epic = (action$) =>
       const { type, refererId, group } = action.payload;
       const createdAt = new Date().toISOString();
       const newGroup = `group-${uuidv4()}`;
-      const newCondition = await client.request(ADD_CONDITION, {
+      const newCondition = await client.request(CreateConditionDocument, {
         newCondition: {
           type,
           [type === "question" ? "referer_question" : "referer_page"]:
@@ -63,7 +63,7 @@ const deleteEpic: Epic = (action$) =>
     switchMap(async (action) => {
       const id: string = action.payload;
       const deletedAt = new Date().toISOString();
-      await client.request(DELETE_CONDITION, {
+      await client.request(DeleteConditionDocument, {
         id,
       });
       return deletedAt;
@@ -83,7 +83,7 @@ const deleteGroupEpic: Epic = (action$) =>
     switchMap(async (action) => {
       const groupId: string = action.payload.groupId;
       const deletedAt = new Date().toISOString();
-      await client.request(DELETE_GROUP_CONDITION, {
+      await client.request(DeleteGroupConditionDocument, {
         name: groupId,
       });
       return deletedAt;
@@ -121,7 +121,7 @@ const saveEpic: Epic = (action$, state$) =>
       };
       const condition = formatPayload(changes);
 
-      await client.request(UPDATE_CONDITION, {
+      await client.request(UpdateConditionDocument, {
         id: selectedConditionId,
         data: condition,
       });

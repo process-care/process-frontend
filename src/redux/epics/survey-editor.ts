@@ -3,10 +3,10 @@ import { combineEpics, ofType } from "redux-observable";
 import { Epic } from "redux/store";
 import { actions } from "redux/slices/survey-editor";
 
-import { client } from "call/actions";
-import { GET_SURVEY_BY_SLUG, UPDATE_SURVEY, ADD_SURVEY } from "call/queries/survey";
-import { ADD_PAGE } from "call/queries/formBuilder/page";
-import { shapeSurvey } from "call/shapers/survey";
+import { client } from "api/gql-client";
+import { shapeSurvey } from "api/shapers/survey";
+import { AddSurveyDocument, SurveyBySlugDocument, UpdateSurveyDocument } from "api/graphql/queries/survey.gql.generated";
+import { AddPageDocument } from "api/graphql/queries/page.gql.generated";
 
 // Watches over "load" survey
 const loadEpic: Epic = (action$) =>
@@ -14,7 +14,7 @@ const loadEpic: Epic = (action$) =>
     ofType(actions.initialize.type),
     switchMap((action) => {
       console.log('Yoloing the yolo');
-      return client.request(GET_SURVEY_BY_SLUG, { slug: action.payload }).then((res) => {
+      return client.request(SurveyBySlugDocument, { slug: action.payload }).then((res) => {
         console.log('Bidum: ', res);
         return shapeSurvey(res.surveys[0]);
       });
@@ -43,7 +43,7 @@ const updateEpic: Epic = (action$, state$) =>
       const savingAt = new Date().toISOString();
       const data = { ...accumulated, id: undefined };
       const surveyId = state$.value.editor.survey.data?.id;
-      await client.request(UPDATE_SURVEY, { id: surveyId, data });
+      await client.request(UpdateSurveyDocument, { id: surveyId, data });
       return savingAt;
     }),
     map((savedDate) => actions.updated({ lastSaved: savedDate }))
@@ -62,7 +62,7 @@ const postEpic: Epic = (action$, state$) =>
       const data = state$.value.editor.survey.data;
       // Create survey and its first page
       try {
-        const surveyRes = await client.request(ADD_SURVEY, {
+        const surveyRes = await client.request(AddSurveyDocument, {
           values: {
             ...data,
             status: "draft",
@@ -71,7 +71,7 @@ const postEpic: Epic = (action$, state$) =>
 
         const surveyId = surveyRes?.createSurvey?.data.id;
         if (surveyId) {
-          await client.request(ADD_PAGE, {
+          await client.request(AddPageDocument, {
             values: {
               name: `Page 1`,
               is_locked: false,

@@ -1,0 +1,21 @@
+## ---- QUERIES
+
+query Landing($id: ID!) {
+  landing(id: $id) {
+    data { ...landingEntityFragment }
+  }
+}
+
+## ---- MUTATIONS
+
+mutation CreateLanding($data: LandingInput!) {
+  createLanding(data: $data) {
+    data { ...landingEntityFragment }
+  }
+}
+
+mutation UpdateLanding($id: ID!, $data: LandingInput!) {
+  updateLanding(id: $id, data: $data) {
+    data { ...landingEntityFragment }
+  }
+}

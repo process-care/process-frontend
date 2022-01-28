@@ -3,8 +3,8 @@ import { combineEpics, ofType } from 'redux-observable';
 import { Epic } from 'redux/store';
 
 import { actions, selectors } from 'redux/slices/participation/answers';
-import { client } from 'call/actions';
-import { CREATE_ANSWER, UPDATE_ANSWER } from 'call/queries/answers';
+import { client } from 'api/gql-client';
+import { CreateAnswerDocument, UpdateAnswerDocument } from 'api/graphql/queries/answers.gql.generated';
 
 const DEBOUNCE_TIME = 3000;
 
@@ -33,8 +33,8 @@ const upsertAnswersEpic: Epic = (action$, state$) => action$.pipe(
     const allUpserts = Object.entries(accu).map(([qId, value]) => {
       const answerInState = selectors.selectById(state$.value, qId);
       return (answerInState?.id)
-        ? client.request(UPDATE_ANSWER, { id: answerInState.id, data: { value } })
-        : client.request(CREATE_ANSWER, { data: { value, question: qId, participation: participationId } });
+        ? client.request(UpdateAnswerDocument, { id: answerInState.id, data: { value } })
+        : client.request(CreateAnswerDocument, { data: { value, question: qId, participation: participationId } });
     });
 
     return Promise.all(allUpserts);

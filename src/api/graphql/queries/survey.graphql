@@ -1,0 +1,72 @@
+## ---- QUERIES
+
+# Get one specific survey
+query Survey($id: ID!) {
+  survey(id: $id) {
+    data {
+      ...surveyEntityFragment
+    }
+  }
+}
+
+# Search one survey by its slug (/!\ result is an array)
+query SurveyBySlug ($slug: String!) {
+  surveys(filters: { slug: { eq: $slug } }) {
+    data {
+      ...surveyEntityFragment
+    }
+  }
+}
+
+## ---- MUTATIONS
+
+# Create survey
+mutation addSurvey($values: SurveyInput!) {
+  createSurvey(data: $values) {
+    data {
+      id
+      attributes {
+        title
+        slug
+      }
+    }
+  }
+}
+
+# Update survey
+mutation updateSurvey($id: ID!, $data: SurveyInput!) {
+  updateSurvey(id: $id, data: $data) {
+    data {
+      id
+      attributes {
+        title
+        slug
+        need_consent
+        landing {
+          data { id }
+        }
+      }
+    }
+  }
+}
+
+# Delete survey
+mutation deleteSurvey($id: ID!) {
+  deleteSurvey(id: $id) {
+    data {
+      id
+    }
+  }
+}
+
+# Update order in survey
+mutation updateOrder($id: ID!, $new_order: JSON) {
+  updateSurvey(id: $id, data: { order: $new_order }) {
+    data {
+      id
+      attributes {
+        order
+      }
+    }
+  }
+}

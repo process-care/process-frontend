@@ -20,7 +20,7 @@ import surveyEditor from "redux/slices/survey-editor";
 
 import scientistData from "redux/slices/scientistData";
 
-import { landingEditorEpics } from "redux/epics/landing-editor";
+import { landingEditorEpics } from "redux/epics/landing/landing-editor";
 import { surveyEditorEpics } from "redux/epics/survey-editor";
 import { surveysEpics } from "redux/epics/my-surveys";
 import { surveyEpics } from "redux/epics/global/survey";

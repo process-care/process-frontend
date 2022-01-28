@@ -9,6 +9,7 @@ import { selectors } from "redux/slices/scientistData";
 interface Props {
   selectedCondition: ICondition;
 }
+
 export const ConditionMenu: React.FC<Props> = ({ selectedCondition }) => {
   const isValid = useAppSelector(
     (state) => state.scientistData.conditions.isValid

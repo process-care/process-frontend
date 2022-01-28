@@ -1,0 +1,27 @@
+mutation createCondition($newCondition: ConditionInput!) {
+  createCondition(data: $newCondition) {
+    data {
+      ...conditionEntityFragment
+    }
+  }
+}
+
+mutation updateCondition($id: ID!, $data: ConditionInput!) {
+  updateCondition(id: $id, data: $data) {
+    data {
+      ...conditionEntityFragment
+    }
+  }
+}
+
+mutation deleteGroupCondition($name: String) {
+  deleteGroupCondition(name: $name)
+}
+
+mutation deleteCondition($id: ID!) {
+  deleteCondition(id: $id) {
+    data {
+      id
+    }
+  }
+}

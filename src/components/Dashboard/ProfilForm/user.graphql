@@ -1,0 +1,29 @@
+query user($id: ID!) {
+  usersPermissionsUser(id: $id) {
+    data {
+      id
+      attributes {
+        email
+        firstName
+        lastName
+        job
+        institution
+      }
+    }
+  }
+}
+
+mutation updateUser($id: ID!, $data: UsersPermissionsUserInput!) {
+  updateUsersPermissionsUser(id: $id, data: $data) {
+    data {
+      id
+      attributes {
+        email
+        firstName
+        lastName
+        job
+        institution
+      }
+    }
+  }
+}

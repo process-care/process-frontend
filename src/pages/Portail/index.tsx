@@ -7,14 +7,12 @@ import { Image } from "@chakra-ui/react";
 import Hero from "assets/hero.jpg";
 import { Filters } from "components/Dashboard/Filters";
 import { NoData } from "components/SurveyGrid/noData";
-import {
-  ITEMS_PER_PAGE,
-  useGetPublishedSurvey,
-  useSearchSurvey,
-} from "./portal.queries";
 import { Loader } from "components/Spinner";
 
 import { ReactComponent as ShowMore } from "./assets/ShowMore.svg";
+import { useSurveyPublishedQuery, useSurveySearchQuery } from "./portal.gql.generated";
+import { client } from "api/gql-client";
+
 // ---- STATIC
 
 const t = {
@@ -29,6 +27,8 @@ const t = {
   ],
 };
 
+const ITEMS_PER_PAGE = 10;
+
 // ---- COMPONENT
 
 export const Portail: React.FC<IRoute> = () => {
@@ -36,28 +36,32 @@ export const Portail: React.FC<IRoute> = () => {
   const [query, setQuery] = useState<string>("");
   const [pagination, setPagination] = useState<number>(0);
 
-  const { data: surveys, isLoading } = useGetPublishedSurvey(pagination);
-  const { data: surveysFound, isLoading: loadingSearch } =
-    useSearchSurvey(query);
+  // Get all published surveys
+  const { data: publishedResult, isLoading } = useSurveyPublishedQuery(client, { page: pagination });
+  // Get surveys related to the searched query
+  const {
+    data: searchResult,
+    isLoading: loadingSearch,
+  } = useSurveySearchQuery(client, { query });
 
   const [state, setState] = useState<any>([]);
 
   const filteredSurveys = useMemo(() => {
-    console.log(surveys);
-    if (!surveys) return [];
+    console.log(publishedResult);
+    if (!publishedResult) return [];
 
-    return surveys?.data?.filter(
-      (survey) => currentFilter === "all" || survey.status === currentFilter
+    return publishedResult.surveys?.data?.filter(
+      (survey) => currentFilter === "all" || survey.attributes?.status === currentFilter
     );
-  }, [currentFilter, surveys]);
+  }, [currentFilter, publishedResult]);
 
   useEffect(() => {
-    if (state !== surveys?.data && filteredSurveys) {
+    if (state !== publishedResult?.surveys?.data && filteredSurveys) {
       setState([...state, ...filteredSurveys]);
     }
   }, [filteredSurveys]);
 
-  const totalCount = surveys?.meta.pagination.total;
+  const totalCount = publishedResult?.surveys?.meta.pagination.total;
   const isSearching = query !== "";
 
   return (
@@ -128,9 +132,9 @@ export const Portail: React.FC<IRoute> = () => {
         </Box>
 
         {isSearching ? (
-          surveysFound && surveysFound?.data?.length > 0 ? (
+          searchResult?.surveys && searchResult.surveys?.data.length > 0 ? (
             <SurveyGrid
-              surveys={surveysFound?.data}
+              surveys={searchResult.surveys?.data}
               isLoading={loadingSearch}
             />
           ) : loadingSearch ? (

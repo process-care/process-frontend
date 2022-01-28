@@ -1,0 +1,7 @@
+fragment answerFragment on AnswerEntity {
+  id 
+  attributes {
+    question { data { id } }
+    value
+  }
+}

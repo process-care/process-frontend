@@ -1,0 +1,33 @@
+mutation createQuestion($values: QuestionInput!) {
+  createQuestion(data: $values) {
+    data {
+      id
+      attributes {
+        type
+        page {
+          data { id }
+        }
+      }
+    }
+  }
+}
+
+mutation updateQuestion($id: ID!, $data: QuestionInput!) {
+  updateQuestion(id: $id, data: $data) {
+    data {
+      id
+      attributes {
+        type
+        internal_title
+      }
+    }
+  }
+}
+
+mutation deleteQuestion($id: ID!) {
+  deleteQuestion(id: $id) {
+    data {
+      id
+    }
+  }
+}

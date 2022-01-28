@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { ReactComponent as Logo } from "assets/black_logo.svg";
 import { Form, Formik } from "formik";
 import { Textarea } from "components/Fields";
-import { forgotPassword } from "call/actions/password";
+import { forgotPassword } from "api/actions/password";
 
 export const ForgotPasswordForm: React.FC = () => {
   const [isSuccess, setSuccess] = useState(false);

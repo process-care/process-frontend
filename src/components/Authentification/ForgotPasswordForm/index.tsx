@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { ReactComponent as Logo } from "assets/black_logo.svg";
 import { Form, Formik } from "formik";
 import { Textarea } from "components/Fields";
-import { forgotPassword } from "call/actions/password";
+import { forgotPassword } from "api/actions/password";
 import { forgotPasswordSchema } from "./validationSchema";
 import { NavLink } from "react-router-dom";
 

@@ -1,0 +1,30 @@
+# PUBLISHED STATUS = ["pending", "closed", "archived"]
+# MAX ITEM PER PAGE = 10
+
+# Search surveys with a query on the title (/!\ result is an array)
+query SurveySearch ($query: String!) {
+  surveys(
+    filters: { status: { in: ["pending", "closed", "archived"] }, title: { contains: $query }},
+  ) {
+    data {
+      ...surveyEntityFragment
+    }
+  }
+}
+
+# Get all published surveys
+query SurveyPublished ($page: Int!) {
+  surveys(
+    filters: { status: { in: ["pending", "closed", "archived"] }},
+    pagination: { page: $page, pageSize: 10 }
+  ) {
+    data {
+      ...surveyEntityFragment
+    }
+    meta {
+      pagination {
+        total
+      }
+    }
+  }
+}

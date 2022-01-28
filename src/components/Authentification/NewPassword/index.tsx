@@ -5,7 +5,7 @@ import { ReactComponent as Logo } from "assets/black_logo.svg";
 import { Form, Formik } from "formik";
 import { Input } from "components/Fields";
 import { NavLink, useLocation } from "react-router-dom";
-import { resetPassword } from "call/actions/password";
+import { resetPassword } from "api/actions/password";
 import { newPasswordSchema } from "./validationSchema";
 
 export const NewPasswordForm: React.FC = () => {

@@ -1,0 +1,28 @@
+# Get my surveys only
+query MySurveys($authorId: ID!) {
+  surveys(filters: { author: { id: { eq: $authorId }}}) {
+    data {
+      id
+      attributes {
+        description
+        title
+        slug
+        status
+        order
+        createdAt
+        landing {
+          data {
+            id
+            attributes {
+              color_theme
+              subtitle
+            }
+          }
+        }
+        participations {
+          data { id }
+        }
+      }
+    }
+  }
+}

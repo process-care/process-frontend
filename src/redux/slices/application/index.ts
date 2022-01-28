@@ -88,11 +88,14 @@ export const applicationSlice = createSlice({
 // ---- SELECTORS
 
 const isEditing = (state: RootState): boolean => state.application.isEditing;
+const drawerIsOpen = (state: RootState): boolean =>
+  state.application.drawerIsOpen;
 
 // ---- EXPORTS
 
 export const selectors = {
   isEditing,
+  drawerIsOpen,
 };
 
 export const actions = applicationSlice.actions;

@@ -167,6 +167,7 @@ export const PageForm: React.FC = () => {
                     (conditionsOnSelectedPage.length === 0 ? (
                       <Button
                         variant="roundedTransparent"
+                        isSmall
                         onClick={() => createCondition()}
                       >
                         {t.add_condition_page}
@@ -174,6 +175,7 @@ export const PageForm: React.FC = () => {
                     ) : (
                       <Button
                         variant="roundedTransparent"
+                        isSmall
                         onClick={() =>
                           editCondition(conditionsOnSelectedPage?.[0].id)
                         }
@@ -189,6 +191,7 @@ export const PageForm: React.FC = () => {
                   >
                     <Button
                       ml={isNotFirstPage ? "5" : "0"}
+                      isSmall
                       variant={isLocked ? "rounded" : "roundedTransparent"}
                       onClick={() =>
                         setFieldValue("is_locked", !values.is_locked)

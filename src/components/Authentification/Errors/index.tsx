@@ -27,9 +27,12 @@ export const Errors: React.FC<Props> = ({ message }) => {
         case "User Not Found":
           return "Utilisateur non trouvé.";
           break;
+        case "Cannot read property 'id' of undefined":
+          return "Une erreur est survenue (pb id).";
+          break;
 
         default:
-          return "";
+          return message;
           break;
       }
     },

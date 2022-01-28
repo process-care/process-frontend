@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import Card from "./Card";
 
@@ -11,6 +11,8 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 import { selectors, actions } from "redux/slices/scientistData";
+// import { selectors as appSelectors } from "redux/slices/application";
+
 import { NoData } from "components/SurveyGrid/noData";
 
 export interface Item {
@@ -33,18 +35,21 @@ interface Props {
 
 const InputsPreview: React.FC<Props> = ({ order }) => {
   const dispatch = useAppDispatch();
-
   const selectedPage = useAppSelector(selectors.pages.getSelectedPage);
 
   const questions = useAppSelector(
     selectors.questions.getSelectedPageQuestions
   );
   const isLoading = useAppSelector(selectors.questions.isLoading);
+  // const isCreating = useAppSelector(selectors.questions.isCreating);
+  // const drawerIsOpen = useAppSelector(appSelectors.drawerIsOpen);
   const error = useAppSelector(selectors.questions.error);
 
   const renderCard = (input: QuestionRedux, index: number) => {
     return <Card key={input.id} input={input} index={index} />;
   };
+
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const onDragEnd = (result: any) => {
     const { destination, source, draggableId } = result;
@@ -68,6 +73,18 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
       dispatch(actions.updateOrder(new_input_order));
     }
   };
+
+  // useEffect(() => {
+  //   console.log(isCreating, "IS CREATING");
+
+  //   setTimeout(() => {
+  //     containerRef?.current?.scrollIntoView({
+  //       behavior: "smooth",
+  //       block: "nearest",
+  //       inline: "start",
+  //     });
+  //   }, 500);
+  // }, [isCreating]);
 
   const Container: React.FC<ContainerProps> = ({
     children,
@@ -106,6 +123,7 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
             );
           }}
         </Formik>
+        <Box ref={containerRef} />
       </Box>
     );
   };

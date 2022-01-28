@@ -80,7 +80,6 @@ export const CustomSelect: React.FC<Props> = ({
     }),
     noOptionsMessage: (provided: IProvided) => ({
       ...provided,
-
       fontSize: isTablet ? "16px" : isBig ? "16px" : "12px",
     }),
     container: (provided: IProvided) => ({
@@ -91,6 +90,7 @@ export const CustomSelect: React.FC<Props> = ({
     valueContainer: (provided: IProvided) => ({
       ...provided,
       minHeight: "40px",
+      padding: isBig ? "0 15px" : "5px 10px",
     }),
   };
   return (

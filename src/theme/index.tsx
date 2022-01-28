@@ -116,14 +116,15 @@ const theme = extendTheme({
             },
           },
         }),
-        rounded: () => ({
+        rounded: ({ isSmall }: { isSmall: boolean }) => ({
           bg: "black",
           borderRadius: "50px",
           color: "white",
-          padding: "25px 30px",
+          padding: isSmall ? "0 20px" : "25px 30px",
           border: "1px solid",
-          fontWeight: "300",
+          fontWeight: 300,
           fontSize: "12px",
+          height: isSmall ? "30px" : 10,
           _hover: {
             bg: "gray.700",
             color: "white",
@@ -138,7 +139,7 @@ const theme = extendTheme({
           borderRadius: "50px",
           color: "white",
           padding: "25px 30px",
-          fontWeight: "300",
+          fontWeight: 300,
           fontSize: "12px",
           _hover: {
             bg: "blue",
@@ -152,13 +153,15 @@ const theme = extendTheme({
             lineHeight: "18,2px",
           },
         }),
-        roundedTransparent: () => ({
+        roundedTransparent: ({ isSmall }: { isSmall: boolean }) => ({
           bg: "transparent",
           borderRadius: "50px",
           fontSize: "12px",
           color: "black",
-          padding: "25px 30px",
+          fontWeight: 300,
+          padding: isSmall ? "0 20px" : "25px 30px",
           border: "1px solid",
+          height: isSmall ? "30px" : 10,
           _hover: {
             bg: "black",
             color: "white",

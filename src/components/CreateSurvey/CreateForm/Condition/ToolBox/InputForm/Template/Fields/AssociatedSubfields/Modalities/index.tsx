@@ -92,6 +92,7 @@ export const Modalities: React.FC<Props> = ({ name }) => {
                   onClick={() => arrayHelpers.push("")}
                   variant="rounded"
                   type="button"
+                  isSmall
                 >
                   Ajouter un parametre
                 </Button>

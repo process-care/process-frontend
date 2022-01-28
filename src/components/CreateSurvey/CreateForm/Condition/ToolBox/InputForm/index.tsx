@@ -99,7 +99,6 @@ const InputForm: React.FC<Props> = ({ order }) => {
     return <> </>;
   }
 
-  console.log(removeEmpty(selectedQuestion));
   return (
     <Formik
       validateOnBlur
@@ -198,6 +197,7 @@ const InputForm: React.FC<Props> = ({ order }) => {
                   {currentConditions.length === 0 ? (
                     <Button
                       variant="roundedTransparent"
+                      isSmall
                       onClick={() => createCondition()}
                     >
                       {t.add_condition}
@@ -205,6 +205,7 @@ const InputForm: React.FC<Props> = ({ order }) => {
                   ) : (
                     <Button
                       variant="roundedTransparent"
+                      isSmall
                       onClick={() => editCondition(currentConditions[0].id)}
                     >
                       {t.edit_condition}
@@ -213,6 +214,7 @@ const InputForm: React.FC<Props> = ({ order }) => {
                   {type !== "wysiwyg" && (
                     <Button
                       ml="5"
+                      isSmall
                       variant={
                         values?.required ? "rounded" : "roundedTransparent"
                       }

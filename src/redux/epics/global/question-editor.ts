@@ -15,7 +15,7 @@ const createEpic: Epic = (action$, state$) =>
       const createdAt = new Date().toISOString();
 
       const selectedPageId = state$.value.scientistData.pages.selectedPage;
-      
+
       const newQuestion = sdk.createQuestion({
         values: {
           type,
@@ -64,13 +64,8 @@ const saveEpic: Epic = (action$, state$) =>
       const changes = { ...action.payload.changes };
       changes.page = changes.page.id;
       changes.id = undefined;
-      changes.conditions = changes.conditions?.map(
-        // TODO: fix the `any` type
-        (cond: any) => cond.id
-      );
-
-      console.log("SAVE QUESTION", action.payload.changes);
-      // TODO: change the hack to send the internal title only when it is modified
+      changes.conditions = undefined;
+      // TODO: change the hack to send the internal title only when it is modify
 
       await sdk.updateQuestion({
         id: selectedQuestionId,

@@ -67,8 +67,6 @@ export const Group: React.FC<Props> = ({
     dispatch(actions.setStep(1));
   };
 
-  console.log("refererId", refererId);
-
   const createCondition = (newGroup?: boolean) => {
     if (!currentCondition) return;
     dispatch(

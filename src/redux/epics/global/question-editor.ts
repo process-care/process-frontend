@@ -15,7 +15,7 @@ const createEpic: Epic = (action$, state$) =>
       const createdAt = new Date().toISOString();
 
       const selectedPageId = state$.value.scientistData.pages.selectedPage;
-
+      console.log("selectedPageId", selectedPageId);
       const newQuestion = sdk.createQuestion({
         values: {
           type,

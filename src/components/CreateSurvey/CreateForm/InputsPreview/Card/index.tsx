@@ -60,16 +60,12 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
 
   const editCondition = async () => {
     // TODO: Open the conditions drawer
-    handleEdit();
-    // if (currentInput) {
-    //   dispatch(actions.setSelectedQuestion(currentInput.id));
-    //   const firstCondition =
-    //     currentInput?.conditions && currentInput?.conditions[0].id;
-    //   if (firstCondition) {
-    //     dispatch(actions.setSelectedCondition(firstCondition));
-    //     dispatch(actions.setValidityCondition(true));
-    //   }
-    // }
+    dispatch(actions.setSelectedQuestion(input.id));
+    const firstCondition = input?.conditions?.[0]?.id;
+    if (firstCondition) {
+      dispatch(actions.setSelectedCondition(firstCondition));
+      dispatch(actions.setValidityCondition(true));
+    }
   };
   return (
     <Draggable draggableId={input.id} index={index}>

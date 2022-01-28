@@ -11,7 +11,6 @@ import {
   UPDATE_QUESTION,
 } from "call/queries/formBuilder/question";
 import { UPDATE_ORDER } from "call/queries/survey";
-import ICondition from "types/form/condition";
 
 // ----  CREATE QUESTION
 

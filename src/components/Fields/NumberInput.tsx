@@ -60,6 +60,7 @@ export const CustomNumberInput: React.FC<Props> = ({
               precision={precision}
               allowMouseWheel
               w="100%"
+              pl="15px"
             >
               <NumberInputField
                 backgroundColor="white"

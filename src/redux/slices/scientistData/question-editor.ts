@@ -83,6 +83,8 @@ export const error = (state: RootState): string | undefined =>
   state.scientistData.questions.error;
 export const isLoading = (state: RootState): boolean =>
   state.scientistData.questions.isLoading;
+export const isCreating = (state: RootState): boolean =>
+  state.scientistData.questions.isCreating;
 export const questionsHasChanges = (state: RootState): boolean => {
   const updated = DateTime.fromISO(state.scientistData.questions.lastUpdated);
   const saved = DateTime.fromISO(state.scientistData.questions.lastSaved);
@@ -116,6 +118,7 @@ const getSelectedQuestion = (state: RootState): IQuestion | any =>
 export const questionsSelectors = {
   error,
   isLoading,
+  isCreating,
   questionsHasChanges,
   questions,
   getSelectedQuestionId,
@@ -137,7 +140,6 @@ export const questionsReducers = {
     state: GlobalState,
     action: PayloadAction<CreatedPayload>
   ): void => {
-    state.questions.isCreating = false;
     state.questions.lastCreated = action.payload.lastCreated;
     questionAdapter.addOne(state.questions, action.payload.question);
     state.survey.order = getNewOrder(
@@ -195,6 +197,7 @@ export const questionsReducers = {
     if (state.pages.redirectToPage) {
       state.pages.selectedPage = state.pages.redirectToPage;
     }
+    state.questions.isCreating = false;
   },
   failedQuestion: (state: GlobalState, action: PayloadAction<string>): void => {
     state.questions.isFailed = true;

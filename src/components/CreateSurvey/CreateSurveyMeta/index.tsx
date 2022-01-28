@@ -42,6 +42,7 @@ export const CreateSurveyForm: React.FC = () => {
     dispatch(actions.post(data));
   }, []);
 
+  console.log(renderSurveyMessage(error));
   return (
     <>
       <Formik
@@ -81,6 +82,9 @@ export const CreateSurveyForm: React.FC = () => {
                     w="100%"
                   >
                     {renderInputs(step)}
+                    <Box w="100%" textAlign="right">
+                      <Errors message={renderSurveyMessage(error)} />
+                    </Box>
                     <Flex w="100%" justifyContent={"space-between"} mt="30px">
                       {step !== 1 ? (
                         <Navigatebtn
@@ -100,9 +104,6 @@ export const CreateSurveyForm: React.FC = () => {
                       />
                     </Flex>
                   </Flex>
-                  <Box mt="50px">
-                    <Errors message={renderSurveyMessage(error)} />
-                  </Box>
                 </Box>
               </Form>
             </Box>

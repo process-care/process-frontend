@@ -79,6 +79,7 @@ export const RepeatedFields: React.FC<Props> = ({ name }) => {
                   onClick={() => arrayHelpers.push("")}
                   variant="rounded"
                   type="button"
+                  isSmall
                 >
                   Ajouter une option de réponse
                 </Button>

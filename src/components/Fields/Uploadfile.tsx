@@ -108,6 +108,7 @@ export const UploadFile: React.FC<Props> = ({
         {!hasFilesName && (
           <Button
             variant="roundedTransparent"
+            isSmall
             onClick={() =>
               hiddenFileInput.current !== null &&
               hiddenFileInput.current.click()

@@ -61,6 +61,7 @@ export const CustomTextarea: React.FC<Props> = ({
             mt={isBig ? "10px" : "0"}
             variant="outline"
             paddingLeft="10px"
+            p={isBig ? "30px" : "10px"}
             backgroundColor={"white"}
             fontSize={isBig ? "16px" : "12px"}
             _placeholder={{

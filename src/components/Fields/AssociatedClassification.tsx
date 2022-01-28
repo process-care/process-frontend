@@ -64,7 +64,15 @@ export const AssociatedClassification: React.FC<Props> = ({
         borderRadius="5px"
         mt="30px"
         w={isTablet ? "100%" : "40%"}
-        _hover={{ border: "1px solid black", cursor: "pointer" }}
+        pos="relative"
+        top="0"
+        transition="all .2s ease-in-out"
+        _hover={{
+          border: "1px solid #9f9f9f",
+          cursor: "pointer",
+          top: "-5px",
+          transition: "all .2s ease-in-out",
+        }}
         onClick={() => handleClick(index)}
       >
         {filteredFactors.map((factor, idx) => {

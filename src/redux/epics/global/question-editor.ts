@@ -70,11 +70,7 @@ const saveEpic: Epic = (action$, state$) =>
       const changes = { ...action.payload.changes };
       changes.page = changes.page.id;
       changes.id = undefined;
-      changes.conditions = changes.conditions?.map(
-        (cond: ICondition) => cond.id
-      );
-
-      console.log("SAVE QUESTION", action.payload.changes);
+      changes.conditions = undefined;
       // TODO: change the hack to send the internal title only when it is modify
 
       await client.request(UPDATE_QUESTION, {

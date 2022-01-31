@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Box, Flex, FormLabel, Spinner, Text } from "@chakra-ui/react";
-import { QuestionRedux } from "redux/slices/types";
+import { Box, Button, Flex, FormLabel, Spinner, Text } from "@chakra-ui/react";
 import { v4 as uuidv4 } from "uuid";
-import { useField } from "formik";
+import { Form, Formik, useField } from "formik";
 import { useAppSelector } from "redux/hooks";
 import { Maybe } from "api/graphql/types.generated";
 
@@ -13,6 +12,8 @@ interface Factor {
   }[];
   title: string;
 }
+import { selectors } from "redux/slices/application";
+import { RenderInput } from "components/CreateSurvey/CreateForm/InputsPreview/Card/utils";
 
 interface Props {
   label: string;
@@ -21,7 +22,7 @@ interface Props {
   isCollapsed?: boolean;
   factors: Factor[];
   maxLoop: Maybe<string> | undefined;
-  mono_thumbnail_input: "radio" | "slider" | "number_input";
+  mono_thumbnail_input: any;
 }
 
 interface State {
@@ -49,20 +50,9 @@ export const MonoThumbnail: React.FC<Props> = ({
     filteredFactors,
     totalClick,
     maxVariations,
-    field,
-  } = useAssociatedLogic(factors, name);
-  const drawerIsOpen = useAppSelector(
-    (state) => state.application.drawerIsOpen
-  );
-
-  // TODO: refactor this
-  const isFinished =
-    totalClick ===
-      (maxVariations - 1 > (typeof maxLoop === "string" && parseInt(maxLoop))
-        ? maxLoop && parseInt(maxLoop)
-        : maxVariations) ||
-    field.value?.length - 1 ===
-      ((maxLoop && parseInt(maxLoop)) || maxVariations);
+    isFinished,
+  } = useAssociatedLogic(factors, name, maxLoop);
+  const drawerIsOpen = useAppSelector(selectors.drawerIsOpen);
 
   const Card = ({ index }: { index: number }) => {
     if (filteredFactors === undefined) {
@@ -70,14 +60,7 @@ export const MonoThumbnail: React.FC<Props> = ({
     }
 
     return (
-      <Box
-        border="1px solid #E5E5E5"
-        borderRadius="5px"
-        mt="30px"
-        w="60%"
-        _hover={{ border: "1px solid black", cursor: "pointer" }}
-        onClick={() => handleClick(index)}
-      >
+      <Box border="1px solid #E5E5E5" borderRadius="5px" mt="30px" w="60%">
         {filteredFactors.map((factor, idx) => {
           const random =
             state.variations.length > 0
@@ -131,14 +114,15 @@ export const MonoThumbnail: React.FC<Props> = ({
       </Text>
     );
   }
+
   return (
     <Box>
       <FormLabel>{label}</FormLabel>
       {maxLoop && maxVariations >= 1 && (
         <Text mt="15px" fontSize="xs">
           {maxVariations > parseInt(maxLoop)
-            ? `${totalClick + 1} / ${maxLoop}`
-            : `${totalClick + 1}  / ${Math.max(maxVariations)}`}
+            ? `${totalClick} / ${parseInt(maxLoop) - 1}`
+            : `${totalClick}  / ${Math.max(maxVariations) - 1}`}
         </Text>
       )}
       {!isCollapsed && (
@@ -153,7 +137,25 @@ export const MonoThumbnail: React.FC<Props> = ({
               {helpText}
             </Text>
             <Box mt="10">
-              <p>{mono_thumbnail_input}</p>
+              <Formik
+                initialValues={{ ...mono_thumbnail_input }}
+                onSubmit={() => console.log("")}
+              >
+                <Form>
+                  {mono_thumbnail_input && (
+                    <RenderInput input={mono_thumbnail_input} />
+                  )}
+                </Form>
+              </Formik>
+              <Box d="flex" justifyContent="flex-end" w="100%">
+                <Button
+                  type="button"
+                  variant="rounded"
+                  onClick={() => handleClick(0)}
+                >
+                  Valider ma réponse
+                </Button>
+              </Box>
             </Box>
           </Box>
         </Flex>
@@ -163,7 +165,11 @@ export const MonoThumbnail: React.FC<Props> = ({
 };
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const useAssociatedLogic = (factors: Factor[], name: string) => {
+export const useAssociatedLogic = (
+  factors: Factor[],
+  name: string,
+  maxLoop: Maybe<string>
+) => {
   const [field, , helpers] = useField(name);
 
   const [state, setState] = useState<State>({
@@ -175,11 +181,8 @@ export const useAssociatedLogic = (factors: Factor[], name: string) => {
   const modalitiesPerFactor = filteredFactors
     ?.map((f) => f.modalities?.length)
     .filter((m) => m !== 0);
+  const totalVariations = modalitiesPerFactor?.reduce((a, b) => a * b, 1);
 
-  const totalVariations = React.useMemo(
-    () => modalitiesPerFactor?.reduce((a, b) => a * b, 0),
-    [modalitiesPerFactor]
-  );
   const getMaxVariation: any = (n: number, k: number) => {
     const factorialize: any = (num: number) => {
       if (num < 0) return -1;
@@ -271,6 +274,14 @@ export const useAssociatedLogic = (factors: Factor[], name: string) => {
     }
   };
 
+  // TODO: refactor this
+  const isFinished =
+    totalClick + 1 ===
+      (maxVariations - 1 > (typeof maxLoop === "string" && parseInt(maxLoop))
+        ? maxLoop && parseInt(maxLoop)
+        : maxVariations) ||
+    field.value?.length ===
+      ((maxLoop && parseInt(maxLoop) - 1) || maxVariations);
   return {
     generate,
     handleClick,
@@ -279,6 +290,6 @@ export const useAssociatedLogic = (factors: Factor[], name: string) => {
     filteredFactors,
     totalClick,
     maxVariations,
-    field,
+    isFinished,
   };
 };

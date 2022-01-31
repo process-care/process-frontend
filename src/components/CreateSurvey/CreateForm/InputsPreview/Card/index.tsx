@@ -8,8 +8,8 @@ import {
 } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 
-import { renderInput } from "./utils";
 import { QuestionRedux } from "redux/slices/types";
+import { RenderInput } from "./utils";
 import { setIsRemoving } from "redux/slices/formBuilder";
 import { Draggable } from "react-beautiful-dnd";
 
@@ -61,7 +61,7 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
   const editCondition = async () => {
     // TODO: Open the conditions drawer
     dispatch(actions.setSelectedQuestion(input.id));
-    const firstCondition = input?.conditions?.[0]?.id;
+    const firstCondition = input?.attributes?.conditions?.data[0]?.id;
     if (firstCondition) {
       dispatch(actions.setSelectedCondition(firstCondition));
       dispatch(actions.setValidityCondition(true));
@@ -123,7 +123,7 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
                   mb="10px"
                   display={isRemoving ? "none" : ""}
                 >
-                  {renderInput(input)}
+                  <RenderInput input={input} />
                 </Box>
               </Box>
             </Container>

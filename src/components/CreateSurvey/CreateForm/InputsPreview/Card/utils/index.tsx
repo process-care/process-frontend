@@ -2,7 +2,6 @@ import React from "react";
 
 import { Box } from "@chakra-ui/react";
 import {
-  Input,
   NumberInput,
   Checkbox,
   Radiobox,
@@ -17,6 +16,8 @@ import {
 import { QuestionRedux } from "redux/slices/types";
 import { t } from "static/input";
 import { useAppSelector } from "redux/hooks";
+import { selectors } from "redux/slices/formBuilder";
+
 import { useLocation } from "react-router-dom";
 import { Enum_Question_Type } from "api/graphql/types.generated";
 
@@ -25,10 +26,14 @@ interface Options {
   label: string;
 }
 
-export const renderInput = (input: QuestionRedux): React.ReactNode => {
+interface Props {
+  input: QuestionRedux;
+}
+
+export const RenderInput: React.FC<Props> = ({ input }) => {
   const location = useLocation();
   const isCollapsed =
-    useAppSelector((state) => state.editor.form.isCollapseView) &&
+    useAppSelector(selectors.isCollapseView) &&
     !location.pathname.includes("/participate");
   const attributes = input?.attributes;
 
@@ -218,6 +223,6 @@ export const renderInput = (input: QuestionRedux): React.ReactNode => {
       );
 
     default:
-      return false;
+      return <></>;
   }
 };

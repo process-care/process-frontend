@@ -42,6 +42,7 @@ export const CustomNumberInput: React.FC<Props> = ({
   isCollapsed,
 }) => {
   const [field, meta] = useField(name);
+  console.log(isRequired);
   return (
     <FormControl
       isRequired={isRequired === "true"}
@@ -62,7 +63,6 @@ export const CustomNumberInput: React.FC<Props> = ({
               precision={precision ?? 0}
               allowMouseWheel
               w="100%"
-              pl="15px"
             >
               <NumberInputField
                 backgroundColor="white"

@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useField } from "formik";
 import { useAppSelector } from "redux/hooks";
 import { Maybe } from "api/graphql/types.generated";
+import { selectors } from "redux/slices/application";
 import { useMediaQueries } from "utils/hooks/mediaqueries";
 
 interface Props {
@@ -46,20 +47,10 @@ export const AssociatedClassification: React.FC<Props> = ({
     filteredFactors,
     totalClick,
     maxVariations,
-    field,
-  } = useAssociatedLogic(factors, name);
-  const drawerIsOpen = useAppSelector(
-    (state) => state.application.drawerIsOpen
-  );
+    isFinished,
+  } = useAssociatedLogic(factors, name, maxLoop);
 
-  // TODO: refactor this
-  const isFinished =
-    totalClick ===
-      (maxVariations - 1 > (typeof maxLoop === "string" && parseInt(maxLoop))
-        ? maxLoop && parseInt(maxLoop)
-        : maxVariations) ||
-    field.value?.length ===
-      ((maxLoop && parseInt(maxLoop) - 1) || maxVariations);
+  const drawerIsOpen = useAppSelector(selectors.drawerIsOpen);
 
   const Card = ({ index }: { index: number }) => {
     if (filteredFactors === undefined) {
@@ -170,7 +161,11 @@ export const AssociatedClassification: React.FC<Props> = ({
 };
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const useAssociatedLogic = (factors: Factor[], name: string) => {
+export const useAssociatedLogic = (
+  factors: Factor[],
+  name: string,
+  maxLoop: Maybe<string>
+) => {
   const [field, , helpers] = useField(name);
 
   const [state, setState] = useState<State>({
@@ -275,6 +270,14 @@ export const useAssociatedLogic = (factors: Factor[], name: string) => {
     }
   };
 
+  // TODO: refactor this
+  const isFinished =
+    totalClick + 1 ===
+      (maxVariations - 1 > (typeof maxLoop === "string" && parseInt(maxLoop))
+        ? maxLoop && parseInt(maxLoop)
+        : maxVariations) ||
+    field.value?.length ===
+      ((maxLoop && parseInt(maxLoop) - 1) || maxVariations);
   return {
     generate,
     handleClick,
@@ -283,6 +286,6 @@ export const useAssociatedLogic = (factors: Factor[], name: string) => {
     filteredFactors,
     totalClick,
     maxVariations,
-    field,
+    isFinished,
   };
 };

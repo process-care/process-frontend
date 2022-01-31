@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 
-import { renderInput } from "./utils";
+import { RenderInput } from "./utils";
 import IQuestion from "types/form/question";
 import { setIsRemoving } from "redux/slices/formBuilder";
 import { Draggable } from "react-beautiful-dnd";
@@ -121,7 +121,7 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
                   mb="10px"
                   display={isRemoving ? "none" : ""}
                 >
-                  {renderInput(input)}
+                  <RenderInput input={input} />
                 </Box>
               </Box>
             </Container>

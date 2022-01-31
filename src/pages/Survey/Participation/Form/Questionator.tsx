@@ -2,7 +2,7 @@ import { Box } from "@chakra-ui/react";
 import { useAppSelector } from "redux/hooks";
 
 import { selectors } from "redux/slices/participation/questions";
-import { renderInput } from "components/CreateSurvey/CreateForm/InputsPreview/Card/utils";
+import { RenderInput } from "components/CreateSurvey/CreateForm/InputsPreview/Card/utils";
 import { useAnswerSaver } from "./answer-hooks";
 import { shouldShow } from "./condition-evaluations";
 import { useMediaQueries } from "utils/hooks/mediaqueries";
@@ -44,7 +44,7 @@ export const Questionator: React.FC<Props> = ({ id }) => {
       p={isTablet ? "20px" : "40px"}
       borderRadius="5px"
     >
-      {renderInput(question)}
+      <RenderInput input={question} />
     </Box>
   );
 };

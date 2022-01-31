@@ -17,6 +17,8 @@ import {
 import IQuestion from "types/form/question";
 import { t } from "static/input";
 import { useAppSelector } from "redux/hooks";
+import { selectors } from "redux/slices/formBuilder";
+
 import { useLocation } from "react-router-dom";
 
 interface Options {
@@ -24,10 +26,14 @@ interface Options {
   label: string;
 }
 
-export const renderInput = (input: IQuestion): React.ReactNode => {
+interface Props {
+  input: Partial<IQuestion>;
+}
+
+export const RenderInput: React.FC<Props> = ({ input }) => {
   const location = useLocation();
   const isCollapsed =
-    useAppSelector((state) => state.editor.form.isCollapseView) &&
+    useAppSelector(selectors.isCollapseView) &&
     !location.pathname.includes("/participate");
 
   const formatOptions = (): Options[] => {
@@ -204,12 +210,12 @@ export const renderInput = (input: IQuestion): React.ReactNode => {
             }
             factors={input.factors}
             maxLoop={input.max_loop}
-            mono_thumbnail_input={input.mono_thumbnail_input?.type || "slider"}
+            mono_thumbnail_input={input.mono_thumbnail_input}
           />
         </>
       );
 
     default:
-      return false;
+      return <></>;
   }
 };

@@ -4,6 +4,7 @@ import IQuestion from "types/form/question";
 import { v4 as uuidv4 } from "uuid";
 import { useField } from "formik";
 import { useAppSelector } from "redux/hooks";
+import { selectors } from "redux/slices/application";
 import { useMediaQueries } from "utils/hooks/mediaqueries";
 
 interface Props {
@@ -38,20 +39,10 @@ export const AssociatedClassification: React.FC<Props> = ({
     filteredFactors,
     totalClick,
     maxVariations,
-    field,
-  } = useAssociatedLogic(factors, name);
-  const drawerIsOpen = useAppSelector(
-    (state) => state.application.drawerIsOpen
-  );
+    isFinished,
+  } = useAssociatedLogic(factors, name, maxLoop);
 
-  // TODO: refactor this
-  const isFinished =
-    totalClick + 1 ===
-      (maxVariations - 1 > (maxLoop && parseInt(maxLoop))
-        ? maxLoop && parseInt(maxLoop)
-        : maxVariations) ||
-    field.value?.length ===
-      ((maxLoop && parseInt(maxLoop) - 1) || maxVariations);
+  const drawerIsOpen = useAppSelector(selectors.drawerIsOpen);
 
   const Card = ({ index }: { index: number }) => {
     if (filteredFactors === undefined) {
@@ -164,7 +155,8 @@ export const AssociatedClassification: React.FC<Props> = ({
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const useAssociatedLogic = (
   factors: IQuestion["factors"],
-  name: string
+  name: string,
+  maxLoop: string
 ) => {
   const [field, , helpers] = useField(name);
 
@@ -270,6 +262,14 @@ export const useAssociatedLogic = (
     }
   };
 
+  // TODO: refactor this
+  const isFinished =
+    totalClick + 1 ===
+      (maxVariations - 1 > (maxLoop && parseInt(maxLoop))
+        ? maxLoop && parseInt(maxLoop)
+        : maxVariations) ||
+    field.value?.length ===
+      ((maxLoop && parseInt(maxLoop) - 1) || maxVariations);
   return {
     generate,
     handleClick,
@@ -278,6 +278,6 @@ export const useAssociatedLogic = (
     filteredFactors,
     totalClick,
     maxVariations,
-    field,
+    isFinished,
   };
 };

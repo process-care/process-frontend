@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { Box, Flex, FormLabel, Spinner, Text } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { Box, Button, Flex, FormLabel, Spinner, Text } from "@chakra-ui/react";
 import IQuestion from "types/form/question";
 import { v4 as uuidv4 } from "uuid";
-import { useField } from "formik";
+import { Form, Formik, useField } from "formik";
 import { useAppSelector } from "redux/hooks";
+import { selectors } from "redux/slices/application";
+import { RenderInput } from "components/CreateSurvey/CreateForm/InputsPreview/Card/utils";
 
 interface Props {
   label: string;
@@ -12,7 +14,7 @@ interface Props {
   isCollapsed?: boolean;
   factors: IQuestion["factors"];
   maxLoop: string | undefined;
-  mono_thumbnail_input: "radio" | "slider" | "number_input";
+  mono_thumbnail_input: IQuestion["mono_thumbnail_input"];
 }
 
 interface State {
@@ -40,20 +42,9 @@ export const MonoThumbnail: React.FC<Props> = ({
     filteredFactors,
     totalClick,
     maxVariations,
-    field,
-  } = useAssociatedLogic(factors, name);
-  const drawerIsOpen = useAppSelector(
-    (state) => state.application.drawerIsOpen
-  );
-
-  // TODO: refactor this
-  const isFinished =
-    totalClick ===
-      (maxVariations - 1 > (maxLoop && parseInt(maxLoop))
-        ? maxLoop && parseInt(maxLoop)
-        : maxVariations) ||
-    field.value?.length - 1 ===
-      ((maxLoop && parseInt(maxLoop)) || maxVariations);
+    isFinished,
+  } = useAssociatedLogic(factors, name, maxLoop);
+  const drawerIsOpen = useAppSelector(selectors.drawerIsOpen);
 
   const Card = ({ index }: { index: number }) => {
     if (filteredFactors === undefined) {
@@ -61,14 +52,7 @@ export const MonoThumbnail: React.FC<Props> = ({
     }
 
     return (
-      <Box
-        border="1px solid #E5E5E5"
-        borderRadius="5px"
-        mt="30px"
-        w="60%"
-        _hover={{ border: "1px solid black", cursor: "pointer" }}
-        onClick={() => handleClick(index)}
-      >
+      <Box border="1px solid #E5E5E5" borderRadius="5px" mt="30px" w="60%">
         {filteredFactors.map((factor, idx) => {
           const random =
             state.variations.length > 0
@@ -122,14 +106,15 @@ export const MonoThumbnail: React.FC<Props> = ({
       </Text>
     );
   }
+
   return (
     <Box>
       <FormLabel>{label}</FormLabel>
       {maxLoop && maxVariations >= 1 && (
         <Text mt="15px" fontSize="xs">
           {maxVariations > parseInt(maxLoop)
-            ? `${totalClick + 1} / ${maxLoop}`
-            : `${totalClick + 1}  / ${Math.max(maxVariations)}`}
+            ? `${totalClick} / ${parseInt(maxLoop) - 1}`
+            : `${totalClick}  / ${Math.max(maxVariations) - 1}`}
         </Text>
       )}
       {!isCollapsed && (
@@ -144,7 +129,25 @@ export const MonoThumbnail: React.FC<Props> = ({
               {helpText}
             </Text>
             <Box mt="10">
-              <p>{mono_thumbnail_input}</p>
+              <Formik
+                initialValues={{ ...mono_thumbnail_input }}
+                onSubmit={() => console.log("")}
+              >
+                <Form>
+                  {mono_thumbnail_input && (
+                    <RenderInput input={mono_thumbnail_input} />
+                  )}
+                </Form>
+              </Formik>
+              <Box d="flex" justifyContent="flex-end" w="100%">
+                <Button
+                  type="button"
+                  variant="rounded"
+                  onClick={() => handleClick(0)}
+                >
+                  Valider ma réponse
+                </Button>
+              </Box>
             </Box>
           </Box>
         </Flex>
@@ -156,7 +159,8 @@ export const MonoThumbnail: React.FC<Props> = ({
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const useAssociatedLogic = (
   factors: IQuestion["factors"],
-  name: string
+  name: string,
+  maxLoop: string
 ) => {
   const [field, , helpers] = useField(name);
 
@@ -169,11 +173,8 @@ export const useAssociatedLogic = (
   const modalitiesPerFactor = filteredFactors
     ?.map((f) => f.modalities?.length)
     .filter((m) => m !== 0);
+  const totalVariations = modalitiesPerFactor?.reduce((a, b) => a * b, 1);
 
-  const totalVariations = React.useMemo(
-    () => modalitiesPerFactor?.reduce((a, b) => a * b, 0),
-    [modalitiesPerFactor]
-  );
   const getMaxVariation: any = (n: number, k: number) => {
     const factorialize: any = (num: number) => {
       if (num < 0) return -1;
@@ -265,6 +266,14 @@ export const useAssociatedLogic = (
     }
   };
 
+  // TODO: refactor this
+  const isFinished =
+    totalClick + 1 ===
+      (maxVariations - 1 > (maxLoop && parseInt(maxLoop))
+        ? maxLoop && parseInt(maxLoop)
+        : maxVariations) ||
+    field.value?.length ===
+      ((maxLoop && parseInt(maxLoop) - 1) || maxVariations);
   return {
     generate,
     handleClick,
@@ -273,6 +282,6 @@ export const useAssociatedLogic = (
     filteredFactors,
     totalClick,
     maxVariations,
-    field,
+    isFinished,
   };
 };

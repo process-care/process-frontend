@@ -170,6 +170,7 @@ export const surveyFullFragment = gql`
         min
         max
         step
+        mono_thumbnail_input
         internal_title
         page {
           id

@@ -222,8 +222,8 @@ const InputForm: React.FC<Props> = ({ order }) => {
                       }
                     >
                       {values?.required
-                        ? "Rendre la réponse obligatoire"
-                        : "Rendre la réponse facultative"}
+                        ? "Rendre la réponse facultative"
+                        : "Rendre la réponse obligatoire"}
                     </Button>
                   )}
                 </Flex>

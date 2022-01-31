@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Box, Button, Flex, FormLabel, Spinner, Text } from "@chakra-ui/react";
 import IQuestion from "types/form/question";
 import { v4 as uuidv4 } from "uuid";
-import { Form, Formik, useField } from "formik";
+import { Form, Formik } from "formik";
 import { useAppSelector } from "redux/hooks";
 import { selectors } from "redux/slices/application";
 import { RenderInput } from "components/CreateSurvey/CreateForm/InputsPreview/Card/utils";
+import { useAssociatedLogic } from "./AssociatedClassification";
 
 interface Props {
   label: string;
@@ -17,14 +18,7 @@ interface Props {
   mono_thumbnail_input: IQuestion["mono_thumbnail_input"];
 }
 
-interface State {
-  variations: number[][][];
-  isMounted: boolean;
-}
-
 const TOTAL_CARDS = 1;
-
-// TODO: refactor this and use the same comp as the AssociatedClassification
 
 export const MonoThumbnail: React.FC<Props> = ({
   label,
@@ -154,134 +148,4 @@ export const MonoThumbnail: React.FC<Props> = ({
       )}
     </Box>
   );
-};
-
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const useAssociatedLogic = (
-  factors: IQuestion["factors"],
-  name: string,
-  maxLoop: string
-) => {
-  const [field, , helpers] = useField(name);
-
-  const [state, setState] = useState<State>({
-    variations: [],
-    isMounted: false,
-  });
-  const [totalClick, setClick] = useState(0);
-  const filteredFactors = factors?.filter((f) => f !== null);
-  const modalitiesPerFactor = filteredFactors
-    ?.map((f) => f.modalities?.length)
-    .filter((m) => m !== 0);
-  const totalVariations = modalitiesPerFactor?.reduce((a, b) => a * b, 1);
-
-  const getMaxVariation: any = (n: number, k: number) => {
-    const factorialize: any = (num: number) => {
-      if (num < 0) return -1;
-      else if (num === 0) return 1;
-      else {
-        return num * factorialize(num - 1);
-      }
-    };
-
-    const _A = (n: number, k: number) => {
-      return factorialize(n) / factorialize(n - k);
-    };
-
-    return _A(n, k) / factorialize(k);
-  };
-
-  const maxVariations = React.useMemo(() => {
-    if (totalVariations) return getMaxVariation(totalVariations, TOTAL_CARDS);
-  }, [totalVariations]);
-
-  const generate = () => {
-    if (maxVariations - 1 === state.variations.length) {
-      console.log("End of variations");
-      return;
-    }
-    if (!modalitiesPerFactor) {
-      return;
-    }
-    const randomize = () => {
-      return modalitiesPerFactor?.map((m) => Math.floor(Math.random() * m));
-    };
-
-    const card1 = randomize();
-    const card2 = randomize();
-
-    const variation = [card1, card2];
-
-    const cardsAreSame = (arrA: number[], arrB: number[]) => {
-      return JSON.stringify(arrA) === JSON.stringify(arrB);
-    };
-
-    if (cardsAreSame(card1, card2)) {
-      console.log("same cards");
-      generate();
-    } else if (
-      state.variations.some(
-        (v) => JSON.stringify(v) === JSON.stringify(variation)
-      ) ||
-      state.variations.some(
-        (v) => JSON.stringify(v) === JSON.stringify(variation.reverse())
-      )
-    ) {
-      console.log("Variation already exists");
-      generate();
-    } else {
-      setState({
-        ...state,
-        variations: [...state.variations, variation],
-        isMounted: true,
-      });
-    }
-  };
-  const handleClick = (cardIdx: number) => {
-    generate();
-    setClick(totalClick + 1);
-
-    const formatPayload = () => {
-      const lastVariation = state.variations[state.variations.length - 1];
-
-      const format = (el: number) => {
-        return filteredFactors?.map((f, idx) => {
-          return {
-            [f.title]: f.modalities[lastVariation[el][idx]].description,
-          };
-        });
-      };
-
-      // TODO: replace format(0) by dynamic value (come from TOTAL_CARDS)
-      return {
-        variations: [format(0), format(1)],
-        choice: cardIdx,
-      };
-    };
-
-    if (!field.value) {
-      helpers.setValue([formatPayload()]);
-    } else {
-      helpers.setValue([...field.value, formatPayload()]);
-    }
-  };
-
-  // TODO: refactor this
-  const isFinished =
-    totalClick + 1 ===
-      (maxVariations - 1 > (maxLoop && parseInt(maxLoop))
-        ? maxLoop && parseInt(maxLoop)
-        : maxVariations) ||
-    field.value?.length ===
-      ((maxLoop && parseInt(maxLoop) - 1) || maxVariations);
-  return {
-    generate,
-    handleClick,
-    setState,
-    state,
-    filteredFactors,
-    totalClick,
-    maxVariations,
-    isFinished,
-  };
 };

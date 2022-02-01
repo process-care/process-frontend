@@ -26,6 +26,7 @@ interface Props {
   style?: React.CSSProperties | undefined;
   placeholder: string;
   isCollapsed?: boolean;
+  appearance?: "light" | "big";
 }
 export const CustomNumberInput: React.FC<Props> = ({
   label,
@@ -40,9 +41,9 @@ export const CustomNumberInput: React.FC<Props> = ({
   placeholder,
   style,
   isCollapsed,
+  appearance,
 }) => {
   const [field, meta] = useField(name);
-  console.log(isRequired);
   return (
     <FormControl
       isRequired={isRequired}
@@ -54,7 +55,7 @@ export const CustomNumberInput: React.FC<Props> = ({
       <FormLabel>{label}</FormLabel>
       {!isCollapsed && (
         <>
-          <InputGroup>
+          <InputGroup mt={appearance === "big" ? "10px" : "0"}>
             <NumberInput
               {...field}
               // Beuh ...
@@ -63,6 +64,7 @@ export const CustomNumberInput: React.FC<Props> = ({
               precision={precision ?? 0}
               allowMouseWheel
               w="100%"
+              fontSize="12px"
             >
               <NumberInputField
                 backgroundColor="white"
@@ -71,6 +73,8 @@ export const CustomNumberInput: React.FC<Props> = ({
                 placeholder={placeholder}
                 borderTopRightRadius={inputRightAddon !== null ? "0" : "5px"}
                 borderBottomRightRadius={inputRightAddon !== null ? "0" : "5px"}
+                p={appearance === "big" ? "30px" : "10px"}
+                fontSize="12px"
               />
             </NumberInput>
             {inputRightAddon && <InputRightAddon children={inputRightAddon} />}

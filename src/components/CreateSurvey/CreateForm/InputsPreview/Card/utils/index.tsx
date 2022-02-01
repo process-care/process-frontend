@@ -69,6 +69,7 @@ export const RenderInput: React.FC<Props> = ({ input }) => {
     case Enum_Question_Type.NumberInput:
       return (
         <NumberInput
+          appearance="big"
           isCollapsed={isCollapsed}
           isRequired={attributes?.required}
           placeholder={attributes?.placeholder || t.placeholder}

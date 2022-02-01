@@ -94,7 +94,7 @@ export const CustomSelect: React.FC<Props> = ({
     }),
   };
   return (
-    <FormControl id={id} textAlign="left" isRequired={isRequired === "true"}>
+    <FormControl id={id} textAlign="left" isRequired={isRequired}>
       <FormLabel>{label}</FormLabel>
       {!isCollapsed && (
         <>
@@ -102,7 +102,7 @@ export const CustomSelect: React.FC<Props> = ({
             isMulti={isMulti}
             styles={customStyles}
             id={id}
-            isRequired={isRequired === "true"}
+            isRequired={isRequired}
             placeholder={placeholder}
             noOptionsMessage={() => t.not_found}
             options={answers}

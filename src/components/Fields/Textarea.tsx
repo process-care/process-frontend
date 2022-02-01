@@ -45,7 +45,7 @@ export const CustomTextarea: React.FC<Props> = ({
 
   return (
     <FormControl
-      isRequired={isRequired === "true"}
+      isRequired={isRequired}
       id={id}
       textAlign="left"
       m={m}
@@ -75,7 +75,7 @@ export const CustomTextarea: React.FC<Props> = ({
             rows={getRows(rows)}
             placeholder={placeholder}
             maxLength={getMaxLength(rows)}
-            isRequired={isRequired === "true"}
+            isRequired={isRequired}
             {...field}
             autoComplete={autoComplete}
             defaultValue={defaultValue}

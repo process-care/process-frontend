@@ -32,12 +32,7 @@ export const CustomCheckbox: React.FC<Props> = ({
   isCollapsed,
 }) => {
   return (
-    <FormControl
-      id={id}
-      textAlign="left"
-      isRequired={isRequired === "true"}
-      pl="0"
-    >
+    <FormControl id={id} textAlign="left" isRequired={isRequired} pl="0">
       <FormLabel>{label}</FormLabel>
       {!isCollapsed && (
         <>
@@ -50,7 +45,7 @@ export const CustomCheckbox: React.FC<Props> = ({
                       key={value}
                       name={id}
                       value={value}
-                      isRequired={isRequired === "true"}
+                      isRequired={isRequired}
                     >
                       {isRequired ? `${label} *` : label}
                     </CheckboxControl>

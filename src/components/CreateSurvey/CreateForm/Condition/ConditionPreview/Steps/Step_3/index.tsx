@@ -28,7 +28,11 @@ export const Step_3: React.FC<Props> = ({ selectedCondition, updateStep }) => {
     <Container w="100%" maxW="unset" p="0">
       <Formik
         validateOnBlur={false}
-        initialValues={{ target_value: selectedCondition.target_value }}
+        initialValues={{
+          target_value: selectedCondition.target_value
+            ? selectedCondition.target_value
+            : "",
+        }}
         onSubmit={(data, { setSubmitting, validateForm }) => {
           validateForm(data);
           setSubmitting(true);

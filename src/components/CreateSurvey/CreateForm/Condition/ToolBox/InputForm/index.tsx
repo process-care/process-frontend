@@ -175,23 +175,28 @@ const InputForm: React.FC<Props> = ({ order }) => {
                 p="5"
                 backgroundColor="#fdfdfdf1"
               >
-                <Textarea
-                  isCollapsed={false}
-                  rows="medium"
-                  label="Label"
-                  placeholder="Renseigner le label de votre question"
-                  id="label"
-                  isRequired="true"
-                />
-                <Input
-                  isCollapsed={false}
-                  label="Id dans la base de donnée"
-                  placeholder="Renseigner le nom interne de votre question"
-                  name="internal_title"
-                  helpText="Ce champ vous permet de donner un titre à la question,il n'est pas visible par les utilisateurs."
-                  isRequired="false"
-                  isAccordion
-                />
+                {type !== "wysiwyg" && (
+                  <>
+                    <Textarea
+                      isCollapsed={false}
+                      rows="medium"
+                      label="Label"
+                      placeholder="Renseigner le label de votre question"
+                      id="label"
+                      isRequired="true"
+                    />
+
+                    <Input
+                      isCollapsed={false}
+                      label="Id dans la base de donnée"
+                      placeholder="Renseigner le nom interne de votre question"
+                      name="internal_title"
+                      helpText="Ce champ vous permet de donner un titre à la question,il n'est pas visible par les utilisateurs."
+                      isRequired="false"
+                      isAccordion
+                    />
+                  </>
+                )}
                 <Flex mb="4" mt="4" w="100%" justifyContent="space-between">
                   {currentConditions.length === 0 ? (
                     <Button

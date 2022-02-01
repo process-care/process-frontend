@@ -53,6 +53,7 @@ export const RenderInput: React.FC<Props> = ({ input }) => {
       return (
         <>
           <Input
+            appearance="big"
             isCollapsed={isCollapsed}
             isRequired={input.required}
             name={input.id || "input"}
@@ -68,6 +69,7 @@ export const RenderInput: React.FC<Props> = ({ input }) => {
     case "number_input":
       return (
         <NumberInput
+          appearance="big"
           isCollapsed={isCollapsed}
           isRequired={input.required}
           placeholder={input.placeholder || t.placeholder}

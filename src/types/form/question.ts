@@ -40,7 +40,7 @@ export default interface IQuestion {
   wysiwyg?: string | undefined;
   freeclassification_responses_count?: string;
   mono_thumbnail_input?: {
-    type: "radio" | "slider" | "number_input";
+    type?: "radio" | "slider" | "number_input";
     label?: string;
     min?: number;
     max?: number;

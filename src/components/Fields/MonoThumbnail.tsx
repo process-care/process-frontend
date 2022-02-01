@@ -6,7 +6,8 @@ import { Form, Formik } from "formik";
 import { useAppSelector } from "redux/hooks";
 import { selectors } from "redux/slices/application";
 import { RenderInput } from "components/CreateSurvey/CreateForm/InputsPreview/Card/utils";
-import { useAssociatedLogic } from "./AssociatedClassification";
+import { useAssociatedLogic } from "./hooks";
+import { TitleDivider } from "components/TitleDivider";
 
 interface Props {
   label: string;
@@ -15,7 +16,7 @@ interface Props {
   isCollapsed?: boolean;
   factors: IQuestion["factors"];
   maxLoop: string | undefined;
-  mono_thumbnail_input: IQuestion["mono_thumbnail_input"];
+  mono_thumbnail_input?: IQuestion["mono_thumbnail_input"];
 }
 
 const TOTAL_CARDS = 1;
@@ -36,8 +37,8 @@ export const MonoThumbnail: React.FC<Props> = ({
     filteredFactors,
     totalClick,
     maxVariations,
-    isFinished,
-  } = useAssociatedLogic(factors, name, maxLoop);
+    checkIsFinished,
+  } = useAssociatedLogic(factors, name, maxLoop, TOTAL_CARDS);
   const drawerIsOpen = useAppSelector(selectors.drawerIsOpen);
 
   const Card = ({ index }: { index: number }) => {
@@ -93,7 +94,7 @@ export const MonoThumbnail: React.FC<Props> = ({
     !drawerIsOpen && generate();
   }, [drawerIsOpen]);
 
-  if (isFinished) {
+  if (checkIsFinished() && !drawerIsOpen) {
     return (
       <Text variant="smallTitle">
         Nous avons bien pris en compte votre sélection !
@@ -107,8 +108,8 @@ export const MonoThumbnail: React.FC<Props> = ({
       {maxLoop && maxVariations >= 1 && (
         <Text mt="15px" fontSize="xs">
           {maxVariations > parseInt(maxLoop)
-            ? `${totalClick} / ${parseInt(maxLoop) - 1}`
-            : `${totalClick}  / ${Math.max(maxVariations) - 1}`}
+            ? `${totalClick} / ${parseInt(maxLoop)}`
+            : `${totalClick}  / ${Math.max(maxVariations)}`}
         </Text>
       )}
       {!isCollapsed && (
@@ -122,26 +123,39 @@ export const MonoThumbnail: React.FC<Props> = ({
             <Text mt="15px" fontSize="xs">
               {helpText}
             </Text>
-            <Box mt="10">
+            <TitleDivider title="" />
+            <Box>
               <Formik
                 initialValues={{ ...mono_thumbnail_input }}
                 onSubmit={() => console.log("")}
               >
-                <Form>
-                  {mono_thumbnail_input && (
-                    <RenderInput input={mono_thumbnail_input} />
-                  )}
-                </Form>
+                {({ values }) => {
+                  return (
+                    <Form>
+                      {mono_thumbnail_input && (
+                        <Box p="0 5%">
+                          <RenderInput input={mono_thumbnail_input} />
+                        </Box>
+                      )}
+                      <Box
+                        d="flex"
+                        justifyContent="flex-end"
+                        w="100%"
+                        mt="20px"
+                        pr="30px"
+                      >
+                        <Button
+                          type="button"
+                          variant="rounded"
+                          onClick={() => handleClick(0, values)}
+                        >
+                          Valider ma réponse
+                        </Button>
+                      </Box>
+                    </Form>
+                  );
+                }}
               </Formik>
-              <Box d="flex" justifyContent="flex-end" w="100%">
-                <Button
-                  type="button"
-                  variant="rounded"
-                  onClick={() => handleClick(0)}
-                >
-                  Valider ma réponse
-                </Button>
-              </Box>
             </Box>
           </Box>
         </Flex>

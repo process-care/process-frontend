@@ -18,7 +18,7 @@ export const inputs: Obj[] = [
     type: "text_area",
     name: "Question texte libre",
     category: "simple",
-    info: "Création d’une zone de texte. La taille de la zone définit la taille maximale de la réponse (”Petite”: 50 caractères; “Moyenne”: 500 caractères; “Grande”: 5000 caractères)",
+    info: "Création d’une zone de texte. La taille de la zone définit la taille maximale de la réponse ('Petite': 50 caractères; 'Moyenne': 500 caractères; 'Grande': 5000 caractères)",
   },
   {
     type: "select",
@@ -68,13 +68,13 @@ export const inputs: Obj[] = [
     type: "mono_thumbnail",
     name: "Vignette simple",
     category: "complex",
-    info: "",
+    info: "Création d’une vignette, composée de plusieurs facteurs (par exemple taille') chacun pouvant prendre différentes valeurs (par exemple 'grand', 'moyen' et 'petit'). Parmi l’ensemble des combinaisons de facteur/attributs possible, l’utilisateur en évalue une avec la question associée (par exemple: 'Sur une échelle de 0 à 10, évaluez l’importance de la situation présentée avant.')",
   },
   {
     type: "associated_classification",
     name: "Vignette double",
     category: "complex",
-    info: "",
+    info: "Création d’une question demandant à l’utilisateur de choisir entre deux  vignettes. Chaque vignette est composée de plusieurs facteurs (par exemple taille”) chacun pouvant prendre différentes valeurs (par exemple “grand”, “moyen” et “petit”).",
   },
 ];
 

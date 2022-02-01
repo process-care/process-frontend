@@ -1,7 +1,8 @@
 import React from "react";
-import JoditEditor from "jodit-react-ts";
+import JoditReact from "jodit-react-ts";
 import { useFormikContext } from "formik";
 import { FormControl } from "@chakra-ui/react";
+import IQuestion from "types/form/question";
 
 interface Props {
   id: string;
@@ -9,12 +10,14 @@ interface Props {
 }
 
 export const Wysiwyg: React.FC<Props> = ({ id, simpleMode }) => {
-  const { setFieldValue, values } = useFormikContext();
+  const { setFieldValue, values } = useFormikContext<IQuestion>();
+
+  console.log("VAL", values);
 
   return React.useMemo(
     () => (
       <FormControl id={id} textAlign="left">
-        <JoditEditor
+        <JoditReact
           onChange={(newContent: string) => {
             setFieldValue(id, newContent);
           }}
@@ -35,6 +38,16 @@ export const Wysiwyg: React.FC<Props> = ({ id, simpleMode }) => {
             showCharsCounter: false,
             showWordsCounter: false,
             showPlaceholder: false,
+            buttonsMD: [
+              "bold",
+              "italic",
+              "underline",
+              "link",
+              "indent",
+              "ul",
+              "ol",
+              !simpleMode ? "image" : "",
+            ],
             buttonsSM: [
               "bold",
               "italic",
@@ -58,7 +71,8 @@ export const Wysiwyg: React.FC<Props> = ({ id, simpleMode }) => {
           }}
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          value={values[id]}
+          // value={values[id]}
+          defaultValue={values.wysiwyg}
         />
       </FormControl>
     ),

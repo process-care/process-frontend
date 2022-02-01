@@ -153,6 +153,7 @@ export const surveyFullFragment = gql`
         }
       }
       questions {
+        wysiwyg
         label
         id
         type

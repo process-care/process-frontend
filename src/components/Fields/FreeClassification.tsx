@@ -100,7 +100,7 @@ export const FreeClassification: React.FC<Props> = ({
         label={label}
         placeholder={placeholder}
         id={id}
-        isRequired={isRequired === "true"}
+        isRequired={isRequired}
         helpText={helpText}
         {...field}
       />

@@ -32,7 +32,7 @@ export const CustomSwitch: React.FC<Props> = ({
   const [, meta] = useField(id);
   return (
     <FormControl
-      isRequired={isRequired === "true"}
+      isRequired={isRequired}
       id={id}
       textAlign="left"
       p={p}
@@ -45,7 +45,7 @@ export const CustomSwitch: React.FC<Props> = ({
         id={id}
         size={size}
         mt={-3}
-        isRequired={isRequired === "true"}
+        isRequired={isRequired}
       />
       <FormLabel ml={5} mt={-2} fontSize={size}>
         {label}

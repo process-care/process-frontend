@@ -77,7 +77,7 @@ export const CustomCreatableSelect: React.FC<Props> = ({
     }),
   };
   return (
-    <FormControl id={id} textAlign="left" isRequired={isRequired === "true"}>
+    <FormControl id={id} textAlign="left" isRequired={isRequired}>
       <FormLabel>{label}</FormLabel>
       {!isCollapsed && (
         <>
@@ -85,7 +85,7 @@ export const CustomCreatableSelect: React.FC<Props> = ({
             styles={customStyles}
             id={id}
             name={name}
-            isRequired={isRequired === "true"}
+            isRequired={isRequired}
             placeholder={placeholder}
             noOptionsMessage={() => t.not_found}
             options={answers}

@@ -1,11 +1,25 @@
 import { InputBox } from "components/CreateSurvey/CreateForm/InputsPreview/InputBox";
-import { Textarea } from "components/Fields";
+import { Input } from "components/Fields";
 import { ConditionRedux } from "redux/slices/types";
 import React from "react";
 import { useAppDispatch } from "redux/hooks";
 import { actions } from "redux/slices/scientistData";
-import { Enum_Question_Rows } from "api/graphql/types.generated";
 import { Box } from "@chakra-ui/react";
+
+const InputNumber = () => {
+  return (
+    <Box w="45%" mr="5">
+      <Input
+        type="number"
+        appearance="big"
+        name="target_value"
+        label="Indiquer la valeur numérique"
+        placeholder="Ex 5"
+        isRequired
+      />
+    </Box>
+  );
+};
 
 export const renderInput = (
   selectedCondition: ConditionRedux
@@ -53,20 +67,6 @@ export const renderInput = (
         </ul>
       );
     }
-  };
-
-  const InputNumber = () => {
-    return (
-      <Box w="45%" mr="5">
-        <Textarea
-          rows={Enum_Question_Rows.Small}
-          id="target_value"
-          label="Indiquer la valeur numérique"
-          placeholder="Ex 5"
-          isRequired
-        />
-      </Box>
-    );
   };
 
   switch (target_question?.data?.attributes?.type) {

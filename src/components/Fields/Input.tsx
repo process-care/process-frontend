@@ -52,7 +52,7 @@ export const CustomInput: React.FC<Props> = ({
   const [field, meta] = useField(name);
   return (
     <FormControl
-      isRequired={isRequired === "true"}
+      isRequired={isRequired}
       id={name}
       textAlign="left"
       style={style}

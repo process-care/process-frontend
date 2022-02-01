@@ -45,7 +45,7 @@ export const CustomNumberInput: React.FC<Props> = ({
   console.log(isRequired);
   return (
     <FormControl
-      isRequired={isRequired === "true"}
+      isRequired={isRequired}
       id={name}
       textAlign="left"
       style={style}

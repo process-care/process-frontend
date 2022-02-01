@@ -24,7 +24,7 @@ import {
   actions as formBuilderAction,
 } from "redux/slices/formBuilder";
 import { TitleDivider } from "components/TitleDivider";
-import { getQuestionName } from "constants/inputs";
+import { getQuestionInfo, getQuestionName } from "constants/inputs";
 import { InfoIcon } from "@chakra-ui/icons";
 import { QuestionRedux } from "redux/slices/types";
 
@@ -138,12 +138,7 @@ const InputForm: React.FC<Props> = ({ order }) => {
                 w="100%"
                 mt="5"
               >
-                <Tooltip
-                  placement="right"
-                  label={`Description du champs ${getQuestionName(
-                    type
-                  )} lorem dsqdsqdqsdqsdqsdqsdqsdqsd`}
-                >
+                <Tooltip placement="bottom" label={getQuestionInfo(type)}>
                   <Box d="flex" alignItems="center">
                     <Text
                       variant="baseline"
@@ -154,7 +149,14 @@ const InputForm: React.FC<Props> = ({ order }) => {
                       {isEditing ? "Edition" : "Création"} d'une{" "}
                       {getQuestionName(type)}
                     </Text>
-                    <InfoIcon color="gray.300" ml="4" mt="-2" w="3" h="3" />
+                    <InfoIcon
+                      color="gray.300"
+                      ml="4"
+                      mt="-2"
+                      w="3"
+                      h="3"
+                      _hover={{ cursor: "pointer" }}
+                    />
                   </Box>
                 </Tooltip>
 

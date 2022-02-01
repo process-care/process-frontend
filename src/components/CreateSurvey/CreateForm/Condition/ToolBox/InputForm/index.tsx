@@ -99,6 +99,7 @@ const InputForm: React.FC<Props> = ({ order }) => {
     return <> </>;
   }
 
+  console.log(selectedQuestion);
   return (
     <Formik
       validateOnBlur

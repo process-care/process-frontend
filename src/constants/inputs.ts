@@ -13,7 +13,7 @@ export const inputs: Obj[] = [
     type: Enum_Question_Type.Wysiwyg,
     name: "Zone d'info",
     category: "other",
-    info: "Création d’une zone d’information, sans interaction possible de l’utilisateur, pouvant comprendre des images et des styles différents de texte",
+    info: "Création d’une zone d’information, sans interaction possible de l’utilisateur, pouvant comprendre des images et des styles différents de texte ",
   },
   {
     type: Enum_Question_Type.TextArea,

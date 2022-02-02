@@ -1,7 +1,7 @@
 import { Box, Container } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
-
+import { selectors as appSelectors } from "redux/slices/application";
 import InputsPreview from "components/CreateSurvey/CreateForm/InputsPreview";
 import IRoute from "types/routes/route";
 import Drawer from "components/Drawer";
@@ -30,15 +30,29 @@ export const CreateForm: React.FC<IRoute> = () => {
   const isLoading = useAppSelector(selectors.survey.isLoading);
   const order = useAppSelector(selectors.survey.getOrder);
   const error = useAppSelector(selectors.survey.error);
-
+  const isCreating = useAppSelector(selectors.questions.isCreating);
+  const drawerIsOpen = useAppSelector(appSelectors.drawerIsOpen);
   const selectedCondition = useAppSelector(
     selectors.conditions.getSelectedCondition
   );
-
+  const containerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     dispatch(actions.initializeSurvey(slug));
   }, [slug]);
 
+  useEffect(() => {
+    console.log(isCreating, "IS CREATING");
+
+    if (drawerIsOpen) {
+      setTimeout(() => {
+        containerRef?.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+          inline: "start",
+        });
+      }, 500);
+    }
+  }, [drawerIsOpen]);
   if (error) {
     return <Error error={error} />;
   }
@@ -72,14 +86,25 @@ export const CreateForm: React.FC<IRoute> = () => {
               p="0"
               d="flex"
               flexDirection="column"
+              className="background__grid"
+              pb="50px"
+              height="100vh"
+              overflow="auto"
             >
               <Banner />
 
               {selectedCondition !== undefined ? (
-                <ConditionMenu selectedCondition={selectedCondition} />
+                <>
+                  <ConditionMenu selectedCondition={selectedCondition} />
+                </>
               ) : (
                 <div className="background__grid">
-                  <InputsPreview order={order} surveyId={selectedSurveyId} />
+                  <InputsPreview
+                    order={order}
+                    surveyId={selectedSurveyId}
+                    containerRef={containerRef}
+                  />
+                  <Box pb="20px" ref={containerRef} />
                 </div>
               )}
             </Container>

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import Card from "./Card";
 
@@ -11,7 +11,6 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 import { selectors, actions } from "redux/slices/scientistData";
-// import { selectors as appSelectors } from "redux/slices/application";
 
 import { NoData } from "components/SurveyGrid/noData";
 
@@ -31,9 +30,10 @@ export interface ContainerProps {
 interface Props {
   order: IQuestion["id"][];
   surveyId: string;
+  containerRef: React.RefObject<HTMLDivElement>;
 }
 
-const InputsPreview: React.FC<Props> = ({ order }) => {
+const InputsPreview: React.FC<Props> = ({ order, containerRef }) => {
   const dispatch = useAppDispatch();
   const selectedPage = useAppSelector(selectors.pages.getSelectedPage);
 
@@ -41,15 +41,12 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
     selectors.questions.getSelectedPageQuestions
   );
   const isLoading = useAppSelector(selectors.questions.isLoading);
-  // const isCreating = useAppSelector(selectors.questions.isCreating);
-  // const drawerIsOpen = useAppSelector(appSelectors.drawerIsOpen);
+
   const error = useAppSelector(selectors.questions.error);
 
   const renderCard = (input: IQuestion, index: number) => {
     return <Card key={input.id} input={input} index={index} />;
   };
-
-  const containerRef = useRef<HTMLDivElement>(null);
 
   const onDragEnd = (result: any) => {
     const { destination, source, draggableId } = result;
@@ -74,18 +71,6 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
     }
   };
 
-  // useEffect(() => {
-  //   console.log(isCreating, "IS CREATING");
-
-  //   setTimeout(() => {
-  //     containerRef?.current?.scrollIntoView({
-  //       behavior: "smooth",
-  //       block: "nearest",
-  //       inline: "start",
-  //     });
-  //   }, 500);
-  // }, [isCreating]);
-
   const Container: React.FC<ContainerProps> = ({
     children,
     isDraggingOver,
@@ -96,10 +81,10 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
         d="flex"
         flexDirection="column"
         alignItems="center"
-        h="90%"
-        pb={10}
+        // h="90%"
+
         backgroundColor={isDraggingOver ? "brand.gray.100" : "transparent"}
-        overflowY="auto"
+        // overflowY="auto"
       >
         <Formik
           initialValues={{}}
@@ -123,7 +108,6 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
             );
           }}
         </Formik>
-        <Box ref={containerRef} />
       </Box>
     );
   };
@@ -144,29 +128,39 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
   }
 
   return (
-    <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
-      <Droppable droppableId={selectedPage.id}>
-        {(provided, snapshot) => (
-          <Container isDraggingOver={snapshot.isDraggingOver}>
-            <Text fontSize="14px" mt={3} textTransform="uppercase">
-              {selectedPage?.name}
-            </Text>
-            {questions.length > 0 && <Header />}
+    <>
+      <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
+        <Droppable droppableId={selectedPage.id}>
+          {(provided, snapshot) => (
+            <>
+              <Container isDraggingOver={snapshot.isDraggingOver}>
+                <Text fontSize="14px" mt={3} textTransform="uppercase">
+                  {selectedPage?.name}
+                </Text>
+                {questions.length > 0 && <Header />}
 
-            <Box w="100%" ref={provided.innerRef} {...provided.droppableProps}>
-              {order?.map((inputId: string, i: number) => {
-                const current = questions.find((c: any) => c.id === inputId);
-                if (current !== undefined) {
-                  return renderCard(current, i);
-                } else return;
-              })}
+                <Box
+                  w="100%"
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                >
+                  {order?.map((inputId: string, i: number) => {
+                    const current = questions.find(
+                      (c: any) => c.id === inputId
+                    );
+                    if (current !== undefined) {
+                      return renderCard(current, i);
+                    } else return;
+                  })}
 
-              {provided.placeholder}
-            </Box>
-          </Container>
-        )}
-      </Droppable>
-    </DragDropContext>
+                  {provided.placeholder}
+                </Box>
+              </Container>
+            </>
+          )}
+        </Droppable>
+      </DragDropContext>
+    </>
   );
 };
 

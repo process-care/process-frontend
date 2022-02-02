@@ -77,7 +77,12 @@ export const CustomNumberInput: React.FC<Props> = ({
                 fontSize="12px"
               />
             </NumberInput>
-            {inputRightAddon && <InputRightAddon children={inputRightAddon} />}
+            {inputRightAddon && (
+              <InputRightAddon
+                children={inputRightAddon}
+                p={appearance === "big" ? "30px" : "10px"}
+              />
+            )}
           </InputGroup>
           {meta.touched && meta.error && (
             <Text fontSize="10px" color="red" textAlign="right">

@@ -13,7 +13,7 @@ generates:
       skipTypename: true
       useIndexSignature: true # https://github.com/dotansimha/graphql-code-generator/issues/1133
 
-  # Config for each queries.gql file
+  # Config React Query for each queries.gql file
   src/:
     preset: near-operation-file
     presetConfig:
@@ -26,6 +26,19 @@ generates:
       # More readable types
       skipTypename: true
       fetcher: graphql-request
+
+  # Config SDK for each queries.gql file
+  src/api/graphql/sdk.generated.ts:
+    presetConfig:
+      baseTypesPath: api/graphql/types.generated.ts
+    plugins:
+      - "typescript"
+      - typescript-operations
+      - typescript-graphql-request
+    config:
+      # More readable types
+      skipTypename: true
+      useIndexSignature: true # https://github.com/dotansimha/graphql-code-generator/issues/1133
       
   # Introspection config
   src/api/graphql/graphql.schema.json:

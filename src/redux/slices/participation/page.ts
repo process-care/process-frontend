@@ -1,16 +1,16 @@
 import { createEntityAdapter, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import IPage from "types/form/page";
 
 import { RootState } from "redux/store";
 import { actions as statusAct } from 'redux/slices/participation/status';
 import { selectors as answerSelectors } from 'redux/slices/participation/answers';
 import { EvaluationCondition } from "call/actions/formBuider/question";
 import { shouldShow } from "pages/Survey/Participation/Form/condition-evaluations";
+import { PageEntity } from "api/graphql/types.generated";
 
 // ---- INITIAL STATE
 
 // TODO: make the submitable false by default ?
-export type ReduxPage = IPage & { submitable?: boolean };
+export type ReduxPage = PageEntity & { id: string } & { submitable?: boolean };
 
 // ---- ACTIONS
 

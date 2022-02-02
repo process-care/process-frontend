@@ -1,5 +1,5 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { LoginRes, SigninRes } from "call/actions/auth";
+import { LoginMutation, RegisterMutation } from "redux/epics/queries/auth.gql.generated";
 import { RootState } from "redux/store";
 
 import { GlobalState } from "../scientistData";
@@ -10,7 +10,7 @@ export interface AuthState {
   isLogging: boolean;
   isConnected: boolean;
   errors?: any[];
-  data: LoginRes["login"] | SigninRes["register"] | null;
+  data: LoginMutation["login"] | RegisterMutation["register"] | null;
 }
 
 // ---- STATE
@@ -39,7 +39,7 @@ export const authReducers = {
   login: (state: GlobalState, _action: PayloadAction<Login>): void => {
     state.auth.isConnected = false;
   },
-  logged: (state: GlobalState, action: PayloadAction<LoginRes | any>): void => {
+  logged: (state: GlobalState, action: PayloadAction<LoginMutation | any>): void => {
     state.auth.data = action.payload;
     state.auth.isConnected = action.payload.login?.user?.blocked === false;
     state.auth.errors = undefined;
@@ -47,7 +47,7 @@ export const authReducers = {
   signin: (state: GlobalState, _action: PayloadAction<Signin>): void => {
     state.auth.isConnected = false;
   },
-  signed: (state: GlobalState, action: PayloadAction<LoginRes | any>): void => {
+  signed: (state: GlobalState, action: PayloadAction<LoginMutation | any>): void => {
     state.auth.data = action.payload;
     state.auth.errors = undefined;
   },

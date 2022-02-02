@@ -109,10 +109,10 @@ body {
 }
 
 .chakra-checkbox__label {
-  padding-left: 10px;
+  padding-left: 2px;
   width: 100%;
 }
 .chakra-checkbox__control {
-  width: 25px !important;
-  height: 25px !important;
+  width: 20px !important;
+  height: 20px !important;
 }

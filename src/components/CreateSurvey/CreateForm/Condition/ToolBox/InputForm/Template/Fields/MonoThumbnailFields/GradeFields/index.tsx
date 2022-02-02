@@ -47,14 +47,14 @@ const renderTemplate = (selectedQuestion: QuestionRedux) => {
         <Flex justifyContent="space-between">
           <NumberInput
             style={{ width: "45%" }}
-            label="Nombre min"
+            label="Valeur minimale"
             name={`${ID}.min`}
             isCollapsed={false}
             placeholder="Ex:0"
           />
           <NumberInput
             style={{ width: "45%" }}
-            label="Nombre max"
+            label="Valeur maximale"
             name={`${ID}.max`}
             isCollapsed={false}
             placeholder="Ex:10"

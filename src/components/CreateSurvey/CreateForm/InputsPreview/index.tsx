@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import React from "react";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import Card from "./Card";
 
@@ -30,10 +30,9 @@ export interface ContainerProps {
 interface Props {
   order: IQuestion["id"][];
   surveyId: string;
-  containerRef: React.RefObject<HTMLDivElement>;
 }
 
-const InputsPreview: React.FC<Props> = ({ order, containerRef }) => {
+const InputsPreview: React.FC<Props> = ({ order }) => {
   const dispatch = useAppDispatch();
   const selectedPage = useAppSelector(selectors.pages.getSelectedPage);
 

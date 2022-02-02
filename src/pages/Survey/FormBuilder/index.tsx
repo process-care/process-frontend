@@ -99,11 +99,7 @@ export const CreateForm: React.FC<IRoute> = () => {
                 </>
               ) : (
                 <div className="background__grid">
-                  <InputsPreview
-                    order={order}
-                    surveyId={selectedSurveyId}
-                    containerRef={containerRef}
-                  />
+                  <InputsPreview order={order} surveyId={selectedSurveyId} />
                   <Box pb="20px" ref={containerRef} />
                 </div>
               )}

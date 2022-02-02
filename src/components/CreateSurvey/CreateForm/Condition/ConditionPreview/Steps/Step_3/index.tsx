@@ -1,11 +1,10 @@
 import React from "react";
 import { Formik, Form } from "formik";
 
-import { Box, Container, Text, Flex } from "@chakra-ui/react";
+import { Box, Container, Text, Flex, Button } from "@chakra-ui/react";
 import ICondition from "types/form/condition";
 import { t } from "static/condition";
 
-import { ReactComponent as Submit } from "./../../assets/submit.svg";
 import { ReactComponent as Check } from "./../../assets/check.svg";
 import { renderInput } from "./utils";
 import { checkIfMultiple } from "utils/formBuilder/input";
@@ -56,7 +55,13 @@ export const Step_3: React.FC<Props> = ({ selectedCondition, updateStep }) => {
               onChange={(event) => onChange(event)}
               style={{ width: "100%" }}
             >
-              <Box d="flex" mx="auto" alignItems="center" w="100%">
+              <Box
+                d="flex"
+                mx="auto"
+                alignItems="center"
+                w="100%"
+                justifyContent="space-between"
+              >
                 {renderInput(selectedCondition)}
                 <Box
                   pt={6}
@@ -72,7 +77,9 @@ export const Step_3: React.FC<Props> = ({ selectedCondition, updateStep }) => {
                   }}
                 >
                   {isNotEmpty && !checkIfMultiple(selectedCondition) && (
-                    <Submit />
+                    <Button variant="rounded" type="submit">
+                      Valider la condition
+                    </Button>
                   )}
                 </Box>
               </Box>

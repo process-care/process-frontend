@@ -8,7 +8,7 @@ import { Box } from "@chakra-ui/react";
 
 const InputNumber = () => {
   return (
-    <Box w="45%" mr="5">
+    <Box w="100%" mr="5">
       <Input
         type="number"
         appearance="big"

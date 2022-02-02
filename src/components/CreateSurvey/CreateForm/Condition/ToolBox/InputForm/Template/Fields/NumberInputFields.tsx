@@ -32,7 +32,7 @@ export const NumberInputFields: React.FC = () => {
         <Flex justifyContent="space-between">
           <NumberInput
             style={{ width: "45%" }}
-            label="Nombre min"
+            label="Valeur minimale"
             name="min"
             isCollapsed={false}
             placeholder="Ex:5"
@@ -40,7 +40,7 @@ export const NumberInputFields: React.FC = () => {
           />
           <NumberInput
             style={{ width: "45%" }}
-            label="Nombre max"
+            label="Valeur maximale"
             name="max"
             isCollapsed={false}
             placeholder="Ex:5"

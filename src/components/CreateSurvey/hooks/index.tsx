@@ -1,8 +1,9 @@
 import { useCallback } from "react";
-import { useAddLanding } from "call/actions/landing";
-import { useUpdateSurvey } from "call/actions/survey";
 import { useHistory } from "react-router-dom";
 import { Survey, SURVEY_STATUS } from "types/survey";
+import { useCreateLandingMutation } from "api/graphql/queries/landing.gql.generated";
+import { client } from "api/gql-client";
+import { useUpdateSurveyMutation } from "api/graphql/queries/survey.gql.generated";
 
 // ---- TYPES
 
@@ -18,8 +19,8 @@ type Navigators = {
 export const useNavigator = (survey: Survey | undefined): Navigators => {
   const history = useHistory();
 
-  const { mutateAsync: addLanding } = useAddLanding();
-  const { mutateAsync: updateSurvey } = useUpdateSurvey();
+  const { mutateAsync: addLanding } = useCreateLandingMutation(client);
+  const { mutateAsync: updateSurvey } = useUpdateSurveyMutation(client);
 
   // Take you to the landing
   const gotToLanding = useCallback(async () => {
@@ -31,8 +32,10 @@ export const useNavigator = (survey: Survey | undefined): Navigators => {
     // If the landing is not created yet, create it
     if (!landing) {
       const newLanding: Record<string, any> = await addLanding({
-        title,
-        survey: id,
+        data: {
+          title,
+          survey: id,
+        },
       });
       // update survey with landing id.
       await updateSurvey({

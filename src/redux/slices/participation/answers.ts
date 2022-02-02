@@ -1,4 +1,5 @@
 import { createEntityAdapter, createSlice, PayloadAction, Update } from "@reduxjs/toolkit";
+import { Maybe } from "api/graphql/types.generated";
 
 import { actions as statusAct } from 'redux/slices/participation/status';
 import { RootState } from "redux/store";
@@ -55,7 +56,7 @@ export const slice = createSlice({
 
 const entitySelectors = adapter.getSelectors();
 
-const selectById = (state: RootState, questionId: string | undefined): Answer | undefined => {
+const selectById = (state: RootState, questionId: Maybe<string>): Answer | undefined => {
   if (!questionId) return;
   return entitySelectors.selectById(state.participation.answers, questionId);
 };

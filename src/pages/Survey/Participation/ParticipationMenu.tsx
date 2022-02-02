@@ -1,13 +1,13 @@
 import React, { useCallback, useMemo } from "react";
 import { Box, Circle, Flex, Text } from "@chakra-ui/react";
-import { ReduxPage } from "redux/slices/participation/page";
+import { PageRedux } from "redux/slices/participation/page";
 
 import IPage from "types/form/page";
 
 // MENU
 
 interface MenuProps {
-  pages: ReduxPage[];
+  pages: PageRedux[];
   selectIndex: (index: number) => void;
   color: string;
   author: string | undefined;
@@ -84,7 +84,7 @@ export const ParticipationMenu: React.FC<MenuProps> = ({
 
 interface EntryProps {
   index: number;
-  page: ReduxPage;
+  page: PageRedux;
   color: string;
   isNavigable: boolean;
   selectedPageId: string | undefined;

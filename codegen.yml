@@ -6,7 +6,7 @@ generates:
   # Types & Resolvers types in general
   src/api/graphql/types.generated.ts:
     plugins:
-      - "typescript"
+      - typescript
     config:
       fetcher: graphql-request
       # More readable types
@@ -32,7 +32,7 @@ generates:
     presetConfig:
       baseTypesPath: api/graphql/types.generated.ts
     plugins:
-      - "typescript"
+      - typescript
       - typescript-operations
       - typescript-graphql-request
     config:

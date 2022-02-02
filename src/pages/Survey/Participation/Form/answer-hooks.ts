@@ -2,7 +2,7 @@ import { useEffect, useMemo } from "react";
 import { useField } from "formik";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { actions, selectors } from "redux/slices/participation/answers";
-import { ReduxPage } from "redux/slices/participation/page";
+import { PageRedux } from "redux/slices/participation/page";
 
 // ---- TYPES
 
@@ -21,7 +21,7 @@ type InitialContent = {
  * @param order 
  * @returns 
  */
-export function useInitialPageContent(page: ReduxPage | undefined, order: string[]): InitialContent {
+export function useInitialPageContent(page: PageRedux | undefined, order: string[]): InitialContent {
   // Filter questions & order in this page
   const { questionsId, orderInPage } = useMemo(() => {
     const questionsId = page?.questions?.map((q) => q.id) ?? [];

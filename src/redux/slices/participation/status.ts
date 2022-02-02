@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Answer } from "call/actions/answers";
-import IPage from "types/form/page";
-import IQuestion from "types/form/question";
+import { Page, Question, Answer } from "api/graphql/types.generated";
+import { SafeEntity } from "api/types";
 
 // ---- TYPES
 
@@ -29,9 +28,9 @@ type InitializePayload = {
 }
 
 type InitializedPayload = {
-  pages: IPage[]
-  questions: IQuestion[]
-  answers: Answer[]
+  pages: SafeEntity<Page>[]
+  questions: SafeEntity<Question>[]
+  answers: SafeEntity<Answer>[]
 }
 
 // ---- SLICE

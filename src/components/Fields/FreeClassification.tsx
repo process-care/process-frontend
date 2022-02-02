@@ -65,8 +65,9 @@ export const FreeClassification: React.FC<Props> = ({
     return (
       <Box>
         <Text pt="5" textAlign="left" variant="currentBold">
-          Choississez une proposition qui vous semble être la plus proche de
-          votre réponse
+          Voici les réponses d’autres participants à la même question. Parmi ces
+          réponses, lesquelles considérez-vous comme similaire à votre propre
+          réponse ?
         </Text>
         {mock.map((item) => {
           const isSelected = field.value

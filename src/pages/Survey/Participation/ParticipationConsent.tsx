@@ -1,12 +1,13 @@
 import React, { useCallback } from "react";
 import { Box, Button, Container, Center } from "@chakra-ui/react";
-import { useCreateParticipation } from "call/actions/participation";
 
 import { Menu } from "components/Menu/CreateSurvey";
-import { useGetSurvey } from "call/actions/survey";
 import { PdfPreview } from "../CreateConsent/PdfPreview";
 import { API_URL_ROOT } from "constants/api";
 import { NL } from "./nl";
+import { useSurveyQuery } from "api/graphql/queries/survey.gql.generated";
+import { client } from "api/gql-client";
+import { useCreateParticipationMutation } from "api/graphql/queries/participation.gql.generated";
 
 // ---- TYPES
 
@@ -24,14 +25,12 @@ export const ParticipationConsent: React.FC<Props> = ({
   onRefuse,
 }) => {
   const { mutateAsync: createParticipation, isLoading } =
-    useCreateParticipation();
-  const { data: survey } = useGetSurvey(surveyId);
+    useCreateParticipationMutation(client);
+  const { data: survey } = useSurveyQuery(client, { id: surveyId });
 
   const onAccept = useCallback(async () => {
     const res = await createParticipation({
-      consent: true,
-      completed: false,
-      survey: surveyId,
+      values: { consent: true, completed: false, survey: surveyId },
     });
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore : I don't understand the structure of the answer, because that's supposed to work
@@ -41,8 +40,8 @@ export const ParticipationConsent: React.FC<Props> = ({
   const onDecline = useCallback(() => {
     onRefuse();
   }, []);
-
-  const url = survey?.consentement?.url;
+  const attributes = survey?.survey?.data?.attributes;
+  const url = attributes?.notice_consent?.data?.attributes?.url;
 
   if (isLoading) <Box mt="20">Please wait...</Box>;
 
@@ -55,7 +54,7 @@ export const ParticipationConsent: React.FC<Props> = ({
       h="100vh"
     >
       <Box w="100%">
-        <Menu surveyTitle={survey?.title} />
+        <Menu surveyTitle={attributes?.title} />
 
         <div className="background__grid">
           <Box

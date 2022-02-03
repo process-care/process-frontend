@@ -1,0 +1,49 @@
+mutation createParticipation($values: ParticipationInput!) {
+  createParticipation(data: $values) {
+    data {
+      id
+      attributes {
+        startedAt
+      }
+    }
+  }
+}
+
+mutation updateParticipation($id: ID!, $data: ParticipationInput!) {
+  updateParticipation(id: $id, data: $data) {
+    data {
+      id
+      attributes {
+        survey {
+          data {
+            id
+          }
+        }
+        contact
+        consent
+        completed
+      }
+    }
+  }
+}
+
+mutation finishParticipation($id: ID!) {
+  updateParticipation(
+    id: $id
+    data: { completed: true, completedAt: "${new Date()}" }
+  ) {
+    data {
+      id
+      attributes {
+        survey {
+          data {
+            id
+          }
+        }
+        contact
+        consent
+        completed
+      }
+    }
+  }
+}

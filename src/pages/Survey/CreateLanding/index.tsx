@@ -7,19 +7,19 @@ import { Menu } from "components/Menu/CreateForm";
 import { ToolBox } from "components/CreateSurvey/CreateLanding/ToolBox";
 import { Preview } from "components/CreateSurvey/CreateLanding/Preview";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
-import { useGetSurveyBySlug } from "call/actions/survey";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 import { actions, selectors } from "redux/slices/landing-editor";
+import { client } from "api/gql-client";
+import { useSurveyBySlugQuery } from "api/graphql/queries/survey.gql.generated";
 
 export const CreateLanding: React.FC<IRoute> = () => {
   const { slug } = useParams<{ slug: string }>();
   const { previewMode } = useAppSelector((state) => state.application);
 
-  const { data: survey } = useGetSurveyBySlug(slug);
-  console.log(survey);
-  const landingId = survey?.landing?.id;
-
+  const { data: survey } = useSurveyBySlugQuery(client, { slug });
+  const landingId = survey?.surveys?.data[0]?.attributes?.landing?.data?.id;
+  const surveyId = survey?.surveys?.data[0]?.id;
   const dispatch = useAppDispatch();
   const data = useAppSelector(selectors.landing);
   const isLoading = useAppSelector(selectors.isLoading);
@@ -43,7 +43,7 @@ export const CreateLanding: React.FC<IRoute> = () => {
     return <Loader />;
   }
 
-  if (!survey) return <Error error={"No survey found..."} />;
+  if (!survey || !surveyId) return <Error error={"No survey found..."} />;
 
   return (
     <Box overflow="auto">
@@ -62,7 +62,7 @@ export const CreateLanding: React.FC<IRoute> = () => {
             backgroundColor="white"
             zIndex="10"
           >
-            <Menu isLanding surveyId={survey.id} />
+            <Menu isLanding surveyId={surveyId} />
           </Box>
           <Box
             mt={previewMode !== "landing" ? "60px" : "0"}

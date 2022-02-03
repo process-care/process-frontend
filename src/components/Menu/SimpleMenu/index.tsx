@@ -10,8 +10,8 @@ import { useDispatch } from "react-redux";
 import { actions } from "redux/slices/application";
 import { actions as appActions } from "redux/slices/scientistData";
 import { useHistory } from "react-router-dom";
-
-import { useGetMe } from "call/actions/auth";
+import { useUserQuery } from "components/Dashboard/ProfilForm/user.gql.generated";
+import { client } from "api/gql-client";
 
 export const HEADER_HEIGHT = "65px";
 
@@ -34,11 +34,11 @@ export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
   const history = useHistory();
   const { cookies } = useAuth();
   const dispatch = useDispatch();
-  
-  const { data: user } = useGetMe(cookies?.user.id);
+
+  const { data: user } = useUserQuery(client, cookies?.user.id);
 
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
-  
+
   const handleClick = () => {
     setIsOpen((prev) => !prev);
   };
@@ -106,7 +106,7 @@ export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
       </motion.nav>
     );
   };
-
+  const attributes = user?.usersPermissionsUser?.data?.attributes;
   return (
     <Box
       py={3}
@@ -135,7 +135,7 @@ export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
           _hover={{ cursor: "pointer" }}
           onClick={handleClick}
           ml="20px"
-          name={user?.firstName + " " + user?.lastName}
+          name={attributes?.firstName + " " + attributes?.lastName}
           w="40px"
           h="40px"
           color="white"

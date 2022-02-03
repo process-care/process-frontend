@@ -12,11 +12,12 @@ import { ReactComponent as Back } from "./assets/back.svg";
 import { t } from "static/input";
 import { actions as appActions } from "redux/slices/application";
 import { Loader } from "components/Spinner";
-import { useGetSurvey } from "call/actions/survey";
 import { actions as globalActions } from "redux/slices/scientistData";
 import { CheckIcon } from "@chakra-ui/icons";
 import { selectors } from "redux/slices/landing-editor";
 import { selectors as globalSelectors } from "redux/slices/scientistData";
+import { useSurveyQuery } from "api/graphql/queries/survey.gql.generated";
+import { client } from "api/gql-client";
 
 // ---- STATIC
 
@@ -41,7 +42,7 @@ interface Props {
 export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
   const dispatch = useAppDispatch();
 
-  const { data, isLoading, error } = useGetSurvey(surveyId);
+  const { data, isLoading, isError } = useSurveyQuery(client, { id: surveyId });
   const { previewMode } = useAppSelector((state) => state.application);
   const { inProgress, done } = useChangesNotifier(isLanding);
 
@@ -49,8 +50,8 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
     return <Loader />;
   }
 
-  if (error) {
-    return <p>{error.message}</p>;
+  if (isError) {
+    return <p>Une erreur est survenue</p>;
   }
 
   const handleVerify = () => {
@@ -100,7 +101,7 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
             isTruncated
             maxWidth="250px"
           >
-            {data?.title}
+            {data?.survey?.data?.attributes?.title}
           </Text>
           <Flex pos="absolute" right="10px">
             {inProgress && <ChangesInProgress />}

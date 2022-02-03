@@ -1,7 +1,7 @@
 ## ---- QUERIES
 
 # Get one specific survey
-query Survey($id: ID!) {
+query survey($id: ID!) {
   survey(id: $id) {
     data {
       ...surveyEntityFragment
@@ -10,7 +10,7 @@ query Survey($id: ID!) {
 }
 
 # Search one survey by its slug (/!\ result is an array)
-query SurveyBySlug ($slug: String!) {
+query surveyBySlug($slug: String!) {
   surveys(filters: { slug: { eq: $slug } }) {
     data {
       ...surveyEntityFragment
@@ -43,7 +43,9 @@ mutation updateSurvey($id: ID!, $data: SurveyInput!) {
         slug
         need_consent
         landing {
-          data { id }
+          data {
+            id
+          }
         }
       }
     }
@@ -70,3 +72,47 @@ mutation updateOrder($id: ID!, $new_order: JSON) {
     }
   }
 }
+
+# Get stats of a survey by ID
+query getSurveyStats($id: ID!) {
+  surveyStats(id: $id) {
+    title
+    description
+    publishedAt
+    createdAt
+    statistics {
+      day {
+        visits
+        consented
+        completed
+      }
+      week {
+        visits
+        consented
+        completed
+      }
+      month {
+        visits
+        consented
+        completed
+      }
+      semester {
+        visits
+        consented
+        completed
+      }
+      year {
+        visits
+        consented
+        completed
+      }
+      all {
+        visits
+        consented
+        completed
+      }
+    }
+  }
+}
+
+# TODO: Harmonize with the other queries (add data and attributes)

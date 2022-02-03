@@ -1,10 +1,12 @@
+import { client } from "api/gql-client";
 import {
-  UploadParams,
-  useDeleteFile,
-  useUploadFileMultiple,
-  useUploadFileSingle,
-} from "call/actions/application";
+  useDeleteFileMutation,
+  useUploadFileMultipleMutation,
+  useUploadFileSingleMutation,
+} from "api/graphql/queries/application.gql.generated";
+
 import { useState } from "react";
+import { UploadParams } from "redux/slices/application";
 
 // ---- TYPES
 
@@ -22,9 +24,10 @@ export const useFileHandlers = (
   onChange: (msg: string) => void
 ): FileHandlers => {
   const [error, setError] = useState<string>();
-  const { mutateAsync: uploadSingleFile } = useUploadFileSingle();
-  const { mutateAsync: uploadMultiFile } = useUploadFileMultiple();
-  const { mutateAsync: deleteFile } = useDeleteFile();
+  const { mutateAsync: uploadSingleFile } = useUploadFileSingleMutation(client);
+  const { mutateAsync: uploadMultiFile } =
+    useUploadFileMultipleMutation(client);
+  const { mutateAsync: deleteFile } = useDeleteFileMutation(client);
 
   // TODO: useCallback on those
 
@@ -51,7 +54,7 @@ export const useFileHandlers = (
   };
 
   const handleDelete = (id: string) => {
-    deleteFile(id);
+    deleteFile({ id });
     onChange(`deleted: ${id}`);
   };
 

@@ -4,7 +4,7 @@ import { RootState } from "redux/store";
 import { actions as statusAct } from 'redux/slices/participation/status';
 import { selectors as answerSelectors } from 'redux/slices/participation/answers';
 import { shouldShow } from "pages/Survey/Participation/Form/condition-evaluations";
-import { SafeEntity } from "api/types";
+import { SafeEntity } from "api/entity-checker";
 import { Page } from "api/graphql/types.generated";
 import { EvaluationCondition } from "./types";
 

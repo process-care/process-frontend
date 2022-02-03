@@ -46,7 +46,19 @@ export const slice = createSlice({
   },
   extraReducers: builder => {
     builder.addCase(statusAct.initialized, (state, action) => {
-      const sanitized = action.payload.answers.map(a => ({ id: a.id, questionId: a.question.id, value: a.value }));
+      const sanitized = action.payload.answers.reduce((acc, a) => {
+        const qId = a.attributes.question?.data?.id;
+        if (!qId) return acc;
+
+        acc.push({
+          id: a.id,
+          questionId: qId,
+          value: a.attributes.value,
+        });
+
+        return acc;
+      }, [] as Answer[]);
+      
       adapter.setAll(state, sanitized);
     });
   }

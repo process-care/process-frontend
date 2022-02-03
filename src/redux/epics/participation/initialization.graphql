@@ -1,6 +1,6 @@
 query QuestionsBySurvey($surveyId: ID!) {
   questionsBySurvey(surveyId: $surveyId) {
-    ...questionFragment
+    ...questionEntityFragment
   }
 }
 

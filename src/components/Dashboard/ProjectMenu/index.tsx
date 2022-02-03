@@ -6,7 +6,7 @@ import { ReactComponent as Trash } from "./assets/trash.svg";
 
 import { API_URL_ROOT } from "constants/api";
 import { Filters } from "../Filters";
-import { useGetSurveyStats } from "call/actions/survey";
+
 import { useNavigator } from "components/CreateSurvey/hooks";
 import { RemovingConfirmation } from "components/CreateSurvey/CreateForm/Condition/ToolBox/PageForm/Status";
 // import { Chart } from "../Chart";
@@ -17,6 +17,8 @@ import { actions, selectors } from "redux/slices/scientistData";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "redux/hooks";
 import { Survey, SURVEY_STATUS } from "types/survey";
+import { useGetSurveyStatsQuery } from "api/graphql/queries/survey.gql.generated";
+import { client } from "api/gql-client";
 
 // ---- STATICS
 
@@ -78,13 +80,14 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
 
   // FIXME: Why is it an array ?
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore  
+  // @ts-ignore
   if (!menuIsOpen || !selectedSurvey || selectedSurvey.length < 1) {
     return <></>;
   }
-  
+
   console.log(selectedSurvey);
   console.log(statistics);
+  // TODO: Wait for redux type : statFilter wich is filter[0].id have to be type with statistic key from api
   const selectedStats = statistics[statFilter];
 
   const handleTrash = () => {
@@ -297,8 +300,8 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
 
 // ---- HOOKS
 
-function useSurveyData(surveyId: string | undefined) {
-  const { data, isLoading } = useGetSurveyStats(surveyId);
+function useSurveyData(surveyId: string) {
+  const { data, isLoading } = useGetSurveyStatsQuery(client, { id: surveyId });
   const exportURL = `${API_URL_ROOT}/surveys/${surveyId}/export`;
 
   // TODO: compute this ?

@@ -3,14 +3,17 @@ import { Box, Button, Center, Flex, Text } from "@chakra-ui/react";
 import { useHistory, useParams } from "react-router-dom";
 import { ParticipationConsent } from "./ParticipationConsent";
 import { ParticipationForm } from "./ParticipationForm";
-import { useGetSurveyBySlug } from "call/actions/survey";
 import {
   findExistingParticipation,
   storeParticipation,
 } from "./localstorage-handlers";
 import { NL } from "./nl";
 import { Loader } from "components/Spinner";
+
 import { SURVEY_STATUS } from "types/survey";
+
+import { useSurveyBySlugQuery } from "api/graphql/queries/survey.gql.generated";
+import { client } from "api/gql-client";
 
 // ---- COMPONENT
 
@@ -18,9 +21,10 @@ export const Participation: React.FC<unknown> = () => {
   const { slug, step } = useParams<{ slug: string; step: string }>();
   const history = useHistory();
 
-  const { data: survey, isLoading } = useGetSurveyBySlug(slug);
+  const { data: survey, isLoading } = useSurveyBySlugQuery(client, { slug });
   const { participation, onConsent, onRefuse } = useConsentHandlers(slug);
-
+  const surveyId = survey?.surveys?.data[0].id;
+  const status = survey?.surveys?.data[0]?.attributes?.status;
   const goBackHome = useCallback(() => history.push("/"), []);
 
   // If there is already a completed participation in local storage
@@ -42,9 +46,8 @@ export const Participation: React.FC<unknown> = () => {
       </Center>
     );
   }
-  console.log(survey);
 
-  if (survey.status !== SURVEY_STATUS.Running) {
+  if (status !== SURVEY_STATUS.Running) {
     return (
       <OverWarning
         msg={NL.msg.surveyOver}
@@ -56,14 +59,16 @@ export const Participation: React.FC<unknown> = () => {
 
   // Redirect if the there is an existing participation
   if (participation && step !== "participate") {
-    history.push(`/survey/${survey.slug}/participate`);
+    history.push(`/survey/${slug}/participate`);
   }
-
-  // CONSENT
+  if (!surveyId) {
+    return <p>Une erreur est survenue</p>;
+  }
   if (step === "consent") {
+    // CONSENT
     return (
       <ParticipationConsent
-        surveyId={survey.id}
+        surveyId={surveyId}
         onConsent={onConsent}
         onRefuse={onRefuse}
       />
@@ -73,13 +78,13 @@ export const Participation: React.FC<unknown> = () => {
   // PARTICIPATE
   if (step === "participate") {
     if (!participation) {
-      history.push(`/survey/${survey.slug}/consent`);
+      history.push(`/survey/${slug}/consent`);
       return <Box mt="60">{NL.msg.missingConsent}</Box>;
     }
 
     return (
       <ParticipationForm
-        surveyId={survey.id}
+        surveyId={surveyId}
         participationId={participation.id}
       />
     );

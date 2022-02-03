@@ -1,26 +1,25 @@
 import React, { useCallback } from "react";
 import { Box, Button } from "@chakra-ui/react";
 import { useHistory, useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { actions } from "redux/slices/participation/status";
-import { useCreateParticipation } from "call/actions/participation";
+import { useCreateParticipationMutation } from "api/graphql/queries/participation.gql.generated";
+import { client } from "api/gql-client";
 
 // STATIC
 
 // ---- COMPONENT
 
 export const Consent = () => {
-  console.log("welcome in the desert of the real");
-
   const { slug } = useParams<{ slug: string }>();
   const history = useHistory();
 
   const { mutateAsync: createParticipation, isLoading } =
-    useCreateParticipation();
+    useCreateParticipationMutation(client);
 
   const onAccept = useCallback(async () => {
     console.log("you said yes");
-    const res = await createParticipation({ consent: true, completed: false });
+    const res = await createParticipation({
+      values: { consent: true, completed: false },
+    });
     console.log("effin res: ", res);
     history.push(`/survey/${slug}/participate`);
   }, [slug]);

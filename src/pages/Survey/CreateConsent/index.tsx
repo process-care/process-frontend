@@ -2,7 +2,6 @@ import { Box, Container, Text, Button } from "@chakra-ui/react";
 import React, { useRef } from "react";
 import { Menu } from "components/Menu/CreateSurvey";
 import { Form, Formik } from "formik";
-import { useGetSurveyBySlug } from "call/actions/survey";
 import { useHistory, useParams } from "react-router-dom";
 
 import { useDispatch } from "react-redux";
@@ -14,6 +13,8 @@ import { Switch } from "components/Fields";
 import { actions } from "redux/slices/scientistData";
 import { Loader } from "components/Spinner";
 import { Survey } from "types/survey";
+import { useSurveyBySlugQuery } from "api/graphql/queries/survey.gql.generated";
+import { client } from "api/gql-client";
 
 // ---- STATICS
 
@@ -31,9 +32,11 @@ const t = {
 
 export const CreateConsent: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { data: survey, isLoading } = useGetSurveyBySlug(slug);
+  const { data: survey, isLoading } = useSurveyBySlugQuery(client, { slug });
   const dispatch = useDispatch();
-  const url = survey?.consentement?.url;
+  const attributes = survey?.surveys?.data[0].attributes;
+  const surveyId = survey?.surveys?.data[0].id;
+  const url = attributes?.notice_consent?.data?.attributes?.url;
   const history = useHistory();
   const firstRender = useRef(true);
   const goToDashboard = () => {
@@ -59,7 +62,7 @@ export const CreateConsent: React.FC = () => {
       h="100vh"
     >
       <Box w="100%">
-        <Menu surveyTitle={survey?.title} />
+        <Menu surveyTitle={attributes?.title} />
         <div className="background__grid">
           <Box
             h="100%"
@@ -95,13 +98,13 @@ export const CreateConsent: React.FC = () => {
                 }
                 dispatch(
                   actions.updateSurvey({
-                    id: survey?.id,
+                    id: surveyId,
                     needConsent: values.needConsent,
                   })
                 );
               }, [values]);
               const targets = React.useMemo(() => {
-                const base = { refId: survey?.id, ref: "survey" };
+                const base = { refId: surveyId, ref: "survey" };
                 return {
                   consentement: { ...base, field: "consentement" },
                 };

@@ -4,8 +4,6 @@ import { Box, Center, Flex } from "@chakra-ui/react";
 import { ParticipationMenu } from "./ParticipationMenu";
 import { Page } from "./Form/Page";
 import IPage from "types/form/page";
-import { useGetSurvey } from "call/actions/survey";
-import { useFinishParticipation } from "call/actions/participation";
 import { useHistory } from "react-router-dom";
 import { finishParticipation } from "./localstorage-handlers";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
@@ -13,6 +11,9 @@ import { actions } from "redux/slices/participation/status";
 import { selectors } from "redux/slices/participation/page";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
+import { client } from "api/gql-client";
+import { useSurveyQuery } from "api/graphql/queries/survey.gql.generated";
+import { useFinishParticipationMutation } from "api/graphql/queries/participation.gql.generated";
 
 // ---- TYPES
 
@@ -34,9 +35,9 @@ export const ParticipationForm: React.FC<Props> = ({
 }) => {
   const dispatch = useAppDispatch();
 
-  const { data, isLoading, isError } = useGetSurvey(surveyId);
+  const { data, isLoading, isError } = useSurveyQuery(client, { id: surveyId });
   const pages = useAppSelector(selectors.selectShown);
-
+  const attributes = data?.survey?.data?.attributes;
   useEffect(() => {
     dispatch(actions.initialize({ surveyId, participationId }));
   }, [surveyId, participationId]);
@@ -50,7 +51,7 @@ export const ParticipationForm: React.FC<Props> = ({
     selectIndex,
   } = useNavigationHandlers(pages);
 
-  const { onFinish } = useFinishHandler(participationId, data?.slug);
+  const { onFinish } = useFinishHandler(participationId, attributes?.slug);
 
   // Missing data checks
 
@@ -70,19 +71,20 @@ export const ParticipationForm: React.FC<Props> = ({
   // if ((pages?.length ?? 0) < 1 || !selectedPage)
   //   return <Box mt="60">No pages to display ! Contact the administrator !</Box>;
 
-  const currentColor = data.landing?.color_theme?.base || "black";
-  const { order } = data;
+  const currentColor =
+    attributes?.landing?.data?.attributes?.color_theme?.base || "black";
+  const order = attributes?.order;
 
   return (
     <Box>
       <Flex direction="row" h="100vh">
         <Box w="20%">
           <ParticipationMenu
-            author={data.author?.email}
+            author={attributes?.author?.data?.attributes?.email}
             pages={pages}
             selectIndex={selectIndex}
             color={currentColor}
-            logo={data.landing?.logo}
+            logo={attributes?.landing?.data?.attributes?.logo}
             selectedPage={selectedPage}
           />
         </Box>
@@ -102,7 +104,7 @@ export const ParticipationForm: React.FC<Props> = ({
             color="white"
             textAlign="left"
           >
-            {data.title}
+            {attributes?.title}
           </Box>
           <Page
             isFirstPage={isFirstPage}
@@ -125,7 +127,8 @@ export const ParticipationForm: React.FC<Props> = ({
 
 function useFinishHandler(participationId: string, slug: string | undefined) {
   const history = useHistory();
-  const { mutateAsync: finishParticipationApi } = useFinishParticipation();
+  const { mutateAsync: finishParticipationApi } =
+    useFinishParticipationMutation(client);
 
   const onFinish = useCallback(async () => {
     // TODO: improve this with a better UI ?
@@ -133,7 +136,7 @@ function useFinishHandler(participationId: string, slug: string | undefined) {
     if (!acknowledge) return;
 
     // Tell the API we're done and wait for it to be saved
-    await finishParticipationApi(participationId);
+    await finishParticipationApi({ id: participationId });
 
     finishParticipation(slug);
     history.push("/");

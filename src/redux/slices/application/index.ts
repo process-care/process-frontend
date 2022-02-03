@@ -15,6 +15,23 @@ interface Application {
   isEditing: boolean;
 }
 
+export type UploadParams = {
+  refId?: string | null | undefined;
+  ref?: string;
+  field?: string;
+};
+
+export type UploadSingleParams = UploadParams & {
+  file: any;
+};
+
+export type UploadMultipleParams = UploadParams & {
+  files: any[];
+};
+
+export type DeleteParams = {
+  id: string;
+};
 // ---- STATE
 
 const initialState: Application = {

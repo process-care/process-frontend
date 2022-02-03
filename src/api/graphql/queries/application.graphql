@@ -1,0 +1,45 @@
+# Upload single file
+mutation uploadFileSingle(
+  $refId: ID
+  $ref: String
+  $field: String
+  $file: Upload!
+) {
+  upload(refId: $refId, ref: $ref, field: $field, file: $file) {
+    data {
+      id
+      attributes {
+        name
+        size
+        url
+      }
+    }
+  }
+}
+
+# Upload multiple files
+mutation uploadFileMultiple(
+  $refId: ID
+  $ref: String
+  $field: String
+  $files: [Upload]!
+) {
+  multipleUpload(refId: $refId, ref: $ref, field: $field, files: $files) {
+    data {
+      id
+      attributes {
+        name
+      }
+    }
+  }
+}
+
+# Delete file
+
+mutation deleteFile($id: ID!) {
+  removeFile(id: $id) {
+    data {
+      id
+    }
+  }
+}

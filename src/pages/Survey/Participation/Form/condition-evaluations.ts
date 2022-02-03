@@ -1,6 +1,4 @@
-import { EvaluationCondition } from "call/actions/formBuider/question";
-
-// ---- TYPES
+import { EvaluationCondition } from "redux/slices/participation/types";
 
 enum Operator {
   EQ = "equal",

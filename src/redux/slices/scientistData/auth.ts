@@ -30,11 +30,6 @@ type Login = {
   identifier: string;
   password: string;
 };
-type Signin = {
-  email: string;
-  username: string;
-  password: string;
-};
 
 // ---- REDUCERS
 
@@ -44,18 +39,18 @@ export const authReducers = {
   },
   logged: (
     state: GlobalState,
-    action: PayloadAction<LoginMutation | any>
+    action: PayloadAction<LoginMutation["login"]>
   ): void => {
     state.auth.data = action.payload;
-    state.auth.isConnected = action.payload.login?.user?.blocked === false;
+    state.auth.isConnected = !action.payload.user.blocked;
     state.auth.errors = undefined;
   },
-  signin: (state: GlobalState, _action: PayloadAction<Signin>): void => {
+  signin: (state: GlobalState): void => {
     state.auth.isConnected = false;
   },
   signed: (
     state: GlobalState,
-    action: PayloadAction<LoginMutation | any>
+    action: PayloadAction<RegisterMutation["register"]>
   ): void => {
     state.auth.data = action.payload;
     state.auth.errors = undefined;

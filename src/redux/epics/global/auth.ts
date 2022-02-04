@@ -33,7 +33,7 @@ const loginEpic: Epic = (action$) =>
 
     map((res) => {
       if (res.user) {
-        return actions.logged(res.user);
+        return actions.logged(res.user.login);
       }
       return actions.authFailed(res.error?.response?.errors);
     })
@@ -62,7 +62,7 @@ const signinEpic: Epic = (action$) =>
 
     map((res) => {
       if (res.user) {
-        return actions.signed(res.user);
+        return actions.signed(res.user.register);
       } else {
         return actions.authFailed(res?.error?.response?.errors);
       }

@@ -1,4 +1,4 @@
-import { SurveyBuilder } from "redux/slices/surveyBuilder";
+import { SurveyBuilder } from "redux/slices/surveyBuilderOLD";
 
 interface StatusTrad {
   trad: "Non publié" | "Finalisé" | "Archivé" | "En cours";

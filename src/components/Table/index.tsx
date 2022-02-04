@@ -9,7 +9,7 @@ import {
 } from "react-table";
 import { Box, Text, Tooltip } from "@chakra-ui/react";
 import { useCallback } from "react";
-import { SurveyBuilder } from "redux/slices/surveyBuilder";
+import { SurveyBuilder } from "redux/slices/surveyBuilderOLD";
 
 // ---- TYPES
 

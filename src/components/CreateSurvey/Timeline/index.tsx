@@ -3,7 +3,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "redux/hooks";
 import { actions, selectors } from "redux/slices/survey-editor";
-import { SurveyBuilder } from "redux/slices/surveyBuilder";
+import { SurveyBuilder } from "redux/slices/surveyBuilderOLD";
 import { t } from "./static";
 
 // ---- TYPES

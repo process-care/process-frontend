@@ -44,7 +44,7 @@ import {
   surveyReducers,
   surveySelectors,
 } from "./scientistData/survey-editor";
-import { SurveyBuilder } from "./surveyBuilder";
+import { SurveyBuilder } from "./surveyBuilderOLD";
 import { Survey } from "types/survey";
 
 type LoadedPayload = SurveyBuilder["survey"];

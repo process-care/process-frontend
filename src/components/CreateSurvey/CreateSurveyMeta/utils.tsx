@@ -2,7 +2,7 @@ import { Box } from "@chakra-ui/react";
 import { Select, Textarea } from "components/Fields";
 import { CustomCreatableSelect } from "components/Fields/SelectCreatable";
 import { FormikErrors } from "formik";
-import { SurveyBuilder } from "redux/slices/surveyBuilder";
+import { SurveyBuilder } from "redux/slices/surveyBuilderOLD";
 
 // TODO : Get the list of all the tags from the backend
 const t = {

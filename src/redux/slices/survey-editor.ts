@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 // import type { RootState } from "redux/store";
 import { RootState } from "redux/store";
 import { DateTime } from "luxon";
-import { SurveyBuilder } from "./surveyBuilder";
+import { SurveyBuilder } from "./surveyBuilderOLD";
 import slugify from "slugify";
 import { history } from "redux/store/history";
 

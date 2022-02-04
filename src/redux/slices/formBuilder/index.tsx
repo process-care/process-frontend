@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "redux/store";
 
+// ---- TYPE
+
 export interface FormBuilder {
   isEditing: boolean;
   isCollapseView: boolean;
@@ -8,7 +10,8 @@ export interface FormBuilder {
   conditionStatus: string | null;
 }
 
-// Define the initial state using that type
+// ---- STATE
+
 const initialState: FormBuilder = {
   isEditing: false,
   isCollapseView: false,
@@ -23,14 +26,12 @@ export const formBuilderSlice = createSlice({
     setConditionStatus: (state, action: PayloadAction<string>) => {
       state.conditionStatus = action.payload;
     },
-
     setIsEditing: (state, action: PayloadAction<boolean>) => {
       state.isEditing = action.payload;
     },
     setIsRemoving: (state, action: PayloadAction<string>) => {
       state.entityToRemove = action.payload;
     },
-
     toggleCollapseView: (state) => {
       state.isCollapseView = !state.isCollapseView;
     },
@@ -38,7 +39,6 @@ export const formBuilderSlice = createSlice({
 });
 
 // ---- SELECTORS
-
 export const isCollapseView = (state: RootState): boolean =>
   state.editor.form.isCollapseView;
 export const isEditing = (state: RootState): boolean =>

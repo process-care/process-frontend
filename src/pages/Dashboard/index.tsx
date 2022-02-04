@@ -12,7 +12,7 @@ import Drawer from "components/Drawer";
 
 import dayjs from "dayjs";
 
-import { SurveyBuilder } from "redux/slices/surveyBuilder";
+import { SurveyBuilder } from "redux/slices/surveyBuilderOLD";
 import { useAppSelector } from "redux/hooks";
 import { actions as actionsApplication } from "redux/slices/application";
 import { useDispatch } from "react-redux";
@@ -124,7 +124,7 @@ export const Dashboard: React.FC<IRoute> = () => {
 
   console.log(surveys);
   console.log(surveysLenght);
-  
+
   return (
     <Box d="flex" justifyContent="space-around" w="100%">
       <Box h="80vh">

@@ -1,19 +1,19 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import {
   LoginMutation,
-  RegisterMutation,
+  LoginMutationVariables,
+  RegisterMutationVariables,
 } from "api/graphql/queries/auth.gql.generated";
 import { RootState } from "redux/store";
 
 import { GlobalState } from "../scientistData";
 
 // ---- TYPES
-
 export interface AuthState {
   isLogging: boolean;
   isConnected: boolean;
   errors?: any[];
-  data: LoginMutation["login"] | RegisterMutation["register"] | null;
+  data: LoginMutation["login"] | null;
 }
 
 // ---- STATE
@@ -24,17 +24,13 @@ export const initialAuthState: AuthState = {
   data: null,
 };
 
-// ---- ACTIONS
-
-type Login = {
-  identifier: string;
-  password: string;
-};
-
 // ---- REDUCERS
 
 export const authReducers = {
-  login: (state: GlobalState, _action: PayloadAction<Login>): void => {
+  login: (
+    state: GlobalState,
+    _action: PayloadAction<LoginMutationVariables>
+  ): void => {
     state.auth.isConnected = false;
   },
   logged: (
@@ -45,12 +41,15 @@ export const authReducers = {
     state.auth.isConnected = !action.payload.user.blocked;
     state.auth.errors = undefined;
   },
-  signin: (state: GlobalState): void => {
+  signin: (
+    state: GlobalState,
+    _action: PayloadAction<RegisterMutationVariables>
+  ): void => {
     state.auth.isConnected = false;
   },
   signed: (
     state: GlobalState,
-    action: PayloadAction<RegisterMutation["register"]>
+    action: PayloadAction<LoginMutation["login"]>
   ): void => {
     state.auth.data = action.payload;
     state.auth.errors = undefined;

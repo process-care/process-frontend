@@ -4,7 +4,7 @@ import { actions as globalActions } from "../scientistData";
 
 // ---- TYPES
 
-interface IPreview {
+interface Preview {
   previewMode: "form" | "landing" | null;
 }
 
@@ -55,7 +55,7 @@ export const applicationSlice = createSlice({
     setAutoSave: (state) => {
       state.isSaving = !state.isSaving;
     },
-    tooglePreview: (state, action: PayloadAction<IPreview>) => {
+    tooglePreview: (state, action: PayloadAction<Preview>) => {
       const { previewMode } = action.payload;
       state.previewMode = previewMode;
     },

@@ -3,26 +3,26 @@ import { combineEpics, ofType } from "redux-observable";
 import { Epic } from "redux/store";
 import { actions } from "redux/slices/survey-editor";
 
-import { client } from "api/gql-client";
-import { shapeSurvey } from "api/shapers/survey";
-import { AddSurveyDocument, SurveyBySlugDocument, UpdateSurveyDocument } from "api/graphql/queries/survey.gql.generated";
+import { client, sdk } from "api/gql-client";
+import {
+  AddSurveyDocument,
+  UpdateSurveyDocument,
+} from "api/graphql/queries/survey.gql.generated";
 import { AddPageDocument } from "api/graphql/queries/page.gql.generated";
+import { sanitizeEntities } from "api/entity-checker";
 
 // Watches over "load" survey
 const loadEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.initialize.type),
-    switchMap((action) => {
-      console.log('Yoloing the yolo');
-      return client.request(SurveyBySlugDocument, { slug: action.payload }).then((res) => {
-        console.log('Bidum: ', res);
-        return shapeSurvey(res.surveys[0]);
-      });
+    switchMap(async (action) => {
+      const slug = action.payload;
+      const res = await sdk
+        .surveyBySlug({ slug })
+        .then((res) => res.surveys?.data);
+      return sanitizeEntities(res);
     }),
     map((result) => {
-      console.log("loadEpic", result);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       return actions.initialized(result);
     })
   );
@@ -33,7 +33,7 @@ const updateEpic: Epic = (action$, state$) =>
     ofType(actions.update.type),
     filter(() => {
       // If surveyId is undefined, it means we are creating a new survey and we don't need to update it
-      const surveyId = state$.value.editor.survey.data?.id;
+      const surveyId = state$.value.editor.survey.data.id;
       return Boolean(surveyId);
     }),
     map((action) => action.payload),

@@ -1,16 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-// import type { RootState } from "redux/store";
 import { RootState } from "redux/store";
 import { DateTime } from "luxon";
-import { SurveyBuilder } from "./surveyBuilderOLD";
 import slugify from "slugify";
 import { history } from "redux/store/history";
+import { SafeEntity } from "api/entity-checker";
+import { Survey } from "api/graphql/types.generated";
+import { LastPosted, LastSaved } from "./types";
+
+export type ReduxSurveyMeta = SafeEntity<Survey>;
 
 // ---- STATE
 
 export interface SurveyEditor {
-  // Page status
   isLoading: boolean;
   isPosting: boolean;
   isFailed: boolean;
@@ -18,7 +19,7 @@ export interface SurveyEditor {
   lastUpdated: string;
   lastSaved: string;
   lastPosted: string;
-  data?: Partial<SurveyBuilder["survey"]>;
+  data: ReduxSurveyMeta;
   step: number;
 }
 
@@ -30,28 +31,7 @@ const initialState: SurveyEditor = {
   lastSaved: new Date().toISOString(),
   lastPosted: new Date().toISOString(),
   step: 1,
-  data: {
-    title: "",
-    description: "",
-    slug: "",
-    keywords: [],
-    categories: [],
-    language: "",
-    email: "",
-  },
-};
-
-// ---- ACTIONS
-
-type LoadedPayload = SurveyBuilder["survey"];
-
-type UpdatePayload = Partial<SurveyBuilder["survey"]>;
-
-type UpdatedPayload = {
-  lastSaved: string;
-};
-type PostedPayload = {
-  lastPosted: string;
+  data: { id: "", attributes: { slug: "" } },
 };
 
 // ----- SLICE
@@ -64,30 +44,33 @@ export const surveyEditorSlice = createSlice({
     initialize: (state, _action: PayloadAction<string>) => {
       state.isLoading = true;
     },
-    initialized: (state, action: PayloadAction<LoadedPayload>) => {
+    initialized: (state, action: PayloadAction<ReduxSurveyMeta>) => {
       state.isLoading = false;
       const survey = action.payload;
       state.data = survey;
     },
-    update: (state, action: PayloadAction<UpdatePayload>) => {
+    update: (state, action: PayloadAction<ReduxSurveyMeta>) => {
       state.lastUpdated = new Date().toISOString();
       const updated = { ...state.data, ...action.payload };
       state.data = updated;
 
       // auto-generate slug
-      if (action.payload.title && state.data) {
-        state.data.slug = `${slugify(action.payload.title.toLowerCase(), {
-          strict: true,
-        })}`;
+      if (action.payload.attributes.title && state.data) {
+        state.data.attributes.slug = `${slugify(
+          action.payload.attributes.title.toLowerCase(),
+          {
+            strict: true,
+          }
+        )}`;
       }
     },
-    updated: (state, action: PayloadAction<UpdatedPayload>) => {
+    updated: (state, action: PayloadAction<LastSaved>) => {
       state.lastSaved = action.payload.lastSaved;
     },
     post: (state, _action: PayloadAction<string>) => {
       state.isPosting = true;
     },
-    posted: (state, action: PayloadAction<PostedPayload>) => {
+    posted: (state, action: PayloadAction<LastPosted>) => {
       state.isPosting = false;
       const { lastPosted } = action.payload;
       state.lastPosted = lastPosted;
@@ -104,7 +87,6 @@ export const surveyEditorSlice = createSlice({
     setStep: (state, action: PayloadAction<number>) => {
       state.step = action.payload;
     },
-
     reset: () => initialState,
   },
 });
@@ -122,9 +104,8 @@ export const hasChanges = (state: RootState): boolean => {
   return updated > saved;
 };
 
-export const survey = (
-  state: RootState
-): Partial<SurveyBuilder["survey"]> | undefined => state.editor.survey.data;
+export const survey = (state: RootState): ReduxSurveyMeta | undefined =>
+  state.editor.survey.data;
 
 export const selectors = {
   error,

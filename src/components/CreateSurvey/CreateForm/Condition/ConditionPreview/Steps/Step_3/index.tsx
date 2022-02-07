@@ -2,7 +2,7 @@ import React from "react";
 import { Formik, Form } from "formik";
 
 import { Box, Container, Text, Flex } from "@chakra-ui/react";
-import { ReduxCondition } from "redux/slices/types";
+import { ConditionRedux } from "redux/slices/types";
 import { t } from "static/condition";
 
 import { ReactComponent as Submit } from "./../../assets/submit.svg";
@@ -13,7 +13,7 @@ import { actions, selectors } from "redux/slices/scientistData";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 interface Props {
-  selectedCondition: ReduxCondition;
+  selectedCondition: ConditionRedux;
   updateStep: (d: any) => void;
 }
 

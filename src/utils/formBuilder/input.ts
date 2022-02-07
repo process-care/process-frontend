@@ -1,7 +1,7 @@
-import { ReduxCondition } from "redux/slices/types";
+import { ConditionRedux } from "redux/slices/types";
 
 export const checkIfMultiple = (
-  currentCondition: Partial<ReduxCondition>
+  currentCondition: Partial<ConditionRedux>
 ): boolean => {
   const multipleInput: string[] = ["checkbox", "radio", "select"];
 

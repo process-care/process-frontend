@@ -8,11 +8,11 @@ import {
 } from "api/graphql/types.generated";
 
 // ----- SAFE ENTITY
-export type ReduxSurvey = SafeEntity<Survey>;
-export type ReduxPage = SafeEntity<Page>;
-export type ReduxQuestion = SafeEntity<Question>;
-export type ReduxCondition = SafeEntity<Condition>;
-export type ReduxLanding = SafeEntity<Landing>;
+export type SurveyRedux = SafeEntity<Survey>;
+export type PageRedux = SafeEntity<Page>;
+export type QuestionRedux = SafeEntity<Question>;
+export type ConditionRedux = SafeEntity<Condition>;
+export type LandingRedux = SafeEntity<Landing>;
 // ----- ACTIONS
 export type LastSaved = {
   lastSaved: string;

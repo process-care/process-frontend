@@ -7,12 +7,12 @@ import { Step_2 } from "./Steps/Step_2";
 import { Step_3 } from "./Steps/Step_3";
 import { StepCounter } from "./Steps/StepCounter";
 import { checkStepValidation } from "./Steps/utils";
-import { ReduxCondition } from "redux/slices/types";
+import { ConditionRedux } from "redux/slices/types";
 import { Loader } from "components/Spinner";
 import { actions, selectors } from "redux/slices/scientistData";
 
 interface Props {
-  selectedCondition: ReduxCondition;
+  selectedCondition: ConditionRedux;
 }
 
 export const ConditionPreview: React.FC<Props> = ({ selectedCondition }) => {

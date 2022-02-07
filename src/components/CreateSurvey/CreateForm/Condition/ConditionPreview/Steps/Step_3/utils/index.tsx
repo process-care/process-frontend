@@ -1,12 +1,12 @@
 import { InputBox } from "components/CreateSurvey/CreateForm/InputsPreview/InputBox";
 import { Textarea } from "components/Fields";
-import { ReduxCondition } from "redux/slices/types";
+import { ConditionRedux } from "redux/slices/types";
 import React from "react";
 import { useAppDispatch } from "redux/hooks";
 import { actions } from "redux/slices/scientistData";
 
 export const renderInput = (
-  selectedCondition: ReduxCondition
+  selectedCondition: ConditionRedux
 ): React.ReactElement => {
   const dispatch = useAppDispatch();
 

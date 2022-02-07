@@ -1,11 +1,11 @@
-import { ReduxCondition } from "redux/slices/types";
+import { ConditionRedux } from "redux/slices/types";
 import IPage from "types/form/page";
 
 // Hide current page and page after when we make condition page.
 // Hide page after current page when we make condition input
 
 export const isInactive = (
-  selectedCondition: ReduxCondition | undefined,
+  selectedCondition: ConditionRedux | undefined,
   pages: IPage[],
   i: number
 ): boolean => {

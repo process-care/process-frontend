@@ -46,10 +46,10 @@ import { SurveyBuilder } from "./surveyBuilderOLD";
 
 import {
   LastUpdated,
-  ReduxCondition,
-  ReduxPage,
-  ReduxQuestion,
-  ReduxSurvey,
+  ConditionRedux,
+  PageRedux,
+  QuestionRedux,
+  SurveyRedux,
 } from "./types";
 
 type LoadedPayload = SurveyBuilder["survey"];
@@ -57,12 +57,12 @@ type LoadedPayload = SurveyBuilder["survey"];
 // ---- TYPES
 
 export interface GlobalState {
-  pages: EntityState<ReduxPage> & PageEditor;
-  questions: EntityState<ReduxQuestion> & QuestionEditor;
-  conditions: EntityState<ReduxCondition> & ConditionEditor;
+  pages: EntityState<PageRedux> & PageEditor;
+  questions: EntityState<QuestionRedux> & QuestionEditor;
+  conditions: EntityState<ConditionRedux> & ConditionEditor;
   survey: SurveyEditor;
   auth: AuthState;
-  surveys: EntityState<ReduxSurvey> & SurveysEditor;
+  surveys: EntityState<SurveyRedux> & SurveysEditor;
 }
 
 // ----- SLICE

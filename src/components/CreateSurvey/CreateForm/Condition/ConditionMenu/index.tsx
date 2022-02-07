@@ -3,11 +3,11 @@ import React from "react";
 import { useAppSelector } from "redux/hooks";
 import { t } from "static/condition";
 import { Group } from "./Group";
-import { ReduxCondition } from "redux/slices/types";
+import { ConditionRedux } from "redux/slices/types";
 import { selectors } from "redux/slices/scientistData";
 
 interface Props {
-  selectedCondition: ReduxCondition;
+  selectedCondition: ConditionRedux;
 }
 
 export const ConditionMenu: React.FC<Props> = ({ selectedCondition }) => {
@@ -20,7 +20,7 @@ export const ConditionMenu: React.FC<Props> = ({ selectedCondition }) => {
     selectors.conditions.getSelectedQuestionsConditions
   );
 
-  const currentPageConditions = (selectedCondition: ReduxCondition) => {
+  const currentPageConditions = (selectedCondition: ConditionRedux) => {
     // The selected page can change to we can't use the selector page's conditions.
     const id = selectedCondition?.attributes.referer_page?.data?.id;
     if (!id) return [];
@@ -33,7 +33,7 @@ export const ConditionMenu: React.FC<Props> = ({ selectedCondition }) => {
     ? currentPageConditions(selectedCondition)
     : currentQuestionConditions;
   const groups = currentConditions.map(
-    (c: ReduxCondition) => c?.attributes.group
+    (c: ConditionRedux) => c?.attributes.group
   );
 
   console.log(isValid);

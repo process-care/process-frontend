@@ -9,11 +9,11 @@ import { RootState } from "redux/store";
 import { DateTime } from "luxon";
 import { GlobalState } from "../scientistData";
 import { Maybe } from "api/graphql/types.generated";
-import { ReduxCondition } from "../types";
+import { ConditionRedux } from "../types";
 
 // ----- ENTITY ADAPTER
 
-export const conditionAdapter = createEntityAdapter<ReduxCondition>({
+export const conditionAdapter = createEntityAdapter<ConditionRedux>({
   selectId: (condition) => condition.id,
 });
 
@@ -86,7 +86,7 @@ export const initialConditionState: ConditionEditor = {
 
 type UpdatePayload = {
   id: string;
-  changes: ReduxCondition;
+  changes: ConditionRedux;
 };
 
 type UpdatedPayload = {
@@ -112,13 +112,13 @@ type InitializePayload = {
 };
 type CreatePayload = {
   refererId: Maybe<string> | undefined;
-  type: ReduxCondition["attributes"]["type"];
+  type: ConditionRedux["attributes"]["type"];
   group?: Maybe<string> | undefined;
 };
 
 type CreatedPayload = {
   lastCreated: string;
-  condition: ReduxCondition;
+  condition: ConditionRedux;
   step: number;
   isValid: boolean;
   redirectToPage: string;
@@ -230,7 +230,7 @@ export const hasChanges = (state: RootState): boolean => {
   return updated > saved;
 };
 
-export const getAllConditions = (state: RootState): ReduxCondition[] =>
+export const getAllConditions = (state: RootState): ConditionRedux[] =>
   conditionAdapter.getSelectors().selectAll(state.scientistData.conditions);
 
 const getSelectedConditionId = (state: RootState): string =>
@@ -241,7 +241,7 @@ const getStep = (state: RootState): number =>
 const getValidity = (state: RootState): boolean =>
   state.scientistData.conditions.isValid;
 
-const getSelectedPageConditions = (state: RootState): ReduxCondition[] => {
+const getSelectedPageConditions = (state: RootState): ConditionRedux[] => {
   return getAllConditions(state).filter(
     (condition) =>
       condition?.attributes?.referer_page?.data?.id ===
@@ -252,7 +252,7 @@ const getSelectedPageConditions = (state: RootState): ReduxCondition[] => {
 const getConditionsByPageId = (
   state: RootState,
   pageId: string
-): ReduxCondition[] => {
+): ConditionRedux[] => {
   return getAllConditions(state).filter(
     (condition) => condition?.attributes?.referer_page?.data?.id === pageId
   );
@@ -261,14 +261,14 @@ const getConditionsByPageId = (
 const getConditionsByQuestionId = (
   state: RootState,
   questionsId: string
-): ReduxCondition[] => {
+): ConditionRedux[] => {
   return getAllConditions(state).filter(
     (condition) =>
       condition?.attributes?.referer_question?.data?.id === questionsId
   );
 };
 
-const getSelectedQuestionsConditions = (state: RootState): ReduxCondition[] => {
+const getSelectedQuestionsConditions = (state: RootState): ConditionRedux[] => {
   return getAllConditions(state).filter(
     (condition) =>
       condition.attributes?.referer_question?.data?.id ===
@@ -276,7 +276,7 @@ const getSelectedQuestionsConditions = (state: RootState): ReduxCondition[] => {
   );
 };
 
-const getSelectedCondition = (state: RootState): ReduxCondition | undefined =>
+const getSelectedCondition = (state: RootState): ConditionRedux | undefined =>
   conditionAdapter
     .getSelectors()
     .selectById(state.scientistData.conditions, getSelectedConditionId(state));

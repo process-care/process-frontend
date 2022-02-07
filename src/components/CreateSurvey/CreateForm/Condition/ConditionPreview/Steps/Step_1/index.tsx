@@ -4,14 +4,14 @@ import { Container, Text } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 import IQuestion from "types/form/question";
-import { ReduxCondition } from "redux/slices/types";
+import { ConditionRedux } from "redux/slices/types";
 import { authorizedQuestionTypes } from "./utils";
 import { t } from "static/input";
 import { InputBox } from "components/CreateSurvey/CreateForm/InputsPreview/InputBox";
 import { selectors, actions } from "redux/slices/scientistData";
 
 interface Props {
-  selectedCondition: ReduxCondition;
+  selectedCondition: ConditionRedux;
   updateStep: (d: any) => void;
 }
 

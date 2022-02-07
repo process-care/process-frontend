@@ -2,11 +2,11 @@ import React from "react";
 
 import { Button, Flex } from "@chakra-ui/react";
 import { operators, operatorsForMultiple } from "constants/operators";
-import { ReduxCondition } from "redux/slices/types";
+import { ConditionRedux } from "redux/slices/types";
 import { checkIfMultiple } from "utils/formBuilder/input";
 
 interface Props {
-  selectedCondition: ReduxCondition;
+  selectedCondition: ConditionRedux;
   updateStep: (d: any) => void;
 }
 

@@ -17,10 +17,11 @@ const loadEpic: Epic = (action$) =>
     ofType(actions.initialize.type),
     switchMap(async (action) => {
       const slug = action.payload;
-      const res = await sdk
-        .surveyBySlug({ slug })
-        .then((res) => res.surveys?.data);
-      return sanitizeEntities(res);
+      const result = await sdk.surveyBySlug({ slug }).then((res) => {
+        const data = res.surveys?.data;
+        return sanitizeEntities(data);
+      });
+      return result;
     }),
     map((result) => {
       return actions.initialized(result);

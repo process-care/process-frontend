@@ -1,10 +1,7 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { v4 as uuidv4 } from "uuid";
-
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import ICondition from "types/form/condition";
-
 import { Separator } from "../Separator";
 import { ReactComponent as Delete } from "./../assets/delete.svg";
 
@@ -12,11 +9,12 @@ import { RemovingConfirmation } from "../../../RemovingConfirmation";
 import { t } from "static/condition";
 import { Operator } from "./Operator";
 import { actions, selectors } from "redux/slices/scientistData";
+import { ReduxCondition } from "redux/slices/scientistData/condition-editor";
 
 interface Props {
-  currentConditions: ICondition[];
+  currentConditions: ReduxCondition[];
   groups: string[] | undefined;
-  selectedCondition: ICondition;
+  selectedCondition: ReduxCondition;
 }
 interface State {
   type: "condition" | "group" | null;
@@ -33,7 +31,7 @@ export const Group: React.FC<Props> = ({
   const isValid = useAppSelector(selectors.conditions.getValidity);
 
   const currentCondition = currentConditions?.find(
-    (c: ICondition) => c.id === selectedCondition.id
+    (c: ReduxCondition) => c.id === selectedCondition.id
   );
 
   const clean_groups = groups?.filter(
@@ -45,10 +43,11 @@ export const Group: React.FC<Props> = ({
     id: "",
   });
 
-  const isPageType = currentCondition?.type === "page";
+  // TODO: wait for backend modification
+  const isPageType = currentCondition?.attributes?.type === "page";
   const refererId = isPageType
-    ? currentCondition.referer_page?.id
-    : currentCondition?.referer_question?.id;
+    ? currentCondition?.attributes?.referer_page?.data?.id
+    : currentCondition?.attributes?.referer_question?.data?.id;
 
   const handleDelete = async (id: string) => {
     dispatch(actions.deleteCondition(id));
@@ -58,7 +57,7 @@ export const Group: React.FC<Props> = ({
     if (!currentCondition) return;
     dispatch(
       actions.deleteGroupCondition({
-        groupId: currentCondition?.group,
+        groupId: currentCondition?.attributes?.group,
         conditionsId: currentConditions.map((c) => c.id),
       })
     );
@@ -74,8 +73,8 @@ export const Group: React.FC<Props> = ({
     dispatch(
       actions.createCondition({
         refererId,
-        type: currentCondition.type,
-        group: newGroup ? uuidv4() : currentCondition.group,
+        type: currentCondition?.attributes?.type,
+        group: newGroup ? uuidv4() : currentCondition?.attributes?.group,
       })
     );
   };
@@ -121,111 +120,117 @@ export const Group: React.FC<Props> = ({
               </Button>
             </Flex>
 
-            {currentConditions.map((condition: ICondition, index: number) => {
-              const isLast = index === currentConditions.length - 1;
+            {currentConditions.map(
+              (condition: ReduxCondition, index: number) => {
+                const isLast = index === currentConditions.length - 1;
 
-              if (condition.group === groupId) {
-                if (
-                  isRemoving.type === "condition" &&
-                  isRemoving.id === condition.id
-                ) {
+                if (condition?.attributes?.group === groupId) {
+                  if (
+                    isRemoving.type === "condition" &&
+                    isRemoving.id === condition.id
+                  ) {
+                    return (
+                      <RemovingConfirmation
+                        key={condition.id}
+                        content={t.removing_condition_confirmation}
+                        confirm={() => handleDelete(condition.id)}
+                        close={() => setRemoving({ type: null, id: "" })}
+                      />
+                    );
+                  }
                   return (
-                    <RemovingConfirmation
-                      key={condition.id}
-                      content={t.removing_condition_confirmation}
-                      confirm={() => handleDelete(condition.id)}
-                      close={() => setRemoving({ type: null, id: "" })}
-                    />
-                  );
-                }
-                return (
-                  <>
-                    <Box textAlign="left" key={condition.id} py={1}>
-                      {condition?.target?.label && (
-                        <>
-                          <Text fontSize="10" color="brand.gray.200">
-                            Si la question
-                          </Text>
+                    <>
+                      <Box textAlign="left" key={condition.id} py={1}>
+                        {condition?.attributes?.target?.data?.attributes
+                          ?.label && (
+                          <>
+                            <Text fontSize="10" color="brand.gray.200">
+                              Si la question
+                            </Text>
 
-                          <Flex
-                            alignItems="flex-start"
-                            justifyContent="space-between"
-                          >
-                            <Flex alignItems="flex-start">
-                              <Text
-                                fontSize="14"
-                                fontWeight="bold"
-                                color="black"
-                              >
-                                {condition?.target?.label}
-                              </Text>
+                            <Flex
+                              alignItems="flex-start"
+                              justifyContent="space-between"
+                            >
+                              <Flex alignItems="flex-start">
+                                <Text
+                                  fontSize="14"
+                                  fontWeight="bold"
+                                  color="black"
+                                >
+                                  {
+                                    condition?.attributes?.target.data
+                                      ?.attributes?.label
+                                  }
+                                </Text>
+                                <Button
+                                  d="flex"
+                                  isDisabled={!isValid}
+                                  onClick={() => goToFirstStep(condition.id)}
+                                  variant="link"
+                                  color="brand.blue"
+                                  fontSize="10"
+                                  pt={1}
+                                  justifyContent="flex-end"
+                                >
+                                  Edit
+                                </Button>
+                              </Flex>
+
                               <Button
-                                d="flex"
-                                isDisabled={!isValid}
-                                onClick={() => goToFirstStep(condition.id)}
+                                onClick={() => {
+                                  setRemoving({
+                                    type: "condition",
+                                    id: condition.id,
+                                  });
+                                }}
                                 variant="link"
                                 color="brand.blue"
                                 fontSize="10"
-                                pt={1}
-                                justifyContent="flex-end"
+                                pt="2px"
                               >
-                                Edit
+                                <Delete />
                               </Button>
                             </Flex>
+                          </>
+                        )}
 
+                        {condition?.attributes?.operator !== null && (
+                          <Flex alignItems="center">
+                            <Operator condition={condition} />
+
+                            <Box ml={2}>
+                              <Text mt={2} fontSize="10" color="brand.gray.200">
+                                {t.response}
+                              </Text>
+                              <Text fontSize="14" color="black" mb={2}>
+                                {condition?.attributes?.target_value}
+                              </Text>
+                            </Box>
+                          </Flex>
+                        )}
+                        {condition?.attributes?.target_value && (
+                          <Separator value="ET" isLast={isLast} />
+                        )}
+                        {
+                          <Flex justifyContent="flex-end">
                             <Button
-                              onClick={() => {
-                                setRemoving({
-                                  type: "condition",
-                                  id: condition.id,
-                                });
-                              }}
+                              isDisabled={!isValid}
                               variant="link"
-                              color="brand.blue"
+                              opacity={0.5}
                               fontSize="10"
-                              pt="2px"
+                              onClick={() => createCondition()}
                             >
-                              <Delete />
+                              {t.add_condition}
                             </Button>
                           </Flex>
-                        </>
-                      )}
-
-                      {condition.operator !== null && (
-                        <Flex alignItems="center">
-                          <Operator condition={condition} />
-
-                          <Box ml={2}>
-                            <Text mt={2} fontSize="10" color="brand.gray.200">
-                              {t.response}
-                            </Text>
-                            <Text fontSize="14" color="black" mb={2}>
-                              {condition.target_value}
-                            </Text>
-                          </Box>
-                        </Flex>
-                      )}
-                      {condition.target_value && (
-                        <Separator value="ET" isLast={isLast} />
-                      )}
-                      {
-                        <Flex justifyContent="flex-end">
-                          <Button
-                            isDisabled={!isValid}
-                            variant="link"
-                            opacity={0.5}
-                            fontSize="10"
-                            onClick={() => createCondition()}
-                          >
-                            {t.add_condition}
-                          </Button>
-                        </Flex>
-                      }
-                    </Box>
-                  </>
-                );
+                        }
+                      </Box>
+                    </>
+                  );
+                }
               }
-            })}
+            )}
 
             <Separator value="OU" isLast={i === clean_groups.length - 1} />
             <Flex justifyContent="flex-end">

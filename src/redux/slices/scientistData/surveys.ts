@@ -3,19 +3,23 @@ import { PayloadAction, createEntityAdapter } from "@reduxjs/toolkit";
 import { RootState } from "redux/store";
 import { DateTime } from "luxon";
 import { GlobalState } from "../scientistData";
-import { Survey } from "types/survey";
+
+import { SafeEntity } from "api/entity-checker";
+import { Survey } from "api/graphql/types.generated";
+import { LastDeleted, LastSaved, LastUpdated } from "../types";
+
+export type ReduxSurvey = SafeEntity<Survey>;
 
 // ----- ENTITY ADAPTER
 
-export const surveysAdapter = createEntityAdapter<Survey>({
+export const surveysAdapter = createEntityAdapter<ReduxSurvey>({
   selectId: (survey) => survey.id,
 });
 
 // ---- TYPES
 
 export interface SurveysEditor {
-  // Surveys status
-  selectedSurvey: string;
+  selectedSurvey: ReduxSurvey["id"];
   isLoading: boolean;
   isFailed: boolean;
   isDeleting: boolean;
@@ -43,20 +47,8 @@ export const initialSurveysState: SurveysEditor = {
 // ----- ACTIONS
 
 type UpdatePayload = {
-  id: string;
-  changes: Partial<Survey>;
-};
-
-type UpdatedPayload = {
-  lastUpdated: string;
-};
-
-type DeletedPayload = {
-  lastDeleted: string;
-};
-
-type SavedPayload = {
-  lastSaved: string;
+  id: ReduxSurvey["id"];
+  changes: ReduxSurvey["attributes"];
 };
 
 // ---- SELECTORS
@@ -73,13 +65,13 @@ export const hasChanges = (state: RootState): boolean => {
   return updated > saved;
 };
 
-export const getAllSurveys = (state: RootState): Survey[] =>
+export const getAllSurveys = (state: RootState): ReduxSurvey[] =>
   surveysAdapter.getSelectors().selectAll(state.scientistData.surveys);
 
 const getSelectedSurveyId = (state: RootState): string =>
   state.scientistData.surveys.selectedSurvey;
 
-const getSelectedSurvey = (state: RootState): Survey | undefined =>
+const getSelectedSurvey = (state: RootState): ReduxSurvey | undefined =>
   surveysAdapter
     .getSelectors()
     .selectById(state.scientistData.surveys, getSelectedSurveyId(state));
@@ -112,16 +104,15 @@ export const surveysReducers = {
     surveysAdapter.setMany(state.surveys, action.payload);
     if (action.payload[0]) state.surveys.selectedSurvey = action.payload[0].id;
   },
-  updateSurveys: (
-    state: GlobalState,
-    action: PayloadAction<UpdatePayload>
-  ): void => {
+
+  // TODO: Check this any here ==> has to be UpdatePayload
+  updateSurveys: (state: GlobalState, action: PayloadAction<any>): void => {
     state.surveys.lastUpdated = new Date().toISOString();
     surveysAdapter.updateOne(state.surveys, action.payload);
   },
   updatedSurveys: (
     state: GlobalState,
-    action: PayloadAction<UpdatedPayload>
+    action: PayloadAction<LastUpdated>
   ): void => {
     state.surveys.lastUpdated = action.payload.lastUpdated;
   },
@@ -139,7 +130,7 @@ export const surveysReducers = {
   },
   deletedSurvey: (
     state: GlobalState,
-    action: PayloadAction<DeletedPayload>
+    action: PayloadAction<LastDeleted>
   ): void => {
     state.surveys.isDeleting = false;
     state.surveys.lastDeleted = action.payload.lastDeleted;
@@ -147,10 +138,7 @@ export const surveysReducers = {
   saveSurvey: (state: GlobalState): void => {
     state.surveys.isSaving = true;
   },
-  savedSurvey: (
-    state: GlobalState,
-    action: PayloadAction<SavedPayload>
-  ): void => {
+  savedSurvey: (state: GlobalState, action: PayloadAction<LastSaved>): void => {
     state.surveys.isSaving = false;
     state.surveys.lastSaved = action.payload.lastSaved;
   },

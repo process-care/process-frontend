@@ -5,3 +5,11 @@ export type LastSaved = {
 export type LastPosted = {
   lastPosted: string;
 };
+
+export type LastUpdated = {
+  lastUpdated: string;
+};
+
+export type LastDeleted = {
+  lastDeleted: string;
+};

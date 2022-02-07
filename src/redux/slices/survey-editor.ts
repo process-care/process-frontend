@@ -34,6 +34,10 @@ const initialState: SurveyEditor = {
   data: { id: "", attributes: { slug: "" } },
 };
 
+// ---- ACTIONS
+
+type InitializedPayload = SafeEntity<Survey>[];
+
 // ----- SLICE
 const SLICE_NAME = "survey-editor";
 
@@ -44,10 +48,10 @@ export const surveyEditorSlice = createSlice({
     initialize: (state, _action: PayloadAction<string>) => {
       state.isLoading = true;
     },
-    initialized: (state, action: PayloadAction<ReduxSurveyMeta>) => {
+    initialized: (state, action: PayloadAction<InitializedPayload>) => {
       state.isLoading = false;
       const survey = action.payload;
-      state.data = survey;
+      state.data = survey[0];
     },
     update: (state, action: PayloadAction<ReduxSurveyMeta>) => {
       state.lastUpdated = new Date().toISOString();

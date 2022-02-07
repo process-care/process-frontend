@@ -1,8 +1,5 @@
 import { createSlice, EntityState, PayloadAction } from "@reduxjs/toolkit";
-import ICondition, { CheckSurvey } from "types/form/condition";
 
-import IPage from "types/form/page";
-import IQuestion from "types/form/question";
 import {
   authReducers,
   authSelectors,
@@ -10,14 +7,17 @@ import {
   initialAuthState,
 } from "./scientistData/auth";
 import {
+  CheckSurvey,
   conditionAdapter,
   ConditionEditor,
   conditionsReducers,
   conditionsSelectors,
   initialConditionState,
+  ReduxCondition,
 } from "./scientistData/condition-editor";
 import {
   initialSurveysState,
+  ReduxSurvey,
   surveysAdapter,
   SurveysEditor,
   surveysReducers,
@@ -30,6 +30,7 @@ import {
   pageReducer,
   pageSelectors,
   initialPageState,
+  ReduxPage,
 } from "./scientistData/page-editor";
 import {
   initialQuestionState,
@@ -37,6 +38,7 @@ import {
   QuestionEditor,
   questionsReducers,
   questionsSelectors,
+  ReduxQuestion,
 } from "./scientistData/question-editor";
 import {
   initialSurveyState,
@@ -45,21 +47,20 @@ import {
   surveySelectors,
 } from "./scientistData/survey-editor";
 import { SurveyBuilder } from "./surveyBuilderOLD";
-import { Survey } from "types/survey";
+
+import { LastUpdated } from "./types";
 
 type LoadedPayload = SurveyBuilder["survey"];
-type UpdatedPayload = {
-  lastUpdated: string;
-};
+
 // ---- TYPES
 
 export interface GlobalState {
-  pages: EntityState<IPage> & PageEditor;
-  questions: EntityState<IQuestion> & QuestionEditor;
-  conditions: EntityState<ICondition> & ConditionEditor;
+  pages: EntityState<ReduxPage> & PageEditor;
+  questions: EntityState<ReduxQuestion> & QuestionEditor;
+  conditions: EntityState<ReduxCondition> & ConditionEditor;
   survey: SurveyEditor;
   auth: AuthState;
-  surveys: EntityState<Survey> & SurveysEditor;
+  surveys: EntityState<ReduxSurvey> & SurveysEditor;
 }
 
 // ----- SLICE
@@ -136,10 +137,7 @@ export const globalSlice = createSlice({
     updateSurvey: (state: GlobalState, action: PayloadAction<any>) => {
       surveysAdapter.updateOne(state.surveys, action.payload);
     },
-    updatedSurvey: (
-      state: GlobalState,
-      action: PayloadAction<UpdatedPayload>
-    ) => {
+    updatedSurvey: (state: GlobalState, action: PayloadAction<LastUpdated>) => {
       state.surveys.lastUpdated = action.payload.lastUpdated;
     },
     updateOrder: (state: GlobalState, action: PayloadAction<string[]>) => {

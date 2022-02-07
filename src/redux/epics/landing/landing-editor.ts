@@ -2,18 +2,21 @@ import { map, switchMap, scan, debounceTime } from "rxjs";
 import { combineEpics, ofType } from "redux-observable";
 import { Epic } from "redux/store";
 import { actions } from "redux/slices/landing-editor";
-
-import { client } from "api/gql-client";
-import { LandingDocument, UpdateLandingDocument } from "api/graphql/queries/landing.gql.generated";
+import { sdk } from "api/gql-client";
+import { sanitizeEntity } from "api/entity-checker";
 
 // Watches over "load" landing
 const loadEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.load.type),
-    switchMap((action) => client.request(LandingDocument, { id: action.payload })),
-    map((result) => {
-      const payload = result.landing;
-      return actions.loaded(payload);
+    switchMap(async (action) => {
+      const landing = await sdk
+        .Landing({ id: action.payload.id })
+        .then((res) => res.landing?.data);
+      if (landing) return sanitizeEntity(landing);
+    }),
+    map((landing) => {
+      return actions.loaded(landing);
     })
   );
 
@@ -34,7 +37,11 @@ const updateEpic: Epic = (action$, state$) =>
       const savingAt = new Date().toISOString();
       const data = { ...accumulated, id: undefined };
       console.log("Saving to DB:", data);
-      await client.request(UpdateLandingDocument, { id: currentLandingId, data });
+      await sdk.UpdateLanding({ id: currentLandingId, data });
+      // await client.request(UpdateLandingDocument, {
+      //   id: currentLandingId,
+      //   data,
+      // });
       return savingAt;
     }),
     map((savedDate) => actions.updated({ lastSaved: savedDate }))

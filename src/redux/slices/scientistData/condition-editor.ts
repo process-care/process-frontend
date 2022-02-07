@@ -7,12 +7,13 @@ import {
 // import type { RootState } from "redux/store";
 import { RootState } from "redux/store";
 import { DateTime } from "luxon";
-import ICondition from "types/form/condition";
 import { GlobalState } from "../scientistData";
+import { Maybe } from "api/graphql/types.generated";
+import { ReduxCondition } from "../types";
 
 // ----- ENTITY ADAPTER
 
-export const conditionAdapter = createEntityAdapter<ICondition>({
+export const conditionAdapter = createEntityAdapter<ReduxCondition>({
   selectId: (condition) => condition.id,
 });
 
@@ -35,6 +36,35 @@ export interface ConditionEditor {
   isValid: boolean;
 }
 
+type UnorderedError = {
+  conditionId: string;
+  targetId: string;
+};
+
+type ConditionError = {
+  conditionId: string;
+  message: string;
+};
+
+type QuestionStatus = {
+  questionId: string;
+  valid: boolean;
+  errors: [ConditionError];
+  unordered: [UnorderedError];
+};
+
+type PageStatus = {
+  pageId: string;
+  valid: boolean;
+  errors: [QuestionStatus];
+};
+
+export interface CheckSurvey {
+  checkSurvey: {
+    valid: boolean;
+    errors: [PageStatus];
+  };
+}
 // ---- STATE
 
 export const initialConditionState: ConditionEditor = {
@@ -56,7 +86,7 @@ export const initialConditionState: ConditionEditor = {
 
 type UpdatePayload = {
   id: string;
-  changes: Partial<ICondition>;
+  changes: ReduxCondition;
 };
 
 type UpdatedPayload = {
@@ -67,7 +97,7 @@ type DeletedPayload = {
   lastDeleted: string;
 };
 type DeleteGroupPayload = {
-  groupId: string;
+  groupId: Maybe<string> | undefined;
   conditionsId: string[];
 };
 
@@ -81,14 +111,14 @@ type InitializePayload = {
   pagesIds: string[];
 };
 type CreatePayload = {
-  refererId: string | undefined;
-  type: ICondition["type"];
-  group?: string;
+  refererId: Maybe<string> | undefined;
+  type: ReduxCondition["attributes"]["type"];
+  group?: Maybe<string> | undefined;
 };
 
 type CreatedPayload = {
   lastCreated: string;
-  condition: ICondition;
+  condition: ReduxCondition;
   step: number;
   isValid: boolean;
   redirectToPage: string;
@@ -131,8 +161,12 @@ export const conditionSlice = createSlice({
       conditionAdapter.removeOne(state, action.payload);
       const groupId = action.payload;
       const entities = conditionAdapter.getSelectors().selectAll(state);
-      const currentGroup = entities.find((e) => e.group === groupId)?.group;
-      const sameGroup = entities.filter((e) => e.group === currentGroup);
+      const currentGroup = entities.find(
+        (e) => e?.attributes?.group === groupId
+      )?.attributes?.group;
+      const sameGroup = entities.filter(
+        (e) => e?.attributes?.group === currentGroup
+      );
       if (sameGroup.length === 0) state.selectedCondition = "";
       if (sameGroup.length > 0) {
         state.selectedCondition = sameGroup[0].id;
@@ -147,7 +181,9 @@ export const conditionSlice = createSlice({
       conditionAdapter.removeMany(state, action.payload.conditionsId);
       const { groupId } = action.payload;
       const entities = conditionAdapter.getSelectors().selectAll(state);
-      const sameGroup = entities.filter((e) => e.group === groupId);
+      const sameGroup = entities.filter(
+        (e) => e?.attributes?.group === groupId
+      );
       if (sameGroup.length === 0) state.selectedCondition = "";
       if (sameGroup.length > 0) {
         state.selectedCondition = sameGroup[0].id;
@@ -194,7 +230,7 @@ export const hasChanges = (state: RootState): boolean => {
   return updated > saved;
 };
 
-export const getAllConditions = (state: RootState): ICondition[] =>
+export const getAllConditions = (state: RootState): ReduxCondition[] =>
   conditionAdapter.getSelectors().selectAll(state.scientistData.conditions);
 
 const getSelectedConditionId = (state: RootState): string =>
@@ -205,40 +241,42 @@ const getStep = (state: RootState): number =>
 const getValidity = (state: RootState): boolean =>
   state.scientistData.conditions.isValid;
 
-const getSelectedPageConditions = (state: RootState): ICondition[] => {
+const getSelectedPageConditions = (state: RootState): ReduxCondition[] => {
   return getAllConditions(state).filter(
     (condition) =>
-      condition.referer_page?.id === state.scientistData.pages.selectedPage
+      condition?.attributes?.referer_page?.data?.id ===
+      state.scientistData.pages.selectedPage
   );
 };
 
 const getConditionsByPageId = (
   state: RootState,
   pageId: string
-): ICondition[] => {
+): ReduxCondition[] => {
   return getAllConditions(state).filter(
-    (condition) => condition.referer_page?.id === pageId
+    (condition) => condition?.attributes?.referer_page?.data?.id === pageId
   );
 };
 
 const getConditionsByQuestionId = (
   state: RootState,
   questionsId: string
-): ICondition[] => {
+): ReduxCondition[] => {
   return getAllConditions(state).filter(
-    (condition) => condition.referer_question?.id === questionsId
+    (condition) =>
+      condition?.attributes?.referer_question?.data?.id === questionsId
   );
 };
 
-const getSelectedQuestionsConditions = (state: RootState): ICondition[] => {
+const getSelectedQuestionsConditions = (state: RootState): ReduxCondition[] => {
   return getAllConditions(state).filter(
     (condition) =>
-      condition.referer_question?.id ===
+      condition.attributes?.referer_question?.data?.id ===
       state.scientistData.questions.selectedQuestion
   );
 };
 
-const getSelectedCondition = (state: RootState): ICondition | undefined =>
+const getSelectedCondition = (state: RootState): ReduxCondition | undefined =>
   conditionAdapter
     .getSelectors()
     .selectById(state.scientistData.conditions, getSelectedConditionId(state));
@@ -305,8 +343,11 @@ export const conditionsReducers = {
     const entities = conditionAdapter
       .getSelectors()
       .selectAll(state.conditions);
-    const currentGroup = entities.find((e) => e.group === groupId)?.group;
-    const sameGroup = entities.filter((e) => e.group === currentGroup);
+    const currentGroup = entities.find((e) => e?.attributes?.group === groupId)
+      ?.attributes?.group;
+    const sameGroup = entities.filter(
+      (e) => e?.attributes?.group === currentGroup
+    );
     if (sameGroup.length === 0) state.conditions.selectedCondition = "";
     if (sameGroup.length > 0) {
       state.conditions.selectedCondition = sameGroup[0].id;
@@ -329,7 +370,7 @@ export const conditionsReducers = {
     const entities = conditionAdapter
       .getSelectors()
       .selectAll(state.conditions);
-    const sameGroup = entities.filter((e) => e.group === groupId);
+    const sameGroup = entities.filter((e) => e?.attributes?.group === groupId);
     if (sameGroup.length === 0) state.conditions.selectedCondition = "";
     if (sameGroup.length > 0) {
       state.conditions.selectedCondition = sameGroup[0].id;

@@ -2,12 +2,12 @@ import { PayloadAction, createEntityAdapter } from "@reduxjs/toolkit";
 
 import { RootState } from "redux/store";
 import { DateTime } from "luxon";
-import IPage from "types/form/page";
 import { GlobalState } from "../scientistData";
+import { ReduxPage } from "../types";
 
 // ----- ENTITY ADAPTER
 
-export const pageAdapter = createEntityAdapter<IPage>({
+export const pageAdapter = createEntityAdapter<ReduxPage>({
   selectId: (page) => page.id,
 });
 
@@ -47,7 +47,7 @@ export const initialPageState: PageEditor = {
 
 type UpdatePayload = {
   id: string;
-  changes: Partial<IPage>;
+  changes: Partial<ReduxPage>;
 };
 
 type UpdatedPayload = {
@@ -67,7 +67,7 @@ type ID = {
 };
 
 type CreatedPayload = {
-  page: IPage;
+  page: ReduxPage;
   lastCreated: string;
 };
 
@@ -83,19 +83,21 @@ export const hasChanges = (state: RootState): boolean => {
   return updated > saved;
 };
 
-export const pages = (state: RootState): IPage[] =>
+export const pages = (state: RootState): ReduxPage[] =>
   pageAdapter.getSelectors().selectAll(state.scientistData.pages);
 
-const getAllPages = (state: RootState): IPage[] => {
+const getAllPages = (state: RootState): ReduxPage[] => {
   return pages(state).filter(
-    (page) => page?.survey?.id === state.scientistData.survey.selectedSurvey
+    (page) =>
+      page?.attributes?.survey?.data?.id ===
+      state.scientistData.survey.selectedSurvey
   );
 };
 
 const getSelectedPageId = (state: RootState): string =>
   state.scientistData.pages.selectedPage;
 
-const getSelectedPage = (state: RootState): IPage | undefined =>
+const getSelectedPage = (state: RootState): ReduxPage | undefined =>
   pageAdapter
     .getSelectors()
     .selectById(state.scientistData.pages, getSelectedPageId(state));

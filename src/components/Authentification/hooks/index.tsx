@@ -1,10 +1,10 @@
-import { LoginMutation } from "redux/epics/queries/auth.gql.generated";
+import { LoginMutation } from "api/graphql/queries/auth.gql.generated";
 
 export const useAuth: any = () => {
   const data = localStorage.getItem("process__user");
 
   if (data) {
-    const cookies: LoginMutation['login'] = JSON.parse(data);
+    const cookies: LoginMutation["login"] = JSON.parse(data);
     return {
       cookies,
       isAuthenticated: !cookies.user?.blocked && !!cookies.jwt,

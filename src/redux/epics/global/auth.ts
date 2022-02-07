@@ -2,8 +2,7 @@ import { map, switchMap } from "rxjs";
 import { combineEpics, ofType } from "redux-observable";
 import { Epic } from "redux/store";
 import { actions } from "redux/slices/scientistData";
-import { client, clientWithNoHeaders } from "api/gql-client";
-import { LoginDocument, RegisterDocument } from "../queries/auth.gql.generated";
+import { sdk } from "api/gql-client";
 
 // // ----  LOGIN
 
@@ -13,25 +12,30 @@ const loginEpic: Epic = (action$) =>
     switchMap(async (action) => {
       try {
         const { identifier, password } = action.payload;
-        const res = await client.request(LoginDocument, {
+        const res = await sdk.login({
           identifier,
           password,
         });
+
         if (res) {
           localStorage.setItem("process__user", JSON.stringify(res.login));
         }
-        return res;
+
+        return {
+          user: res,
+        };
       } catch (error: any) {
-        return error;
+        return {
+          error,
+        };
       }
     }),
 
     map((res) => {
-      if (res?.response?.errors) {
-        return actions.authFailed(res?.response?.errors);
-      } else {
-        return actions.logged(res);
+      if (res.user) {
+        return actions.logged(res.user.login);
       }
+      return actions.authFailed(res.error?.response?.errors);
     })
   );
 
@@ -43,25 +47,24 @@ const signinEpic: Epic = (action$) =>
     switchMap(async (action) => {
       try {
         const { email, username, password } = action.payload;
-        const res = await clientWithNoHeaders.request(RegisterDocument, {
-          email,
-          username,
-          password,
-        });
+        const res = await sdk.register({ email, username, password });
+
         if (res) {
           localStorage.setItem("process__user", JSON.stringify(res.register));
         }
-        return res;
+        return {
+          user: res,
+        };
       } catch (error: any) {
-        return error;
+        return { error };
       }
     }),
 
     map((res) => {
-      if (res?.response?.errors) {
-        return actions.authFailed(res?.response?.errors);
+      if (res.user) {
+        return actions.signed(res.user.register);
       } else {
-        return actions.signed(res.register);
+        return actions.authFailed(res?.error?.response?.errors);
       }
     })
   );

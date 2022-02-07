@@ -1,16 +1,19 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { LoginMutation, RegisterMutation } from "redux/epics/queries/auth.gql.generated";
+import {
+  LoginMutation,
+  LoginMutationVariables,
+  RegisterMutationVariables,
+} from "api/graphql/queries/auth.gql.generated";
 import { RootState } from "redux/store";
 
 import { GlobalState } from "../scientistData";
 
 // ---- TYPES
-
 export interface AuthState {
   isLogging: boolean;
   isConnected: boolean;
   errors?: any[];
-  data: LoginMutation["login"] | RegisterMutation["register"] | null;
+  data: LoginMutation["login"] | null;
 }
 
 // ---- STATE
@@ -21,33 +24,33 @@ export const initialAuthState: AuthState = {
   data: null,
 };
 
-// ---- ACTIONS
-
-type Login = {
-  identifier: string;
-  password: string;
-};
-type Signin = {
-  email: string;
-  username: string;
-  password: string;
-};
-
 // ---- REDUCERS
 
 export const authReducers = {
-  login: (state: GlobalState, _action: PayloadAction<Login>): void => {
+  login: (
+    state: GlobalState,
+    _action: PayloadAction<LoginMutationVariables>
+  ): void => {
     state.auth.isConnected = false;
   },
-  logged: (state: GlobalState, action: PayloadAction<LoginMutation | any>): void => {
+  logged: (
+    state: GlobalState,
+    action: PayloadAction<LoginMutation["login"]>
+  ): void => {
     state.auth.data = action.payload;
-    state.auth.isConnected = action.payload.login?.user?.blocked === false;
+    state.auth.isConnected = !action.payload.user.blocked;
     state.auth.errors = undefined;
   },
-  signin: (state: GlobalState, _action: PayloadAction<Signin>): void => {
+  signin: (
+    state: GlobalState,
+    _action: PayloadAction<RegisterMutationVariables>
+  ): void => {
     state.auth.isConnected = false;
   },
-  signed: (state: GlobalState, action: PayloadAction<LoginMutation | any>): void => {
+  signed: (
+    state: GlobalState,
+    action: PayloadAction<LoginMutation["login"]>
+  ): void => {
     state.auth.data = action.payload;
     state.auth.errors = undefined;
   },

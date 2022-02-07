@@ -2,11 +2,11 @@ import { PayloadAction } from "@reduxjs/toolkit";
 
 import { RootState } from "redux/store";
 import { DateTime } from "luxon";
-import { SurveyBuilder } from "../surveyBuilder";
+import { SurveyBuilder } from "../surveyBuilderOLD";
 import slugify from "slugify";
 import { history } from "redux/store/history";
 import { GlobalState } from "../scientistData";
-import { CheckSurvey } from "types/form/condition";
+import { CheckSurvey } from "./condition-editor";
 
 // ---- STATE
 

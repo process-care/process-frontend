@@ -2,13 +2,13 @@ import { createEntityAdapter, PayloadAction } from "@reduxjs/toolkit";
 
 import { RootState } from "redux/store";
 import { DateTime } from "luxon";
-import IQuestion from "types/form/question";
 import { GlobalState } from "../scientistData";
 import { getNewOrder } from "components/CreateSurvey/CreateForm/Condition/ToolBox/PageForm/utils";
+import { ReduxQuestion } from "../types";
 
 // ----- ENTITY ADAPTER
 
-export const questionAdapter = createEntityAdapter<IQuestion>({
+export const questionAdapter = createEntityAdapter<ReduxQuestion>({
   selectId: (question) => question.id,
 });
 
@@ -16,7 +16,7 @@ export const questionAdapter = createEntityAdapter<IQuestion>({
 
 export interface QuestionEditor {
   // Questions status
-  selectedQuestion: string;
+  selectedQuestion: ReduxQuestion["id"];
   isCreating: boolean;
   isLoading: boolean;
   isSaving: boolean;
@@ -48,7 +48,7 @@ export const initialQuestionState: QuestionEditor = {
 
 type UpdatePayload = {
   id: string;
-  changes: Partial<IQuestion>;
+  changes: ReduxQuestion;
 };
 
 type UpdatedPayload = {
@@ -60,7 +60,7 @@ type DeletedPayload = {
 };
 
 type SavePayload = {
-  changes: Partial<IQuestion>;
+  changes: ReduxQuestion;
 };
 
 type SavedPayload = {
@@ -68,11 +68,11 @@ type SavedPayload = {
 };
 
 type CreatePayload = {
-  type: IQuestion["type"];
+  type: ReduxQuestion["attributes"]["type"];
 };
 
 type CreatedPayload = {
-  question: IQuestion;
+  question: ReduxQuestion;
   lastCreated: string;
   global: GlobalState;
 };
@@ -89,26 +89,30 @@ export const questionsHasChanges = (state: RootState): boolean => {
   return updated > saved;
 };
 
-export const questions = (state: RootState): IQuestion[] =>
+export const questions = (state: RootState): ReduxQuestion[] =>
   questionAdapter.getSelectors().selectAll(state.scientistData.questions);
 
 const getSelectedQuestionId = (state: RootState): string =>
   state.scientistData.questions.selectedQuestion;
 
-const getSelectedPageQuestions = (state: RootState): IQuestion[] => {
+const getSelectedPageQuestions = (state: RootState): ReduxQuestion[] => {
   return questions(state).filter(
-    (question) => question.page?.id === state.scientistData.pages.selectedPage
+    (question) =>
+      question?.attributes?.page?.data?.id ===
+      state.scientistData.pages.selectedPage
   );
 };
 
 const getQuestionsByPageId = (
   state: RootState,
   pageId: string
-): IQuestion[] => {
-  return questions(state).filter((question) => question.page?.id === pageId);
+): ReduxQuestion[] => {
+  return questions(state).filter(
+    (question) => question?.attributes?.page?.data?.id === pageId
+  );
 };
 
-const getSelectedQuestion = (state: RootState): IQuestion | any =>
+const getSelectedQuestion = (state: RootState): ReduxQuestion | any =>
   questionAdapter
     .getSelectors()
     .selectById(state.scientistData.questions, getSelectedQuestionId(state));

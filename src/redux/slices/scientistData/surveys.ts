@@ -46,10 +46,10 @@ export const initialSurveysState: SurveysEditor = {
 };
 // ----- ACTIONS
 
-type UpdatePayload = {
-  id: ReduxSurvey["id"];
-  changes: ReduxSurvey["attributes"];
-};
+// type UpdatePayload = {
+//   id: ReduxSurvey["id"];
+//   changes: ReduxSurvey["attributes"];
+// };
 
 // ---- SELECTORS
 

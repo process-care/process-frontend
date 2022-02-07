@@ -43,7 +43,6 @@ export const Group: React.FC<Props> = ({
     id: "",
   });
 
-  // TODO: wait for backend modification
   const isPageType = currentCondition?.attributes?.type === "page";
   const refererId = isPageType
     ? currentCondition?.attributes?.referer_page?.data?.id

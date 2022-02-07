@@ -2,10 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Landing } from "api/graphql/types.generated";
 import { RootState } from "redux/store";
 import { DateTime } from "luxon";
-import { SafeEntity } from "api/entity-checker";
-import { LastSaved } from "./types";
-
-export type ReduxLanding = SafeEntity<Landing>;
+import { LastSaved, ReduxLanding } from "./types";
 
 // ---- STATE
 

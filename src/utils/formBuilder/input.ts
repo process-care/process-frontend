@@ -1,7 +1,7 @@
-import ICondition from "types/form/condition";
+import { ReduxCondition } from "redux/slices/types";
 
 export const checkIfMultiple = (
-  currentCondition: Partial<ICondition>
+  currentCondition: Partial<ReduxCondition>
 ): boolean => {
   const multipleInput: string[] = ["checkbox", "radio", "select"];
 

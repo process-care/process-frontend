@@ -4,14 +4,14 @@ import { Container, Text } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 import IQuestion from "types/form/question";
-import ICondition from "types/form/condition";
+import { ReduxCondition } from "redux/slices/types";
 import { authorizedQuestionTypes } from "./utils";
 import { t } from "static/input";
 import { InputBox } from "components/CreateSurvey/CreateForm/InputsPreview/InputBox";
 import { selectors, actions } from "redux/slices/scientistData";
 
 interface Props {
-  selectedCondition: ICondition;
+  selectedCondition: ReduxCondition;
   updateStep: (d: any) => void;
 }
 
@@ -70,7 +70,7 @@ export const Step_1: React.FC<Props> = ({ selectedCondition, updateStep }) => {
   };
 
   return (
-    <Container w="100%" maxW="unset" p={0} >
+    <Container w="100%" maxW="unset" p={0}>
       {!isEmpty && (
         <Text textAlign="center" variant="xs" mt={5} color="brand.gray.200">
           {t.help}

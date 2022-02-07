@@ -109,7 +109,7 @@ const saveEpic: Epic = (action$, state$) =>
         state$.value.scientistData.conditions.entities
       );
       const changes = conditions.filter((c) => c[0] === selectedConditionId)[0];
-      // We need to send target : id, referer_question:id, but Icondition have full Question object adn we use it in frontend
+      // We need to send target : id, referer_question:id, but ReduxCondition have full Question object adn we use it in frontend
       const formatPayload = (changes: any) => {
         return {
           ...changes[1],

@@ -13,11 +13,9 @@ import {
   conditionsReducers,
   conditionsSelectors,
   initialConditionState,
-  ReduxCondition,
 } from "./scientistData/condition-editor";
 import {
   initialSurveysState,
-  ReduxSurvey,
   surveysAdapter,
   SurveysEditor,
   surveysReducers,
@@ -30,7 +28,6 @@ import {
   pageReducer,
   pageSelectors,
   initialPageState,
-  ReduxPage,
 } from "./scientistData/page-editor";
 import {
   initialQuestionState,
@@ -38,7 +35,6 @@ import {
   QuestionEditor,
   questionsReducers,
   questionsSelectors,
-  ReduxQuestion,
 } from "./scientistData/question-editor";
 import {
   initialSurveyState,
@@ -48,7 +44,13 @@ import {
 } from "./scientistData/survey-editor";
 import { SurveyBuilder } from "./surveyBuilderOLD";
 
-import { LastUpdated } from "./types";
+import {
+  LastUpdated,
+  ReduxCondition,
+  ReduxPage,
+  ReduxQuestion,
+  ReduxSurvey,
+} from "./types";
 
 type LoadedPayload = SurveyBuilder["survey"];
 

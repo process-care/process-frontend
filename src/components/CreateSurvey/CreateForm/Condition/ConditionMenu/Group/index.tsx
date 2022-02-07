@@ -10,15 +10,16 @@ import { t } from "static/condition";
 import { Operator } from "./Operator";
 import { actions, selectors } from "redux/slices/scientistData";
 import { ReduxCondition } from "redux/slices/types";
+import { Maybe } from "api/graphql/types.generated";
 
 interface Props {
   currentConditions: ReduxCondition[];
-  groups: string[] | undefined;
+  groups: (Maybe<string> | undefined)[] | undefined;
   selectedCondition: ReduxCondition;
 }
 interface State {
   type: "condition" | "group" | null;
-  id: string | number;
+  id: Maybe<string> | undefined | number;
 }
 
 export const Group: React.FC<Props> = ({

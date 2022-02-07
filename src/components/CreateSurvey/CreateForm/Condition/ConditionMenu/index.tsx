@@ -3,26 +3,26 @@ import React from "react";
 import { useAppSelector } from "redux/hooks";
 import { t } from "static/condition";
 import { Group } from "./Group";
-import ICondition from "types/form/condition";
+import { ReduxCondition } from "redux/slices/types";
 import { selectors } from "redux/slices/scientistData";
 
 interface Props {
-  selectedCondition: ICondition;
+  selectedCondition: ReduxCondition;
 }
 
 export const ConditionMenu: React.FC<Props> = ({ selectedCondition }) => {
   const isValid = useAppSelector(
     (state) => state.scientistData.conditions.isValid
   );
-  const isTypePage = selectedCondition.type === "page";
+  const isTypePage = selectedCondition?.attributes?.type === "page";
 
   const currentQuestionConditions = useAppSelector(
     selectors.conditions.getSelectedQuestionsConditions
   );
 
-  const currentPageConditions = (selectedCondition: ICondition) => {
+  const currentPageConditions = (selectedCondition: ReduxCondition) => {
     // The selected page can change to we can't use the selector page's conditions.
-    const id = selectedCondition.referer_page?.id;
+    const id = selectedCondition?.attributes.referer_page?.data?.id;
     if (!id) return [];
     return useAppSelector((state) =>
       selectors.conditions.getConditionsByPageId(state, id)
@@ -32,7 +32,9 @@ export const ConditionMenu: React.FC<Props> = ({ selectedCondition }) => {
   const currentConditions = isTypePage
     ? currentPageConditions(selectedCondition)
     : currentQuestionConditions;
-  const groups = currentConditions.map((c: ICondition) => c.group);
+  const groups = currentConditions.map(
+    (c: ReduxCondition) => c?.attributes.group
+  );
 
   console.log(isValid);
   return (
@@ -59,8 +61,10 @@ export const ConditionMenu: React.FC<Props> = ({ selectedCondition }) => {
         </Text>
         <Text variant="xsMedium">
           {isTypePage
-            ? selectedCondition.referer_page?.name
-            : selectedCondition.referer_question?.label}
+            ? selectedCondition?.attributes?.referer_page?.data?.attributes
+                ?.name
+            : selectedCondition?.attributes?.referer_question?.data?.attributes
+                ?.label}
         </Text>
         {!isValid && (
           <Text variant="xs" mt={5} textAlign="left" color="brand.gray.200">

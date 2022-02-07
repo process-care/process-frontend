@@ -1,4 +1,4 @@
-// import ICondition from "./condition";
+// import ReduxCondition from "./condition";
 // import IPage from "./page";
 
 // interface Modality {
@@ -46,7 +46,7 @@
 //     max?: number;
 //     step?: number;
 //   };
-//   conditions?: ICondition[];
+//   conditions?: ReduxCondition[];
 //   max_loop?: string;
 //   factors?: [
 //     {

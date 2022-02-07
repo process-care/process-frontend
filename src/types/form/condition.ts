@@ -2,20 +2,20 @@
 // import IOperator from "./operator";
 // import IPage from "./page";
 
-// export default interface ICondition {
+// export default interface ReduxCondition {
 //   id: string;
 //   type: "page" | "question";
 //   referer_page?: IPage;
 //   referer_question?: IQuestion;
-//   referer_id?: IPage["id"] | ICondition["id"];
+//   referer_id?: IPage["id"] | ReduxCondition["id"];
 //   target?: IQuestion;
 //   target_value: string;
 //   operator: IOperator["id"];
 //   group: string;
 // }
 
-// export interface IConditionRes {
-//   conditions: ICondition[];
+// export interface ReduxConditionRes {
+//   conditions: ReduxCondition[];
 // }
 
 // type UnorderedError = {

@@ -1,5 +1,5 @@
 // import { Survey } from "types/survey";
-// import ICondition from "./condition";
+// import ReduxCondition from "./condition";
 // import IQuestion from "./question";
 
 // export default interface IPage {
@@ -8,6 +8,6 @@
 //   short_name: string;
 //   survey: Survey;
 //   is_locked: boolean;
-//   conditions: ICondition[];
+//   conditions: ReduxCondition[];
 //   questions?: IQuestion[];
 // }

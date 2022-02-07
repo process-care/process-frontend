@@ -13,7 +13,6 @@ export type ReduxPage = SafeEntity<Page>;
 export type ReduxQuestion = SafeEntity<Question>;
 export type ReduxCondition = SafeEntity<Condition>;
 export type ReduxLanding = SafeEntity<Landing>;
-
 // ----- ACTIONS
 export type LastSaved = {
   lastSaved: string;

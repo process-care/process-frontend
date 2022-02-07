@@ -2,10 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Landing } from "api/graphql/types.generated";
 import { RootState } from "redux/store";
 import { DateTime } from "luxon";
-import { SafeEntity } from "api/entity-checker";
-import { LastSaved } from "./types";
-
-export type ReduxLanding = SafeEntity<Landing>;
+import { LastSaved, LandingRedux } from "./types";
 
 // ---- STATE
 
@@ -15,7 +12,7 @@ export interface LandingEditor {
   isEditingAbout: boolean;
   lastUpdated: string;
   lastSaved: string;
-  data?: ReduxLanding;
+  data?: LandingRedux;
 }
 
 const initialState: LandingEditor = {
@@ -35,7 +32,7 @@ export const landingEditorSlice = createSlice({
     load: (state, _action: PayloadAction<string>) => {
       state.isLoading = true;
     },
-    loaded: (state, action: PayloadAction<ReduxLanding | undefined>) => {
+    loaded: (state, action: PayloadAction<LandingRedux | undefined>) => {
       state.isLoading = false;
       const landing = action.payload;
       state.data = landing;
@@ -44,7 +41,7 @@ export const landingEditorSlice = createSlice({
       state.isLoading = false;
       state.error = "Chargement de la landing a échoué.";
     },
-    update: (state, action: PayloadAction<ReduxLanding>) => {
+    update: (state, action: PayloadAction<LandingRedux>) => {
       state.lastUpdated = new Date().toISOString();
       const updated = { ...state.data, ...action.payload };
       state.data = updated;
@@ -62,7 +59,7 @@ export const landingEditorSlice = createSlice({
 
 function getAttributes(
   state: RootState
-): ReduxLanding["attributes"] | undefined {
+): LandingRedux["attributes"] | undefined {
   return state.editor.landing.data?.attributes;
 }
 

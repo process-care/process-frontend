@@ -4,13 +4,13 @@ import { actions as statusAct } from "redux/slices/participation/status";
 import { RootState } from "redux/store";
 import { selectors as answerSelectors } from "redux/slices/participation/answers";
 import { EvaluationCondition } from "./types";
-import { ReduxQuestion } from "../types";
+import { QuestionRedux } from "../types";
 
 // ---- SLICE
 
 const SLICE_NAME = "questions";
 
-const adapter = createEntityAdapter<ReduxQuestion>({
+const adapter = createEntityAdapter<QuestionRedux>({
   selectId: (q) => q.id,
 });
 
@@ -32,12 +32,12 @@ const entitySelectors = adapter.getSelectors();
 const selectById = (
   state: RootState,
   questionId: string | undefined
-): ReduxQuestion | undefined => {
+): QuestionRedux | undefined => {
   if (!questionId) return;
   return entitySelectors.selectById(state.participation.questions, questionId);
 };
 
-const selectAll = (state: RootState): ReduxQuestion[] =>
+const selectAll = (state: RootState): QuestionRedux[] =>
   entitySelectors.selectAll(state.participation.questions);
 
 // TODO: see the comments in "page-visited" slice => maybe this should return the boolean right away, instead

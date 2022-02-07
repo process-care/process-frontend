@@ -3,7 +3,7 @@ import { RootState } from "redux/store";
 import { DateTime } from "luxon";
 import slugify from "slugify";
 import { history } from "redux/store/history";
-import { LastPosted, LastSaved, ReduxSurvey } from "./types";
+import { LastPosted, LastSaved, SurveyRedux } from "./types";
 
 // ---- STATE
 
@@ -15,7 +15,7 @@ export interface SurveyEditor {
   lastUpdated: string;
   lastSaved: string;
   lastPosted: string;
-  data: ReduxSurvey;
+  data: SurveyRedux;
   step: number;
 }
 
@@ -32,7 +32,7 @@ const initialState: SurveyEditor = {
 
 // ---- ACTIONS
 
-type InitializedPayload = ReduxSurvey[];
+type InitializedPayload = SurveyRedux[];
 
 // ----- SLICE
 const SLICE_NAME = "survey-editor";
@@ -49,7 +49,7 @@ export const surveyEditorSlice = createSlice({
       const survey = action.payload;
       state.data = survey[0];
     },
-    update: (state, action: PayloadAction<ReduxSurvey>) => {
+    update: (state, action: PayloadAction<SurveyRedux>) => {
       state.lastUpdated = new Date().toISOString();
       const updated = { ...state.data, ...action.payload };
       state.data = updated;
@@ -104,7 +104,7 @@ export const hasChanges = (state: RootState): boolean => {
   return updated > saved;
 };
 
-export const survey = (state: RootState): ReduxSurvey | undefined =>
+export const survey = (state: RootState): SurveyRedux | undefined =>
   state.editor.survey.data;
 
 export const selectors = {

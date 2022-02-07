@@ -1,12 +1,19 @@
 import { SafeEntity } from "api/entity-checker";
-import { Condition, Page, Question, Survey } from "api/graphql/types.generated";
+import {
+  Condition,
+  Landing,
+  Page,
+  Question,
+  Survey,
+} from "api/graphql/types.generated";
 
 // ----- SAFE ENTITY
 
-export type ReduxSurvey = SafeEntity<Survey>;
-export type ReduxPage = SafeEntity<Page>;
-export type ReduxQuestion = SafeEntity<Question>;
-export type ReduxCondition = SafeEntity<Condition>;
+export type SurveyRedux = SafeEntity<Survey>;
+export type LandingRedux = SafeEntity<Landing>;
+export type PageRedux = SafeEntity<Page>;
+export type QuestionRedux = SafeEntity<Question>;
+export type ConditionRedux = SafeEntity<Condition>;
 
 // ----- ACTIONS
 

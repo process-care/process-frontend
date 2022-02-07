@@ -13,11 +13,9 @@ import {
   conditionsReducers,
   conditionsSelectors,
   initialConditionState,
-  ReduxCondition,
 } from "./scientistData/condition-editor";
 import {
   initialSurveysState,
-  ReduxSurvey,
   surveysAdapter,
   SurveysEditor,
   surveysReducers,
@@ -30,7 +28,6 @@ import {
   pageReducer,
   pageSelectors,
   initialPageState,
-  ReduxPage,
 } from "./scientistData/page-editor";
 import {
   initialQuestionState,
@@ -38,7 +35,6 @@ import {
   QuestionEditor,
   questionsReducers,
   questionsSelectors,
-  ReduxQuestion,
 } from "./scientistData/question-editor";
 import {
   initialSurveyState,
@@ -48,19 +44,25 @@ import {
 } from "./scientistData/survey-editor";
 import { SurveyBuilder } from "./surveyBuilderOLD";
 
-import { LastUpdated } from "./types";
+import {
+  LastUpdated,
+  ConditionRedux,
+  PageRedux,
+  QuestionRedux,
+  SurveyRedux,
+} from "./types";
 
 type LoadedPayload = SurveyBuilder["survey"];
 
 // ---- TYPES
 
 export interface GlobalState {
-  pages: EntityState<ReduxPage> & PageEditor;
-  questions: EntityState<ReduxQuestion> & QuestionEditor;
-  conditions: EntityState<ReduxCondition> & ConditionEditor;
+  pages: EntityState<PageRedux> & PageEditor;
+  questions: EntityState<QuestionRedux> & QuestionEditor;
+  conditions: EntityState<ConditionRedux> & ConditionEditor;
   survey: SurveyEditor;
   auth: AuthState;
-  surveys: EntityState<ReduxSurvey> & SurveysEditor;
+  surveys: EntityState<SurveyRedux> & SurveysEditor;
 }
 
 // ----- SLICE

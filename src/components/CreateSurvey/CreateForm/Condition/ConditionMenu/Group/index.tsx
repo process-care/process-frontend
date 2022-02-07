@@ -9,12 +9,12 @@ import { RemovingConfirmation } from "../../../RemovingConfirmation";
 import { t } from "static/condition";
 import { Operator } from "./Operator";
 import { actions, selectors } from "redux/slices/scientistData";
-import { ReduxCondition } from "redux/slices/types";
+import { ConditionRedux } from "redux/slices/types";
 
 interface Props {
-  currentConditions: ReduxCondition[];
+  currentConditions: ConditionRedux[];
   groups: string[] | undefined;
-  selectedCondition: ReduxCondition;
+  selectedCondition: ConditionRedux;
 }
 interface State {
   type: "condition" | "group" | null;
@@ -30,7 +30,7 @@ export const Group: React.FC<Props> = ({
   const isValid = useAppSelector(selectors.conditions.getValidity);
 
   const currentCondition = currentConditions?.find(
-    (c: ReduxCondition) => c.id === selectedCondition.id
+    (c: ConditionRedux) => c.id === selectedCondition.id
   );
 
   const clean_groups = groups?.filter(
@@ -119,7 +119,7 @@ export const Group: React.FC<Props> = ({
             </Flex>
 
             {currentConditions.map(
-              (condition: ReduxCondition, index: number) => {
+              (condition: ConditionRedux, index: number) => {
                 const isLast = index === currentConditions.length - 1;
 
                 if (condition?.attributes?.group === groupId) {

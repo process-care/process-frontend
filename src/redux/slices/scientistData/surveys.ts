@@ -3,12 +3,7 @@ import { PayloadAction, createEntityAdapter } from "@reduxjs/toolkit";
 import { RootState } from "redux/store";
 import { DateTime } from "luxon";
 import { GlobalState } from "../scientistData";
-
-import { SafeEntity } from "api/entity-checker";
-import { Survey } from "api/graphql/types.generated";
-import { LastDeleted, LastSaved, LastUpdated } from "../types";
-
-export type ReduxSurvey = SafeEntity<Survey>;
+import { LastDeleted, LastSaved, LastUpdated, ReduxSurvey } from "../types";
 
 // ----- ENTITY ADAPTER
 
@@ -96,6 +91,8 @@ export const surveysReducers = {
   ): void => {
     state.surveys.isLoading = true;
   },
+
+  // TODO: Check this any here ==> has to be UpdatePayload
   initializedSurveys: (
     state: GlobalState,
     action: PayloadAction<any>

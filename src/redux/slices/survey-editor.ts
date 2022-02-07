@@ -3,11 +3,7 @@ import { RootState } from "redux/store";
 import { DateTime } from "luxon";
 import slugify from "slugify";
 import { history } from "redux/store/history";
-import { SafeEntity } from "api/entity-checker";
-import { Survey } from "api/graphql/types.generated";
-import { LastPosted, LastSaved } from "./types";
-
-export type ReduxSurveyMeta = SafeEntity<Survey>;
+import { LastPosted, LastSaved, ReduxSurvey } from "./types";
 
 // ---- STATE
 
@@ -19,7 +15,7 @@ export interface SurveyEditor {
   lastUpdated: string;
   lastSaved: string;
   lastPosted: string;
-  data: ReduxSurveyMeta;
+  data: ReduxSurvey;
   step: number;
 }
 
@@ -36,7 +32,7 @@ const initialState: SurveyEditor = {
 
 // ---- ACTIONS
 
-type InitializedPayload = SafeEntity<Survey>[];
+type InitializedPayload = ReduxSurvey[];
 
 // ----- SLICE
 const SLICE_NAME = "survey-editor";
@@ -53,7 +49,7 @@ export const surveyEditorSlice = createSlice({
       const survey = action.payload;
       state.data = survey[0];
     },
-    update: (state, action: PayloadAction<ReduxSurveyMeta>) => {
+    update: (state, action: PayloadAction<ReduxSurvey>) => {
       state.lastUpdated = new Date().toISOString();
       const updated = { ...state.data, ...action.payload };
       state.data = updated;
@@ -108,7 +104,7 @@ export const hasChanges = (state: RootState): boolean => {
   return updated > saved;
 };
 
-export const survey = (state: RootState): ReduxSurveyMeta | undefined =>
+export const survey = (state: RootState): ReduxSurvey | undefined =>
   state.editor.survey.data;
 
 export const selectors = {

@@ -4,10 +4,8 @@ import { RootState } from "redux/store";
 import { DateTime } from "luxon";
 import { GlobalState } from "../scientistData";
 import { getNewOrder } from "components/CreateSurvey/CreateForm/Condition/ToolBox/PageForm/utils";
-import { SafeEntity } from "api/entity-checker";
-import { Question } from "api/graphql/types.generated";
+import { ReduxQuestion } from "../types";
 
-export type ReduxQuestion = SafeEntity<Question>;
 // ----- ENTITY ADAPTER
 
 export const questionAdapter = createEntityAdapter<ReduxQuestion>({

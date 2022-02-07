@@ -9,7 +9,7 @@ import { RemovingConfirmation } from "../../../RemovingConfirmation";
 import { t } from "static/condition";
 import { Operator } from "./Operator";
 import { actions, selectors } from "redux/slices/scientistData";
-import { ReduxCondition } from "redux/slices/scientistData/condition-editor";
+import { ReduxCondition } from "redux/slices/types";
 
 interface Props {
   currentConditions: ReduxCondition[];
@@ -26,7 +26,6 @@ export const Group: React.FC<Props> = ({
   groups,
   selectedCondition,
 }) => {
-  console.log(currentConditions);
   const dispatch = useAppDispatch();
   const isValid = useAppSelector(selectors.conditions.getValidity);
 

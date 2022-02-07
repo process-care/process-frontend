@@ -8,10 +8,8 @@ import {
 import { RootState } from "redux/store";
 import { DateTime } from "luxon";
 import { GlobalState } from "../scientistData";
-import { SafeEntity } from "api/entity-checker";
-import { Condition, Maybe } from "api/graphql/types.generated";
-
-export type ReduxCondition = SafeEntity<Condition>;
+import { Maybe } from "api/graphql/types.generated";
+import { ReduxCondition } from "../types";
 
 // ----- ENTITY ADAPTER
 

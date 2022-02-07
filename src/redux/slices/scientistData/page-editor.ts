@@ -3,10 +3,8 @@ import { PayloadAction, createEntityAdapter } from "@reduxjs/toolkit";
 import { RootState } from "redux/store";
 import { DateTime } from "luxon";
 import { GlobalState } from "../scientistData";
-import { SafeEntity } from "api/entity-checker";
-import { Page } from "api/graphql/types.generated";
+import { ReduxPage } from "../types";
 
-export type ReduxPage = SafeEntity<Page>;
 // ----- ENTITY ADAPTER
 
 export const pageAdapter = createEntityAdapter<ReduxPage>({

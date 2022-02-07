@@ -1,9 +1,9 @@
 import { Box } from "@chakra-ui/react";
-import ICondition from "types/form/condition";
 import React from "react";
+import { ReduxCondition } from "redux/slices/types";
 
 interface Props {
-  condition: ICondition;
+  condition: ReduxCondition;
 }
 
 import { ReactComponent as Different } from "./../assets/different.svg";
@@ -15,7 +15,7 @@ import { ReactComponent as Superior } from "./../assets/superior.svg";
 
 // TODO replace string by SVG orperator.
 export const renderOperator = (
-  operators: ICondition["operator"] | undefined
+  operators: ReduxCondition["attributes"]["operator"] | undefined
 ): React.ReactElement | string | undefined => {
   switch (operators) {
     case "not_equal":
@@ -44,5 +44,5 @@ export const renderOperator = (
 };
 
 export const Operator: React.FC<Props> = ({ condition }) => {
-  return <Box>{renderOperator(condition.operator)}</Box>;
+  return <Box>{renderOperator(condition?.attributes?.operator)}</Box>;
 };

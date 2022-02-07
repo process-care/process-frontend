@@ -1,40 +1,43 @@
-import IQuestion from "types/form/question";
 import * as Yup from "yup";
+import { QuestionEntity } from "api/graphql/sdk.generated";
 
-const getTypeValidation = (item: IQuestion) => {
-  if (item.type === "number_input") {
-    return Yup.number();
+const getTypeValidation = (item: QuestionEntity) => {
+  const type = item.attributes?.type;
+
+  switch (type) {
+    case 'select':
+    case 'radio':
+    case 'text_area':
+      return Yup.string();
+
+    case 'number_input':
+      return Yup.number();
+
+    case 'date_picker':
+      return Yup.date();
+
+    case 'checkbox':
+      return Yup.array().min(1, "Merci de cocher au moins une valeur");
+
+    default:
+      return Yup.mixed();
   }
-  if (item.type === "date_picker") {
-    return Yup.date();
-  }
-  if (item.type === "select") {
-    return Yup.string();
-  }
-  if (item.type === "radio") {
-    return Yup.string();
-  }
-  if (item.type === "checkbox") {
-    return Yup.array().min(1, "Merci de cocher au moins une valeur");
-  }
-  if (item.type === "text_area") {
-    return Yup.string();
-  } else return Yup.mixed();
 };
 
-export const formSchema: any = (questions: IQuestion[] | undefined) => {
-  if (questions) {
-    const res = questions.reduce(
-      (obj, item) => ({
+export const formSchema: any = (questions: QuestionEntity[] | undefined) => {
+  if (!questions) return {};
+
+  const res = questions.reduce(
+    (obj, item) => {
+      if (!item.id) return obj;
+
+      return {
         ...obj,
-        [item.id]: item.required
-          ? getTypeValidation(item).required(
-              "Merci de bien vouloir renseigner ce champs"
-            )
+        [item.id]: item.attributes?.required
+          ? getTypeValidation(item).required('Merci de bien vouloir renseigner ce champs')
           : getTypeValidation(item),
-      }),
-      {}
-    );
-    return Yup.object().shape(res);
-  } else return {};
+      };
+  }, {} as Record<string, any>);
+
+  return Yup.object().shape(res);
 };

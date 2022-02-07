@@ -1,18 +1,16 @@
 import React, { useCallback, useMemo } from "react";
 import { Box, Circle, Flex, Text } from "@chakra-ui/react";
-import { PageRedux } from "redux/slices/participation/page";
-
-import IPage from "types/form/page";
+import { PageParticipationRedux } from "redux/slices/participation/page";
 
 // MENU
 
 interface MenuProps {
-  pages: PageRedux[];
+  pages: PageParticipationRedux[];
   selectIndex: (index: number) => void;
   color: string;
   author: string | undefined;
   logo: string | undefined;
-  selectedPage: IPage | undefined;
+  selectedPage: PageParticipationRedux | undefined;
 }
 
 export const ParticipationMenu: React.FC<MenuProps> = ({
@@ -84,7 +82,7 @@ export const ParticipationMenu: React.FC<MenuProps> = ({
 
 interface EntryProps {
   index: number;
-  page: PageRedux;
+  page: PageParticipationRedux;
   color: string;
   isNavigable: boolean;
   selectedPageId: string | undefined;
@@ -119,7 +117,7 @@ const PageEntry: React.FC<EntryProps> = ({
       textDecoration={isSelected ? "underline" : "none"}
     >
       <Circle backgroundColor={color} w="10px" h="10px" mr="10px" />
-      {page.short_name}
+      {page.attributes.short_name ?? 'Short name missing 😣'}
     </Box>
   );
 };

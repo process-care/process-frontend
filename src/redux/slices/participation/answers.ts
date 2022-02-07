@@ -3,10 +3,11 @@ import { Maybe } from "api/graphql/types.generated";
 
 import { actions as statusAct } from 'redux/slices/participation/status';
 import { RootState } from "redux/store";
+import { sanitizeAnswers } from "./utils";
 
 // ---- INITIAL STATE
 
-export interface Answer {
+export interface AnswerParticipationRedux {
   id?: string;
   questionId: string;
   value: unknown;
@@ -20,15 +21,15 @@ export type UpsertAnswerPayload = {
 }
 
 export type UpsertedAnswerPayload = {
-  created: Update<Answer>[]
-  updated: Update<Answer>[]
+  created: Update<AnswerParticipationRedux>[]
+  updated: Update<AnswerParticipationRedux>[]
 }
 
 // ---- SLICE
 
 const SLICE_NAME = 'answers';
 
-const adapter = createEntityAdapter<Answer>({
+const adapter = createEntityAdapter<AnswerParticipationRedux>({
   selectId: (a) => a.questionId,
 });
 
@@ -46,19 +47,7 @@ export const slice = createSlice({
   },
   extraReducers: builder => {
     builder.addCase(statusAct.initialized, (state, action) => {
-      const sanitized = action.payload.answers.reduce((acc, a) => {
-        const qId = a.attributes.question?.data?.id;
-        if (!qId) return acc;
-
-        acc.push({
-          id: a.id,
-          questionId: qId,
-          value: a.attributes.value,
-        });
-
-        return acc;
-      }, [] as Answer[]);
-      
+      const sanitized = sanitizeAnswers(action.payload.answers);
       adapter.setAll(state, sanitized);
     });
   }
@@ -68,24 +57,24 @@ export const slice = createSlice({
 
 const entitySelectors = adapter.getSelectors();
 
-const selectById = (state: RootState, questionId: Maybe<string>): Answer | undefined => {
+const selectById = (state: RootState, questionId: Maybe<string>): AnswerParticipationRedux | undefined => {
   if (!questionId) return;
   return entitySelectors.selectById(state.participation.answers, questionId);
 };
 
-const selectByIds = (state: RootState, questionsId: string[]): Answer[] => {
+const selectByIds = (state: RootState, questionsId: string[]): AnswerParticipationRedux[] => {
   const answerState = state.participation.answers;
 
   const answers = questionsId.reduce((acc, qId) => {
     const answer = entitySelectors.selectById(answerState, qId);
     if (answer) acc.push(answer);
     return acc;
-  }, [] as Answer[]);
+  }, [] as AnswerParticipationRedux[]);
     
   return answers;
 };
 
-const selectAll = (state: RootState): Answer[] => entitySelectors.selectAll(state.participation.answers);
+const selectAll = (state: RootState): AnswerParticipationRedux[] => entitySelectors.selectAll(state.participation.answers);
 
 export const selectors = {
   selectAll,

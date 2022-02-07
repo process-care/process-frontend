@@ -3,12 +3,11 @@ import { Box, Center, Flex } from "@chakra-ui/react";
 
 import { ParticipationMenu } from "./ParticipationMenu";
 import { Page } from "./Form/Page";
-import IPage from "types/form/page";
 import { useHistory } from "react-router-dom";
 import { finishParticipation } from "./localstorage-handlers";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { actions } from "redux/slices/participation/status";
-import { selectors } from "redux/slices/participation/page";
+import { PageParticipationRedux, selectors } from "redux/slices/participation/page";
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 import { client } from "api/gql-client";
@@ -67,9 +66,6 @@ export const ParticipationForm: React.FC<Props> = ({
         <Error message="Il n'y a pas de donnée sur le formulaire." />
       </Center>
     );
-
-  // if ((pages?.length ?? 0) < 1 || !selectedPage)
-  //   return <Box mt="60">No pages to display ! Contact the administrator !</Box>;
 
   const currentColor =
     attributes?.landing?.data?.attributes?.color_theme?.base || "black";
@@ -147,7 +143,7 @@ function useFinishHandler(participationId: string, slug: string | undefined) {
   };
 }
 
-function useNavigationHandlers(pages: IPage[] | undefined) {
+function useNavigationHandlers(pages: PageParticipationRedux[] | undefined) {
   const [selectedIdx, setSelectedIdx] = useState(0);
   const selectedPage = pages?.[selectedIdx];
 

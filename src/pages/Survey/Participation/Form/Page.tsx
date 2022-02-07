@@ -49,14 +49,14 @@ export const Page: React.FC<Props> = ({
   return (
     <Box>
       <Text variant="xl" my="20px">
-        {page.name}
+        {page.attributes.name ?? 'Missing page name 😣'}
       </Text>
 
       <Formik
         validateOnBlur
         validateOnMount
         enableReinitialize
-        validationSchema={formSchema(page.questions)}
+        validationSchema={formSchema(page.attributes.questions?.data)}
         initialValues={initialAnswers}
         onSubmit={(data, { setSubmitting, validateForm }) => {
           validateForm(data);

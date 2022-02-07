@@ -27,7 +27,7 @@ type InitializePayload = {
   surveyId: string,
 }
 
-type InitializedPayload = {
+export type InitializedPayload = {
   pages: SafeEntity<Page>[]
   questions: SafeEntity<Question>[]
   answers: SafeEntity<Answer>[]

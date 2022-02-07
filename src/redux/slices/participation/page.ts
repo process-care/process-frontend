@@ -4,14 +4,13 @@ import { RootState } from "redux/store";
 import { actions as statusAct } from 'redux/slices/participation/status';
 import { selectors as answerSelectors } from 'redux/slices/participation/answers';
 import { shouldShow } from "pages/Survey/Participation/Form/condition-evaluations";
-import { SafeEntity } from "api/entity-checker";
-import { Page } from "api/graphql/types.generated";
 import { EvaluationCondition } from "./types";
+import { ReduxPage } from "../types";
 
 // ---- INITIAL STATE
 
 // TODO: make the submitable false by default ?
-export type PageRedux = SafeEntity<Page> & { submitable?: boolean };
+export type PageParticipationRedux = ReduxPage & { submitable?: boolean };
 
 // ---- ACTIONS
 
@@ -24,7 +23,7 @@ export type SubmitablePayload = {
 
 const SLICE_NAME = 'pages';
 
-const adapter = createEntityAdapter<PageRedux>({
+const adapter = createEntityAdapter<PageParticipationRedux>({
   selectId: (p) => p.id,
 });
 
@@ -49,12 +48,12 @@ export const slice = createSlice({
 
 const entitySelectors = adapter.getSelectors();
 
-const selectById = (state: RootState, pageId: string | undefined): PageRedux | undefined => {
+const selectById = (state: RootState, pageId: string | undefined): PageParticipationRedux | undefined => {
   if (!pageId) return;
   return entitySelectors.selectById(state.participation.pages, pageId);
 };
 
-const selectAll = (state: RootState): PageRedux[] => entitySelectors.selectAll(state.participation.pages);
+const selectAll = (state: RootState): PageParticipationRedux[] => entitySelectors.selectAll(state.participation.pages);
 
 // TODO: Memoize this (or maybe compute it inside reducer when adding/updating answers, with extra reducers ?)
 // Note to self: Hmm... No, it's a computed property, so it should be computed upon selecting it, with memoization.
@@ -95,7 +94,7 @@ const selectEvaluation = (state: RootState, pageId: string): EvaluationCondition
 
 // TODO: Memoize this (or maybe compute it inside reducer when adding/updating answers, with extra reducers ?)
 // Same as above, it's computed, so it should be memoized and deduced WHEN needed (and not recomputed at every answer update)
-const selectShown = (state: RootState): PageRedux[] => {
+const selectShown = (state: RootState): PageParticipationRedux[] => {
   const allPages = entitySelectors.selectAll(state.participation.pages)
 
   const filtered = allPages.reduce((acc, p) => {
@@ -103,7 +102,7 @@ const selectShown = (state: RootState): PageRedux[] => {
     const show = shouldShow(evaluations);
     if (show) acc.push(p);
     return acc;
-  }, [] as PageRedux[]);
+  }, [] as PageParticipationRedux[]);
 
   return filtered;
 }

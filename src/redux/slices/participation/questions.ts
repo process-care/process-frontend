@@ -1,22 +1,16 @@
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
-import IQuestion from "types/form/question";
 
 import { actions as statusAct } from "redux/slices/participation/status";
 import { RootState } from "redux/store";
 import { selectors as answerSelectors } from "redux/slices/participation/answers";
 import { EvaluationCondition } from "./types";
-
-// ---- TYPES
-// Not needed, for now, may be removed later.
-
-// ---- INITIAL STATE
-// Nothing so far.
+import { ReduxQuestion } from "../types";
 
 // ---- SLICE
 
 const SLICE_NAME = "questions";
 
-const adapter = createEntityAdapter<IQuestion>({
+const adapter = createEntityAdapter<ReduxQuestion>({
   selectId: (q) => q.id,
 });
 
@@ -38,12 +32,12 @@ const entitySelectors = adapter.getSelectors();
 const selectById = (
   state: RootState,
   questionId: string | undefined
-): IQuestion | undefined => {
+): ReduxQuestion | undefined => {
   if (!questionId) return;
   return entitySelectors.selectById(state.participation.questions, questionId);
 };
 
-const selectAll = (state: RootState): IQuestion[] =>
+const selectAll = (state: RootState): ReduxQuestion[] =>
   entitySelectors.selectAll(state.participation.questions);
 
 // TODO: see the comments in "page-visited" slice => maybe this should return the boolean right away, instead
@@ -60,22 +54,25 @@ const selectEvaluation = (
   );
 
   if (!q) return [];
-  if (!q.conditions) return [];
+  const data = q.attributes.conditions?.data;
+  if (!data) return [];
 
   // Get the related answers
-  const evals = q.conditions.reduce((acc, c) => {
-    const { id, group, operator, target_value, target } = c;
-    if (!target) return acc;
+  const evals = data.reduce((acc, c) => {
+    const targetId = c.attributes?.target?.data?.id;
+    if (!c.id || !c.attributes || !targetId) return acc;
 
-    const answer = answerSelectors.selectById(state, target.id);
+    const answer = answerSelectors.selectById(state, targetId);
+    const { group, operator, target_value } = c.attributes;
+
     if (!answer) return acc;
 
     acc.push({
-      id,
+      id: c.id,
       group,
       operator,
       target_value,
-      answer: answer?.value,
+      answer: answer.value,
     });
 
     return acc;

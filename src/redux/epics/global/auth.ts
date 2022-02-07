@@ -21,13 +21,9 @@ const loginEpic: Epic = (action$) =>
           localStorage.setItem("process__user", JSON.stringify(res.login));
         }
 
-        return {
-          user: res,
-        };
+        return { user: res };
       } catch (error: any) {
-        return {
-          error,
-        };
+        return { error};
       }
     }),
 
@@ -35,6 +31,7 @@ const loginEpic: Epic = (action$) =>
       if (res.user) {
         return actions.logged(res.user.login);
       }
+      
       return actions.authFailed(res.error?.response?.errors);
     })
   );

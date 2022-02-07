@@ -1,25 +1,30 @@
-import ICondition from "types/form/condition";
-import IPage from "types/form/page";
+import { ConditionRedux } from "redux/slices/types";
+import { PageRedux } from "redux/slices/types";
 
 // Hide current page and page after when we make condition page.
 // Hide page after current page when we make condition input
 
 export const isInactive = (
-  selectedCondition: ICondition | undefined,
-  pages: IPage[],
+  selectedCondition: ConditionRedux | undefined,
+  pages: PageRedux[],
   i: number
 ): boolean => {
   if (selectedCondition?.id !== undefined) {
-    if (selectedCondition?.type === "page") {
+    if (selectedCondition?.attributes?.type === "page") {
       return (
-        pages.findIndex((p) => p.id === selectedCondition?.referer_page?.id) -
+        pages.findIndex(
+          (p) => p.id === selectedCondition?.attributes?.referer_page?.data?.id
+        ) -
           1 <
         i
       );
     } else {
       return (
         pages.findIndex(
-          (p) => p.id === selectedCondition?.referer_question?.page?.id
+          (p) =>
+            p.id ===
+            selectedCondition?.attributes?.referer_question?.data?.attributes
+              ?.page?.data?.id
         ) < i
       );
     }

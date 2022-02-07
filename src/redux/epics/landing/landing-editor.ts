@@ -16,7 +16,10 @@ const loadEpic: Epic = (action$) =>
       if (landing) return sanitizeEntity(landing);
     }),
     map((landing) => {
-      return actions.loaded(landing);
+      if (landing) return actions.loaded(landing);
+      else return actions.loadFailed();
+
+      // TODO: HANDLE ERROR
     })
   );
 
@@ -38,10 +41,6 @@ const updateEpic: Epic = (action$, state$) =>
       const data = { ...accumulated, id: undefined };
       console.log("Saving to DB:", data);
       await sdk.UpdateLanding({ id: currentLandingId, data });
-      // await client.request(UpdateLandingDocument, {
-      //   id: currentLandingId,
-      //   data,
-      // });
       return savingAt;
     }),
     map((savedDate) => actions.updated({ lastSaved: savedDate }))

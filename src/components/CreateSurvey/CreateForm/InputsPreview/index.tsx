@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import Card from "./Card";
 
-import IQuestion from "types/form/question";
+import { QuestionRedux } from "redux/slices/types";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { Formik, Form } from "formik";
 import { Header } from "./Header";
@@ -27,7 +27,7 @@ export interface ContainerProps {
 }
 
 interface Props {
-  order: IQuestion["id"][];
+  order: QuestionRedux["id"][];
   surveyId: string;
 }
 
@@ -42,7 +42,7 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
   const isLoading = useAppSelector(selectors.questions.isLoading);
   const error = useAppSelector(selectors.questions.error);
 
-  const renderCard = (input: IQuestion, index: number) => {
+  const renderCard = (input: QuestionRedux, index: number) => {
     return <Card key={input.id} input={input} index={index} />;
   };
 

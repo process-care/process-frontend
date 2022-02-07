@@ -48,7 +48,7 @@ export const initialQuestionState: QuestionEditor = {
 
 type UpdatePayload = {
   id: string;
-  changes: QuestionRedux;
+  changes: QuestionRedux | any;
 };
 
 type UpdatedPayload = {

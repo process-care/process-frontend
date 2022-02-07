@@ -4,6 +4,7 @@ import { RootState } from "redux/store";
 import { DateTime } from "luxon";
 import { GlobalState } from "../scientistData";
 import { PageRedux } from "../types";
+import { Maybe } from "api/graphql/types.generated";
 
 // ----- ENTITY ADAPTER
 
@@ -14,7 +15,7 @@ export const pageAdapter = createEntityAdapter<PageRedux>({
 // ---- TYPES
 
 export interface PageEditor {
-  selectedPage: string;
+  selectedPage: Maybe<string> | undefined;
   redirectToPage?: string;
   isCreating: boolean;
   isLoading: boolean;
@@ -94,13 +95,15 @@ const getAllPages = (state: RootState): PageRedux[] => {
   );
 };
 
-const getSelectedPageId = (state: RootState): string =>
+//  TODO: Refacto any here
+const getSelectedPageId = (state: RootState): any =>
   state.scientistData.pages.selectedPage;
 
-const getSelectedPage = (state: RootState): PageRedux | undefined =>
+const getSelectedPage = (state: RootState): PageRedux | any => {
   pageAdapter
     .getSelectors()
     .selectById(state.scientistData.pages, getSelectedPageId(state));
+};
 
 // ---- EXPORTS
 

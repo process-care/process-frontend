@@ -32,7 +32,7 @@ export const landingEditorSlice = createSlice({
     load: (state, _action: PayloadAction<string>) => {
       state.isLoading = true;
     },
-    loaded: (state, action: PayloadAction<LandingRedux | undefined>) => {
+    loaded: (state, action: PayloadAction<LandingRedux>) => {
       state.isLoading = false;
       const landing = action.payload;
       state.data = landing;
@@ -81,8 +81,7 @@ export const landing = (state: RootState): Landing | undefined =>
   getAttributes(state);
 export const members = (state: RootState): Landing["members"] =>
   getAttributes(state)?.members;
-export const partners = (state: RootState): Landing["partners"] | undefined =>
-  getAttributes(state)?.partners;
+
 export const about = (state: RootState): Landing["about_page"] | undefined =>
   getAttributes(state)?.about_page;
 

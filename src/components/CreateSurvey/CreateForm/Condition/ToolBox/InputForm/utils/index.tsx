@@ -1,4 +1,4 @@
-import IQuestion from "types/form/question";
+import { QuestionRedux } from "redux/slices/types";
 import React from "react";
 import {
   TextareaFields,
@@ -23,9 +23,9 @@ import {
 } from "../ValidationSchemas";
 
 export const renderFormTemplate = (
-  input: IQuestion | Record<string, any>
+  input: QuestionRedux | Record<string, any>
 ): React.ReactNode => {
-  switch (input?.type) {
+  switch (input?.attributes?.type) {
     case "input":
       return <InputFields />;
       break;
@@ -65,9 +65,9 @@ export const renderFormTemplate = (
 };
 
 export const renderFormValidationSchema = (
-  input: IQuestion | Record<string, any>
+  input: QuestionRedux | Record<string, any>
 ): React.ReactFragment => {
-  switch (input?.type) {
+  switch (input?.attributes?.type) {
     case "input":
       return CommonFieldsSchema;
       break;

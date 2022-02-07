@@ -1,22 +1,23 @@
 import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
-import { Survey, SURVEY_STATUS } from "types/survey";
+import { SURVEY_STATUS } from "types/survey";
 import { useCreateLandingMutation } from "api/graphql/queries/landing.gql.generated";
 import { client } from "api/gql-client";
 import { useUpdateSurveyMutation } from "api/graphql/queries/survey.gql.generated";
+import { SurveyRedux } from "redux/slices/types";
 
 // ---- TYPES
 
 type Navigators = {
-  gotToLanding: () => Promise<void>,
-  goToForm: () => void,
-  goToConsent: () => void,
-  goToSurveyMetadatas: () => void,
+  gotToLanding: () => Promise<void>;
+  goToForm: () => void;
+  goToConsent: () => void;
+  goToSurveyMetadatas: () => void;
 };
 
 // ---- HOOKS
 
-export const useNavigator = (survey: Survey | undefined): Navigators => {
+export const useNavigator = (survey: SurveyRedux | undefined): Navigators => {
   const history = useHistory();
 
   const { mutateAsync: addLanding } = useCreateLandingMutation(client);
@@ -27,7 +28,8 @@ export const useNavigator = (survey: Survey | undefined): Navigators => {
     // If no survey, don't do anything
     if (!survey) return;
 
-    const { id, landing, title, slug } = survey;
+    const { landing, title, slug } = survey?.attributes;
+    const { id } = survey;
 
     // If the landing is not created yet, create it
     if (!landing) {

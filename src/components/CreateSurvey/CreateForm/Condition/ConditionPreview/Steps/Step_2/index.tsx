@@ -2,11 +2,11 @@ import React from "react";
 
 import { Button, Flex } from "@chakra-ui/react";
 import { operators, operatorsForMultiple } from "constants/operators";
-import ICondition from "types/form/condition";
+import { ConditionRedux } from "redux/slices/types";
 import { checkIfMultiple } from "utils/formBuilder/input";
 
 interface Props {
-  selectedCondition: ICondition;
+  selectedCondition: ConditionRedux;
   updateStep: (d: any) => void;
 }
 
@@ -26,7 +26,7 @@ export const Step_2: React.FC<Props> = ({ selectedCondition, updateStep }) => {
       pt="10%"
     >
       {authorizedOperators().map(({ id, name }) => {
-        const isSelected = id === selectedCondition.operator;
+        const isSelected = id === selectedCondition?.attributes?.operator;
 
         return (
           <Button

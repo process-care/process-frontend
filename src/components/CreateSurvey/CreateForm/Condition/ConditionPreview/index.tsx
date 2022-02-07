@@ -7,12 +7,12 @@ import { Step_2 } from "./Steps/Step_2";
 import { Step_3 } from "./Steps/Step_3";
 import { StepCounter } from "./Steps/StepCounter";
 import { checkStepValidation } from "./Steps/utils";
-import ICondition from "types/form/condition";
+import { ConditionRedux } from "redux/slices/types";
 import { Loader } from "components/Spinner";
 import { actions, selectors } from "redux/slices/scientistData";
 
 interface Props {
-  selectedCondition: ICondition;
+  selectedCondition: ConditionRedux;
 }
 
 export const ConditionPreview: React.FC<Props> = ({ selectedCondition }) => {
@@ -20,15 +20,16 @@ export const ConditionPreview: React.FC<Props> = ({ selectedCondition }) => {
   const step = useAppSelector(selectors.conditions.getStep);
   const isValid = useAppSelector(selectors.conditions.getValidity);
 
-  const handleUpdate = (changes: Record<string, any>) => {
-    dispatch(
-      actions.updateCondition({
-        id: selectedCondition.id,
-        changes: {
-          ...changes,
-        },
-      })
-    );
+  const handleUpdate = (changes: ConditionRedux) => {
+    // TODO:REFACTO uncomment and fix
+    // dispatch(
+    //   actions.updateCondition({
+    //     changes: {
+    //       id: selectedCondition.id,
+    //       attributes: changes,
+    //     },
+    //   })
+    // );
   };
 
   const renderStep = () => {

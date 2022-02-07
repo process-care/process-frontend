@@ -25,6 +25,7 @@ import {
 import { TitleDivider } from "components/TitleDivider";
 import { getQuestionName } from "constants/inputs";
 import { InfoIcon } from "@chakra-ui/icons";
+import { QuestionRedux } from "redux/slices/types";
 
 interface Props {
   order: string[];
@@ -42,8 +43,7 @@ const InputForm: React.FC<Props> = ({ order }) => {
   const selectedQuestionId = useAppSelector(
     selectors.questions.getSelectedQuestionId
   );
-  const [prevState, setPrevState] =
-    useState<Record<string, any>>(selectedQuestion);
+  const [prevState, setPrevState] = useState<QuestionRedux>(selectedQuestion);
 
   const type = selectedQuestion?.type;
 

@@ -1,13 +1,13 @@
-// import IPage from "types/form/page";
-// import IQuestion from "types/form/question";
+// import {PageRedux} from "redux/slices/types";
+// import {QuestionRedux} from "redux/slices/types";
 // import { ILanding } from "types/landing";
 
 // // Attributes from the API
 // export interface SurveyAttributes {
 
-//   order: IQuestion["id"][];
+//   order: QuestionRedux["id"][];
 //   description: string;
-//   pages: IPage[];
+//   pages: PageRedux[];
 //   landing?: ILanding;
 //   title: string;
 //   slug: string;

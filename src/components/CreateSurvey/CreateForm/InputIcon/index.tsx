@@ -1,10 +1,10 @@
 import { Box } from "@chakra-ui/react";
 import { SvgHover } from "components/SvgHover";
-import IQuestion from "types/form/question";
+import { QuestionRedux } from "redux/slices/types";
 import React from "react";
 
 interface Props {
-  type: IQuestion["type"];
+  type: QuestionRedux["type"];
 }
 
 import { ReactComponent as Checkbox } from "./assets/checkbox.svg";
@@ -18,7 +18,9 @@ import { ReactComponent as TextArea } from "./assets/text-area.svg";
 import { ReactComponent as Wysiwyg } from "./assets/wysiwyg.svg";
 
 // TODO replace string by SVG orperator.
-export const renderInput = (type: IQuestion["type"]): React.ReactElement => {
+export const renderInput = (
+  type: QuestionRedux["type"]
+): React.ReactElement => {
   switch (type) {
     case "checkbox":
       return <Checkbox />;

@@ -2,7 +2,7 @@ import React from "react";
 import { Formik, Form } from "formik";
 
 import { Box, Container, Text, Flex } from "@chakra-ui/react";
-import ICondition from "types/form/condition";
+import { ConditionRedux } from "redux/slices/types";
 import { t } from "static/condition";
 
 import { ReactComponent as Submit } from "./../../assets/submit.svg";
@@ -13,7 +13,7 @@ import { actions, selectors } from "redux/slices/scientistData";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 interface Props {
-  selectedCondition: ICondition;
+  selectedCondition: ConditionRedux;
   updateStep: (d: any) => void;
 }
 
@@ -28,7 +28,9 @@ export const Step_3: React.FC<Props> = ({ selectedCondition, updateStep }) => {
     <Container w="100%" maxW="unset" p="0">
       <Formik
         validateOnBlur={false}
-        initialValues={{ target_value: selectedCondition.target_value }}
+        initialValues={{
+          target_value: selectedCondition?.attributes.target_value,
+        }}
         onSubmit={(data, { setSubmitting, validateForm }) => {
           validateForm(data);
           setSubmitting(true);

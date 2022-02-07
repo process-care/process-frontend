@@ -14,7 +14,7 @@ import {
   FreeClassification,
   MonoThumbnail,
 } from "components/Fields";
-import IQuestion from "types/form/question";
+import { QuestionRedux } from "redux/slices/types";
 import { t } from "static/input";
 import { useAppSelector } from "redux/hooks";
 import { useLocation } from "react-router-dom";
@@ -24,7 +24,7 @@ interface Options {
   label: string;
 }
 
-export const renderInput = (input: IQuestion): React.ReactNode => {
+export const renderInput = (input: QuestionRedux): React.ReactNode => {
   const location = useLocation();
   const isCollapsed =
     useAppSelector((state) => state.editor.form.isCollapseView) &&

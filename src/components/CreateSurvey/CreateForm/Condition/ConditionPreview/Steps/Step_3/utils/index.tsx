@@ -1,12 +1,12 @@
 import { InputBox } from "components/CreateSurvey/CreateForm/InputsPreview/InputBox";
 import { Textarea } from "components/Fields";
-import ICondition from "types/form/condition";
+import { ConditionRedux } from "redux/slices/types";
 import React from "react";
 import { useAppDispatch } from "redux/hooks";
 import { actions } from "redux/slices/scientistData";
 
 export const renderInput = (
-  selectedCondition: ICondition
+  selectedCondition: ConditionRedux
 ): React.ReactElement => {
   const dispatch = useAppDispatch();
 
@@ -25,11 +25,11 @@ export const renderInput = (
     dispatch(actions.setValidityCondition(bool));
   };
 
-  const target_question = selectedCondition.target;
+  const target_question = selectedCondition?.attributes.target;
   const Options = () => {
     const answers =
-      target_question?.options !== undefined &&
-      Object.values(target_question?.options);
+      target_question?.data?.attributes?.options !== undefined &&
+      Object.values(target_question?.data?.attributes?.options);
     if (!answers) {
       return <p>Erreur, pas de réponses</p>;
     } else {
@@ -37,7 +37,7 @@ export const renderInput = (
         <ul style={{ width: "100%" }}>
           {answers.map((option) => (
             <InputBox
-              isSelected={selectedCondition.target_value === option}
+              isSelected={selectedCondition?.attributes.target_value === option}
               isOptionMode
               option={option}
               onClick={() => {
@@ -53,7 +53,7 @@ export const renderInput = (
     }
   };
 
-  switch (target_question?.type) {
+  switch (target_question?.data?.attributes?.type) {
     case "select":
       return <Options />;
       break;

@@ -1,7 +1,7 @@
-import IQuestion from "types/form/question";
+import { QuestionRedux } from "redux/slices/types";
 
 type Obj = {
-  type: IQuestion["type"];
+  type: QuestionRedux["type"];
   name: string;
   category: "other" | "simple" | "complex";
 };
@@ -66,7 +66,7 @@ export const inputs: Obj[] = [
   },
 ];
 
-export const getQuestionName = (type: IQuestion["type"]): string => {
+export const getQuestionName = (type: QuestionRedux["type"]): string => {
   const question = inputs.find((q) => q.type === type);
   return question ? question.name : "";
 };

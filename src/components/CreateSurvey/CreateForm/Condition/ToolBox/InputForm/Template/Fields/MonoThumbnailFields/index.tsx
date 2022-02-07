@@ -1,24 +1,25 @@
 import { Box } from "@chakra-ui/react";
+import { Maybe } from "api/graphql/sdk.generated";
+import { Enum_Question_Type } from "api/graphql/types.generated";
 import { NumberInput, Select } from "components/Fields";
 import { TitleDivider } from "components/TitleDivider";
 import React, { useState, useEffect } from "react";
 import { useAppSelector } from "redux/hooks";
 import { selectors } from "redux/slices/scientistData";
-import IQuestion from "types/form/question";
 
 import { CommonFields } from "../../index";
 import { AssociatedSubfields } from "../AssociatedSubfields";
 import { GradeFields } from "./GradeFields";
 
-interface Option {
+export interface Option {
   label: string;
-  value: IQuestion["type"];
+  value: Maybe<Enum_Question_Type> | undefined;
 }
 
 const answers: Option[] = [
-  { label: "Question curseur", value: "slider" },
-  { label: "Question Nombre", value: "number_input" },
-  { label: "Question bouton radio", value: "radio" },
+  { label: "Question curseur", value: Enum_Question_Type.Slider },
+  { label: "Question Nombre", value: Enum_Question_Type.NumberInput },
+  { label: "Question bouton radio", value: Enum_Question_Type.Radio },
 ];
 
 export const MonoThumbnailFields: React.FC = () => {

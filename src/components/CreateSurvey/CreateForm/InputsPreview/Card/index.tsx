@@ -9,7 +9,7 @@ import {
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 import { renderInput } from "./utils";
-import IQuestion from "types/form/question";
+import { QuestionRedux } from "redux/slices/types";
 import { setIsRemoving } from "redux/slices/formBuilder";
 import { Draggable } from "react-beautiful-dnd";
 
@@ -27,7 +27,7 @@ import { SvgHover } from "components/SvgHover";
 import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
 
 interface CardProps {
-  input: IQuestion;
+  input: QuestionRedux;
   index: number;
 }
 
@@ -36,7 +36,7 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
   const { entityToRemove } = useAppSelector((state) => state.editor.form);
   const { status } = useAppSelector((state) => state.scientistData.survey);
 
-  const getCondition = (input: IQuestion) =>
+  const getCondition = (input: QuestionRedux) =>
     useAppSelector((state) =>
       selectors.conditions.getConditionsByQuestionId(state, input.id)
     );

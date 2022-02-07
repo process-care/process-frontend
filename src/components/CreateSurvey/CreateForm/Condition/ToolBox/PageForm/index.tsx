@@ -10,7 +10,7 @@ import { t } from "static/survey";
 import ToolBox from "../InputsButton";
 import { Formik, Form } from "formik";
 import { Textarea } from "components/Fields";
-import IQuestion from "types/form/question";
+import { QuestionRedux } from "redux/slices/types";
 import { RemovingConfirmation } from "../../../RemovingConfirmation";
 import { SvgHover } from "components/SvgHover";
 import { ReactComponent as Trash } from "assets/trash.svg";
@@ -35,7 +35,7 @@ export const PageForm: React.FC = () => {
 
   const isRemoving = entityToRemove === selectedPageId;
 
-  const handleSelect = (type: IQuestion["type"]) => {
+  const handleSelect = (type: QuestionRedux["type"]) => {
     dispatch(actions.setSelectedQuestion(""));
     dispatch(actions.createQuestion({ type }));
   };

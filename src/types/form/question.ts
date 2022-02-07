@@ -1,11 +1,11 @@
-// import ICondition from "./condition";
-// import IPage from "./page";
+// import ConditionRedux from "./condition";
+// import PageRedux from "./page";
 
 // interface Modality {
 //   description: string;
 //   file?: string;
 // }
-// export default interface IQuestion {
+// export default interface QuestionRedux {
 //   type:
 //     | "input"
 //     | "wysiwyg"
@@ -36,7 +36,7 @@
 //   rows?: "small" | "medium" | "large" | undefined;
 //   required?: boolean;
 //   default_value?: string | undefined;
-//   page?: Partial<IPage>;
+//   page?: Partial<PageRedux>;
 //   wysiwyg?: string | undefined;
 //   freeclassification_responses_count?: string;
 //   mono_thumbnail_input?: {
@@ -46,7 +46,7 @@
 //     max?: number;
 //     step?: number;
 //   };
-//   conditions?: ICondition[];
+//   conditions?: ConditionRedux[];
 //   max_loop?: string;
 //   factors?: [
 //     {
@@ -56,10 +56,10 @@
 //   ];
 // }
 
-// export interface IQuestionsRes {
-//   questions: IQuestion[];
+// export interface QuestionReduxsRes {
+//   questions: QuestionRedux[];
 // }
 
-// export interface IQuestionRes {
-//   question: IQuestion;
+// export interface QuestionReduxRes {
+//   question: QuestionRedux;
 // }

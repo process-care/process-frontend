@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Box, Flex, FormLabel, Spinner, Text } from "@chakra-ui/react";
-import IQuestion from "types/form/question";
+import { QuestionRedux } from "redux/slices/types";
 import { v4 as uuidv4 } from "uuid";
 import { useField } from "formik";
 import { useAppSelector } from "redux/hooks";
@@ -10,7 +10,7 @@ interface Props {
   helpText?: string;
   name: string;
   isCollapsed?: boolean;
-  factors: IQuestion["factors"];
+  factors: QuestionRedux["factors"];
   maxLoop: string | undefined;
   mono_thumbnail_input: "radio" | "slider" | "number_input";
 }
@@ -155,7 +155,7 @@ export const MonoThumbnail: React.FC<Props> = ({
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const useAssociatedLogic = (
-  factors: IQuestion["factors"],
+  factors: QuestionRedux["factors"],
   name: string
 ) => {
   const [field, , helpers] = useField(name);

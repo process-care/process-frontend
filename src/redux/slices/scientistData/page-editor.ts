@@ -46,11 +46,6 @@ export const initialPageState: PageEditor = {
 
 // ----- ACTIONS
 
-type UpdatePayload = {
-  id: string;
-  changes: PageRedux;
-};
-
 type UpdatedPayload = {
   lastUpdated: string;
 };
@@ -70,6 +65,11 @@ type ID = {
 type CreatedPayload = {
   page: PageRedux;
   lastCreated: string;
+};
+
+type UploadPayload = {
+  id: string;
+  changes: PageRedux;
 };
 
 // ---- SELECTORS
@@ -133,7 +133,7 @@ export const pageReducer = {
   },
   updatePage: (
     state: GlobalState,
-    action: PayloadAction<UpdatePayload>
+    action: PayloadAction<UploadPayload>
   ): void => {
     state.pages.lastUpdated = new Date().toISOString();
     pageAdapter.updateOne(state.pages, action.payload);

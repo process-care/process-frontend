@@ -98,9 +98,12 @@ export const PageForm: React.FC = () => {
               actions.updatePage({
                 id: selectedPageId,
                 changes: {
-                  short_name: values.short_name,
-                  name: values.name,
-                  is_locked: values.is_locked,
+                  id: selectedPageId,
+                  attributes: {
+                    short_name: values.short_name,
+                    name: values.name,
+                    is_locked: values.is_locked,
+                  },
                 },
               })
             );

@@ -29,9 +29,8 @@ export const CreateSurveyForm: React.FC = () => {
 
   // Flag to avoid saving the initial values injected into Formik
   const firstRender = useRef(true);
-  const data = useAppSelector(selectors.survey);
+  const survey = useAppSelector(selectors.survey);
   const error = useAppSelector(selectors.error);
-
   const step = useAppSelector(selectors.step);
 
   const onSubmit = useCallback((data, { setSubmitting, validateForm }) => {
@@ -40,12 +39,10 @@ export const CreateSurveyForm: React.FC = () => {
     dispatch(actions.post(data));
   }, []);
 
-  console.log(data, error, step);
-
   return (
     <>
       <Formik
-        initialValues={formatValues(data)}
+        initialValues={formatValues(survey)}
         enableReinitialize
         validationSchema={createSurveySchema}
         onSubmit={onSubmit}
@@ -57,8 +54,18 @@ export const CreateSurveyForm: React.FC = () => {
               firstRender.current = false;
               return;
             }
-
-            dispatch(actions.update({ ...values }));
+            if (!survey?.id) return;
+            dispatch(
+              actions.update({
+                id: survey?.id,
+                changes: {
+                  id: survey?.id,
+                  attributes: {
+                    ...values,
+                  },
+                },
+              })
+            );
           }, [values]);
 
           return (

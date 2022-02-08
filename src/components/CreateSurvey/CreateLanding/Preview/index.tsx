@@ -7,7 +7,8 @@ import { Header } from "./Header";
 import { Team } from "./Team";
 import { useAppSelector } from "redux/hooks";
 import { selectors } from "redux/slices/landing-editor";
-import { LandingRedux } from "redux/slices/types";
+// import { LandingRedux } from "redux/slices/types";
+// import { SurveyBySlugQuery } from "api/graphql/sdk.generated";
 
 // ---- STATICS
 
@@ -18,7 +19,8 @@ const big_placeholder =
 
 interface Props {
   isUserView?: boolean;
-  data?: LandingRedux | null;
+  // TODO: Refacto this and remove any => LandingRedux
+  data?: any;
 }
 
 // ---- COMPONENT

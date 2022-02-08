@@ -22,6 +22,13 @@ const initialState: LandingEditor = {
   lastSaved: new Date().toISOString(),
 };
 
+// ----- ACTIONS
+
+type UploadPayload = {
+  id: string;
+  changes: LandingRedux;
+};
+
 // ----- SLICE
 const SLICE_NAME = "landing-editor";
 
@@ -41,9 +48,9 @@ export const landingEditorSlice = createSlice({
       state.isLoading = false;
       state.error = "Chargement de la landing a échoué.";
     },
-    update: (state, action: PayloadAction<LandingRedux>) => {
+    update: (state, action: PayloadAction<UploadPayload>) => {
       state.lastUpdated = new Date().toISOString();
-      const updated = { ...state.data, ...action.payload };
+      const updated = { ...state.data, ...action.payload?.changes };
       state.data = updated;
     },
     updated: (state, action: PayloadAction<LastSaved>) => {
@@ -77,12 +84,15 @@ export const isEditingAbout = (state: RootState): boolean =>
   state.editor.landing.isEditingAbout;
 export const hasMembers = (state: RootState): boolean =>
   getAttributes(state)?.members.length > 0;
-export const landing = (state: RootState): Landing | undefined =>
-  getAttributes(state);
-export const members = (state: RootState): Landing["members"] =>
-  getAttributes(state)?.members;
+export const getLanding = (state: RootState): LandingRedux | undefined =>
+  state.editor.landing.data;
+export const members = (
+  state: RootState
+): LandingRedux["attributes"]["members"] => getAttributes(state)?.members;
 
-export const about = (state: RootState): Landing["about_page"] | undefined =>
+export const about = (
+  state: RootState
+): LandingRedux["attributes"]["about_page"] | undefined =>
   getAttributes(state)?.about_page;
 
 type HeaderData = Partial<Pick<Landing, "title" | "color_theme" | "logo">>;
@@ -105,7 +115,7 @@ export const selectors = {
   isEditingAbout,
   hasMembers,
   headerData,
-  landing,
+  getLanding,
   members,
   about,
 };

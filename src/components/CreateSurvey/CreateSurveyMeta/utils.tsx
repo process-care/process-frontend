@@ -4,6 +4,7 @@ import { Select, Textarea } from "components/Fields";
 import { CustomCreatableSelect } from "components/Fields/SelectCreatable";
 import { FormikErrors } from "formik";
 import { SurveyBuilder } from "redux/slices/surveyBuilderOLD";
+import { SurveyRedux } from "redux/slices/types";
 
 // TODO : Get the list of all the tags from the backend
 const t = {
@@ -148,15 +149,17 @@ export const checkValidity = (
 
 // remove unused values
 export const formatValues = (
-  data: Partial<SurveyBuilder["survey"]> | undefined
-): Partial<SurveyBuilder["survey"]> => {
+  data: SurveyRedux | undefined
+): SurveyRedux["attributes"] => {
+  const attributes = data?.attributes;
   return {
-    title: data?.title,
-    slug: data?.slug,
-    email: data?.email,
-    language: data?.language,
-    description: data?.description,
-    keywords: data?.keywords,
-    categories: data?.categories,
+    title: attributes?.title,
+    // TODO: REFACTO HUMMMM ??? the slug can't be null
+    slug: attributes?.slug ?? "",
+    email: attributes?.email,
+    language: attributes?.language,
+    description: attributes?.description,
+    keywords: attributes?.keywords,
+    categories: attributes?.categories,
   };
 };

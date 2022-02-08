@@ -22,7 +22,7 @@ export const LandingForm: React.FC = () => {
 
   // Flag to avoid saving the initial values injected into Formik
   const firstRender = useRef(true);
-  const data = useAppSelector(selectors.landing);
+  const landing = useAppSelector(selectors.getLanding);
 
   const onSubmit = useCallback((data, { setSubmitting, validateForm }) => {
     validateForm(data);
@@ -37,12 +37,23 @@ export const LandingForm: React.FC = () => {
   }, []);
 
   const onSave = () => {
-    dispatch(actions.update({ ...data }));
+    if (!landing?.id) return;
+    dispatch(
+      actions.update({
+        id: landing?.id,
+        changes: {
+          id: landing?.id,
+          attributes: {
+            ...landing?.attributes,
+          },
+        },
+      })
+    );
   };
   return (
     <Formik
       validateOnBlur={false}
-      initialValues={data || initialValues}
+      initialValues={landing || initialValues}
       onSubmit={onSubmit}
     >
       {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment*/}
@@ -57,7 +68,7 @@ export const LandingForm: React.FC = () => {
             return;
           }
 
-          dispatch(actions.update({ ...values }));
+          onSave();
         }, [values]);
 
         // Target params for various uploads (cover, partners)
@@ -71,7 +82,19 @@ export const LandingForm: React.FC = () => {
 
         // Delete video handler
         const onDeleteVideo = useCallback(() => {
-          dispatch(actions.update({ video_url: "" }));
+          if (!landing?.id) return;
+          dispatch(
+            actions.update({
+              id: landing?.id,
+              changes: {
+                id: landing?.id,
+                attributes: {
+                  ...landing?.attributes,
+                  video_url: "",
+                },
+              },
+            })
+          );
           setFieldValue("video_url", "");
         }, []);
 
@@ -143,7 +166,7 @@ export const LandingForm: React.FC = () => {
                   rows={Enum_Question_Rows.Small}
                   placeholder={t.video_url_placeholder}
                   label={t.video_url_label}
-                  isDisabled={Boolean(values.cover)}
+                  isDisabled={Boolean(values?.attributes?.cover)}
                 />
                 <Box mt={7} ml={4}>
                   <SvgHover>

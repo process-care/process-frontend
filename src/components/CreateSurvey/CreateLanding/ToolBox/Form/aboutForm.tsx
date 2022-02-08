@@ -12,11 +12,14 @@ export const AboutForm: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const aboutPage = useAppSelector(selectors.about);
-
+  const landing = useAppSelector(selectors.getLanding);
   const handleFinish = useCallback(() => {
     dispatch(actions.editAbout(false));
   }, []);
 
+  if (!landing) {
+    return <p>Une erreur est survenue</p>;
+  }
   return (
     <Formik
       validateOnBlur={false}
@@ -29,7 +32,18 @@ export const AboutForm: React.FC = () => {
     >
       {({ values }) => {
         React.useEffect(() => {
-          dispatch(actions.update({ about_page: values.about_page }));
+          dispatch(
+            actions.update({
+              id: landing?.id,
+              changes: {
+                id: landing?.id,
+                attributes: {
+                  title: landing?.attributes?.title,
+                  about_page: values.about_page,
+                },
+              },
+            })
+          );
         }, [values.about_page]);
 
         // Component

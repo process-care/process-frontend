@@ -1,4 +1,5 @@
 import { Box } from "@chakra-ui/react";
+import { Enum_Question_Rows } from "api/graphql/types.generated";
 import { Select, Textarea } from "components/Fields";
 import { CustomCreatableSelect } from "components/Fields/SelectCreatable";
 import { FormikErrors } from "formik";
@@ -34,7 +35,7 @@ export const renderInputs = (step: number): React.ReactElement => {
         <Textarea
           appearance="light"
           id="title"
-          rows="small"
+          rows={Enum_Question_Rows.Small}
           placeholder="Titre du projet"
           label="Renseigner le titre du projet"
         />
@@ -45,7 +46,7 @@ export const renderInputs = (step: number): React.ReactElement => {
         <Textarea
           appearance="light"
           id="slug"
-          rows="small"
+          rows={Enum_Question_Rows.Small}
           placeholder="Url du projet"
           label="Valider ou modifier l'url du projet"
         />
@@ -63,7 +64,7 @@ export const renderInputs = (step: number): React.ReactElement => {
           <Textarea
             appearance="light"
             id="description"
-            rows="medium"
+            rows={Enum_Question_Rows.Medium}
             placeholder="Description"
             label="Renseigner la description du projet"
             helpText="Description publique, affichée aux utilisateurs de PROCESS. 500 signes max"
@@ -101,7 +102,7 @@ export const renderInputs = (step: number): React.ReactElement => {
         <Textarea
           appearance="light"
           id="email"
-          rows="small"
+          rows={Enum_Question_Rows.Small}
           placeholder="Email de contact"
           label="Renseigner l'email de contact"
         />

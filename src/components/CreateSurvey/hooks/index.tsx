@@ -48,13 +48,13 @@ export const useNavigator = (survey: SurveyRedux | undefined): Navigators => {
 
     // Navigate to the landing
     history.push(`/survey/${slug}/create/landing`);
-  }, [survey?.id, survey?.slug]);
+  }, [survey?.id, survey?.attributes?.slug]);
 
   // Take you to the form editor
   const goToForm = useCallback(() => {
     if (!survey) return;
 
-    const { status, slug } = survey;
+    const { status, slug } = survey?.attributes;
     if (
       status !== SURVEY_STATUS.Draft &&
       process.env.NODE_ENV !== "development"
@@ -71,13 +71,13 @@ export const useNavigator = (survey: SurveyRedux | undefined): Navigators => {
   // Take you to the consent page
   const goToConsent = useCallback(() => {
     if (!survey) return;
-    history.push(`/survey/${survey.slug}/create/consent`);
+    history.push(`/survey/${survey?.attributes?.slug}/create/consent`);
   }, [survey?.id]);
 
   // Take you to the survey metadatas page
   const goToSurveyMetadatas = useCallback(() => {
     if (!survey) return;
-    history.push(`/survey/${survey.slug}/create/metadatas`);
+    history.push(`/survey/${survey?.attributes?.slug}/create/metadatas`);
   }, [survey?.id]);
 
   return {

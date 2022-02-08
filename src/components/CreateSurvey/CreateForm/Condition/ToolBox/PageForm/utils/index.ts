@@ -12,11 +12,15 @@ export const getNewOrder: any = (
   const order = global.survey.order === null ? [] : global.survey.order;
   const selectedPageId = global.pages.selectedPage;
   const q = Object.entries(global.questions.entities);
-  const questions = q.filter((c) => c[1]?.page?.id === selectedPageId);
+  const questions = q.filter(
+    (c) => c[1]?.attributes?.page?.data?.id === selectedPageId
+  );
 
   const previousPageIdx = pagesIds.findIndex((p) => p === selectedPageId) - 1;
   const previousPageId = pagesIds[previousPageIdx];
-  const previousQuestions = q.filter((c) => c[1]?.page?.id === previousPageId);
+  const previousQuestions = q.filter(
+    (c) => c[1]?.attributes?.page?.data?.id === previousPageId
+  );
   const length = questions?.length;
 
   if (questions && length && length > 0) {

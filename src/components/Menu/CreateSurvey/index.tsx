@@ -6,7 +6,7 @@ import { useAppSelector } from "redux/hooks";
 import { ReactComponent as Back } from "./assets/back.svg";
 
 interface Props {
-  surveyTitle: string | null | undefined;
+  surveyTitle?: string | null | undefined;
 }
 
 export const Menu: React.FC<Props> = ({ surveyTitle }) => {

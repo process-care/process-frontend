@@ -8,6 +8,7 @@ import { actions } from "redux/slices/scientistData";
 import { useDispatch } from "react-redux";
 import { Errors, renderAuthMessage } from "../../Errors";
 import { useAppSelector } from "redux/hooks";
+import { Enum_Question_Rows } from "api/graphql/types.generated";
 
 interface Props {
   cancel: () => void;
@@ -74,7 +75,7 @@ export const SigninForm: React.FC<Props> = ({ cancel }) => {
               <Flex justifyContent="center" flexDirection="column" w="100%">
                 <Textarea
                   isCollapsed={false}
-                  rows="small"
+                  rows={Enum_Question_Rows.Small}
                   label="E-mail"
                   placeholder="Renseigner votre email"
                   id="username"

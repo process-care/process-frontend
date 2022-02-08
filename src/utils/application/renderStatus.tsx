@@ -1,11 +1,11 @@
-import { SurveyBuilder } from "redux/slices/surveyBuilderOLD";
+import { Enum_Survey_Status, Maybe } from "api/graphql/types.generated";
 
 interface StatusTrad {
   trad: "Non publié" | "Finalisé" | "Archivé" | "En cours";
 }
 
 export const renderStatus = (
-  status: SurveyBuilder["survey"]["status"]
+  status: Maybe<Enum_Survey_Status> | undefined
 ): StatusTrad["trad"] => {
   switch (status) {
     case "draft":

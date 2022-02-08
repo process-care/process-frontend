@@ -1,72 +1,75 @@
+import { Enum_Question_Type } from "api/graphql/types.generated";
 import { QuestionRedux } from "redux/slices/types";
 
 type Obj = {
-  type: QuestionRedux["type"];
+  type: QuestionRedux["attributes"]["type"];
   name: string;
   category: "other" | "simple" | "complex";
 };
 
 export const inputs: Obj[] = [
   {
-    type: "wysiwyg",
+    type: Enum_Question_Type.Wysiwyg,
     name: "Wysiwyg",
     category: "other",
   },
   {
-    type: "text_area",
+    type: Enum_Question_Type.TextArea,
     name: "Question texte libre",
     category: "simple",
   },
   {
-    type: "select",
+    type: Enum_Question_Type.Select,
     name: "Questions liste déroulante",
     category: "simple",
   },
   {
-    type: "slider",
+    type: Enum_Question_Type.Slider,
     name: "Question curseur",
     category: "simple",
   },
   {
-    type: "number_input",
+    type: Enum_Question_Type.NumberInput,
     name: "Question nombre",
     category: "simple",
   },
 
   {
-    type: "radio",
+    type: Enum_Question_Type.Radio,
     name: "Question bouton radio",
     category: "simple",
   },
   {
-    type: "checkbox",
+    type: Enum_Question_Type.Checkbox,
     name: "Question case à cocher",
     category: "simple",
   },
 
   {
-    type: "date_picker",
+    type: Enum_Question_Type.DatePicker,
     name: "Question date",
     category: "simple",
   },
   {
-    type: "free_classification",
+    type: Enum_Question_Type.FreeClassification,
     name: "Classification démocratique du texte libre",
     category: "complex",
   },
   {
-    type: "mono_thumbnail",
+    type: Enum_Question_Type.MonoThumbnail,
     name: "Vignette (évaluation d'une seule vignette)",
     category: "complex",
   },
   {
-    type: "associated_classification",
+    type: Enum_Question_Type.AssociatedClassification,
     name: "Vignettes (choix parmi deux)",
     category: "complex",
   },
 ];
 
-export const getQuestionName = (type: QuestionRedux["type"]): string => {
+export const getQuestionName = (
+  type: QuestionRedux["attributes"]["type"]
+): string => {
   const question = inputs.find((q) => q.type === type);
   return question ? question.name : "";
 };

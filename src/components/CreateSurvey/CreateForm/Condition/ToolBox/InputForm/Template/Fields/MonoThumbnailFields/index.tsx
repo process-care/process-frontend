@@ -60,7 +60,7 @@ export const MonoThumbnailFields: React.FC = () => {
             id="mono_thumbnail_input.type"
             answers={answers}
             placeholder="Choisir une question"
-            defaultValue={answers[0].value}
+            defaultValue={answers[0].value ?? ""}
           />
         </Box>
 

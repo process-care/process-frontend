@@ -2,12 +2,13 @@ import React from "react";
 import { Textarea } from "components/Fields";
 import { useField } from "formik";
 import { Container, Text, Box } from "@chakra-ui/react";
+import { Enum_Question_Rows, Maybe } from "api/graphql/types.generated";
 
 interface Props {
   label: string;
   helpText?: string;
   placeholder: string;
-  rows: "small" | "medium" | "large" | undefined;
+  rows: Maybe<Enum_Question_Rows> | undefined;
   isRequired?: any;
   id: string;
   isCollapsed?: boolean;

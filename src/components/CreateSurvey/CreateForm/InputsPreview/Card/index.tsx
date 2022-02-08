@@ -91,16 +91,18 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
               <Box color={color}>
                 {!isRemoving && (
                   <Flex w="100%" justifyContent="space-between" pb={4}>
-                    <Text variant="xsMedium">{input.internal_title}</Text>
+                    <Text variant="xsMedium">
+                      {input?.attributes?.internal_title}
+                    </Text>
                     <Box>
-                      <InputIcon type={input.type} />
+                      <InputIcon type={input?.attributes.type} />
                     </Box>
                   </Flex>
                 )}
 
                 {isRemoving && (
                   <RemovingConfirmation
-                    content={`${t.removing_confirmation} ${input.internal_title} ?`}
+                    content={`${t.removing_confirmation} ${input?.attributes.internal_title} ?`}
                     confirm={handleDelete}
                     close={() => dispatch(setIsRemoving(""))}
                   />

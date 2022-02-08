@@ -4,6 +4,7 @@ import { QuestionRedux } from "redux/slices/types";
 import { Input, NumberInput, Textarea } from "components/Fields";
 import { RepeatedFields } from "../../..";
 import { useFormikContext } from "formik";
+import { Enum_Question_Rows } from "api/graphql/types.generated";
 
 const ID = "mono_thumbnail_input";
 interface Props {
@@ -28,7 +29,7 @@ export const GradeFields: React.FC<Props> = ({ selectedQuestion }) => {
     <Box mt="5">
       <Textarea
         isCollapsed={false}
-        rows="small"
+        rows={Enum_Question_Rows.Small}
         label="Label de la question"
         placeholder="Ex: Noter cette proposition de 0 à 10"
         id={`${ID}.label`}

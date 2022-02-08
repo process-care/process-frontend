@@ -15,6 +15,7 @@ import { SvgHover } from "components/SvgHover";
 import { ReactComponent as Delete } from "assets/delete.svg";
 import { goTop } from "utils/application/scrollTo";
 import { actions, selectors } from "redux/slices/landing-editor";
+import { Enum_Question_Rows } from "api/graphql/types.generated";
 
 export const LandingForm: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -105,7 +106,7 @@ export const LandingForm: React.FC = () => {
 
               <Textarea
                 id="title"
-                rows="medium"
+                rows={Enum_Question_Rows.Medium}
                 placeholder={t.title_input}
                 label={t.title_input}
                 helpText={t.title_helptext}
@@ -113,7 +114,7 @@ export const LandingForm: React.FC = () => {
 
               <Textarea
                 id="subtitle"
-                rows="large"
+                rows={Enum_Question_Rows.Large}
                 placeholder={t.subtitle_input}
                 label={t.subtitle_input}
                 helpText={t.subtitle_helptext}
@@ -139,7 +140,7 @@ export const LandingForm: React.FC = () => {
               <Flex alignItems="center">
                 <Textarea
                   id="video_url"
-                  rows="small"
+                  rows={Enum_Question_Rows.Small}
                   placeholder={t.video_url_placeholder}
                   label={t.video_url_label}
                   isDisabled={Boolean(values.cover)}

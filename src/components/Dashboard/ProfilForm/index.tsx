@@ -11,7 +11,12 @@ import { useHistory } from "react-router-dom";
 import { useAuth } from "components/Authentification/hooks";
 import { Loader } from "components/Spinner";
 import { changePassword } from "api/actions/password";
-import { UserQuery, useUpdateUserMutation, useUserQuery } from "./user.gql.generated";
+import {
+  UserQuery,
+  useUpdateUserMutation,
+  useUserQuery,
+} from "./user.gql.generated";
+import { Enum_Question_Rows } from "api/graphql/types.generated";
 import { client } from "api/gql-client";
 
 // ---- STATICS
@@ -38,7 +43,9 @@ export const ProfilForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const { cookies } = useAuth();
 
-  const { data: userResult, isLoading } = useUserQuery(client, { id: cookies.user.id });
+  const { data: userResult, isLoading } = useUserQuery(client, {
+    id: cookies.user.id,
+  });
   const { mutateAsync: updateMe } = useUpdateUserMutation(client);
 
   const history = useHistory();
@@ -96,9 +103,7 @@ export const ProfilForm: React.FC = () => {
                 <Avatar
                   _hover={{ cursor: "pointer" }}
                   ml="20px"
-                  name={
-                    attributes?.firstName + " " + attributes?.lastName
-                  }
+                  name={attributes?.firstName + " " + attributes?.lastName}
                   w="104px"
                   h="104px"
                   color="white"
@@ -130,7 +135,7 @@ rgba(0, 132, 255, 1))"
               >
                 <Textarea
                   isCollapsed={false}
-                  rows="small"
+                  rows={Enum_Question_Rows.Small}
                   label="Prénom"
                   placeholder="Renseigner votre prénom"
                   id="firstName"
@@ -138,7 +143,7 @@ rgba(0, 132, 255, 1))"
                 />
                 <Textarea
                   isCollapsed={false}
-                  rows="small"
+                  rows={Enum_Question_Rows.Small}
                   label="Nom"
                   placeholder="Renseigner votre nom"
                   id="lastName"
@@ -146,7 +151,7 @@ rgba(0, 132, 255, 1))"
                 />
                 <Textarea
                   isCollapsed={false}
-                  rows="small"
+                  rows={Enum_Question_Rows.Small}
                   label="Email de contact"
                   placeholder="Renseigner votre email"
                   id="email"
@@ -154,14 +159,14 @@ rgba(0, 132, 255, 1))"
                 />
                 <Textarea
                   isCollapsed={false}
-                  rows="small"
+                  rows={Enum_Question_Rows.Small}
                   label="Profession"
                   placeholder="Renseigner votre profession"
                   id="job"
                 />
                 <Textarea
                   isCollapsed={false}
-                  rows="small"
+                  rows={Enum_Question_Rows.Small}
                   label="Institution"
                   placeholder="Renseigner votre institution"
                   id="institution"

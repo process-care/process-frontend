@@ -1,6 +1,7 @@
 import React from "react";
 import { Textarea, Input } from "components/Fields";
 import { Box } from "@chakra-ui/react";
+import { Enum_Question_Rows } from "api/graphql/types.generated";
 
 interface Props {
   noPlacehoder?: boolean;
@@ -17,7 +18,7 @@ export const CommonFields: React.FC<Props> = ({ noPlacehoder = false }) => {
     >
       <Textarea
         isCollapsed={false}
-        rows="medium"
+        rows={Enum_Question_Rows.Medium}
         label="Label de la question"
         placeholder="Renseigner le label de votre question"
         id="label"

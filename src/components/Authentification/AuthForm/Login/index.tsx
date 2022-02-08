@@ -9,6 +9,7 @@ import { actions } from "redux/slices/scientistData";
 import { useAppSelector } from "redux/hooks";
 import { LoginSchema } from "components/Authentification/SiginForm/validationSchema";
 import { Errors, renderAuthMessage } from "components/Authentification/Errors";
+import { Enum_Question_Rows } from "api/graphql/types.generated";
 
 export const LoginForm: React.FC = () => {
   const dispatch = useDispatch();
@@ -46,7 +47,7 @@ export const LoginForm: React.FC = () => {
                 {/* {errors && <p>{error.name}</p>} */}
                 <Textarea
                   isCollapsed={false}
-                  rows="small"
+                  rows={Enum_Question_Rows.Small}
                   label="E-mail"
                   placeholder="Renseigner votre email"
                   id="identifier"

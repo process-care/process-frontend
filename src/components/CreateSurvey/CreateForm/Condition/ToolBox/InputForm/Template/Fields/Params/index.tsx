@@ -4,6 +4,7 @@ import { Textarea } from "components/Fields";
 import { Flex, Box, Button, Text } from "@chakra-ui/react";
 import { useAppSelector } from "redux/hooks";
 import { selectors as selectorsApplication } from "redux/slices/application";
+import { Enum_Question_Rows } from "api/graphql/types.generated";
 
 interface Props {
   name: string;
@@ -41,7 +42,7 @@ export const AssociatedSubfields: React.FC<Props> = ({ name }) => {
                       placeholder={
                         isEditing ? fields[index] : `Option ${index}`
                       }
-                      rows="small"
+                      rows={Enum_Question_Rows.Small}
                       isRequired
                       isCollapsed={false}
                     />

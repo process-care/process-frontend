@@ -7,7 +7,7 @@ import { Header } from "./Header";
 import { Team } from "./Team";
 import { useAppSelector } from "redux/hooks";
 import { selectors } from "redux/slices/landing-editor";
-import { ILanding } from "types/landing";
+import { LandingRedux } from "redux/slices/types";
 
 // ---- STATICS
 
@@ -18,7 +18,7 @@ const big_placeholder =
 
 interface Props {
   isUserView?: boolean;
-  data?: Partial<ILanding>;
+  data?: LandingRedux | null;
 }
 
 // ---- COMPONENT
@@ -63,7 +63,8 @@ export const Preview: React.FC<Props> = ({ isUserView, data }) => {
       </Box>
     );
   }
-  
+
+  const attributes = data?.attributes;
   return (
     <Box
       h={isFullView ? "100%" : "fit-content"}
@@ -73,18 +74,21 @@ export const Preview: React.FC<Props> = ({ isUserView, data }) => {
       mt={isFullView ? "0" : "100px"}
     >
       <Header
-        title={data?.title}
-        logo={data?.logo}
-        color_theme={data?.color_theme}
+        title={attributes?.title}
+        logo={attributes?.logo}
+        color_theme={attributes?.color_theme}
         onParticipate={onParticipate}
       />
       <Content data={data} onParticipate={onParticipate} />
-      {data?.members && (
-        <Team members={data.members} color_theme={data?.color_theme} />
+      {attributes?.members && (
+        <Team
+          members={attributes?.members}
+          color_theme={attributes?.color_theme}
+        />
       )}
       <Footer
-        partners_logos={data?.partners_logos ?? []}
-        color_theme={data?.color_theme}
+        partners_logos={attributes?.partners_logos ?? []}
+        color_theme={attributes?.color_theme}
       />
     </Box>
   );

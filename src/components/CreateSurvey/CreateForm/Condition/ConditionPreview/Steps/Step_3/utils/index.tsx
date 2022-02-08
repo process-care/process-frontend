@@ -4,6 +4,7 @@ import { ConditionRedux } from "redux/slices/types";
 import React from "react";
 import { useAppDispatch } from "redux/hooks";
 import { actions } from "redux/slices/scientistData";
+import { Enum_Question_Rows } from "api/graphql/types.generated";
 
 export const renderInput = (
   selectedCondition: ConditionRedux
@@ -60,7 +61,7 @@ export const renderInput = (
     case "slider":
       return (
         <Textarea
-          rows="small"
+          rows={Enum_Question_Rows.Small}
           id="target_value"
           label="Indiquer la valeur numérique"
           placeholder="Ex 5"
@@ -71,7 +72,7 @@ export const renderInput = (
     case "number_input":
       return (
         <Textarea
-          rows="small"
+          rows={Enum_Question_Rows.Small}
           id="target_value"
           label="Indiquer la valeur numérique"
           placeholder="Ex 5"
@@ -90,7 +91,7 @@ export const renderInput = (
     default:
       return (
         <Textarea
-          rows="small"
+          rows={Enum_Question_Rows.Small}
           id="target_value"
           label="Indiquer la valeur numérique"
           placeholder="Ex 5"

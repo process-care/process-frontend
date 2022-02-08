@@ -1,10 +1,10 @@
 import { Box, Text, Flex, Container, Image } from "@chakra-ui/react";
-import { IColor, ILanding, IMember } from "types/landing";
+import { Color, Member as MemberType } from "types/landing";
 import React from "react";
 
 type Props = {
-  members: ILanding["members"];
-  color_theme?: IColor;
+  members: MemberType[];
+  color_theme?: Color;
 };
 
 export const Team: React.FC<Props> = ({ members, color_theme }) => {
@@ -30,7 +30,7 @@ export const Team: React.FC<Props> = ({ members, color_theme }) => {
   );
 };
 
-const Member: React.FC<IMember> = ({ job, name, image, color }) => {
+const Member: React.FC<MemberType> = ({ job, name, image, color }) => {
   return (
     <Flex flexDirection="column" mr={6}>
       <Image

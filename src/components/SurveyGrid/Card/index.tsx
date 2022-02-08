@@ -8,7 +8,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React from "react";
-import { Survey } from "types/survey";
+import { SurveyRedux } from "redux/slices/types";
 import { renderStatus } from "utils/application/renderStatus";
 
 // STATIC
@@ -20,12 +20,13 @@ const t = {
 // TYPES
 
 interface Props {
-  data: Survey;
+  data: SurveyRedux;
 }
 
 // COMPONENT
 
 export const Card: React.FC<Props> = ({ data }) => {
+  const attributes = data?.attributes;
   return (
     <GridItem
       w="100%"
@@ -39,27 +40,33 @@ export const Card: React.FC<Props> = ({ data }) => {
       <Flex alignItems="center">
         <Circle
           size="10px"
-          bg={data.landing?.color_theme?.button || "black"}
+          bg={
+            attributes?.landing?.data?.attributes?.color_theme?.button ||
+            "black"
+          }
           color="white"
           mr="12px"
         />
-        <Text variant="titleParaLight">{data.title}</Text>
+        <Text variant="titleParaLight">{attributes?.title}</Text>
       </Flex>
       <Box minH="140px">
         <Text variant="currentLight" mt="10px" noOfLines={5}>
-          {data.landing?.subtitle ||
+          {attributes?.landing?.data?.attributes?.subtitle ||
             "Lorem, ipsum dolor sit amet consectetur adipisicing elit.Doloribus, impedit non. Sequi asperiores amet sunt. Consequunturvitae aliquam quasi laudantium, voluptas repellendus sapiente sit esse! Id mollitia deleniti ea nisi."}
         </Text>
       </Box>
 
-      {data?.keywords?.length > 0 ? (
+      {attributes?.keywords?.length > 0 ? (
         <Flex mt="10px" alignItems="center">
-          {data.keywords.map((keyword) => (
+          {attributes?.keywords.map((keyword: { label: string }) => (
             <Text
               mr="20px"
               key={keyword.label}
               variant="xs"
-              color={data.landing?.color_theme?.button || "black"}
+              color={
+                attributes?.landing?.data?.attributes?.color_theme?.button ||
+                "black"
+              }
             >
               {keyword.label}
             </Text>
@@ -76,11 +83,14 @@ export const Card: React.FC<Props> = ({ data }) => {
           border="1px solid black"
           textTransform="initial"
         >
-          <Text variant="currentLight">{renderStatus(data.status)}</Text>
+          <Text variant="currentLight">{renderStatus(attributes?.status)}</Text>
         </Badge>
         <Button
           variant="rounded"
-          bg={data.landing?.color_theme?.button || "black"}
+          bg={
+            attributes?.landing?.data?.attributes?.color_theme?.button ||
+            "black"
+          }
         >
           {t.cta}
         </Button>

@@ -48,7 +48,7 @@ export const initialPageState: PageEditor = {
 
 type UpdatePayload = {
   id: string;
-  changes: Partial<PageRedux>;
+  changes: PageRedux;
 };
 
 type UpdatedPayload = {

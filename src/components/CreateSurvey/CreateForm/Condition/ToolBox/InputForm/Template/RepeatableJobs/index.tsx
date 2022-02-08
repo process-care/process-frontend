@@ -7,6 +7,7 @@ import { UploadFile } from "components/Fields/Uploadfile";
 import { ReactComponent as Delete } from "assets/delete.svg";
 import { SvgHover } from "components/SvgHover";
 import { selectors as selectorsApplication } from "redux/slices/application";
+import { Enum_Question_Rows } from "api/graphql/types.generated";
 interface Props {
   name: string;
   onlyUpload?: boolean;
@@ -36,7 +37,7 @@ export const RepeatableJobs: React.FC<Props> = ({ name, onlyUpload, cta }) => {
                             id={`${name}.${index}.name`}
                             label="Nom"
                             placeholder="Renseigner le nom"
-                            rows="small"
+                            rows={Enum_Question_Rows.Small}
                             isRequired
                             isCollapsed={false}
                             {...field}
@@ -45,7 +46,7 @@ export const RepeatableJobs: React.FC<Props> = ({ name, onlyUpload, cta }) => {
                             id={`${name}.${index}.job`}
                             label="Job"
                             placeholder="Renseigner l'emploi"
-                            rows="small"
+                            rows={Enum_Question_Rows.Small}
                             isRequired
                             isCollapsed={false}
                             {...field}

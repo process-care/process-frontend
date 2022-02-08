@@ -15,6 +15,7 @@ import { RemovingConfirmation } from "../../../RemovingConfirmation";
 import { SvgHover } from "components/SvgHover";
 import { ReactComponent as Trash } from "assets/trash.svg";
 import { TitleDivider } from "components/TitleDivider";
+import { Enum_Question_Rows } from "api/graphql/types.generated";
 
 export const PageForm: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -35,7 +36,7 @@ export const PageForm: React.FC = () => {
 
   const isRemoving = entityToRemove === selectedPageId;
 
-  const handleSelect = (type: QuestionRedux["type"]) => {
+  const handleSelect = (type: QuestionRedux["attributes"]["type"]) => {
     dispatch(actions.setSelectedQuestion(""));
     dispatch(actions.createQuestion({ type }));
   };
@@ -135,7 +136,7 @@ export const PageForm: React.FC = () => {
                 <Textarea
                   id="name"
                   label="Nom de la page"
-                  rows="small"
+                  rows={Enum_Question_Rows.Small}
                   placeholder="Page 1"
                   helpText="100 signes maximum"
                   isRequired="true"
@@ -143,7 +144,7 @@ export const PageForm: React.FC = () => {
                 <Textarea
                   id="short_name"
                   label="Nom court pour la navigation rapide"
-                  rows="small"
+                  rows={Enum_Question_Rows.Small}
                   placeholder="Page 1"
                   helpText="40 signes maximum"
                   isRequired="true"

@@ -107,7 +107,6 @@ export const selectors = {
   headerData,
   landing,
   members,
-  partners,
   about,
 };
 

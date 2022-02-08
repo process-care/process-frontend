@@ -8,7 +8,7 @@ import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
 interface Props {
   group?: "other" | "simple" | "complex";
   onSelect: (
-    type: QuestionRedux["type"],
+    type: QuestionRedux["attributes"]["type"],
     id: string,
     internal_title: string | undefined
   ) => void;

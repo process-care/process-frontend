@@ -4,6 +4,11 @@ import { t } from "static/survey";
 import { useField } from "formik";
 import Select from "react-select";
 
+interface Options {
+  label: string;
+  value: any;
+}
+
 interface Props {
   label: string;
   id: string;

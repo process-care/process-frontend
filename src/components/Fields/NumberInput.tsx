@@ -11,15 +11,16 @@ import {
 } from "@chakra-ui/react";
 
 import { useField } from "formik";
+import { Maybe } from "api/graphql/types.generated";
 
 interface Props {
   label: string;
   helpText?: string;
-  inputRightAddon?: string;
+  inputRightAddon?: Maybe<string> | undefined;
   defaultValue?: string;
-  min?: number;
-  max?: number;
-  precision?: number;
+  min?: Maybe<number> | undefined;
+  max?: Maybe<number> | undefined;
+  precision?: Maybe<number> | undefined;
   isRequired?: any;
   name: string;
   style?: React.CSSProperties | undefined;
@@ -55,9 +56,10 @@ export const CustomNumberInput: React.FC<Props> = ({
           <InputGroup>
             <NumberInput
               {...field}
-              min={min}
-              max={max}
-              precision={precision}
+              // Beuh ...
+              min={min ?? -99999999999999}
+              max={max ?? 99999999999999}
+              precision={precision ?? 0}
               allowMouseWheel
               w="100%"
             >

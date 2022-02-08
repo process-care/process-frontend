@@ -18,6 +18,7 @@ import { QuestionRedux } from "redux/slices/types";
 import { t } from "static/input";
 import { useAppSelector } from "redux/hooks";
 import { useLocation } from "react-router-dom";
+import { Enum_Question_Type } from "api/graphql/types.generated";
 
 interface Options {
   value: string;
@@ -29,182 +30,189 @@ export const renderInput = (input: QuestionRedux): React.ReactNode => {
   const isCollapsed =
     useAppSelector((state) => state.editor.form.isCollapseView) &&
     !location.pathname.includes("/participate");
+  const attributes = input?.attributes;
 
   const formatOptions = (): Options[] => {
-    if (input.options) {
+    if (attributes?.options) {
       const arr = [];
-      for (const [, value] of Object.entries(input.options)) {
+      for (const [, value] of Object.entries(attributes?.options)) {
         if (value !== null) {
           arr.push({ value, label: value });
         }
       }
-      return arr;
+      return arr as Options[];
     } else return [];
   };
 
-  switch (input.type) {
-    case "input":
-      return (
-        <>
-          <Input
-            isCollapsed={isCollapsed}
-            isRequired={input.required}
-            name={input.id || "input"}
-            type="text"
-            label={input.label || t.label}
-            helpText={input.help_text || t.help_text}
-            placeholder={input.placeholder || t.placeholder}
-            inputRightAddon={input.units}
-          />
-        </>
-      );
+  switch (attributes?.type) {
+    // case Enum_Question_Type.Input:
+    //   return (
+    //     <>
+    //       <Input
+    //         isCollapsed={isCollapsed}
+    //         isRequired={attributes?.required}
+    //         name={input.id || "input"}
+    //         type="text"
+    //         label={attributes?.label || t.label}
+    //         helpText={attributes?.help_text || t.help_text}
+    //         placeholder={attributes?.placeholder || t.placeholder}
+    //         inputRightAddon={attributes?.units}
+    //       />
+    //     </>
+    //   );
 
-    case "number_input":
+    case Enum_Question_Type.NumberInput:
       return (
         <NumberInput
           isCollapsed={isCollapsed}
-          isRequired={input.required}
-          placeholder={input.placeholder || t.placeholder}
+          isRequired={attributes?.required}
+          placeholder={attributes?.placeholder || t.placeholder}
           name={input.id || "number_input"}
           precision={0}
-          label={input.label || t.label}
-          inputRightAddon={input.units}
-          helpText={input.help_text || t.help_text}
-          min={input.min}
-          max={input.max}
+          label={attributes?.label || t.label}
+          inputRightAddon={attributes?.units}
+          helpText={attributes?.help_text || t.help_text}
+          min={attributes?.min}
+          max={attributes?.max}
         />
       );
 
-    case "checkbox":
+    case Enum_Question_Type.Checkbox:
       return (
         <Checkbox
           isCollapsed={isCollapsed}
           id={input.id || "checkbox"}
-          isRequired={input.required}
-          label={input.label || t.label}
-          helpText={input.help_text || t.help_text}
+          isRequired={attributes?.required}
+          label={attributes?.label || t.label}
+          helpText={attributes?.help_text || t.help_text}
           checkbox={formatOptions()}
         />
       );
 
-    case "radio":
+    case Enum_Question_Type.Radio:
       return (
         <Radiobox
-          helpText={input.help_text || t.help_text}
+          helpText={attributes?.help_text || t.help_text}
           isCollapsed={isCollapsed}
-          isRequired={input.required}
+          isRequired={attributes?.required}
           id={input.id || "radiobox"}
-          label={input.label || t.label}
+          label={attributes?.label || t.label}
           radios={formatOptions()}
         />
       );
 
-    case "select":
+    case Enum_Question_Type.Select:
       return (
         <Select
-          isRequired={input.required}
+          isRequired={attributes?.required}
           isCollapsed={isCollapsed}
           id={input.id || "select"}
-          label={input.label || t.label}
-          placeholder={input.placeholder || t.placeholder}
+          label={attributes?.label || t.label}
+          placeholder={attributes?.placeholder || t.placeholder}
           answers={formatOptions()}
-          helpText={input.help_text || t.help_text}
+          helpText={attributes?.help_text || t.help_text}
         />
       );
 
-    case "slider":
+    case Enum_Question_Type.Slider:
       return (
         <Slider
           isCollapsed={isCollapsed}
-          isRequired={input.required}
+          isRequired={attributes?.required}
           id={input.id || "slider"}
-          label={input.label || t.label}
-          min={input.min}
-          max={input.max}
-          step={input.step}
-          defaultValue={input.default_value}
-          helpText={input.help_text || t.help_text}
-          vertical={input.vertical}
-          reverse={input.reverse}
+          label={attributes?.label || t.label}
+          min={attributes?.min}
+          max={attributes?.max}
+          step={attributes?.step}
+          // defaultValue={attributes?.default_value}
+          helpText={attributes?.help_text || t.help_text}
+          vertical={attributes?.vertical}
+          reverse={attributes?.reverse}
         />
       );
 
-    case "text_area":
+    case Enum_Question_Type.TextArea:
       return (
         <Textarea
           isCollapsed={isCollapsed}
-          isRequired={input.required}
+          isRequired={attributes?.required}
           id={input.id || "textarea"}
-          rows={input.rows}
-          label={input.label || t.label}
-          placeholder={input.placeholder || t.placeholder}
-          helpText={input.help_text || t.help_text}
+          rows={attributes?.rows}
+          label={attributes?.label || t.label}
+          placeholder={attributes?.placeholder || t.placeholder}
+          helpText={attributes?.help_text || t.help_text}
         />
       );
 
-    case "date_picker":
+    case Enum_Question_Type.DatePicker:
       return (
         <Datepicker
           isCollapsed={isCollapsed}
-          isRequired={input.required}
-          label={input.label || t.label}
+          isRequired={attributes?.required}
+          label={attributes?.label || t.label}
           id={input.id || "datepicker"}
-          helpText={input.help_text || t.help_text}
+          helpText={attributes?.help_text || t.help_text}
         />
       );
 
-    case "wysiwyg":
+    case Enum_Question_Type.Wysiwyg:
       return (
         <Box
           textAlign="left"
           id={input.id || "wysiwyg"}
           dangerouslySetInnerHTML={{
-            __html: input.wysiwyg === undefined ? "" : input.wysiwyg,
+            __html:
+              typeof attributes?.wysiwyg !== "string"
+                ? ""
+                : attributes?.wysiwyg,
           }}
         />
       );
 
-    case "free_classification":
+    case Enum_Question_Type.FreeClassification:
       return (
         <FreeClassification
           isCollapsed={isCollapsed}
-          isRequired={input.required}
+          isRequired={attributes?.required}
           id={input.id || "free_classification"}
-          rows={input.rows}
-          label={input.label || t.label}
-          placeholder={input.placeholder || t.placeholder}
-          helpText={input.help_text || t.help_text}
+          rows={attributes?.rows}
+          label={attributes?.label || t.label}
+          placeholder={attributes?.placeholder || t.placeholder}
+          helpText={attributes?.help_text || t.help_text}
         />
       );
-    case "associated_classification":
+    case Enum_Question_Type.AssociatedClassification:
       return (
         <>
           <AssociatedClassification
             isCollapsed={isCollapsed}
             name={input.id || "associated_classification"}
-            label={input.label || t.label}
+            label={attributes?.label || t.label}
             helpText={
-              input.help_text || "Cliquer sur une vignette pour la sélectionner"
+              attributes?.help_text ||
+              "Cliquer sur une vignette pour la sélectionner"
             }
-            factors={input.factors}
-            maxLoop={input.max_loop}
+            factors={attributes?.factors}
+            maxLoop={attributes?.max_loop}
           />
         </>
       );
-    case "mono_thumbnail":
+    case Enum_Question_Type.MonoThumbnail:
       return (
         <>
           <MonoThumbnail
             isCollapsed={isCollapsed}
             name={input.id || "mono_thumbnail"}
-            label={input.label || t.label}
+            label={attributes?.label || t.label}
             helpText={
-              input.help_text ||
+              attributes?.help_text ||
               "Merci de remplir la valeur qui définit le mieux cette proposition"
             }
-            factors={input.factors}
-            maxLoop={input.max_loop}
-            mono_thumbnail_input={input.mono_thumbnail_input?.type || "slider"}
+            factors={attributes?.factors}
+            maxLoop={attributes?.max_loop}
+            mono_thumbnail_input={
+              attributes?.mono_thumbnail_input?.type || "slider"
+            }
           />
         </>
       );

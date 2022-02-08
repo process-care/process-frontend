@@ -12,10 +12,10 @@ import { isInactive } from "./utils";
 import { SvgHover } from "components/SvgHover";
 
 import { actions, selectors } from "redux/slices/scientistData";
-import { Survey } from "types/survey";
+import { SurveyRedux } from "redux/slices/types";
 
 interface Props {
-  survey: Survey | Record<string, any>;
+  survey: SurveyRedux;
 }
 
 const PageBuilder: React.FC<Props> = ({ survey }) => {
@@ -77,8 +77,9 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
             >
               <Flex alignItems="center" position="relative">
                 <Box position="absolute" right="16px" bottom="35px">
-                  {conditions.filter((c) => c?.referer_page?.id === page.id)
-                    ?.length > 0 && <Condition />}
+                  {conditions.filter(
+                    (c) => c?.attributes?.referer_page?.data?.id === page.id
+                  )?.length > 0 && <Condition />}
                 </Box>
                 <Box
                   onClick={() => selectPage(page.id)}
@@ -93,7 +94,7 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
                   px={3}
                   _hover={{ cursor: "pointer" }}
                 >
-                  {page.is_locked ? (
+                  {page?.attributes?.is_locked ? (
                     <Box mx="auto">
                       <Locked />
                     </Box>
@@ -119,7 +120,7 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
                 fontSize="10"
                 fontWeight={isSelected ? "bold" : ""}
               >
-                {page.name}
+                {page?.attributes?.name}
               </Text>
             </Box>
           );

@@ -4,6 +4,7 @@ import { Epic, store } from "redux/store";
 import { actions } from "redux/slices/scientistData";
 import { v4 as uuidv4 } from "uuid";
 import { sdk } from "api/gql-client";
+import { hasAttributes } from "api/entity-checker";
 
 // ----  CREATE CONDITION
 
@@ -11,8 +12,6 @@ const createEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.createCondition.type),
     switchMap(async (action) => {
-      const redirectToPage = store.getState().scientistData.pages.selectedPage;
-
       const { type, refererId, group } = action.payload;
       const createdAt = new Date().toISOString();
       const newGroup = `group-${uuidv4()}`;
@@ -24,19 +23,16 @@ const createEpic: Epic = (action$) =>
           group: group === undefined ? newGroup : group,
       }});
 
-      return { createdAt, newCondition, redirectToPage };
+      return { createdAt, newCondition };
     }),
-    map(
-      ({
-        newCondition,
-        createdAt,
-        redirectToPage,
-      }: {
-        newCondition: any;
-        createdAt: string;
-        redirectToPage: string;
-      }) => {
-        const data = newCondition.createCondition.condition;
+    map(({ newCondition, createdAt }) => {
+        const redirectToPage = store.getState().scientistData.pages.selectedPage;
+        const data = newCondition?.createCondition?.data;
+
+        // TODO:ERROR: Handle the error and use case better
+        // Can `redirectToPage` really be undefined ? If yes, what does it mean ?
+        if (!hasAttributes(data) || !redirectToPage) return actions.error({});
+
         return actions.createdCondition({
           lastCreated: createdAt,
           condition: data,

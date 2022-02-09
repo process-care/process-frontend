@@ -85,9 +85,10 @@ export const initialConditionState: ConditionEditor = {
 
 // ----- ACTIONS
 
-type UpdatePayload = {
-  changes: ConditionRedux["attributes"];
-};
+// This type seems to be unused
+// type UpdatePayload = {
+//   changes: ConditionRedux["attributes"];
+// };
 
 type UpdatedPayload = {
   lastUpdated: string;

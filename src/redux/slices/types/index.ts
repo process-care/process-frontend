@@ -5,7 +5,7 @@ import {
   Page,
   Question,
   Survey,
-} from "api/graphql/types.generated";
+} from "api/graphql/sdk.generated";
 
 // ----- SAFE ENTITY
 

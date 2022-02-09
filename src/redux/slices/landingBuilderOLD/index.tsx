@@ -1,14 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Landing } from "api/graphql/types.generated";
-
+import { LandingRedux } from "../types";
 import { initialValues } from "components/CreateSurvey/CreateLanding/ToolBox/Form/utils/initialValues";
 
 export interface LandingBuilder {
-  landing: Landing;
+  landing: LandingRedux;
 }
 
 interface Update {
-  data: Landing;
+  data: LandingRedux;
 }
 
 const initialState: LandingBuilder = {

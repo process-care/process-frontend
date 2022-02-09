@@ -2,13 +2,13 @@ import React from "react";
 import { Box, Button, ButtonGroup, Text } from "@chakra-ui/react";
 import { inputs } from "constants/inputs";
 import { v4 as uuidv4 } from "uuid";
-import IQuestion from "types/form/question";
+import { QuestionRedux } from "redux/slices/types";
 import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
 
 interface Props {
   group?: "other" | "simple" | "complex";
   onSelect: (
-    type: IQuestion["type"],
+    type: QuestionRedux["attributes"]["type"],
     id: string,
     internal_title: string | undefined
   ) => void;

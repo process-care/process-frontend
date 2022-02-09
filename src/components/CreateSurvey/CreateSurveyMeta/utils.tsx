@@ -1,8 +1,10 @@
 import { Box } from "@chakra-ui/react";
+import { Enum_Question_Rows } from "api/graphql/types.generated";
 import { Select, Textarea } from "components/Fields";
 import { CustomCreatableSelect } from "components/Fields/SelectCreatable";
 import { FormikErrors } from "formik";
 import { SurveyBuilder } from "redux/slices/surveyBuilderOLD";
+import { SurveyRedux } from "redux/slices/types";
 
 // TODO : Get the list of all the tags from the backend
 const t = {
@@ -34,7 +36,7 @@ export const renderInputs = (step: number): React.ReactElement => {
         <Textarea
           appearance="light"
           id="title"
-          rows="small"
+          rows={Enum_Question_Rows.Small}
           placeholder="Titre du projet"
           label="Renseigner le titre du projet"
         />
@@ -45,7 +47,7 @@ export const renderInputs = (step: number): React.ReactElement => {
         <Textarea
           appearance="light"
           id="slug"
-          rows="small"
+          rows={Enum_Question_Rows.Small}
           placeholder="Url du projet"
           label="Valider ou modifier l'url du projet"
         />
@@ -63,7 +65,7 @@ export const renderInputs = (step: number): React.ReactElement => {
           <Textarea
             appearance="light"
             id="description"
-            rows="medium"
+            rows={Enum_Question_Rows.Medium}
             placeholder="Description"
             label="Renseigner la description du projet"
             helpText="Description publique, affichée aux utilisateurs de PROCESS. 500 signes max"
@@ -101,7 +103,7 @@ export const renderInputs = (step: number): React.ReactElement => {
         <Textarea
           appearance="light"
           id="email"
-          rows="small"
+          rows={Enum_Question_Rows.Small}
           placeholder="Email de contact"
           label="Renseigner l'email de contact"
         />
@@ -147,15 +149,17 @@ export const checkValidity = (
 
 // remove unused values
 export const formatValues = (
-  data: Partial<SurveyBuilder["survey"]> | undefined
-): Partial<SurveyBuilder["survey"]> => {
+  data: SurveyRedux | undefined
+): SurveyRedux["attributes"] => {
+  const attributes = data?.attributes;
   return {
-    title: data?.title,
-    slug: data?.slug,
-    email: data?.email,
-    language: data?.language,
-    description: data?.description,
-    keywords: data?.keywords,
-    categories: data?.categories,
+    title: attributes?.title,
+    // TODO: REFACTO HUMMMM ??? the slug can't be null
+    slug: attributes?.slug ?? "",
+    email: attributes?.email,
+    language: attributes?.language,
+    description: attributes?.description,
+    keywords: attributes?.keywords,
+    categories: attributes?.categories,
   };
 };

@@ -56,14 +56,17 @@ export const Dashboard: React.FC<IRoute> = () => {
 
   const data = React.useMemo(() => {
     const orderedList = surveys.sort((a, b) => {
-      return dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf();
+      return (
+        dayjs(b?.attributes?.createdAt).valueOf() -
+        dayjs(a?.attributes?.createdAt).valueOf()
+      );
     });
 
     if (currentFilter === "all") {
       return orderedList;
     } else {
       return orderedList?.filter((survey) => {
-        return survey.status === currentFilter;
+        return survey?.attributes?.status === currentFilter;
       });
     }
   }, [currentFilter, surveys]);
@@ -121,9 +124,6 @@ export const Dashboard: React.FC<IRoute> = () => {
   const surveysLenght = surveys.length;
   const hadSurveys = surveysLenght > 0;
   const hadFilteredSurvys = data.length > 0;
-
-  console.log(surveys);
-  console.log(surveysLenght);
 
   return (
     <Box d="flex" justifyContent="space-around" w="100%">

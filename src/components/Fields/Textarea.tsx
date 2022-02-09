@@ -9,12 +9,13 @@ import {
 import { getMaxLength, getRows } from "./utils";
 
 import { useField } from "formik";
+import { Enum_Question_Rows, Maybe } from "api/graphql/types.generated";
 
 interface Props {
   label: string;
   helpText?: string;
   placeholder: string;
-  rows: "small" | "medium" | "large" | undefined;
+  rows: Maybe<Enum_Question_Rows> | undefined;
   isRequired?: any;
   id: string;
   m?: string | number;

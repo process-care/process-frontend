@@ -12,8 +12,10 @@ import { PdfPreview } from "./PdfPreview";
 import { Switch } from "components/Fields";
 import { actions } from "redux/slices/scientistData";
 import { Loader } from "components/Spinner";
-import { Survey } from "types/survey";
-import { useSurveyBySlugQuery } from "api/graphql/queries/survey.gql.generated";
+import {
+  SurveyBySlugQuery,
+  useSurveyBySlugQuery,
+} from "api/graphql/queries/survey.gql.generated";
 import { client } from "api/gql-client";
 
 // ---- STATICS
@@ -43,10 +45,10 @@ export const CreateConsent: React.FC = () => {
     history.push("/dashboard");
   };
 
-  const formatInitialValues = (survey: Survey | undefined) => {
+  const formatInitialValues = (survey: SurveyBySlugQuery | undefined) => {
     return {
-      consentement: survey?.consentement,
-      needConsent: survey?.needConsent,
+      consentement: survey?.surveys?.data[0]?.attributes?.notice_consent?.data,
+      needConsent: survey?.surveys?.data[0]?.attributes?.need_consent,
     };
   };
   if (isLoading) {

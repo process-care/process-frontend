@@ -1,17 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { Box, Flex, FormLabel, Spinner, Text } from "@chakra-ui/react";
-import IQuestion from "types/form/question";
+import { QuestionRedux } from "redux/slices/types";
 import { v4 as uuidv4 } from "uuid";
 import { useField } from "formik";
 import { useAppSelector } from "redux/hooks";
+import { Maybe } from "api/graphql/types.generated";
+
+interface Factor {
+  modalities: {
+    file: any;
+    description: string;
+  }[];
+  title: string;
+}
 
 interface Props {
   label: string;
   helpText?: string;
   name: string;
   isCollapsed?: boolean;
-  factors: IQuestion["factors"];
-  maxLoop: string | undefined;
+  factors: Factor[];
+  maxLoop: Maybe<string> | undefined;
   mono_thumbnail_input: "radio" | "slider" | "number_input";
 }
 
@@ -49,7 +58,7 @@ export const MonoThumbnail: React.FC<Props> = ({
   // TODO: refactor this
   const isFinished =
     totalClick ===
-      (maxVariations - 1 > (maxLoop && parseInt(maxLoop))
+      (maxVariations - 1 > (typeof maxLoop === "string" && parseInt(maxLoop))
         ? maxLoop && parseInt(maxLoop)
         : maxVariations) ||
     field.value?.length - 1 ===
@@ -154,10 +163,7 @@ export const MonoThumbnail: React.FC<Props> = ({
 };
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const useAssociatedLogic = (
-  factors: IQuestion["factors"],
-  name: string
-) => {
+export const useAssociatedLogic = (factors: Factor[], name: string) => {
   const [field, , helpers] = useField(name);
 
   const [state, setState] = useState<State>({

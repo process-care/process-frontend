@@ -7,6 +7,7 @@ import { Textarea } from "components/Fields";
 import { forgotPassword } from "api/actions/password";
 import { forgotPasswordSchema } from "./validationSchema";
 import { NavLink } from "react-router-dom";
+import { Enum_Question_Rows } from "api/graphql/types.generated";
 
 export const ForgotPasswordForm: React.FC = () => {
   const [isSuccess, setSuccess] = useState(false);
@@ -52,7 +53,7 @@ export const ForgotPasswordForm: React.FC = () => {
                   </Text>
                   <Textarea
                     isCollapsed={false}
-                    rows="small"
+                    rows={Enum_Question_Rows.Small}
                     label="Renseigner votre email"
                     placeholder="Email"
                     id="email"

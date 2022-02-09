@@ -1,14 +1,14 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
-import IQuestion from "types/form/question";
+import { QuestionRedux } from "redux/slices/types";
 import React from "react";
 
 interface Props {
   onClick: () => void;
-  input?: IQuestion;
+  input?: QuestionRedux;
   isSelected?: boolean;
   isOptionMode?: boolean;
-  option?: string;
+  option?: string | unknown;
 }
 
 export const InputBox: React.FC<Props> = ({
@@ -37,18 +37,20 @@ export const InputBox: React.FC<Props> = ({
     >
       {isOptionMode && (
         <Flex justifyContent="space-between" alignItems="center">
-          <Text variant="titleParaLight">{option}</Text>
+          {typeof option === "string" && (
+            <Text variant="titleParaLight">{option}</Text>
+          )}
         </Flex>
       )}
       {!isOptionMode && input && (
         <Flex justifyContent="space-between" alignItems="center">
-          <Text variant="titleParaLight">{input?.label}</Text>
+          <Text variant="titleParaLight">{input?.attributes?.label}</Text>
           <Flex alignItems="center">
             <Text variant="xsMedium" color="brand.gray.200">
-              {input?.internal_title}
+              {input?.attributes?.internal_title}
             </Text>
             <Box>
-              <InputIcon type={input.type} />
+              <InputIcon type={input?.attributes.type} />
             </Box>
           </Flex>
         </Flex>

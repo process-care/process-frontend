@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { actions } from "redux/slices/scientistData";
 import { useAppSelector } from "redux/hooks";
 import { Errors, renderAuthMessage } from "../Errors";
+import { Enum_Question_Rows } from "api/graphql/types.generated";
 
 export const LoginForm: React.FC = () => {
   const [isSigninPage, setIsSigninPage] = React.useState(false);
@@ -51,7 +52,7 @@ export const LoginForm: React.FC = () => {
                   {/* {errors && <p>{error.name}</p>} */}
                   <Textarea
                     isCollapsed={false}
-                    rows="small"
+                    rows={Enum_Question_Rows.Small}
                     label="Identifiant"
                     placeholder="Renseigner votre identifiant"
                     id="identifier"

@@ -1,20 +1,21 @@
 import React, { useEffect } from "react";
 import { Box, Flex } from "@chakra-ui/react";
-import IQuestion from "types/form/question";
+import { QuestionRedux } from "redux/slices/types";
 import { Input, NumberInput, Textarea } from "components/Fields";
 import { RepeatedFields } from "../../..";
 import { useFormikContext } from "formik";
+import { Enum_Question_Rows } from "api/graphql/types.generated";
 
 const ID = "mono_thumbnail_input";
 interface Props {
-  selectedQuestion: IQuestion;
+  selectedQuestion: QuestionRedux;
 }
 
 export const GradeFields: React.FC<Props> = ({ selectedQuestion }) => {
   const { setFieldValue, handleReset, resetForm } = useFormikContext();
 
   useEffect(() => {
-    const savedType = selectedQuestion.mono_thumbnail_input?.type;
+    const savedType = selectedQuestion?.attributes.mono_thumbnail_input?.type;
     if (savedType) {
       console.log(savedType);
       handleReset();
@@ -22,13 +23,13 @@ export const GradeFields: React.FC<Props> = ({ selectedQuestion }) => {
       setFieldValue("mono_thumbnail_input.type", savedType);
       // setFieldValue("mono_thumbnail_input.label", "");
     }
-  }, [selectedQuestion.mono_thumbnail_input?.type]);
+  }, [selectedQuestion?.attributes?.mono_thumbnail_input?.type]);
 
   return (
     <Box mt="5">
       <Textarea
         isCollapsed={false}
-        rows="small"
+        rows={Enum_Question_Rows.Small}
         label="Label de la question"
         placeholder="Ex: Noter cette proposition de 0 à 10"
         id={`${ID}.label`}
@@ -39,8 +40,8 @@ export const GradeFields: React.FC<Props> = ({ selectedQuestion }) => {
   );
 };
 
-const renderTemplate = (selectedQuestion: IQuestion) => {
-  switch (selectedQuestion?.mono_thumbnail_input?.type) {
+const renderTemplate = (selectedQuestion: QuestionRedux) => {
+  switch (selectedQuestion?.attributes?.mono_thumbnail_input?.type) {
     case "number_input":
       return (
         <Flex justifyContent="space-between">

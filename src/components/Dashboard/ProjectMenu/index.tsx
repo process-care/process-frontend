@@ -16,9 +16,11 @@ import { NavLink } from "react-router-dom";
 import { actions, selectors } from "redux/slices/scientistData";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "redux/hooks";
-import { Survey, SURVEY_STATUS } from "types/survey";
+import { SURVEY_STATUS } from "types/survey";
 import { useGetSurveyStatsQuery } from "api/graphql/queries/survey.gql.generated";
 import { client } from "api/gql-client";
+import { SurveyRedux } from "redux/slices/types";
+import { Enum_Survey_Status } from "api/graphql/types.generated";
 
 // ---- STATICS
 
@@ -30,6 +32,14 @@ const filters = [
   { label: "1 an", id: "year" },
   { label: "Max", id: "all" },
 ];
+export const enum Filter {
+  Day = "day",
+  Week = "week",
+  Month = "month",
+  Semester = "semester",
+  Year = "year",
+  All = "all",
+}
 
 // ---- TYPES
 
@@ -60,7 +70,7 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
   const { isDraft, isArchived, hadLanding, hadQuestion, canPublish } =
     useWarning(selectedSurvey);
 
-  const [statFilter, setStatFilter] = useState(filters[0].id);
+  const [statFilter, setStatFilter] = useState<Filter>(Filter.Day);
 
   // We should be doing that much better :/
   if (isLoadingStats) {
@@ -88,7 +98,7 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
   console.log(selectedSurvey);
   console.log(statistics);
   // TODO: Wait for redux type : statFilter wich is filter[0].id have to be type with statistic key from api
-  const selectedStats = statistics[statFilter];
+  const selectedStats = statistics && statistics[statFilter];
 
   const handleTrash = () => {
     setIsRemoving(true);
@@ -99,7 +109,7 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
     onClose();
   };
 
-  const changeStatus = (status: Survey["status"]) => {
+  const changeStatus = (status: SurveyRedux["attributes"]["status"]) => {
     if (!selectedSurvey.id) return;
     dispatch(
       actions.updateSurveys({
@@ -112,11 +122,11 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
   };
 
   const handleArchive = () => {
-    changeStatus("archived");
+    changeStatus(Enum_Survey_Status.Archived);
   };
 
   const handlePublish = () => {
-    changeStatus("pending");
+    changeStatus(Enum_Survey_Status.Pending);
   };
 
   return (
@@ -133,7 +143,7 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
         <RemovingConfirmation
           confirm={handleDelete}
           close={() => setIsRemoving(false)}
-          content={`Voulez-vous vraiment supprimer le projet"${selectedSurvey.title}" ?`}
+          content={`Voulez-vous vraiment supprimer le projet"${selectedSurvey?.attributes.title}" ?`}
         />
       ) : (
         <Box>
@@ -189,7 +199,7 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
                 </Button>
               ) : (
                 <Text variant="xs">
-                  Etat : {renderStatus(selectedSurvey.status)}
+                  Etat : {renderStatus(selectedSurvey?.attributes.status)}
                 </Text>
               )}
               <Tooltip label={"Exporter les données"} placement="top-start">
@@ -277,8 +287,8 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
             />
 
             <Flex mt={5} ml={50} mr={50} justifyContent="space-around">
-              <BigNumber value={selectedStats.consented} label={"consentis"} />
-              <BigNumber value={selectedStats.completed} label={"terminés"} />
+              <BigNumber value={selectedStats?.consented} label={"consentis"} />
+              <BigNumber value={selectedStats?.completed} label={"terminés"} />
             </Flex>
 
             {/* <Flex
@@ -300,8 +310,10 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
 
 // ---- HOOKS
 
-function useSurveyData(surveyId: string) {
-  const { data, isLoading } = useGetSurveyStatsQuery(client, { id: surveyId });
+function useSurveyData(surveyId: string | undefined) {
+  const { data, isLoading } = useGetSurveyStatsQuery(client, {
+    id: surveyId ?? "",
+  });
   const exportURL = `${API_URL_ROOT}/surveys/${surveyId}/export`;
 
   // TODO: compute this ?
@@ -320,12 +332,14 @@ function useSurveyData(surveyId: string) {
   };
 }
 
-function useWarning(selectedSurvey: Survey | undefined) {
-  const isDraft = selectedSurvey?.status === SURVEY_STATUS.Draft;
-  const isArchived = selectedSurvey?.status === SURVEY_STATUS.Archived;
+function useWarning(selectedSurvey: SurveyRedux | undefined) {
+  const isDraft = selectedSurvey?.attributes?.status === SURVEY_STATUS.Draft;
+  const isArchived =
+    selectedSurvey?.attributes?.status === SURVEY_STATUS.Archived;
 
-  const hadLanding = selectedSurvey?.landing !== null;
-  const hadQuestion = selectedSurvey && selectedSurvey?.order?.length > 0;
+  const hadLanding = selectedSurvey?.attributes?.landing !== null;
+  const hadQuestion =
+    selectedSurvey && selectedSurvey?.attributes?.order?.length > 0;
   const canPublish = isDraft && hadLanding && hadQuestion;
 
   return {
@@ -342,7 +356,7 @@ function useWarning(selectedSurvey: Survey | undefined) {
 // -- Big Numbers
 
 interface BigNumberProps {
-  value: number;
+  value: number | undefined;
   label: string;
 }
 

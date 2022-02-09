@@ -4,22 +4,13 @@ fragment landingFragment on Landing {
   wysiwyg
   members
   cover
-  partners {
-    data {
-      id
-      attributes {
-        name
-        url
-      }
-    }
-  }
   color_theme
   video_url
   logo
   partners_logos
   about_page
 }
-  
+
 fragment landingEntityFragment on LandingEntity {
   id
   attributes {

@@ -10,11 +10,12 @@ import { t } from "static/survey";
 import ToolBox from "../InputsButton";
 import { Formik, Form } from "formik";
 import { Textarea } from "components/Fields";
-import IQuestion from "types/form/question";
+import { QuestionRedux } from "redux/slices/types";
 import { RemovingConfirmation } from "../../../RemovingConfirmation";
 import { SvgHover } from "components/SvgHover";
 import { ReactComponent as Trash } from "assets/trash.svg";
 import { TitleDivider } from "components/TitleDivider";
+import { Enum_Question_Rows } from "api/graphql/types.generated";
 
 export const PageForm: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -35,7 +36,7 @@ export const PageForm: React.FC = () => {
 
   const isRemoving = entityToRemove === selectedPageId;
 
-  const handleSelect = (type: IQuestion["type"]) => {
+  const handleSelect = (type: QuestionRedux["attributes"]["type"]) => {
     dispatch(actions.setSelectedQuestion(""));
     dispatch(actions.createQuestion({ type }));
   };
@@ -97,9 +98,12 @@ export const PageForm: React.FC = () => {
               actions.updatePage({
                 id: selectedPageId,
                 changes: {
-                  short_name: values.short_name,
-                  name: values.name,
-                  is_locked: values.is_locked,
+                  id: selectedPageId,
+                  attributes: {
+                    short_name: values.short_name,
+                    name: values.name,
+                    is_locked: values.is_locked,
+                  },
                 },
               })
             );
@@ -135,7 +139,7 @@ export const PageForm: React.FC = () => {
                 <Textarea
                   id="name"
                   label="Nom de la page"
-                  rows="small"
+                  rows={Enum_Question_Rows.Small}
                   placeholder="Page 1"
                   helpText="100 signes maximum"
                   isRequired="true"
@@ -143,7 +147,7 @@ export const PageForm: React.FC = () => {
                 <Textarea
                   id="short_name"
                   label="Nom court pour la navigation rapide"
-                  rows="small"
+                  rows={Enum_Question_Rows.Small}
                   placeholder="Page 1"
                   helpText="40 signes maximum"
                   isRequired="true"

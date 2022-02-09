@@ -15,13 +15,14 @@ import { SvgHover } from "components/SvgHover";
 import { ReactComponent as Delete } from "assets/delete.svg";
 import { goTop } from "utils/application/scrollTo";
 import { actions, selectors } from "redux/slices/landing-editor";
+import { Enum_Question_Rows } from "api/graphql/types.generated";
 
 export const LandingForm: React.FC = () => {
   const dispatch = useAppDispatch();
 
   // Flag to avoid saving the initial values injected into Formik
   const firstRender = useRef(true);
-  const data = useAppSelector(selectors.landing);
+  const landing = useAppSelector(selectors.getLanding);
 
   const onSubmit = useCallback((data, { setSubmitting, validateForm }) => {
     validateForm(data);
@@ -36,12 +37,23 @@ export const LandingForm: React.FC = () => {
   }, []);
 
   const onSave = () => {
-    dispatch(actions.update({ ...data }));
+    if (!landing?.id) return;
+    dispatch(
+      actions.update({
+        id: landing?.id,
+        changes: {
+          id: landing?.id,
+          attributes: {
+            ...landing?.attributes,
+          },
+        },
+      })
+    );
   };
   return (
     <Formik
       validateOnBlur={false}
-      initialValues={data || initialValues}
+      initialValues={landing || initialValues}
       onSubmit={onSubmit}
     >
       {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment*/}
@@ -56,7 +68,7 @@ export const LandingForm: React.FC = () => {
             return;
           }
 
-          dispatch(actions.update({ ...values }));
+          onSave();
         }, [values]);
 
         // Target params for various uploads (cover, partners)
@@ -70,7 +82,19 @@ export const LandingForm: React.FC = () => {
 
         // Delete video handler
         const onDeleteVideo = useCallback(() => {
-          dispatch(actions.update({ video_url: "" }));
+          if (!landing?.id) return;
+          dispatch(
+            actions.update({
+              id: landing?.id,
+              changes: {
+                id: landing?.id,
+                attributes: {
+                  ...landing?.attributes,
+                  video_url: "",
+                },
+              },
+            })
+          );
           setFieldValue("video_url", "");
         }, []);
 
@@ -105,7 +129,7 @@ export const LandingForm: React.FC = () => {
 
               <Textarea
                 id="title"
-                rows="medium"
+                rows={Enum_Question_Rows.Medium}
                 placeholder={t.title_input}
                 label={t.title_input}
                 helpText={t.title_helptext}
@@ -113,7 +137,7 @@ export const LandingForm: React.FC = () => {
 
               <Textarea
                 id="subtitle"
-                rows="large"
+                rows={Enum_Question_Rows.Large}
                 placeholder={t.subtitle_input}
                 label={t.subtitle_input}
                 helpText={t.subtitle_helptext}
@@ -139,10 +163,10 @@ export const LandingForm: React.FC = () => {
               <Flex alignItems="center">
                 <Textarea
                   id="video_url"
-                  rows="small"
+                  rows={Enum_Question_Rows.Small}
                   placeholder={t.video_url_placeholder}
                   label={t.video_url_label}
-                  isDisabled={Boolean(values.cover)}
+                  isDisabled={Boolean(values?.attributes?.cover)}
                 />
                 <Box mt={7} ml={4}>
                   <SvgHover>

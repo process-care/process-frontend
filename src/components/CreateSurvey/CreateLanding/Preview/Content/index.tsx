@@ -2,10 +2,10 @@ import React from "react";
 import { Box, Text, Flex, Button } from "@chakra-ui/react";
 import { Video } from "components/Video";
 import { t } from "static/createLanding";
-import { ILanding } from "types/landing";
+import { LandingRedux } from "redux/slices/types";
 
 interface Props {
-  data?: Partial<ILanding>;
+  data?: LandingRedux;
   onParticipate: () => void;
 }
 
@@ -25,7 +25,7 @@ export const Content: React.FC<Props> = ({ data, onParticipate }) => {
     video_url,
     cover,
     wysiwyg,
-  } = data;
+  } = data?.attributes;
 
   const hasVideo = Boolean(video_url);
   const hasImage = Boolean(cover);

@@ -26,20 +26,25 @@ interface BaseProps {
 
 type SingleContent = BaseProps & {
   multiple: true;
-  content?: Content[];
+  content?: Content[] | null;
 };
 
 type MultipleContent = BaseProps & {
   multiple?: false;
-  content?: Content;
+  content?: Content | null;
 };
 
 type Props = SingleContent | MultipleContent;
 
 interface Content {
-  id: string;
-  name: string;
-  url: string;
+  id?: string | null | undefined;
+  attributes?:
+    | {
+        name?: string | null | undefined;
+        url?: string | null | undefined;
+      }
+    | null
+    | undefined;
 }
 
 // ---- COMPONENT
@@ -89,7 +94,7 @@ export const UploadFileRemote: React.FC<Props> = (props: Props) => {
         {!props.multiple && props.content && (
           <Flex alignItems="center">
             <Text variant="xsMedium" isTruncated maxWidth="90px">
-              {props.content.name}
+              {props.content?.attributes?.name}
             </Text>
             <DeleteButton id={props.content.id} handleDelete={handleDelete} />
           </Flex>
@@ -98,11 +103,11 @@ export const UploadFileRemote: React.FC<Props> = (props: Props) => {
 
       {props.multiple && props.content && (
         <Flex flexDirection="column" mt={2}>
-          {props.content.map(({ id, name }: Content) => {
+          {props.content.map(({ id, attributes }: Content) => {
             return (
-              <Flex key={name}>
+              <Flex key={id}>
                 <Text my={1} variant="xsMedium" isTruncated maxWidth="150px">
-                  {name}
+                  {attributes?.name}
                 </Text>
                 <DeleteButton id={id} handleDelete={handleDelete} />
               </Flex>
@@ -125,7 +130,7 @@ export const UploadFileRemote: React.FC<Props> = (props: Props) => {
 // ---- HELPERS
 
 interface DeleteButtonProps {
-  id: string;
+  id: string | null | undefined;
   handleDelete: (id: string) => void;
 }
 
@@ -134,6 +139,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({
   handleDelete,
 }: DeleteButtonProps) => {
   const callDelete = useCallback(() => {
+    if (!id) return;
     handleDelete(id);
   }, [id, handleDelete]);
 

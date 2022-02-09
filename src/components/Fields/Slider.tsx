@@ -11,17 +11,18 @@ import { useField } from "formik";
 
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
+import { Maybe } from "api/graphql/types.generated";
 
 interface Props {
   label: string;
   id: string;
   helpText?: string;
   defaultValue?: string | undefined;
-  step: number | undefined;
-  min: number | undefined;
-  max: number | undefined;
-  vertical?: boolean;
-  reverse?: boolean;
+  step: Maybe<number> | undefined;
+  min: Maybe<number> | undefined;
+  max: Maybe<number> | undefined;
+  vertical?: Maybe<boolean> | undefined;
+  reverse?: Maybe<boolean> | undefined;
   isRequired?: any;
   isCollapsed?: boolean;
 }
@@ -51,7 +52,7 @@ export const CustomSlider: React.FC<Props> = ({
   }, [defaultValue]);
 
   const cleanValue = (
-    value: string | number | undefined,
+    value: string | number | undefined | null,
     defaultValue: number
   ): number => {
     if (value === undefined || value === null || value === "") {
@@ -65,7 +66,6 @@ export const CustomSlider: React.FC<Props> = ({
     }
   };
 
-  console.log(min, max);
   return (
     <FormControl
       isRequired={isRequired === "true"}
@@ -82,7 +82,7 @@ export const CustomSlider: React.FC<Props> = ({
             m={vertical ? "30px 0 0 30px" : ""}
           >
             <Range
-              reverse={reverse}
+              reverse={reverse ?? false}
               dots
               min={cleanValue(min, 0)}
               max={cleanValue(max, 10)}
@@ -90,7 +90,7 @@ export const CustomSlider: React.FC<Props> = ({
               defaultValue={
                 defaultValue !== undefined ? parseInt(defaultValue, 10) : 0
               }
-              vertical={vertical}
+              vertical={vertical ?? true}
               onChange={(value) => helpers.setValue(value)}
               value={field.value}
             />

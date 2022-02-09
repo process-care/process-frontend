@@ -1,11 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import { SvgHover } from "components/SvgHover";
-import IQuestion from "types/form/question";
 import React from "react";
-
-interface Props {
-  type: IQuestion["type"];
-}
+import { Enum_Question_Type, Maybe } from "api/graphql/types.generated";
 
 import { ReactComponent as Checkbox } from "./assets/checkbox.svg";
 import { ReactComponent as Cursor } from "./assets/cursor.svg";
@@ -17,8 +13,12 @@ import { ReactComponent as Select } from "./assets/select.svg";
 import { ReactComponent as TextArea } from "./assets/text-area.svg";
 import { ReactComponent as Wysiwyg } from "./assets/wysiwyg.svg";
 
+interface Props {
+  type: Maybe<Enum_Question_Type> | undefined;
+}
+
 // TODO replace string by SVG orperator.
-export const renderInput = (type: IQuestion["type"]): React.ReactElement => {
+export const renderInput = (type: Props["type"]): React.ReactElement => {
   switch (type) {
     case "checkbox":
       return <Checkbox />;

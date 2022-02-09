@@ -17,22 +17,3 @@ export interface Member {
   image: IBase64["base64"];
   color?: string;
 }
-
-// export interface ILanding {
-//   id: string;
-//   color_theme: IColor;
-//   cover: string;
-//   partners: Media[];
-//   logo: string;
-//   members: IMember[];
-//   subtitle: string;
-//   title: string;
-//   video_url: string;
-//   wysiwyg: string;
-//   partners_logos: string[];
-//   about_page: string;
-// }
-
-// export interface ILandingRes {
-//   landing: ILanding;
-// }

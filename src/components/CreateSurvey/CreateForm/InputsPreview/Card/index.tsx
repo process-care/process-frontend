@@ -9,7 +9,7 @@ import {
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 import { renderInput } from "./utils";
-import IQuestion from "types/form/question";
+import { QuestionRedux } from "redux/slices/types";
 import { setIsRemoving } from "redux/slices/formBuilder";
 import { Draggable } from "react-beautiful-dnd";
 
@@ -27,7 +27,7 @@ import { SvgHover } from "components/SvgHover";
 import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
 
 interface CardProps {
-  input: IQuestion;
+  input: QuestionRedux;
   index: number;
 }
 
@@ -36,7 +36,7 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
   const { entityToRemove } = useAppSelector((state) => state.editor.form);
   const { status } = useAppSelector((state) => state.scientistData.survey);
 
-  const getCondition = (input: IQuestion) =>
+  const getCondition = (input: QuestionRedux) =>
     useAppSelector((state) =>
       selectors.conditions.getConditionsByQuestionId(state, input.id)
     );
@@ -91,16 +91,18 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
               <Box color={color}>
                 {!isRemoving && (
                   <Flex w="100%" justifyContent="space-between" pb={4}>
-                    <Text variant="xsMedium">{input.internal_title}</Text>
+                    <Text variant="xsMedium">
+                      {input?.attributes?.internal_title}
+                    </Text>
                     <Box>
-                      <InputIcon type={input.type} />
+                      <InputIcon type={input?.attributes.type} />
                     </Box>
                   </Flex>
                 )}
 
                 {isRemoving && (
                   <RemovingConfirmation
-                    content={`${t.removing_confirmation} ${input.internal_title} ?`}
+                    content={`${t.removing_confirmation} ${input?.attributes.internal_title} ?`}
                     confirm={handleDelete}
                     close={() => dispatch(setIsRemoving(""))}
                   />

@@ -2,11 +2,11 @@ import React from "react";
 
 import { Container } from "@chakra-ui/react";
 import { PageForm } from "components/CreateSurvey/CreateForm/Condition/ToolBox/PageForm";
-import ICondition from "types/form/condition";
+import { ConditionRedux } from "redux/slices/types";
 import { ConditionPreview } from "components/CreateSurvey/CreateForm/Condition/ConditionPreview";
 
 interface Props {
-  selectedCondition: ICondition | undefined;
+  selectedCondition: ConditionRedux | undefined;
 }
 export const RightPart: React.FC<Props> = ({ selectedCondition }) => {
   return (

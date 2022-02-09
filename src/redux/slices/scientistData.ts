@@ -42,7 +42,6 @@ import {
   surveyReducers,
   surveySelectors,
 } from "./scientistData/survey-editor";
-import { SurveyBuilder } from "./surveyBuilderOLD";
 
 import {
   LastUpdated,
@@ -52,7 +51,7 @@ import {
   SurveyRedux,
 } from "./types";
 
-type LoadedPayload = SurveyBuilder["survey"];
+type LoadedPayload = SurveyRedux;
 
 // ---- TYPES
 
@@ -101,11 +100,13 @@ export const globalSlice = createSlice({
       const survey = action.payload;
       state.survey.data = survey;
       state.survey.selectedSurvey = survey.id;
-      state.survey.order = survey.order;
-      const pages = survey.pages;
-      const questions = pages?.map((page) => page.questions).flat();
+      state.survey.order = survey?.attributes?.order;
+      const pages = survey?.attributes?.pages?.data;
+      const questions = pages
+        ?.map((page) => page?.attributes?.questions?.data)
+        .flat();
       const questionsConditions = questions
-        ?.map((question) => question?.conditions)
+        ?.map((question) => question?.attributes?.conditions?.data)
         .flat();
 
       if (pages) {
@@ -113,8 +114,8 @@ export const globalSlice = createSlice({
         state.pages.selectedPage = pages[0].id;
 
         pages.map((p) => {
-          const questions = p.questions;
-          const pageConditions = p.conditions;
+          const questions = p?.attributes?.questions?.data;
+          const pageConditions = p?.attributes?.conditions?.data;
 
           if (questions) {
             questionAdapter.setMany(state.questions, questions);

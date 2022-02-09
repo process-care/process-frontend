@@ -1,17 +1,18 @@
-import { ILanding } from "types/landing";
+import { LandingRedux } from "redux/slices/types";
 import { colors } from "./../../ColorPicker/utils";
 
-export const initialValues: ILanding = {
+export const initialValues: LandingRedux = {
   id: "",
-  color_theme: colors[0],
-  cover: "",
-  logo: "",
-  members: [],
-  subtitle: "",
-  title: "",
-  video_url: "",
-  wysiwyg: "",
-  partners: [],
-  partners_logos: [],
-  about_page: "",
+  attributes: {
+    color_theme: colors[0],
+    cover: "",
+    logo: "",
+    members: [],
+    subtitle: "",
+    title: "",
+    video_url: "",
+    wysiwyg: "",
+    partners_logos: [],
+    about_page: "",
+  },
 };

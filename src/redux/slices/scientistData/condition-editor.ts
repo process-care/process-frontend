@@ -2,6 +2,7 @@ import {
   createEntityAdapter,
   createSlice,
   PayloadAction,
+  Update,
 } from "@reduxjs/toolkit";
 
 // import type { RootState } from "redux/store";
@@ -85,8 +86,7 @@ export const initialConditionState: ConditionEditor = {
 // ----- ACTIONS
 
 type UpdatePayload = {
-  id: string;
-  changes: ConditionRedux;
+  changes: ConditionRedux["attributes"];
 };
 
 type UpdatedPayload = {
@@ -112,7 +112,9 @@ type InitializePayload = {
 };
 type CreatePayload = {
   refererId: Maybe<string> | undefined;
-  type: ConditionRedux["attributes"]["type"];
+  // TODO: REFACTO check why ConditionRedux["attributes"]["type"] is not working
+  // type: ConditionRedux["attributes"]["type"];
+  type: "question" | "page";
   group?: Maybe<string> | undefined;
 };
 
@@ -149,7 +151,8 @@ export const conditionSlice = createSlice({
       state.step = action.payload.step;
       state.isValid = action.payload.isValid;
     },
-    update: (state, action: PayloadAction<UpdatePayload>) => {
+    // TODO: Refacto Remove any
+    update: (state, action: PayloadAction<any>) => {
       state.lastUpdated = new Date().toISOString();
       conditionAdapter.updateOne(state, action.payload);
     },
@@ -322,7 +325,7 @@ export const conditionsReducers = {
   },
   updateCondition: (
     state: GlobalState,
-    action: PayloadAction<UpdatePayload>
+    action: PayloadAction<Update<ConditionRedux>>
   ): void => {
     state.conditions.lastUpdated = new Date().toISOString();
     conditionAdapter.updateOne(state.conditions, action.payload);

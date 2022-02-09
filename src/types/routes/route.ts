@@ -1,3 +1,3 @@
-export default interface Ipage {
+export default interface PageRedux {
   name?: string;
 }

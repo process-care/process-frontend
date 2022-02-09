@@ -2,11 +2,11 @@ import React from "react";
 import { Flex, Box, Button, Text, Container, Image } from "@chakra-ui/react";
 import { t } from "static/createLanding";
 import { NavLink } from "react-router-dom";
-import { IColor } from "types/landing";
+import { Color } from "types/landing";
 
 type Props = {
   partners_logos: string[];
-  color_theme?: IColor;
+  color_theme?: Color;
 };
 
 export const Footer: React.FC<Props> = ({ partners_logos, color_theme }) => {

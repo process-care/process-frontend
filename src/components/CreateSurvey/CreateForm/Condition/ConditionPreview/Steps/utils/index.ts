@@ -8,10 +8,10 @@ export const checkStepValidation = (): boolean => {
     selectors.conditions.getSelectedCondition
   );
 
-  const target = selectedCondition?.target;
-  const operator = selectedCondition?.operator;
+  const target = selectedCondition?.attributes?.target;
+  const operator = selectedCondition?.attributes?.operator;
 
-  if (step === 1 && !!target?.id) {
+  if (step === 1 && !!target?.data?.id) {
     return false;
   }
   if (step === 2 && !!operator) {

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import slugify from "slugify";
-import IPage from "types/form/page";
-import IQuestion from "types/form/question";
+import { PageRedux } from "redux/slices/types";
+import { QuestionRedux } from "redux/slices/types";
 
 export interface SurveyBuilder {
   survey: {
@@ -14,8 +14,8 @@ export interface SurveyBuilder {
     keywords?: string[];
     categories?: string[];
     landing?: string;
-    order: IQuestion["id"][];
-    pages?: IPage[];
+    order: QuestionRedux["id"][];
+    pages?: PageRedux[];
     status?: "draft" | "pending" | "closed" | "archived";
     createdAt?: string;
     needConsent?: boolean;

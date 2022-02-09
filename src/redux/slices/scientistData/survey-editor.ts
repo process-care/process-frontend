@@ -6,8 +6,8 @@ import { SurveyBuilder } from "../surveyBuilderOLD";
 import slugify from "slugify";
 import { history } from "redux/store/history";
 import { GlobalState } from "../scientistData";
-import { CheckSurvey } from "./condition-editor";
 import { SurveyRedux } from "../types";
+import { CheckSurveyQuery } from "api/graphql/sdk.generated";
 
 // ---- STATE
 
@@ -18,7 +18,8 @@ export interface SurveyEditor {
   isFailed: boolean;
   isChecking: boolean;
   isOrdering: boolean;
-  status?: CheckSurvey;
+  // TODO: Improve this type (it's too much from the API)
+  status?: CheckSurveyQuery;
   lastUpdated: string;
   lastSaved: string;
   lastPosted: string;

@@ -31,7 +31,7 @@ fragment surveyEntityFragment on SurveyEntity {
     keywords
     categories
     author {
-      data { attributes { email } }
+      data { attributes { email, username } }
     }
 
     # Landing
@@ -39,6 +39,7 @@ fragment surveyEntityFragment on SurveyEntity {
       data {
         id
         attributes {
+          title
           color_theme
           logo
         }
@@ -66,6 +67,10 @@ fragment surveyEntityFragment on SurveyEntity {
         attributes {
           url
           name
+          hash
+          mime
+          provider
+          size
         }
       }
     }

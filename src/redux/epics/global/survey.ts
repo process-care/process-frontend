@@ -2,19 +2,22 @@ import { map, switchMap } from "rxjs";
 import { combineEpics, ofType } from "redux-observable";
 import { Epic } from "redux/store";
 import { actions } from "redux/slices/scientistData";
-import { client } from "api/gql-client";
-import { SurveyBySlugDocument, UpdateOrderDocument, UpdateSurveyDocument } from "api/graphql/queries/survey.gql.generated";
-import { CheckSurveyDocument } from "../queries/checks.gql.generated";
+import { sdk } from "api/gql-client";
+import { sanitizeEntity } from "api/entity-checker";
 
 // Watches over "initialize" currentsurvey
 const initializeEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.initializeSurvey.type),
     switchMap((action) => {
-      return client.request(SurveyBySlugDocument, { slug: action.payload });
+      return sdk.surveyBySlug({ slug: action.payload });
     }),
     map((result) => {
-      const payload = result.surveys[0];
+      const payload = sanitizeEntity(result.surveys?.data[0]);
+
+      // Raise an error if no survey found
+      if (!payload) return actions.error({});
+
       return actions.initializedSurvey(payload);
     })
   );
@@ -26,13 +29,13 @@ const updateOrderEpic: Epic = (action$, state$) =>
     map((action) => action.payload),
     switchMap((payload) => {
       const selectedSurveyId = state$.value.scientistData.survey.selectedSurvey;
-      return client.request(UpdateOrderDocument, {
+      return sdk.updateOrder({
         id: selectedSurveyId,
         new_order: payload,
       });
     }),
-    map((payload) => {
-      return actions.updatedOrder(payload);
+    map((_result) => {
+      return actions.updatedOrder({});
     })
   );
 
@@ -43,16 +46,18 @@ const updateSurveyEpic: Epic = (action$) =>
     ofType(actions.updateSurvey.type),
     map((action) => action.payload),
     switchMap((payload) => {
-      console.log("payload", payload);
-      return client.request(UpdateSurveyDocument, {
+      console.log("Payload - update survey: ", payload);
+
+      return sdk.updateSurvey({
         id: payload.id,
         data: {
-          needConsent: payload.needConsent,
+          need_consent: payload.needConsent,
         },
       });
     }),
-    map((payload) => {
-      return actions.updatedSurvey(payload);
+    map((_payload) => {
+      const lastUpdated = new Date().toISOString();
+      return actions.updatedSurvey({ lastUpdated });
     })
   );
 
@@ -62,9 +67,7 @@ const TestEpic: Epic = (action$, state$) =>
     map((action) => action.payload),
     switchMap(() => {
       const selectedSurveyId = state$.value.scientistData.survey.selectedSurvey;
-      return client.request(CheckSurveyDocument, {
-        surveyId: selectedSurveyId,
-      });
+      return sdk.checkSurvey({ surveyId: selectedSurveyId });
     }),
     map((payload) => {
       return actions.checkedSurvey(payload);

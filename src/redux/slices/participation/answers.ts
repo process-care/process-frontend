@@ -8,7 +8,7 @@ import { sanitizeAnswers } from "./utils";
 // ---- INITIAL STATE
 
 export interface AnswerParticipationRedux {
-  id?: string;
+  id?: string | null;
   questionId: string;
   value: unknown;
 }

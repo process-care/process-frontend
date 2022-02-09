@@ -5,8 +5,13 @@ query checkSurvey($surveyId: ID!) {
       valid
       pageId
       errors {
-        questionId
         __typename
+        questionId
+        valid
+        errors {
+          conditionId
+          message
+        }
         unordered {
           conditionId
           targetId

@@ -2,9 +2,9 @@ import { map, switchMap, filter, scan, debounceTime, timeInterval } from 'rxjs';
 import { combineEpics, ofType } from 'redux-observable';
 import { Epic } from 'redux/store';
 
-import { actions, selectors } from 'redux/slices/participation/answers';
-import { client } from 'api/gql-client';
-import { CreateAnswerDocument, UpdateAnswerDocument } from 'api/graphql/queries/answers.gql.generated';
+import { actions, selectors, UpsertedAnswerPayload } from 'redux/slices/participation/answers';
+import { sdk } from 'api/gql-client';
+import { CreateAnswerMutation, UpdateAnswerMutation } from 'api/graphql/sdk.generated';
 
 const DEBOUNCE_TIME = 3000;
 
@@ -30,11 +30,11 @@ const upsertAnswersEpic: Epic = (action$, state$) => action$.pipe(
 
     if (!participationId) throw new Error('Missing participation Id to save answers !');
     
-    const allUpserts = Object.entries(accu).map(([qId, value]) => {
+    const allUpserts: (Promise<CreateAnswerMutation & UpdateAnswerMutation>)[] = Object.entries(accu).map(([qId, value]) => {
       const answerInState = selectors.selectById(state$.value, qId);
       return (answerInState?.id)
-        ? client.request(UpdateAnswerDocument, { id: answerInState.id, data: { value } })
-        : client.request(CreateAnswerDocument, { data: { value, question: qId, participation: participationId } });
+        ? sdk.updateAnswer({ id: answerInState.id, data: { value } })
+        : sdk.createAnswer({ data: { value, question: qId, participation: participationId } });
     });
 
     return Promise.all(allUpserts);
@@ -45,21 +45,26 @@ const upsertAnswersEpic: Epic = (action$, state$) => action$.pipe(
       let rawAnswer;
 
       // Find the correct targets according to the operation type
-      if (res.createAnswer) {
+      if (res.createAnswer?.data) {
         target = acc.created;
-        rawAnswer = res.createAnswer.answer;
+        rawAnswer = res.createAnswer.data;
       }
-      else {
+      else if (res.updateAnswer?.data) {
         target = acc.updated;
-        rawAnswer = res.updateAnswer.answer;
+        rawAnswer = res.updateAnswer.data;
+      } else {
+        return acc;
       }
 
       // Sanitize into correct payload form then push into related target
-      const answer = { id: rawAnswer.question.id, changes: { id: rawAnswer.id } };
+      const qId = rawAnswer.attributes?.question?.data?.id;
+      if (!qId) return acc;
+      
+      const answer = { id: qId, changes: { id: rawAnswer.id } };
       target.push(answer);
 
       return acc;
-    }, { created: [], updated: [] });
+    }, { created: [], updated: [] } as UpsertedAnswerPayload);
 
     return actions.updated(upserted);
   }),

@@ -3,8 +3,7 @@ import { combineEpics, ofType } from "redux-observable";
 import { Epic } from "redux/store";
 import { actions, selectors } from "redux/slices/scientistData";
 
-import { client } from "api/gql-client";
-import { AddPageDocument, DeletePageDocument, UpdatePageDocument } from "api/graphql/queries/page.gql.generated";
+import { sdk } from "api/gql-client";
 
 // ----  CREATE PAGE
 
@@ -14,6 +13,7 @@ const createEpic: Epic = (action$, state$) =>
     switchMap(async (action) => {
       const { id } = action.payload;
       const pagesLength = selectors.pages.getAllPages(state$.value).length;
+
       const pageData = {
         name: `Page ${pagesLength + 1}`,
         is_locked: false,
@@ -23,7 +23,8 @@ const createEpic: Epic = (action$, state$) =>
         questions: [],
       };
       const createdAt = new Date().toISOString();
-      const newPage = await client.request(AddPageDocument, {
+
+      const newPage = await sdk.addPage({
         values: pageData,
       });
 
@@ -55,10 +56,11 @@ const updateEpic: Epic = (action$) =>
     debounceTime(3000),
     switchMap(async (accumulated: any) => {
       const updatedAt: string = new Date().toISOString();
-      await client.request(UpdatePageDocument, {
+      await sdk.updatePage({
         id: accumulated.id,
         data: accumulated.changes,
       });
+
       return updatedAt;
     }),
     map((updatedAt) => actions.updatedPage({ lastUpdated: updatedAt }))
@@ -73,9 +75,7 @@ const deleteEpic: Epic = (action$) =>
       const pageId: string = action.payload;
       const deletedAt = new Date().toISOString();
 
-      await client.request(DeletePageDocument, {
-        id: pageId,
-      });
+      await sdk.deletePage({ id: pageId });
 
       return { deletedAt };
     }),

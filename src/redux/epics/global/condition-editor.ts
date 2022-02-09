@@ -3,14 +3,7 @@ import { combineEpics, ofType } from "redux-observable";
 import { Epic, store } from "redux/store";
 import { actions } from "redux/slices/scientistData";
 import { v4 as uuidv4 } from "uuid";
-import { client } from "api/gql-client";
-
-import {
-  CreateConditionDocument,
-  DeleteConditionDocument,
-  DeleteGroupConditionDocument,
-  UpdateConditionDocument,
-} from "api/graphql/queries/condition.gql.generated";
+import { sdk } from "api/gql-client";
 
 // ----  CREATE CONDITION
 
@@ -19,17 +12,17 @@ const createEpic: Epic = (action$) =>
     ofType(actions.createCondition.type),
     switchMap(async (action) => {
       const redirectToPage = store.getState().scientistData.pages.selectedPage;
+
       const { type, refererId, group } = action.payload;
       const createdAt = new Date().toISOString();
       const newGroup = `group-${uuidv4()}`;
-      const newCondition = await client.request(CreateConditionDocument, {
-        newCondition: {
-          type,
+
+      const newCondition = await sdk.createCondition({ newCondition: {
+        type,
           [type === "question" ? "referer_question" : "referer_page"]:
             refererId,
           group: group === undefined ? newGroup : group,
-        },
-      });
+      }});
 
       return { createdAt, newCondition, redirectToPage };
     }),
@@ -63,9 +56,7 @@ const deleteEpic: Epic = (action$) =>
     switchMap(async (action) => {
       const id: string = action.payload;
       const deletedAt = new Date().toISOString();
-      await client.request(DeleteConditionDocument, {
-        id,
-      });
+      await sdk.deleteCondition({ id });
       return deletedAt;
     }),
     map((deletedAt) => {
@@ -83,9 +74,7 @@ const deleteGroupEpic: Epic = (action$) =>
     switchMap(async (action) => {
       const groupId: string = action.payload.groupId;
       const deletedAt = new Date().toISOString();
-      await client.request(DeleteGroupConditionDocument, {
-        name: groupId,
-      });
+      await sdk.deleteGroupCondition({ name: groupId });
       return deletedAt;
     }),
     map((deletedAt) => {
@@ -121,10 +110,11 @@ const saveEpic: Epic = (action$, state$) =>
       };
       const condition = formatPayload(changes);
 
-      await client.request(UpdateConditionDocument, {
+      await sdk.updateCondition({
         id: selectedConditionId,
         data: condition,
       });
+
       return { savedAt, condition };
     }),
     map(({ savedAt, condition }) =>

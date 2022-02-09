@@ -1,5 +1,5 @@
 # Get my surveys only
-query MySurveys($authorId: ID!) {
+query mySurveys($authorId: ID!) {
   surveys(filters: { author: { id: { eq: $authorId }}}) {
     data {
       id

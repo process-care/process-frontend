@@ -21,7 +21,7 @@ query surveyBySlug($slug: String!) {
 ## ---- MUTATIONS
 
 # Create survey
-mutation addSurvey($values: SurveyInput!) {
+mutation createSurvey($values: SurveyInput!) {
   createSurvey(data: $values) {
     data {
       id

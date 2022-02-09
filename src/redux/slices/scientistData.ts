@@ -7,7 +7,6 @@ import {
   initialAuthState,
 } from "./scientistData/auth";
 import {
-  CheckSurvey,
   conditionAdapter,
   ConditionEditor,
   conditionsReducers,
@@ -50,8 +49,8 @@ import {
   QuestionRedux,
   SurveyRedux,
 } from "./types";
-
-type LoadedPayload = SurveyRedux;
+import { hasAttributes, sanitizeEntities } from "api/entity-checker";
+import { CheckSurveyQuery } from "api/graphql/sdk.generated";
 
 // ---- TYPES
 
@@ -94,44 +93,56 @@ export const globalSlice = createSlice({
     },
     initializedSurvey: (
       state: GlobalState,
-      action: PayloadAction<LoadedPayload>
+      action: PayloadAction<SurveyRedux>
     ): void => {
       state.survey.isLoading = false;
       const survey = action.payload;
+
       state.survey.data = survey;
       state.survey.selectedSurvey = survey.id;
-      state.survey.order = survey?.attributes?.order;
-      const pages = survey?.attributes?.pages?.data;
-      const questions = pages
-        ?.map((page) => page?.attributes?.questions?.data)
-        .flat();
+      state.survey.order = survey.attributes.order;
+
+      const pages = survey.attributes.pages?.data;
+      const questions = pages?.map((page) => page.attributes?.questions?.data ?? []).flat();
+
       const questionsConditions = questions
-        ?.map((question) => question?.attributes?.conditions?.data)
+        ?.map((question) => question?.attributes?.conditions?.data ?? [])
         .flat();
 
+      // Save all pages if any
       if (pages) {
-        pageAdapter.setMany(state.pages, pages);
-        state.pages.selectedPage = pages[0].id;
+        const sanePages = sanitizeEntities(pages);
+        pageAdapter.setMany(state.pages, sanePages);
 
-        pages.map((p) => {
-          const questions = p?.attributes?.questions?.data;
-          const pageConditions = p?.attributes?.conditions?.data;
+        state.pages.selectedPage = sanePages[0].id;
+
+        // Sanitize and save all page and their questions / conditions
+        sanePages.map((p) => {
+          const questions = p.attributes.questions?.data;
+          const pageConditions = p.attributes.conditions?.data;
 
           if (questions) {
-            questionAdapter.setMany(state.questions, questions);
+            const saneQuestions = sanitizeEntities(questions);
+            questionAdapter.setMany(state.questions, saneQuestions);
           }
+
           if (pageConditions) {
-            conditionAdapter.setMany(state.conditions, pageConditions);
+            const sanePageConditions = sanitizeEntities(pageConditions);
+            conditionAdapter.setMany(state.conditions, sanePageConditions);
           }
         });
       }
+
+      // Save all conditions if any
       if (questionsConditions) {
         questionsConditions.map((condition) => {
-          if (condition) {
+          if (hasAttributes(condition)) {
             conditionAdapter.setOne(state.conditions, condition);
           }
         });
       }
+
+      // Update the various loading flags
       state.survey.isLoading = false;
       state.pages.isLoading = false;
       state.questions.isLoading = false;
@@ -147,15 +158,20 @@ export const globalSlice = createSlice({
       state.survey.isOrdering = true;
       state.survey.order = action.payload;
     },
-    updatedOrder: (state: GlobalState, _action: PayloadAction<string>) => {
+    updatedOrder: (state: GlobalState, _action: PayloadAction<{ msg?: string }>) => {
       state.survey.isOrdering = false;
     },
     checkSurvey: (state: GlobalState, action: PayloadAction<boolean>) => {
       state.survey.isChecking = action.payload;
     },
-    checkedSurvey: (state: GlobalState, action: PayloadAction<CheckSurvey>) => {
+    // TODO: Improve the `CheckSurveyQuery` type (it's too much from the API)
+    checkedSurvey: (state: GlobalState, action: PayloadAction<CheckSurveyQuery>) => {
       state.survey.status = action.payload;
       state.survey.isChecking = false;
+    },
+    // TODO:ERROR: Improve error handling
+    error: (_state: GlobalState, _action: PayloadAction<{ slug?: string }>) => {
+      console.error('An error occured while loading a survey');
     },
   },
 });

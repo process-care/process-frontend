@@ -3,13 +3,9 @@ import { combineEpics, ofType } from "redux-observable";
 import { Epic } from "redux/store";
 import { actions } from "redux/slices/survey-editor";
 
-import { client, sdk } from "api/gql-client";
-import {
-  AddSurveyDocument,
-  UpdateSurveyDocument,
-} from "api/graphql/queries/survey.gql.generated";
-import { AddPageDocument } from "api/graphql/queries/page.gql.generated";
+import { sdk } from "api/gql-client";
 import { sanitizeEntities } from "api/entity-checker";
+import { Enum_Survey_Status, SurveyInput } from "api/graphql/sdk.generated";
 
 // Watches over "load" survey
 const loadEpic: Epic = (action$) =>
@@ -42,9 +38,11 @@ const updateEpic: Epic = (action$, state$) =>
     debounceTime(5000),
     switchMap(async (accumulated) => {
       const savingAt = new Date().toISOString();
-      const data = { ...accumulated, id: undefined };
+      const data: SurveyInput = { ...accumulated };
       const surveyId = state$.value.editor.survey.data?.id;
-      await client.request(UpdateSurveyDocument, { id: surveyId, data });
+
+      await sdk.updateSurvey({ id: surveyId, data });
+
       return savingAt;
     }),
     map((savedDate) => actions.updated({ lastSaved: savedDate }))
@@ -61,26 +59,29 @@ const postEpic: Epic = (action$, state$) =>
     }),
     switchMap(async () => {
       const data = state$.value.editor.survey.data;
+
       // Create survey and its first page
       try {
-        const surveyRes = await client.request(AddSurveyDocument, {
+        const surveyRes = await sdk.createSurvey({
           values: {
             ...data,
-            status: "draft",
+            status: Enum_Survey_Status.Draft,
           },
         });
 
-        const surveyId = surveyRes?.createSurvey?.data.id;
+        const surveyId = surveyRes?.createSurvey?.data?.id;
+
         if (surveyId) {
-          await client.request(AddPageDocument, {
+          await sdk.addPage({
             values: {
               name: `Page 1`,
               is_locked: false,
               short_name: `P1`,
               survey: surveyId,
             },
-          });
+          })
         }
+
         return surveyRes;
       } catch (error: any) {
         console.log(error);

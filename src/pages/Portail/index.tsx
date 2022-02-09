@@ -10,8 +10,12 @@ import { NoData } from "components/SurveyGrid/noData";
 import { Loader } from "components/Spinner";
 
 import { ReactComponent as ShowMore } from "./assets/ShowMore.svg";
-import { useSurveyPublishedQuery, useSurveySearchQuery } from "./portal.gql.generated";
+import {
+  useSurveyPublishedQuery,
+  useSurveySearchQuery,
+} from "./portal.gql.generated";
 import { client } from "api/gql-client";
+import { SurveyRedux } from "redux/slices/types";
 
 // ---- STATIC
 
@@ -37,21 +41,23 @@ export const Portail: React.FC<IRoute> = () => {
   const [pagination, setPagination] = useState<number>(0);
 
   // Get all published surveys
-  const { data: publishedResult, isLoading } = useSurveyPublishedQuery(client, { page: pagination });
+  const { data: publishedResult, isLoading } = useSurveyPublishedQuery(client, {
+    page: pagination,
+  });
   // Get surveys related to the searched query
-  const {
-    data: searchResult,
-    isLoading: loadingSearch,
-  } = useSurveySearchQuery(client, { query });
+  const { data: searchResult, isLoading: loadingSearch } = useSurveySearchQuery(
+    client,
+    { query }
+  );
 
   const [state, setState] = useState<any>([]);
 
   const filteredSurveys = useMemo(() => {
-    console.log(publishedResult);
     if (!publishedResult) return [];
 
     return publishedResult.surveys?.data?.filter(
-      (survey) => currentFilter === "all" || survey.attributes?.status === currentFilter
+      (survey) =>
+        currentFilter === "all" || survey.attributes?.status === currentFilter
     );
   }, [currentFilter, publishedResult]);
 
@@ -64,6 +70,7 @@ export const Portail: React.FC<IRoute> = () => {
   const totalCount = publishedResult?.surveys?.meta.pagination.total;
   const isSearching = query !== "";
 
+  const results = searchResult?.surveys?.data as SurveyRedux[];
   return (
     <Box>
       <Box>
@@ -132,11 +139,8 @@ export const Portail: React.FC<IRoute> = () => {
         </Box>
 
         {isSearching ? (
-          searchResult?.surveys && searchResult.surveys?.data.length > 0 ? (
-            <SurveyGrid
-              surveys={searchResult.surveys?.data}
-              isLoading={loadingSearch}
-            />
+          results.length > 0 ? (
+            <SurveyGrid surveys={results} isLoading={loadingSearch} />
           ) : loadingSearch ? (
             <Loader />
           ) : (

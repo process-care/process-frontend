@@ -7,6 +7,7 @@ import slugify from "slugify";
 import { history } from "redux/store/history";
 import { GlobalState } from "../scientistData";
 import { CheckSurvey } from "./condition-editor";
+import { SurveyRedux } from "../types";
 
 // ---- STATE
 
@@ -21,7 +22,7 @@ export interface SurveyEditor {
   lastUpdated: string;
   lastSaved: string;
   lastPosted: string;
-  data: Partial<SurveyBuilder["survey"]>;
+  data: SurveyRedux;
   step: number;
   selectedSurvey: string;
   order: string[];
@@ -39,7 +40,10 @@ export const initialSurveyState: SurveyEditor = {
   step: 1,
   selectedSurvey: "",
   order: [],
-  data: {},
+  data: {
+    id: "",
+    attributes: { slug: "" },
+  },
 };
 
 // ---- ACTIONS
@@ -66,9 +70,8 @@ export const hasChanges = (state: RootState): boolean => {
   return updated > saved;
 };
 
-export const getSelectedSurvey = (
-  state: RootState
-): Partial<SurveyBuilder["survey"]> => state.scientistData.survey.data;
+export const getSelectedSurvey = (state: RootState): SurveyRedux =>
+  state.scientistData.survey.data;
 
 export const getSelectedSurveyId = (state: RootState): string =>
   state.scientistData.survey.selectedSurvey;
@@ -96,9 +99,12 @@ export const surveyReducers = {
 
     // auto-generate slug
     if (action.payload.title && state.survey.data) {
-      state.survey.data.slug = `${slugify(action.payload.title.toLowerCase(), {
-        strict: true,
-      })}`;
+      state.survey.data.attributes.slug = `${slugify(
+        action.payload.title.toLowerCase(),
+        {
+          strict: true,
+        }
+      )}`;
     }
   },
   updated: (

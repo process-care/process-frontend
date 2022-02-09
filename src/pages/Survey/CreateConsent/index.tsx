@@ -47,9 +47,7 @@ export const CreateConsent: React.FC = () => {
 
   const formatInitialValues = (survey: SurveyBySlugQuery | undefined) => {
     return {
-      consentement:
-        survey?.surveys?.data[0]?.attributes?.notice_consent?.data?.attributes
-          ?.url,
+      consentement: survey?.surveys?.data[0]?.attributes?.notice_consent?.data,
       needConsent: survey?.surveys?.data[0]?.attributes?.need_consent,
     };
   };

@@ -21,7 +21,7 @@ export const CreateLanding: React.FC<IRoute> = () => {
   const landingId = survey?.surveys?.data[0]?.attributes?.landing?.data?.id;
   const surveyId = survey?.surveys?.data[0]?.id;
   const dispatch = useAppDispatch();
-  const data = useAppSelector(selectors.landing);
+  const data = useAppSelector(selectors.getLanding);
   const isLoading = useAppSelector(selectors.isLoading);
   const error = useAppSelector(selectors.error);
 

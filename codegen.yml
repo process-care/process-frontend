@@ -1,8 +1,7 @@
 overwrite: true
-schema: "http://localhost:1337/graphql"
-documents: "src/**/*.graphql"
+schema: ${GQL_SCHEMA_URL}
+documents: 'src/**/*.graphql'
 generates:
-
   # Types & Resolvers types in general
   src/api/graphql/types.generated.ts:
     plugins:
@@ -39,8 +38,8 @@ generates:
       # More readable types
       skipTypename: true
       useIndexSignature: true # https://github.com/dotansimha/graphql-code-generator/issues/1133
-      
+
   # Introspection config
   src/api/graphql/graphql.schema.json:
     plugins:
-      - "introspection"
+      - 'introspection'

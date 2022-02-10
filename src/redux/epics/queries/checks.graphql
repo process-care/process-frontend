@@ -5,7 +5,6 @@ query checkSurvey($surveyId: ID!) {
       valid
       pageId
       errors {
-        __typename
         questionId
         valid
         errors {

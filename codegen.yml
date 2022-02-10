@@ -38,8 +38,3 @@ generates:
       # More readable types
       skipTypename: true
       useIndexSignature: true # https://github.com/dotansimha/graphql-code-generator/issues/1133
-
-  # Introspection config
-  src/api/graphql/graphql.schema.json:
-    plugins:
-      - 'introspection'

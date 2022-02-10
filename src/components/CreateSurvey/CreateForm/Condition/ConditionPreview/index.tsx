@@ -31,16 +31,17 @@ export const ConditionPreview: React.FC<Props> = ({ selectedCondition }) => {
   const step = useAppSelector(selectors.conditions.getStep);
   const isValid = useAppSelector(selectors.conditions.getValidity);
 
-  const handleUpdate = (changes: ConditionRedux) => {
+  const handleUpdate = (changes: ConditionRedux["attributes"]) => {
     // TODO:REFACTO uncomment and fix
-    // dispatch(
-    //   actions.updateCondition({
-    //     changes: {
-    //       id: selectedCondition.id,
-    //       attributes: changes,
-    //     },
-    //   })
-    // );
+    dispatch(
+      actions.updateCondition({
+        id: selectedCondition.id,
+        changes: {
+          id: selectedCondition.id,
+          attributes: changes,
+        },
+      })
+    );
   };
 
   const renderStep = () => {

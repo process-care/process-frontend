@@ -80,6 +80,8 @@ export const RepeatedFields: React.FC<Props> = ({ name }) => {
                   onClick={() => arrayHelpers.push("")}
                   variant="rounded"
                   type="button"
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore: Pb with props in theme ...
                   isSmall
                 >
                   Ajouter une option de réponse

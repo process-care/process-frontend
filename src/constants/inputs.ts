@@ -86,7 +86,9 @@ export const getQuestionName = (
   return question ? question.name.toLowerCase() : "";
 };
 
-export const getQuestionInfo = (type: IQuestion["type"]): string => {
+export const getQuestionInfo = (
+  type: QuestionRedux["attributes"]["type"]
+): string => {
   const question = inputs.find((q) => q.type === type);
   return question ? question.info : "";
 };

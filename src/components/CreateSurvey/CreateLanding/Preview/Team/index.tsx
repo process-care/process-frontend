@@ -1,21 +1,11 @@
-<<<<<<< HEAD
-import { Box, Text, Flex, Container, Image } from "@chakra-ui/react";
-import { Color, Member as MemberType } from "types/landing";
-=======
 import { Box, Text, Flex, Container, Image, Grid } from "@chakra-ui/react";
-import { IColor, ILanding, IMember } from "types/landing";
->>>>>>> 3078117 ([mobile] Fix landing and consent)
+import { Color, Member as MemberType } from "types/landing";
 import React from "react";
 
 type Props = {
-<<<<<<< HEAD
   members: MemberType[];
   color_theme?: Color;
-=======
-  members: ILanding["members"];
-  color_theme?: IColor;
   isUserView?: boolean;
->>>>>>> 3078117 ([mobile] Fix landing and consent)
 };
 
 export const Team: React.FC<Props> = ({ members, color_theme, isUserView }) => {
@@ -53,13 +43,13 @@ export const Team: React.FC<Props> = ({ members, color_theme, isUserView }) => {
   );
 };
 
-<<<<<<< HEAD
-const Member: React.FC<MemberType> = ({ job, name, image, color }) => {
-  const { isTablet } = useMediaQueries();
-
-=======
-const Member: React.FC<IMember> = ({ job, name, image, color, isUserView }) => {
->>>>>>> 3078117 ([mobile] Fix landing and consent)
+const Member: React.FC<MemberType> = ({
+  job,
+  name,
+  image,
+  color,
+  isUserView,
+}) => {
   return (
     <Flex flexDirection="column" justifyContent="center">
       <Image

@@ -429,7 +429,6 @@ const ActionButton = ({
 
   return (
     <Box
-      disabled={disabled}
       _disabled={disabledStyle}
       p={3}
       w="calc(100% / 3)"

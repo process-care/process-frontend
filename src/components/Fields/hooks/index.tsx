@@ -97,10 +97,7 @@ export const useAssociatedLogic = (
       });
     }
   };
-  const handleClick = (
-    cardIdx: number,
-    values?: IQuestion["mono_thumbnail_input"]
-  ) => {
+  const handleClick = (cardIdx: number, values?: any) => {
     generate();
     setClick(totalClick + 1);
 
@@ -138,14 +135,14 @@ export const useAssociatedLogic = (
   // TODO: refactor this
   const isFinished =
     totalClick ===
-      (maxVariations - 1 > (maxLoop && parseInt(maxLoop))
+      (maxVariations - 1 > (typeof maxLoop === "string" && parseInt(maxLoop))
         ? maxLoop && parseInt(maxLoop)
         : maxVariations) ||
     field.value?.length ===
       ((maxLoop && parseInt(maxLoop) - 1) || maxVariations);
 
   const checkIsFinished = () => {
-    const loop = maxLoop && parseInt(maxLoop);
+    const loop = typeof maxLoop === "string" && parseInt(maxLoop);
     const hadValue = field.value?.length > 0;
     const valueLenght = field.value?.length;
     const limit = loop > maxVariations ? maxVariations : loop;

@@ -204,6 +204,8 @@ const InputForm: React.FC<Props> = ({ order }) => {
                   {currentConditions.length === 0 ? (
                     <Button
                       variant="roundedTransparent"
+                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                      // @ts-ignore: Pb with props in theme ...
                       isSmall
                       onClick={() => createCondition()}
                     >
@@ -212,6 +214,8 @@ const InputForm: React.FC<Props> = ({ order }) => {
                   ) : (
                     <Button
                       variant="roundedTransparent"
+                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                      // @ts-ignore: Pb with props in theme ...
                       isSmall
                       onClick={() => editCondition(currentConditions[0].id)}
                     >
@@ -221,6 +225,8 @@ const InputForm: React.FC<Props> = ({ order }) => {
                   {type !== "wysiwyg" && (
                     <Button
                       ml="5"
+                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                      // @ts-ignore: Pb with props in theme ...
                       isSmall
                       variant={
                         values?.required ? "rounded" : "roundedTransparent"

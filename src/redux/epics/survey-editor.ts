@@ -5,7 +5,7 @@ import { actions } from "redux/slices/survey-editor";
 
 import { sdk } from "api/gql-client";
 import { sanitizeEntities } from "api/entity-checker";
-import { Enum_Survey_Status, SurveyInput } from "api/graphql/sdk.generated";
+import { SurveyInput } from "api/graphql/sdk.generated";
 
 // Watches over "load" survey
 const loadEpic: Epic = (action$) =>
@@ -58,14 +58,13 @@ const postEpic: Epic = (action$, state$) =>
       return !surveyId;
     }),
     switchMap(async () => {
-      const data = state$.value.editor.survey.data;
+      const data = state$.value.editor.survey.draft?.attributes as SurveyInput;
 
       // Create survey and its first page
       try {
         const surveyRes = await sdk.createSurvey({
           values: {
             ...data,
-            status: Enum_Survey_Status.Draft,
           },
         });
 
@@ -79,7 +78,7 @@ const postEpic: Epic = (action$, state$) =>
               short_name: `P1`,
               survey: surveyId,
             },
-          })
+          });
         }
 
         return surveyRes;

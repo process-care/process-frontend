@@ -167,6 +167,8 @@ export const PageForm: React.FC = () => {
                     (conditionsOnSelectedPage.length === 0 ? (
                       <Button
                         variant="roundedTransparent"
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore: Pb with props in theme ...
                         isSmall
                         onClick={() => createCondition()}
                       >
@@ -175,6 +177,8 @@ export const PageForm: React.FC = () => {
                     ) : (
                       <Button
                         variant="roundedTransparent"
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore: Pb with props in theme ...
                         isSmall
                         onClick={() =>
                           editCondition(conditionsOnSelectedPage?.[0].id)
@@ -191,6 +195,8 @@ export const PageForm: React.FC = () => {
                   >
                     <Button
                       ml={isNotFirstPage ? "5" : "0"}
+                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                      // @ts-ignore: Pb with props in theme ...
                       isSmall
                       variant={isLocked ? "rounded" : "roundedTransparent"}
                       onClick={() =>

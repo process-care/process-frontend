@@ -8,10 +8,11 @@ import {
 import { createSurveySchema } from "../validationSchema";
 import { useAppSelector, useAppDispatch } from "redux/hooks";
 
-import { checkValidity, formatValues, renderInputs } from "./utils";
+import { checkValidity, renderInputs } from "./utils";
 
 import { useParams } from "react-router-dom";
 import { selectors, actions } from "redux/slices/survey-editor";
+import { Enum_Survey_Status } from "api/graphql/types.generated";
 
 // COMPONENT
 
@@ -28,11 +29,12 @@ export const CreateSurveyForm: React.FC = () => {
 
   // Flag to avoid saving the initial values injected into Formik
   const firstRender = useRef(true);
-  const survey = useAppSelector(selectors.survey);
+  const survey = useAppSelector(selectors.getSurveyDraft);
   const error = useAppSelector(selectors.error);
   const step = useAppSelector(selectors.step);
 
   const onSubmit = useCallback((data, { setSubmitting, validateForm }) => {
+    console.log("data", data);
     validateForm(data);
     setSubmitting(true);
     dispatch(actions.post(data));
@@ -42,7 +44,7 @@ export const CreateSurveyForm: React.FC = () => {
   return (
     <>
       <Formik
-        initialValues={formatValues(survey)}
+        initialValues={survey?.attributes ?? { slug: "draft" }}
         enableReinitialize
         validationSchema={createSurveySchema}
         onSubmit={onSubmit}
@@ -54,14 +56,15 @@ export const CreateSurveyForm: React.FC = () => {
               firstRender.current = false;
               return;
             }
-            if (!survey?.id) return;
             dispatch(
-              actions.update({
-                id: survey?.id,
+              actions.updateMetas({
+                // need id to be SurveyRedux
+                id: "draft",
                 changes: {
-                  id: survey?.id,
+                  id: "draft",
                   attributes: {
                     ...values,
+                    status: Enum_Survey_Status.Draft,
                   },
                 },
               })

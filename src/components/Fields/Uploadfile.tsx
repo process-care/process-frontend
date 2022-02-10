@@ -108,6 +108,8 @@ export const UploadFile: React.FC<Props> = ({
         {!hasFilesName && (
           <Button
             variant="roundedTransparent"
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore: Pb with props in theme ...
             isSmall
             onClick={() =>
               hiddenFileInput.current !== null &&

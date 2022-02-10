@@ -155,7 +155,7 @@ export const PageEntry: React.FC<EntryProps> = ({
       textDecoration={isSelected ? "underline" : "none"}
       w="100%"
     >
-      <Circle backgroundColor={color} w="10px" h="10px" mr="10px" />
+      <Circle backgroundColor={color} size="10px" mr="10px" />
       {page.attributes.short_name ?? "Short name missing 😣"}
     </Box>
   );

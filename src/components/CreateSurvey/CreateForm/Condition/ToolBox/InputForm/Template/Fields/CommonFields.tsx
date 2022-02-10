@@ -1,7 +1,6 @@
 import React from "react";
 import { Input } from "components/Fields";
 import { Box } from "@chakra-ui/react";
-import { Enum_Question_Rows } from "api/graphql/types.generated";
 
 interface Props {
   noPlacehoder?: boolean;

@@ -16,6 +16,7 @@ export interface SurveyEditor {
   lastSaved: string;
   lastPosted: string;
   data: SurveyRedux;
+  draft?: SurveyRedux;
   step: number;
 }
 
@@ -34,7 +35,7 @@ const initialState: SurveyEditor = {
 
 type InitializedPayload = SurveyRedux[];
 
-type UploadPayload = {
+type UpdatePayload = {
   id: string;
   changes: SurveyRedux;
 };
@@ -54,15 +55,21 @@ export const surveyEditorSlice = createSlice({
       const survey = action.payload;
       state.data = survey[0];
     },
-    update: (state, action: PayloadAction<UploadPayload>) => {
+    update: (state, action: PayloadAction<UpdatePayload>) => {
       state.lastUpdated = new Date().toISOString();
-      const updated = { ...state.data, ...action.payload };
+      console.log(action.payload);
+      const updated = { ...state.data, ...action.payload.changes };
       state.data = updated;
+    },
+    updateMetas: (state, action: PayloadAction<UpdatePayload>) => {
+      state.lastUpdated = new Date().toISOString();
+      const updated = { ...state.draft, ...action.payload.changes };
+      state.draft = updated;
 
-      // auto-generate slug
-      if (action.payload?.changes?.attributes.title && state.data) {
-        state.data.attributes.slug = `${slugify(
-          action.payload?.changes?.attributes.title.toLowerCase(),
+      // // auto-generate slug
+      if (action.payload?.changes?.attributes?.title) {
+        state.draft.attributes.slug = `${slugify(
+          action.payload?.changes?.attributes?.title.toLowerCase(),
           {
             strict: true,
           }
@@ -72,7 +79,7 @@ export const surveyEditorSlice = createSlice({
     updated: (state, action: PayloadAction<LastSaved>) => {
       state.lastSaved = action.payload.lastSaved;
     },
-    post: (state, _action: PayloadAction<string>) => {
+    post: (state, _action: PayloadAction<SurveyRedux>) => {
       state.isPosting = true;
     },
     posted: (state, action: PayloadAction<LastPosted>) => {
@@ -112,11 +119,15 @@ export const hasChanges = (state: RootState): boolean => {
 export const survey = (state: RootState): SurveyRedux | undefined =>
   state.editor.survey.data;
 
+export const getSurveyDraft = (state: RootState): SurveyRedux | undefined =>
+  state.editor.survey.draft;
+
 export const selectors = {
   error,
   isLoading,
   hasChanges,
   survey,
+  getSurveyDraft,
   step,
 };
 

@@ -28,6 +28,8 @@ export const Step_2: React.FC<Props> = ({ selectedCondition, updateStep }) => {
             key={id}
             variant="box"
             minW="200px"
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore: Pb with props in theme ...
             isSelected={isSelected}
             _hover={{ borderColor: "brand.blue", color: "brand.blue" }}
           >

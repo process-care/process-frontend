@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/react";
-import { ReduxPage } from "redux/slices/participation/page";
+import { PageParticipationRedux } from "redux/slices/participation/page";
 import { PageEntry } from "../ParticipationMenu";
 import {
   Accordion,
@@ -9,9 +9,9 @@ import {
   AccordionIcon,
 } from "@chakra-ui/react";
 interface Props {
-  pages: ReduxPage[];
+  pages: PageParticipationRedux[];
   navigables: boolean[];
-  selectedPage: ReduxPage | undefined;
+  selectedPage: PageParticipationRedux | undefined;
   selectIndex: (index: number) => void;
   color: string;
 }

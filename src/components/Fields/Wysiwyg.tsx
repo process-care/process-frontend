@@ -2,7 +2,7 @@ import React from "react";
 import JoditReact from "jodit-react-ts";
 import { useFormikContext } from "formik";
 import { FormControl } from "@chakra-ui/react";
-import IQuestion from "types/form/question";
+import { QuestionRedux } from "redux/slices/types";
 
 interface Props {
   id: string;
@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const Wysiwyg: React.FC<Props> = ({ id, simpleMode }) => {
-  const { setFieldValue, values } = useFormikContext<IQuestion>();
+  const { setFieldValue, values } = useFormikContext<QuestionRedux>();
 
   console.log("VAL", values);
 

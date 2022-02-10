@@ -1,10 +1,8 @@
-import { Box } from "@chakra-ui/react";
 import { Enum_Question_Rows } from "api/graphql/types.generated";
 import { Input, Select, Textarea } from "components/Fields";
 import { CustomCreatableSelect } from "components/Fields/SelectCreatable";
 import { FormikErrors } from "formik";
 import { SurveyBuilder } from "redux/slices/surveyBuilderOLD";
-import { SurveyRedux } from "redux/slices/types";
 
 // TODO : Get the list of all the tags from the backend
 const t = {
@@ -137,21 +135,4 @@ export const checkValidity = (
   if (step === 7 && categories) {
     return categories?.length !== 0 && !errors.categories;
   } else return false;
-};
-
-// remove unused values
-export const formatValues = (
-  data: SurveyRedux | undefined
-): SurveyRedux["attributes"] => {
-  const attributes = data?.attributes;
-  return {
-    title: attributes?.title,
-    // TODO: REFACTO HUMMMM ??? the slug can't be null
-    slug: attributes?.slug ?? "",
-    email: attributes?.email,
-    language: attributes?.language,
-    description: attributes?.description,
-    keywords: attributes?.keywords,
-    categories: attributes?.categories,
-  };
 };

@@ -3,18 +3,18 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "redux/hooks";
 import { actions, selectors } from "redux/slices/survey-editor";
-import { SurveyBuilder } from "redux/slices/surveyBuilderOLD";
+import { SurveyRedux } from "redux/slices/types";
 import { t } from "./static";
 
 // ---- TYPES
 
 interface Props {
-  survey: Partial<SurveyBuilder["survey"]> | undefined;
+  survey: SurveyRedux | undefined;
   step: number;
 }
 
 interface IStep {
-  id: keyof Omit<SurveyBuilder["survey"], "needConsent">;
+  id: keyof Omit<SurveyRedux["attributes"], "needConsent">;
   label: string;
   pos: number;
 }
@@ -22,7 +22,7 @@ interface IStep {
 // ---- COMPONENT
 
 export const Timeline: React.FC = () => {
-  const survey = useAppSelector(selectors.survey);
+  const survey = useAppSelector(selectors.getSurveyDraft);
   const step = useAppSelector(selectors.step);
   return (
     <Box p="8px 20px 0 30px" pos="relative">
@@ -49,9 +49,9 @@ const RenderSteps: React.FC<Props> = ({ survey, step }) => {
 
   const Step = ({ data }: { data: IStep }) => {
     const { id, label, pos } = data;
-    const isCompleted = survey && survey[id]?.length !== 0;
+    const isCompleted = survey && survey?.attributes[id]?.length !== 0;
     const isCurrent = pos === step;
-    const value = survey && survey[id];
+    const value = survey && survey?.attributes[id];
 
     return (
       <Box
@@ -78,8 +78,7 @@ const RenderSteps: React.FC<Props> = ({ survey, step }) => {
         />
         <Circle
           transition="all 500ms"
-          w="32px"
-          h="32px"
+          size="32px"
           bg={isCurrent ? "white" : "black"}
           mr="30px"
           color={isCurrent ? "black" : "white"}

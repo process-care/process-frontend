@@ -83,6 +83,7 @@ export const Preview: React.FC<Props> = ({ isUserView, data }) => {
         <Team
           members={attributes?.members}
           color_theme={attributes?.color_theme}
+          isUserView={isUserView}
         />
       )}
       <Footer

@@ -74,9 +74,4 @@ const TestEpic: Epic = (action$, state$) =>
     })
   );
 
-export const surveyEpics = combineEpics(
-  initializeEpic,
-  updateOrderEpic,
-  TestEpic,
-  updateSurveyEpic
-);
+export const surveyEpics = combineEpics(initializeEpic, updateOrderEpic, TestEpic, updateSurveyEpic);

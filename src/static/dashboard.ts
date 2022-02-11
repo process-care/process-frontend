@@ -18,7 +18,9 @@ export const t = {
   ],
 };
 
-export const getLabelStatus = (status: string): string => {
+export const getLabelStatus = (status: string | undefined | null): string => {
+  console.log("status", status);
+
   switch (status) {
     case "draft":
       return "Brouillon";

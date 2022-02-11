@@ -19,13 +19,11 @@ import { useDispatch } from "react-redux";
 import { ProfilForm } from "components/Dashboard/ProfilForm";
 import { useAuth } from "components/Authentification/hooks";
 import { actions } from "redux/slices/survey-editor";
-import {
-  actions as actionsMySurveys,
-  selectors,
-} from "redux/slices/scientistData";
+import { actions as actionsMySurveys, selectors } from "redux/slices/scientistData";
 
 import { NoData } from "components/SurveyGrid/noData";
 import { HEADER_HEIGHT } from "components/Menu/SimpleMenu";
+import { SurveyRedux } from "redux/slices/types";
 
 export const Dashboard: React.FC<IRoute> = () => {
   const { cookies } = useAuth();
@@ -56,10 +54,7 @@ export const Dashboard: React.FC<IRoute> = () => {
 
   const data = React.useMemo(() => {
     const orderedList = surveys.sort((a, b) => {
-      return (
-        dayjs(b?.attributes?.createdAt).valueOf() -
-        dayjs(a?.attributes?.createdAt).valueOf()
-      );
+      return dayjs(b?.attributes?.createdAt).valueOf() - dayjs(a?.attributes?.createdAt).valueOf();
     });
 
     if (currentFilter === "all") {
@@ -77,20 +72,27 @@ export const Dashboard: React.FC<IRoute> = () => {
         if (accessor === "status") {
           return {
             Header,
-            accessor: (d: any) => getLabelStatus(d.status),
+            accessor: (d: SurveyRedux) => getLabelStatus(d?.attributes?.status),
           };
         }
         if (accessor === "createdAt") {
           return {
             Header,
-            accessor: (d: any) => {
-              return dayjs(d.createdAt).format("DD-MM-YYYY");
+            accessor: (d: SurveyRedux) => {
+              return dayjs(d?.attributes.createdAt).format("DD-MM-YYYY");
             },
           };
-        } else if (accessor === "total") {
+        }
+        if (accessor === "total") {
           return {
             Header,
-            accessor: (d: any) => d.participations?.length,
+            accessor: (d: SurveyRedux) => d?.attributes.participations?.data.length,
+          };
+        }
+        if (accessor === "title") {
+          return {
+            Header,
+            accessor: (d: SurveyRedux) => d?.attributes?.title,
           };
         } else
           return {
@@ -134,38 +136,19 @@ export const Dashboard: React.FC<IRoute> = () => {
   return (
     <Box d="flex" justifyContent="space-around" w="100%">
       <Box h="80vh">
-        <Drawer
-          isOpen={isProfilPage && isOpen}
-          size="md"
-          content={<ProfilForm />}
-          onOverlayClick={closeDrawer}
-        />
+        <Drawer isOpen={isProfilPage && isOpen} size="md" content={<ProfilForm />} onOverlayClick={closeDrawer} />
       </Box>
 
-      <div
-        className="background__grid"
-        style={{ width: menuIsOpen ? "47%" : "100%" }}
-      >
-        <Container
-          textAlign="left"
-          pt="9"
-          maxW="90%"
-          h={`calc(100vh - ${HEADER_HEIGHT})`}
-        >
+      <div className="background__grid" style={{ width: menuIsOpen ? "47%" : "100%" }}>
+        <Container textAlign="left" pt="9" maxW="90%" h={`calc(100vh - ${HEADER_HEIGHT})`}>
           <Flex justifyContent="space-between" alignItems="center">
             {hadSurveys && (
               <>
                 <Text variant="xl" mb={7}>
-                  {surveysLenght > 1
-                    ? `Mes ${surveysLenght} enquêtes`
-                    : "Mon enquête"}
+                  {surveysLenght > 1 ? `Mes ${surveysLenght} enquêtes` : "Mon enquête"}
                 </Text>
 
-                <Button
-                  onClick={goToCreateSurvey}
-                  variant="roundedBlue"
-                  zIndex="0"
-                >
+                <Button onClick={goToCreateSurvey} variant="roundedBlue" zIndex="0">
                   {t.cta}
                 </Button>
               </>
@@ -174,11 +157,7 @@ export const Dashboard: React.FC<IRoute> = () => {
 
           {hadSurveys ? (
             <>
-              <Filters
-                filters={t.filters}
-                handleClick={(id) => setCurrentFilter(id)}
-                currentFilter={currentFilter}
-              />
+              <Filters filters={t.filters} handleClick={(id) => setCurrentFilter(id)} currentFilter={currentFilter} />
               {hadFilteredSurvys ? (
                 <Box mt={8}>
                   <Table columns={columns} data={data} onClick={toggleMenu} />
@@ -192,20 +171,14 @@ export const Dashboard: React.FC<IRoute> = () => {
           ) : (
             <Box w="80%" m="0 auto" textAlign="center">
               <NoData content="Vous n'avez aucun projet" />
-              <Button
-                onClick={goToCreateSurvey}
-                variant="roundedBlue"
-                zIndex="0"
-              >
+              <Button onClick={goToCreateSurvey} variant="roundedBlue" zIndex="0">
                 {t.cta}
               </Button>
             </Box>
           )}
         </Container>
       </div>
-      {hadSurveys && (
-        <ProjectMenu menuIsOpen={menuIsOpen} onClose={toggleOff} />
-      )}
+      {hadSurveys && <ProjectMenu menuIsOpen={menuIsOpen} onClose={toggleOff} />}
     </Box>
   );
 };

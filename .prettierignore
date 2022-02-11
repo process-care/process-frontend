@@ -1,0 +1,13 @@
+# Generated files
+**/*generated.ts
+**/*generated.tsx
+
+# Analytics
+analytics/*
+
+# Libs
+lib/**/*
+
+# Modules & builds
+node_modules/**
+build/**

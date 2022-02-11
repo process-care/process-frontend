@@ -65,23 +65,15 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
     isLoadingStats,
   } = useSurveyData(selectedSurvey?.id);
 
-  const { gotToLanding, goToForm, goToConsent, goToSurveyMetadatas } =
-    useNavigator(selectedSurvey);
-  const { isDraft, isArchived, hadLanding, hadQuestion, canPublish } =
-    useWarning(selectedSurvey);
+  const { gotToLanding, goToForm, goToConsent, goToSurveyMetadatas } = useNavigator(selectedSurvey);
+  const { isDraft, isArchived, hadLanding, hadQuestion, canPublish } = useWarning(selectedSurvey);
 
   const [statFilter, setStatFilter] = useState<Filter>(Filter.Day);
 
   // We should be doing that much better :/
   if (isLoadingStats) {
     return (
-      <Container
-        variant="rightPart"
-        h="93vh"
-        overflow="scroll"
-        pos="sticky"
-        top="65px"
-      >
+      <Container variant="rightPart" h="93vh" overflow="scroll" pos="sticky" top="65px">
         <Loader />
       </Container>
     );
@@ -94,8 +86,6 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
     return <></>;
   }
 
-  console.log(selectedSurvey);
-  console.log(statistics);
   // TODO: Wait for redux type : statFilter wich is filter[0].id have to be type with statistic key from api
   const selectedStats = statistics && statistics[statFilter];
 
@@ -130,14 +120,7 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
 
   return (
     // TODO: Use a % + max-width to limit growth on big screens
-    <Container
-      variant="rightPart"
-      w="53%"
-      h="93vh"
-      overflow="scroll"
-      pos="sticky"
-      top="65px"
-    >
+    <Container variant="rightPart" w="53%" h="93vh" overflow="scroll" pos="sticky" top="65px">
       {isRemoving ? (
         <RemovingConfirmation
           confirm={handleDelete}
@@ -177,29 +160,18 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
                   {description}
                 </Text>
 
-                <Text
-                  variant="xs"
-                  mb={5}
-                  textAlign="left"
-                  color="brand.gray.200"
-                >
+                <Text variant="xs" mb={5} textAlign="left" color="brand.gray.200">
                   Enquête mise en ligne le {date.toLocaleDateString()}.
                 </Text>
               </NavLink>
             </Tooltip>
             <Flex justifyContent="space-between" alignItems="center">
               {isDraft ? (
-                <Button
-                  disabled={!canPublish}
-                  variant="roundedBlue"
-                  onClick={handlePublish}
-                >
+                <Button disabled={!canPublish} variant="roundedBlue" onClick={handlePublish}>
                   Publier
                 </Button>
               ) : (
-                <Text variant="xs">
-                  Etat : {renderStatus(selectedSurvey?.attributes.status)}
-                </Text>
+                <Text variant="xs">Etat : {renderStatus(selectedSurvey?.attributes.status)}</Text>
               )}
               <Tooltip label={"Exporter les données"} placement="top-start">
                 <a href={exportURL} download>
@@ -210,17 +182,13 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
               </Tooltip>
             </Flex>
           </Box>
-          {isDraft && (
-            <Warning hadLanding={hadLanding} hadQuestion={hadQuestion} />
-          )}
+          {isDraft && <Warning hadLanding={hadLanding} hadQuestion={hadQuestion} />}
           <Box mt={4}>
             <Flex>
               <ActionButton
                 top
                 right
-                label={` ${
-                  hadLanding ? "Modifier" : "Créer"
-                } la page d'accueil`}
+                label={` ${hadLanding ? "Modifier" : "Créer"} la page d'accueil`}
                 onClick={gotToLanding}
                 disabled={isArchived}
               />
@@ -231,12 +199,7 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
                 label={` ${hadQuestion ? "Modifier" : "Créer"} le formulaire`}
                 onClick={goToForm}
               />
-              <ActionButton
-                top
-                disabled={!isDraft}
-                label={"Modifier le consentement"}
-                onClick={goToConsent}
-              />
+              <ActionButton top disabled={!isDraft} label={"Modifier le consentement"} onClick={goToConsent} />
               <ActionButton
                 disabled={!isDraft}
                 top
@@ -246,30 +209,10 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
               />
             </Flex>
             <Flex>
-              <ActionButton
-                top
-                right
-                bottom
-                label={"Archiver"}
-                onClick={handleArchive}
-                disabled={isArchived}
-              />
-              <ActionButton
-                disabled
-                top
-                right
-                bottom
-                label={"Dupliquer"}
-                onClick={nyi}
-              />
+              <ActionButton top right bottom label={"Archiver"} onClick={handleArchive} disabled={isArchived} />
+              <ActionButton disabled top right bottom label={"Dupliquer"} onClick={nyi} />
 
-              <ActionButton
-                disabled
-                top
-                bottom
-                label={"Archiver & Dupliquer"}
-                onClick={handleArchive}
-              />
+              <ActionButton disabled top bottom label={"Archiver & Dupliquer"} onClick={handleArchive} />
             </Flex>
           </Box>
 
@@ -278,12 +221,7 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
               Statistiques
             </Text>
 
-            <Filters
-              filters={filters}
-              handleClick={setStatFilter}
-              currentFilter={statFilter}
-              center
-            />
+            <Filters filters={filters} handleClick={setStatFilter} currentFilter={statFilter} center />
 
             <Flex mt={5} ml={50} mr={50} justifyContent="space-around">
               <BigNumber value={selectedStats?.consented} label={"consentis"} />
@@ -321,9 +259,7 @@ function useSurveyData(surveyId: string | undefined) {
   return {
     title: data?.surveyStats?.title,
     description: data?.surveyStats?.description,
-    date: new Date(
-      data?.surveyStats?.publishedAt ?? data?.surveyStats?.createdAt
-    ),
+    date: new Date(data?.surveyStats?.publishedAt ?? data?.surveyStats?.createdAt),
     stepsLeft,
     statistics: data?.surveyStats?.statistics,
     exportURL,
@@ -333,12 +269,10 @@ function useSurveyData(surveyId: string | undefined) {
 
 function useWarning(selectedSurvey: SurveyRedux | undefined) {
   const isDraft = selectedSurvey?.attributes?.status === SURVEY_STATUS.Draft;
-  const isArchived =
-    selectedSurvey?.attributes?.status === SURVEY_STATUS.Archived;
+  const isArchived = selectedSurvey?.attributes?.status === SURVEY_STATUS.Archived;
 
-  const hadLanding = selectedSurvey?.attributes?.landing !== null;
-  const hadQuestion =
-    selectedSurvey && selectedSurvey?.attributes?.order?.length > 0;
+  const hadLanding = selectedSurvey?.attributes?.landing?.data !== null;
+  const hadQuestion = selectedSurvey && selectedSurvey?.attributes?.order?.length > 0;
   const canPublish = isDraft && hadLanding && hadQuestion;
 
   return {
@@ -370,13 +304,7 @@ const BigNumber = ({ value, label }: BigNumberProps) => {
 
 //  -- Warning
 
-const Warning = ({
-  hadLanding,
-  hadQuestion,
-}: {
-  hadLanding: boolean;
-  hadQuestion: boolean | undefined;
-}) => {
+const Warning = ({ hadLanding, hadQuestion }: { hadLanding: boolean; hadQuestion: boolean | undefined }) => {
   const Message = ({ content }: { content: string }) => {
     return (
       <Box pl={5} d="flex" alignContent="flex-start">
@@ -407,15 +335,7 @@ interface ActionButtonProps {
 const borderStyle = "1px solid";
 const disabledStyle = { backgroundColor: "#cdcdcd", opacity: 0.3 };
 
-const ActionButton = ({
-  disabled,
-  top,
-  right,
-  bottom,
-  left,
-  label,
-  onClick,
-}: ActionButtonProps) => {
+const ActionButton = ({ disabled, top, right, bottom, left, label, onClick }: ActionButtonProps) => {
   const borders = {
     borderTop: top ? borderStyle : undefined,
     borderBottom: bottom ? borderStyle : undefined,

@@ -15,7 +15,6 @@ const createEpic: Epic = (action$, state$) =>
       const createdAt = new Date().toISOString();
 
       const selectedPageId = state$.value.scientistData.pages.selectedPage;
-      console.log("selectedPageId", selectedPageId);
       const newQuestion = sdk.createQuestion({
         values: {
           type,
@@ -25,26 +24,18 @@ const createEpic: Epic = (action$, state$) =>
 
       return { newQuestion, createdAt };
     }),
-    map(
-      ({
-        newQuestion,
-        createdAt,
-      }: {
-        newQuestion: Record<string, any>;
-        createdAt: string;
-      }) => {
-        const global = state$.value.scientistData;
-        const { type, id } = newQuestion.createQuestion.question;
-        return actions.createdQuestion({
-          question: {
-            ...newQuestion.createQuestion.question,
-            internal_title: `${type}-${id}`,
-          },
-          global,
-          lastCreated: createdAt,
-        });
-      }
-    )
+    map(({ newQuestion, createdAt }: { newQuestion: Record<string, any>; createdAt: string }) => {
+      const global = state$.value.scientistData;
+      const { type, id } = newQuestion.createQuestion.question;
+      return actions.createdQuestion({
+        question: {
+          ...newQuestion.createQuestion.question,
+          internal_title: `${type}-${id}`,
+        },
+        global,
+        lastCreated: createdAt,
+      });
+    })
   );
 
 // // ----  SAVE QUESTION
@@ -54,10 +45,8 @@ const saveEpic: Epic = (action$, state$) =>
     ofType(actions.saveQuestion.type),
     switchMap(async (action) => {
       const savedAt: string = new Date().toISOString();
-      const selectedQuestionId =
-        state$.value.scientistData.questions.selectedQuestion;
-      const selectedQuestion =
-        state$.value.scientistData.questions.entities[selectedQuestionId];
+      const selectedQuestionId = state$.value.scientistData.questions.selectedQuestion;
+      const selectedQuestion = state$.value.scientistData.questions.entities[selectedQuestionId];
       const selectedSurvey = state$.value.scientistData.survey.selectedSurvey;
       const order = state$.value.scientistData.survey.order;
 
@@ -113,8 +102,4 @@ const deleteEpic: Epic = (action$, state$) =>
     })
   );
 
-export const questionEditorEpic = combineEpics(
-  createEpic,
-  saveEpic,
-  deleteEpic
-);
+export const questionEditorEpic = combineEpics(createEpic, saveEpic, deleteEpic);

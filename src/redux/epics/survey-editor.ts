@@ -83,12 +83,10 @@ const postEpic: Epic = (action$, state$) =>
 
         return surveyRes;
       } catch (error: any) {
-        console.log(error);
         return error;
       }
     }),
     map((surveyRes) => {
-      console.log("surveyRes", surveyRes);
       const postedAt = new Date().toISOString();
 
       if (surveyRes.response?.errors) {

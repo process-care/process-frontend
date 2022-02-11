@@ -30,19 +30,15 @@ export const CreateForm: React.FC<IRoute> = () => {
   const isLoading = useAppSelector(selectors.survey.isLoading);
   const order = useAppSelector(selectors.survey.getOrder);
   const error = useAppSelector(selectors.survey.error);
-  const isCreating = useAppSelector(selectors.questions.isCreating);
+  // const isCreating = useAppSelector(selectors.questions.isCreating);
   const drawerIsOpen = useAppSelector(appSelectors.drawerIsOpen);
-  const selectedCondition = useAppSelector(
-    selectors.conditions.getSelectedCondition
-  );
+  const selectedCondition = useAppSelector(selectors.conditions.getSelectedCondition);
   const containerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     dispatch(actions.initializeSurvey(slug));
   }, [slug]);
 
   useEffect(() => {
-    console.log(isCreating, "IS CREATING");
-
     if (drawerIsOpen) {
       setTimeout(() => {
         containerRef?.current?.scrollIntoView({
@@ -69,13 +65,7 @@ export const CreateForm: React.FC<IRoute> = () => {
           <Menu surveyId={selectedSurveyId} />
 
           <Box d="flex" overflow="hidden" w="100%">
-            <Container
-              variant="createformColumn"
-              w="6%"
-              minW="100px"
-              borderRight="1px"
-              borderColor="gray.200"
-            >
+            <Container variant="createformColumn" w="6%" minW="100px" borderRight="1px" borderColor="gray.200">
               <PageBuilder survey={selectedSurvey} />
             </Container>
 

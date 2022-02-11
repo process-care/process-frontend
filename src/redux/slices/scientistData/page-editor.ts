@@ -74,35 +74,27 @@ type UploadPayload = {
 
 // ---- SELECTORS
 
-export const error = (state: RootState): string | undefined =>
-  state.scientistData.pages.error;
-export const isLoading = (state: RootState): boolean =>
-  state.scientistData.pages.isLoading;
+export const error = (state: RootState): string | undefined => state.scientistData.pages.error;
+export const isLoading = (state: RootState): boolean => state.scientistData.pages.isLoading;
 export const hasChanges = (state: RootState): boolean => {
   const updated = DateTime.fromISO(state.scientistData.questions.lastUpdated);
   const saved = DateTime.fromISO(state.scientistData.questions.lastSaved);
   return updated > saved;
 };
 
-export const pages = (state: RootState): PageRedux[] =>
-  pageAdapter.getSelectors().selectAll(state.scientistData.pages);
+export const pages = (state: RootState): PageRedux[] => pageAdapter.getSelectors().selectAll(state.scientistData.pages);
 
 const getAllPages = (state: RootState): PageRedux[] => {
   return pages(state).filter(
-    (page) =>
-      page?.attributes?.survey?.data?.id ===
-      state.scientistData.survey.selectedSurvey
+    (page) => page?.attributes?.survey?.data?.id === state.scientistData.survey.selectedSurvey
   );
 };
 
 //  TODO: Refacto any here
-const getSelectedPageId = (state: RootState): any =>
-  state.scientistData.pages.selectedPage;
+const getSelectedPageId = (state: RootState): any => state.scientistData.pages.selectedPage;
 
 const getSelectedPage = (state: RootState): PageRedux | any => {
-  pageAdapter
-    .getSelectors()
-    .selectById(state.scientistData.pages, getSelectedPageId(state));
+  pageAdapter.getSelectors().selectById(state.scientistData.pages, getSelectedPageId(state));
 };
 
 // ---- EXPORTS
@@ -122,26 +114,17 @@ export const pageReducer = {
   createPage: (state: GlobalState, _action: PayloadAction<ID>): void => {
     state.pages.isCreating = true;
   },
-  createdPage: (
-    state: GlobalState,
-    action: PayloadAction<CreatedPayload>
-  ): void => {
+  createdPage: (state: GlobalState, action: PayloadAction<CreatedPayload>): void => {
     state.pages.isCreating = false;
     state.pages.lastCreated = action.payload.lastCreated;
     pageAdapter.addOne(state.pages, action.payload.page);
     state.pages.selectedPage = action.payload.page.id;
   },
-  updatePage: (
-    state: GlobalState,
-    action: PayloadAction<UploadPayload>
-  ): void => {
+  updatePage: (state: GlobalState, action: PayloadAction<UploadPayload>): void => {
     state.pages.lastUpdated = new Date().toISOString();
     pageAdapter.updateOne(state.pages, action.payload);
   },
-  updatedPage: (
-    state: GlobalState,
-    action: PayloadAction<UpdatedPayload>
-  ): void => {
+  updatedPage: (state: GlobalState, action: PayloadAction<UpdatedPayload>): void => {
     state.pages.lastUpdated = action.payload.lastUpdated;
   },
   deletePage: (state: GlobalState, action: PayloadAction<any>): void => {
@@ -150,20 +133,14 @@ export const pageReducer = {
     const lastPageId = state.pages.ids.length - 1;
     state.pages.selectedPage = state.pages.ids[lastPageId]?.toString();
   },
-  deletedPage: (
-    state: GlobalState,
-    action: PayloadAction<DeletedPayload>
-  ): void => {
+  deletedPage: (state: GlobalState, action: PayloadAction<DeletedPayload>): void => {
     state.pages.isDeleting = false;
     state.pages.lastDeleted = action.payload.lastDeleted;
   },
   savePage: (state: GlobalState): void => {
     state.pages.isSaving = true;
   },
-  savedPage: (
-    state: GlobalState,
-    action: PayloadAction<SavedPayload>
-  ): void => {
+  savedPage: (state: GlobalState, action: PayloadAction<SavedPayload>): void => {
     state.pages.isSaving = false;
     state.pages.lastSaved = action.payload.lastSaved;
   },
@@ -171,16 +148,10 @@ export const pageReducer = {
     state.pages.isFailed = true;
     state.pages.error = action.payload;
   },
-  setSelectedPage: (
-    state: GlobalState,
-    action: PayloadAction<string>
-  ): void => {
+  setSelectedPage: (state: GlobalState, action: PayloadAction<string>): void => {
     state.pages.selectedPage = action.payload;
   },
-  setRedirectPage: (
-    state: GlobalState,
-    action: PayloadAction<string>
-  ): void => {
+  setRedirectPage: (state: GlobalState, action: PayloadAction<string>): void => {
     state.pages.redirectToPage = action.payload;
   },
 };

@@ -47,21 +47,9 @@ export const CreateLanding: React.FC<IRoute> = () => {
 
   return (
     <Box overflow="auto">
-      <Box
-        d="flex"
-        justifyContent="space-between"
-        w="100%"
-        overflow="hidden"
-        h="100%"
-      >
+      <Box d="flex" justifyContent="space-between" w="100%" overflow="hidden" h="100%">
         <Box w="57%" pos="relative">
-          <Box
-            position="fixed"
-            top="0"
-            w="inherit"
-            backgroundColor="white"
-            zIndex="10"
-          >
+          <Box position="fixed" top="0" w="inherit" backgroundColor="white" zIndex="10">
             <Menu isLanding surveyId={surveyId} />
           </Box>
           <Box
@@ -72,14 +60,7 @@ export const CreateLanding: React.FC<IRoute> = () => {
             w="100%"
             h="100%"
           >
-            <Container
-              variant="createformColumn"
-              w="100%"
-              h="100%"
-              alignItems="center"
-              p="0"
-              d="flex"
-            >
+            <Container variant="createformColumn" w="100%" h="100%" alignItems="center" p="0" d="flex">
               <div className="background__grid--black">
                 <Preview data={data} isUserView={false} />
               </div>

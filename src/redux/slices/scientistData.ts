@@ -1,11 +1,6 @@
 import { createSlice, EntityState, PayloadAction } from "@reduxjs/toolkit";
 
-import {
-  authReducers,
-  authSelectors,
-  AuthState,
-  initialAuthState,
-} from "./scientistData/auth";
+import { authReducers, authSelectors, AuthState, initialAuthState } from "./scientistData/auth";
 import {
   conditionAdapter,
   ConditionEditor,
@@ -21,13 +16,7 @@ import {
   surveysSelectors,
 } from "./scientistData/surveys";
 
-import {
-  pageAdapter,
-  PageEditor,
-  pageReducer,
-  pageSelectors,
-  initialPageState,
-} from "./scientistData/page-editor";
+import { pageAdapter, PageEditor, pageReducer, pageSelectors, initialPageState } from "./scientistData/page-editor";
 import {
   initialQuestionState,
   questionAdapter,
@@ -35,20 +24,9 @@ import {
   questionsReducers,
   questionsSelectors,
 } from "./scientistData/question-editor";
-import {
-  initialSurveyState,
-  SurveyEditor,
-  surveyReducers,
-  surveySelectors,
-} from "./scientistData/survey-editor";
+import { initialSurveyState, SurveyEditor, surveyReducers, surveySelectors } from "./scientistData/survey-editor";
 
-import {
-  LastUpdated,
-  ConditionRedux,
-  PageRedux,
-  QuestionRedux,
-  SurveyRedux,
-} from "./types";
+import { LastUpdated, ConditionRedux, PageRedux, QuestionRedux, SurveyRedux } from "./types";
 import { hasAttributes, sanitizeEntities } from "api/entity-checker";
 import { CheckSurveyQuery } from "api/graphql/sdk.generated";
 
@@ -85,16 +63,10 @@ export const globalSlice = createSlice({
     ...authReducers,
     ...surveysReducers,
 
-    initializeSurvey: (
-      state: GlobalState,
-      _action: PayloadAction<string>
-    ): void => {
+    initializeSurvey: (state: GlobalState, _action: PayloadAction<string>): void => {
       state.survey.isLoading = true;
     },
-    initializedSurvey: (
-      state: GlobalState,
-      action: PayloadAction<SurveyRedux>
-    ): void => {
+    initializedSurvey: (state: GlobalState, action: PayloadAction<SurveyRedux>): void => {
       state.survey.isLoading = false;
       const survey = action.payload;
 
@@ -105,9 +77,7 @@ export const globalSlice = createSlice({
       const pages = survey.attributes.pages?.data;
       const questions = pages?.map((page) => page.attributes?.questions?.data ?? []).flat();
 
-      const questionsConditions = questions
-        ?.map((question) => question?.attributes?.conditions?.data ?? [])
-        .flat();
+      const questionsConditions = questions?.map((question) => question?.attributes?.conditions?.data ?? []).flat();
 
       // Save all pages if any
       if (pages) {
@@ -170,8 +140,8 @@ export const globalSlice = createSlice({
       state.survey.isChecking = false;
     },
     // TODO:ERROR: Improve error handling
-    error: (_state: GlobalState, _action: PayloadAction<{ slug?: string }>) => {
-      console.error('An error occured while loading a survey');
+    error: (_state: GlobalState, _action: PayloadAction<any>) => {
+      console.error("An error occured while loading a survey");
     },
   },
 });

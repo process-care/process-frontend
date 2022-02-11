@@ -23,7 +23,7 @@ const loginEpic: Epic = (action$) =>
 
         return { user: res };
       } catch (error: any) {
-        return { error};
+        return { error };
       }
     }),
 
@@ -31,7 +31,7 @@ const loginEpic: Epic = (action$) =>
       if (res.user) {
         return actions.logged(res.user.login);
       }
-      
+
       return actions.authFailed(res.error?.response?.errors);
     })
   );

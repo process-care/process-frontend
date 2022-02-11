@@ -34,7 +34,6 @@ export const AboutForm: React.FC = () => {
         React.useEffect(() => {
           dispatch(
             actions.update({
-              id: landing?.id,
               changes: {
                 id: landing?.id,
                 attributes: {
@@ -62,13 +61,7 @@ export const AboutForm: React.FC = () => {
                 },
               }}
             >
-              <Text
-                variant="baseline"
-                fontWeight="bold"
-                textAlign="left"
-                _hover={{ cursor: "pointer" }}
-                mb="5"
-              >
+              <Text variant="baseline" fontWeight="bold" textAlign="left" _hover={{ cursor: "pointer" }} mb="5">
                 Edition de la page d'accueil
               </Text>
               <Wysiwyg id="about_page" />

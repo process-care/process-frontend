@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { SURVEY_STATUS } from "types/survey";
-import { useCreateLandingMutation } from "api/graphql/queries/landing.gql.generated";
+import { CreateLandingMutation, useCreateLandingMutation } from "api/graphql/queries/landing.gql.generated";
 import { client } from "api/gql-client";
 import { useUpdateSurveyMutation } from "api/graphql/queries/survey.gql.generated";
 import { SurveyRedux } from "redux/slices/types";
@@ -30,10 +30,12 @@ export const useNavigator = (survey: SurveyRedux | undefined): Navigators => {
 
     const { landing, title, slug } = survey?.attributes;
     const { id } = survey;
+    const ladingId = landing?.data?.id;
 
+    console.log("ladingId", ladingId);
     // If the landing is not created yet, create it
-    if (!landing) {
-      const newLanding: Record<string, any> = await addLanding({
+    if (!ladingId) {
+      const newLanding: CreateLandingMutation = await addLanding({
         data: {
           title,
           survey: id,
@@ -42,11 +44,9 @@ export const useNavigator = (survey: SurveyRedux | undefined): Navigators => {
       // update survey with landing id.
       await updateSurvey({
         id,
-        data: { landing: newLanding.createLanding.landing.id },
+        data: { landing: newLanding?.createLanding?.data?.id },
       });
     }
-
-    // Navigate to the landing
     history.push(`/survey/${slug}/create/landing`);
   }, [survey?.id, survey?.attributes?.slug]);
 
@@ -55,13 +55,8 @@ export const useNavigator = (survey: SurveyRedux | undefined): Navigators => {
     if (!survey) return;
 
     const { status, slug } = survey?.attributes;
-    if (
-      status !== SURVEY_STATUS.Draft &&
-      process.env.NODE_ENV !== "development"
-    ) {
-      alert(
-        "Désolé, vous ne pouvez pas éditer le formulaire d'une enquête en cours."
-      );
+    if (status !== SURVEY_STATUS.Draft && process.env.NODE_ENV !== "development") {
+      alert("Désolé, vous ne pouvez pas éditer le formulaire d'une enquête en cours.");
       return;
     }
 

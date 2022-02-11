@@ -1,6 +1,6 @@
 # Get my surveys only
 query mySurveys($authorId: ID!) {
-  surveys(filters: { author: { id: { eq: $authorId }}}) {
+  surveys(filters: { author: { id: { eq: $authorId } } }) {
     data {
       id
       attributes {
@@ -10,17 +10,17 @@ query mySurveys($authorId: ID!) {
         status
         order
         createdAt
+
         landing {
           data {
             id
-            attributes {
-              color_theme
-              subtitle
-            }
           }
         }
+
         participations {
-          data { id }
+          data {
+            id
+          }
         }
       }
     }

@@ -46,8 +46,6 @@ const updateSurveyEpic: Epic = (action$) =>
     ofType(actions.updateSurvey.type),
     map((action) => action.payload),
     switchMap((payload) => {
-      console.log("Payload - update survey: ", payload);
-
       return sdk.updateSurvey({
         id: payload.id,
         data: {

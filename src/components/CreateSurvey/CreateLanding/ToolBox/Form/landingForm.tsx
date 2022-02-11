@@ -15,10 +15,10 @@ import { SvgHover } from "components/SvgHover";
 import { ReactComponent as Delete } from "assets/delete.svg";
 import { goTop } from "utils/application/scrollTo";
 import { actions, selectors } from "redux/slices/landing-editor";
-import { Enum_Question_Rows } from "api/graphql/types.generated";
 import { Footer } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer";
 import { useHistory } from "react-router-dom";
 import { TitleDivider } from "components/TitleDivider";
+import { Enum_Question_Rows } from "api/graphql/types.generated";
 
 export const LandingForm: React.FC = () => {
   const history = useHistory();
@@ -44,7 +44,6 @@ export const LandingForm: React.FC = () => {
     if (!landing?.id) return;
     dispatch(
       actions.update({
-        id: landing?.id,
         changes: {
           id: landing?.id,
           attributes: {
@@ -58,13 +57,13 @@ export const LandingForm: React.FC = () => {
   const handleCancel = () => {
     history.push("/dashboard");
   };
+  const handleSubmit = () => {
+    onSave();
+    history.push("/dashboard");
+  };
 
   return (
-    <Formik
-      validateOnBlur={false}
-      initialValues={landing || initialValues}
-      onSubmit={onSubmit}
-    >
+    <Formik validateOnBlur={false} initialValues={landing?.attributes || initialValues} onSubmit={onSubmit}>
       {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment*/}
       {/* @ts-ignore */}
       {({ values, setFieldValue, isValid, isSubmitting }) => {
@@ -75,7 +74,17 @@ export const LandingForm: React.FC = () => {
             return;
           }
 
-          onSave();
+          if (!landing?.id) return;
+          dispatch(
+            actions.update({
+              changes: {
+                id: landing?.id,
+                attributes: {
+                  ...values,
+                },
+              },
+            })
+          );
         }, [values]);
 
         // Target params for various uploads (cover, partners)
@@ -92,7 +101,6 @@ export const LandingForm: React.FC = () => {
           if (!landing?.id) return;
           dispatch(
             actions.update({
-              id: landing?.id,
               changes: {
                 id: landing?.id,
                 attributes: {
@@ -112,64 +120,17 @@ export const LandingForm: React.FC = () => {
               // onBlur={autoSaveDebounce}
               style={{ width: "100%" }}
             >
-              <Text
-                variant="baseline"
-                fontWeight="bold"
-                textAlign="left"
-                _hover={{ cursor: "pointer" }}
-                mb="5"
-              >
+              <Text variant="baseline" fontWeight="bold" textAlign="left" _hover={{ cursor: "pointer" }} mb="5">
                 Edition de la page d'accueil
               </Text>
-              <Text variant="currentBold">{t.label_logo}</Text>
-              <UploadFile
-                onChange={logOnChange}
-                label={t.logo_cta}
-                id="logo"
-                helpText={t.logo_helptext}
-              />
-
-              <Text variant="currentBold" mt={9}>
-                {t.theme_label}
-              </Text>
-              <ColorPicker />
-
-              <Textarea
-                id="title"
-                rows={Enum_Question_Rows.Medium}
-                placeholder={t.title_input}
-                label={t.title_input}
-                helpText={t.title_helptext}
-              />
-
-              <Textarea
-                id="subtitle"
-                rows={Enum_Question_Rows.Large}
-                placeholder={t.subtitle_input}
-                label={t.subtitle_input}
-                helpText={t.subtitle_helptext}
-              />
-
-              <Text variant="currentBold" mt={9} mb={2}>
-                {t.content_label}
-              </Text>
-              <Wysiwyg id="wysiwyg" simpleMode />
-
-              <Text variant="currentBold">{t.add_image}</Text>
-              <UploadFile
-                onChange={logOnChange}
-                label={t.image_cta}
-                id="cover"
-                helpText={t.logo_helptext}
-              />
-
-              <Flex alignItems="center">
+              <TitleDivider title="Bandeau" />
+              <Box border="1px solid #F7F7F7F7" p="5" backgroundColor="#fdfdfdf1">
                 <Textarea
-                  id="video_url"
-                  rows={Enum_Question_Rows.Small}
-                  placeholder={t.video_url_placeholder}
-                  label={t.video_url_label}
-                  isDisabled={Boolean(values?.attributes?.cover)}
+                  id="title"
+                  rows={Enum_Question_Rows.Medium}
+                  placeholder={t.title_input}
+                  label={t.title_input}
+                  helpText={t.title_helptext}
                 />
 
                 <Textarea
@@ -182,25 +143,16 @@ export const LandingForm: React.FC = () => {
                 <Text variant="currentBold" mt="5">
                   {t.label_logo}
                 </Text>
-                <UploadFile
-                  onChange={logOnChange}
-                  label={t.logo_cta}
-                  id="logo"
-                  helpText={t.logo_helptext}
-                />
+                <UploadFile onChange={logOnChange} label={t.logo_cta} id="logo" helpText={t.logo_helptext} />
 
                 <Text variant="currentBold" mt={9}>
                   {t.theme_label}
                 </Text>
                 <ColorPicker />
-              </Flex>
+              </Box>
 
               <TitleDivider title="Corps" />
-              <Box
-                border="1px solid #F7F7F7F7"
-                p="5"
-                backgroundColor="#fdfdfdf1"
-              >
+              <Box border="1px solid #F7F7F7F7" p="5" backgroundColor="#fdfdfdf1">
                 <Text variant="currentBold" mt={2} mb={2}>
                   {t.content_label}
                 </Text>
@@ -209,12 +161,7 @@ export const LandingForm: React.FC = () => {
                 <Text variant="currentBold" mt="5">
                   {t.add_image}
                 </Text>
-                <UploadFile
-                  onChange={logOnChange}
-                  label={t.image_cta}
-                  id="cover"
-                  helpText={t.logo_helptext}
-                />
+                <UploadFile onChange={logOnChange} label={t.image_cta} id="cover" helpText={t.logo_helptext} />
 
                 <Flex alignItems="center">
                   <Textarea
@@ -222,7 +169,7 @@ export const LandingForm: React.FC = () => {
                     rows={Enum_Question_Rows.Small}
                     placeholder={t.video_url_placeholder}
                     label={t.video_url_label}
-                    isDisabled={Boolean(values?.attributes?.cover)}
+                    isDisabled={Boolean(values?.cover)}
                   />
                   <Box mt={7} ml={4}>
                     <SvgHover>
@@ -233,37 +180,21 @@ export const LandingForm: React.FC = () => {
                 <Text variant="currentBold" mt="5">
                   {t.see_more_cta}
                 </Text>
-                <Button
-                  variant="roundedTransparent"
-                  mt={4}
-                  onClick={onEditAbout}
-                >
+                <Button variant="roundedTransparent" mt={4} onClick={onEditAbout}>
                   {t.cta_show_more}
                 </Button>
               </Box>
 
               <TitleDivider title="Pied de page" />
-              <Box
-                border="1px solid #F7F7F7F7"
-                p="5"
-                backgroundColor="#fdfdfdf1"
-                mb="100px"
-              >
-                <RepeatableJobs
-                  name="members"
-                  cta="Ajouter un membre de l'équipe"
-                />
+              <Box border="1px solid #F7F7F7F7" p="5" backgroundColor="#fdfdfdf1" mb="100px">
+                <RepeatableJobs name="members" cta="Ajouter un membre de l'équipe" />
 
-                <RepeatableJobs
-                  name="partners_logos"
-                  onlyUpload
-                  cta="Ajouter un logo partenaire"
-                />
+                <RepeatableJobs name="partners_logos" onlyUpload cta="Ajouter un logo partenaire" />
               </Box>
 
               <Footer
                 w="43%"
-                onSubmit={() => onSave()}
+                onSubmit={handleSubmit}
                 disabled={!isValid || isSubmitting}
                 onCancel={handleCancel}
                 hideDelete={true}

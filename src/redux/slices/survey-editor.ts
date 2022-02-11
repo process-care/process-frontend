@@ -57,7 +57,6 @@ export const surveyEditorSlice = createSlice({
     },
     update: (state, action: PayloadAction<UpdatePayload>) => {
       state.lastUpdated = new Date().toISOString();
-      console.log(action.payload);
       const updated = { ...state.data, ...action.payload.changes };
       state.data = updated;
     },
@@ -68,12 +67,9 @@ export const surveyEditorSlice = createSlice({
 
       // // auto-generate slug
       if (action.payload?.changes?.attributes?.title) {
-        state.draft.attributes.slug = `${slugify(
-          action.payload?.changes?.attributes?.title.toLowerCase(),
-          {
-            strict: true,
-          }
-        )}`;
+        state.draft.attributes.slug = `${slugify(action.payload?.changes?.attributes?.title.toLowerCase(), {
+          strict: true,
+        })}`;
       }
     },
     updated: (state, action: PayloadAction<LastSaved>) => {
@@ -105,10 +101,8 @@ export const surveyEditorSlice = createSlice({
 
 // ---- SELECTORS
 
-export const error = (state: RootState): any[] | undefined =>
-  state.editor.survey.error;
-export const isLoading = (state: RootState): boolean =>
-  state.editor.survey.isLoading;
+export const error = (state: RootState): any[] | undefined => state.editor.survey.error;
+export const isLoading = (state: RootState): boolean => state.editor.survey.isLoading;
 export const step = (state: RootState): number => state.editor.survey.step;
 export const hasChanges = (state: RootState): boolean => {
   const updated = DateTime.fromISO(state.editor.survey.lastUpdated);
@@ -116,11 +110,9 @@ export const hasChanges = (state: RootState): boolean => {
   return updated > saved;
 };
 
-export const survey = (state: RootState): SurveyRedux | undefined =>
-  state.editor.survey.data;
+export const survey = (state: RootState): SurveyRedux | undefined => state.editor.survey.data;
 
-export const getSurveyDraft = (state: RootState): SurveyRedux | undefined =>
-  state.editor.survey.draft;
+export const getSurveyDraft = (state: RootState): SurveyRedux | undefined => state.editor.survey.draft;
 
 export const selectors = {
   error,

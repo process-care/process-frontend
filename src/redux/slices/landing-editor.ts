@@ -25,7 +25,6 @@ const initialState: LandingEditor = {
 // ----- ACTIONS
 
 type UploadPayload = {
-  id: string;
   changes: LandingRedux;
 };
 
@@ -64,35 +63,24 @@ export const landingEditorSlice = createSlice({
 
 // ---- SELECTORS
 
-function getAttributes(
-  state: RootState
-): LandingRedux["attributes"] | undefined {
+function getAttributes(state: RootState): LandingRedux["attributes"] | undefined {
   return state.editor.landing.data?.attributes;
 }
 
-export const error = (state: RootState): string | undefined =>
-  state.editor.landing.error;
-export const isLoading = (state: RootState): boolean =>
-  state.editor.landing.isLoading;
+export const error = (state: RootState): string | undefined => state.editor.landing.error;
+export const isLoading = (state: RootState): boolean => state.editor.landing.isLoading;
 export const landingHasChanges = (state: RootState): boolean => {
   const updated = DateTime.fromISO(state.editor.landing.lastUpdated);
   const saved = DateTime.fromISO(state.editor.landing.lastSaved);
   return updated > saved;
 };
 
-export const isEditingAbout = (state: RootState): boolean =>
-  state.editor.landing.isEditingAbout;
-export const hasMembers = (state: RootState): boolean =>
-  getAttributes(state)?.members.length > 0;
-export const getLanding = (state: RootState): LandingRedux | undefined =>
-  state.editor.landing.data;
-export const members = (
-  state: RootState
-): LandingRedux["attributes"]["members"] => getAttributes(state)?.members;
+export const isEditingAbout = (state: RootState): boolean => state.editor.landing.isEditingAbout;
+export const hasMembers = (state: RootState): boolean => getAttributes(state)?.members.length > 0;
+export const getLanding = (state: RootState): LandingRedux | undefined => state.editor.landing.data;
+export const members = (state: RootState): LandingRedux["attributes"]["members"] => getAttributes(state)?.members;
 
-export const about = (
-  state: RootState
-): LandingRedux["attributes"]["about_page"] | undefined =>
+export const about = (state: RootState): LandingRedux["attributes"]["about_page"] | undefined =>
   getAttributes(state)?.about_page;
 
 type HeaderData = Partial<Pick<Landing, "title" | "color_theme" | "logo">>;

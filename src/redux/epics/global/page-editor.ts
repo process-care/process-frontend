@@ -2,8 +2,9 @@ import { map, switchMap, scan, debounceTime } from "rxjs";
 import { combineEpics, ofType } from "redux-observable";
 import { Epic } from "redux/store";
 import { actions, selectors } from "redux/slices/scientistData";
-
+import { sanitizeEntity } from "api/entity-checker";
 import { sdk } from "api/gql-client";
+import { AddPageMutation } from "api/graphql/sdk.generated";
 
 // ----  CREATE PAGE
 
@@ -30,20 +31,15 @@ const createEpic: Epic = (action$, state$) =>
 
       return { newPage, createdAt };
     }),
-    map(
-      ({
-        newPage,
-        createdAt,
-      }: {
-        newPage: Record<string, any>;
-        createdAt: string;
-      }) => {
+    map(({ newPage, createdAt }: { newPage: AddPageMutation; createdAt: string }) => {
+      if (newPage.createPage?.data) {
+        return actions.error("Error while creating page");
+      } else
         return actions.createdPage({
-          page: newPage.createPage.page,
+          page: sanitizeEntity(newPage?.createPage?.data),
           lastCreated: createdAt,
         });
-      }
-    )
+    })
   );
 
 // ----  UPDATE PAGE

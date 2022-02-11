@@ -1,10 +1,7 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import { Formik, Form } from "formik";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import {
-  Errors,
-  renderSurveyMessage,
-} from "components/Authentification/Errors";
+import { Errors, renderSurveyMessage } from "components/Authentification/Errors";
 import { createSurveySchema } from "../validationSchema";
 import { useAppSelector, useAppDispatch } from "redux/hooks";
 
@@ -34,7 +31,6 @@ export const CreateSurveyForm: React.FC = () => {
   const step = useAppSelector(selectors.step);
 
   const onSubmit = useCallback((data, { setSubmitting, validateForm }) => {
-    console.log("data", data);
     validateForm(data);
     setSubmitting(true);
     dispatch(actions.post(data));
@@ -84,33 +80,19 @@ export const CreateSurveyForm: React.FC = () => {
                 }}
               >
                 <Box my="auto" w="60%" mt="80px">
-                  <Flex
-                    alignItems="center"
-                    justifyContent="flex-end"
-                    flexDirection="column"
-                    w="100%"
-                  >
+                  <Flex alignItems="center" justifyContent="flex-end" flexDirection="column" w="100%">
                     {renderInputs(step)}
                     <Box w="100%" textAlign="right">
                       <Errors message={renderSurveyMessage(error)} />
                     </Box>
                     <Flex w="100%" justifyContent={"space-between"} mt="30px">
                       {step !== 1 ? (
-                        <Navigatebtn
-                          step={step}
-                          previous
-                          errors={errors}
-                          values={values}
-                        />
+                        <Navigatebtn step={step} previous errors={errors} values={values} />
                       ) : (
                         <Box minW="150px"></Box>
                       )}
 
-                      <Navigatebtn
-                        step={step}
-                        errors={errors}
-                        values={values}
-                      />
+                      <Navigatebtn step={step} errors={errors} values={values} />
                     </Flex>
                   </Flex>
                 </Box>

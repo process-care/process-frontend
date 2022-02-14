@@ -1,5 +1,5 @@
-mutation createCondition($newCondition: ConditionInput!) {
-  createCondition(data: $newCondition) {
+mutation createCondition($data: ConditionInput!) {
+  createCondition(data: $data) {
     data {
       ...conditionEntityFragment
     }

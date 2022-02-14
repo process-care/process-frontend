@@ -18,10 +18,9 @@ const createEpic: Epic = (action$) =>
       const newGroup = `group-${uuidv4()}`;
 
       const newCondition = await sdk.createCondition({
-        newCondition: {
+        data: {
           type,
-          [type === "question" ? "referer_question" : "referer_page"]:
-            refererId,
+          [type === "question" ? "referer_question" : "referer_page"]: refererId,
           group: group === undefined ? newGroup : group,
         },
       });
@@ -89,12 +88,9 @@ const saveEpic: Epic = (action$, state$) =>
     ofType(actions.saveCondition.type),
     switchMap(async () => {
       const savedAt: string = new Date().toISOString();
-      const selectedConditionId =
-        state$.value.scientistData.conditions.selectedCondition;
+      const selectedConditionId = state$.value.scientistData.conditions.selectedCondition;
 
-      const conditions = Object.entries(
-        state$.value.scientistData.conditions.entities
-      );
+      const conditions = Object.entries(state$.value.scientistData.conditions.entities);
       const changes = conditions.filter((c) => c[0] === selectedConditionId)[0];
       // We need to send target : id, referer_question:id, but ConditionRedux have full Question object adn we use it in frontend
       const formatPayload = (changes: any) => {
@@ -115,14 +111,7 @@ const saveEpic: Epic = (action$, state$) =>
 
       return { savedAt, condition };
     }),
-    map(({ savedAt, condition }) =>
-      actions.savedCondition({ lastSaved: savedAt, condition })
-    )
+    map(({ savedAt, condition }) => actions.savedCondition({ lastSaved: savedAt, condition }))
   );
 
-export const conditionsEditorEpics = combineEpics(
-  createEpic,
-  saveEpic,
-  deleteEpic,
-  deleteGroupEpic
-);
+export const conditionsEditorEpics = combineEpics(createEpic, saveEpic, deleteEpic, deleteGroupEpic);

@@ -28,7 +28,7 @@ export const useNavigator = (survey: SurveyRedux | undefined): Navigators => {
     // If no survey, don't do anything
     if (!survey) return;
 
-    const { landing, title, slug } = survey?.attributes;
+    const { landing, title, slug } = survey.attributes;
     const { id } = survey;
     const ladingId = landing?.data?.id;
 
@@ -54,7 +54,7 @@ export const useNavigator = (survey: SurveyRedux | undefined): Navigators => {
   const goToForm = useCallback(() => {
     if (!survey) return;
 
-    const { status, slug } = survey?.attributes;
+    const { status, slug } = survey.attributes;
     if (status !== SURVEY_STATUS.Draft && process.env.NODE_ENV !== "development") {
       alert("Désolé, vous ne pouvez pas éditer le formulaire d'une enquête en cours.");
       return;

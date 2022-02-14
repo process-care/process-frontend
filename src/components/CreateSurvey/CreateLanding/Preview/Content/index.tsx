@@ -20,14 +20,7 @@ export const Content: React.FC<Props> = ({ data, onParticipate }) => {
   const { isTablet } = useMediaQueries();
   if (!data) return <Loader />;
 
-  const {
-    title,
-    subtitle,
-    color_theme: theme,
-    video_url,
-    cover,
-    wysiwyg,
-  } = data?.attributes;
+  const { title, subtitle, color_theme: theme, video_url, cover, wysiwyg } = data.attributes;
 
   const hasVideo = Boolean(video_url);
   const hasImage = Boolean(cover);
@@ -35,16 +28,8 @@ export const Content: React.FC<Props> = ({ data, onParticipate }) => {
 
   return (
     <Box>
-      <Box
-        backgroundColor={theme?.base || "black"}
-        py="100px"
-        color="white"
-        textAlign="left"
-        px="5%"
-      >
-        <Text variant={isTablet ? "xlNoMobilVariant" : "xl"}>
-          {title || "Titre à remplacer"}
-        </Text>
+      <Box backgroundColor={theme?.base || "black"} py="100px" color="white" textAlign="left" px="5%">
+        <Text variant={isTablet ? "xlNoMobilVariant" : "xl"}>{title || "Titre à remplacer"}</Text>
         <Text variant="current" mt="30px">
           {subtitle || `Sous titre à remplacer. ${placeholder}`}
         </Text>
@@ -70,16 +55,8 @@ export const Content: React.FC<Props> = ({ data, onParticipate }) => {
               __html: wysiwyg || big_placeholder,
             }}
           ></Text>
-          <Flex
-            mt={10}
-            justifyContent="space-between"
-            flexDirection={isTablet ? "column" : "row"}
-          >
-            <Button
-              variant="rounded"
-              backgroundColor={theme?.button || "brand.blue"}
-              onClick={onParticipate}
-            >
+          <Flex mt={10} justifyContent="space-between" flexDirection={isTablet ? "column" : "row"}>
+            <Button variant="rounded" backgroundColor={theme?.button || "brand.blue"} onClick={onParticipate}>
               {t.cta_participate}
             </Button>
             <Button

@@ -20,13 +20,8 @@ interface Props {
 
 // ---- COMPONENT
 
-export const ParticipationConsent: React.FC<Props> = ({
-  surveyId,
-  onConsent,
-  onRefuse,
-}) => {
-  const { mutateAsync: createParticipation, isLoading } =
-    useCreateParticipationMutation(client);
+export const ParticipationConsent: React.FC<Props> = ({ surveyId, onConsent, onRefuse }) => {
+  const { mutateAsync: createParticipation, isLoading } = useCreateParticipationMutation(client);
   const { data: survey } = useSurveyQuery(client, { id: surveyId });
 
   const onAccept = useCallback(async () => {
@@ -35,7 +30,7 @@ export const ParticipationConsent: React.FC<Props> = ({
     });
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore : I don't understand the structure of the answer, because that's supposed to work
-    onConsent(res.createParticipation.participation.id);
+    onConsent(res?.createParticipation?.data?.id);
   }, [surveyId]);
 
   const onDecline = useCallback(() => {
@@ -77,23 +72,10 @@ export const ParticipationConsent: React.FC<Props> = ({
           </Box>
         </div>
       </Box>
-      <Container
-        variant="rightPart"
-        className={isTablet ? "background__grid" : ""}
-      >
-        <Center
-          h={isTablet ? "unset" : "100vh"}
-          mb="20px"
-          w={isTablet ? "100%" : "unset"}
-        >
+      <Container variant="rightPart" className={isTablet ? "background__grid" : ""}>
+        <Center h={isTablet ? "unset" : "100vh"} mb="20px" w={isTablet ? "100%" : "unset"}>
           <Box d="flex" flexDir="column" w={isTablet ? "90%" : "50%"}>
-            <Button
-              mb="20px"
-              isFullWidth
-              variant="rounded"
-              onClick={onAccept}
-              mr="10"
-            >
+            <Button mb="20px" isFullWidth variant="rounded" onClick={onAccept} mr="10">
               {NL.button.consent.accept}
             </Button>
 

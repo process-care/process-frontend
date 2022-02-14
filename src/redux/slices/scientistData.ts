@@ -41,6 +41,11 @@ export interface GlobalState {
   surveys: EntityState<SurveyRedux> & SurveysEditor;
 }
 
+export interface InitializedSurveyPayload {
+  survey: SurveyRedux;
+  questions: QuestionRedux[];
+}
+
 // ----- SLICE
 
 const SLICE_NAME = "scientistData";
@@ -65,37 +70,30 @@ export const globalSlice = createSlice({
 
     initializeSurvey: (state: GlobalState, _action: PayloadAction<string>): void => {
       state.survey.isLoading = true;
+      state.questions.isLoading = true;
+      state.pages.isLoading = true;
+      state.conditions.isLoading = true;
     },
-    initializedSurvey: (state: GlobalState, action: PayloadAction<SurveyRedux>): void => {
-      state.survey.isLoading = false;
-      const survey = action.payload;
+    initializedSurvey: (state: GlobalState, action: PayloadAction<InitializedSurveyPayload>): void => {
+      const { survey, questions } = action.payload;
 
+      // Set survey
       state.survey.data = survey;
       state.survey.selectedSurvey = survey.id;
       state.survey.order = survey.attributes.order;
 
       const pages = survey.attributes.pages?.data;
-      const questions = pages?.map((page) => page.attributes?.questions?.data ?? []).flat();
 
-      const questionsConditions = questions?.map((question) => question?.attributes?.conditions?.data ?? []).flat();
-
-      // Save all pages if any
+      // Set pages
       if (pages) {
-        console.log("pages", pages);
         const sanePages = sanitizeEntities(pages);
         pageAdapter.setMany(state.pages, sanePages);
 
         state.pages.selectedPage = sanePages[0].id;
 
-        // Sanitize and save all page and their questions / conditions
+        // Set conditions's pages
         sanePages.map((p) => {
-          const questions = p.attributes.questions?.data;
           const pageConditions = p.attributes.conditions?.data;
-
-          if (questions) {
-            const saneQuestions = sanitizeEntities(questions);
-            questionAdapter.setMany(state.questions, saneQuestions);
-          }
 
           if (pageConditions) {
             const sanePageConditions = sanitizeEntities(pageConditions);
@@ -104,7 +102,11 @@ export const globalSlice = createSlice({
         });
       }
 
-      // Save all conditions if any
+      // Set questions
+      questionAdapter.setMany(state.questions, questions);
+      const questionsConditions = questions?.map((question) => question?.attributes?.conditions?.data ?? []).flat();
+
+      // Set conditions's questions
       if (questionsConditions) {
         questionsConditions.map((condition) => {
           if (hasAttributes(condition)) {

@@ -3,17 +3,30 @@ import { combineEpics, ofType } from "redux-observable";
 import { Epic } from "redux/store";
 import { actions } from "redux/slices/scientistData";
 import { sdk } from "api/gql-client";
-import { sanitizeEntity } from "api/entity-checker";
+import { sanitizeEntities, sanitizeEntity } from "api/entity-checker";
 
 // Watches over "initialize" currentsurvey
 const initializeEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.initializeSurvey.type),
-    switchMap((action) => {
-      return sdk.surveyBySlug({ slug: action.payload });
+    switchMap(async (action) => {
+      const survey = sdk.surveyBySlug({ slug: action.payload }).then((res) => {
+        // Get survey - pages and conditions's pages
+        const data = res.surveys?.data[0];
+        return sanitizeEntity(data);
+      });
+      const questions = sdk.questionsBySurveySlug({ slug: action.payload }).then((res) => {
+        // Get questions - pages and conditions's questions
+        const data = res.questions?.data;
+        return sanitizeEntities(data);
+      });
+
+      return Promise.all([survey, questions]);
     }),
-    map((result) => {
-      const payload = sanitizeEntity(result.surveys?.data[0]);
+    map((results) => {
+      const survey = results[0];
+      const questions = results[1];
+      const payload = { survey, questions };
 
       // Raise an error if no survey found
       if (!payload) return actions.error({});

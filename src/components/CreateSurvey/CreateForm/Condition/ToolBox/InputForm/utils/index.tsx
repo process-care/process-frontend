@@ -22,9 +22,7 @@ import {
   AssociatedSchema,
 } from "../ValidationSchemas";
 
-export const renderFormTemplate = (
-  input: QuestionRedux | Record<string, any>
-): React.ReactNode => {
+export const renderFormTemplate = (input: QuestionRedux | Record<string, any>): React.ReactNode => {
   switch (input?.attributes?.type) {
     case "input":
       return <InputFields />;
@@ -64,9 +62,7 @@ export const renderFormTemplate = (
   }
 };
 
-export const renderFormValidationSchema = (
-  input: QuestionRedux | Record<string, any>
-): React.ReactFragment => {
+export const renderFormValidationSchema = (input: QuestionRedux | Record<string, any>): React.ReactFragment => {
   switch (input?.attributes?.type) {
     case "input":
       return CommonFieldsSchema;
@@ -103,10 +99,7 @@ export const renderFormValidationSchema = (
   }
 };
 
-export const getDiff = (
-  newValues: Record<string, any>,
-  oldValues: Record<string, any>
-): Record<string, any> =>
+export const getDiff = (newValues: Record<string, any>, oldValues: Record<string, any>): Record<string, any> =>
   Object.keys(newValues).reduce((diff, key) => {
     if (oldValues[key] === newValues[key]) return diff;
     return {
@@ -115,8 +108,6 @@ export const getDiff = (
     };
   }, {});
 
-export const removeEmpty = (
-  obj: Record<string, unknown>
-): Record<string, unknown> => {
-  return Object.fromEntries(Object.entries(obj).filter(([_, v]) => v != null));
+export const removeEmpty = (obj: QuestionRedux): QuestionRedux["attributes"] => {
+  return Object.fromEntries(Object.entries(obj.attributes).filter(([_, v]) => v != null));
 };

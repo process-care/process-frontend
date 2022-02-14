@@ -24,25 +24,17 @@ const answers: Option[] = [
 
 export const MonoThumbnailFields: React.FC = () => {
   const [state, setState] = useState(true);
-  const selectedQuestion = useAppSelector(
-    selectors.questions.getSelectedQuestion
-  );
+  const selectedQuestion = useAppSelector(selectors.questions.getSelectedQuestion);
   useEffect(() => {
     // Force re render to reset the field on select change
     setState(true);
-  }, [selectedQuestion.mono_thumbnail_input?.type]);
+  }, [selectedQuestion?.attributes?.mono_thumbnail_input?.type]);
 
   if (!state) return <></>;
   return (
     <>
       <TitleDivider title="Contenu" />
-      <Box
-        w="100%"
-        m="0 auto"
-        border="1px solid #F7F7F7F7"
-        p="5"
-        backgroundColor="#fdfdfdf1"
-      >
+      <Box w="100%" m="0 auto" border="1px solid #F7F7F7F7" p="5" backgroundColor="#fdfdfdf1">
         <CommonFields noPlacehoder />
         <NumberInput
           placeholder="ex: 4"

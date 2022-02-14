@@ -4,6 +4,8 @@ import { Epic } from "redux/store";
 import { actions } from "redux/slices/scientistData";
 
 import { sdk } from "api/gql-client";
+import { CreateQuestionMutation } from "api/graphql/sdk.generated";
+import { sanitizeEntity } from "api/entity-checker";
 
 // ----  CREATE QUESTION
 
@@ -15,7 +17,7 @@ const createEpic: Epic = (action$, state$) =>
       const createdAt = new Date().toISOString();
 
       const selectedPageId = state$.value.scientistData.pages.selectedPage;
-      const newQuestion = sdk.createQuestion({
+      const newQuestion = await sdk.createQuestion({
         values: {
           type,
           page: selectedPageId,
@@ -24,14 +26,19 @@ const createEpic: Epic = (action$, state$) =>
 
       return { newQuestion, createdAt };
     }),
-    map(({ newQuestion, createdAt }: { newQuestion: Record<string, any>; createdAt: string }) => {
+    map(({ newQuestion, createdAt }: { newQuestion: CreateQuestionMutation; createdAt: string }) => {
       const global = state$.value.scientistData;
-      const { type, id } = newQuestion.createQuestion.question;
+      const data = newQuestion?.createQuestion?.data;
+      const type = data?.attributes?.type;
+      const id = data?.id;
+
+      const question = {
+        attributes: { ...data?.attributes, internal_title: `${type}-${id}` },
+        id,
+      };
+
       return actions.createdQuestion({
-        question: {
-          ...newQuestion.createQuestion.question,
-          internal_title: `${type}-${id}`,
-        },
+        question: sanitizeEntity(question),
         global,
         lastCreated: createdAt,
       });

@@ -8,7 +8,7 @@ import { Enum_Question_Rows } from "api/graphql/types.generated";
 
 const ID = "mono_thumbnail_input";
 interface Props {
-  selectedQuestion: QuestionRedux;
+  selectedQuestion: QuestionRedux | undefined;
 }
 
 export const GradeFields: React.FC<Props> = ({ selectedQuestion }) => {
@@ -40,7 +40,7 @@ export const GradeFields: React.FC<Props> = ({ selectedQuestion }) => {
   );
 };
 
-const renderTemplate = (selectedQuestion: QuestionRedux) => {
+const renderTemplate = (selectedQuestion: QuestionRedux | undefined) => {
   switch (selectedQuestion?.attributes?.mono_thumbnail_input?.type) {
     case "number_input":
       return (

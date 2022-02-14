@@ -1,13 +1,20 @@
+## ---- QUERIES
+
+query questionsBySurveySlug($slug: String!) {
+  questions(filters: { page: { survey: { slug: { eq: $slug } } } }) {
+    data {
+      id
+      ...questionEntityFragment
+    }
+  }
+}
+
+## ---- MUTATUIONS
+
 mutation createQuestion($values: QuestionInput!) {
   createQuestion(data: $values) {
     data {
-      id
-      attributes {
-        type
-        page {
-          data { id }
-        }
-      }
+      ...questionEntityFragment
     }
   }
 }

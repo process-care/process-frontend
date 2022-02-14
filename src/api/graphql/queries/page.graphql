@@ -1,3 +1,4 @@
+## ---- MUTATIONS
 mutation addPage($values: PageInput!) {
   createPage(data: $values) {
     data {

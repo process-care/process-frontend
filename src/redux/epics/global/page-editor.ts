@@ -32,7 +32,7 @@ const createEpic: Epic = (action$, state$) =>
       return { newPage, createdAt };
     }),
     map(({ newPage, createdAt }: { newPage: AddPageMutation; createdAt: string }) => {
-      if (newPage.createPage?.data) {
+      if (!newPage.createPage?.data) {
         return actions.error("Error while creating page");
       } else
         return actions.createdPage({

@@ -5,12 +5,7 @@ import { Formik, Form } from "formik";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 import { Footer } from "./Template/Footer";
-import {
-  getDiff,
-  removeEmpty,
-  renderFormTemplate,
-  renderFormValidationSchema,
-} from "./utils";
+import { getDiff, removeEmpty, renderFormTemplate, renderFormValidationSchema } from "./utils";
 import { fields } from "./Template/logic/initialValues";
 import { setIsRemoving } from "redux/slices/formBuilder";
 
@@ -19,10 +14,7 @@ import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
 import { selectors, actions } from "redux/slices/scientistData";
 import { actions as appActions } from "redux/slices/application";
 
-import {
-  selectors as formBuilderSelectors,
-  actions as formBuilderAction,
-} from "redux/slices/formBuilder";
+import { selectors as formBuilderSelectors, actions as formBuilderAction } from "redux/slices/formBuilder";
 import { TitleDivider } from "components/TitleDivider";
 import { getQuestionInfo, getQuestionName } from "constants/inputs";
 import { InfoIcon } from "@chakra-ui/icons";
@@ -37,31 +29,28 @@ interface Props {
 
 const InputForm: React.FC<Props> = ({ order }) => {
   const dispatch = useAppDispatch();
-  const currentConditions = useAppSelector(
-    selectors.conditions.getSelectedQuestionsConditions
-  );
+  const currentConditions = useAppSelector(selectors.conditions.getSelectedQuestionsConditions);
   const isEditing = useAppSelector(formBuilderSelectors.isEditing);
-  const selectedQuestion = useAppSelector(
-    selectors.questions.getSelectedQuestion
-  );
-  const selectedQuestionId = useAppSelector(
-    selectors.questions.getSelectedQuestionId
-  );
-  const [prevState, setPrevState] = useState<QuestionRedux>(selectedQuestion);
+  const selectedQuestion = useAppSelector(selectors.questions.getSelectedQuestion);
+  const selectedQuestionId = useAppSelector(selectors.questions.getSelectedQuestionId);
+  const [prevState, setPrevState] = useState<QuestionRedux | undefined>(selectedQuestion);
 
-  const type = selectedQuestion?.type;
+  const type = selectedQuestion?.attributes?.type;
 
   const handleCancel = async () => {
     if (!isEditing) {
       dispatch(actions.deleteQuestion(selectedQuestionId));
     } else {
       dispatch(appActions.toogleDrawer());
-      dispatch(
-        actions.updateQuestion({
-          id: selectedQuestionId,
-          changes: prevState,
-        })
-      );
+      if (prevState)
+        dispatch(
+          actions.updateQuestion({
+            id: selectedQuestionId,
+            changes: {
+              ...prevState,
+            },
+          })
+        );
     }
     dispatch(formBuilderAction.setIsEditing(false));
     dispatch(actions.setSelectedQuestion(""));
@@ -95,7 +84,7 @@ const InputForm: React.FC<Props> = ({ order }) => {
     dispatch(appActions.toogleDrawer());
   };
 
-  if (!selectedQuestion) {
+  if (!selectedQuestion || !type) {
     return <> </>;
   }
 
@@ -103,9 +92,7 @@ const InputForm: React.FC<Props> = ({ order }) => {
     <Formik
       validateOnBlur
       validationSchema={renderFormValidationSchema(selectedQuestion)}
-      initialValues={
-        selectedQuestion ? removeEmpty(selectedQuestion) : fields[type]
-      }
+      initialValues={selectedQuestion ? removeEmpty(selectedQuestion) : fields[type]}
       onSubmit={handleSubmit}
     >
       {({ isValid, isSubmitting, values, setFieldValue }) => {
@@ -116,7 +103,10 @@ const InputForm: React.FC<Props> = ({ order }) => {
               actions.updateQuestion({
                 id: selectedQuestionId,
                 changes: {
-                  ...newChanges,
+                  id: selectedQuestionId,
+                  attributes: {
+                    ...newChanges,
+                  },
                 },
               })
             );
@@ -125,38 +115,14 @@ const InputForm: React.FC<Props> = ({ order }) => {
 
         return (
           <Form>
-            <Flex
-              alignItems="center"
-              justifyContent="center"
-              fontSize="30"
-              flexDirection="column"
-              px={5}
-            >
-              <Flex
-                alignItems="center"
-                justifyContent="space-between"
-                w="100%"
-                mt="5"
-              >
+            <Flex alignItems="center" justifyContent="center" fontSize="30" flexDirection="column" px={5}>
+              <Flex alignItems="center" justifyContent="space-between" w="100%" mt="5">
                 <Tooltip placement="bottom" label={getQuestionInfo(type)}>
                   <Box d="flex" alignItems="center">
-                    <Text
-                      variant="baseline"
-                      fontWeight="bold"
-                      textAlign="left"
-                      _hover={{ cursor: "pointer" }}
-                    >
-                      {isEditing ? "Edition" : "Création"} d'une{" "}
-                      {getQuestionName(type)}
+                    <Text variant="baseline" fontWeight="bold" textAlign="left" _hover={{ cursor: "pointer" }}>
+                      {isEditing ? "Edition" : "Création"} d'une {getQuestionName(type)}
                     </Text>
-                    <InfoIcon
-                      color="gray.300"
-                      ml="4"
-                      mt="-2"
-                      w="3"
-                      h="3"
-                      _hover={{ cursor: "pointer" }}
-                    />
+                    <InfoIcon color="gray.300" ml="4" mt="-2" w="3" h="3" _hover={{ cursor: "pointer" }} />
                   </Box>
                 </Tooltip>
 
@@ -164,20 +130,12 @@ const InputForm: React.FC<Props> = ({ order }) => {
                   <InputIcon type={type} />
 
                   <Text variant="xsMedium" ml="3">
-                    {order?.findIndex(
-                      (id: string) => id === selectedQuestionId
-                    ) + 1}
+                    {order?.findIndex((id: string) => id === selectedQuestionId) + 1}
                   </Text>
                 </Flex>
               </Flex>
               <TitleDivider title="Paramètres de la question" mt="3" />
-              <Box
-                w="100%"
-                m="0 auto"
-                border="1px solid #F7F7F7F7"
-                p="5"
-                backgroundColor="#fdfdfdf1"
-              >
+              <Box w="100%" m="0 auto" border="1px solid #F7F7F7F7" p="5" backgroundColor="#fdfdfdf1">
                 {type !== "wysiwyg" && (
                   <>
                     <Textarea
@@ -228,16 +186,10 @@ const InputForm: React.FC<Props> = ({ order }) => {
                       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                       // @ts-ignore: Pb with props in theme ...
                       isSmall
-                      variant={
-                        values?.required ? "rounded" : "roundedTransparent"
-                      }
-                      onClick={() =>
-                        setFieldValue("required", !values.required)
-                      }
+                      variant={values?.required ? "rounded" : "roundedTransparent"}
+                      onClick={() => setFieldValue("required", !values.required)}
                     >
-                      {values?.required
-                        ? "Rendre la réponse facultative"
-                        : "Rendre la réponse obligatoire"}
+                      {values?.required ? "Rendre la réponse facultative" : "Rendre la réponse obligatoire"}
                     </Button>
                   )}
                 </Flex>

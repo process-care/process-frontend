@@ -48,7 +48,7 @@ export const initialQuestionState: QuestionEditor = {
 
 type UpdatePayload = {
   id: string;
-  changes: QuestionRedux | any;
+  changes: QuestionRedux;
 };
 
 type UpdatedPayload = {
@@ -79,12 +79,9 @@ type CreatedPayload = {
 
 // ---- SELECTORS
 
-export const error = (state: RootState): string | undefined =>
-  state.scientistData.questions.error;
-export const isLoading = (state: RootState): boolean =>
-  state.scientistData.questions.isLoading;
-export const isCreating = (state: RootState): boolean =>
-  state.scientistData.questions.isCreating;
+export const error = (state: RootState): string | undefined => state.scientistData.questions.error;
+export const isLoading = (state: RootState): boolean => state.scientistData.questions.isLoading;
+export const isCreating = (state: RootState): boolean => state.scientistData.questions.isCreating;
 export const questionsHasChanges = (state: RootState): boolean => {
   const updated = DateTime.fromISO(state.scientistData.questions.lastUpdated);
   const saved = DateTime.fromISO(state.scientistData.questions.lastSaved);
@@ -94,30 +91,20 @@ export const questionsHasChanges = (state: RootState): boolean => {
 export const questions = (state: RootState): QuestionRedux[] =>
   questionAdapter.getSelectors().selectAll(state.scientistData.questions);
 
-const getSelectedQuestionId = (state: RootState): string =>
-  state.scientistData.questions.selectedQuestion;
+const getSelectedQuestionId = (state: RootState): string => state.scientistData.questions.selectedQuestion;
 
 const getSelectedPageQuestions = (state: RootState): QuestionRedux[] => {
   return questions(state).filter(
-    (question) =>
-      question?.attributes?.page?.data?.id ===
-      state.scientistData.pages.selectedPage
+    (question) => question?.attributes?.page?.data?.id === state.scientistData.pages.selectedPage
   );
 };
 
-const getQuestionsByPageId = (
-  state: RootState,
-  pageId: string
-): QuestionRedux[] => {
-  return questions(state).filter(
-    (question) => question?.attributes?.page?.data?.id === pageId
-  );
+const getQuestionsByPageId = (state: RootState, pageId: string): QuestionRedux[] => {
+  return questions(state).filter((question) => question?.attributes?.page?.data?.id === pageId);
 };
 
-const getSelectedQuestion = (state: RootState): QuestionRedux | any =>
-  questionAdapter
-    .getSelectors()
-    .selectById(state.scientistData.questions, getSelectedQuestionId(state));
+const getSelectedQuestion = (state: RootState): QuestionRedux | undefined =>
+  questionAdapter.getSelectors().selectById(state.scientistData.questions, getSelectedQuestionId(state));
 
 export const questionsSelectors = {
   error,
@@ -134,68 +121,41 @@ export const questionsSelectors = {
 // ---- REDUCERS
 
 export const questionsReducers = {
-  createQuestion: (
-    state: GlobalState,
-    _action: PayloadAction<CreatePayload>
-  ): void => {
+  createQuestion: (state: GlobalState, _action: PayloadAction<CreatePayload>): void => {
     state.questions.isCreating = true;
   },
-  createdQuestion: (
-    state: GlobalState,
-    action: PayloadAction<CreatedPayload>
-  ): void => {
+  createdQuestion: (state: GlobalState, action: PayloadAction<CreatedPayload>): void => {
     state.questions.lastCreated = action.payload.lastCreated;
     questionAdapter.addOne(state.questions, action.payload.question);
-    state.survey.order = getNewOrder(
-      action.payload.global,
-      action.payload.question.id
-    );
+    state.survey.order = getNewOrder(action.payload.global, action.payload.question.id);
     state.questions.selectedQuestion = action.payload.question.id;
   },
-  updateQuestion: (
-    state: GlobalState,
-    action: PayloadAction<UpdatePayload>
-  ): void => {
+  updateQuestion: (state: GlobalState, action: PayloadAction<UpdatePayload>): void => {
     state.questions.lastUpdated = new Date().toISOString();
     questionAdapter.updateOne(state.questions, action.payload);
   },
-  updatedQuestion: (
-    state: GlobalState,
-    action: PayloadAction<UpdatedPayload>
-  ): void => {
+  updatedQuestion: (state: GlobalState, action: PayloadAction<UpdatedPayload>): void => {
     state.questions.lastUpdated = action.payload.lastUpdated;
   },
   deleteQuestion: (state: GlobalState, action: PayloadAction<string>): void => {
     state.questions.isDeleting = true;
     questionAdapter.removeOne(state.questions, action.payload);
-    state.survey.order = state.survey.order?.filter(
-      (id: string) => id !== action.payload
-    );
+    state.survey.order = state.survey.order?.filter((id: string) => id !== action.payload);
   },
-  deletedQuestion: (
-    state: GlobalState,
-    action: PayloadAction<DeletedPayload>
-  ): void => {
+  deletedQuestion: (state: GlobalState, action: PayloadAction<DeletedPayload>): void => {
     state.questions.isDeleting = false;
     state.questions.lastDeleted = action.payload.lastDeleted;
     const lastQuestionId = state.questions.ids.length - 1;
     if (lastQuestionId !== -1) {
-      state.questions.selectedQuestion =
-        state.questions.ids[lastQuestionId].toString();
+      state.questions.selectedQuestion = state.questions.ids[lastQuestionId].toString();
     } else {
       state.questions.selectedQuestion = "";
     }
   },
-  saveQuestion: (
-    state: GlobalState,
-    _action: PayloadAction<SavePayload>
-  ): void => {
+  saveQuestion: (state: GlobalState, _action: PayloadAction<SavePayload>): void => {
     state.questions.isSaving = true;
   },
-  savedQuestion: (
-    state: GlobalState,
-    action: PayloadAction<SavedPayload>
-  ): void => {
+  savedQuestion: (state: GlobalState, action: PayloadAction<SavedPayload>): void => {
     state.questions.isSaving = false;
     state.questions.lastSaved = action.payload.lastSaved;
     if (state.pages.redirectToPage) {
@@ -207,10 +167,7 @@ export const questionsReducers = {
     state.questions.isFailed = true;
     state.questions.error = action.payload;
   },
-  setSelectedQuestion: (
-    state: GlobalState,
-    action: PayloadAction<string>
-  ): void => {
+  setSelectedQuestion: (state: GlobalState, action: PayloadAction<string>): void => {
     state.questions.selectedQuestion = action.payload;
   },
 };

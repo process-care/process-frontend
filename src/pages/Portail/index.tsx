@@ -20,8 +20,7 @@ import {
 // ---- STATIC
 
 const t = {
-  title:
-    "Une plateforme de curation scientifique curabitur blandit tempus porttitor.",
+  title: "Une plateforme de curation scientifique curabitur blandit tempus porttitor.",
   filters: [
     { label: "Tout voir", id: "all" },
     // { label: "Les plus populaires", id: "mostViewed" },
@@ -57,8 +56,7 @@ export const Portail: React.FC<IRoute> = () => {
     if (!publishedResult) return [];
 
     return publishedResult.surveys?.data?.filter(
-      (survey) =>
-        currentFilter === "all" || survey.attributes?.status === currentFilter
+      (survey) => currentFilter === "all" || survey.attributes?.status === currentFilter
     );
   }, [currentFilter, publishedResult]);
 
@@ -75,36 +73,16 @@ export const Portail: React.FC<IRoute> = () => {
   return (
     <Box w="100%">
       <Box>
-        <Center
-          position="absolute"
-          color="white"
-          textAlign="left"
-          px="5%"
-          h="90vh"
-          d="flex"
-          flexDir="column"
-          w="100%"
-        >
+        <Center position="absolute" color="white" textAlign="left" px="5%" h="90vh" d="flex" flexDir="column" w="100%">
           <Text variant="xxl" maxW="1000px">
             {t.title}
           </Text>
-          <Text
-            variant={isTablet ? "currentLight" : "baseline"}
-            maxW="1000px"
-            pt="15px"
-          >
-            Nullam id dolor id nibh ultricies vehicula ut id elit. Maecenas sed
-            diam eget risus varius blandit sit amet non magna. Aenean eu leo
-            quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.
+          <Text variant={isTablet ? "currentLight" : "baseline"} maxW="1000px" pt="15px">
+            Nullam id dolor id nibh ultricies vehicula ut id elit. Maecenas sed diam eget risus varius blandit sit amet
+            non magna. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.
           </Text>
         </Center>
-        <Image
-          src={Hero}
-          alt="Process"
-          boxSize="100%"
-          h="90vh"
-          objectFit="cover"
-        />
+        <Image src={Hero} alt="Process" boxSize="100%" h="90vh" objectFit="cover" />
       </Box>
 
       <Box
@@ -115,25 +93,13 @@ export const Portail: React.FC<IRoute> = () => {
         px="5%"
       >
         <Text variant="xl" textAlign={isTablet ? "left" : "center"}>
-          Une plateforme de curation scientifique{" "}
-          <strong>{totalCount} projets en cours</strong> tempus porttitor. Duis
-          mollis, est non commodo luctus, nisi erat porttitor ligula, eget
-          lacinia odio sem nec elit.
+          Une plateforme de curation scientifique <strong>{totalCount} projets en cours</strong> tempus porttitor. Duis
+          mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
         </Text>
       </Box>
 
-      <Box
-        px="5%"
-        d="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        flexDir={isTablet ? "column" : "row"}
-      >
-        <Filters
-          filters={t.filters}
-          handleClick={(id) => setCurrentFilter(id)}
-          currentFilter={currentFilter}
-        />
+      <Box px="5%" d="flex" alignItems="center" justifyContent="space-between" flexDir={isTablet ? "column" : "row"}>
+        <Filters filters={t.filters} handleClick={(id) => setCurrentFilter(id)} currentFilter={currentFilter} />
         {/* <Box w={isTablet ? "100%" : "50%"} mt={isTablet ? "30px" : "unset"}>
             <Input
               height="55px"
@@ -174,12 +140,9 @@ export const Portail: React.FC<IRoute> = () => {
       ) : isLoading ? (
         <Loader />
       ) : (
-        <NoData
-          content="Nous n'avons pas trouvé d'enquêtes pour votre recherche."
-          w="90%"
-        />
+        <NoData content="Nous n'avons pas trouvé d'enquêtes pour votre recherche." w="90%" />
       )}
-      {totalCount && state.length < totalCount && (
+      {totalCount && state.length < totalCount ? (
         <Box
           pos="relative"
           margin="0 auto"
@@ -193,6 +156,8 @@ export const Portail: React.FC<IRoute> = () => {
             <ShowMore />
           </Box>
         </Box>
+      ) : (
+        <></>
       )}
     </Box>
   );

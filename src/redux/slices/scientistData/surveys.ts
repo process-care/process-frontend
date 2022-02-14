@@ -41,10 +41,10 @@ export const initialSurveysState: SurveysEditor = {
 };
 // ----- ACTIONS
 
-// type UpdatePayload = {
-//   id: SurveyRedux["id"];
-//   changes: SurveyRedux["attributes"];
-// };
+type UpdatePayload = {
+  id: SurveyRedux["id"];
+  changes: SurveyRedux;
+};
 
 // ---- SELECTORS
 
@@ -84,8 +84,7 @@ export const surveysReducers = {
     state.surveys.isLoading = true;
   },
 
-  // TODO: Check this any here ==> has to be UpdatePayload
-  initializedSurveys: (state: GlobalState, action: PayloadAction<any>): void => {
+  initializedSurveys: (state: GlobalState, action: PayloadAction<SurveyRedux[]>): void => {
     state.surveys.isLoading = false;
     surveysAdapter.setMany(state.surveys, action.payload);
     if (action.payload[0]) {
@@ -93,8 +92,7 @@ export const surveysReducers = {
     }
   },
 
-  // TODO: Check this any here ==> has to be UpdatePayload
-  updateSurveys: (state: GlobalState, action: PayloadAction<any>): void => {
+  updateSurveys: (state: GlobalState, action: PayloadAction<UpdatePayload>): void => {
     state.surveys.lastUpdated = new Date().toISOString();
     surveysAdapter.updateOne(state.surveys, action.payload);
   },

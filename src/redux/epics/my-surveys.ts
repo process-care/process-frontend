@@ -11,12 +11,10 @@ const initializeEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.initializeSurveys.type),
     switchMap(async (action) => {
-      const response = await sdk
-        .mySurveys({ authorId: action.payload })
-        .then((res) => {
-          const data = res.surveys?.data;
-          return sanitizeEntities(data);
-        });
+      const response = await sdk.mySurveys({ authorId: action.payload }).then((res) => {
+        const data = res.surveys?.data;
+        return sanitizeEntities(data);
+      });
 
       return response;
     }),
@@ -32,8 +30,7 @@ const updateEpic: Epic = (action$) =>
     switchMap(async (action) => {
       const updatedAt: string = new Date().toISOString();
       const { id, changes } = action;
-
-      await sdk.updateSurvey({ id, data: changes });
+      await sdk.updateSurvey({ id, data: changes?.attributes });
       return updatedAt;
     }),
     map((updatedAt) => {
@@ -58,8 +55,4 @@ const deleteEpic: Epic = (action$) =>
     })
   );
 
-export const surveysEpics = combineEpics(
-  initializeEpic,
-  updateEpic,
-  deleteEpic
-);
+export const surveysEpics = combineEpics(initializeEpic, updateEpic, deleteEpic);

@@ -96,7 +96,6 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
       </Box>
     );
   };
-  console.log("selectedPage", selectedPage);
 
   if (isLoading || order === undefined) {
     return <Loader />;

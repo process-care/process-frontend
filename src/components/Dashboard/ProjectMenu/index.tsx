@@ -104,7 +104,11 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
       actions.updateSurveys({
         id: selectedSurvey.id,
         changes: {
-          status,
+          id: selectedSurvey.id,
+          attributes: {
+            slug: selectedSurvey.attributes.slug,
+            status,
+          },
         },
       })
     );

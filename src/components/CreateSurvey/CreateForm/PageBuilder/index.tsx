@@ -21,10 +21,8 @@ interface Props {
 const PageBuilder: React.FC<Props> = ({ survey }) => {
   const dispatch = useAppDispatch();
 
-  const pages = useAppSelector(selectors.pages.getAllPages);
-  const selectedCondition = useAppSelector(
-    selectors.conditions.getSelectedCondition
-  );
+  const pages = useAppSelector(selectors.pages.getPages);
+  const selectedCondition = useAppSelector(selectors.conditions.getSelectedCondition);
   const selectedPage = useAppSelector(selectors.pages.getSelectedPage);
 
   const handlePage = () => {
@@ -36,15 +34,9 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
 
   const conditions = useAppSelector(selectors.conditions.getAllConditions);
 
+  console.log(pages);
   return (
-    <Flex
-      flexDirection="column"
-      alignItems="center"
-      pt={5}
-      backgroundColor="white"
-      width="100%"
-      position="relative"
-    >
+    <Flex flexDirection="column" alignItems="center" pt={5} backgroundColor="white" width="100%" position="relative">
       <Box
         onClick={() => handlePage()}
         mb="10"
@@ -71,15 +63,13 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
               mb={4}
               w="100%"
               key={page.id}
-              visibility={
-                isInactive(selectedCondition, pages, i) ? "hidden" : "visible"
-              }
+              visibility={isInactive(selectedCondition, pages, i) ? "hidden" : "visible"}
             >
               <Flex alignItems="center" position="relative">
                 <Box position="absolute" right="16px" bottom="35px">
-                  {conditions.filter(
-                    (c) => c?.attributes?.referer_page?.data?.id === page.id
-                  )?.length > 0 && <Condition />}
+                  {conditions.filter((c) => c?.attributes?.referer_page?.data?.id === page.id)?.length > 0 && (
+                    <Condition />
+                  )}
                 </Box>
                 <Box
                   onClick={() => selectPage(page.id)}
@@ -114,12 +104,7 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
                   </Box>
                 )}
               </Flex>
-              <Text
-                mt={1}
-                color="blue.500"
-                fontSize="10"
-                fontWeight={isSelected ? "bold" : ""}
-              >
+              <Text mt={1} color="blue.500" fontSize="10" fontWeight={isSelected ? "bold" : ""}>
                 {page?.attributes?.name}
               </Text>
             </Box>

@@ -11,11 +11,7 @@ import { useHistory } from "react-router-dom";
 import { useAuth } from "components/Authentification/hooks";
 import { Loader } from "components/Spinner";
 import { changePassword } from "api/actions/password";
-import {
-  UserQuery,
-  useUpdateUserMutation,
-  useUserQuery,
-} from "./user.gql.generated";
+import { UserQuery, useUpdateUserMutation, useUserQuery } from "./user.gql.generated";
 import { Enum_Question_Rows } from "api/graphql/types.generated";
 import { client } from "api/gql-client";
 
@@ -70,16 +66,8 @@ export const ProfilForm: React.FC = () => {
       onSubmit={(data, { setSubmitting, validateForm }) => {
         validateForm(data);
         setSubmitting(true);
-        if (
-          data.currentPassword !== "" &&
-          data.confirmNewPassword === data.newPassword &&
-          data.newPassword !== ""
-        ) {
-          changePassword(
-            data.currentPassword,
-            data.newPassword,
-            data.confirmNewPassword
-          );
+        if (data.currentPassword !== "" && data.confirmNewPassword === data.newPassword && data.newPassword !== "") {
+          changePassword(data.currentPassword, data.newPassword, data.confirmNewPassword);
         }
         updateMe({
           id: cookies.user.id,
@@ -92,26 +80,20 @@ export const ProfilForm: React.FC = () => {
       {({ isValid, isSubmitting, values }) => {
         return (
           <Form>
-            <Box
-              textAlign="center"
-              h="100vh"
-              d="flex"
-              flexDir="column"
-              pt="50px"
-            >
-              <Flex alignItems="center" justifyContent="center">
+            <Box textAlign="center" h="100vh" d="flex" flexDir="column" pt="10px">
+              <Flex alignItems="center" justifyContent="flex-start" ml="20px">
                 <Avatar
                   _hover={{ cursor: "pointer" }}
                   ml="20px"
                   name={attributes?.firstName + " " + attributes?.lastName}
-                  w="104px"
-                  h="104px"
+                  w="50px"
+                  h="50px"
                   color="white"
                   fontSize="45px"
                   background="linear-gradient(rgba(194, 165, 249, 1),
 rgba(0, 132, 255, 1))"
                 />
-                <Flex flexDir="column" alignItems="flex-start" ml="40px">
+                <Flex flexDir="column" alignItems="flex-start" ml="10px">
                   <Text variant="smallTitle" fontWeight="bold">
                     {attributes?.firstName} {attributes?.lastName}
                   </Text>
@@ -121,9 +103,6 @@ rgba(0, 132, 255, 1))"
                 </Flex>
               </Flex>
 
-              <Text variant="smallTitle" py="30px">
-                {t.title}
-              </Text>
               <Flex
                 alignItems="center"
                 justifyContent="center"
@@ -131,7 +110,7 @@ rgba(0, 132, 255, 1))"
                 flexDirection="column"
                 px={10}
                 w="100%"
-                pb="140px"
+                pt="10px"
               >
                 <Textarea
                   isCollapsed={false}
@@ -197,8 +176,8 @@ rgba(0, 132, 255, 1))"
                   name="confirmNewPassword"
                   type="password"
                 />
-
                 <Footer
+                  w="100%"
                   hideDelete
                   onSubmit={() => console.log(values)}
                   disabled={!isValid || isSubmitting}

@@ -81,6 +81,7 @@ export const globalSlice = createSlice({
 
       // Save all pages if any
       if (pages) {
+        console.log("pages", pages);
         const sanePages = sanitizeEntities(pages);
         pageAdapter.setMany(state.pages, sanePages);
 

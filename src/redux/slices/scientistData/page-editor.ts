@@ -84,17 +84,21 @@ export const hasChanges = (state: RootState): boolean => {
 
 export const pages = (state: RootState): PageRedux[] => pageAdapter.getSelectors().selectAll(state.scientistData.pages);
 
-const getAllPages = (state: RootState): PageRedux[] => {
-  return pages(state).filter(
-    (page) => page?.attributes?.survey?.data?.id === state.scientistData.survey.selectedSurvey
-  );
+// const getPages = (state: RootState): PageRedux[] => {
+//   return pages(state).filter(
+//     (page) => page?.attributes?.survey?.data?.id === state.scientistData.survey.selectedSurvey
+//   );
+// };
+
+const getPages = (state: RootState): PageRedux[] => {
+  return pages(state);
 };
 
 //  TODO: Refacto any here
-const getSelectedPageId = (state: RootState): any => state.scientistData.pages.selectedPage;
+const getSelectedPageId = (state: RootState): Maybe<string> | undefined => state.scientistData.pages.selectedPage;
 
-const getSelectedPage = (state: RootState): PageRedux | any => {
-  pageAdapter.getSelectors().selectById(state.scientistData.pages, getSelectedPageId(state));
+const getSelectedPage = (state: RootState): PageRedux => {
+  return pages(state).filter((pages) => pages?.id === state.scientistData.pages.selectedPage)[0];
 };
 
 // ---- EXPORTS
@@ -103,7 +107,7 @@ export const pageSelectors = {
   error,
   isLoading,
   hasChanges,
-  getAllPages,
+  getPages,
   getSelectedPage,
   getSelectedPageId,
 };

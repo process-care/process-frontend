@@ -13,7 +13,7 @@ const createEpic: Epic = (action$, state$) =>
     ofType(actions.createPage.type),
     switchMap(async (action) => {
       const { id } = action.payload;
-      const pagesLength = selectors.pages.getAllPages(state$.value).length;
+      const pagesLength = selectors.pages.getPages(state$.value).length;
 
       const pageData = {
         name: `Page ${pagesLength + 1}`,
@@ -54,7 +54,7 @@ const updateEpic: Epic = (action$) =>
       const updatedAt: string = new Date().toISOString();
       await sdk.updatePage({
         id: accumulated.id,
-        data: accumulated.changes,
+        data: accumulated.changes?.attributes,
       });
 
       return updatedAt;

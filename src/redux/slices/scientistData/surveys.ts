@@ -48,11 +48,9 @@ export const initialSurveysState: SurveysEditor = {
 
 // ---- SELECTORS
 
-export const error = (state: RootState): string | undefined =>
-  state.scientistData.surveys.error;
+export const error = (state: RootState): string | undefined => state.scientistData.surveys.error;
 
-export const isLoading = (state: RootState): boolean =>
-  state.scientistData.surveys.isLoading;
+export const isLoading = (state: RootState): boolean => state.scientistData.surveys.isLoading;
 
 export const hasChanges = (state: RootState): boolean => {
   const updated = DateTime.fromISO(state.scientistData.surveys.lastUpdated);
@@ -63,13 +61,10 @@ export const hasChanges = (state: RootState): boolean => {
 export const getAllSurveys = (state: RootState): SurveyRedux[] =>
   surveysAdapter.getSelectors().selectAll(state.scientistData.surveys);
 
-const getSelectedSurveyId = (state: RootState): string =>
-  state.scientistData.surveys.selectedSurvey;
+const getSelectedSurveyId = (state: RootState): string => state.scientistData.surveys.selectedSurvey;
 
 const getSelectedSurvey = (state: RootState): SurveyRedux | undefined =>
-  surveysAdapter
-    .getSelectors()
-    .selectById(state.scientistData.surveys, getSelectedSurveyId(state));
+  surveysAdapter.getSelectors().selectById(state.scientistData.surveys, getSelectedSurveyId(state));
 
 // ---- EXPORTS
 
@@ -85,21 +80,17 @@ export const surveysSelectors = {
 // ---- REDUCERS
 
 export const surveysReducers = {
-  initializeSurveys: (
-    state: GlobalState,
-    _action: PayloadAction<string>
-  ): void => {
+  initializeSurveys: (state: GlobalState, _action: PayloadAction<string>): void => {
     state.surveys.isLoading = true;
   },
 
   // TODO: Check this any here ==> has to be UpdatePayload
-  initializedSurveys: (
-    state: GlobalState,
-    action: PayloadAction<any>
-  ): void => {
+  initializedSurveys: (state: GlobalState, action: PayloadAction<any>): void => {
     state.surveys.isLoading = false;
     surveysAdapter.setMany(state.surveys, action.payload);
-    if (action.payload[0]) state.surveys.selectedSurvey = action.payload[0].id;
+    if (action.payload[0]) {
+      state.surveys.selectedSurvey = action.payload[0].id;
+    }
   },
 
   // TODO: Check this any here ==> has to be UpdatePayload
@@ -107,16 +98,10 @@ export const surveysReducers = {
     state.surveys.lastUpdated = new Date().toISOString();
     surveysAdapter.updateOne(state.surveys, action.payload);
   },
-  updatedSurveys: (
-    state: GlobalState,
-    action: PayloadAction<LastUpdated>
-  ): void => {
+  updatedSurveys: (state: GlobalState, action: PayloadAction<LastUpdated>): void => {
     state.surveys.lastUpdated = action.payload.lastUpdated;
   },
-  setSelectedSurvey: (
-    state: GlobalState,
-    action: PayloadAction<string>
-  ): void => {
+  setSelectedSurvey: (state: GlobalState, action: PayloadAction<string>): void => {
     state.surveys.selectedSurvey = action.payload;
   },
   deleteSurvey: (state: GlobalState, action: PayloadAction<string>): void => {
@@ -125,10 +110,7 @@ export const surveysReducers = {
     const lastPageId = state.surveys.ids.length - 1;
     state.surveys.selectedSurvey = state.surveys.ids[lastPageId]?.toString();
   },
-  deletedSurvey: (
-    state: GlobalState,
-    action: PayloadAction<LastDeleted>
-  ): void => {
+  deletedSurvey: (state: GlobalState, action: PayloadAction<LastDeleted>): void => {
     state.surveys.isDeleting = false;
     state.surveys.lastDeleted = action.payload.lastDeleted;
   },
@@ -143,6 +125,5 @@ export const surveysReducers = {
     state.surveys.isFailed = true;
     state.surveys.error = action.payload;
   },
-  resetMySurveys: (): any =>
-    surveysAdapter.getInitialState(initialSurveysState),
+  resetMySurveys: (): any => surveysAdapter.getInitialState(initialSurveysState),
 };

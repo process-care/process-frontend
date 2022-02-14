@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 import { setIsRemoving } from "redux/slices/formBuilder";
@@ -20,19 +20,17 @@ import { Enum_Question_Rows } from "api/graphql/types.generated";
 export const PageForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const { entityToRemove } = useAppSelector((state) => state.editor.form);
+  const firstRender = useRef(true);
 
   const selectedPageId = useAppSelector(selectors.pages.getSelectedPageId);
   const selectedPage = useAppSelector(selectors.pages.getSelectedPage);
-  const pages = useAppSelector(selectors.pages.getAllPages);
-  const questionsOnSelectedPage = useAppSelector(
-    selectors.questions.getSelectedPageQuestions
-  ).map((question) => question.id);
-  const conditionsOnSelectedPage = useAppSelector(
-    selectors.conditions.getSelectedPageConditions
+  const pages = useAppSelector(selectors.pages.getPages);
+  const questionsOnSelectedPage = useAppSelector(selectors.questions.getSelectedPageQuestions).map(
+    (question) => question.id
   );
+  const conditionsOnSelectedPage = useAppSelector(selectors.conditions.getSelectedPageConditions);
 
-  const isNotFirstPage =
-    pages.findIndex((page) => page.id === selectedPageId) > 0;
+  const isNotFirstPage = pages.findIndex((page) => page.id === selectedPageId) > 0;
 
   const isRemoving = entityToRemove === selectedPageId;
 
@@ -69,14 +67,14 @@ export const PageForm: React.FC = () => {
     return (
       <RemovingConfirmation
         height="100%"
-        content={`${t.remove_page} ${selectedPage?.name} ?`}
+        content={`${t.remove_page} ${selectedPage?.attributes?.name} ?`}
         confirm={handleDelete}
         close={() => dispatch(setIsRemoving(""))}
       />
     );
   }
 
-  if (!selectedPage) {
+  if (!selectedPage || !selectedPageId) {
     return <></>;
   }
 
@@ -84,7 +82,7 @@ export const PageForm: React.FC = () => {
     <Box p={4}>
       <Formik
         validateOnBlur={false}
-        initialValues={selectedPage}
+        initialValues={selectedPage["attributes"]}
         enableReinitialize
         onSubmit={(data, { setSubmitting, validateForm }) => {
           validateForm(data);
@@ -94,6 +92,10 @@ export const PageForm: React.FC = () => {
       >
         {({ setFieldValue, values }) => {
           useEffect(() => {
+            if (firstRender.current) {
+              firstRender.current = false;
+              return;
+            }
             dispatch(
               actions.updatePage({
                 id: selectedPageId,
@@ -129,22 +131,11 @@ export const PageForm: React.FC = () => {
                 )}
               </Flex>
 
-              <Text
-                variant="baseline"
-                fontWeight="bold"
-                textAlign="left"
-                _hover={{ cursor: "pointer" }}
-              >
+              <Text variant="baseline" fontWeight="bold" textAlign="left" _hover={{ cursor: "pointer" }}>
                 Edition d'une page
               </Text>
               <TitleDivider title="Informations de la page" mt="5" />
-              <Box
-                w="100%"
-                m="0 auto"
-                border="1px solid #F7F7F7F7"
-                backgroundColor="#fdfdfdf1"
-                p="5"
-              >
+              <Box w="100%" m="0 auto" border="1px solid #F7F7F7F7" backgroundColor="#fdfdfdf1" p="5">
                 <Textarea
                   id="name"
                   label="Nom de la page"
@@ -180,17 +171,13 @@ export const PageForm: React.FC = () => {
                         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                         // @ts-ignore: Pb with props in theme ...
                         isSmall
-                        onClick={() =>
-                          editCondition(conditionsOnSelectedPage?.[0].id)
-                        }
+                        onClick={() => editCondition(conditionsOnSelectedPage?.[0].id)}
                       >
                         {t.edit_condition}
                       </Button>
                     ))}
                   <Tooltip
-                    label={
-                      "Si la page est bloquée, l'utilisateur ne peut plus modifier le contenu enregistré"
-                    }
+                    label={"Si la page est bloquée, l'utilisateur ne peut plus modifier le contenu enregistré"}
                     placement="right"
                   >
                     <Button
@@ -199,9 +186,7 @@ export const PageForm: React.FC = () => {
                       // @ts-ignore: Pb with props in theme ...
                       isSmall
                       variant={isLocked ? "rounded" : "roundedTransparent"}
-                      onClick={() =>
-                        setFieldValue("is_locked", !values.is_locked)
-                      }
+                      onClick={() => setFieldValue("is_locked", !values.is_locked)}
                     >
                       {isLocked
                         ? "Autoriser la modification après validation"
@@ -211,13 +196,7 @@ export const PageForm: React.FC = () => {
                 </Box>
               </Box>
               <TitleDivider title="Contenu de la page" />
-              <Box
-                w="100%"
-                m="0 auto"
-                border="1px solid #F7F7F7F7"
-                p="5"
-                backgroundColor="#fdfdfdf1"
-              >
+              <Box w="100%" m="0 auto" border="1px solid #F7F7F7F7" p="5" backgroundColor="#fdfdfdf1">
                 <ToolBox onSelect={(type) => handleSelect(type)} />
               </Box>
             </Form>

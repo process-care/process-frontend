@@ -17,13 +17,9 @@ interface Props {
 
 export const Step_1: React.FC<Props> = ({ selectedCondition, updateStep }) => {
   const dispatch = useAppDispatch();
-  const selectedQuestion = useAppSelector(
-    selectors.questions.getSelectedQuestion
-  );
-  const questions = useAppSelector(
-    selectors.questions.getSelectedPageQuestions
-  );
-  const pages = useAppSelector(selectors.pages.getAllPages);
+  const selectedQuestion = useAppSelector(selectors.questions.getSelectedQuestion);
+  const questions = useAppSelector(selectors.questions.getSelectedPageQuestions);
+  const pages = useAppSelector(selectors.pages.getPages);
   const order = useAppSelector(selectors.survey.getOrder);
   const isTypePage = selectedCondition?.attributes?.type === "page";
 
@@ -60,8 +56,7 @@ export const Step_1: React.FC<Props> = ({ selectedCondition, updateStep }) => {
 
   const isEmpty = conditionableQuestions?.length === 0;
   const renderCard = (question: QuestionRedux) => {
-    const isSelected =
-      question.id === selectedCondition?.attributes.target?.data?.id;
+    const isSelected = question.id === selectedCondition?.attributes.target?.data?.id;
 
     return (
       <InputBox
@@ -82,9 +77,7 @@ export const Step_1: React.FC<Props> = ({ selectedCondition, updateStep }) => {
       )}
 
       {order.map((inputId: string) => {
-        const current = conditionableQuestions?.find(
-          (c: QuestionRedux) => c.id === inputId
-        );
+        const current = conditionableQuestions?.find((c: QuestionRedux) => c.id === inputId);
         if (current !== undefined) {
           return renderCard(current);
         } else return;

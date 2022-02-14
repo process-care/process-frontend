@@ -36,9 +36,7 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
   const dispatch = useAppDispatch();
   const selectedPage = useAppSelector(selectors.pages.getSelectedPage);
 
-  const questions = useAppSelector(
-    selectors.questions.getSelectedPageQuestions
-  );
+  const questions = useAppSelector(selectors.questions.getSelectedPageQuestions);
   const isLoading = useAppSelector(selectors.questions.isLoading);
 
   const error = useAppSelector(selectors.questions.error);
@@ -54,10 +52,7 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
       return;
     }
 
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    ) {
+    if (destination.droppableId === source.droppableId && destination.index === source.index) {
       return;
     }
 
@@ -70,10 +65,7 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
     }
   };
 
-  const Container: React.FC<ContainerProps> = ({
-    children,
-    isDraggingOver,
-  }) => {
+  const Container: React.FC<ContainerProps> = ({ children, isDraggingOver }) => {
     return (
       <Box
         w="100%"
@@ -94,13 +86,7 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
           {() => {
             return (
               <Form style={{ width: "100%" }}>
-                <Flex
-                  alignItems="center"
-                  justifyContent="center"
-                  fontSize="30"
-                  flexDirection="column"
-                  px={10}
-                >
+                <Flex alignItems="center" justifyContent="center" fontSize="30" flexDirection="column" px={10}>
                   {children}
                 </Flex>
               </Form>
@@ -110,6 +96,7 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
       </Box>
     );
   };
+  console.log("selectedPage", selectedPage);
 
   if (isLoading || order === undefined) {
     return <Loader />;
@@ -134,19 +121,13 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
             <>
               <Container isDraggingOver={snapshot.isDraggingOver}>
                 <Text fontSize="14px" mt={3} textTransform="uppercase">
-                  {selectedPage?.name}
+                  {selectedPage?.attributes?.name}
                 </Text>
                 {questions.length > 0 && <Header />}
 
-                <Box
-                  w="100%"
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                >
+                <Box w="100%" ref={provided.innerRef} {...provided.droppableProps}>
                   {order?.map((inputId: string, i: number) => {
-                    const current = questions.find(
-                      (c: any) => c.id === inputId
-                    );
+                    const current = questions.find((c: any) => c.id === inputId);
                     if (current !== undefined) {
                       return renderCard(current, i);
                     } else return;

@@ -11,31 +11,32 @@ import { SafeEntity } from "api/entity-checker";
 // ---- INITIAL STATE
 
 interface SliceState {
-  isLoading: boolean,
-  participationId?: string
-  surveyId?: string
+  isLoading: boolean;
+  participationId?: string;
+  surveyId?: string;
 }
 
 const initialState: SliceState = {
-  isLoading: false
+  isLoading: false,
 };
 
 // ---- ACTIONS
 
 type InitializePayload = {
-  participationId: string,
-  surveyId: string,
-}
+  participationId: string;
+  surveyId: string;
+  slug: string;
+};
 
 export type InitializedPayload = {
-  pages: SafeEntity<Page>[]
-  questions: SafeEntity<Question>[]
-  answers: SafeEntity<Answer>[]
-}
+  pages: SafeEntity<Page>[];
+  questions: SafeEntity<Question>[];
+  answers: SafeEntity<Answer>[];
+};
 
 // ---- SLICE
 
-const SLICE_NAME = 'status';
+const SLICE_NAME = "status";
 
 export const slice = createSlice({
   name: SLICE_NAME,
@@ -51,7 +52,7 @@ export const slice = createSlice({
     },
     initialized: (state, _action: PayloadAction<InitializedPayload>) => {
       state.isLoading = false;
-    }
+    },
   },
 });
 

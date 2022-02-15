@@ -6,6 +6,8 @@ query QuestionsBySurvey($surveyId: ID!) {
 
 query AnswersByParticipation($participationId: ID!) {
   answers(filters: { participation: { id: { eq: $participationId } } }) {
-    data { ...answerFragment }
+    data {
+      ...answerFragment
+    }
   }
 }

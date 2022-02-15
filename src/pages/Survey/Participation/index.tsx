@@ -1,41 +1,41 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Box, Button, Center, Flex, Text } from "@chakra-ui/react";
 import { useHistory, useParams } from "react-router-dom";
 import { ParticipationConsent } from "./ParticipationConsent";
 import { ParticipationForm } from "./ParticipationForm";
-import {
-  findExistingParticipation,
-  storeParticipation,
-} from "./localstorage-handlers";
+import { findExistingParticipation, storeParticipation } from "./localstorage-handlers";
 import { NL } from "./nl";
 import { Loader } from "components/Spinner";
 
 import { SURVEY_STATUS } from "types/survey";
 
-import { useSurveyBySlugQuery } from "api/graphql/queries/survey.gql.generated";
-import { client } from "api/gql-client";
+import { actions, selectors } from "redux/slices/scientistData";
+import { useAppSelector } from "redux/hooks";
+import { useDispatch } from "react-redux";
 
 // ---- COMPONENT
 
 export const Participation: React.FC<unknown> = () => {
   const { slug, step } = useParams<{ slug: string; step: string }>();
   const history = useHistory();
-
-  const { data: survey, isLoading } = useSurveyBySlugQuery(client, { slug });
+  const dispatch = useDispatch();
+  // const { data: survey, isLoading } = useSurveyBySlugQuery(client, { slug });
   const { participation, onConsent, onRefuse } = useConsentHandlers(slug);
-  const surveyId = survey?.surveys?.data[0].id;
-  const status = survey?.surveys?.data[0]?.attributes?.status;
+
+  useEffect(() => {
+    dispatch(actions.initializeSurvey(slug));
+  }, [slug]);
+
+  const survey = useAppSelector(selectors.survey.getSelectedSurvey);
+  const isLoading = useAppSelector(selectors.survey.isLoading);
+
+  const surveyId = survey.id;
+  const status = survey?.attributes?.status;
   const goBackHome = useCallback(() => history.push("/"), []);
 
   // If there is already a completed participation in local storage
   if (participation?.completed) {
-    return (
-      <OverWarning
-        msg={NL.msg.thxParticipation}
-        cta={NL.button.backToWelcome}
-        action={goBackHome}
-      />
-    );
+    return <OverWarning msg={NL.msg.thxParticipation} cta={NL.button.backToWelcome} action={goBackHome} />;
   }
 
   // LOADING STATE
@@ -48,13 +48,7 @@ export const Participation: React.FC<unknown> = () => {
   }
 
   if (status !== SURVEY_STATUS.Running) {
-    return (
-      <OverWarning
-        msg={NL.msg.surveyOver}
-        cta={NL.button.backToWelcome}
-        action={goBackHome}
-      />
-    );
+    return <OverWarning msg={NL.msg.surveyOver} cta={NL.button.backToWelcome} action={goBackHome} />;
   }
 
   // Redirect if the there is an existing participation
@@ -66,13 +60,7 @@ export const Participation: React.FC<unknown> = () => {
   }
   if (step === "consent") {
     // CONSENT
-    return (
-      <ParticipationConsent
-        surveyId={surveyId}
-        onConsent={onConsent}
-        onRefuse={onRefuse}
-      />
-    );
+    return <ParticipationConsent surveyId={surveyId} onConsent={onConsent} onRefuse={onRefuse} />;
   }
 
   // PARTICIPATE
@@ -82,12 +70,7 @@ export const Participation: React.FC<unknown> = () => {
       return <Box mt="60">{NL.msg.missingConsent}</Box>;
     }
 
-    return (
-      <ParticipationForm
-        surveyId={surveyId}
-        participationId={participation.id}
-      />
-    );
+    return <ParticipationForm surveyId={surveyId} participationId={participation.id} />;
   }
 
   return <Box mt="60">Something went wrong...</Box>;

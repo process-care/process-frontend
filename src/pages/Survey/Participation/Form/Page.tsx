@@ -2,10 +2,8 @@ import React, { useEffect } from "react";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 
-import {
-  actions,
-  selectors as pageSelectors,
-} from "redux/slices/participation/page";
+import { actions, selectors as pageSelectors } from "redux/slices/participation/page";
+import { selectors as ScientistDataSelectors } from "redux/slices/scientistData";
 
 import { NL } from "../nl";
 import { useInitialPageContent } from "./answer-hooks";
@@ -44,10 +42,13 @@ export const Page: React.FC<Props> = ({
   const { isTablet } = useMediaQueries();
 
   // Get page & content
-  const page = useAppSelector((state) =>
-    pageSelectors.selectById(state, pageId)
+  //
+
+  const questions = useAppSelector(ScientistDataSelectors.questions.questions).filter(
+    (q) => q?.attributes?.page?.data?.id === pageId
   );
-  const { orderInPage, initialAnswers } = useInitialPageContent(page, order);
+  const page = useAppSelector((state) => pageSelectors.selectById(state, pageId));
+  const { orderInPage, initialAnswers } = useInitialPageContent(page, order, questions);
 
   // If page is empty
   if (!page) return <Box mt="60">{NL.msg.nodata}</Box>;
@@ -56,14 +57,15 @@ export const Page: React.FC<Props> = ({
   return (
     <Box>
       <Text variant="xl" my="20px">
-        {page.attributes.name ?? 'Missing page name 😣'}
+        {page.attributes.name ?? "Missing page name 😣"}
       </Text>
 
       <Formik
         validateOnBlur
         validateOnMount
         enableReinitialize
-        validationSchema={formSchema(page.attributes.questions?.data)}
+        //  validationSchema={formSchema(page.attributes.questions?.data)}
+
         initialValues={initialAnswers}
         onSubmit={(data, { setSubmitting, validateForm }) => {
           validateForm(data);
@@ -87,38 +89,19 @@ export const Page: React.FC<Props> = ({
               </Box>
 
               {/* Navigation */}
-              <Flex
-                justifyContent="flex-end"
-                mt="10"
-                pb="20px"
-                pr={isTablet ? "5%" : "10%"}
-              >
+              <Flex justifyContent="flex-end" mt="10" pb="20px" pr={isTablet ? "5%" : "10%"}>
                 {!isFirstPage && (
-                  <Button
-                    mr="4"
-                    variant="roundedTransparent"
-                    onClick={previousPage}
-                  >
+                  <Button mr="4" variant="roundedTransparent" onClick={previousPage}>
                     {NL.button.previous}
                   </Button>
                 )}
                 {!isLastPage && (
-                  <Button
-                    disabled={!isValid}
-                    variant="rounded"
-                    backgroundColor={currentColor}
-                    onClick={nextPage}
-                  >
+                  <Button disabled={!isValid} variant="rounded" backgroundColor={currentColor} onClick={nextPage}>
                     {NL.button.next}
                   </Button>
                 )}
                 {isLastPage && (
-                  <Button
-                    disabled={!isValid}
-                    variant="rounded"
-                    backgroundColor={currentColor}
-                    onClick={onFinish}
-                  >
+                  <Button disabled={!isValid} variant="rounded" backgroundColor={currentColor} onClick={onFinish}>
                     {NL.button.finish}
                   </Button>
                 )}

@@ -7,10 +7,9 @@ import { useHistory } from "react-router-dom";
 import { finishParticipation } from "./localstorage-handlers";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { actions } from "redux/slices/participation/status";
-import {
-  PageParticipationRedux,
-  selectors,
-} from "redux/slices/participation/page";
+import { PageParticipationRedux, selectors } from "redux/slices/participation/page";
+import { selectors as scientistDataSelectors } from "redux/slices/scientistData";
+
 import { Loader } from "components/Spinner";
 import { Error } from "components/Error";
 import { client } from "api/gql-client";
@@ -32,30 +31,25 @@ export enum DIRECTION {
 
 // ---- COMPONENT
 
-export const ParticipationForm: React.FC<Props> = ({
-  surveyId,
-  participationId,
-}) => {
+export const ParticipationForm: React.FC<Props> = ({ surveyId, participationId }) => {
   const dispatch = useAppDispatch();
 
   const { data, isLoading, isError } = useSurveyQuery(client, { id: surveyId });
   const pages = useAppSelector(selectors.selectShown);
+  const survey = useAppSelector(scientistDataSelectors.survey.getSelectedSurvey);
+  const slug = survey?.attributes?.slug;
   const attributes = data?.survey?.data?.attributes;
   const { isTablet } = useMediaQueries();
+
   useEffect(() => {
-    dispatch(actions.initialize({ surveyId, participationId }));
+    dispatch(actions.initialize({ surveyId, participationId, slug }));
   }, [surveyId, participationId]);
 
-  const {
-    isFirstPage,
-    isLastPage,
-    selectedPage,
-    nextPage,
-    previousPage,
-    selectIndex,
-  } = useNavigationHandlers(pages);
+  const { isFirstPage, isLastPage, selectedPage, nextPage, previousPage, selectIndex } = useNavigationHandlers(pages);
 
   const { onFinish } = useFinishHandler(participationId, attributes?.slug);
+
+  console.log(survey);
 
   // Missing data checks
 
@@ -72,21 +66,12 @@ export const ParticipationForm: React.FC<Props> = ({
       </Center>
     );
 
-  const currentColor =
-    attributes?.landing?.data?.attributes?.color_theme?.base || "black";
+  const currentColor = attributes?.landing?.data?.attributes?.color_theme?.base || "black";
   const order = attributes?.order;
 
   const Title = () => {
     return (
-      <Box
-        pos="sticky"
-        top="0"
-        zIndex="10"
-        backgroundColor={currentColor}
-        p="20px"
-        color="white"
-        textAlign="left"
-      >
+      <Box pos="sticky" top="0" zIndex="10" backgroundColor={currentColor} p="20px" color="white" textAlign="left">
         {attributes?.title}
       </Box>
     );
@@ -107,12 +92,7 @@ export const ParticipationForm: React.FC<Props> = ({
           />
         </Box>
 
-        <Box
-          flexGrow={1}
-          backgroundColor="brand.gray.100"
-          h="fit-content"
-          minH="fit-content"
-        >
+        <Box flexGrow={1} backgroundColor="brand.gray.100" h="fit-content" minH="100vh">
           {!isTablet && <Title />}
           <Page
             isFirstPage={isFirstPage}
@@ -135,8 +115,7 @@ export const ParticipationForm: React.FC<Props> = ({
 
 function useFinishHandler(participationId: string, slug: string | undefined) {
   const history = useHistory();
-  const { mutateAsync: finishParticipationApi } =
-    useFinishParticipationMutation(client);
+  const { mutateAsync: finishParticipationApi } = useFinishParticipationMutation(client);
 
   const onFinish = useCallback(async () => {
     // TODO: improve this with a better UI ?
@@ -178,10 +157,7 @@ function useNavigationHandlers(pages: PageParticipationRedux[] | undefined) {
   );
 
   const nextPage = useCallback(() => onNavigate(DIRECTION.Next), [onNavigate]);
-  const previousPage = useCallback(
-    () => onNavigate(DIRECTION.Previous),
-    [onNavigate]
-  );
+  const previousPage = useCallback(() => onNavigate(DIRECTION.Previous), [onNavigate]);
 
   return {
     isFirstPage: selectedIdx === 0,

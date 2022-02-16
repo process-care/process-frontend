@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Box, Center, Flex } from "@chakra-ui/react";
+import { Box, Button, Center, Flex, Text } from "@chakra-ui/react";
 
 import { ParticipationMenu } from "./ParticipationMenu";
 import { Page } from "./Form/Page";
@@ -33,7 +33,9 @@ export enum DIRECTION {
 
 export const ParticipationForm: React.FC<Props> = ({ surveyId, participationId }) => {
   const dispatch = useAppDispatch();
-
+  const history = useHistory();
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isFailed, setIsFailed] = useState(false);
   const { data, isLoading, isError } = useSurveyQuery(client, { id: surveyId });
   const pages = useAppSelector(selectors.selectShown);
   const survey = useAppSelector(scientistDataSelectors.survey.getSelectedSurvey);
@@ -48,8 +50,6 @@ export const ParticipationForm: React.FC<Props> = ({ surveyId, participationId }
   const { isFirstPage, isLastPage, selectedPage, nextPage, previousPage, selectIndex } = useNavigationHandlers(pages);
 
   const { onFinish } = useFinishHandler(participationId, attributes?.slug);
-
-  console.log(survey);
 
   // Missing data checks
 
@@ -77,6 +77,38 @@ export const ParticipationForm: React.FC<Props> = ({ surveyId, participationId }
     );
   };
 
+  const handleSubmit = () => {
+    onFinish()
+      .then(() => {
+        setIsSuccess(true);
+      })
+      .catch((err) => {
+        setIsFailed(true);
+        console.log(err);
+      });
+  };
+
+  if (isSuccess) {
+    return (
+      <Center h="100vh" d="flex" flexDirection="column" backgroundColor="gray.100">
+        <Box
+          backgroundColor="white"
+          p={isTablet ? "30px 20px" : "50px"}
+          border="1px solid"
+          borderColor="brand.line"
+          w={isTablet ? "90%" : "480px"}
+        >
+          <Text variant="xl" mb="20px">
+            🎉
+          </Text>
+          <Text>Votre participation à bien été enregistrée, merci beaucoup !</Text>
+          <Button mt="50px" variant="roundedBlue" minW="200px" onClick={() => history.push("/")}>
+            Revenir au portail
+          </Button>
+        </Box>
+      </Center>
+    );
+  }
   return (
     <Box>
       <Flex direction={isTablet ? "column" : "row"} h="100vh">
@@ -95,12 +127,13 @@ export const ParticipationForm: React.FC<Props> = ({ surveyId, participationId }
         <Box flexGrow={1} backgroundColor="brand.gray.100" h="fit-content" minH="100vh">
           {!isTablet && <Title />}
           <Page
+            isFailed={isFailed}
             isFirstPage={isFirstPage}
             isLastPage={isLastPage}
             currentColor={currentColor}
             previousPage={previousPage}
             nextPage={nextPage}
-            onFinish={onFinish}
+            onFinish={handleSubmit}
             pageId={selectedPage.id}
             participationId={participationId}
             order={order}
@@ -114,19 +147,12 @@ export const ParticipationForm: React.FC<Props> = ({ surveyId, participationId }
 // ---- HOOKS
 
 function useFinishHandler(participationId: string, slug: string | undefined) {
-  const history = useHistory();
   const { mutateAsync: finishParticipationApi } = useFinishParticipationMutation(client);
 
   const onFinish = useCallback(async () => {
-    // TODO: improve this with a better UI ?
-    const acknowledge = confirm(" Conclure votre participation au projet ?");
-    if (!acknowledge) return;
-
     // Tell the API we're done and wait for it to be saved
     await finishParticipationApi({ id: participationId, completedAt: new Date() });
-
     finishParticipation(slug);
-    history.push("/");
   }, [slug, participationId]);
 
   return {

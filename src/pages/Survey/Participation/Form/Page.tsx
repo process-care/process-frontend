@@ -3,6 +3,8 @@ import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 
 import { actions, selectors as pageSelectors } from "redux/slices/participation/page";
+import { selectors as questionsSelectors } from "redux/slices/participation/questions";
+
 import { selectors as ScientistDataSelectors } from "redux/slices/scientistData";
 
 import { NL } from "../nl";
@@ -24,6 +26,7 @@ interface Props {
   previousPage: () => void;
   currentColor: string;
   onFinish: () => void;
+  isFailed: boolean;
 }
 
 // ---- COMPONENT
@@ -37,14 +40,12 @@ export const Page: React.FC<Props> = ({
   previousPage,
   currentColor,
   onFinish,
+  isFailed,
 }) => {
   const dispatch = useAppDispatch();
   const { isTablet } = useMediaQueries();
 
-  // Get page & content
-  //
-
-  const questions = useAppSelector(ScientistDataSelectors.questions.questions).filter(
+  const questions = useAppSelector((state) => questionsSelectors.selectAll(state)).filter(
     (q) => q?.attributes?.page?.data?.id === pageId
   );
   const page = useAppSelector((state) => pageSelectors.selectById(state, pageId));
@@ -64,8 +65,7 @@ export const Page: React.FC<Props> = ({
         validateOnBlur
         validateOnMount
         enableReinitialize
-        //  validationSchema={formSchema(page.attributes.questions?.data)}
-
+        validationSchema={formSchema(questions)}
         initialValues={initialAnswers}
         onSubmit={(data, { setSubmitting, validateForm }) => {
           validateForm(data);
@@ -87,7 +87,13 @@ export const Page: React.FC<Props> = ({
                   <Questionator key={inputId} id={inputId} />
                 ))}
               </Box>
-
+              {isFailed && (
+                <Box textAlign="right" mr="10%">
+                  <Text color="red.500" variant="current">
+                    {NL.msg.error}
+                  </Text>
+                </Box>
+              )}
               {/* Navigation */}
               <Flex justifyContent="flex-end" mt="10" pb="20px" pr={isTablet ? "5%" : "10%"}>
                 {!isFirstPage && (

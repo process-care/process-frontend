@@ -193,7 +193,7 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
                 top
                 right
                 label={` ${hadLanding ? "Modifier" : "Créer"} la page d'accueil`}
-                onClick={gotToLanding}
+                onClick={isArchived ? () => console.log("forbidden") : gotToLanding}
                 disabled={isArchived}
               />
               <ActionButton
@@ -201,22 +201,40 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
                 right
                 disabled={!isDraft}
                 label={` ${hadQuestion ? "Modifier" : "Créer"} le formulaire`}
-                onClick={goToForm}
+                onClick={!isDraft ? () => console.log("forbidden") : goToForm}
               />
-              <ActionButton top disabled={!isDraft} label={"Modifier le consentement"} onClick={goToConsent} />
+              <ActionButton
+                top
+                disabled={!isDraft}
+                label={"Modifier le consentement"}
+                onClick={!isDraft ? () => console.log("forbidden") : goToConsent}
+              />
               <ActionButton
                 disabled={!isDraft}
                 top
                 left
                 label={"Modifier les données de le projet"}
-                onClick={goToSurveyMetadatas}
+                onClick={!isDraft ? () => console.log("forbidden") : goToSurveyMetadatas}
               />
             </Flex>
             <Flex>
-              <ActionButton top right bottom label={"Archiver"} onClick={handleArchive} disabled={isArchived} />
-              <ActionButton disabled top right bottom label={"Dupliquer"} onClick={nyi} />
+              <ActionButton
+                top
+                right
+                bottom
+                label={"Archiver"}
+                onClick={isArchived ? () => console.log("forbidden") : handleArchive}
+                disabled={isArchived}
+              />
+              <ActionButton disabled top right bottom label={"Dupliquer"} onClick={() => console.log("forbiden")} />
 
-              <ActionButton disabled top bottom label={"Archiver & Dupliquer"} onClick={handleArchive} />
+              <ActionButton
+                disabled
+                top
+                bottom
+                label={"Archiver & Dupliquer"}
+                onClick={() => console.log("forbiden")}
+              />
             </Flex>
           </Box>
 
@@ -341,7 +359,7 @@ interface ActionButtonProps {
 }
 
 const borderStyle = "1px solid";
-const disabledStyle = { backgroundColor: "#cdcdcd", opacity: 0.3 };
+const disabledStyle = { opacity: 0.3 };
 
 const ActionButton = ({ disabled, top, right, bottom, left, label, onClick }: ActionButtonProps) => {
   const borders = {
@@ -357,7 +375,6 @@ const ActionButton = ({ disabled, top, right, bottom, left, label, onClick }: Ac
 
   return (
     <Box
-      _disabled={disabledStyle}
       p={3}
       w="calc(100% / 3)"
       {...borders}
@@ -366,6 +383,7 @@ const ActionButton = ({ disabled, top, right, bottom, left, label, onClick }: Ac
       display="flex"
       alignItems="center"
       justifyContent="center"
+      style={disabled ? { ...disabledStyle } : {}}
     >
       <Text variant="xs">{label}</Text>
     </Box>

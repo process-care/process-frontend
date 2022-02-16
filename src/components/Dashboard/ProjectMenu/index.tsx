@@ -255,7 +255,11 @@ function useSurveyData(surveyId: string | undefined) {
   const { data, isLoading } = useGetSurveyStatsQuery(client, {
     id: surveyId ?? "",
   });
-  const exportURL = `${API_URL_ROOT}/surveys/${surveyId}/export`;
+
+  // TODO: It seems REST routes have changed in Strapi v4 (need the leading `/api`)
+  // Maybe it should be embeded into the CONST, but the base root may be needed elsewhere
+  // Maybe do a special CONST for REST routes ?
+  const exportURL = `${API_URL_ROOT}/api/surveys/${surveyId}/export`;
 
   // TODO: compute this ?
   const stepsLeft = 2;

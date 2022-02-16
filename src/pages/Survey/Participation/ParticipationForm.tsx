@@ -123,7 +123,7 @@ function useFinishHandler(participationId: string, slug: string | undefined) {
     if (!acknowledge) return;
 
     // Tell the API we're done and wait for it to be saved
-    await finishParticipationApi({ id: participationId });
+    await finishParticipationApi({ id: participationId, completedAt: new Date() });
 
     finishParticipation(slug);
     history.push("/");

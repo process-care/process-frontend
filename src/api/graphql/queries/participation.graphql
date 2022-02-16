@@ -27,11 +27,8 @@ mutation updateParticipation($id: ID!, $data: ParticipationInput!) {
   }
 }
 
-mutation finishParticipation($id: ID!) {
-  updateParticipation(
-    id: $id
-    data: { completed: true, completedAt: "${new Date()}" }
-  ) {
+mutation finishParticipation($id: ID!, $completedAt: DateTime!) {
+  updateParticipation(id: $id, data: { completed: true, completedAt: $completedAt }) {
     data {
       id
       attributes {

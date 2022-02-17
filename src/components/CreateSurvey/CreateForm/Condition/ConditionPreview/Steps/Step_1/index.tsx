@@ -23,6 +23,12 @@ export const Step_1: React.FC<Props> = ({ selectedCondition, updateStep }) => {
   const order = useAppSelector(selectors.survey.getOrder);
   const isTypePage = selectedCondition?.attributes?.type === "page";
 
+  console.log("selectedQuestion", selectedQuestion);
+  console.log("questions", questions);
+  console.log("pages", pages);
+  console.log("isTypePage", isTypePage);
+  console.log("order", order);
+
   React.useEffect(() => {
     // Select first page if we make a condition on page.
     if (isTypePage && pages.length > 0) {
@@ -33,17 +39,22 @@ export const Step_1: React.FC<Props> = ({ selectedCondition, updateStep }) => {
   const referId = isTypePage
     ? selectedCondition?.attributes?.referer_page?.data?.id
     : selectedCondition?.attributes.referer_question?.data?.id;
+  console.log("referId", referId);
+
   const currentInputIndex = order.findIndex((id: string) => id === referId);
+  console.log("currentInputIndex", currentInputIndex);
 
   const questionsBeforeCurrent = order.slice(0, currentInputIndex);
+  console.log("questionsBeforeCurrent", questionsBeforeCurrent);
 
   // Remove all types who can't be conditionable,
   const conditionableQuestions = questions
     .filter((q: QuestionRedux) => {
       const type = q?.attributes?.type;
-      if (type) authorizedQuestionTypes.includes(type);
+      type && authorizedQuestionTypes.includes(type);
     })
     .filter((q: QuestionRedux) => q.id !== selectedQuestion?.id);
+  console.log("conditionableQuestions", conditionableQuestions);
 
   if (!isTypePage) {
     // Si selectedCondition.type === "page" alors on affiche les inputs des pages précédantes.

@@ -1,13 +1,5 @@
+import { Enum_Condition_Operator } from "api/graphql/types.generated";
 import { EvaluationCondition } from "redux/slices/participation/types";
-
-enum Operator {
-  EQ = "equal",
-  NEQ = "not_equal",
-  EQ_SUP = "equal_or_superior",
-  EQ_INF = "equal_or_inferior",
-  SUP = "superior",
-  INF = "inferior",
-}
 
 // ---- FUNCTIONS
 
@@ -16,9 +8,7 @@ enum Operator {
  * @param conditions
  * @returns
  */
-export function shouldShow(
-  conditions: EvaluationCondition[] | undefined
-): boolean {
+export function shouldShow(conditions: EvaluationCondition[] | undefined): boolean {
   if (!conditions || conditions.length < 1) return true;
 
   // console.log('evaluating...');
@@ -54,20 +44,21 @@ function evaluate(c: EvaluationCondition): boolean {
   // console.log('nuf: ', c.operator, answer, value);
 
   if (!answer) return false;
+  if (!operator) return false;
 
   switch (operator) {
-    case Operator.EQ:
+    case Enum_Condition_Operator.Equal:
       return answer === value;
-    case Operator.NEQ:
+    case Enum_Condition_Operator.NotEqual:
       return answer !== value;
 
-    case Operator.EQ_SUP:
+    case Enum_Condition_Operator.EqualOrSuperior:
       return Number(answer) >= Number(value);
-    case Operator.EQ_INF:
+    case Enum_Condition_Operator.EqualOrInferior:
       return Number(answer) <= Number(value);
-    case Operator.SUP:
+    case Enum_Condition_Operator.Superior:
       return Number(answer) > Number(value);
-    case Operator.INF:
+    case Enum_Condition_Operator.Inferior:
       return Number(answer) < Number(value);
 
     default:

@@ -1,10 +1,9 @@
-import { Maybe } from "api/graphql/sdk.generated";
-import Operator from "types/form/operator";
+import { Enum_Condition_Operator, Maybe } from "api/graphql/sdk.generated";
 
 export interface EvaluationCondition {
-  id: string,
-  group?: Maybe<string>,
-  operator: Operator['id'],
-  target_value: string,
-  answer?: unknown,
+  id: string;
+  group?: Maybe<string>;
+  operator: Maybe<Enum_Condition_Operator> | undefined;
+  target_value: Maybe<string> | undefined;
+  answer?: unknown;
 }

@@ -34,7 +34,6 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
 
   const conditions = useAppSelector(selectors.conditions.getAllConditions);
 
-  console.log(pages);
   return (
     <Flex flexDirection="column" alignItems="center" pt={5} backgroundColor="white" width="100%" position="relative">
       <Box

@@ -32,7 +32,6 @@ export const useNavigator = (survey: SurveyRedux | undefined): Navigators => {
     const { id } = survey;
     const ladingId = landing?.data?.id;
 
-    console.log("ladingId", ladingId);
     // If the landing is not created yet, create it
     if (!ladingId) {
       const newLanding: CreateLandingMutation = await addLanding({

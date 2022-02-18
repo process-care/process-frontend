@@ -58,7 +58,6 @@ export const CreateForm: React.FC<IRoute> = () => {
     return <Loader />;
   }
 
-  console.log(selectedSurvey, selectedSurveyId);
   return (
     <Box h="100vh" overflow="hidden">
       <Drawer isOpen={isOpen} size="md" content={<InputForm order={order} />} />

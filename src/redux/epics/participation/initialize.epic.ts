@@ -35,7 +35,6 @@ const initializeEpic: Epic = (action$) =>
       const pages = results[0];
       const questions = results[1];
       const answers = results[2];
-      console.log("EPIC", results);
 
       const payload = { pages, questions, answers };
       return statusAct.initialized(payload);

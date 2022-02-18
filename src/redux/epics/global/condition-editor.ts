@@ -30,7 +30,6 @@ const createEpic: Epic = (action$) =>
     map(({ newCondition, createdAt }) => {
       const redirectToPage = store.getState().scientistData.pages.selectedPage;
       const data = newCondition?.createCondition?.data;
-
       // TODO:ERROR: Handle the error and use case better
       // Can `redirectToPage` really be undefined ? If yes, what does it mean ?
       if (!hasAttributes(data) || !redirectToPage) return actions.error({});
@@ -89,20 +88,23 @@ const saveEpic: Epic = (action$, state$) =>
     switchMap(async () => {
       const savedAt: string = new Date().toISOString();
       const selectedConditionId = state$.value.scientistData.conditions.selectedCondition;
-
       const conditions = Object.entries(state$.value.scientistData.conditions.entities);
+
       const changes = conditions.filter((c) => c[0] === selectedConditionId)[0];
       // We need to send target : id, referer_question:id, but ConditionRedux have full Question object adn we use it in frontend
-      const formatPayload = (changes: any) => {
-        return {
-          ...changes[1],
-          id: undefined,
-          target: changes[1].target.id,
-          referer_question: changes[1].referer_question?.id,
-          referer_page: changes[1].referer_page?.id,
-        };
+
+      const data = changes[1]?.attributes;
+      const isTypePage = data?.type === "page";
+
+      const condition = {
+        target: data?.target?.data?.id,
+        referer_question: isTypePage ? undefined : data?.referer_question?.data?.id,
+        referer_page: isTypePage ? data?.referer_page?.data?.id : undefined,
+        target_value: data?.target_value,
+        type: data?.type,
+        group: data?.group,
+        operator: data?.operator,
       };
-      const condition = formatPayload(changes);
 
       await sdk.updateCondition({
         id: selectedConditionId,

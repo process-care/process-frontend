@@ -23,12 +23,6 @@ export const Step_1: React.FC<Props> = ({ selectedCondition, updateStep }) => {
   const order = useAppSelector(selectors.survey.getOrder);
   const isTypePage = selectedCondition?.attributes?.type === "page";
 
-  console.log("selectedQuestion", selectedQuestion);
-  console.log("questions", questions);
-  console.log("pages", pages);
-  console.log("isTypePage", isTypePage);
-  console.log("order", order);
-
   React.useEffect(() => {
     // Select first page if we make a condition on page.
     if (isTypePage && pages.length > 0) {
@@ -39,42 +33,36 @@ export const Step_1: React.FC<Props> = ({ selectedCondition, updateStep }) => {
   const referId = isTypePage
     ? selectedCondition?.attributes?.referer_page?.data?.id
     : selectedCondition?.attributes.referer_question?.data?.id;
-  console.log("referId", referId);
 
   const currentInputIndex = order.findIndex((id: string) => id === referId);
-  console.log("currentInputIndex", currentInputIndex);
-
   const questionsBeforeCurrent = order.slice(0, currentInputIndex);
-  console.log("questionsBeforeCurrent", questionsBeforeCurrent);
 
   // Remove all types who can't be conditionable,
   const conditionableQuestions = questions
     .filter((q: QuestionRedux) => {
       const type = q?.attributes?.type;
-      type && authorizedQuestionTypes.includes(type);
+      if (type && authorizedQuestionTypes.includes(type)) {
+        return true;
+      } else return null;
+    })
+    .filter((q: QuestionRedux) => q.id !== selectedQuestion?.id)
+    .filter((q: QuestionRedux) => {
+      if (questionsBeforeCurrent?.includes(q.id)) {
+        return true;
+      } else return null;
     })
     .filter((q: QuestionRedux) => q.id !== selectedQuestion?.id);
-  console.log("conditionableQuestions", conditionableQuestions);
-
-  if (!isTypePage) {
-    // Si selectedCondition.type === "page" alors on affiche les inputs des pages précédantes.
-    // Si selectedCondition.type === "input" alors on affiche les inputs précédants l'input referent
-    conditionableQuestions
-      .filter((q: QuestionRedux) => questionsBeforeCurrent?.includes(q.id))
-      .filter((q: QuestionRedux) => q.id !== selectedQuestion?.id);
-    conditionableQuestions;
-  }
 
   const isEmpty = conditionableQuestions?.length === 0;
   const renderCard = (question: QuestionRedux) => {
-    const isSelected = question.id === selectedCondition?.attributes.target?.data?.id;
+    const isSelected = question.id === selectedCondition?.attributes?.target?.data?.id;
 
     return (
       <InputBox
         key={question.id}
         isSelected={isSelected}
         input={question}
-        onClick={() => updateStep({ target: question })}
+        onClick={() => updateStep({ target: { data: question } })}
       />
     );
   };

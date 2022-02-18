@@ -21,9 +21,7 @@ const InputNumber = () => {
   );
 };
 
-export const renderInput = (
-  selectedCondition: ConditionRedux
-): React.ReactElement | undefined => {
+export const renderInput = (selectedCondition: ConditionRedux): React.ReactElement | undefined => {
   const dispatch = useAppDispatch();
 
   const handleUpdate = (changes: Record<string, any>) => {
@@ -31,7 +29,7 @@ export const renderInput = (
       actions.updateCondition({
         id: selectedCondition.id,
         changes: {
-          ...changes,
+          attributes: { ...selectedCondition?.attributes, ...changes },
         },
       })
     );

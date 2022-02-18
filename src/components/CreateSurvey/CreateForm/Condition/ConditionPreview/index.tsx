@@ -1,14 +1,6 @@
 import React from "react";
 
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  Center,
-  Container,
-  Text,
-  Tooltip,
-} from "@chakra-ui/react";
+import { Box, Button, ButtonGroup, Center, Container, Text, Tooltip } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { Step_1 } from "components/CreateSurvey/CreateForm/Condition/ConditionPreview/Steps/Step_1";
 import { Step_2 } from "./Steps/Step_2";
@@ -31,14 +23,12 @@ export const ConditionPreview: React.FC<Props> = ({ selectedCondition }) => {
   const step = useAppSelector(selectors.conditions.getStep);
   const isValid = useAppSelector(selectors.conditions.getValidity);
 
-  const handleUpdate = (changes: ConditionRedux["attributes"]) => {
-    // TODO:REFACTO uncomment and fix
+  const handleUpdate = (changes: any) => {
     dispatch(
       actions.updateCondition({
         id: selectedCondition.id,
         changes: {
-          id: selectedCondition.id,
-          attributes: changes,
+          attributes: { ...selectedCondition?.attributes, ...changes },
         },
       })
     );
@@ -47,28 +37,13 @@ export const ConditionPreview: React.FC<Props> = ({ selectedCondition }) => {
   const renderStep = () => {
     switch (step) {
       case 1:
-        return (
-          <Step_1
-            selectedCondition={selectedCondition}
-            updateStep={(changes) => handleUpdate(changes)}
-          />
-        );
+        return <Step_1 selectedCondition={selectedCondition} updateStep={(changes) => handleUpdate(changes)} />;
         break;
       case 2:
-        return (
-          <Step_2
-            selectedCondition={selectedCondition}
-            updateStep={(changes) => handleUpdate(changes)}
-          />
-        );
+        return <Step_2 selectedCondition={selectedCondition} updateStep={(changes) => handleUpdate(changes)} />;
         break;
       case 3:
-        return (
-          <Step_3
-            selectedCondition={selectedCondition}
-            updateStep={(changes) => handleUpdate(changes)}
-          />
-        );
+        return <Step_3 selectedCondition={selectedCondition} updateStep={(changes) => handleUpdate(changes)} />;
         break;
 
       default:
@@ -109,17 +84,10 @@ export const ConditionPreview: React.FC<Props> = ({ selectedCondition }) => {
         label="Ne peuvent être sélectionnées que les questions de type liste déroulante, radio et case à cocher, antérieures à la question en cours"
       >
         <Box d="flex" alignItems="center" mt="5">
-          <Text
-            variant="baseline"
-            fontWeight="bold"
-            textAlign="left"
-            _hover={{ cursor: "pointer" }}
-          >
+          <Text variant="baseline" fontWeight="bold" textAlign="left" _hover={{ cursor: "pointer" }}>
             {renderTitle(step)}
           </Text>
-          {step === 1 && (
-            <InfoIcon color="gray.300" ml="4" mt="-2" w="3" h="3" />
-          )}
+          {step === 1 && <InfoIcon color="gray.300" ml="4" mt="-2" w="3" h="3" />}
         </Box>
       </Tooltip>
 
@@ -136,9 +104,8 @@ export const ConditionPreview: React.FC<Props> = ({ selectedCondition }) => {
       </Center>
       {isValid && (
         <Text variant="currentBold" mt="5" textAlign="left">
-          Vous pouvez ajouter d’autres conditions (opérateur “ET”) ou d’autres
-          groupes de conditions (opérateur “OU”) en utilisant la fenêtre de
-          prévisualisation
+          Vous pouvez ajouter d’autres conditions (opérateur “ET”) ou d’autres groupes de conditions (opérateur “OU”) en
+          utilisant la fenêtre de prévisualisation
         </Text>
       )}
       <Box pos="relative" pt="40px" w="100%">
@@ -152,11 +119,7 @@ export const ConditionPreview: React.FC<Props> = ({ selectedCondition }) => {
           </Button>
 
           {step !== 3 ? (
-            <Button
-              variant="roundedBlue"
-              isDisabled={checkStepValidation()}
-              onClick={() => handleNavigation(step + 1)}
-            >
+            <Button variant="roundedBlue" isDisabled={checkStepValidation()} onClick={() => handleNavigation(step + 1)}>
               Suivant
             </Button>
           ) : (
@@ -173,13 +136,7 @@ export const ConditionPreview: React.FC<Props> = ({ selectedCondition }) => {
         </ButtonGroup>
       </Box>
 
-      <Footer
-        w="53%"
-        onSubmit={saveCondition}
-        disabled={!isValid}
-        onCancel={onCancel}
-        hideDelete={true}
-      />
+      <Footer w="53%" onSubmit={saveCondition} disabled={!isValid} onCancel={onCancel} hideDelete={true} />
     </Container>
   );
 };

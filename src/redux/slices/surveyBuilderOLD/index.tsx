@@ -12,7 +12,6 @@ export interface SurveyBuilder {
     email?: string;
     description?: string;
     keywords?: string[];
-    categories?: string[];
     landing?: string;
     order: QuestionRedux["id"][];
     pages?: PageRedux[];
@@ -40,7 +39,6 @@ export const initialState: SurveyBuilder = {
     description: "",
     email: "",
     keywords: [],
-    categories: [],
     needConsent: true,
   },
   step: 1,
@@ -75,7 +73,6 @@ export const surveyBuilderSlice = createSlice({
   },
 });
 
-export const { updateSurveyMeta, updateSurveyStep, updateConsentMeta } =
-  surveyBuilderSlice.actions;
+export const { updateSurveyMeta, updateSurveyStep, updateConsentMeta } = surveyBuilderSlice.actions;
 
 export default surveyBuilderSlice.reducer;

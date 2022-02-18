@@ -1,12 +1,4 @@
-import {
-  Badge,
-  Box,
-  Button,
-  Circle,
-  Flex,
-  GridItem,
-  Text,
-} from "@chakra-ui/react";
+import { Badge, Box, Button, Circle, Flex, GridItem, Text } from "@chakra-ui/react";
 import React from "react";
 import { SurveyRedux } from "redux/slices/types";
 import { renderStatus } from "utils/application/renderStatus";
@@ -43,10 +35,7 @@ export const Card: React.FC<Props> = ({ data }) => {
       <Flex alignItems="center">
         <Circle
           size="10px"
-          bg={
-            attributes?.landing?.data?.attributes?.color_theme?.button ||
-            "black"
-          }
+          bg={attributes?.landing?.data?.attributes?.color_theme?.button || "black"}
           color="white"
           mr="12px"
         />
@@ -59,45 +48,27 @@ export const Card: React.FC<Props> = ({ data }) => {
         </Text>
       </Box>
 
-      {attributes?.keywords?.length > 0 ? (
+      {attributes?.keywords && attributes?.keywords?.length > 0 ? (
         <Flex mt="10px" alignItems="center">
-          {attributes?.keywords.map((keyword: { label: string }) => (
+          {attributes?.keywords?.map((k) => (
             <Text
               mr="20px"
-              key={keyword.label}
+              key={k?.id}
               variant="xs"
-              color={
-                attributes?.landing?.data?.attributes?.color_theme?.button ||
-                "black"
-              }
+              color={attributes?.landing?.data?.attributes?.color_theme?.button || "black"}
             >
-              {keyword.label}
+              {k?.label}
             </Text>
           ))}
         </Flex>
       ) : (
         <Box minH="20px" />
       )}
-      <Flex
-        justifyContent="space-between"
-        pt={isTablet ? "20px" : "40px"}
-        alignItems="center"
-      >
-        <Badge
-          color="black"
-          backgroundColor="transparent"
-          border="1px solid black"
-          textTransform="initial"
-        >
+      <Flex justifyContent="space-between" pt={isTablet ? "20px" : "40px"} alignItems="center">
+        <Badge color="black" backgroundColor="transparent" border="1px solid black" textTransform="initial">
           <Text variant="currentLight">{renderStatus(attributes?.status)}</Text>
         </Badge>
-        <Button
-          variant="rounded"
-          bg={
-            attributes?.landing?.data?.attributes?.color_theme?.button ||
-            "black"
-          }
-        >
+        <Button variant="rounded" bg={attributes?.landing?.data?.attributes?.color_theme?.button || "black"}>
           {t.cta}
         </Button>
       </Flex>

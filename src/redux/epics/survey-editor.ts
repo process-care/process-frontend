@@ -59,13 +59,24 @@ const postEpic: Epic = (action$, state$) =>
     }),
     switchMap(async () => {
       const data = state$.value.editor.survey.draft?.attributes as SurveyInput;
-
+      const format = {
+        slug: data.slug,
+        title: data.title,
+        description: data.description,
+        language: data.language,
+        status: "draft",
+        keywords: [
+          {
+            label: data.keywords,
+            value: data.keywords,
+          },
+        ],
+        email: data.email,
+      } as SurveyInput;
       // Create survey and its first page
       try {
         const surveyRes = await sdk.createSurvey({
-          values: {
-            ...data,
-          },
+          values: format,
         });
 
         const surveyId = surveyRes?.createSurvey?.data?.id;

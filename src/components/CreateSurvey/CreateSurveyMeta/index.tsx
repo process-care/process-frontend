@@ -36,7 +36,6 @@ export const CreateSurveyForm: React.FC = () => {
     dispatch(actions.post(data));
   }, []);
 
-  console.log(renderSurveyMessage(error));
   return (
     <>
       <Formik

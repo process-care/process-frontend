@@ -28,10 +28,19 @@ fragment surveyEntityFragment on SurveyEntity {
     status
     language
     email
-    keywords
-    categories
+    keywords {
+      id
+      label
+      value
+    }
+
     author {
-      data { attributes { email, username } }
+      data {
+        attributes {
+          email
+          username
+        }
+      }
     }
 
     # Landing

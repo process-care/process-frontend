@@ -115,7 +115,7 @@ export const checkValidity = (
   values: SurveyBuilder["survey"],
   errors: FormikErrors<SurveyBuilder["survey"]>
 ): boolean => {
-  const { title, description, keywords, language, email, categories, slug } = values;
+  const { title, description, keywords, language, email, slug } = values;
 
   if (step === 1) {
     return title !== "" && !errors.title;
@@ -134,8 +134,5 @@ export const checkValidity = (
   }
   if (step === 6) {
     return email !== "" && !errors.email;
-  }
-  if (step === 7 && categories) {
-    return categories?.length !== 0 && !errors.categories;
   } else return false;
 };

@@ -73,6 +73,7 @@ const postEpic: Epic = (action$, state$) =>
         ],
         email: data.email,
       } as SurveyInput;
+
       // Create survey and its first page
       try {
         const surveyRes = await sdk.createSurvey({

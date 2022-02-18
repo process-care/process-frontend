@@ -1,6 +1,5 @@
 import { Enum_Question_Rows } from "api/graphql/types.generated";
 import { Input, Select, Textarea } from "components/Fields";
-import { CustomCreatableSelect } from "components/Fields/SelectCreatable";
 import { FormikErrors } from "formik";
 import { SurveyBuilder } from "redux/slices/surveyBuilderOLD";
 

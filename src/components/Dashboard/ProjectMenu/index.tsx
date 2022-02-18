@@ -389,18 +389,3 @@ const ActionButton = ({ disabled, top, right, bottom, left, label, onClick }: Ac
     </Box>
   );
 };
-
-// ---- HELPERS
-
-// Good job reading up until here, you found the goodies :D
-
-const nyiMsg = [
-  "Not yet implemented... 🚧",
-  "Come back later... 🏗",
-  "Come on, we are not done yet ! 👷‍♂️",
-  "Man... just give us room to build this ! 🧱",
-];
-
-function nyi() {
-  alert(nyiMsg[Math.floor(Math.random() * nyiMsg.length)]);
-}

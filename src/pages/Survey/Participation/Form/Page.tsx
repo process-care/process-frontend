@@ -5,8 +5,6 @@ import { Form, Formik } from "formik";
 import { actions, selectors as pageSelectors } from "redux/slices/participation/page";
 import { selectors as questionsSelectors } from "redux/slices/participation/questions";
 
-import { selectors as ScientistDataSelectors } from "redux/slices/scientistData";
-
 import { NL } from "../nl";
 import { useInitialPageContent } from "./answer-hooks";
 import { formSchema } from "./validation";

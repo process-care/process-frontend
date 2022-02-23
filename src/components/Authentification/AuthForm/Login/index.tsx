@@ -13,13 +13,13 @@ import { Errors, renderAuthMessage } from "components/Authentification/Errors";
 export const LoginForm: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const isConnected = useAppSelector(
-    (state) => state.scientistData.auth.isConnected
-  );
+  const isConnected = useAppSelector((state) => state.scientistData.auth.isConnected);
   const errors = useAppSelector((state) => state.scientistData.auth.errors);
+
   function handleSubmit({ identifier, password }: any) {
     dispatch(actions.login({ identifier, password }));
   }
+
   if (isConnected) {
     history.push("/dashboard");
   }
@@ -58,19 +58,11 @@ export const LoginForm: React.FC = () => {
                   type="password"
                   isRequired="true"
                 />
-                <NavLink
-                  to="/mot-de-passe-oublie"
-                  style={{ width: "fit-content" }}
-                >
+                <NavLink to="/mot-de-passe-oublie" style={{ width: "fit-content" }}>
                   <Button variant="link">Mot de passe oublié ? </Button>
                 </NavLink>
                 <Errors message={renderAuthMessage(errors)} />
-                <Button
-                  mt="60px"
-                  type="submit"
-                  disabled={!isValid || isSubmitting || !dirty}
-                  variant="roundedBlue"
-                >
+                <Button mt="60px" type="submit" disabled={!isValid || isSubmitting || !dirty} variant="roundedBlue">
                   Connexion
                 </Button>
               </Flex>

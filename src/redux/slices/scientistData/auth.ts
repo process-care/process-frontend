@@ -31,9 +31,9 @@ export const authReducers = {
     state.auth.isConnected = false;
   },
   logged: (state: GlobalState, action: PayloadAction<LoginMutation["login"]>): void => {
-    console.log("logged: ", action);
     state.auth.data = action.payload;
-    state.auth.isConnected = action.payload.user.blocked ?? false;
+    // If the user is blocked OR has no information (= null | undefined) -> it is not connected
+    state.auth.isConnected = !(action.payload.user.blocked ?? true);
     state.auth.errors = undefined;
   },
   signin: (state: GlobalState, _action: PayloadAction<RegisterMutationVariables>): void => {

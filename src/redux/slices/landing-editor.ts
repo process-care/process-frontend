@@ -45,7 +45,7 @@ export const landingEditorSlice = createSlice({
     },
     loadFailed: (state) => {
       state.isLoading = false;
-      state.error = "Chargement de la landing a échoué.";
+      state.error = "Le chargement de la landing a échoué.";
     },
     update: (state, action: PayloadAction<UploadPayload>) => {
       state.lastUpdated = new Date().toISOString();

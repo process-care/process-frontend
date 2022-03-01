@@ -28,7 +28,7 @@ const updateEpic: Epic = (action$, state$) =>
     map((action) => action.payload),
     scan((acc, payload) => Object.assign({}, acc, payload), {}),
     debounceTime(500),
-    switchMap(async (accumulated) => {
+    switchMap(async (accumulated: any) => {
       const currentLandingId = state$.value.editor.landing.data?.id;
 
       if (!currentLandingId) {
@@ -36,8 +36,11 @@ const updateEpic: Epic = (action$, state$) =>
       }
 
       const savingAt = new Date().toISOString();
-      const data = { ...accumulated } as any;
-      await sdk.updateLanding({ id: currentLandingId, data: data?.changes?.attributes });
+      const attributes = accumulated?.changes?.attributes;
+      // Change cover data to match correct LandingInput type
+      const data = { ...attributes, cover: attributes?.cover?.data?.id };
+
+      await sdk.updateLanding({ id: currentLandingId, data });
       return savingAt;
     }),
     map((savedDate) => actions.updated({ lastSaved: savedDate }))

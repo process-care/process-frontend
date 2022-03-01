@@ -3,8 +3,8 @@ import { colors } from "./../../ColorPicker/utils";
 
 export const initialValues: LandingRedux["attributes"] = {
   color_theme: colors[0],
-  cover: "",
-  logo: "",
+  cover: null,
+  logo: null,
   members: [],
   subtitle: "",
   title: "",

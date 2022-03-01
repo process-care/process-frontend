@@ -3,7 +3,7 @@ import { Textarea } from "components/Fields";
 import { UploadFile } from "components/Fields/Uploadfile";
 import { Wysiwyg } from "components/Fields/Wysiwyg";
 import { Formik, Form } from "formik";
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 
 import { t } from "static/createLanding";
 import { ColorPicker } from "../ColorPicker";
@@ -19,6 +19,7 @@ import { Footer } from "components/CreateSurvey/CreateForm/Condition/ToolBox/Inp
 import { useHistory } from "react-router-dom";
 import { TitleDivider } from "components/TitleDivider";
 import { Enum_Question_Rows } from "api/graphql/types.generated";
+import { UploadFileRemote } from "components/Fields/UploadFileRemote";
 
 export const LandingForm: React.FC = () => {
   const history = useHistory();
@@ -57,6 +58,7 @@ export const LandingForm: React.FC = () => {
   const handleCancel = () => {
     history.push("/dashboard");
   };
+
   const handleSubmit = () => {
     onSave();
     history.push("/dashboard");
@@ -88,13 +90,12 @@ export const LandingForm: React.FC = () => {
         }, [values]);
 
         // Target params for various uploads (cover, partners)
-        // const targets = useMemo(() => {
-        //   const base = { refId: values.id, ref: "landing" };
-        //   return {
-        //     partners: { ...base, field: "partners" },
-        //     // cover: { ...base, field: "cover" },
-        //   };
-        // }, [values.id]);
+        const targets = useMemo(() => {
+          const base = { refId: landing?.id, ref: "landing" };
+          return {
+            cover: { ...base, field: "cover" },
+          };
+        }, [landing?.id]);
 
         // Delete video handler
         const onDeleteVideo = useCallback(() => {
@@ -140,9 +141,11 @@ export const LandingForm: React.FC = () => {
                   label={t.subtitle_input}
                   helpText={t.subtitle_helptext}
                 />
+
                 <Text variant="currentBold" mt="5">
                   {t.label_logo}
                 </Text>
+
                 <UploadFile onChange={logOnChange} label={t.logo_cta} id="logo" helpText={t.logo_helptext} />
 
                 <Text variant="currentBold" mt={9}>
@@ -156,12 +159,21 @@ export const LandingForm: React.FC = () => {
                 <Text variant="currentBold" mt={2} mb={2}>
                   {t.content_label}
                 </Text>
+
                 <Wysiwyg id="wysiwyg" simpleMode />
 
                 <Text variant="currentBold" mt="5">
                   {t.add_image}
                 </Text>
-                <UploadFile onChange={logOnChange} label={t.image_cta} id="cover" helpText={t.logo_helptext} />
+
+                <UploadFileRemote
+                  accept=".jpg,.png,.jpeg"
+                  target={targets?.cover}
+                  content={values.cover?.data}
+                  label={t.image_cta}
+                  helpText={t.logo_helptext}
+                  onChange={logOnChange}
+                />
 
                 <Flex alignItems="center">
                   <Textarea
@@ -171,21 +183,25 @@ export const LandingForm: React.FC = () => {
                     label={t.video_url_label}
                     isDisabled={Boolean(values?.cover)}
                   />
+
                   <Box mt={7} ml={4}>
                     <SvgHover>
                       <Delete onClick={onDeleteVideo} />
                     </SvgHover>
                   </Box>
                 </Flex>
+
                 <Text variant="currentBold" mt="5">
                   {t.see_more_cta}
                 </Text>
+
                 <Button variant="roundedTransparent" mt={4} onClick={onEditAbout}>
                   {t.cta_show_more}
                 </Button>
               </Box>
 
               <TitleDivider title="Pied de page" />
+
               <Box border="1px solid #F7F7F7F7" p="5" backgroundColor="#fdfdfdf1" mb="100px">
                 <RepeatableJobs name="members" cta="Ajouter un membre de l'équipe" />
 

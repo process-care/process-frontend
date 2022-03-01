@@ -63,6 +63,7 @@ const updateSurveyEpic: Epic = (action$) =>
         id: payload.id,
         data: {
           need_consent: payload.needConsent,
+          notice_consent: payload?.noticeConsent?.data?.id,
         },
       });
     }),

@@ -5,6 +5,7 @@ import { t } from "static/createLanding";
 import { LandingRedux } from "redux/slices/types";
 import { useMediaQueries } from "utils/hooks/mediaqueries";
 import { Loader } from "components/Spinner";
+import { API_URL_ROOT } from "constants/api";
 
 interface Props {
   data?: LandingRedux;
@@ -18,12 +19,16 @@ const big_placeholder =
 
 export const Content: React.FC<Props> = ({ data, onParticipate }) => {
   const { isTablet } = useMediaQueries();
+
   if (!data) return <Loader />;
 
   const { title, subtitle, color_theme: theme, video_url, cover, wysiwyg } = data.attributes;
 
+  const coverName = cover?.data?.attributes?.name ?? "";
+  const coverSrc = cover?.data?.attributes?.url;
+
   const hasVideo = Boolean(video_url);
-  const hasImage = Boolean(cover);
+  const hasImage = Boolean(coverSrc);
   const hasMedia = hasVideo || hasImage;
 
   return (
@@ -39,7 +44,7 @@ export const Content: React.FC<Props> = ({ data, onParticipate }) => {
         {hasMedia && (
           <Box w={isTablet ? "100%" : "60%"}>
             {hasVideo && <Video url={video_url ?? ""} />}
-            {cover && <img src={cover} alt={cover} />}
+            {hasImage && <img src={`${API_URL_ROOT}${coverSrc}`} alt={coverName} />}
           </Box>
         )}
         <Box

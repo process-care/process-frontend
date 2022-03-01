@@ -27,6 +27,7 @@ interface Props {
 export const Preview: React.FC<Props> = ({ isUserView, data }) => {
   const { slug } = useParams<{ slug: string }>();
   const history = useHistory();
+
   const { previewMode } = useAppSelector((state) => state.application);
   const aboutPage = useAppSelector(selectors.about);
   const isEditingAbout = useAppSelector(selectors.isEditingAbout);
@@ -43,14 +44,7 @@ export const Preview: React.FC<Props> = ({ isUserView, data }) => {
 
   if (isEditingAbout) {
     return (
-      <Box
-        h="fit-content"
-        backgroundColor="white"
-        w="80%"
-        mx="auto"
-        mt="100px"
-        p={10}
-      >
+      <Box h="fit-content" backgroundColor="white" w="80%" mx="auto" mt="100px" p={10}>
         <Text
           textAlign="left"
           variant="current"
@@ -63,6 +57,7 @@ export const Preview: React.FC<Props> = ({ isUserView, data }) => {
   }
 
   const attributes = data?.attributes;
+
   return (
     <Box
       h={isFullView ? "100%" : "fit-content"}
@@ -79,17 +74,12 @@ export const Preview: React.FC<Props> = ({ isUserView, data }) => {
       />
 
       <Content data={data} onParticipate={onParticipate} />
+
       {attributes?.members && (
-        <Team
-          members={attributes?.members}
-          color_theme={attributes?.color_theme}
-          isUserView={isUserView}
-        />
+        <Team members={attributes?.members} color_theme={attributes?.color_theme} isUserView={isUserView} />
       )}
-      <Footer
-        partners_logos={attributes?.partners_logos ?? []}
-        color_theme={attributes?.color_theme}
-      />
+
+      <Footer partners_logos={attributes?.partners_logos ?? []} color_theme={attributes?.color_theme} />
       <CtaMobil data={data} onParticipate={onParticipate} />
     </Box>
   );

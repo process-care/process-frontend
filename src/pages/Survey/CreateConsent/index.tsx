@@ -12,12 +12,10 @@ import { PdfPreview } from "./PdfPreview";
 import { Switch } from "components/Fields";
 import { actions } from "redux/slices/scientistData";
 import { Loader } from "components/Spinner";
-import {
-  SurveyBySlugQuery,
-  useSurveyBySlugQuery,
-} from "api/graphql/queries/survey.gql.generated";
+import { SurveyBySlugQuery, useSurveyBySlugQuery } from "api/graphql/queries/survey.gql.generated";
 import { client } from "api/gql-client";
 import { Footer } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer";
+
 // ---- STATICS
 
 const t = {
@@ -33,14 +31,17 @@ const t = {
 // ---- COMPONENT
 
 export const CreateConsent: React.FC = () => {
-  const { slug } = useParams<{ slug: string }>();
-  const { data: survey, isLoading } = useSurveyBySlugQuery(client, { slug });
   const dispatch = useDispatch();
+  const history = useHistory();
+  const { slug } = useParams<{ slug: string }>();
+  const { data: survey, isLoading, refetch } = useSurveyBySlugQuery(client, { slug });
+
   const attributes = survey?.surveys?.data[0].attributes;
   const surveyId = survey?.surveys?.data[0].id;
   const url = attributes?.notice_consent?.data?.attributes?.url;
-  const history = useHistory();
+
   const firstRender = useRef(true);
+
   const goToDashboard = () => {
     history.push("/dashboard");
   };
@@ -57,32 +58,16 @@ export const CreateConsent: React.FC = () => {
   }
 
   return (
-    <Box
-      d="flex"
-      justifyContent="space-around"
-      w="100%"
-      overflow="hidden"
-      h="100vh"
-    >
+    <Box d="flex" justifyContent="space-around" w="100%" overflow="hidden" h="100vh">
       <Box w="100%">
         <Menu surveyTitle={attributes?.title} />
         <div className="background__grid">
-          <Box
-            h="100%"
-            d="flex"
-            justifyContent="center"
-            overflow="scroll"
-            pt="40px"
-            pb="40px"
-          >
-            {url ? (
-              <PdfPreview url={`${API_URL_ROOT}${url}`} />
-            ) : (
-              <Box w="450px" h="80%" backgroundColor="gray.100" />
-            )}
+          <Box h="100%" d="flex" justifyContent="center" overflow="scroll" pt="40px" pb="40px">
+            {url ? <PdfPreview url={`${API_URL_ROOT}${url}`} /> : <Box w="450px" h="80%" backgroundColor="gray.100" />}
           </Box>
         </div>
       </Box>
+
       <Container variant="rightPart">
         <Box h="90vh" p="30">
           <Formik
@@ -100,19 +85,26 @@ export const CreateConsent: React.FC = () => {
                   firstRender.current = false;
                   return;
                 }
+
                 dispatch(
                   actions.updateSurvey({
                     id: surveyId,
                     needConsent: values.needConsent,
+                    noticeConsent: values.consentement,
                   })
                 );
+
+                // FIXME: Refetch this sh*t better
+                setTimeout(refetch, 500);
               }, [values]);
+
               const targets = React.useMemo(() => {
                 const base = { refId: surveyId, ref: "survey" };
                 return {
                   consentement: { ...base, field: "consentement" },
                 };
               }, [values, survey]);
+
               return (
                 <Form
                   style={{
@@ -122,23 +114,13 @@ export const CreateConsent: React.FC = () => {
                   }}
                 >
                   <Box w="100%" mb="50px">
-                    <Text
-                      variant="baseline"
-                      fontWeight="bold"
-                      textAlign="left"
-                      _hover={{ cursor: "pointer" }}
-                      mb="5"
-                    >
+                    <Text variant="baseline" fontWeight="bold" textAlign="left" _hover={{ cursor: "pointer" }} mb="5">
                       Import du consentement
                     </Text>
                     <Text variant="currentBold" mb="10">
                       {t.switchLabel}
                     </Text>
-                    <Switch
-                      label={t.label}
-                      id="needConsent"
-                      defaultChecked={true}
-                    />
+                    <Switch label={t.label} id="needConsent" defaultChecked={true} />
                   </Box>
                   {values.needConsent && (
                     <>
@@ -148,7 +130,7 @@ export const CreateConsent: React.FC = () => {
                         content={values.consentement}
                         label={t.cta}
                         helpText={t.format}
-                        onChange={(e: any) => console.log("e", e)}
+                        onChange={(e: any) => console.log(e)}
                       />
                     </>
                   )}

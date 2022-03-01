@@ -30,6 +30,7 @@ const updateEpic: Epic = (action$) =>
     switchMap(async (action) => {
       const updatedAt: string = new Date().toISOString();
       const { id, changes } = action;
+
       await sdk.updateSurvey({ id, data: changes?.attributes });
       return updatedAt;
     }),

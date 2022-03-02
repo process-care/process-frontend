@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  FormControl,
-  FormHelperText,
-  FormLabel,
-  Textarea,
-  Text,
-} from "@chakra-ui/react";
+import { FormControl, FormHelperText, FormLabel, Textarea, Text } from "@chakra-ui/react";
 import { getMaxLength, getRows } from "./utils";
 
 import { useField } from "formik";
@@ -45,17 +39,11 @@ export const CustomTextarea: React.FC<Props> = ({
   const isBig = appearance === "big";
 
   return (
-    <FormControl
-      isRequired={isRequired}
-      id={id}
-      textAlign="left"
-      m={m}
-      p={p}
-      isInvalid={!!meta.error}
-    >
+    <FormControl isRequired={isRequired} id={id} textAlign="left" m={m} p={p} isInvalid={!!meta.error}>
       <FormLabel htmlFor={id} opacity={isDisabled ? "0.5" : "1"}>
         {label}
       </FormLabel>
+
       {!isCollapsed && (
         <>
           <Textarea
@@ -81,17 +69,14 @@ export const CustomTextarea: React.FC<Props> = ({
             autoComplete={autoComplete}
             defaultValue={defaultValue}
           />
+
           {meta.error && (
             <Text fontSize="10px" color="red" textAlign="right">
               {meta.error}
             </Text>
           )}
-          <FormHelperText
-            mt={1}
-            lineHeight={1.4}
-            fontSize="xs"
-            color="gray.400"
-          >
+
+          <FormHelperText mt={1} lineHeight={1.4} fontSize="xs" color="gray.400">
             {helpText}
           </FormHelperText>
         </>

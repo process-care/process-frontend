@@ -27,30 +27,18 @@ export const initialAuthState: AuthState = {
 // ---- REDUCERS
 
 export const authReducers = {
-  login: (
-    state: GlobalState,
-    _action: PayloadAction<LoginMutationVariables>
-  ): void => {
+  login: (state: GlobalState, _action: PayloadAction<LoginMutationVariables>): void => {
     state.auth.isConnected = false;
   },
-  logged: (
-    state: GlobalState,
-    action: PayloadAction<LoginMutation["login"]>
-  ): void => {
+  logged: (state: GlobalState, action: PayloadAction<LoginMutation["login"]>): void => {
     state.auth.data = action.payload;
     state.auth.isConnected = !action.payload.user.blocked;
     state.auth.errors = undefined;
   },
-  signin: (
-    state: GlobalState,
-    _action: PayloadAction<RegisterMutationVariables>
-  ): void => {
+  signin: (state: GlobalState, _action: PayloadAction<RegisterMutationVariables>): void => {
     state.auth.isConnected = false;
   },
-  signed: (
-    state: GlobalState,
-    action: PayloadAction<LoginMutation["login"]>
-  ): void => {
+  signed: (state: GlobalState, action: PayloadAction<LoginMutation["login"]>): void => {
     state.auth.data = action.payload;
     state.auth.errors = undefined;
   },
@@ -66,8 +54,7 @@ export const authReducers = {
 
 // ---- SELECTORS
 
-export const getUser = (state: RootState): any =>
-  state.scientistData.auth.data?.user;
+export const getUser = (state: RootState): any => state.scientistData.auth.data?.user;
 
 export const authSelectors = {
   getUser,

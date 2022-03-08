@@ -11,9 +11,7 @@ import { useMediaQueries } from "utils/hooks/mediaqueries";
 export const AuthForm: React.FC = () => {
   const history = useHistory();
   const [isSigninPage, setIsSigninPage] = React.useState(false);
-  const isConnected = useAppSelector(
-    (state) => state.scientistData.auth.isConnected
-  );
+  const isConnected = useAppSelector((state) => state.scientistData.auth.isConnected);
   const { isTablet } = useMediaQueries();
   if (isConnected) {
     history.push("/dashboard");
@@ -31,11 +29,7 @@ export const AuthForm: React.FC = () => {
         <Logo />
       </Box>
       <Box pt={isTablet ? "20px" : "90px"}>
-        {isSigninPage ? (
-          <SigninForm cancel={() => setIsSigninPage(false)} />
-        ) : (
-          <LoginForm />
-        )}
+        {isSigninPage ? <SigninForm cancel={() => setIsSigninPage(false)} /> : <LoginForm />}
       </Box>
 
       {!isSigninPage && (
@@ -43,11 +37,7 @@ export const AuthForm: React.FC = () => {
           <Text my="3" variant="currentLight">
             OU
           </Text>
-          <Button
-            onClick={() => setIsSigninPage(true)}
-            variant="rounded"
-            isFullWidth
-          >
+          <Button onClick={() => setIsSigninPage(true)} variant="rounded" isFullWidth>
             Créer un compte
           </Button>
         </>

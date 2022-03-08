@@ -1,6 +1,8 @@
 import { Text, Button, Center } from "@chakra-ui/react";
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
+import { actions } from "redux/slices/scientistData";
+import { history } from "redux/store/history";
 
 const t = {
   title: " 👌 Bienvenue !",
@@ -10,17 +12,24 @@ const t = {
 };
 
 export const SuccessPage: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.scientistData.auth.data);
+  if (!user) return <></>;
+
+  const handleClick = () => {
+    dispatch(actions.logged(user));
+    history.push("/dashboard");
+  };
+
   return (
     <Center h="100%" d="flex" flexDirection="column">
       <Text variant="xl" py="20px">
         {t.title}
       </Text>
       <Text variant="current">{t.content}</Text>
-      <NavLink to="/">
-        <Button mt="40px" variant="roundedBlue">
-          {t.cta}
-        </Button>
-      </NavLink>
+      <Button mt="40px" variant="roundedBlue" onClick={handleClick}>
+        {t.cta}
+      </Button>
     </Center>
   );
 };

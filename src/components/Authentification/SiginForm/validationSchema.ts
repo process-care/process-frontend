@@ -1,9 +1,7 @@
 import * as Yup from "yup";
 
 export const SigninSchema = Yup.object().shape({
-  username: Yup.string()
-    .email("Email invalide")
-    .required("Ce champs est requis"),
+  username: Yup.string().email("Email invalide").required("Ce champs est requis"),
   password: Yup.string()
     // .matches(
     //   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -11,13 +9,12 @@ export const SigninSchema = Yup.object().shape({
     //   "^(?=.*[A-Za-z])(?=.*d)(?=.*[@$!%*#?&])[A-Za-zd@$!%*#?&]{8,}$",
     //   "Le mot de passe doit contenir au moins 8 charcatères, une majuscule, une minuscule, un nombre et un charactère spécial"
     // )
-    .required("Ce champs est requis"),
+    .required("Ce champs est requis")
+    .min(6, "Le mot de passe doit contenir au moins 6 charactères"),
   confirmPassword: Yup.string()
     .required("Ce champs est requis")
-    .oneOf(
-      [Yup.ref("password"), null],
-      "Les mots de passe ne sont pas identiques"
-    ),
+    .oneOf([Yup.ref("password"), null], "Les mots de passe ne sont pas identiques")
+    .min(6, "Le mot de passe doit contenir au moins 6 charactères"),
   cgv: Yup.array().length(1, "Vous devez accepter les CGV"),
 });
 

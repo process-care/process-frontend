@@ -32,9 +32,7 @@ interface Props {
 
 export const RenderInput: React.FC<Props> = ({ input }) => {
   const location = useLocation();
-  const isCollapsed =
-    useAppSelector(selectors.isCollapseView) &&
-    !location.pathname.includes("/participate");
+  const isCollapsed = useAppSelector(selectors.isCollapseView) && !location.pathname.includes("/participate");
   const attributes = input?.attributes;
 
   const formatOptions = (): Options[] => {
@@ -50,22 +48,6 @@ export const RenderInput: React.FC<Props> = ({ input }) => {
   };
 
   switch (attributes?.type) {
-    // case Enum_Question_Type.Input:
-    //   return (
-    //     <>
-    //       <Input
-    //         isCollapsed={isCollapsed}
-    //         isRequired={attributes?.required}
-    //         name={input.id || "input"}
-    //         type="text"
-    //         label={attributes?.label || t.label}
-    //         helpText={attributes?.help_text || t.help_text}
-    //         placeholder={attributes?.placeholder || t.placeholder}
-    //         inputRightAddon={attributes?.units}
-    //       />
-    //     </>
-    //   );
-
     case Enum_Question_Type.NumberInput:
       return (
         <NumberInput
@@ -130,7 +112,6 @@ export const RenderInput: React.FC<Props> = ({ input }) => {
           min={attributes?.min}
           max={attributes?.max}
           step={attributes?.step}
-          // defaultValue={attributes?.default_value}
           helpText={attributes?.help_text || t.help_text}
           vertical={attributes?.vertical}
           reverse={attributes?.reverse}
@@ -167,10 +148,7 @@ export const RenderInput: React.FC<Props> = ({ input }) => {
           textAlign="left"
           id={input.id || "wysiwyg"}
           dangerouslySetInnerHTML={{
-            __html:
-              typeof attributes?.wysiwyg !== "string"
-                ? ""
-                : attributes?.wysiwyg,
+            __html: typeof attributes?.wysiwyg !== "string" ? "" : attributes?.wysiwyg,
           }}
         />
       );
@@ -194,31 +172,24 @@ export const RenderInput: React.FC<Props> = ({ input }) => {
             isCollapsed={isCollapsed}
             name={input.id || "associated_classification"}
             label={attributes?.label || t.label}
-            helpText={
-              attributes?.help_text ||
-              "Cliquer sur une vignette pour la sélectionner"
-            }
+            helpText={attributes?.help_text || "Cliquer sur une vignette pour la sélectionner"}
             factors={attributes?.factors}
             maxLoop={attributes?.max_loop}
           />
         </>
       );
     case Enum_Question_Type.MonoThumbnail:
+      console.log(attributes);
       return (
         <>
           <MonoThumbnail
             isCollapsed={isCollapsed}
             name={input.id || "mono_thumbnail"}
             label={attributes?.label || t.label}
-            helpText={
-              attributes?.help_text ||
-              "Merci de remplir la valeur qui définit le mieux cette proposition"
-            }
+            helpText={attributes?.help_text || "Merci de remplir la valeur qui définit le mieux cette proposition"}
             factors={attributes?.factors}
             maxLoop={attributes?.max_loop}
-            mono_thumbnail_input={
-              attributes?.mono_thumbnail_input?.type || "slider"
-            }
+            mono_thumbnail_input={attributes?.mono_thumbnail_input}
           />
         </>
       );

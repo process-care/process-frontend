@@ -16,6 +16,7 @@ import { selectors } from "redux/slices/application";
 import { RenderInput } from "components/CreateSurvey/CreateForm/InputsPreview/Card/utils";
 import { useAssociatedLogic } from "./hooks";
 import { TitleDivider } from "components/TitleDivider";
+import { QuestionRedux } from "redux/slices/types";
 
 interface Props {
   label: string;
@@ -24,7 +25,7 @@ interface Props {
   isCollapsed?: boolean;
   factors: Factor[];
   maxLoop: Maybe<string> | undefined;
-  mono_thumbnail_input: any;
+  mono_thumbnail_input: QuestionRedux["attributes"];
 }
 
 const TOTAL_CARDS = 1;
@@ -38,16 +39,11 @@ export const MonoThumbnail: React.FC<Props> = ({
   name,
   mono_thumbnail_input,
 }) => {
-  const {
-    generate,
-    handleClick,
-    state,
-    filteredFactors,
-    totalClick,
-    maxVariations,
-    checkIsFinished,
-  } = useAssociatedLogic(factors, name, maxLoop, TOTAL_CARDS);
+  const { generate, handleClick, state, filteredFactors, totalClick, maxVariations, checkIsFinished } =
+    useAssociatedLogic(factors, name, maxLoop, TOTAL_CARDS);
   const drawerIsOpen = useAppSelector(selectors.drawerIsOpen);
+
+  console.log(mono_thumbnail_input);
 
   const Card = ({ index }: { index: number }) => {
     if (filteredFactors === undefined) {
@@ -57,17 +53,10 @@ export const MonoThumbnail: React.FC<Props> = ({
     return (
       <Box border="1px solid #E5E5E5" borderRadius="5px" mt="30px" w="60%">
         {filteredFactors.map((factor, idx) => {
-          const random =
-            state.variations.length > 0
-              ? state.variations[state.variations.length - 1][index][idx]
-              : 0;
+          const random = state.variations.length > 0 ? state.variations[state.variations.length - 1][index][idx] : 0;
 
           return (
-            <Box
-              key={uuidv4()}
-              p="20px"
-              backgroundColor={idx % 2 == 0 ? "transparent" : "gray.100"}
-            >
+            <Box key={uuidv4()} p="20px" backgroundColor={idx % 2 == 0 ? "transparent" : "gray.100"}>
               {filteredFactors.length > 1 && (
                 <Text variant="currentBold" textTransform="uppercase" mt="10px">
                   {factor?.title}
@@ -85,9 +74,7 @@ export const MonoThumbnail: React.FC<Props> = ({
                       style={{ maxWidth: "30px", margin: "0 auto" }}
                     />
                   )}
-                  <Text variant="xs">
-                    {factor?.modalities[random]?.description}
-                  </Text>
+                  <Text variant="xs">{factor?.modalities[random]?.description}</Text>
                 </Box>
               )}
             </Box>
@@ -103,12 +90,14 @@ export const MonoThumbnail: React.FC<Props> = ({
   }, [drawerIsOpen]);
 
   if (checkIsFinished() && !drawerIsOpen) {
-    return (
-      <Text variant="smallTitle">
-        Nous avons bien pris en compte votre sélection !
-      </Text>
-    );
+    return <Text variant="smallTitle">Nous avons bien pris en compte votre sélection !</Text>;
   }
+  const sanitizeMono = {
+    id: "",
+    attributes: {
+      ...mono_thumbnail_input,
+    },
+  } as QuestionRedux;
 
   return (
     <Box>
@@ -133,30 +122,17 @@ export const MonoThumbnail: React.FC<Props> = ({
             </Text>
             <TitleDivider title="" />
             <Box>
-              <Formik
-                initialValues={{ ...mono_thumbnail_input }}
-                onSubmit={() => console.log("")}
-              >
+              <Formik initialValues={{ ...mono_thumbnail_input }} onSubmit={() => console.log("")}>
                 {({ values }) => {
                   return (
                     <Form>
                       {mono_thumbnail_input && (
                         <Box p="0 5%">
-                          <RenderInput input={mono_thumbnail_input} />
+                          <RenderInput input={sanitizeMono} />
                         </Box>
                       )}
-                      <Box
-                        d="flex"
-                        justifyContent="flex-end"
-                        w="100%"
-                        mt="20px"
-                        pr="30px"
-                      >
-                        <Button
-                          type="button"
-                          variant="rounded"
-                          onClick={() => handleClick(0, values)}
-                        >
+                      <Box d="flex" justifyContent="flex-end" w="100%" mt="20px" pr="30px">
+                        <Button type="button" variant="rounded" onClick={() => handleClick(0, values)}>
                           Valider ma réponse
                         </Button>
                       </Box>

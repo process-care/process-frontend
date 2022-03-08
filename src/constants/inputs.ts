@@ -67,28 +67,24 @@ export const inputs: Obj[] = [
   },
   {
     type: Enum_Question_Type.MonoThumbnail,
-    name: "Vignette (évaluation d'une seule vignette)",
+    name: "Vignette (simple)",
     category: "complex",
     info: "Création d’une vignette, composée de plusieurs facteurs (par exemple taille') chacun pouvant prendre différentes valeurs (par exemple 'grand', 'moyen' et 'petit'). Parmi l’ensemble des combinaisons de facteur/attributs possible, l’utilisateur en évalue une avec la question associée (par exemple: 'Sur une échelle de 0 à 10, évaluez l’importance de la situation présentée avant.')",
   },
   {
     type: Enum_Question_Type.AssociatedClassification,
-    name: "Vignettes (choix parmi deux)",
+    name: "Vignettes (double)",
     category: "complex",
     info: "Création d’une question demandant à l’utilisateur de choisir entre deux  vignettes. Chaque vignette est composée de plusieurs facteurs (par exemple taille”) chacun pouvant prendre différentes valeurs (par exemple “grand”, “moyen” et “petit”).",
   },
 ];
 
-export const getQuestionName = (
-  type: QuestionRedux["attributes"]["type"]
-): string => {
+export const getQuestionName = (type: QuestionRedux["attributes"]["type"]): string => {
   const question = inputs.find((q) => q.type === type);
   return question ? question.name.toLowerCase() : "";
 };
 
-export const getQuestionInfo = (
-  type: QuestionRedux["attributes"]["type"]
-): string => {
+export const getQuestionInfo = (type: QuestionRedux["attributes"]["type"]): string => {
   const question = inputs.find((q) => q.type === type);
   return question ? question.info : "";
 };

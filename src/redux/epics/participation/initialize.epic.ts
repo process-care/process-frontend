@@ -26,7 +26,17 @@ const initializeEpic: Epic = (action$) =>
 
       const answers = sdk.AnswersByParticipation({ participationId }).then((res) => {
         const data = res.answers?.data;
-        return sanitizeEntities(data);
+        const sanitized = sanitizeEntities(data);
+
+        // Unwrap strings from their object form so they work normaly in Textarea
+        const unwrapped = sanitized.map((answer) => {
+          if (typeof answer.attributes.value.answer === "string") {
+            answer.attributes.value = answer.attributes.value.answer;
+          }
+          return answer;
+        });
+
+        return unwrapped;
       });
 
       return Promise.all([pages, questions, answers]);

@@ -13,6 +13,7 @@ export const AuthForm: React.FC = () => {
   const [isSigninPage, setIsSigninPage] = React.useState(false);
   const isConnected = useAppSelector((state) => state.scientistData.auth.isConnected);
   const { isTablet } = useMediaQueries();
+
   if (isConnected) {
     history.push("/dashboard");
   }

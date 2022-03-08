@@ -1,13 +1,27 @@
 fragment landingFragment on Landing {
   title
   subtitle
-  wysiwyg
-  members
-  cover
-  color_theme
-  video_url
   logo
+  color_theme
+
+  wysiwyg
+  video_url
+  cover {
+    data {
+      id
+      attributes {
+        url
+        name
+        hash
+        mime
+        provider
+        size
+      }
+    }
+  }
+
   partners_logos
+  members
   about_page
 }
 

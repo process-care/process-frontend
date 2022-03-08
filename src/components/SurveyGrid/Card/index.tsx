@@ -50,7 +50,7 @@ export const Card: React.FC<Props> = ({ data }) => {
 
       {attributes?.keywords && attributes?.keywords?.length > 0 ? (
         <Flex mt="10px" alignItems="center">
-          {attributes?.keywords?.map((k) => (
+          {attributes?.keywords?.map((k: any) => (
             <Text
               mr="20px"
               key={k?.id}

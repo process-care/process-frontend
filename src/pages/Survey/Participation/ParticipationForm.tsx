@@ -109,6 +109,7 @@ export const ParticipationForm: React.FC<Props> = ({ surveyId, participationId }
       </Center>
     );
   }
+
   return (
     <Box>
       <Flex direction={isTablet ? "column" : "row"} h="100vh">

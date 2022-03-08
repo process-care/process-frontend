@@ -12,18 +12,11 @@ interface MenuProps {
   selectIndex: (index: number) => void;
   color: string;
   author: string | undefined;
-  logo: string | undefined;
+  logo: string | null | undefined;
   selectedPage: PageParticipationRedux | undefined;
 }
 
-export const ParticipationMenu: React.FC<MenuProps> = ({
-  pages,
-  selectIndex,
-  color,
-  author,
-  logo,
-  selectedPage,
-}) => {
+export const ParticipationMenu: React.FC<MenuProps> = ({ pages, selectIndex, color, author, logo, selectedPage }) => {
   const { isTablet } = useMediaQueries();
 
   const navigables = useMemo(() => {
@@ -35,8 +28,7 @@ export const ParticipationMenu: React.FC<MenuProps> = ({
       // first page (idx = 0) OR the previous page is submitable (= valid)
       // AND there is no unnavigable page already up the chain
       // |-> edge case like: P1 unvalid (accessible) P2 valid (not accessible) P3 (accessible)
-      const isNavigable =
-        ((pages[prevIdx].submitable ?? false) || idx === 0) && !isBlocked;
+      const isNavigable = ((pages[prevIdx].submitable ?? false) || idx === 0) && !isBlocked;
 
       if (!isNavigable) isBlocked = true;
       return isNavigable;
@@ -127,14 +119,7 @@ interface EntryProps {
   selectIndex: (index: number) => void;
 }
 
-export const PageEntry: React.FC<EntryProps> = ({
-  index,
-  page,
-  color,
-  isNavigable,
-  selectedPageId,
-  selectIndex,
-}) => {
+export const PageEntry: React.FC<EntryProps> = ({ index, page, color, isNavigable, selectedPageId, selectIndex }) => {
   const isSelected = selectedPageId === page.id;
 
   const goTo = useCallback(() => {

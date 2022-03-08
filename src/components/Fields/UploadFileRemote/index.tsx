@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  Text,
-  Flex,
-  FormHelperText,
-  FormControl,
-  FormErrorMessage,
-} from "@chakra-ui/react";
+import { Box, Button, Text, Flex, FormHelperText, FormControl, FormErrorMessage } from "@chakra-ui/react";
 import React, { useCallback } from "react";
 import { ReactComponent as Delete } from "../assets/delete.svg";
 import { SvgHover } from "components/SvgHover";
@@ -19,7 +11,7 @@ interface BaseProps {
   label: string;
   helpText?: string;
   isDisabled?: boolean;
-  onChange: (msg: string) => void;
+  onChange: (msg: string | null | undefined) => void;
   target: UploadParams;
   accept: string;
 }
@@ -57,24 +49,17 @@ export const UploadFileRemote: React.FC<Props> = (props: Props) => {
   // Kept in one object: `if (props.multiple && props.content) props.content[0].id` <- WORKS (content is well guessed)
   //
   // We can still destructure the rest for convenience. The object is really just needed for the safe guard guessing.
-  const { target, multiple, onChange, isDisabled, label, helpText, accept } =
-    props;
+  const { target, multiple, onChange, isDisabled, label, helpText, accept } = props;
 
   const hiddenFileInput = React.useRef<HTMLInputElement>(null);
-  const { handleChange, handleDelete, error } = useFileHandlers(
-    target,
-    multiple,
-    onChange
-  );
+  const { handleChange, handleDelete, error } = useFileHandlers(target, multiple, onChange);
 
   return (
     <FormControl my={4}>
       <Flex alignItems="center" justifyContent="space-between">
         <Button
           variant="roundedTransparent"
-          onClick={() =>
-            hiddenFileInput.current !== null && hiddenFileInput.current.click()
-          }
+          onClick={() => hiddenFileInput.current !== null && hiddenFileInput.current.click()}
           isDisabled={isDisabled}
         >
           {label}
@@ -134,10 +119,7 @@ interface DeleteButtonProps {
   handleDelete: (id: string) => void;
 }
 
-const DeleteButton: React.FC<DeleteButtonProps> = ({
-  id,
-  handleDelete,
-}: DeleteButtonProps) => {
+const DeleteButton: React.FC<DeleteButtonProps> = ({ id, handleDelete }: DeleteButtonProps) => {
   const callDelete = useCallback(() => {
     if (!id) return;
     handleDelete(id);

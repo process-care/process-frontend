@@ -18,7 +18,7 @@ interface Application {
 export type UploadParams = {
   refId?: string | null | undefined;
   ref?: string;
-  field?: string;
+  field: string;
 };
 
 export type UploadSingleParams = UploadParams & {
@@ -88,8 +88,7 @@ export const applicationSlice = createSlice({
 // ---- SELECTORS
 
 const isEditing = (state: RootState): boolean => state.application.isEditing;
-const drawerIsOpen = (state: RootState): boolean =>
-  state.application.drawerIsOpen;
+const drawerIsOpen = (state: RootState): boolean => state.application.drawerIsOpen;
 
 // ---- EXPORTS
 

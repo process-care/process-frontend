@@ -1,19 +1,19 @@
-import { Box, Flex, Text } from '@chakra-ui/react';
-import React from 'react';
-import { Avatar } from '@chakra-ui/react';
-import { t } from 'static/dashboard';
-import { ReactComponent as Logo } from 'assets/logo.svg';
-import { NavLink } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { useAuth } from 'components/Authentification/hooks';
-import { useDispatch } from 'react-redux';
-import { actions } from 'redux/slices/application';
-import { actions as appActions } from 'redux/slices/scientistData';
-import { useHistory } from 'react-router-dom';
-import { useUserQuery } from 'components/Dashboard/ProfilForm/user.gql.generated';
-import { client } from 'api/gql-client';
+import { Box, Flex, Text } from "@chakra-ui/react";
+import React from "react";
+import { Avatar } from "@chakra-ui/react";
+import { t } from "static/dashboard";
+import { ReactComponent as Logo } from "assets/logo.svg";
+import { NavLink } from "react-router-dom";
+import { motion } from "framer-motion";
+import { useAuth } from "components/Authentification/hooks";
+import { useDispatch } from "react-redux";
+import { actions } from "redux/slices/application";
+import { actions as appActions } from "redux/slices/scientistData";
+import { useHistory } from "react-router-dom";
+import { useUserQuery } from "components/Dashboard/ProfilForm/user.gql.generated";
+import { client } from "api/gql-client";
 
-export const HEADER_HEIGHT = '65px';
+export const HEADER_HEIGHT = "65px";
 
 interface Props {
   isPortail?: boolean;
@@ -40,13 +40,15 @@ export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
   const handleClick = () => {
-    setIsOpen(prev => !prev);
+    setIsOpen((prev) => !prev);
   };
 
   const logout = () => {
-    () => history.push('/connexion');
-    localStorage.removeItem('process__user');
+    () => history.push("/connexion");
+    localStorage.removeItem("process__user");
     dispatch(appActions.logout());
+    // Kill redux data
+    window.location.reload();
   };
 
   const handleDrawer = () => {
@@ -55,17 +57,17 @@ export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
 
   const items: Item[] = [
     {
-      name: 'Mon profil',
-      path: '/profil',
+      name: "Mon profil",
+      path: "/profil",
       action: () => handleDrawer(),
     },
     {
-      name: 'Mes enquêtes',
-      path: '/dashboard',
+      name: "Mes enquêtes",
+      path: "/dashboard",
     },
     {
-      name: 'Se déconnecter',
-      path: '/connexion',
+      name: "Se déconnecter",
+      path: "/connexion",
       action: () => logout(),
     },
   ];
@@ -73,11 +75,11 @@ export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
   const SubMenu = () => {
     return (
       <motion.nav
-        animate={isOpen ? 'open' : 'closed'}
+        animate={isOpen ? "open" : "closed"}
         variants={variants}
         style={{
-          display: 'flex',
-          alignItems: 'center',
+          display: "flex",
+          alignItems: "center",
         }}
       >
         <Flex zIndex={1} w="300px" justifyContent="space-between" mr="10px" pos="absolute" right="80px">
@@ -88,7 +90,7 @@ export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
                 key={name}
                 to={path}
                 activeStyle={{
-                  fontStyle: 'italic',
+                  fontStyle: "italic",
                 }}
               >
                 {name}
@@ -125,10 +127,10 @@ export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
         <SubMenu />
 
         <Avatar
-          _hover={{ cursor: 'pointer' }}
+          _hover={{ cursor: "pointer" }}
           onClick={handleClick}
           ml="20px"
-          name={attributes?.firstName + ' ' + attributes?.lastName}
+          name={attributes?.firstName + " " + attributes?.lastName}
           w="40px"
           h="40px"
           color="white"

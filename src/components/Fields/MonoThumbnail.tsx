@@ -25,7 +25,7 @@ interface Props {
   isCollapsed?: boolean;
   factors: Factor[];
   maxLoop: Maybe<string> | undefined;
-  mono_thumbnail_input: QuestionRedux["attributes"];
+  associated_input: QuestionRedux["attributes"];
 }
 
 const TOTAL_CARDS = 1;
@@ -37,13 +37,11 @@ export const MonoThumbnail: React.FC<Props> = ({
   factors,
   maxLoop = "5",
   name,
-  mono_thumbnail_input,
+  associated_input,
 }) => {
   const { generate, handleClick, state, filteredFactors, totalClick, maxVariations, checkIsFinished } =
     useAssociatedLogic(factors, name, maxLoop, TOTAL_CARDS);
   const drawerIsOpen = useAppSelector(selectors.drawerIsOpen);
-
-  console.log(mono_thumbnail_input);
 
   const Card = ({ index }: { index: number }) => {
     if (filteredFactors === undefined) {
@@ -95,10 +93,11 @@ export const MonoThumbnail: React.FC<Props> = ({
   const sanitizeMono = {
     id: "",
     attributes: {
-      ...mono_thumbnail_input,
+      ...associated_input,
     },
   } as QuestionRedux;
 
+  // console.log("santiize", sanitizeMono);
   return (
     <Box>
       <FormLabel>{label}</FormLabel>
@@ -122,11 +121,11 @@ export const MonoThumbnail: React.FC<Props> = ({
             </Text>
             <TitleDivider title="" />
             <Box>
-              <Formik initialValues={{ ...mono_thumbnail_input }} onSubmit={() => console.log("")}>
+              <Formik initialValues={{ ...sanitizeMono }} onSubmit={() => console.log("")}>
                 {({ values }) => {
                   return (
                     <Form>
-                      {mono_thumbnail_input && (
+                      {sanitizeMono && (
                         <Box p="0 5%">
                           <RenderInput input={sanitizeMono} />
                         </Box>

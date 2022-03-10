@@ -23,10 +23,12 @@ fragment questionMetadataFragment on Question {
   wysiwyg
   step
   internal_title
-  mono_thumbnail_input
+  associated_input
   freeclassification_responses_count
   page {
-    data { id }
+    data {
+      id
+    }
   }
 }
 
@@ -46,7 +48,9 @@ fragment questionLightFragment on Question {
       id
       attributes {
         target {
-          data { id }
+          data {
+            id
+          }
         }
         type
         operator

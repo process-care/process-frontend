@@ -101,12 +101,12 @@ export const useAssociatedLogic = (factors: Factor[], name: string, maxLoop: May
         });
       };
 
-      // If values !== undefined, it means that the we are on MonoThumbnail, we dont need choice but we need mono_thumbnail_input
+      // If values !== undefined, it means that the we are on MonoThumbnail, we dont need choice but we need associated_input
 
       if (values) {
         return {
           variations: [...Array(TOTAL_CARDS)].map((_, idx) => format(idx)),
-          mono_thumbnail_input: values,
+          associated_input: values,
         };
       } else
         return {
@@ -122,11 +122,11 @@ export const useAssociatedLogic = (factors: Factor[], name: string, maxLoop: May
     }
   };
 
-  console.group("Algos");
-  console.log("maxVariations", maxVariations); // 27
-  console.log("maxLoop", maxLoop); // 4
-  console.log("totalClick", totalClick); // 0
-  console.groupEnd();
+  // console.group("Algos");
+  // console.log("maxVariations", maxVariations); // 27
+  // console.log("maxLoop", maxLoop); // 4
+  // console.log("totalClick", totalClick); // 0
+  // console.groupEnd();
 
   // TODO: refactor this
   const isFinished =

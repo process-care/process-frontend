@@ -179,7 +179,6 @@ export const RenderInput: React.FC<Props> = ({ input }) => {
         </>
       );
     case Enum_Question_Type.MonoThumbnail:
-      console.log(attributes);
       return (
         <>
           <MonoThumbnail
@@ -189,7 +188,7 @@ export const RenderInput: React.FC<Props> = ({ input }) => {
             helpText={attributes?.help_text || "Merci de remplir la valeur qui définit le mieux cette proposition"}
             factors={attributes?.factors}
             maxLoop={attributes?.max_loop}
-            mono_thumbnail_input={attributes?.mono_thumbnail_input}
+            associated_input={attributes?.associated_input}
           />
         </>
       );

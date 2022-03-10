@@ -38,7 +38,6 @@ export const CustomTextarea: React.FC<Props> = ({
   const [field, meta] = useField(id);
   const isBig = appearance === "big";
 
-  console.log(typeof isRequired);
   return (
     <FormControl isRequired={isRequired ? true : false} id={id} textAlign="left" m={m} p={p} isInvalid={!!meta.error}>
       <FormLabel htmlFor={id} opacity={isDisabled ? "0.5" : "1"}>

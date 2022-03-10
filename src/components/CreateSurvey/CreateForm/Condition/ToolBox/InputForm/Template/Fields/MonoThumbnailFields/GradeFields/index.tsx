@@ -6,7 +6,7 @@ import { RepeatedFields } from "../../..";
 import { useFormikContext } from "formik";
 import { Enum_Question_Rows } from "api/graphql/types.generated";
 
-const ID = "mono_thumbnail_input";
+const ID = "associated_input";
 interface Props {
   selectedQuestion: QuestionRedux | undefined;
 }
@@ -15,15 +15,15 @@ export const GradeFields: React.FC<Props> = ({ selectedQuestion }) => {
   const { setFieldValue, handleReset, resetForm } = useFormikContext();
 
   useEffect(() => {
-    const savedType = selectedQuestion?.attributes.mono_thumbnail_input?.type;
+    const savedType = selectedQuestion?.attributes.associated_input?.type;
     if (savedType) {
       console.log(savedType);
       handleReset();
       resetForm({ values: "" });
-      setFieldValue("mono_thumbnail_input.type", savedType);
-      // setFieldValue("mono_thumbnail_input.label", "");
+      setFieldValue("associated_input.type", savedType);
+      // setFieldValue("associated_input.label", "");
     }
-  }, [selectedQuestion?.attributes?.mono_thumbnail_input?.type]);
+  }, [selectedQuestion?.attributes?.associated_input?.type]);
 
   return (
     <Box mt="5">
@@ -41,7 +41,7 @@ export const GradeFields: React.FC<Props> = ({ selectedQuestion }) => {
 };
 
 const renderTemplate = (selectedQuestion: QuestionRedux | undefined) => {
-  switch (selectedQuestion?.attributes?.mono_thumbnail_input?.type) {
+  switch (selectedQuestion?.attributes?.associated_input?.type) {
     case "number_input":
       return (
         <Flex justifyContent="space-between">

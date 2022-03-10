@@ -21,33 +21,51 @@ const multipleInputFieldsInitialValues = {
 
 export const fields: { [type: string]: Record<string, unknown> } = {
   input: {
-    ...commonFieldsInitialValues,
-    ...inputFieldsInitialValues,
-    units: "",
+    id: "",
+    attributes: {
+      ...commonFieldsInitialValues,
+      ...inputFieldsInitialValues,
+      units: "",
+    },
   },
   number_input: {
-    ...commonFieldsInitialValues,
-    ...inputFieldsInitialValues,
-    units: "",
+    id: "",
+    attributes: {
+      ...commonFieldsInitialValues,
+      ...inputFieldsInitialValues,
+      units: "",
+    },
   },
   text_area: {
-    ...commonFieldsInitialValues,
-    ...inputFieldsInitialValues,
-    rows: [],
+    id: "",
+    attributes: {
+      ...commonFieldsInitialValues,
+      ...inputFieldsInitialValues,
+      rows: [],
+    },
   },
   free_classification: {
-    ...commonFieldsInitialValues,
-    ...inputFieldsInitialValues,
-    rows: [],
-    freeclassification_responses_count: "",
+    id: "",
+    attributes: {
+      ...commonFieldsInitialValues,
+      ...inputFieldsInitialValues,
+      rows: [],
+      freeclassification_responses_count: "",
+    },
   },
   associated_classification: {
-    ...commonFieldsInitialValues,
-    ...inputFieldsInitialValues,
+    id: "",
+    attributes: {
+      ...commonFieldsInitialValues,
+      ...inputFieldsInitialValues,
+    },
   },
 
   checkbox: {
-    ...multipleInputFieldsInitialValues,
+    id: "",
+    attributes: {
+      ...multipleInputFieldsInitialValues,
+    },
   },
   radio: {
     ...multipleInputFieldsInitialValues,

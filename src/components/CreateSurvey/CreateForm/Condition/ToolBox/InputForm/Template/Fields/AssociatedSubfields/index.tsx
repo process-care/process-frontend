@@ -35,22 +35,14 @@ export const AssociatedSubfields: React.FC<Props> = ({ name }) => {
           <Box w="100%">
             {fields?.length > 0 ? (
               fields.map((_: string, index: number) => (
-                <Box
-                  key={index}
-                  w="100%"
-                  backgroundColor="brand.gray.100"
-                  p="5"
-                >
+                <Box key={index} w="100%" backgroundColor="brand.gray.100" p="5">
                   <Flex w="100%">
                     <Textarea
                       id={`${name}.${index}.title`}
                       label={`Titre du facteur #${index + 1}`}
-                      placeholder={
-                        isEditing ? fields[index] : `Facteur ${index}`
-                      }
+                      placeholder={isEditing ? fields[index] : `Facteur ${index}`}
                       rows={Enum_Question_Rows.Small}
-                      isRequired="true"
-                      isCollapsed={false}
+                      isRequired
                     />
 
                     <Flex ml={3} mt={8}>
@@ -63,8 +55,7 @@ export const AssociatedSubfields: React.FC<Props> = ({ name }) => {
                       >
                         -
                       </Button>
-                      {(index + 1 === field.value.length ||
-                        (index + 1 !== 1 && isEditing)) && (
+                      {(index + 1 === field.value.length || (index + 1 !== 1 && isEditing)) && (
                         <Button
                           ml={3}
                           type="button"

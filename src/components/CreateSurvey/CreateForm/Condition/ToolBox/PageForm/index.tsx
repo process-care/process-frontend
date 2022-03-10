@@ -142,7 +142,7 @@ export const PageForm: React.FC = () => {
                   rows={Enum_Question_Rows.Small}
                   placeholder="Page 1"
                   helpText="100 signes maximum"
-                  isRequired="true"
+                  isRequired
                 />
                 <Textarea
                   id="short_name"
@@ -150,7 +150,7 @@ export const PageForm: React.FC = () => {
                   rows={Enum_Question_Rows.Small}
                   placeholder="Page 1"
                   helpText="40 signes maximum"
-                  isRequired="true"
+                  isRequired
                 />
 
                 <Box d="flex" justifyContent="space-between" mt="5">

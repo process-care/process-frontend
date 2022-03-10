@@ -57,8 +57,6 @@ export const CustomSlider: React.FC<Props> = ({
     }
   };
 
-  console.log(vertical);
-
   return (
     <FormControl isRequired={isRequired} id="email" textAlign="left" h={vertical ? "700px" : "fit-content"}>
       <FormLabel>{label}</FormLabel>

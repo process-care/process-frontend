@@ -10,7 +10,7 @@ interface Props {
   helpText?: string;
   placeholder: string;
   rows: Maybe<Enum_Question_Rows> | undefined;
-  isRequired?: any;
+  isRequired?: Maybe<boolean> | undefined;
   id: string;
   m?: string | number;
   p?: string | number;
@@ -38,8 +38,9 @@ export const CustomTextarea: React.FC<Props> = ({
   const [field, meta] = useField(id);
   const isBig = appearance === "big";
 
+  console.log(typeof isRequired);
   return (
-    <FormControl isRequired={isRequired} id={id} textAlign="left" m={m} p={p} isInvalid={!!meta.error}>
+    <FormControl isRequired={isRequired ? true : false} id={id} textAlign="left" m={m} p={p} isInvalid={!!meta.error}>
       <FormLabel htmlFor={id} opacity={isDisabled ? "0.5" : "1"}>
         {label}
       </FormLabel>
@@ -64,7 +65,7 @@ export const CustomTextarea: React.FC<Props> = ({
             rows={getRows(rows)}
             placeholder={placeholder}
             maxLength={getMaxLength(rows)}
-            isRequired={isRequired}
+            isRequired={isRequired ? true : false}
             {...field}
             autoComplete={autoComplete}
             defaultValue={defaultValue}

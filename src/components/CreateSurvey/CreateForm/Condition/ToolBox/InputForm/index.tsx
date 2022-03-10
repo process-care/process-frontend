@@ -144,7 +144,7 @@ const InputForm: React.FC<Props> = ({ order }) => {
                       label="Label"
                       placeholder="Renseigner le label de votre question"
                       id="label"
-                      isRequired="true"
+                      isRequired
                     />
 
                     <Input

@@ -41,11 +41,9 @@ export const Modalities: React.FC<Props> = ({ name }) => {
                       <Textarea
                         id={`${name}.${index}.description`}
                         label={`Description de la modalité #${index + 1}`}
-                        placeholder={
-                          isEditing ? fields[index] : `Modalité ${index}`
-                        }
+                        placeholder={isEditing ? fields[index] : `Modalité ${index}`}
                         rows={Enum_Question_Rows.Medium}
-                        isRequired="true"
+                        isRequired
                         isCollapsed={false}
                       />
 
@@ -60,22 +58,13 @@ export const Modalities: React.FC<Props> = ({ name }) => {
                         type="button"
                         onClick={() => {
                           arrayHelpers.remove(index);
-                          setFieldValue(
-                            `${name}.modalities.${index}`,
-                            undefined
-                          );
+                          setFieldValue(`${name}.modalities.${index}`, undefined);
                         }}
                       >
                         -
                       </Button>
-                      {(index + 1 === field.value.length ||
-                        (index + 1 !== 1 && isEditing)) && (
-                        <Button
-                          ml={3}
-                          type="button"
-                          onClick={() => arrayHelpers.push("")}
-                          variant="solid"
-                        >
+                      {(index + 1 === field.value.length || (index + 1 !== 1 && isEditing)) && (
+                        <Button ml={3} type="button" onClick={() => arrayHelpers.push("")} variant="solid">
                           +
                         </Button>
                       )}

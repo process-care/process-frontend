@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Flex,
-  FormControl,
-  FormHelperText,
-  FormLabel,
-  Text,
-} from "@chakra-ui/react";
+import { Flex, FormControl, FormHelperText, FormLabel, Text } from "@chakra-ui/react";
 
 import { useField } from "formik";
 
@@ -51,10 +45,7 @@ export const CustomSlider: React.FC<Props> = ({
     }
   }, [defaultValue]);
 
-  const cleanValue = (
-    value: string | number | undefined | null,
-    defaultValue: number
-  ): number => {
+  const cleanValue = (value: string | number | undefined | null, defaultValue: number): number => {
     if (value === undefined || value === null || value === "") {
       return defaultValue;
     } else {
@@ -66,13 +57,10 @@ export const CustomSlider: React.FC<Props> = ({
     }
   };
 
+  console.log(vertical);
+
   return (
-    <FormControl
-      isRequired={isRequired}
-      id="email"
-      textAlign="left"
-      h={vertical ? "700px" : "fit-content"}
-    >
+    <FormControl isRequired={isRequired} id="email" textAlign="left" h={vertical ? "700px" : "fit-content"}>
       <FormLabel>{label}</FormLabel>
       {!isCollapsed && (
         <>
@@ -87,24 +75,15 @@ export const CustomSlider: React.FC<Props> = ({
               min={cleanValue(min, 0)}
               max={cleanValue(max, 10)}
               step={cleanValue(step, 1)}
-              defaultValue={
-                defaultValue !== undefined ? parseInt(defaultValue, 10) : 0
-              }
-              vertical={vertical ?? true}
+              defaultValue={defaultValue !== undefined ? parseInt(defaultValue, 10) : 0}
+              vertical={!!vertical}
               onChange={(value) => helpers.setValue(value)}
               value={field.value}
             />
-            <Flex
-              w="100%"
-              h="100%"
-              justifyContent="space-between"
-              flexDirection={vertical ? "column" : "row"}
-            >
+            <Flex w="100%" h="100%" justifyContent="space-between" flexDirection={vertical ? "column" : "row"}>
               <Text fontSize="10px" ml="-5px">
                 {reverse || vertical ? max : min}
               </Text>
-
-              <Text fontSize="10px" ml="4px"></Text>
 
               <Text fontSize="10px" mr="-5px">
                 {reverse || vertical ? min : max}

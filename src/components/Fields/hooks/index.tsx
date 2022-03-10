@@ -103,11 +103,16 @@ export const useAssociatedLogic = (factors: Factor[], name: string, maxLoop: May
 
       // If values !== undefined, it means that the we are on MonoThumbnail, we dont need choice but we need mono_thumbnail_input
 
-      return {
-        variations: [...Array(TOTAL_CARDS)].map((_, idx) => format(idx)),
-        choice: values ? undefined : cardIdx,
-        mono_thumbnail_input: values ? values : undefined,
-      };
+      if (values) {
+        return {
+          variations: [...Array(TOTAL_CARDS)].map((_, idx) => format(idx)),
+          mono_thumbnail_input: values,
+        };
+      } else
+        return {
+          variations: [...Array(TOTAL_CARDS)].map((_, idx) => format(idx)),
+          choice: cardIdx,
+        };
     };
 
     if (!field.value) {

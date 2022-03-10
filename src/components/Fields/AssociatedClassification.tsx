@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Flex, FormLabel, Spinner, Text } from "@chakra-ui/react";
 import { v4 as uuidv4 } from "uuid";
 import { useAppSelector } from "redux/hooks";
@@ -35,16 +35,14 @@ export const AssociatedClassification: React.FC<Props> = ({
   name,
 }) => {
   const { isTablet } = useMediaQueries();
-  const {
-    generate,
-    handleClick,
-    state,
-    filteredFactors,
-    totalClick,
-    maxVariations,
-    isFinished,
-  } = useAssociatedLogic(factors, name, maxLoop, TOTAL_CARDS);
+  const { generate, handleClick, state, filteredFactors, totalClick, maxVariations, isFinished } = useAssociatedLogic(
+    factors,
+    name,
+    maxLoop,
+    TOTAL_CARDS
+  );
 
+  const [selected, setSelected] = useState<number | null>(null);
   const drawerIsOpen = useAppSelector(selectors.drawerIsOpen);
 
   const Card = ({ index }: { index: number }) => {
@@ -52,9 +50,18 @@ export const AssociatedClassification: React.FC<Props> = ({
       return <></>;
     }
 
+    const handleSelect = (index: number) => {
+      setSelected(index);
+      setTimeout(() => {
+        handleClick(index);
+        setSelected(null);
+      }, 500);
+    };
+
     return (
       <Box
-        border="1px solid #E5E5E5"
+        border={`${selected === index ? "1px solid green" : "1px solid #E5E5E5"} `}
+        backgroundColor={`${selected === index ? " green" : ""} `}
         borderRadius="5px"
         mt="30px"
         w={isTablet ? "100%" : "40%"}
@@ -64,22 +71,17 @@ export const AssociatedClassification: React.FC<Props> = ({
         _hover={{
           border: "1px solid #9f9f9f",
           cursor: "pointer",
-          top: "-5px",
-          transition: "all .2s ease-in-out",
         }}
-        onClick={() => handleClick(index)}
+        onClick={() => handleSelect(index)}
       >
         {filteredFactors.map((factor, idx) => {
-          const random =
-            state.variations.length > 0
-              ? state.variations[state.variations.length - 1][index][idx]
-              : 0;
+          const random = state.variations.length > 0 ? state.variations[state.variations.length - 1][index][idx] : 0;
 
           return (
             <Box
               key={uuidv4()}
               p="20px"
-              backgroundColor={idx % 2 == 0 ? "transparent" : "gray.100"}
+              backgroundColor={selected === index ? "green" : idx % 2 == 0 ? "transparent" : "gray.100"}
             >
               {filteredFactors.length > 1 && (
                 <Text variant="currentBold" textTransform="uppercase" mt="10px">
@@ -98,9 +100,7 @@ export const AssociatedClassification: React.FC<Props> = ({
                       style={{ maxWidth: "30px", margin: "0 auto" }}
                     />
                   )}
-                  <Text variant="xs">
-                    {factor?.modalities[random]?.description}
-                  </Text>
+                  <Text variant="xs">{factor?.modalities[random]?.description}</Text>
                 </Box>
               )}
             </Box>
@@ -116,11 +116,7 @@ export const AssociatedClassification: React.FC<Props> = ({
   }, [drawerIsOpen]);
 
   if (isFinished) {
-    return (
-      <Text variant="smallTitle">
-        Nous avons bien pris en compte votre sélection !
-      </Text>
-    );
+    return <Text variant="smallTitle">Nous avons bien pris en compte votre sélection !</Text>;
   }
   return (
     <Box>
@@ -135,12 +131,7 @@ export const AssociatedClassification: React.FC<Props> = ({
       {!isCollapsed && (
         <Flex flexDir="column">
           <Box>
-            <Box
-              d="flex"
-              justifyContent="space-around"
-              flexDirection={isTablet ? "column" : "row"}
-              w="100%"
-            >
+            <Box d="flex" justifyContent="space-around" flexDirection={isTablet ? "column" : "row"} w="100%">
               {[...Array(TOTAL_CARDS)].map((_, i) => (
                 <Card index={i} key={i} />
               ))}

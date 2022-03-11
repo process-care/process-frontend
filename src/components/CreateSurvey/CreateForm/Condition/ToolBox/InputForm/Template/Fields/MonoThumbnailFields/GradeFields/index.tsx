@@ -12,18 +12,24 @@ interface Props {
 }
 
 export const GradeFields: React.FC<Props> = ({ selectedQuestion }) => {
-  const { setFieldValue, handleReset, resetForm } = useFormikContext();
+  const { handleReset, resetForm } = useFormikContext();
   console.log(selectedQuestion);
-  // useEffect(() => {
-  //   const savedType = selectedQuestion?.attributes.associated_input?.type;
-  //   if (savedType) {
-  //     console.log(savedType);
-  //     handleReset();
-  //     resetForm({ values: "" });
-  //     setFieldValue("associated_input.type", savedType);
-  //     // setFieldValue("associated_input.label", "");
-  //   }
-  // }, [selectedQuestion?.attributes?.associated_input?.type]);
+  useEffect(() => {
+    const savedType = selectedQuestion?.attributes.associated_input?.type;
+    if (savedType) {
+      console.log(savedType);
+      handleReset();
+      resetForm({
+        values: {
+          ...selectedQuestion.attributes,
+          associated_input: {
+            type: savedType,
+            label: "",
+          },
+        },
+      });
+    }
+  }, [selectedQuestion?.attributes?.associated_input?.type]);
 
   return (
     <Box mt="5">

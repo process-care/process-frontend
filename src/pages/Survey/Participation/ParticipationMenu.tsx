@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from "react";
-import { Box, Circle, Flex, Text } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { PageParticipationRedux } from "redux/slices/participation/page";
 
 import { useMediaQueries } from "utils/hooks/mediaqueries";
@@ -16,7 +16,7 @@ interface MenuProps {
   selectedPage: PageParticipationRedux | undefined;
 }
 
-export const ParticipationMenu: React.FC<MenuProps> = ({ pages, selectIndex, color, author, logo, selectedPage }) => {
+export const ParticipationMenu: React.FC<MenuProps> = ({ pages, selectIndex, color, logo, selectedPage }) => {
   const { isTablet } = useMediaQueries();
 
   const navigables = useMemo(() => {
@@ -44,7 +44,7 @@ export const ParticipationMenu: React.FC<MenuProps> = ({ pages, selectIndex, col
       alignItems="center"
       flexDirection={isTablet ? "row" : "column"}
     >
-      {!isTablet && (
+      {/* {!isTablet && (
         <Flex
           textAlign="right"
           py="19.5px"
@@ -65,7 +65,7 @@ export const ParticipationMenu: React.FC<MenuProps> = ({ pages, selectIndex, col
             <a href={`mailto: ${author}`}>{author}</a>
           </Text>
         </Flex>
-      )}
+      )} */}
       <Box
         d="flex"
         flexDirection={isTablet ? "row" : "column"}
@@ -134,13 +134,14 @@ export const PageEntry: React.FC<EntryProps> = ({ index, page, color, isNavigabl
       fontSize="14px"
       onClick={goTo}
       mb="4"
+      ml="5px"
       color={color}
       d="flex"
       alignItems="center"
-      textDecoration={isSelected ? "underline" : "none"}
+      fontWeight={isSelected ? "bold" : "normal"}
       w="100%"
     >
-      <Circle backgroundColor={color} size="10px" mr="10px" />
+      .{/* <Circle backgroundColor={color} size="10px" mr="10px" /> */}
       {page.attributes.short_name ?? "Short name missing 😣"}
     </Box>
   );

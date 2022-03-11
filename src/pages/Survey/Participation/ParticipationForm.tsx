@@ -72,7 +72,7 @@ export const ParticipationForm: React.FC<Props> = ({ surveyId, participationId }
   const Title = () => {
     return (
       <Box pos="sticky" top="0" zIndex="10" backgroundColor={currentColor} p="20px" color="white" textAlign="left">
-        {attributes?.title}
+        <Text>{attributes?.title}</Text>
       </Box>
     );
   };
@@ -112,9 +112,11 @@ export const ParticipationForm: React.FC<Props> = ({ surveyId, participationId }
 
   return (
     <Box>
+      {!isTablet && <Title />}
+
       <Flex direction={isTablet ? "column" : "row"} h="100vh">
         {isTablet && <Title />}
-        <Box w={isTablet ? "100%" : "20%"}>
+        <Box w={isTablet ? "100%" : "10%"} minW={isTablet ? "100%" : "200px"}>
           <ParticipationMenu
             author={attributes?.author?.data?.attributes?.email}
             pages={pages}
@@ -125,8 +127,7 @@ export const ParticipationForm: React.FC<Props> = ({ surveyId, participationId }
           />
         </Box>
 
-        <Box flexGrow={1} backgroundColor="brand.gray.100" h="fit-content" minH="100vh">
-          {!isTablet && <Title />}
+        <Box flexGrow={1} h="fit-content" minH="100vh" backgroundColor="gray.100">
           <Page
             isFailed={isFailed}
             isFirstPage={isFirstPage}

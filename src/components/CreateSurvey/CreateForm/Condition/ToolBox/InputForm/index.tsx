@@ -99,17 +99,11 @@ const InputForm: React.FC<Props> = ({ order }) => {
         useEffect(() => {
           const newChanges = getDiff(values, selectedQuestion);
 
-          console.group("newChanges");
-          console.log("newChanges", newChanges);
-          console.log("values", values);
-          console.log("selectedQuestion", selectedQuestion);
-
-          console.groupEnd();
-
           if (values) {
             dispatch(
               actions.updateQuestion({
                 id: selectedQuestionId,
+
                 changes: {
                   id: selectedQuestionId,
                   attributes: {

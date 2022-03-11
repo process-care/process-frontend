@@ -3,7 +3,6 @@ import { Maybe } from "api/graphql/sdk.generated";
 import { Enum_Question_Type } from "api/graphql/types.generated";
 import { NumberInput, Select } from "components/Fields";
 import { TitleDivider } from "components/TitleDivider";
-import { useFormikContext } from "formik";
 import React, { useState, useEffect } from "react";
 import { useAppSelector } from "redux/hooks";
 import { selectors } from "redux/slices/scientistData";
@@ -26,11 +25,10 @@ const answers: Option[] = [
 export const MonoThumbnailFields: React.FC = () => {
   const [state, setState] = useState(true);
   const selectedQuestion = useAppSelector(selectors.questions.getSelectedQuestion);
-  const { setFieldValue } = useFormikContext();
-  // useEffect(() => {
-  //   // Force re render to reset the field on select change
-  //   setState(true);
-  // }, [selectedQuestion?.attributes?.associated_input?.type]);
+  useEffect(() => {
+    // Force re render to reset the field on select change
+    setState(true);
+  }, [selectedQuestion?.attributes?.associated_input?.type]);
 
   if (!state) return <></>;
   return (

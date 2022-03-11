@@ -101,11 +101,6 @@ export const renderFormValidationSchema = (input: QuestionRedux | Record<string,
 
 export const getDiff = (newValues: Record<string, any>, oldValues: Record<string, any>): Record<string, any> =>
   Object.keys(newValues).reduce((diff, key) => {
-    console.group("TTTESTT");
-    console.log(newValues, "newValues");
-    console.log(oldValues, "oldValues");
-    console.groupEnd();
-
     if (oldValues[key] === newValues[key]) return diff;
     return {
       ...diff,

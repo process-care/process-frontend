@@ -49,7 +49,8 @@ export const CustomSelect: React.FC<Props> = ({
     if (defaultValue && !field.value) {
       setValue(defaultValue);
     }
-  }, []);
+  }, [defaultValue]);
+
   const getLabel = () => {
     if (!answers) return;
     const selected = answers.find((answer) => answer.value === field.value);

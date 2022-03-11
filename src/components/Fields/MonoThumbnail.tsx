@@ -25,7 +25,7 @@ interface Props {
   isCollapsed?: boolean;
   factors: Factor[];
   maxLoop: Maybe<string> | undefined;
-  associated_input: QuestionRedux["attributes"];
+  associated_input: Record<string, unknown>;
 }
 
 const TOTAL_CARDS = 1;
@@ -97,7 +97,6 @@ export const MonoThumbnail: React.FC<Props> = ({
     },
   } as QuestionRedux;
 
-  // console.log("santiize", sanitizeMono);
   return (
     <Box>
       <FormLabel>{label}</FormLabel>

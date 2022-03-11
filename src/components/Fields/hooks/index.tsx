@@ -104,9 +104,12 @@ export const useAssociatedLogic = (factors: Factor[], name: string, maxLoop: May
       // If values !== undefined, it means that the we are on MonoThumbnail, we dont need choice but we need associated_input
 
       if (values) {
+        const isRadiobox = Boolean(values.attributes.radio);
         return {
-          variations: [...Array(TOTAL_CARDS)].map((_, idx) => format(idx)),
+          variations: [...Array(TOTAL_CARDS)].map((_, idx) => format(idx))[0],
           associated_input: values,
+
+          value: isRadiobox ? values.attributes.radio : values[values.attributes.type],
         };
       } else
         return {

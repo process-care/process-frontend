@@ -76,7 +76,7 @@ export const Step_1: React.FC<Props> = ({ selectedCondition, updateStep }) => {
         </Text>
       )}
 
-      {order.map((inputId: string) => {
+      {order?.map((inputId: string) => {
         const current = conditionableQuestions?.find((c: QuestionRedux) => c.id === inputId);
         if (current !== undefined) {
           return renderCard(current);

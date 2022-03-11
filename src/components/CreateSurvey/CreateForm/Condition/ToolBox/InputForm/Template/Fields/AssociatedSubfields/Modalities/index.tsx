@@ -28,7 +28,7 @@ export const Modalities: React.FC<Props> = ({ name }) => {
   }, [isEditing]);
 
   return (
-    <Box w="100%">
+    <Box w="100%" pl="20px">
       <FieldArray
         name={name}
         render={(arrayHelpers) => (

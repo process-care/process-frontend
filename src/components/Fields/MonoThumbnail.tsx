@@ -42,7 +42,6 @@ export const MonoThumbnail: React.FC<Props> = ({
   const { generate, handleClick, state, filteredFactors, totalClick, maxVariations, checkIsFinished } =
     useAssociatedLogic(factors, name, maxLoop, TOTAL_CARDS);
   const drawerIsOpen = useAppSelector(selectors.drawerIsOpen);
-
   const Card = ({ index }: { index: number }) => {
     if (filteredFactors === undefined) {
       return <></>;
@@ -90,13 +89,15 @@ export const MonoThumbnail: React.FC<Props> = ({
   if (checkIsFinished() && !drawerIsOpen) {
     return <Text variant="smallTitle">Nous avons bien pris en compte votre sélection !</Text>;
   }
+
   const sanitizeMono = {
-    id: "",
+    id: associated_input?.type,
     attributes: {
       ...associated_input,
     },
   } as QuestionRedux;
 
+  console.log("sanitizeMono", sanitizeMono);
   return (
     <Box>
       <FormLabel>{label}</FormLabel>
@@ -122,6 +123,9 @@ export const MonoThumbnail: React.FC<Props> = ({
             <Box>
               <Formik initialValues={{ ...sanitizeMono }} onSubmit={() => console.log("")}>
                 {({ values }) => {
+                  const validate = (values: QuestionRedux) => {
+                    handleClick(0, values);
+                  };
                   return (
                     <Form>
                       {sanitizeMono && (
@@ -130,7 +134,7 @@ export const MonoThumbnail: React.FC<Props> = ({
                         </Box>
                       )}
                       <Box d="flex" justifyContent="flex-end" w="100%" mt="20px" pr="30px">
-                        <Button type="button" variant="rounded" onClick={() => handleClick(0, values)}>
+                        <Button type="button" variant="rounded" onClick={() => validate(values)}>
                           Valider ma réponse
                         </Button>
                       </Box>

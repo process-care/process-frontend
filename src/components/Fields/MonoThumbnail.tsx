@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, Flex, FormLabel, Spinner, Text } from "@chakra-ui/react";
 import { v4 as uuidv4 } from "uuid";
 import { Form, Formik } from "formik";
@@ -39,6 +39,8 @@ export const MonoThumbnail: React.FC<Props> = ({
   name,
   associated_input,
 }) => {
+  const [mount, setMount] = useState(true);
+
   const { generate, handleClick, state, filteredFactors, totalClick, maxVariations, checkIsFinished } =
     useAssociatedLogic(factors, name, maxLoop, TOTAL_CARDS);
   const drawerIsOpen = useAppSelector(selectors.drawerIsOpen);
@@ -80,16 +82,6 @@ export const MonoThumbnail: React.FC<Props> = ({
       </Box>
     );
   };
-
-  useEffect(() => {
-    // Generate only if drawer is close (mean no adding new factors /modalities)
-    !drawerIsOpen && generate();
-  }, [drawerIsOpen]);
-
-  if (checkIsFinished() && !drawerIsOpen) {
-    return <Text variant="smallTitle">Nous avons bien pris en compte votre sélection !</Text>;
-  }
-
   const sanitizeMono = {
     id: associated_input?.type,
     attributes: {
@@ -97,7 +89,21 @@ export const MonoThumbnail: React.FC<Props> = ({
     },
   } as QuestionRedux;
 
-  console.log("sanitizeMono", sanitizeMono);
+  useEffect(() => {
+    // Generate only if drawer is close (mean no adding new factors /modalities)
+    !drawerIsOpen && generate();
+  }, [drawerIsOpen]);
+
+  useEffect(() => {
+    // Force re render to reset the field on select change
+    setMount(true);
+  }, [sanitizeMono]);
+
+  if (checkIsFinished() && !drawerIsOpen) {
+    return <Text variant="smallTitle">Nous avons bien pris en compte votre sélection !</Text>;
+  }
+
+  if (!mount) return <></>;
   return (
     <Box>
       <FormLabel>{label}</FormLabel>
@@ -124,6 +130,7 @@ export const MonoThumbnail: React.FC<Props> = ({
               <Formik initialValues={{ ...sanitizeMono }} onSubmit={() => console.log("")}>
                 {({ values }) => {
                   const validate = (values: QuestionRedux) => {
+                    setMount(false);
                     handleClick(0, values);
                   };
                   return (

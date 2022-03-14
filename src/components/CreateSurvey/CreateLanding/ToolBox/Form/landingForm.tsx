@@ -114,6 +114,7 @@ export const LandingForm: React.FC = () => {
           setFieldValue("video_url", "");
         }, []);
 
+        console.log(values?.cover);
         // Components
         return (
           <Box pos="relative" p={4} d="flex" textAlign="left">
@@ -181,10 +182,10 @@ export const LandingForm: React.FC = () => {
                     rows={Enum_Question_Rows.Small}
                     placeholder={t.video_url_placeholder}
                     label={t.video_url_label}
-                    isDisabled={Boolean(values?.cover)}
+                    isDisabled={Boolean(values?.cover?.data)}
                   />
 
-                  <Box mt={7} ml={4}>
+                  <Box mt={7} ml={4} hidden={Boolean(!values?.video_url)}>
                     <SvgHover>
                       <Delete onClick={onDeleteVideo} />
                     </SvgHover>

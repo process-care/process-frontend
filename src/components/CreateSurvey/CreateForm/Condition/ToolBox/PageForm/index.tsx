@@ -157,6 +157,7 @@ export const PageForm: React.FC = () => {
                   {isNotFirstPage &&
                     (conditionsOnSelectedPage.length === 0 ? (
                       <Button
+                        disabled={questionsOnSelectedPage.length === 0}
                         variant="roundedTransparent"
                         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                         // @ts-ignore: Pb with props in theme ...

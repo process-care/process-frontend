@@ -22,7 +22,7 @@ export const Content: React.FC<Props> = ({ data, onParticipate }) => {
 
   if (!data) return <Loader />;
 
-  const { title, subtitle, color_theme: theme, video_url, cover, wysiwyg } = data.attributes;
+  const { title, subtitle, color_theme: theme, video_url, cover, wysiwyg, about_page } = data.attributes;
 
   const coverName = cover?.data?.attributes?.name ?? "";
   const coverSrc = cover?.data?.attributes?.url;
@@ -64,16 +64,18 @@ export const Content: React.FC<Props> = ({ data, onParticipate }) => {
             <Button variant="rounded" backgroundColor={theme?.button || "brand.blue"} onClick={onParticipate}>
               {t.cta_participate}
             </Button>
-            <Button
-              mt={isTablet ? "20px" : "unset"}
-              variant="rounded"
-              color={theme?.button}
-              border={`1px solid ${theme?.base || "brand.blue"}`}
-              backgroundColor={theme?.base || "brand.blue"}
-              _hover={{ backgroundColor: theme?.button, color: "white" }}
-            >
-              {t.cta_show_more}
-            </Button>
+            {about_page && (
+              <Button
+                mt={isTablet ? "20px" : "unset"}
+                variant="rounded"
+                color={theme?.button}
+                border={`1px solid ${theme?.base || "brand.blue"}`}
+                backgroundColor={theme?.base || "brand.blue"}
+                _hover={{ backgroundColor: theme?.button, color: "white" }}
+              >
+                {t.cta_show_more}
+              </Button>
+            )}
           </Flex>
         </Box>
       </Flex>

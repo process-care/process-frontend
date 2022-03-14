@@ -204,8 +204,13 @@ export const LandingForm: React.FC = () => {
               <TitleDivider title="Pied de page" />
 
               <Box border="1px solid #F7F7F7F7" p="5" backgroundColor="#fdfdfdf1" mb="100px">
+                <Text variant="currentBold" mt="5">
+                  {t.team_label}
+                </Text>
                 <RepeatableJobs name="members" cta="Ajouter un membre de l'équipe" />
-
+                <Text variant="currentBold" mt="5">
+                  {t.partners}
+                </Text>
                 <RepeatableJobs name="partners_logos" onlyUpload cta="Ajouter un logo partenaire" />
               </Box>
 

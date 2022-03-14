@@ -8,6 +8,8 @@ export const t = {
   add_image: "Intégrer une image",
   video_url_label: "Intégrer une video",
   team_label: "Membre de l'équipe",
+  partners: "Logos des partenaires",
+
   member_placeholder: "Nom, prénom",
   member_placeholder_2: "Fonction",
   logos_label: "Les logos des partenaires",

@@ -12,6 +12,9 @@ export const Errors: React.FC<Props> = ({ message }) => {
         case "Auth.form.error.invalid":
           return "Identifiant ou mot de passe incorrect";
           break;
+        case "Invalid identifier or password":
+          return "Identifiant ou mot de passe incorrect";
+          break;
         case "Auth.form.error.email.taken":
           return "Un compte existe déja avec cet email de contact ou ce nom d'utilisateur";
           break;

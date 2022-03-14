@@ -43,7 +43,7 @@ export const Wysiwyg: React.FC<Props> = ({ id, simpleMode }) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           // value={values[id]}
-          defaultValue={values.wysiwyg}
+          defaultValue={values.wysiwyg || values.about_page}
         />
       </FormControl>
     ),

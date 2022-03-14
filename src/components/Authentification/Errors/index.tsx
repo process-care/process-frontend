@@ -24,6 +24,9 @@ export const Errors: React.FC<Props> = ({ message }) => {
         case "Your account has been blocked by the administrator.":
           return "Votre compte a été bloqué par l'administrateur.";
           break;
+        case "Email already taken":
+          return "Un compte existe déja avec cet email de contact";
+          break;
         case "Bad Request":
           return "Une erreur est survenue, merci de vérifier votre email et mot de passe.";
           break;

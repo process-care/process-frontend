@@ -12,15 +12,12 @@ export const Consent: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const history = useHistory();
 
-  const { mutateAsync: createParticipation, isLoading } =
-    useCreateParticipationMutation(client);
+  const { mutateAsync: createParticipation, isLoading } = useCreateParticipationMutation(client);
 
   const onAccept = useCallback(async () => {
-    console.log("you said yes");
     const res = await createParticipation({
       values: { consent: true, completed: false },
     });
-    console.log("effin res: ", res);
     history.push(`/survey/${slug}/participate`);
   }, [slug]);
 

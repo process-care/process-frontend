@@ -43,28 +43,25 @@ export const CustomNumberInput: React.FC<Props> = ({
   isCollapsed,
   appearance,
 }) => {
-  const [field, meta] = useField(name);
+  const [field, meta, helpers] = useField(name);
+  console.log(field);
   return (
-    <FormControl
-      isRequired={isRequired}
-      id={name}
-      textAlign="left"
-      style={style}
-      isInvalid={!!meta.error}
-    >
+    <FormControl isRequired={isRequired} id={name} textAlign="left" style={style} isInvalid={!!meta.error}>
       <FormLabel>{label}</FormLabel>
       {!isCollapsed && (
         <>
           <InputGroup mt={appearance === "big" ? "10px" : "0"}>
             <NumberInput
-              {...field}
-              // Beuh ...
-              min={min ?? -99999999999999}
-              max={max ?? 99999999999999}
+              min={min ?? undefined}
+              max={max ?? undefined}
               precision={precision ?? 0}
               allowMouseWheel
               w="100%"
               fontSize="12px"
+              value={field.value}
+              onChange={(e) => {
+                helpers.setValue(parseInt(e));
+              }}
             >
               <NumberInputField
                 backgroundColor="white"
@@ -78,10 +75,7 @@ export const CustomNumberInput: React.FC<Props> = ({
               />
             </NumberInput>
             {inputRightAddon && (
-              <InputRightAddon
-                children={inputRightAddon}
-                p={appearance === "big" ? "30px" : "10px"}
-              />
+              <InputRightAddon children={inputRightAddon} p={appearance === "big" ? "30px" : "10px"} />
             )}
           </InputGroup>
           {meta.touched && meta.error && (

@@ -11,13 +11,7 @@ export const NumberInputFields: React.FC = () => {
     <>
       <TitleDivider title="Contenu" />
 
-      <Box
-        w="100%"
-        m="0 auto"
-        border="1px solid #F7F7F7F7"
-        p="5"
-        backgroundColor="#fdfdfdf1"
-      >
+      <Box w="100%" m="0 auto" border="1px solid #F7F7F7F7" p="5" backgroundColor="#fdfdfdf1">
         <CommonFields />
 
         <Input

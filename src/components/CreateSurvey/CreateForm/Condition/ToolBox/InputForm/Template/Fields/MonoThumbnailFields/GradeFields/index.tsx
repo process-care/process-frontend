@@ -5,6 +5,8 @@ import { Input, NumberInput, Textarea } from "components/Fields";
 import { RepeatedFields } from "../../..";
 import { useFormikContext } from "formik";
 import { Enum_Question_Rows } from "api/graphql/types.generated";
+import { useAppSelector } from "redux/hooks";
+import { selectors as formBuilderSelectors } from "redux/slices/formBuilder";
 
 const ID = "associated_input";
 interface Props {
@@ -12,13 +14,13 @@ interface Props {
 }
 
 export const GradeFields: React.FC<Props> = ({ selectedQuestion }) => {
-  const { handleReset, resetForm } = useFormikContext();
-  console.log(selectedQuestion);
+  const isEditing = useAppSelector(formBuilderSelectors.isEditing);
+
+  const { resetForm, touched } = useFormikContext<QuestionRedux["attributes"]>();
+  const savedType = selectedQuestion?.attributes.associated_input?.type;
+
   useEffect(() => {
-    const savedType = selectedQuestion?.attributes.associated_input?.type;
-    if (savedType) {
-      console.log(savedType);
-      handleReset();
+    if (savedType && Object.keys(touched).length > 0) {
       resetForm({
         values: {
           ...selectedQuestion.attributes,
@@ -29,7 +31,7 @@ export const GradeFields: React.FC<Props> = ({ selectedQuestion }) => {
         },
       });
     }
-  }, [selectedQuestion?.attributes?.associated_input?.type]);
+  }, [savedType, isEditing]);
 
   return (
     <Box mt="5">

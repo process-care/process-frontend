@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Box, Flex, FormLabel, Spinner, Text } from "@chakra-ui/react";
 import { v4 as uuidv4 } from "uuid";
 import { useAppSelector } from "redux/hooks";
-import { Maybe } from "api/graphql/types.generated";
 import { selectors } from "redux/slices/application";
 import { useMediaQueries } from "utils/hooks/mediaqueries";
 import { useAssociatedLogic } from "./hooks";
+import { Maybe } from "api/graphql/types.generated";
 
 interface Props {
   label: string;
@@ -13,7 +13,7 @@ interface Props {
   name: string;
   isCollapsed?: boolean;
   factors: Factor[];
-  maxLoop: Maybe<string> | undefined;
+  maxLoop: Maybe<number> | undefined;
 }
 
 interface Factor {
@@ -31,7 +31,7 @@ export const AssociatedClassification: React.FC<Props> = ({
   helpText,
   isCollapsed,
   factors,
-  maxLoop = "5",
+  maxLoop = 5,
   name,
 }) => {
   const { isTablet } = useMediaQueries();
@@ -123,9 +123,7 @@ export const AssociatedClassification: React.FC<Props> = ({
       <FormLabel>{label}</FormLabel>
       {maxLoop && maxVariations >= 1 && (
         <Text mt="15px" fontSize="xs">
-          {maxVariations > parseInt(maxLoop)
-            ? `${totalClick} / ${parseInt(maxLoop)}`
-            : `${totalClick}  / ${Math.max(maxVariations)}`}
+          {maxVariations > maxLoop ? `${totalClick} / ${maxLoop}` : `${totalClick}  / ${Math.max(maxVariations)}`}
         </Text>
       )}
       {!isCollapsed && (

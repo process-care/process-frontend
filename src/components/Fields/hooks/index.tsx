@@ -16,7 +16,13 @@ interface State {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const useAssociatedLogic = (factors: Factor[], name: string, maxLoop: Maybe<string>, TOTAL_CARDS: number) => {
+export const useAssociatedLogic = (
+  factors: Factor[],
+  name: string,
+  maxLoop: Maybe<number> | undefined,
+  TOTAL_CARDS: number
+) => {
+  console.log(maxLoop);
   const [field, , helpers] = useField(name);
 
   const [state, setState] = useState<State>({
@@ -132,11 +138,11 @@ export const useAssociatedLogic = (factors: Factor[], name: string, maxLoop: May
   // console.groupEnd();
 
   // TODO: refactor this
+
   const isFinished =
-    totalClick ===
-      (maxVariations - 1 > (typeof maxLoop === "string" && parseInt(maxLoop))
-        ? maxLoop && parseInt(maxLoop)
-        : maxVariations) || field.value?.length === ((maxLoop && parseInt(maxLoop)) || maxVariations);
+    maxLoop &&
+    (totalClick === (maxVariations - 1 > maxLoop ? maxLoop : maxVariations) ||
+      field.value?.length === (maxLoop || maxVariations));
 
   const checkIsFinished = () => {
     const loop = typeof maxLoop === "string" && parseInt(maxLoop);

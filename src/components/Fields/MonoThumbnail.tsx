@@ -3,7 +3,6 @@ import { Box, Button, Flex, FormLabel, Spinner, Text } from "@chakra-ui/react";
 import { v4 as uuidv4 } from "uuid";
 import { Form, Formik } from "formik";
 import { useAppSelector } from "redux/hooks";
-import { Maybe } from "api/graphql/types.generated";
 
 interface Factor {
   modalities: {
@@ -17,6 +16,7 @@ import { RenderInput } from "components/CreateSurvey/CreateForm/InputsPreview/Ca
 import { useAssociatedLogic } from "./hooks";
 import { TitleDivider } from "components/TitleDivider";
 import { QuestionRedux } from "redux/slices/types";
+import { Maybe } from "api/graphql/types.generated";
 
 interface Props {
   label: string;
@@ -24,7 +24,7 @@ interface Props {
   name: string;
   isCollapsed?: boolean;
   factors: Factor[];
-  maxLoop: Maybe<string> | undefined;
+  maxLoop: Maybe<number> | undefined;
   associated_input: Record<string, unknown>;
 }
 
@@ -35,14 +35,18 @@ export const MonoThumbnail: React.FC<Props> = ({
   helpText,
   isCollapsed,
   factors,
-  maxLoop = "5",
+  maxLoop = 5,
   name,
   associated_input,
 }) => {
   const [mount, setMount] = useState(true);
 
-  const { generate, handleClick, state, filteredFactors, totalClick, maxVariations, checkIsFinished } =
-    useAssociatedLogic(factors, name, maxLoop, TOTAL_CARDS);
+  const { generate, handleClick, state, filteredFactors, totalClick, maxVariations, isFinished } = useAssociatedLogic(
+    factors,
+    name,
+    maxLoop,
+    TOTAL_CARDS
+  );
   const drawerIsOpen = useAppSelector(selectors.drawerIsOpen);
   const Card = ({ index }: { index: number }) => {
     if (filteredFactors === undefined) {
@@ -99,7 +103,7 @@ export const MonoThumbnail: React.FC<Props> = ({
     setMount(true);
   }, [sanitizeMono]);
 
-  if (checkIsFinished() && !drawerIsOpen) {
+  if (isFinished && !drawerIsOpen) {
     return <Text variant="smallTitle">Nous avons bien pris en compte votre sélection !</Text>;
   }
 
@@ -109,9 +113,7 @@ export const MonoThumbnail: React.FC<Props> = ({
       <FormLabel>{label}</FormLabel>
       {maxLoop && maxVariations >= 1 && (
         <Text mt="15px" fontSize="xs">
-          {maxVariations > parseInt(maxLoop)
-            ? `${totalClick} / ${parseInt(maxLoop)}`
-            : `${totalClick}  / ${Math.max(maxVariations)}`}
+          {maxVariations > maxLoop ? `${totalClick} / ${maxLoop}` : `${totalClick}  / ${Math.max(maxVariations)}`}
         </Text>
       )}
       {!isCollapsed && (

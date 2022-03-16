@@ -122,9 +122,15 @@ export const PageForm: React.FC = () => {
                       dispatch(setIsRemoving(selectedPageId));
                     }}
                   >
-                    <SvgHover>
-                      <Trash />
-                    </SvgHover>
+                    <Tooltip
+                      label="Cliquer ici pour supprimer la page séléctionnée"
+                      placement="right"
+                      shouldWrapChildren
+                    >
+                      <SvgHover>
+                        <Trash />
+                      </SvgHover>
+                    </Tooltip>
                   </Box>
                 ) : (
                   <Box mt={5} />
@@ -156,16 +162,26 @@ export const PageForm: React.FC = () => {
                 <Box d="flex" justifyContent="space-between" mt="5">
                   {isNotFirstPage &&
                     (conditionsOnSelectedPage.length === 0 ? (
-                      <Button
-                        disabled={questionsOnSelectedPage.length === 0}
-                        variant="roundedTransparent"
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-ignore: Pb with props in theme ...
-                        isSmall
-                        onClick={() => createCondition()}
+                      <Tooltip
+                        label={
+                          questionsOnSelectedPage.length === 0
+                            ? "Merci d'ajouter une question pour conditionner la page"
+                            : "Cliquer pour ajouter une condtion sur la page courante"
+                        }
+                        placement="right"
+                        shouldWrapChildren
                       >
-                        {t.add_condition_page}
-                      </Button>
+                        <Button
+                          disabled={questionsOnSelectedPage.length === 0}
+                          variant="roundedTransparent"
+                          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                          // @ts-ignore: Pb with props in theme ...
+                          isSmall
+                          onClick={() => createCondition()}
+                        >
+                          {t.add_condition_page}
+                        </Button>
+                      </Tooltip>
                     ) : (
                       <Button
                         variant="roundedTransparent"

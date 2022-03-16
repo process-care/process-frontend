@@ -30,7 +30,6 @@ export const NumberInputFields: React.FC = () => {
             name="min"
             isCollapsed={false}
             placeholder="Ex:5"
-            isRequired
           />
           <NumberInput
             style={{ width: "45%" }}
@@ -38,7 +37,6 @@ export const NumberInputFields: React.FC = () => {
             name="max"
             isCollapsed={false}
             placeholder="Ex:5"
-            isRequired
           />
         </Flex>
       </Box>

@@ -165,6 +165,10 @@ const theme = extendTheme({
           _hover: {
             bg: "black",
             color: "white",
+            _disabled: {
+              border: "1px solid gray",
+              color: "gray",
+            },
           },
           [`@media screen and (max-width: ${tablet})`]: {
             fontSize: "14px",

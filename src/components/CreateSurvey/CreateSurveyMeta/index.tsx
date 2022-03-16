@@ -44,7 +44,7 @@ export const CreateSurveyForm: React.FC = () => {
         validationSchema={createSurveySchema}
         onSubmit={onSubmit}
       >
-        {({ values, errors }) => {
+        {({ values, errors, isSubmitting }) => {
           // Handle update value
           useEffect(() => {
             if (firstRender.current) {
@@ -86,12 +86,12 @@ export const CreateSurveyForm: React.FC = () => {
                     </Box>
                     <Flex w="100%" justifyContent={"space-between"} mt="30px">
                       {step !== 1 ? (
-                        <Navigatebtn step={step} previous errors={errors} values={values} />
+                        <Navigatebtn step={step} previous errors={errors} values={values} isSubmitting={isSubmitting} />
                       ) : (
                         <Box minW="150px"></Box>
                       )}
 
-                      <Navigatebtn step={step} errors={errors} values={values} />
+                      <Navigatebtn step={step} errors={errors} values={values} isSubmitting={isSubmitting} />
                     </Flex>
                   </Flex>
                 </Box>
@@ -110,11 +110,13 @@ const Navigatebtn = ({
   previous,
   values,
   errors,
+  isSubmitting,
 }: {
   step: number;
   previous?: boolean;
   errors: any;
   values: any;
+  isSubmitting: boolean;
 }) => {
   const target = step + (previous ? -1 : +1);
   const dispatch = useAppDispatch();
@@ -125,7 +127,7 @@ const Navigatebtn = ({
 
   if (step === 6 && !previous) {
     return (
-      <Button type="submit" variant="roundedBlue" minW="150px">
+      <Button type="submit" variant="roundedBlue" minW="150px" isLoading={isSubmitting}>
         Valider
       </Button>
     );

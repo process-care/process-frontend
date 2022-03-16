@@ -87,7 +87,7 @@ export const globalSlice = createSlice({
       // Set pages
       if (pages) {
         const sanePages = sanitizeEntities(pages);
-        pageAdapter.setMany(state.pages, sanePages);
+        pageAdapter.setAll(state.pages, sanePages);
 
         state.pages.selectedPage = sanePages[0].id;
 
@@ -97,13 +97,13 @@ export const globalSlice = createSlice({
 
           if (pageConditions) {
             const sanePageConditions = sanitizeEntities(pageConditions);
-            conditionAdapter.setMany(state.conditions, sanePageConditions);
+            conditionAdapter.setAll(state.conditions, sanePageConditions);
           }
         });
       }
 
       // Set questions
-      questionAdapter.setMany(state.questions, questions);
+      questionAdapter.setAll(state.questions, questions);
       const questionsConditions = questions?.map((question) => question?.attributes?.conditions?.data ?? []).flat();
 
       // Set conditions's questions

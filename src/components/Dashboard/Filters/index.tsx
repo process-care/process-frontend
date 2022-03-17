@@ -17,7 +17,7 @@ interface Props {
 export const Filters: React.FC<Props> = ({ filters, handleClick, currentFilter, center }) => {
   const { isTablet } = useMediaQueries();
   return (
-    <Flex justifyContent={center ? "center" : undefined} w="100%">
+    <Flex justifyContent={center ? "center" : undefined} w="fit-content">
       {filters.map(({ label, id }) => {
         const isSelected = currentFilter === id;
 

@@ -118,12 +118,12 @@ const theme = extendTheme({
         }),
         rounded: ({ isSmall }: { isSmall: boolean }) => ({
           bg: "black",
-          borderRadius: "50px",
+          borderRadius: "4px",
           color: "white",
           padding: isSmall ? "0 20px" : "25px 30px",
           border: "1px solid",
-          fontWeight: 300,
-          fontSize: "12px",
+          fontWeight: 600,
+          fontSize: "0.75rem",
           height: isSmall ? "30px" : 10,
           _hover: {
             bg: "gray.700",
@@ -155,7 +155,7 @@ const theme = extendTheme({
         }),
         roundedTransparent: ({ isSmall }: { isSmall: boolean }) => ({
           bg: "transparent",
-          borderRadius: "50px",
+          borderRadius: "4px",
           fontSize: "12px",
           color: "black",
           fontWeight: 300,

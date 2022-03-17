@@ -27,6 +27,11 @@ export const Card: React.FC<Props> = ({ data }) => {
       pb={isTablet ? "50px" : "160px"}
       w="100%"
       textAlign="left"
+      boxShadow="rgb(33 33 52 / 10%) 0px 1px 4px"
+      backgroundColor="white"
+      border="1px solid #e7e7e7"
+      borderRadius="4px"
+      p="20px"
       _hover={{
         opacity: "0.8",
         cursor: "pointer",

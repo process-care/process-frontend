@@ -8,11 +8,7 @@ import { Preview } from "components/CreateSurvey/CreateLanding/Preview";
 import { client } from "api/gql-client";
 import { useSurveyBySlugQuery } from "api/graphql/queries/survey.gql.generated";
 import { useLandingQuery } from "api/graphql/queries/landing.gql.generated";
-
-// const t = {
-//   noLanding:
-//     "⚠️ Dev ⚠️ La landing n'a pas encore été créée pour cette enquete.",
-// };
+import { sanitizeEntity } from "api/entity-checker";
 
 export const Landing: React.FC<IRoute> = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -21,20 +17,8 @@ export const Landing: React.FC<IRoute> = () => {
   const { data: survey } = useSurveyBySlugQuery(client, { slug });
   const surveyId = survey?.surveys?.data[0].attributes?.landing?.data?.id ?? "";
 
-  const {
-    data: landing,
-    isLoading,
-    error,
-  } = useLandingQuery(client, { id: surveyId }, { enabled: surveyId !== "" });
-
-  // if (landing?.landing === undefined) {
-  //   return (
-  //     <Text pt="80px" variant="titleParaLight">
-  //       {t.noLanding}
-  //     </Text>
-  //   );
-  // }
-
+  const { data: landing, isLoading, error } = useLandingQuery(client, { id: surveyId }, { enabled: surveyId !== "" });
+  const author = survey?.surveys?.data[0].attributes?.author;
   if (isLoading) {
     return <Loader />;
   }
@@ -43,5 +27,9 @@ export const Landing: React.FC<IRoute> = () => {
     return <Error error={error} />;
   }
 
-  return <Preview data={landing?.landing?.data} isUserView />;
+  if (!landing?.landing?.data) {
+    return <></>;
+  }
+  console.log(survey);
+  return <Preview data={sanitizeEntity(landing?.landing?.data)} isUserView author={author?.data?.attributes} />;
 };

@@ -12,31 +12,23 @@ import { Loader } from "components/Spinner";
 import { ReactComponent as ShowMore } from "./assets/ShowMore.svg";
 import { useMediaQueries } from "utils/hooks/mediaqueries";
 import { client } from "api/gql-client";
-// import { SurveyRedux } from "redux/slices/types";
-import {
-  useSurveyPublishedQuery,
-  // useSurveySearchQuery,
-} from "./portal.gql.generated";
-// ---- STATIC
+import { useSurveyPublishedQuery } from "./portal.gql.generated";
 
 const t = {
-  title: "Une plateforme de curation scientifique curabitur blandit tempus porttitor.",
+  title: "Process",
   filters: [
     { label: "Tout voir", id: "all" },
-    // { label: "Les plus populaires", id: "mostViewed" },
-    // { label: "Les plus récents", id: "newest" },
     { label: "En cours", id: "pending" },
     { label: "Archivés", id: "archived" },
   ],
 };
-
 const ITEMS_PER_PAGE = 10;
 
 // ---- COMPONENT
 
 export const Portail: React.FC<IRoute> = () => {
   const [currentFilter, setCurrentFilter] = useState<string>(t.filters[0].id);
-  // const [query, setQuery] = useState<string>("");
+
   const [pagination, setPagination] = useState<number>(0);
   const { isTablet } = useMediaQueries();
 
@@ -44,11 +36,6 @@ export const Portail: React.FC<IRoute> = () => {
   const { data: publishedResult, isLoading } = useSurveyPublishedQuery(client, {
     page: pagination,
   });
-  // Get surveys related to the searched query
-  // const { data: searchResult, isLoading: loadingSearch } = useSurveySearchQuery(
-  //   client,
-  //   { query }
-  // );
 
   const [state, setState] = useState<any>([]);
 
@@ -67,23 +54,26 @@ export const Portail: React.FC<IRoute> = () => {
   }, [filteredSurveys]);
 
   const totalCount = publishedResult?.surveys?.meta.pagination.total;
-  // const isSearching = query !== "";
 
-  // const results = searchResult?.surveys?.data as SurveyRedux[];
   return (
     <Box w="100%">
-      <Box>
-        <Center position="absolute" color="white" textAlign="left" px="5%" h="90vh" d="flex" flexDir="column" w="100%">
-          <Text variant="xxl" maxW="1000px">
-            {t.title}
-          </Text>
-          <Text variant={isTablet ? "currentLight" : "baseline"} maxW="1000px" pt="15px">
-            Nullam id dolor id nibh ultricies vehicula ut id elit. Maecenas sed diam eget risus varius blandit sit amet
-            non magna. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.
-          </Text>
-        </Center>
-        <Image src={Hero} alt="Process" boxSize="100%" h="90vh" objectFit="cover" />
+      <Box
+        position="absolute"
+        color="white"
+        zIndex="2"
+        top={isTablet ? "80px" : "90px"}
+        left={isTablet ? "5%" : "70px"}
+      >
+        <Text variant="xxl" fontWeight="900" maxW="1000px" w="auto" textAlign="left" marginLeft="-2px">
+          {t.title}
+        </Text>
+        <Text variant={isTablet ? "currentLight" : "baseline"} maxW="1000px">
+          <strong>P</strong>latform for <strong>R</strong>esearch <strong>O</strong>nline and <strong>C</strong>itiz
+          <strong>E</strong>n <strong>S</strong>cience <strong>S</strong>urveys. <br />
+        </Text>
       </Box>
+
+      <Image src={Hero} alt="Process" boxSize="100%" h={isTablet ? "80px" : "200px"} objectFit="cover" pos="absolute" />
 
       <Box
         pt={isTablet ? "50px" : "110px"}
@@ -91,50 +81,17 @@ export const Portail: React.FC<IRoute> = () => {
         maxW={isTablet ? "unset" : "80%"}
         margin="0 auto"
         px="5%"
-      >
-        <Text variant="xl" textAlign={isTablet ? "left" : "center"}>
-          Une plateforme de curation scientifique <strong>{totalCount} projets en cours</strong> tempus porttitor. Duis
-          mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
-        </Text>
-      </Box>
+      ></Box>
 
       <Box px="5%" d="flex" alignItems="center" justifyContent="space-between" flexDir={isTablet ? "column" : "row"}>
-        <Filters filters={t.filters} handleClick={(id) => setCurrentFilter(id)} currentFilter={currentFilter} />
-        {/* <Box w={isTablet ? "100%" : "50%"} mt={isTablet ? "30px" : "unset"}>
-            <Input
-              height="55px"
-              name="search"
-              label="Recherche de projet par titre"
-              placeholder="Recherche de projet par titre"
-              // onChange={(e) => setQuery(e.target.value)}
-            />
-          </Box> */}
+        <Box d="flex" alignItems="center">
+          <Filters filters={t.filters} handleClick={(id) => setCurrentFilter(id)} currentFilter={currentFilter} />
+          <Text textAlign="left" variant="xs" color="gray.600" ml={isTablet ? "5px" : "0"}>
+            {totalCount} projets en cours
+          </Text>
+        </Box>
       </Box>
 
-      {/* {isSearching ? (
-          surveysFound && surveysFound?.surveys?.length > 0 ? (
-            <SurveyGrid
-              surveys={surveysFound?.surveys}
-              isLoading={loadingSearch}
-            />
-          ) : loadingSearch ? (
-            <Loader />
-          ) : (
-            <NoData
-              content="Nous n'avons pas trouvé d'enquêtes pour votre recherche."
-              w="90%"
-            />
-          )
-        ) : state.length > 0 ? (
-          <SurveyGrid surveys={state} isLoading={isLoading} />
-        ) : isLoading ? (
-          <Loader />
-        ) : (
-          <NoData
-            content="Nous n'avons pas trouvé d'enquêtes pour votre recherche."
-            w="90%"
-          />
-        )} */}
       {filteredSurveys && filteredSurveys?.length > 0 ? (
         <SurveyGrid surveys={filteredSurveys} isLoading={isLoading} />
       ) : isLoading ? (

@@ -1,7 +1,7 @@
 import { CheckIcon } from "@chakra-ui/icons";
 import { CircularProgress, Flex, Text } from "@chakra-ui/react";
 import React from "react";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useAppSelector } from "redux/hooks";
 import { useMediaQueries } from "utils/hooks/mediaqueries";
 import { ReactComponent as Back } from "./assets/back.svg";
@@ -11,7 +11,6 @@ interface Props {
 }
 
 export const Menu: React.FC<Props> = ({ surveyTitle }) => {
-  const { slug } = useParams<{ slug: string }>();
   const { isSaving } = useAppSelector((state) => state.application);
   const { isTablet } = useMediaQueries();
   return (
@@ -22,7 +21,7 @@ export const Menu: React.FC<Props> = ({ surveyTitle }) => {
       justifyContent="flex-start"
       alignItems="center"
     >
-      <NavLink to={`/dashboard?surveySlug=${slug}`}>
+      <NavLink to={`/dashboard`}>
         <Flex ml={isTablet ? "0" : "50px"} alignItems="center">
           <Back />
           <Text fontSize="12px" ml={2} mr="30px">

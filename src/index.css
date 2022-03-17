@@ -7,7 +7,7 @@ body {
   height: 100%;
   width: 100%;
   background-size: auto auto;
-  background-color: rgb(249, 249, 249);
+  background-color: #f6f6f9;
   /* background-image: repeating-linear-gradient(
       0deg,
       transparent,
@@ -35,13 +35,7 @@ body {
       rgb(69, 108, 235) 81px,
       rgb(69, 108, 235) 81px
     ),
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 80px,
-      rgb(69, 108, 235) 81px,
-      rgb(69, 108, 235) 80px
-    );
+    repeating-linear-gradient(90deg, transparent, transparent 80px, rgb(69, 108, 235) 81px, rgb(69, 108, 235) 80px);
 }
 .background__grid--black {
   height: 100%;

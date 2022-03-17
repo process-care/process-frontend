@@ -14,15 +14,10 @@ interface Props {
   center?: boolean;
 }
 
-export const Filters: React.FC<Props> = ({
-  filters,
-  handleClick,
-  currentFilter,
-  center,
-}) => {
+export const Filters: React.FC<Props> = ({ filters, handleClick, currentFilter, center }) => {
   const { isTablet } = useMediaQueries();
   return (
-    <Flex justifyContent={center ? "center" : undefined} w="100%">
+    <Flex justifyContent={center ? "center" : undefined} w="fit-content">
       {filters.map(({ label, id }) => {
         const isSelected = currentFilter === id;
 
@@ -31,9 +26,10 @@ export const Filters: React.FC<Props> = ({
             mr={isTablet ? "unset" : "3"}
             key={id}
             onClick={() => handleClick(id)}
-            backgroundColor={isSelected ? "brand.line" : "transparent"}
+            backgroundColor={isSelected ? "white" : "transparent"}
+            border="1px solid rgb(220, 220, 228)"
             color={isSelected ? "black" : "brand.gray.200"}
-            borderRadius="50px"
+            borderRadius="4px"
             px="10px"
             py="5px"
             transition="all 200ms"

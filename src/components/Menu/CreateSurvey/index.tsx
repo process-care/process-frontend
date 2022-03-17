@@ -14,7 +14,13 @@ export const Menu: React.FC<Props> = ({ surveyTitle }) => {
   const { isSaving } = useAppSelector((state) => state.application);
   const { isTablet } = useMediaQueries();
   return (
-    <Flex pos="relative" p={5} borderBottom="1px" justifyContent="flex-start" alignItems="center">
+    <Flex
+      pos="relative"
+      p={5}
+      borderBottom="1px solid rgb(234, 234, 239)"
+      justifyContent="flex-start"
+      alignItems="center"
+    >
       <NavLink to={`/dashboard`}>
         <Flex ml={isTablet ? "0" : "50px"} alignItems="center">
           <Back />

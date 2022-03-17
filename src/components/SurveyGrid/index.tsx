@@ -27,14 +27,9 @@ export const SurveyGrid: React.FC<Props> = ({ surveys, isLoading }) => {
 
   return (
     <Grid
-      templateColumns={[
-        "repeat(1, 1fr)",
-        "repeat(1, 1fr)",
-        "repeat(2, 1fr)",
-        "repeat(3, 1fr)",
-      ]}
+      templateColumns={["repeat(1, 1fr)", "repeat(1, 1fr)", "repeat(2, 1fr)", "repeat(3, 1fr)"]}
       gap={isTablet ? "1%" : "5%"}
-      pt="75px"
+      pt="30px"
       px="10%"
       paddingInlineStart="5%"
       paddingInlineEnd="5%"

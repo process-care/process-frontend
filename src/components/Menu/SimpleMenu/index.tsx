@@ -113,16 +113,28 @@ export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
       m="0 auto"
       fontSize="13"
       h={HEADER_HEIGHT}
-      borderBottom="1px solid black"
+      borderBottom="1px solid rgb(234, 234, 239)"
       position="sticky"
       top="0"
       backgroundColor="white"
       zIndex={1}
     >
-      <NavLink to="/">
-        <Logo />
-      </NavLink>
-      {!isPortail && <Text variant="baseline">{t.menu_title}</Text>}
+      <Box d="flex" alignItems="center">
+        <NavLink to="/">
+          <Logo />
+        </NavLink>
+        {!isPortail && (
+          <>
+            <Text variant="smallTitle" ml="10px" color="gray">
+              |
+            </Text>
+            <Text variant="smallTitleBold" ml="10px">
+              {t.menu_title}
+            </Text>
+          </>
+        )}
+      </Box>
+
       <Flex alignItems="center">
         <SubMenu />
 

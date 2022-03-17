@@ -1,12 +1,5 @@
 import * as React from "react";
-import {
-  useTable,
-  Column,
-  useSortBy,
-  HeaderGroup,
-  Row,
-  TableInstance,
-} from "react-table";
+import { useTable, Column, useSortBy, HeaderGroup, Row, TableInstance } from "react-table";
 import { Box, Text, Tooltip } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { SurveyBuilder } from "redux/slices/surveyBuilderOLD";
@@ -29,17 +22,15 @@ const styles = {
   thead: {
     width: "100%",
     backgroundColor: "white",
-    border: "1px solid #e7e7e7",
   },
-  tr: { border: "1px solid #e7e7e7" },
+  tr: { borderTop: "1px solid #e7e7e7" },
   td: { backgroundColor: "#F6F6F6" },
 };
 
 // ---- COMPONENT
 
 export const Table: React.FC<Props> = ({ columns, data, onClick }) => {
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data }, useSortBy);
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({ columns, data }, useSortBy);
 
   return (
     <table {...getTableProps()} width="100%">
@@ -52,18 +43,10 @@ export const Table: React.FC<Props> = ({ columns, data, onClick }) => {
           </tr>
         ))}
       </thead>
-      <Tooltip
-        label="Cliquer pour éditer les paramètres du projet"
-        placement="top-start"
-      >
+      <Tooltip label="Cliquer pour éditer les paramètres du projet" placement="top-start">
         <tbody {...getTableBodyProps()}>
           {rows.map((row, j) => (
-            <TableRow
-              key={j}
-              row={row}
-              prepareRow={prepareRow}
-              onClick={onClick}
-            />
+            <TableRow key={j} row={row} prepareRow={prepareRow} onClick={onClick} />
           ))}
         </tbody>
       </Tooltip>

@@ -51,13 +51,7 @@ export const CustomInput: React.FC<Props> = ({
 }) => {
   const [field, meta] = useField(name);
   return (
-    <FormControl
-      isRequired={isRequired}
-      id={name}
-      textAlign="left"
-      style={style}
-      isInvalid={!!meta.error}
-    >
+    <FormControl isRequired={isRequired} id={name} textAlign="left" style={style} isInvalid={!!meta.error}>
       {isAccordion ? (
         <Accordion allowToggle>
           <AccordionItem border="none" _hover={{ cursor: "pointer" }}>
@@ -85,15 +79,9 @@ export const CustomInput: React.FC<Props> = ({
                       autoComplete={autoComplete}
                       p={appearance === "big" ? "30px" : "10px"}
                     />
-                    {inputRightAddon && (
-                      <InputRightAddon children={inputRightAddon} h="40px" />
-                    )}
+                    {inputRightAddon && <InputRightAddon children={inputRightAddon} h="40px" />}
                   </InputGroup>
-                  <FormErrorMessage
-                    mt={1}
-                    justifyContent="flex-end"
-                    fontSize="10px"
-                  >
+                  <FormErrorMessage mt={1} justifyContent="flex-end" fontSize="10px">
                     {meta.error}
                   </FormErrorMessage>
                   <FormHelperText fontSize="xs">{helpText}</FormHelperText>
@@ -108,7 +96,7 @@ export const CustomInput: React.FC<Props> = ({
 
           {!isCollapsed && (
             <>
-              <InputGroup size="sm" mt={appearance === "big" ? "10px" : "0"}>
+              <InputGroup size="sm" mt={appearance === "big" ? "10px" : "0"} borderRadius="7px">
                 <Input
                   ref={ref}
                   backgroundColor="white"
@@ -120,15 +108,9 @@ export const CustomInput: React.FC<Props> = ({
                   autoComplete={autoComplete}
                   p={appearance === "big" ? "30px" : "10px"}
                 />
-                {inputRightAddon && (
-                  <InputRightAddon children={inputRightAddon} h="40px" />
-                )}
+                {inputRightAddon && <InputRightAddon children={inputRightAddon} h="40px" />}
               </InputGroup>
-              <FormErrorMessage
-                mt={1}
-                justifyContent="flex-end"
-                fontSize="10px"
-              >
+              <FormErrorMessage mt={1} justifyContent="flex-end" fontSize="10px">
                 {meta.error}
               </FormErrorMessage>
               <FormHelperText fontSize="xs">{helpText}</FormHelperText>

@@ -1,14 +1,16 @@
 import React, { useCallback } from "react";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Center, Flex, Text } from "@chakra-ui/react";
 import { useHistory, useParams } from "react-router-dom";
-import { Content } from "./Content";
-import { Footer } from "./Footer";
-import { Header } from "./Header";
-import { Team } from "./Team";
+import { Description } from "./Description";
 import { useAppSelector } from "redux/hooks";
 import { selectors } from "redux/slices/landing-editor";
-import { CtaMobil } from "./Cta";
-
+import { useMediaQueries } from "utils/hooks/mediaqueries";
+import { LandingRedux } from "redux/slices/types";
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
+import { Team } from "./Team";
+import { Contact } from "./Contact";
+import { Video } from "components/Video";
+import { API_URL_ROOT } from "constants/api";
 // ---- STATICS
 
 const big_placeholder =
@@ -19,20 +21,28 @@ const big_placeholder =
 interface Props {
   isUserView?: boolean;
   // TODO: Refacto this and remove any => LandingRedux
-  data?: any;
+  data?: LandingRedux;
+  author?: { email: string; username: string } | null;
 }
 
 // ---- COMPONENT
 
-export const Preview: React.FC<Props> = ({ isUserView, data }) => {
+export const Preview: React.FC<Props> = ({ isUserView, data, author }) => {
   const { slug } = useParams<{ slug: string }>();
   const history = useHistory();
 
-  const { previewMode } = useAppSelector((state) => state.application);
   const aboutPage = useAppSelector(selectors.about);
   const isEditingAbout = useAppSelector(selectors.isEditingAbout);
+  const { isTablet } = useMediaQueries();
+  const attributes = data?.attributes;
 
-  const isFullView = isUserView || previewMode === "landing";
+  const hasVideo = Boolean(attributes?.video_url);
+  const coverSrc = attributes?.cover?.data?.attributes?.url;
+  const coverName = attributes?.cover?.data?.attributes?.name ?? "";
+
+  const hasImage = Boolean(coverSrc);
+  const hasMedia = hasVideo || hasImage;
+  const hasMembers = Boolean(data?.attributes?.members);
 
   const onParticipate = useCallback(() => {
     if (!isUserView) {
@@ -55,32 +65,85 @@ export const Preview: React.FC<Props> = ({ isUserView, data }) => {
       </Box>
     );
   }
-
-  const attributes = data?.attributes;
-
-  return (
-    <Box
-      h={isFullView ? "100%" : "fit-content"}
-      backgroundColor="white"
-      w={isFullView ? "100%" : "80%"}
-      mx="auto"
-      mt={isFullView ? "0" : "100px"}
-    >
-      <Header
-        title={attributes?.title}
-        logo={attributes?.logo}
-        color_theme={attributes?.color_theme}
-        onParticipate={onParticipate}
+  const Logo = () => {
+    return (
+      <img
+        src={attributes?.logo ?? ""}
+        alt="Logo"
+        style={{
+          maxHeight: "100px",
+          position: "absolute",
+          top: "20px",
+          left: "20px",
+        }}
       />
+    );
+  };
+  return (
+    <Box h="100vh" w="100%" backgroundColor="white">
+      <Flex flexDirection={isTablet ? "column" : "row"}>
+        <Center
+          w={isTablet ? "100%" : "33%"}
+          minW="400px"
+          borderRight="1px solid rgb(234, 234, 239)"
+          h="100vh"
+          pos="relative"
+        >
+          <Box color="white" textAlign="left" px="5%">
+            <Logo />
 
-      <Content data={data} onParticipate={onParticipate} />
+            <Text
+              variant={isTablet ? "xlNoMobilVariant" : "xxl"}
+              fontWeight="bold"
+              color="gray.800"
+              ml="-2px"
+              maxW="420px"
+            >
+              {attributes?.title || "Titre à remplacer"}
+            </Text>
 
-      {attributes?.members && (
-        <Team members={attributes?.members} color_theme={attributes?.color_theme} isUserView={isUserView} />
-      )}
+            <Text variant="smallTitle" color="gray.800" mt="30px">
+              {attributes?.subtitle || `Sous titre à remplacer.}`}
+            </Text>
+            {hasMedia && (
+              <Box mt="30px">
+                {hasVideo && <Video url={attributes?.video_url ?? ""} />}
+                {hasImage && <img src={`${API_URL_ROOT}${coverSrc}`} alt={coverName} />}
+              </Box>
+            )}
+          </Box>
+          <Box pos="absolute" bottom="30px" left="5%" w="100%" textAlign="left"></Box>
+        </Center>
+        <Box w={isTablet ? "100%" : "67%"}>
+          <Box h="100vh" flexDirection="column" textAlign="left" alignItems="flex-end">
+            <Tabs w="80%" m="150px auto 0 auto">
+              <TabList>
+                <Tab>Description</Tab>
+                {hasMembers && <Tab>Equipe</Tab>}
+                <Tab>Contact</Tab>
+              </TabList>
 
-      <Footer partners_logos={attributes?.partners_logos ?? []} color_theme={attributes?.color_theme} />
-      <CtaMobil data={data} onParticipate={onParticipate} />
+              <TabPanels>
+                <TabPanel>
+                  <Description data={data} onParticipate={onParticipate} />
+                </TabPanel>
+                {hasMembers && (
+                  <TabPanel>
+                    <Team
+                      members={data?.attributes?.members}
+                      color_theme={data?.attributes?.color_theme}
+                      isUserView={isUserView}
+                    />
+                  </TabPanel>
+                )}
+                <TabPanel>
+                  <Contact data={data} author={author} />
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+          </Box>
+        </Box>
+      </Flex>
     </Box>
   );
 };

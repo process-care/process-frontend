@@ -10,12 +10,7 @@ interface Props {
   onParticipate: () => void;
 }
 
-export const Header: React.FC<Props> = ({
-  title,
-  logo,
-  color_theme,
-  onParticipate,
-}) => {
+export const Header: React.FC<Props> = ({ title, logo, color_theme, onParticipate }) => {
   const { isTablet } = useMediaQueries();
   return (
     <Flex

@@ -149,11 +149,6 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
           </Box>
 
           <Box p={5} textAlign="left">
-            {/* {stepsLeft > 0 && (
-              <Text variant="xs" textAlign="left" color="red">
-                Il reste {stepsLeft} étapes à finaliser.
-              </Text>
-            )} */}
             <Tooltip label={"Voir la page d'accueil"} placement="top-start">
               <NavLink to={`/survey/${selectedSurvey.id}`}>
                 <Text variant="titleParaLight" mt={4} textAlign="left">
@@ -175,7 +170,9 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
                   Publier
                 </Button>
               ) : (
-                <Text variant="xs">Etat : {renderStatus(selectedSurvey?.attributes.status)}</Text>
+                <Text variant="xs">
+                  Etat : <strong>{renderStatus(selectedSurvey?.attributes.status)}</strong>
+                </Text>
               )}
               <Tooltip label={"Exporter les données"} placement="top-start">
                 <a href={exportURL} download>
@@ -213,7 +210,7 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
                 disabled={!isDraft}
                 top
                 left
-                label={"Modifier les données de le projet"}
+                label={"Modifier les données du projet"}
                 onClick={!isDraft ? () => console.log("forbidden") : goToSurveyMetadatas}
               />
             </Flex>

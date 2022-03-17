@@ -112,7 +112,7 @@ export const hasChanges = (state: RootState): boolean => {
 
 export const survey = (state: RootState): SurveyRedux | undefined => state.editor.survey.data;
 
-export const getSurveyDraft = (state: RootState): SurveyRedux | undefined => state.editor.survey.draft;
+export const getSurveyDraft = (state: RootState): SurveyRedux | undefined => state.editor.survey.data;
 
 export const selectors = {
   error,

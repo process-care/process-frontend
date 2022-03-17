@@ -31,7 +31,7 @@ export const CreateSurveyForm: React.FC = () => {
   const step = useAppSelector(selectors.step);
 
   // If survey does not have id, it means that it is a draft
-  const isDraft = Boolean(!survey?.id);
+  const isDraft = survey?.id === "";
 
   const onSubmit = useCallback((data, { setSubmitting, validateForm }) => {
     validateForm(data);
@@ -39,28 +39,27 @@ export const CreateSurveyForm: React.FC = () => {
     dispatch(actions.post(data));
   }, []);
 
-  if (!survey) return <></>;
   return (
     <>
       <Formik
-        initialValues={survey?.attributes ?? { slug: "draft" }}
+        initialValues={survey?.attributes ?? { slug: "" }}
         enableReinitialize
         validationSchema={createSurveySchema}
         onSubmit={onSubmit}
       >
         {({ values, errors, isSubmitting }) => {
-          const format = () => {
-            return {
-              title: values.title,
-              slug: values.slug,
-              description: values.description,
-              keywords: values.keywords,
-              language: values.language,
-              email: values.email,
-            };
-          };
           useEffect(() => {
-            if (!survey) return;
+            const format = () => {
+              return {
+                title: values.title,
+                slug: values.slug,
+                description: values.description,
+                keywords: values.keywords,
+                language: values.language,
+                email: values.email,
+              };
+            };
+            if (!survey?.id) return;
             if (!isDraft)
               dispatch(
                 actions.update({
@@ -82,9 +81,9 @@ export const CreateSurveyForm: React.FC = () => {
             dispatch(
               actions.updateMetas({
                 // need id to be SurveyRedux
-                id: isDraft ? "draft" : survey?.id,
+                id: isDraft ? "" : survey?.id || "",
                 changes: {
-                  id: isDraft ? "draft" : survey?.id,
+                  id: isDraft ? "" : survey?.id || "",
                   attributes: {
                     ...values,
                     status: Enum_Survey_Status.Draft,
@@ -187,7 +186,6 @@ const Navigatebtn = ({
 
   return (
     <Button
-      type={previous ? "button" : "submit"}
       disabled={!previous && !checkValidity(step, values, errors)}
       onClick={() => navigateTo(target)}
       variant="roundedBlue"

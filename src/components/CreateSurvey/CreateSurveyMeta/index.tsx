@@ -7,7 +7,7 @@ import { useAppSelector, useAppDispatch } from "redux/hooks";
 
 import { checkValidity, renderInputs } from "./utils";
 
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { selectors, actions } from "redux/slices/survey-editor";
 import { Enum_Survey_Status } from "api/graphql/types.generated";
 
@@ -30,12 +30,16 @@ export const CreateSurveyForm: React.FC = () => {
   const error = useAppSelector(selectors.error);
   const step = useAppSelector(selectors.step);
 
+  // If survey does not have id, it means that it is a draft
+  const isDraft = Boolean(!survey?.id);
+
   const onSubmit = useCallback((data, { setSubmitting, validateForm }) => {
     validateForm(data);
     setSubmitting(true);
     dispatch(actions.post(data));
   }, []);
 
+  if (!survey) return <></>;
   return (
     <>
       <Formik
@@ -45,6 +49,30 @@ export const CreateSurveyForm: React.FC = () => {
         onSubmit={onSubmit}
       >
         {({ values, errors, isSubmitting }) => {
+          const format = () => {
+            return {
+              title: values.title,
+              slug: values.slug,
+              description: values.description,
+              keywords: values.keywords,
+              language: values.language,
+              email: values.email,
+            };
+          };
+          useEffect(() => {
+            if (!survey) return;
+            if (!isDraft)
+              dispatch(
+                actions.update({
+                  id: survey.id,
+                  changes: {
+                    id: survey.id,
+                    attributes: { ...format() },
+                  },
+                })
+              );
+          }, [values]);
+
           // Handle update value
           useEffect(() => {
             if (firstRender.current) {
@@ -54,9 +82,9 @@ export const CreateSurveyForm: React.FC = () => {
             dispatch(
               actions.updateMetas({
                 // need id to be SurveyRedux
-                id: "draft",
+                id: isDraft ? "draft" : survey?.id,
                 changes: {
-                  id: "draft",
+                  id: isDraft ? "draft" : survey?.id,
                   attributes: {
                     ...values,
                     status: Enum_Survey_Status.Draft,
@@ -86,12 +114,25 @@ export const CreateSurveyForm: React.FC = () => {
                     </Box>
                     <Flex w="100%" justifyContent={"space-between"} mt="30px">
                       {step !== 1 ? (
-                        <Navigatebtn step={step} previous errors={errors} values={values} isSubmitting={isSubmitting} />
+                        <Navigatebtn
+                          step={step}
+                          previous
+                          errors={errors}
+                          values={values}
+                          isSubmitting={isSubmitting}
+                          isDraft={isDraft}
+                        />
                       ) : (
                         <Box minW="150px"></Box>
                       )}
 
-                      <Navigatebtn step={step} errors={errors} values={values} isSubmitting={isSubmitting} />
+                      <Navigatebtn
+                        step={step}
+                        errors={errors}
+                        values={values}
+                        isSubmitting={isSubmitting}
+                        isDraft={isDraft}
+                      />
                     </Flex>
                   </Flex>
                 </Box>
@@ -111,12 +152,14 @@ const Navigatebtn = ({
   values,
   errors,
   isSubmitting,
+  isDraft,
 }: {
   step: number;
   previous?: boolean;
   errors: any;
   values: any;
   isSubmitting: boolean;
+  isDraft: boolean;
 }) => {
   const target = step + (previous ? -1 : +1);
   const dispatch = useAppDispatch();
@@ -126,6 +169,15 @@ const Navigatebtn = ({
   };
 
   if (step === 6 && !previous) {
+    if (!isDraft) {
+      return (
+        <Link to="/dashboard">
+          <Button type="submit" variant="roundedBlue" minW="150px">
+            Sauvegarder et revenir
+          </Button>
+        </Link>
+      );
+    }
     return (
       <Button type="submit" variant="roundedBlue" minW="150px" isLoading={isSubmitting}>
         Valider

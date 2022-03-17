@@ -1,4 +1,4 @@
-import { Box, Text, Center } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import { SurveyGrid } from "components/SurveyGrid";
 import React, { useState, useMemo, useEffect } from "react";
 import IRoute from "types/routes/route";

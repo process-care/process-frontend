@@ -35,7 +35,7 @@ const initialState: SurveyEditor = {
 
 type InitializedPayload = SurveyRedux[];
 
-type UpdatePayload = {
+export type UpdatePayload = {
   id: string;
   changes: SurveyRedux;
 };
@@ -62,12 +62,12 @@ export const surveyEditorSlice = createSlice({
     },
     updateMetas: (state, action: PayloadAction<UpdatePayload>) => {
       state.lastUpdated = new Date().toISOString();
-      const updated = { ...state.draft, ...action.payload.changes };
-      state.draft = updated;
+      const updated = { ...state.data, ...action.payload.changes };
+      state.data = updated;
 
       // // auto-generate slug
       if (action.payload?.changes?.attributes?.title) {
-        state.draft.attributes.slug = `${slugify(action.payload?.changes?.attributes?.title.toLowerCase(), {
+        state.data.attributes.slug = `${slugify(action.payload?.changes?.attributes?.title.toLowerCase(), {
           strict: true,
         })}`;
       }
@@ -112,7 +112,7 @@ export const hasChanges = (state: RootState): boolean => {
 
 export const survey = (state: RootState): SurveyRedux | undefined => state.editor.survey.data;
 
-export const getSurveyDraft = (state: RootState): SurveyRedux | undefined => state.editor.survey.draft;
+export const getSurveyDraft = (state: RootState): SurveyRedux | undefined => state.editor.survey.data;
 
 export const selectors = {
   error,

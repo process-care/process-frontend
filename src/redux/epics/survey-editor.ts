@@ -33,18 +33,16 @@ const updateEpic: Epic = (action$, state$) =>
     filter(() => {
       // If surveyId is undefined, it means we are creating a new survey and we don't need to update it
       const surveyId = state$.value.editor.survey.data.id;
+
       return Boolean(surveyId);
     }),
-    map((action) => action.payload),
+    map((action) => action.payload?.changes?.attributes),
     scan((acc, payload) => Object.assign({}, acc, payload), {}),
-    debounceTime(5000),
-    switchMap(async (accumulated) => {
+    debounceTime(1000),
+    switchMap(async (accumulated: SurveyInput) => {
       const savingAt = new Date().toISOString();
-      const data: SurveyInput = { ...accumulated };
       const surveyId = state$.value.editor.survey.data?.id;
-
-      await sdk.updateSurvey({ id: surveyId, data });
-
+      await sdk.updateSurvey({ id: surveyId, data: accumulated });
       return savingAt;
     }),
     map((savedDate) => actions.updated({ lastSaved: savedDate }))

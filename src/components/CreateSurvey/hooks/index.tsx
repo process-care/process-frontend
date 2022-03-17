@@ -19,7 +19,6 @@ type Navigators = {
 
 export const useNavigator = (survey: SurveyRedux | undefined): Navigators => {
   const history = useHistory();
-
   const { mutateAsync: addLanding } = useCreateLandingMutation(client);
   const { mutateAsync: updateSurvey } = useUpdateSurveyMutation(client);
 

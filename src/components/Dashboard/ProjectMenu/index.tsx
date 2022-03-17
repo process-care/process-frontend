@@ -213,7 +213,7 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
                 disabled={!isDraft}
                 top
                 left
-                label={"Modifier les données de le projet"}
+                label={"Modifier les données du projet"}
                 onClick={!isDraft ? () => console.log("forbidden") : goToSurveyMetadatas}
               />
             </Flex>

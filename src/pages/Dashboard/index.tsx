@@ -144,8 +144,8 @@ export const Dashboard: React.FC<IRoute> = () => {
           <Flex justifyContent="space-between" alignItems="center">
             {hadSurveys && (
               <>
-                <Text variant="xl" mb={7}>
-                  {surveysLenght > 1 ? `Mes ${surveysLenght} enquêtes` : "Mon enquête"}
+                <Text variant="xl" mb={7} fontWeight="bold">
+                  {surveysLenght > 1 ? `Mes ${surveysLenght} projets` : "Mon projet"}
                 </Text>
 
                 <Button onClick={goToCreateSurvey} variant="roundedBlue" zIndex="0">
@@ -159,12 +159,21 @@ export const Dashboard: React.FC<IRoute> = () => {
             <>
               <Filters filters={t.filters} handleClick={(id) => setCurrentFilter(id)} currentFilter={currentFilter} />
               {hadFilteredSurvys ? (
-                <Box mt={8}>
+                <Box
+                  mt={8}
+                  style={{
+                    backgroundColor: "white",
+                    border: "1px solid #e7e7e7",
+                    borderRadius: "4px",
+                    overflow: "hidden",
+                    boxShadow: "rgb(33 33 52 / 10%) 0px 1px 4px",
+                  }}
+                >
                   <Table columns={columns} data={data} onClick={toggleMenu} />
                 </Box>
               ) : (
                 <Box w="100%" m="0 auto">
-                  <NoData content="Vous n'avez pas d'enquêtes ayant ce status" />
+                  <NoData content="Vous n'avez pas de projet ayant ce status" />
                 </Box>
               )}
             </>

@@ -72,8 +72,8 @@ export const ForgotPasswordForm: React.FC = () => {
               <Box w="100%" pt={isTablet ? "20px" : "90px"} textAlign="left">
                 <Flex justifyContent="center" flexDirection="column" w="100%">
                   <Text variant="current" mb="20px">
-                    Merci de renseigner votre adresse email, vous recevrez un
-                    lien vous permettant de réinitialiser votre mot de passe.
+                    Merci de renseigner votre adresse email, vous recevrez un lien vous permettant de réinitialiser
+                    votre mot de passe.
                   </Text>
                   <Input
                     isCollapsed={false}
@@ -84,7 +84,7 @@ export const ForgotPasswordForm: React.FC = () => {
                     autoComplete="email"
                   />
 
-                  {errors.length > 0 &&
+                  {errors?.length > 0 &&
                     errors[0].messages.map((err: any) => {
                       return (
                         <Text color="red" fontSize="12px" mt="10px">
@@ -93,12 +93,7 @@ export const ForgotPasswordForm: React.FC = () => {
                       );
                     })}
 
-                  <Button
-                    mt="40px"
-                    type="submit"
-                    disabled={!isValid || isSubmitting}
-                    variant="roundedBlue"
-                  >
+                  <Button mt="40px" type="submit" disabled={!isValid || isSubmitting} variant="roundedBlue">
                     Reinitialiser mon mot de passe
                   </Button>
                   <Box textAlign="center">

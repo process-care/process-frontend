@@ -18,7 +18,7 @@ export const Menu: React.FC<Props> = ({ surveyTitle }) => {
     <Flex
       pos="relative"
       p={5}
-      borderBottom="1px"
+      borderBottom="1px solid rgb(234, 234, 239)"
       justifyContent="flex-start"
       alignItems="center"
     >
@@ -30,30 +30,14 @@ export const Menu: React.FC<Props> = ({ surveyTitle }) => {
           </Text>
         </Flex>
       </NavLink>
-      <Text
-        fontSize="12px"
-        textTransform="uppercase"
-        isTruncated
-        maxWidth="250px"
-      >
+      <Text fontSize="12px" textTransform="uppercase" isTruncated maxWidth="250px">
         {surveyTitle}
       </Text>
       {isSaving && (
-        <Text
-          variant="xs"
-          mr="40px"
-          color="brand.green"
-          pos="absolute"
-          right="0"
-        >
+        <Text variant="xs" mr="40px" color="brand.green" pos="absolute" right="0">
           <CheckIcon mr="7px" />
           Modification sauvegardée
-          <CircularProgress
-            ml={2}
-            isIndeterminate
-            color="brand.green"
-            size="2"
-          />
+          <CircularProgress ml={2} isIndeterminate color="brand.green" size="2" />
         </Text>
       )}
     </Flex>

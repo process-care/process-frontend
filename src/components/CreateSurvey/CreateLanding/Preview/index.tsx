@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Center, Flex, Text } from "@chakra-ui/react";
 import { useHistory, useParams } from "react-router-dom";
 import { Description } from "./Description";
 import { useAppSelector } from "redux/hooks";
@@ -80,7 +80,7 @@ export const Preview: React.FC<Props> = ({ isUserView, data, author }) => {
   return (
     <Box h={isTablet ? "fit-content" : "100vh"} w="100%" backgroundColor="white">
       <Flex flexDirection={isTablet ? "column" : "row"}>
-        <Box
+        <Center
           w={isTablet ? "100%" : "33%"}
           minW="400px"
           borderRight="1px solid rgb(234, 234, 239)"
@@ -90,47 +90,40 @@ export const Preview: React.FC<Props> = ({ isUserView, data, author }) => {
           backgroundColor={attributes?.color_theme?.button || "blue"}
         >
           <Box textAlign="left" px="5%">
-            <Text variant="xxl" fontWeight="bold" color="white" ml="-2px" maxW="420px">
+            <Text variant="xxl" fontWeight="bold" color="white" ml="-2px" wordBreak="break-word">
               {attributes?.title}
             </Text>
 
             <Text
               variant="smallTitle"
               color="white"
-              mt="60px"
+              mt="30px"
               maxHeight="300px"
               overflow="scroll"
-              defaultValue="dsqdsq"
+              wordBreak="break-word"
             >
               {attributes?.subtitle}
             </Text>
             {hasMedia && (
-              <Box
-                mt="30px"
-                position={isTablet ? "relative" : "absolute"}
-                left={isTablet ? "0" : "10px"}
-                right={isTablet ? "0" : "10px"}
-                bottom={isTablet ? "0" : "10px"}
-              >
+              <Box mt="30px" position="relative">
                 {hasVideo && <Video url={attributes?.video_url ?? ""} />}
                 {hasImage && <img src={`${API_URL_ROOT}${coverSrc}`} alt={coverName} />}
               </Box>
             )}
           </Box>
-        </Box>
+        </Center>
         <Box w={isTablet ? "100%" : "67%"}>
-          <Box
+          <Center
             h={isTablet ? "fit-content" : "100vh"}
             flexDirection="column"
             textAlign="left"
             alignItems="flex-end"
             overflow="scroll"
           >
-            <Box p="20px" d="flex" justifyContent={isTablet ? "center" : "flex-end"}>
+            <Box pos="absolute" top="20px" right="20px">
               <Logo />
             </Box>
-
-            <Tabs w={isTablet ? "90%" : "80%"} m={isTablet ? "30px auto" : "150px auto 0 auto"}>
+            <Tabs w={isTablet ? "90%" : "80%"} m={isTablet ? "30px auto" : "0 auto"}>
               <TabList>
                 <Tab>Description</Tab>
                 {hasMembers && <Tab>Equipe</Tab>}
@@ -156,7 +149,7 @@ export const Preview: React.FC<Props> = ({ isUserView, data, author }) => {
                 </TabPanel>
               </TabPanels>
             </Tabs>
-          </Box>
+          </Center>
         </Box>
       </Flex>
     </Box>

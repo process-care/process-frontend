@@ -120,7 +120,7 @@ export const Preview: React.FC<Props> = ({ isUserView, data, author }) => {
             alignItems="flex-end"
             overflow="scroll"
           >
-            <Box pos="absolute" top="20px" right="20px">
+            <Box pos="absolute" top="20px" right="20px" hidden={isTablet}>
               <Logo />
             </Box>
             <Tabs w={isTablet ? "90%" : "80%"} m={isTablet ? "30px auto" : "0 auto"}>

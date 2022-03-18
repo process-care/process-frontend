@@ -55,7 +55,7 @@ export const Page: React.FC<Props> = ({
   // Final render
   return (
     <Box>
-      <Text variant="xl" my="20px">
+      <Text variant="smallTitleBold" mt="50px">
         {page.attributes.name ?? "Missing page name 😣"}
       </Text>
 

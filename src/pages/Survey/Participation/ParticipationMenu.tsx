@@ -119,7 +119,7 @@ interface EntryProps {
   selectIndex: (index: number) => void;
 }
 
-export const PageEntry: React.FC<EntryProps> = ({ index, page, color, isNavigable, selectedPageId, selectIndex }) => {
+export const PageEntry: React.FC<EntryProps> = ({ index, page, isNavigable, selectedPageId, selectIndex }) => {
   const isSelected = selectedPageId === page.id;
 
   const goTo = useCallback(() => {
@@ -135,14 +135,14 @@ export const PageEntry: React.FC<EntryProps> = ({ index, page, color, isNavigabl
       onClick={goTo}
       mb="4"
       ml="5px"
-      color={color}
+      color="white"
       d="flex"
       alignItems="center"
       fontWeight={isSelected ? "bold" : "normal"}
       w="100%"
     >
       .{/* <Circle backgroundColor={color} size="10px" mr="10px" /> */}
-      {page.attributes.short_name ?? "Short name missing 😣"}
+      {page.attributes.name ?? "Short name missing 😣"}
     </Box>
   );
 };

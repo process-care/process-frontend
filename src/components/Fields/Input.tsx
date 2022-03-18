@@ -12,7 +12,6 @@ import {
   AccordionButton,
   AccordionPanel,
   AccordionIcon,
-  Text,
 } from "@chakra-ui/react";
 
 import { useField } from "formik";
@@ -51,8 +50,6 @@ export const CustomInput: React.FC<Props> = ({
   appearance,
 }) => {
   const [field, meta] = useField(name);
-
-  console.log(meta.touched, field.name, meta.error);
   return (
     <FormControl isRequired={isRequired} id={name} textAlign="left" style={style} isInvalid={!!meta.error}>
       {isAccordion ? (
@@ -84,7 +81,6 @@ export const CustomInput: React.FC<Props> = ({
                     />
                     {inputRightAddon && <InputRightAddon children={inputRightAddon} h="40px" />}
                   </InputGroup>
-
                   <FormErrorMessage mt={1} justifyContent="flex-end" fontSize="10px">
                     {meta.error}
                   </FormErrorMessage>
@@ -114,11 +110,9 @@ export const CustomInput: React.FC<Props> = ({
                 />
                 {inputRightAddon && <InputRightAddon children={inputRightAddon} h="40px" />}
               </InputGroup>
-              {meta.error && (
-                <Text fontSize="10px" color="red" textAlign="right">
-                  {meta.error}
-                </Text>
-              )}
+              <FormErrorMessage mt={1} justifyContent="flex-end" fontSize="10px">
+                {meta.error}
+              </FormErrorMessage>
               <FormHelperText fontSize="xs">{helpText}</FormHelperText>
             </>
           )}

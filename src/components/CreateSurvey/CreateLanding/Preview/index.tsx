@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Box, Center, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { useHistory, useParams } from "react-router-dom";
 import { Description } from "./Description";
 import { useAppSelector } from "redux/hooks";
@@ -8,9 +8,9 @@ import { useMediaQueries } from "utils/hooks/mediaqueries";
 import { LandingRedux } from "redux/slices/types";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import { Team } from "./Team";
-import { Contact } from "./Contact";
 import { Video } from "components/Video";
 import { API_URL_ROOT } from "constants/api";
+import { Legals } from "./Legals";
 // ---- STATICS
 
 const big_placeholder =
@@ -71,56 +71,64 @@ export const Preview: React.FC<Props> = ({ isUserView, data, author }) => {
         src={attributes?.logo ?? ""}
         alt="Logo"
         style={{
-          maxHeight: "100px",
-          position: "absolute",
-          top: "20px",
-          left: "20px",
+          maxHeight: "90px",
+          position: isTablet ? "relative" : "absolute",
+          margin: "0 auto",
+          top: "10px",
+          right: "10px",
         }}
       />
     );
   };
   return (
-    <Box h="100vh" w="100%" backgroundColor="white">
+    <Box h={isTablet ? "fit-content" : "100vh"} w="100%" backgroundColor="white">
       <Flex flexDirection={isTablet ? "column" : "row"}>
-        <Center
+        <Box
           w={isTablet ? "100%" : "33%"}
           minW="400px"
           borderRight="1px solid rgb(234, 234, 239)"
-          h="100vh"
+          h={isTablet ? "fit-content" : "100vh"}
+          py={isTablet ? "30px" : "0px"}
           pos="relative"
+          backgroundColor={attributes?.color_theme?.button}
         >
-          <Box color="white" textAlign="left" px="5%">
-            <Logo />
-
-            <Text
-              variant={isTablet ? "xlNoMobilVariant" : "xxl"}
-              fontWeight="bold"
-              color="gray.800"
-              ml="-2px"
-              maxW="420px"
-            >
-              {attributes?.title || "Titre à remplacer"}
+          <Box textAlign="left" px="5%">
+            <Text variant="xxl" fontWeight="bold" color="white" ml="-2px" maxW="420px">
+              {attributes?.title}
             </Text>
 
-            <Text variant="smallTitle" color="gray.800" mt="30px">
-              {attributes?.subtitle || `Sous titre à remplacer.}`}
+            <Text variant="smallTitle" color="white" mt="60px" maxHeight="300px" overflow="scroll">
+              {attributes?.subtitle}
             </Text>
             {hasMedia && (
-              <Box mt="30px">
+              <Box
+                mt="30px"
+                position={isTablet ? "relative" : "absolute"}
+                left={isTablet ? "0" : "10px"}
+                right={isTablet ? "0" : "10px"}
+                bottom={isTablet ? "0" : "10px"}
+              >
                 {hasVideo && <Video url={attributes?.video_url ?? ""} />}
                 {hasImage && <img src={`${API_URL_ROOT}${coverSrc}`} alt={coverName} />}
               </Box>
             )}
           </Box>
-          <Box pos="absolute" bottom="30px" left="5%" w="100%" textAlign="left"></Box>
-        </Center>
+        </Box>
         <Box w={isTablet ? "100%" : "67%"}>
-          <Box h="100vh" flexDirection="column" textAlign="left" alignItems="flex-end">
-            <Tabs w="80%" m="150px auto 0 auto">
+          <Box
+            h={isTablet ? "fit-content" : "100vh"}
+            flexDirection="column"
+            textAlign="left"
+            alignItems="flex-end"
+            overflow="scroll"
+          >
+            <Logo />
+
+            <Tabs w={isTablet ? "90%" : "80%"} m={isTablet ? "30px auto" : "150px auto 0 auto"}>
               <TabList>
                 <Tab>Description</Tab>
                 {hasMembers && <Tab>Equipe</Tab>}
-                <Tab>Contact</Tab>
+                <Tab>Informations</Tab>
               </TabList>
 
               <TabPanels>
@@ -136,8 +144,9 @@ export const Preview: React.FC<Props> = ({ isUserView, data, author }) => {
                     />
                   </TabPanel>
                 )}
+
                 <TabPanel>
-                  <Contact data={data} author={author} />
+                  <Legals data={data} author={author} />
                 </TabPanel>
               </TabPanels>
             </Tabs>

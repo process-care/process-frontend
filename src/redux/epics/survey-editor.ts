@@ -38,7 +38,7 @@ const updateEpic: Epic = (action$, state$) =>
     }),
     map((action) => action.payload?.changes?.attributes),
     scan((acc, payload) => Object.assign({}, acc, payload), {}),
-    debounceTime(1000),
+    debounceTime(500),
     switchMap(async (accumulated: SurveyInput) => {
       const savingAt = new Date().toISOString();
       const surveyId = state$.value.editor.survey.data?.id;
@@ -55,10 +55,11 @@ const postEpic: Epic = (action$, state$) =>
     filter(() => {
       // If surveyId is defined, it means we don't need to create it
       const surveyId = state$.value.editor.survey.data?.id;
+      console.log(surveyId), "ID";
       return !surveyId;
     }),
     switchMap(async () => {
-      const data = state$.value.editor.survey.draft?.attributes as SurveyInput;
+      const data = state$.value.editor.survey.data?.attributes as SurveyInput;
       const format = {
         slug: data.slug,
         title: data.title,

@@ -7,7 +7,7 @@ export const t = {
     { label: "Tout voir", id: "all" },
     { label: "Brouillon", id: "draft" },
     { label: "En cours", id: "pending" },
-    { label: "Fermés", id: "closed" },
+    // { label: "Fermés", id: "closed" },
     { label: "Archivés", id: "archived" },
   ],
   header: [

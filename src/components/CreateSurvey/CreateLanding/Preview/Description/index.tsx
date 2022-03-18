@@ -12,16 +12,10 @@ export const Description: React.FC<Props> = ({ data, onParticipate }) => {
   const attributes = data?.attributes;
   const { isTablet } = useMediaQueries();
 
-  const coverSrc = attributes?.cover?.data?.attributes?.url;
-
-  const hasVideo = Boolean(attributes?.video_url);
-  const hasImage = Boolean(coverSrc);
-  const hasMedia = hasVideo || hasImage;
-
   return (
     <Box w="100%" h="100%">
-      <Flex px="5%" py="10%" flexDirection={isTablet ? "column" : "row"}>
-        <Box m={hasMedia ? "inherit" : "auto"} pl={isTablet ? "unset" : "30px"} mt={hasMedia ? "30px" : "unset"}>
+      <Flex w="100%" pt="40px">
+        <Box>
           <Text
             textAlign="left"
             variant="current"

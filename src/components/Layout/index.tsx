@@ -20,12 +20,9 @@ export const Layout: React.FC<Props> = ({ children }) => {
   const { isTablet } = useMediaQueries();
   const isSurveyPages = pathname.search("/survey/") !== -1;
   const isPortail = pathname === "/";
-  const authPage = [
-    "/connexion",
-    "/inscription",
-    "/mot-de-passe-oublie",
-    "/nouveau-mot-de-passe",
-  ];
+  const isEditor = pathname.includes("create/landing");
+  console.log(isEditor);
+  const authPage = ["/connexion", "/inscription", "/mot-de-passe-oublie", "/nouveau-mot-de-passe"];
   const isAuthPage = authPage.includes(pathname);
   const renderMenu = () => {
     const isSimpleMenu = ["/dashboard", "/profil"];
@@ -43,16 +40,10 @@ export const Layout: React.FC<Props> = ({ children }) => {
     if (isPortail) return <Footer />;
   };
 
-  if (isTablet && !isSurveyPages && !isPortail && !isAuthPage) {
+  if ((isTablet && !isSurveyPages && !isPortail && !isAuthPage) || (isTablet && isEditor)) {
     return (
       <Div100vh>
-        <Box
-          h="100%"
-          alignItems="center"
-          d="flex"
-          justifyContent="center"
-          className="background__grid"
-        >
+        <Box h="100%" alignItems="center" d="flex" justifyContent="center" className="background__grid">
           <Box
             backgroundColor="white"
             p={isTablet ? "30px 20px" : "50px"}

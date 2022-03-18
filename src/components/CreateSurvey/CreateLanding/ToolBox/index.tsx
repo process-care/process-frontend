@@ -10,7 +10,7 @@ export const ToolBox: React.FC = () => {
   const isEditingAbout = useAppSelector(selectors.isEditingAbout);
 
   return (
-    <Container variant="rightPart" height="100%" w="43%">
+    <Container variant="rightPart" maxWidth="100%" transition="all 400ms" overflow="scroll" height="100vh">
       {isEditingAbout ? <AboutForm /> : <LandingForm />}
     </Container>
   );

@@ -42,7 +42,8 @@ export const Preview: React.FC<Props> = ({ isUserView, data, author }) => {
 
   const hasImage = Boolean(coverSrc);
   const hasMedia = hasVideo || hasImage;
-  const hasMembers = Boolean(data?.attributes?.members);
+  const hasMembers = Boolean(data?.attributes?.members?.length > 0);
+  console.log(data?.attributes?.members);
 
   const onParticipate = useCallback(() => {
     if (!isUserView) {
@@ -72,10 +73,6 @@ export const Preview: React.FC<Props> = ({ isUserView, data, author }) => {
         alt="Logo"
         style={{
           maxHeight: "90px",
-          position: isTablet ? "relative" : "absolute",
-          margin: "0 auto",
-          top: "10px",
-          right: "10px",
         }}
       />
     );
@@ -90,14 +87,21 @@ export const Preview: React.FC<Props> = ({ isUserView, data, author }) => {
           h={isTablet ? "fit-content" : "100vh"}
           py={isTablet ? "30px" : "0px"}
           pos="relative"
-          backgroundColor={attributes?.color_theme?.button}
+          backgroundColor={attributes?.color_theme?.button || "blue"}
         >
           <Box textAlign="left" px="5%">
             <Text variant="xxl" fontWeight="bold" color="white" ml="-2px" maxW="420px">
               {attributes?.title}
             </Text>
 
-            <Text variant="smallTitle" color="white" mt="60px" maxHeight="300px" overflow="scroll">
+            <Text
+              variant="smallTitle"
+              color="white"
+              mt="60px"
+              maxHeight="300px"
+              overflow="scroll"
+              defaultValue="dsqdsq"
+            >
               {attributes?.subtitle}
             </Text>
             {hasMedia && (
@@ -122,7 +126,9 @@ export const Preview: React.FC<Props> = ({ isUserView, data, author }) => {
             alignItems="flex-end"
             overflow="scroll"
           >
-            <Logo />
+            <Box p="20px" d="flex" justifyContent={isTablet ? "center" : "flex-end"}>
+              <Logo />
+            </Box>
 
             <Tabs w={isTablet ? "90%" : "80%"} m={isTablet ? "30px auto" : "150px auto 0 auto"}>
               <TabList>

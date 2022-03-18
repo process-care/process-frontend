@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Flex,
-  Text,
-  Button,
-  Collapse,
-  CircularProgress,
-} from "@chakra-ui/react";
+import { Flex, Text, Button, Collapse, CircularProgress } from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { ReactComponent as Back } from "./assets/back.svg";
@@ -64,8 +58,11 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
         <Button
           pos="absolute"
           top="19px"
-          right="10px"
+          right="0"
+          left="0"
+          m="0 auto"
           variant="roundedBlue"
+          width="fit-content"
           onClick={() =>
             dispatch(
               appActions.tooglePreview({
@@ -83,6 +80,7 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
           pos="relative"
           p={5}
           borderBottom="1px"
+          borderColor="brand.line"
           justifyContent="flex-start"
           alignItems="center"
         >
@@ -95,12 +93,7 @@ export const Menu: React.FC<Props> = ({ isLanding, surveyId }) => {
             </Flex>
           </NavLink>
 
-          <Text
-            fontSize="12px"
-            textTransform="uppercase"
-            isTruncated
-            maxWidth="250px"
-          >
+          <Text fontSize="12px" textTransform="uppercase" isTruncated maxWidth="250px">
             {data?.survey?.data?.attributes?.title}
           </Text>
           <Flex pos="absolute" right="10px">
@@ -158,9 +151,7 @@ function ChangesSaved() {
 // TODO: make it global
 function useChangesNotifier(isLanding: boolean | undefined) {
   const hasUnsavedChanges = useAppSelector(
-    isLanding
-      ? selectors.landingHasChanges
-      : globalSelectors.questions.questionsHasChanges
+    isLanding ? selectors.landingHasChanges : globalSelectors.questions.questionsHasChanges
   );
 
   const [inProgress, setInProgress] = useState(false);

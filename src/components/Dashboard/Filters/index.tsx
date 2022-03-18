@@ -1,6 +1,5 @@
 import React from "react";
 import { Box, Flex, Text } from "@chakra-ui/react";
-import { useMediaQueries } from "utils/hooks/mediaqueries";
 
 export interface Filter {
   label: string;
@@ -15,7 +14,6 @@ interface Props {
 }
 
 export const Filters: React.FC<Props> = ({ filters, handleClick, currentFilter, center }) => {
-  const { isTablet } = useMediaQueries();
   return (
     <Flex justifyContent={center ? "center" : undefined} w="fit-content">
       {filters.map(({ label, id }) => {
@@ -23,7 +21,7 @@ export const Filters: React.FC<Props> = ({ filters, handleClick, currentFilter, 
 
         return (
           <Box
-            mr={isTablet ? "unset" : "3"}
+            mr="5px"
             key={id}
             onClick={() => handleClick(id)}
             backgroundColor={isSelected ? "white" : "transparent"}

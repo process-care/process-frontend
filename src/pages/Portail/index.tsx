@@ -57,36 +57,37 @@ export const Portail: React.FC<IRoute> = () => {
 
   return (
     <Box w="100%">
-      <Box
-        position="absolute"
-        color="white"
-        zIndex="2"
-        top={isTablet ? "80px" : "90px"}
-        left={isTablet ? "5%" : "70px"}
-      >
-        <Text variant="xxl" fontWeight="900" maxW="1000px" w="auto" textAlign="left" marginLeft="-2px">
-          {t.title}
-        </Text>
-        <Text variant={isTablet ? "currentLight" : "baseline"} maxW="1000px">
-          <strong>P</strong>latform for <strong>R</strong>esearch <strong>O</strong>nline and <strong>C</strong>itiz
-          <strong>E</strong>n <strong>S</strong>cience <strong>S</strong>urveys. <br />
-        </Text>
+      <Box position="relative" h={isTablet ? "150px" : "200px"}>
+        <Box position="absolute" color="white" zIndex="2" top="20px" left={isTablet ? "5%" : "70px"}>
+          <Text variant="xxl" fontWeight="900" maxW="1000px" w="auto" textAlign="left" marginLeft="-3px" mb="10px">
+            {t.title}
+          </Text>
+          <Text variant={isTablet ? "currentLight" : "baseline"} maxW="1000px">
+            <strong>P</strong>latform for <strong>R</strong>esearch <strong>O</strong>nline and <strong>C</strong>itiz
+            <strong>E</strong>n <strong>S</strong>cience <strong>S</strong>urveys. <br />
+          </Text>
+        </Box>
+
+        <Image
+          src={Hero}
+          alt="Process"
+          boxSize="100%"
+          h={isTablet ? "150px" : "200px"}
+          objectFit="cover"
+          pos="absolute"
+        />
       </Box>
 
-      <Image src={Hero} alt="Process" boxSize="100%" h={isTablet ? "80px" : "200px"} objectFit="cover" pos="absolute" />
-
-      <Box
-        pt={isTablet ? "50px" : "110px"}
-        pb={isTablet ? "50px" : "160px"}
-        maxW={isTablet ? "unset" : "80%"}
-        margin="0 auto"
-        px="5%"
-      ></Box>
-
-      <Box px="5%" d="flex" alignItems="center" justifyContent="space-between" flexDir={isTablet ? "column" : "row"}>
-        <Box d="flex" alignItems="center">
+      <Box p={isTablet ? "5%" : "2% 5%"} d="flex" justifyContent="space-between" flexDir={isTablet ? "column" : "row"}>
+        <Box
+          d="flex"
+          alignItems={isTablet ? "flex-start" : "center"}
+          w="100%"
+          flexDirection={isTablet ? "column" : "row"}
+          justifyContent="flex-start"
+        >
           <Filters filters={t.filters} handleClick={(id) => setCurrentFilter(id)} currentFilter={currentFilter} />
-          <Text textAlign="left" variant="xs" color="gray.600" ml={isTablet ? "5px" : "0"}>
+          <Text textAlign="left" variant="xs" color="gray.600" mt={isTablet ? "5px" : "0"}>
             {totalCount} projets en cours
           </Text>
         </Box>

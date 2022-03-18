@@ -30,6 +30,6 @@ export const Landing: React.FC<IRoute> = () => {
   if (!landing?.landing?.data) {
     return <></>;
   }
-  console.log(survey);
+
   return <Preview data={sanitizeEntity(landing?.landing?.data)} isUserView author={author?.data?.attributes} />;
 };

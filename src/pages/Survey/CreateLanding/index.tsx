@@ -1,4 +1,4 @@
-import { Box, Container } from "@chakra-ui/react";
+import { Box, Collapse, Container } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
@@ -48,7 +48,7 @@ export const CreateLanding: React.FC<IRoute> = () => {
   return (
     <Box overflow="auto">
       <Box d="flex" justifyContent="space-between" w="100%" overflow="hidden" h="100%">
-        <Box w="57%" pos="relative">
+        <Box w={previewMode === "landing" ? "100%" : "57%"} pos="relative" transition="all 400ms" overflow="scroll">
           <Box position="fixed" top="0" w="inherit" backgroundColor="white" zIndex="10">
             <Menu isLanding surveyId={surveyId} />
           </Box>
@@ -56,20 +56,28 @@ export const CreateLanding: React.FC<IRoute> = () => {
             mt={previewMode !== "landing" ? "60px" : "0"}
             d="flex"
             justifyContent="space-around"
-            overflow="hidden"
             w="100%"
             h="100%"
+            transition="all 400ms"
           >
-            <Container variant="createformColumn" w="100%" h="100%" alignItems="center" p="0" d="flex">
+            <Container
+              variant="createformColumn"
+              w="inherit"
+              h="100%"
+              alignItems="center"
+              p="0"
+              d="flex"
+              transition="all 400ms"
+            >
               <div className="background__grid--black">
                 <Preview data={data} isUserView={false} />
               </div>
             </Container>
           </Box>
         </Box>
-        {/* <Collapse in={previewMode !== "landing"} style={{ width: "32%" }}> */}
-        <ToolBox />
-        {/* </Collapse> */}
+        <Collapse in={previewMode !== "landing"} style={{ width: "43%", transition: "all 400ms" }}>
+          <ToolBox />
+        </Collapse>
       </Box>
     </Box>
   );

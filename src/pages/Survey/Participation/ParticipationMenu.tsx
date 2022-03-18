@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from "react";
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import { PageParticipationRedux } from "redux/slices/participation/page";
 
 import { useMediaQueries } from "utils/hooks/mediaqueries";
@@ -36,49 +36,15 @@ export const ParticipationMenu: React.FC<MenuProps> = ({ pages, selectIndex, col
   }, [pages]);
 
   return (
-    <Box
-      pos="sticky"
-      top="0"
-      h={isTablet ? "60px" : "unset"}
-      d="flex"
-      alignItems="center"
-      flexDirection={isTablet ? "row" : "column"}
-    >
-      {/* {!isTablet && (
-        <Flex
-          textAlign="right"
-          py="19.5px"
-          px="20px"
-          borderBottom="1px solid"
-          borderColor={color}
-          alignItems="center"
-          justifyContent="space-between"
-          width="100%"
-        >
-          {!!logo && logo.length !== 0 ? (
-            <img src={logo} alt="Logo" style={{ maxHeight: "30px" }} />
-          ) : (
-            <Box minH="30px" />
-          )}
-
-          <Text textDecoration="underline" variant="xs">
-            <a href={`mailto: ${author}`}>{author}</a>
-          </Text>
-        </Flex>
-      )} */}
+    <Box h={isTablet ? "60px" : "unset"} d="flex" alignItems="center" flexDirection={isTablet ? "row" : "column"}>
       <Box
         d="flex"
         flexDirection={isTablet ? "row" : "column"}
         justifyContent={logo?.length === 0 ? "flex-end" : "space-between"}
         alignItems="center"
-        w="90%"
+        w="100%"
         mx="auto"
       >
-        {isTablet && !!logo && logo.length !== 0 ? (
-          <img src={logo} alt="Logo" style={{ maxHeight: "30px" }} />
-        ) : (
-          <Box minH="30px" />
-        )}
         {isTablet && (
           <SummaryMobile
             pages={pages}
@@ -130,19 +96,15 @@ export const PageEntry: React.FC<EntryProps> = ({ index, page, isNavigable, sele
   return (
     <Box
       _hover={{ cursor: isNavigable || isSelected ? "pointer" : "not-allowed" }}
-      textAlign="left"
-      fontSize="14px"
       onClick={goTo}
-      mb="4"
-      ml="5px"
       color="white"
-      d="flex"
-      alignItems="center"
       fontWeight={isSelected ? "bold" : "normal"}
       w="100%"
+      textAlign="left"
     >
-      .{/* <Circle backgroundColor={color} size="10px" mr="10px" /> */}
-      {page.attributes.name ?? "Short name missing 😣"}
+      <Text variant="smallTitle" fontWeight={isSelected ? "bold" : "normal"}>
+        {page.attributes.name ?? "Short name missing 😣"}
+      </Text>
     </Box>
   );
 };

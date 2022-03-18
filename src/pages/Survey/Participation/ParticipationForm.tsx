@@ -69,16 +69,6 @@ export const ParticipationForm: React.FC<Props> = ({ surveyId, participationId }
   const currentColor = attributes?.landing?.data?.attributes?.color_theme?.button || "black";
   const order = attributes?.order;
 
-  const Title = () => {
-    return (
-      <Box pos="sticky" top="0" zIndex="10" backgroundColor={currentColor} p="20px" color="white" textAlign="left">
-        <Text variant="xxl" fontWeight="bold">
-          {attributes?.title}
-        </Text>
-      </Box>
-    );
-  };
-
   const handleSubmit = () => {
     onFinish()
       .then(() => {
@@ -116,14 +106,22 @@ export const ParticipationForm: React.FC<Props> = ({ surveyId, participationId }
     <Box>
       {/* {!isTablet && <Title />} */}
 
-      <Flex direction={isTablet ? "column" : "row"} h="100vh">
-        {isTablet && <Title />}
-        <Box
+      <Flex
+        direction={isTablet ? "column" : "row"}
+        h="100vh"
+        backgroundColor={attributes?.landing?.data?.attributes?.color_theme?.button}
+      >
+        <Center
+          d="flex"
+          flexDirection="column"
           w={isTablet ? "100%" : "30%"}
           minW={isTablet ? "100%" : "200px"}
-          backgroundColor={attributes?.landing?.data?.attributes?.color_theme?.button}
+          h="100%"
+          backgroundColor={attributes?.landing?.data?.attributes?.color_theme?.button || "black"}
         >
-          <Title />
+          <Text variant="xxl" fontWeight="bold" color="white">
+            {attributes?.title}
+          </Text>
           <ParticipationMenu
             author={attributes?.author?.data?.attributes?.email}
             pages={pages}
@@ -132,9 +130,9 @@ export const ParticipationForm: React.FC<Props> = ({ surveyId, participationId }
             logo={attributes?.landing?.data?.attributes?.logo}
             selectedPage={selectedPage}
           />
-        </Box>
+        </Center>
 
-        <Box flexGrow={1} h="fit-content" minH="100vh" backgroundColor="gray.100">
+        <Box flexGrow={1} h="100%" backgroundColor="gray.100" overflow="scroll">
           <Page
             isFailed={isFailed}
             isFirstPage={isFirstPage}

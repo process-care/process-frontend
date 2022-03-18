@@ -54,11 +54,7 @@ export const Page: React.FC<Props> = ({
 
   // Final render
   return (
-    <Box>
-      <Text variant="smallTitleBold" mt="50px">
-        {page.attributes.name ?? "Missing page name 😣"}
-      </Text>
-
+    <Box overflow="scroll" pt="60px">
       <Formik
         validateOnBlur
         validateOnMount

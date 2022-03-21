@@ -76,6 +76,7 @@
     "zustand": "^3.5.0"
   },
   "scripts": {
+    "heroku-prebuild": "yarn run codegen && yarn install -g serve",
     "start": "react-scripts start",
     "build": "yarn run codegen && react-scripts build",
     "test": "react-scripts test",

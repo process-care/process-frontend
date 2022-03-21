@@ -82,7 +82,7 @@
     "eject": "react-scripts eject",
     "eslint:watch": "yarn eslint . --ext .js,.jsx,.ts,.tsx",
     "codegen": "graphql-codegen --config codegen.yml -r dotenv/config",
-    "postinstall": "react-scripts build"
+    "postinstall": "yarn run codegen && react-scripts build"
   },
   "eslintConfig": {
     "extends": "react-app"

@@ -87,7 +87,7 @@ export const Portail: React.FC<IRoute> = () => {
           justifyContent="flex-start"
         >
           <Filters filters={t.filters} handleClick={(id) => setCurrentFilter(id)} currentFilter={currentFilter} />
-          <Text textAlign="left" variant="xs" color="gray.600" mt={isTablet ? "5px" : "0"}>
+          <Text textAlign="left" variant="xs" color="gray.600" mt={isTablet ? "5px" : "0"} ml={isTablet ? "0" : "10px"}>
             {totalCount} projets en cours
           </Text>
         </Box>

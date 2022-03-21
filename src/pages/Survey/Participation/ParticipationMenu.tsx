@@ -4,6 +4,7 @@ import { PageParticipationRedux } from "redux/slices/participation/page";
 
 import { useMediaQueries } from "utils/hooks/mediaqueries";
 import { SummaryMobile } from "./SummaryMobile";
+import { ArrowForwardIcon } from "@chakra-ui/icons";
 
 // MENU
 
@@ -101,8 +102,12 @@ export const PageEntry: React.FC<EntryProps> = ({ index, page, isNavigable, sele
       fontWeight={isSelected ? "bold" : "normal"}
       w="100%"
       textAlign="left"
+      d="flex"
+      alignItems="center"
+      mb="5px"
     >
-      <Text variant="smallTitle" fontWeight={isSelected ? "bold" : "normal"}>
+      {isSelected && <ArrowForwardIcon />}
+      <Text variant="smallTitle" fontWeight={isSelected ? "bold" : "normal"} ml="5px">
         {page.attributes.name ?? "Short name missing 😣"}
       </Text>
     </Box>

@@ -118,6 +118,7 @@ export const ParticipationForm: React.FC<Props> = ({ surveyId, participationId }
           minW={isTablet ? "100%" : "200px"}
           h="100%"
           backgroundColor={attributes?.landing?.data?.attributes?.color_theme?.button || "black"}
+          textAlign="left"
         >
           <Text variant="xxl" fontWeight="bold" color="white">
             {attributes?.title}

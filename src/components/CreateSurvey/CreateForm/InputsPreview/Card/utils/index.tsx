@@ -13,7 +13,6 @@ import {
   FreeClassification,
   MonoThumbnail,
 } from "components/Fields";
-import { QuestionRedux } from "redux/slices/types";
 import { t } from "static/input";
 import { useAppSelector } from "redux/hooks";
 import { selectors } from "redux/slices/formBuilder";

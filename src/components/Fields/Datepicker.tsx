@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  FormControl,
-  FormHelperText,
-  FormLabel,
-  FormErrorMessage,
-} from "@chakra-ui/react";
+import { FormControl, FormHelperText, FormLabel, FormErrorMessage } from "@chakra-ui/react";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -19,19 +14,13 @@ interface Props {
   isCollapsed?: boolean;
 }
 
-export const CustomDatePicker: React.FC<Props> = ({
-  id,
-  label,
-  helpText,
-  isRequired,
-  isCollapsed,
-}) => {
-  const [, meta, helpers] = useField(id);
-  const [startDate, setStartDate] = React.useState(new Date());
+export const CustomDatePicker: React.FC<Props> = ({ id, label, helpText, isRequired, isCollapsed }) => {
+  const [field, meta, helpers] = useField(id);
+  const selected = field.value ? new Date(field.value) : new Date();
+
   const handleChange = (date: Date) => {
     if (date) {
-      setStartDate(date);
-      helpers.setValue(date);
+      helpers.setValue(date.toISOString());
     }
   };
 
@@ -40,13 +29,7 @@ export const CustomDatePicker: React.FC<Props> = ({
       <FormLabel>{label}</FormLabel>
       {!isCollapsed && (
         <>
-          <DatePicker
-            required={isRequired}
-            selected={startDate}
-            onChange={(d: Date) => {
-              handleChange(d);
-            }}
-          />
+          <DatePicker required={isRequired} selected={selected} onChange={handleChange} dateFormat="dd/MM/yyyy" />
           <FormErrorMessage>{meta.error}</FormErrorMessage>
           <FormHelperText fontSize="xs">{helpText}</FormHelperText>
         </>

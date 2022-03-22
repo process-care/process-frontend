@@ -69,7 +69,10 @@ function processAnswers(res: AnswersByParticipationQuery) {
 
   // Unwrap strings from their object form so they work normaly in Textarea
   const unwrapped = sanitized.map((answer) => {
-    if (answer.attributes.question?.data?.attributes?.type === Enum_Question_Type.TextArea) {
+    if (
+      answer.attributes.question?.data?.attributes?.type === Enum_Question_Type.TextArea ||
+      answer.attributes.question?.data?.attributes?.type === Enum_Question_Type.DatePicker
+    ) {
       answer.attributes.value = answer.attributes.value.answer;
     }
     return answer;

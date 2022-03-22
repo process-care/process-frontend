@@ -8,11 +8,7 @@ const config = {
   "Content-Type": "application/json",
 };
 
-export const changePassword: any = async (
-  currentPassword: string,
-  newPassword: string,
-  confirmNewPassword: string
-) => {
+export const changePassword: any = async (currentPassword: string, newPassword: string, confirmNewPassword: string) => {
   const res = await axios.post(
     `${API_URL_ROOT}/password/change-password`,
     {
@@ -26,18 +22,14 @@ export const changePassword: any = async (
 };
 
 export const forgotPassword: any = async (email: string) => {
-  const res = await axios.post(`${API_URL_ROOT}/auth/forgot-password`, {
+  const res = await axios.post(`${API_URL_ROOT}/api/auth/forgot-password`, {
     email,
-    url: `${API_URL_ROOT}/admin/plugins/users-permissions/auth/reset-password`,
+    // url: `${API_URL_ROOT}/admin/plugins/users-permissions/auth/reset-password`,
   });
   return res;
 };
 
-export const resetPassword: any = async (
-  code: string,
-  password: string,
-  passwordConfirmation: string
-) => {
+export const resetPassword: any = async (code: string, password: string, passwordConfirmation: string) => {
   const res = await axios.post(`${API_URL_ROOT}/auth/reset-password`, {
     code,
     password,

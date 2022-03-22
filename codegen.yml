@@ -1,6 +1,6 @@
 overwrite: true
-schema: ${GQL_SCHEMA_URL}
-documents: 'src/**/*.graphql'
+schema: ${REACT_APP_GQL_SCHEMA_URL}
+documents: "src/**/*.graphql"
 generates:
   # Types & Resolvers types in general
   src/api/graphql/types.generated.ts:

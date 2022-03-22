@@ -30,3 +30,5 @@ yarn-error.log*
 # codegen
 *.generated.ts
 graphql.schema.json
+
+.env

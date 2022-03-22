@@ -13,11 +13,10 @@ interface MenuProps {
   selectIndex: (index: number) => void;
   color: string;
   author: string | undefined;
-  logo: string | null | undefined;
   selectedPage: PageParticipationRedux | undefined;
 }
 
-export const ParticipationMenu: React.FC<MenuProps> = ({ pages, selectIndex, color, logo, selectedPage }) => {
+export const ParticipationMenu: React.FC<MenuProps> = ({ pages, selectIndex, color, selectedPage }) => {
   const { isTablet } = useMediaQueries();
 
   const navigables = useMemo(() => {
@@ -38,17 +37,17 @@ export const ParticipationMenu: React.FC<MenuProps> = ({ pages, selectIndex, col
 
   return (
     <Box
-      h={isTablet ? "60px" : "unset"}
       d="flex"
       alignItems="center"
       flexDirection={isTablet ? "row" : "column"}
       w="100%"
-      p="0 20px"
+      p={isTablet ? "10px" : "0 20px"}
+      pos={isTablet ? "absolute" : "relative"}
     >
       <Box
         d="flex"
         flexDirection={isTablet ? "row" : "column"}
-        justifyContent={logo?.length === 0 ? "flex-end" : "space-between"}
+        justifyContent="flex-end"
         alignItems="center"
         w="100%"
         mx="auto"
@@ -93,8 +92,9 @@ interface EntryProps {
   selectIndex: (index: number) => void;
 }
 
-export const PageEntry: React.FC<EntryProps> = ({ index, page, isNavigable, selectedPageId, selectIndex }) => {
+export const PageEntry: React.FC<EntryProps> = ({ index, page, isNavigable, selectedPageId, selectIndex, color }) => {
   const isSelected = selectedPageId === page.id;
+  const { isTablet } = useMediaQueries();
 
   const goTo = useCallback(() => {
     if (!isNavigable) return;
@@ -105,7 +105,7 @@ export const PageEntry: React.FC<EntryProps> = ({ index, page, isNavigable, sele
     <Box
       _hover={{ cursor: isNavigable || isSelected ? "pointer" : "not-allowed" }}
       onClick={goTo}
-      color="white"
+      color={isTablet ? color : "white"}
       fontWeight={isSelected ? "bold" : "normal"}
       w="100%"
       textAlign="left"
@@ -114,7 +114,7 @@ export const PageEntry: React.FC<EntryProps> = ({ index, page, isNavigable, sele
       mb="5px"
     >
       {isSelected && <ArrowForwardIcon />}
-      <Text variant="smallTitle" fontWeight={isSelected ? "bold" : "normal"} ml="5px">
+      <Text variant={isTablet ? "current" : "smallTitle"} fontWeight={isSelected ? "bold" : "normal"} ml="5px">
         {page.attributes.name ?? "Short name missing 😣"}
       </Text>
     </Box>

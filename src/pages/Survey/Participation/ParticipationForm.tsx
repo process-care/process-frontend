@@ -102,54 +102,69 @@ export const ParticipationForm: React.FC<Props> = ({ surveyId, participationId }
     );
   }
 
-  console.log(attributes);
   return (
     <Box>
-      {/* {!isTablet && <Title />} */}
-
       <Flex
         direction={isTablet ? "column" : "row"}
-        h="100vh"
-        backgroundColor={attributes?.landing?.data?.attributes?.color_theme?.button}
+        h={isTablet ? "100%" : "100vh"}
+        backgroundColor={isTablet ? "gray.100" : attributes?.landing?.data?.attributes?.color_theme?.button || "black"}
       >
         <Center
           d="flex"
           flexDirection="column"
           w={isTablet ? "100%" : "30%"}
-          minW={isTablet ? "100%" : "200px"}
+          minW={isTablet ? "100%" : "400px"}
           h="100%"
-          backgroundColor={attributes?.landing?.data?.attributes?.color_theme?.button || "black"}
+          backgroundColor={
+            isTablet ? "gray.100" : attributes?.landing?.data?.attributes?.color_theme?.button || "black"
+          }
           textAlign="left"
         >
-          <Text variant="xxl" fontWeight="bold" color="white">
-            {attributes?.title}
-          </Text>
-          <Text variant="smallTitle" color="white" p="20px">
-            {attributes?.description}
-          </Text>
+          <Box w="100%" pr="50px">
+            <Text
+              variant={isTablet ? "xl" : "xxl"}
+              fontWeight="bold"
+              color={isTablet ? "black" : "white"}
+              p="20px"
+              w="100%"
+              lineHeight="1"
+            >
+              {attributes?.title}
+            </Text>
+          </Box>
+          {!isTablet && (
+            <Text variant="smallTitle" color="white" p="20px">
+              {attributes?.description}
+            </Text>
+          )}
           <ParticipationMenu
             author={attributes?.author?.data?.attributes?.email}
             pages={pages}
             selectIndex={selectIndex}
             color={currentColor}
-            logo={attributes?.landing?.data?.attributes?.logo}
             selectedPage={selectedPage}
           />
-          <Text
-            variant="current"
-            color="white"
-            pos="absolute"
-            left="0"
-            right="0"
-            bottom="20px"
-            width="30%"
-            textAlign="center"
-            opacity="0.7"
-          >
-            <a href={`mailto:${attributes?.author?.data?.attributes?.email}`} target="_blank" rel="noopener noreferrer">
-              {attributes?.author?.data?.attributes?.email}
-            </a>
-          </Text>
+          {!isTablet && (
+            <Text
+              variant="current"
+              color="white"
+              pos="absolute"
+              left="0"
+              right="0"
+              bottom="20px"
+              width="30%"
+              textAlign="center"
+              opacity="0.7"
+            >
+              <a
+                href={`mailto:${attributes?.author?.data?.attributes?.email}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {attributes?.author?.data?.attributes?.email}
+              </a>
+            </Text>
+          )}
         </Center>
 
         <Box flexGrow={1} h="100%" backgroundColor="gray.100" overflow="scroll">

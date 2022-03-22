@@ -28,9 +28,12 @@ type InitializePayload = {
   slug: string;
 };
 
+// We expect to have samples for the Free Classification questions
+export type QuestionWithSamples = Question & { samples?: string[] };
+
 export type InitializedPayload = {
   pages: SafeEntity<Page>[];
-  questions: SafeEntity<Question>[];
+  questions: SafeEntity<QuestionWithSamples>[];
   answers: SafeEntity<Answer>[];
 };
 

@@ -114,7 +114,6 @@ export const LandingForm: React.FC = () => {
           setFieldValue("video_url", "");
         }, []);
 
-        console.log(values?.cover);
         // Components
         return (
           <Box pos="relative" p={4} d="flex" textAlign="left">

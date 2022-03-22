@@ -21,7 +21,7 @@ export const Layout: React.FC<Props> = ({ children }) => {
   const isSurveyPages = pathname.search("/survey/") !== -1;
   const isPortail = pathname === "/";
   const isEditor = pathname.includes("create/landing");
-  console.log(isEditor);
+
   const authPage = ["/connexion", "/inscription", "/mot-de-passe-oublie", "/nouveau-mot-de-passe"];
   const isAuthPage = authPage.includes(pathname);
   const renderMenu = () => {

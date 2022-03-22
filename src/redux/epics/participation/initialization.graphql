@@ -11,3 +11,10 @@ query AnswersByParticipation($participationId: ID!) {
     }
   }
 }
+
+query classificationSamples($questionId: ID!, $nbSamples: Int!) {
+  classificationSamples(questionId: $questionId, nbSamples: $nbSamples) {
+    questionId
+    samples
+  }
+}

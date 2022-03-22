@@ -1,7 +1,14 @@
 fragment answerFragment on AnswerEntity {
-  id 
+  id
   attributes {
-    question { data { id } }
+    question {
+      data {
+        id
+        attributes {
+          type
+        }
+      }
+    }
     value
   }
 }

@@ -44,7 +44,7 @@ export const CustomNumberInput: React.FC<Props> = ({
   appearance,
 }) => {
   const [field, meta, helpers] = useField(name);
-  console.log(field);
+
   return (
     <FormControl isRequired={isRequired} id={name} textAlign="left" style={style} isInvalid={!!meta.error}>
       <FormLabel>{label}</FormLabel>

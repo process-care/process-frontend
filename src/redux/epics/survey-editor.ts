@@ -55,7 +55,6 @@ const postEpic: Epic = (action$, state$) =>
     filter(() => {
       // If surveyId is defined, it means we don't need to create it
       const surveyId = state$.value.editor.survey.data?.id;
-      console.log(surveyId), "ID";
       return !surveyId;
     }),
     switchMap(async () => {

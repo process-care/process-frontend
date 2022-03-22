@@ -22,7 +22,6 @@ export const Consent: React.FC = () => {
   }, [slug]);
 
   const onDecline = useCallback(() => {
-    console.log("you said no");
     history.push(`/`);
   }, []);
 

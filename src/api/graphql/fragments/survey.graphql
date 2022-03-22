@@ -51,6 +51,7 @@ fragment surveyEntityFragment on SurveyEntity {
           title
           color_theme
           logo
+          subtitle
         }
       }
     }

@@ -37,7 +37,14 @@ export const ParticipationMenu: React.FC<MenuProps> = ({ pages, selectIndex, col
   }, [pages]);
 
   return (
-    <Box h={isTablet ? "60px" : "unset"} d="flex" alignItems="center" flexDirection={isTablet ? "row" : "column"}>
+    <Box
+      h={isTablet ? "60px" : "unset"}
+      d="flex"
+      alignItems="center"
+      flexDirection={isTablet ? "row" : "column"}
+      w="100%"
+      p="0 20px"
+    >
       <Box
         d="flex"
         flexDirection={isTablet ? "row" : "column"}

@@ -18,3 +18,5 @@ test-utils.ts
 analytics/*
 helpers/*
 helpers/**/*
+
+.env

@@ -102,6 +102,7 @@ export const ParticipationForm: React.FC<Props> = ({ surveyId, participationId }
     );
   }
 
+  console.log(attributes);
   return (
     <Box>
       {/* {!isTablet && <Title />} */}
@@ -123,6 +124,9 @@ export const ParticipationForm: React.FC<Props> = ({ surveyId, participationId }
           <Text variant="xxl" fontWeight="bold" color="white">
             {attributes?.title}
           </Text>
+          <Text variant="smallTitle" color="white" p="20px">
+            {attributes?.description}
+          </Text>
           <ParticipationMenu
             author={attributes?.author?.data?.attributes?.email}
             pages={pages}
@@ -131,6 +135,21 @@ export const ParticipationForm: React.FC<Props> = ({ surveyId, participationId }
             logo={attributes?.landing?.data?.attributes?.logo}
             selectedPage={selectedPage}
           />
+          <Text
+            variant="current"
+            color="white"
+            pos="absolute"
+            left="0"
+            right="0"
+            bottom="20px"
+            width="30%"
+            textAlign="center"
+            opacity="0.7"
+          >
+            <a href={`mailto:${attributes?.author?.data?.attributes?.email}`} target="_blank" rel="noopener noreferrer">
+              {attributes?.author?.data?.attributes?.email}
+            </a>
+          </Text>
         </Center>
 
         <Box flexGrow={1} h="100%" backgroundColor="gray.100" overflow="scroll">

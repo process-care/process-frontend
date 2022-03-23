@@ -60,8 +60,9 @@ export const AssociatedClassification: React.FC<Props> = ({
 
     return (
       <Box
-        border={`${selected === index ? "1px solid green" : "1px solid #E5E5E5"} `}
-        backgroundColor={`${selected === index ? " green" : ""} `}
+        border={`${selected === index ? "1px solid blue" : "1px solid #E5E5E5"} `}
+        backgroundColor={`${selected === index ? " blue" : ""} `}
+        color={`${selected === index ? " white" : "black"} `}
         borderRadius="5px"
         mt="30px"
         w={isTablet ? "100%" : "40%"}
@@ -81,7 +82,7 @@ export const AssociatedClassification: React.FC<Props> = ({
             <Box
               key={uuidv4()}
               p="20px"
-              backgroundColor={selected === index ? "green" : idx % 2 == 0 ? "transparent" : "gray.100"}
+              backgroundColor={selected === index ? "blue" : idx % 2 == 0 ? "transparent" : "gray.100"}
             >
               {filteredFactors.length > 1 && (
                 <Text variant="currentBold" textTransform="uppercase" mt="10px">

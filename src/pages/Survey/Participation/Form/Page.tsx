@@ -54,7 +54,7 @@ export const Page: React.FC<Props> = ({
 
   // Final render
   return (
-    <Box overflow="scroll" pt={isTablet ? "30px" : "60px"}>
+    <Box overflow="auto" pt={isTablet ? "30px" : "60px"}>
       <Formik
         validateOnBlur
         validateOnMount

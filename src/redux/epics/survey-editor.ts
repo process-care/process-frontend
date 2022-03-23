@@ -15,6 +15,7 @@ const loadEpic: Epic = (action$) =>
     ofType(actions.initialize.type),
     switchMap(async (action) => {
       const slug = action.payload;
+
       const result = await sdk.surveyBySlug({ slug }).then((res) => {
         const data = res.surveys?.data;
         return sanitizeEntities(data);

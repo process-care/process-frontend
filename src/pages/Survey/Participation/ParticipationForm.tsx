@@ -167,7 +167,7 @@ export const ParticipationForm: React.FC<Props> = ({ surveyId, participationId }
           )}
         </Center>
 
-        <Box flexGrow={1} h="100%" backgroundColor="gray.100" overflow="scroll">
+        <Box flexGrow={1} h="100%" backgroundColor="gray.100" overflow="auto">
           <Page
             isFailed={isFailed}
             isFirstPage={isFirstPage}

@@ -94,14 +94,7 @@ export const Preview: React.FC<Props> = ({ isUserView, data, author }) => {
               {attributes?.title}
             </Text>
 
-            <Text
-              variant="smallTitle"
-              color="white"
-              mt="30px"
-              maxHeight="300px"
-              overflow="scroll"
-              wordBreak="break-word"
-            >
+            <Text variant="smallTitle" color="white" mt="30px" maxHeight="300px" overflow="auto" wordBreak="break-word">
               {attributes?.subtitle}
             </Text>
             {hasMedia && (
@@ -118,7 +111,7 @@ export const Preview: React.FC<Props> = ({ isUserView, data, author }) => {
             flexDirection="column"
             textAlign="left"
             alignItems="flex-end"
-            overflow="scroll"
+            overflow="auto"
           >
             <Box pos="absolute" top="20px" right="20px" hidden={isTablet}>
               <Logo />

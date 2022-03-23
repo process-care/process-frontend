@@ -18,7 +18,7 @@ export const PdfPreview: React.FC<Props> = ({ url }) => {
   };
 
   return (
-    <Box h="100%" overflow="scroll">
+    <Box h="100%" overflow="auto">
       <Box mb="20px">
         <Document file={url} onLoadSuccess={onDocumentLoadSuccess}>
           <Page pageNumber={pageNumber} height={isTablet ? 400 : 900} />
@@ -38,12 +38,7 @@ export const PdfPreview: React.FC<Props> = ({ url }) => {
         // h="85px"
       >
         {pageNumber !== 1 ? (
-          <Button
-            variant="rounded"
-            backgroundColor="black"
-            p="0"
-            onClick={() => setPageNumber(pageNumber - 1)}
-          >
+          <Button variant="rounded" backgroundColor="black" p="0" onClick={() => setPageNumber(pageNumber - 1)}>
             {"<"}
           </Button>
         ) : (
@@ -54,12 +49,7 @@ export const PdfPreview: React.FC<Props> = ({ url }) => {
           Page {pageNumber} sur {numPages}
         </Text>
         {pageNumber !== numPages ? (
-          <Button
-            variant="rounded"
-            backgroundColor="black"
-            p="0"
-            onClick={() => setPageNumber(pageNumber + 1)}
-          >
+          <Button variant="rounded" backgroundColor="black" p="0" onClick={() => setPageNumber(pageNumber + 1)}>
             {">"}
           </Button>
         ) : (

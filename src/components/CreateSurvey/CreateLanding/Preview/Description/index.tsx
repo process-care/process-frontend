@@ -35,18 +35,6 @@ export const Description: React.FC<Props> = ({ data, onParticipate }) => {
             >
               {t.cta_participate}
             </Button>
-            {attributes?.about_page && (
-              <Button
-                mt={isTablet ? "20px" : "unset"}
-                variant="rounded"
-                color={attributes?.color_theme?.button}
-                border={`1px solid ${attributes?.color_theme?.base || "brand.blue"}`}
-                backgroundColor={attributes?.color_theme?.base || "brand.blue"}
-                _hover={{ backgroundColor: attributes?.color_theme?.button, color: "white" }}
-              >
-                {t.cta_show_more}
-              </Button>
-            )}
           </Flex>
         </Box>
       </Flex>

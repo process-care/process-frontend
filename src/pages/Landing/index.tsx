@@ -37,5 +37,12 @@ export const Landing: React.FC<IRoute> = () => {
     return <></>;
   }
 
-  return <Preview data={sanitizeEntity(landing?.landing?.data)} isUserView author={author?.data?.attributes} />;
+  return (
+    <Preview
+      data={sanitizeEntity(landing?.landing?.data)}
+      isUserView
+      author={author?.data?.attributes}
+      needConsent={fetchedSurvey?.attributes?.need_consent}
+    />
+  );
 };

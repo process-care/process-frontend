@@ -23,11 +23,12 @@ interface Props {
   // TODO: Refacto this and remove any => LandingRedux
   data?: LandingRedux;
   author?: { email: string; username: string } | null;
+  needConsent?: boolean | null | undefined;
 }
 
 // ---- COMPONENT
 
-export const Preview: React.FC<Props> = ({ isUserView, data, author }) => {
+export const Preview: React.FC<Props> = ({ isUserView, data, author, needConsent }) => {
   const { slug } = useParams<{ slug: string }>();
   const history = useHistory();
 
@@ -43,15 +44,18 @@ export const Preview: React.FC<Props> = ({ isUserView, data, author }) => {
   const hasImage = Boolean(coverSrc);
   const hasMedia = hasVideo || hasImage;
   const hasMembers = Boolean(data?.attributes?.members?.length > 0);
-  console.log(data?.attributes?.members);
 
   const onParticipate = useCallback(() => {
     if (!isUserView) {
       alert("Bouton désactivé pendant la prévisualisation.");
       return;
     }
-    history.push(`/survey/${slug}/consent`);
-  }, [slug, isUserView]);
+    if (needConsent) {
+      history.push(`/landing/${slug}/consent`);
+    } else {
+      history.push(`/survey/${slug}/participate`);
+    }
+  }, [slug, isUserView, needConsent]);
 
   if (isEditingAbout) {
     return (

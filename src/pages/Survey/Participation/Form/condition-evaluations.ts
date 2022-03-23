@@ -11,8 +11,8 @@ import { EvaluationCondition } from "redux/slices/participation/types";
 export function shouldShow(conditions: EvaluationCondition[] | undefined): boolean {
   if (!conditions || conditions.length < 1) return true;
 
-  // console.log('evaluating...');
-  // console.log('here are the conditions: ', conditions);
+  // console.log("evaluating...");
+  // console.log("here are the conditions: ", conditions);
 
   const groupEvals = conditions.reduce((acc, c) => {
     // Evaluate the condition
@@ -48,9 +48,9 @@ function evaluate(c: EvaluationCondition): boolean {
 
   switch (operator) {
     case Enum_Condition_Operator.Equal:
-      return answer === value;
+      return Array.isArray(answer) ? answer.includes(value) : answer === value;
     case Enum_Condition_Operator.NotEqual:
-      return answer !== value;
+      return Array.isArray(answer) ? !answer.includes(value) : answer !== value;
 
     case Enum_Condition_Operator.EqualOrSuperior:
       return Number(answer) >= Number(value);

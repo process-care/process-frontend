@@ -31,7 +31,7 @@ export const CustomRadioBox: React.FC<Props> = ({ label, helpText, radios, id, m
                   {radios ? (
                     radios.map(({ value, label }) => {
                       return (
-                        <Radio value={value} id={id} isRequired={isRequired} m={2}>
+                        <Radio value={value} id={id} key={value} isRequired={isRequired} m={2}>
                           {label}
                         </Radio>
                       );

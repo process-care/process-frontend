@@ -71,7 +71,8 @@ function processAnswers(res: AnswersByParticipationQuery) {
   const unwrapped = sanitized.map((answer) => {
     if (
       answer.attributes.question?.data?.attributes?.type === Enum_Question_Type.TextArea ||
-      answer.attributes.question?.data?.attributes?.type === Enum_Question_Type.DatePicker
+      answer.attributes.question?.data?.attributes?.type === Enum_Question_Type.DatePicker ||
+      answer.attributes.question?.data?.attributes?.type === Enum_Question_Type.Radio
     ) {
       answer.attributes.value = answer.attributes.value.answer;
     }

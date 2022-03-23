@@ -52,7 +52,7 @@ export const Preview: React.FC<Props> = ({ isUserView, data, author, needConsent
       return;
     }
     if (needConsent) {
-      history.push(`/landing/${slug}/consent`);
+      history.push(`/survey/${slug}/consent`);
     } else {
       history.push(`/survey/${slug}/participate`);
     }

@@ -61,7 +61,8 @@ export const ForgotPasswordForm: React.FC = () => {
               }
             })
             .catch((err: any) => {
-              setError(err.response.data.message);
+              setError(err.response.data.error.message);
+              console.log(err.response.data.error.message);
             });
           setSubmitting(false);
         }}
@@ -84,14 +85,9 @@ export const ForgotPasswordForm: React.FC = () => {
                     autoComplete="email"
                   />
 
-                  {errors?.length > 0 &&
-                    errors[0].messages.map((err: any) => {
-                      return (
-                        <Text color="red" fontSize="12px" mt="10px">
-                          {err.message}
-                        </Text>
-                      );
-                    })}
+                  <Text color="red" fontSize="12px" mt="10px">
+                    {errors}
+                  </Text>
 
                   <Button mt="40px" type="submit" disabled={!isValid || isSubmitting} variant="roundedBlue">
                     Reinitialiser mon mot de passe

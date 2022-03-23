@@ -39,6 +39,7 @@ export const ParticipationConsent: React.FC<Props> = ({ surveyId, onConsent, onR
   const attributes = survey?.survey?.data?.attributes;
   const url = attributes?.notice_consent?.data?.attributes?.url;
   const { isTablet } = useMediaQueries();
+  if (!attributes?.need_consent) onAccept();
   if (isLoading) <Box mt="20">Please wait...</Box>;
 
   return (
@@ -58,7 +59,7 @@ export const ParticipationConsent: React.FC<Props> = ({ surveyId, onConsent, onR
             h="100%"
             d="flex"
             justifyContent="center"
-            overflow="scroll"
+            overflow="auto"
             pt="40px"
             pb={isTablet ? "50px" : "0px"}
             w={isTablet ? "90%" : "100%"}

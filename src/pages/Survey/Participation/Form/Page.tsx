@@ -54,7 +54,7 @@ export const Page: React.FC<Props> = ({
 
   // Final render
   return (
-    <Box overflow="scroll" pt="60px">
+    <Box overflow="auto" pt={isTablet ? "30px" : "60px"}>
       <Formik
         validateOnBlur
         validateOnMount
@@ -76,7 +76,7 @@ export const Page: React.FC<Props> = ({
           return (
             <Form>
               {/* Questions */}
-              <Box px={isTablet ? "5%" : "10%"} pt="20px">
+              <Box px={isTablet ? "20px" : "10%"}>
                 {orderInPage.map((inputId: string) => (
                   <Questionator key={inputId} id={inputId} />
                 ))}

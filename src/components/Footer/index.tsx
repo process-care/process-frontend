@@ -25,21 +25,20 @@ export const Footer: React.FC = () => {
     >
       <Box h="20px">{isTablet ? <LogoMobile /> : <Logo />}</Box>
       <Text variant={isTablet ? "xxs" : "currentLight"} mt="20px" maxW="60%">
-        Une plateforme de curation scientifique curabitur blandit tempus
-        porttitor.
+        Platform for Research Online and CitizEn Science Surveys.
       </Text>
       <Flex justifyContent="space-between" w="100%" mt="20px" textAlign="left">
         <Box>
           <Text variant="currentLight" textDecoration="underline" mt="10px">
-            contact@process.com
+            <a href="mailto:contact@process.care">contact@process.care</a>
           </Text>
-          <Text variant="currentLight" textDecoration="underline" mt="10px">
+          {/* <Text variant="currentLight" textDecoration="underline" mt="10px">
             Mentions légales
-          </Text>
+          </Text> */}
         </Box>
-        <Text variant="currentLight" textDecoration="underline" mt="10px">
+        {/* <Text variant="currentLight" textDecoration="underline" mt="10px">
           CGU
-        </Text>
+        </Text> */}
       </Flex>
     </Box>
   );

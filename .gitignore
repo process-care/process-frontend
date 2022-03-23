@@ -31,5 +31,4 @@ yarn-error.log*
 *.generated.ts
 graphql.schema.json
 
-# environment variables
 .env

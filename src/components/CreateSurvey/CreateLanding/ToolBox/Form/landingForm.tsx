@@ -63,7 +63,7 @@ export const LandingForm: React.FC = () => {
     onSave();
     history.push("/dashboard");
   };
-
+  console.log(landing?.attributes);
   return (
     <Formik validateOnBlur={false} initialValues={landing?.attributes || initialValues} onSubmit={onSubmit}>
       {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment*/}
@@ -114,7 +114,6 @@ export const LandingForm: React.FC = () => {
           setFieldValue("video_url", "");
         }, []);
 
-        console.log(values?.cover);
         // Components
         return (
           <Box pos="relative" p={4} d="flex" textAlign="left">

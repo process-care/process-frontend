@@ -37,6 +37,7 @@ export const AboutForm: React.FC = () => {
               changes: {
                 id: landing?.id,
                 attributes: {
+                  ...landing?.attributes,
                   title: landing?.attributes?.title,
                   about_page: values.about_page,
                 },

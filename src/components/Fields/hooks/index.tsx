@@ -22,7 +22,6 @@ export const useAssociatedLogic = (
   maxLoop: Maybe<number> | undefined,
   TOTAL_CARDS: number
 ) => {
-  console.log(maxLoop);
   const [field, , helpers] = useField(name);
 
   const [state, setState] = useState<State>({
@@ -56,7 +55,6 @@ export const useAssociatedLogic = (
 
   const generate = () => {
     if (maxVariations - 1 === state.variations.length) {
-      console.log("End of variations");
       return;
     }
     if (!modalitiesPerFactor) {
@@ -76,13 +74,11 @@ export const useAssociatedLogic = (
     };
 
     if (cardsAreSame(card1, card2)) {
-      console.log("same cards");
       generate();
     } else if (
       state.variations.some((v) => JSON.stringify(v) === JSON.stringify(variation)) ||
       state.variations.some((v) => JSON.stringify(v) === JSON.stringify(variation.reverse()))
     ) {
-      console.log("Variation already exists");
       generate();
     } else {
       setState({

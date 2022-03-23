@@ -150,7 +150,7 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
 
           <Box p={5} textAlign="left">
             <Tooltip label={"Voir la page d'accueil"} placement="top-start">
-              <NavLink to={`/survey/${selectedSurvey.id}`}>
+              <NavLink to={`/survey/${selectedSurvey.attributes.slug}`}>
                 <Text variant="titleParaLight" mt={4} textAlign="left">
                   {title}
                 </Text>

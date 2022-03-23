@@ -1,7 +1,7 @@
 import { createEntityAdapter, createSlice, PayloadAction, Update } from "@reduxjs/toolkit";
 import { Maybe } from "api/graphql/types.generated";
 
-import { actions as statusAct } from 'redux/slices/participation/status';
+import { actions as statusAct } from "redux/slices/participation/status";
 import { RootState } from "redux/store";
 import { sanitizeAnswers } from "./utils";
 
@@ -16,18 +16,18 @@ export interface AnswerParticipationRedux {
 // ---- ACTIONS
 
 export type UpsertAnswerPayload = {
-  questionId: string,
-  value: string,
-}
+  questionId: string;
+  value: string;
+};
 
 export type UpsertedAnswerPayload = {
-  created: Update<AnswerParticipationRedux>[]
-  updated: Update<AnswerParticipationRedux>[]
-}
+  created: Update<AnswerParticipationRedux>[];
+  updated: Update<AnswerParticipationRedux>[];
+};
 
 // ---- SLICE
 
-const SLICE_NAME = 'answers';
+const SLICE_NAME = "answers";
 
 const adapter = createEntityAdapter<AnswerParticipationRedux>({
   selectId: (a) => a.questionId,
@@ -43,14 +43,14 @@ export const slice = createSlice({
     updated: (state, action: PayloadAction<UpsertedAnswerPayload>) => {
       // Update only those who have been created to keep their answerId
       adapter.updateMany(state, action.payload.created);
-    }
+    },
   },
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     builder.addCase(statusAct.initialized, (state, action) => {
       const sanitized = sanitizeAnswers(action.payload.answers);
       adapter.setAll(state, sanitized);
     });
-  }
+  },
 });
 
 // ---- SELECTORS
@@ -70,11 +70,12 @@ const selectByIds = (state: RootState, questionsId: string[]): AnswerParticipati
     if (answer) acc.push(answer);
     return acc;
   }, [] as AnswerParticipationRedux[]);
-    
+
   return answers;
 };
 
-const selectAll = (state: RootState): AnswerParticipationRedux[] => entitySelectors.selectAll(state.participation.answers);
+const selectAll = (state: RootState): AnswerParticipationRedux[] =>
+  entitySelectors.selectAll(state.participation.answers);
 
 export const selectors = {
   selectAll,

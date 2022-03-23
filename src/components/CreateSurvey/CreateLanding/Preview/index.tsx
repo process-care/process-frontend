@@ -23,11 +23,12 @@ interface Props {
   // TODO: Refacto this and remove any => LandingRedux
   data?: LandingRedux;
   author?: { email: string; username: string } | null;
+  needConsent?: boolean | null | undefined;
 }
 
 // ---- COMPONENT
 
-export const Preview: React.FC<Props> = ({ isUserView, data, author }) => {
+export const Preview: React.FC<Props> = ({ isUserView, data, author, needConsent }) => {
   const { slug } = useParams<{ slug: string }>();
   const history = useHistory();
 
@@ -43,15 +44,19 @@ export const Preview: React.FC<Props> = ({ isUserView, data, author }) => {
   const hasImage = Boolean(coverSrc);
   const hasMedia = hasVideo || hasImage;
   const hasMembers = Boolean(data?.attributes?.members?.length > 0);
-  console.log(data?.attributes?.members);
+  const hasAboutPage = Boolean(data?.attributes?.about_page);
 
   const onParticipate = useCallback(() => {
     if (!isUserView) {
       alert("Bouton désactivé pendant la prévisualisation.");
       return;
     }
-    history.push(`/survey/${slug}/consent`);
-  }, [slug, isUserView]);
+    if (needConsent) {
+      history.push(`/survey/${slug}/consent`);
+    } else {
+      history.push(`/survey/${slug}/participate`);
+    }
+  }, [slug, isUserView, needConsent]);
 
   if (isEditingAbout) {
     return (
@@ -94,14 +99,7 @@ export const Preview: React.FC<Props> = ({ isUserView, data, author }) => {
               {attributes?.title}
             </Text>
 
-            <Text
-              variant="smallTitle"
-              color="white"
-              mt="30px"
-              maxHeight="300px"
-              overflow="scroll"
-              wordBreak="break-word"
-            >
+            <Text variant="smallTitle" color="white" mt="30px" maxHeight="300px" overflow="auto" wordBreak="break-word">
               {attributes?.subtitle}
             </Text>
             {hasMedia && (
@@ -118,7 +116,7 @@ export const Preview: React.FC<Props> = ({ isUserView, data, author }) => {
             flexDirection="column"
             textAlign="left"
             alignItems="flex-end"
-            overflow="scroll"
+            overflow="auto"
           >
             <Box pos="absolute" top="20px" right="20px" hidden={isTablet}>
               <Logo />
@@ -128,6 +126,7 @@ export const Preview: React.FC<Props> = ({ isUserView, data, author }) => {
                 <Tab>Description</Tab>
                 {hasMembers && <Tab>Equipe</Tab>}
                 <Tab>Informations</Tab>
+                {hasAboutPage && <Tab>A propos</Tab>}
               </TabList>
 
               <TabPanels>
@@ -146,6 +145,17 @@ export const Preview: React.FC<Props> = ({ isUserView, data, author }) => {
 
                 <TabPanel>
                   <Legals data={data} author={author} />
+                </TabPanel>
+                <TabPanel>
+                  <Box h="fit-content" backgroundColor="white" w="100%">
+                    <Text
+                      textAlign="left"
+                      variant="current"
+                      dangerouslySetInnerHTML={{
+                        __html: aboutPage ?? "",
+                      }}
+                    ></Text>
+                  </Box>
                 </TabPanel>
               </TabPanels>
             </Tabs>

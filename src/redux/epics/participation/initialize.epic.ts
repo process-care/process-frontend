@@ -5,6 +5,9 @@ import { Epic } from "redux/store";
 import { sdk } from "api/gql-client";
 import { actions as statusAct } from "redux/slices/participation/status";
 import { sanitizeEntities } from "api/entity-checker";
+import { AnswersByParticipationQuery, Enum_Question_Type, QuestionsBySurveySlugQuery } from "api/graphql/sdk.generated";
+
+// ---- EPIC
 
 // Initialize pages-visited upon init
 const initializeEpic: Epic = (action$) =>
@@ -19,25 +22,9 @@ const initializeEpic: Epic = (action$) =>
         return sanitizeEntities(data);
       });
 
-      const questions = sdk.questionsBySurveySlug({ slug }).then((res) => {
-        const data = res?.questions?.data;
-        return sanitizeEntities(data);
-      });
+      const questions = sdk.questionsBySurveySlug({ slug }).then(processQuestions);
 
-      const answers = sdk.AnswersByParticipation({ participationId }).then((res) => {
-        const data = res.answers?.data;
-        const sanitized = sanitizeEntities(data);
-
-        // Unwrap strings from their object form so they work normaly in Textarea
-        const unwrapped = sanitized.map((answer) => {
-          if (typeof answer.attributes.value.answer === "string") {
-            answer.attributes.value = answer.attributes.value.answer;
-          }
-          return answer;
-        });
-
-        return unwrapped;
-      });
+      const answers = sdk.AnswersByParticipation({ participationId }).then(processAnswers);
 
       return Promise.all([pages, questions, answers]);
     }),
@@ -50,5 +37,51 @@ const initializeEpic: Epic = (action$) =>
       return statusAct.initialized(payload);
     })
   );
+
+// ---- UTILS
+
+function processQuestions(res: QuestionsBySurveySlugQuery) {
+  const data = res?.questions?.data;
+  const sanitized = sanitizeEntities(data);
+
+  // Look for free classification and load some samples
+  const processed = sanitized.map(async (question) => {
+    if (question.attributes.type === Enum_Question_Type.FreeClassification) {
+      const dataSamples = await sdk.classificationSamples({
+        questionId: question.id,
+        nbSamples: question.attributes.freeclassification_responses_count ?? 4,
+      });
+
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      question.attributes.samples = dataSamples?.classificationSamples?.samples;
+    }
+
+    return question;
+  });
+
+  return Promise.all(processed);
+}
+
+function processAnswers(res: AnswersByParticipationQuery) {
+  const data = res.answers?.data;
+  const sanitized = sanitizeEntities(data);
+
+  // Unwrap strings from their object form so they work normaly in Textarea
+  const unwrapped = sanitized.map((answer) => {
+    if (
+      answer.attributes.question?.data?.attributes?.type === Enum_Question_Type.TextArea ||
+      answer.attributes.question?.data?.attributes?.type === Enum_Question_Type.DatePicker ||
+      answer.attributes.question?.data?.attributes?.type === Enum_Question_Type.Radio
+    ) {
+      answer.attributes.value = answer.attributes.value.answer;
+    }
+    return answer;
+  });
+
+  return unwrapped;
+}
+
+// ---- EXPORT
 
 export const initializeEpics = combineEpics(initializeEpic);

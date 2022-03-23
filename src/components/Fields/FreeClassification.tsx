@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Textarea } from "components/Fields";
 import { useField } from "formik";
 import { Container, Text, Box } from "@chakra-ui/react";
@@ -9,82 +9,67 @@ interface Props {
   helpText?: string;
   placeholder: string;
   rows: Maybe<Enum_Question_Rows> | undefined;
+  samples?: string[];
+  nbSamples?: Maybe<number>;
   isRequired?: any;
   id: string;
   isCollapsed?: boolean;
   autoComplete?: string;
 }
 
-interface Mock {
-  id: number;
-  value: string;
-}
-const mock: Mock[] = [
-  {
-    id: 1,
-    value: "Réponse aléatoire 1",
-  },
-  {
-    id: 2,
-    value: "Réponse aléatoire 2",
-  },
-  {
-    id: 3,
-    value: "Réponse aléatoire 3",
-  },
-  {
-    id: 4,
-    value: "Réponse aléatoire 4",
-  },
-];
+const DEFAULT_NB_SAMPLES = 4;
+
+// ---- COMPONENT
 
 export const FreeClassification: React.FC<Props> = ({
+  id,
   label,
   helpText,
   placeholder,
+  samples,
+  nbSamples,
   rows,
   isRequired,
-  id,
   isCollapsed,
 }) => {
   const [field, , helpers] = useField(id);
-  const Options = () => {
-    const post = (item: Mock) => {
-      if (field.value) {
-        if (field.value.includes(item.value)) {
-          const newValues = field.value.filter(
-            (value: string) => value !== item.value
-          );
+  const [subTextarea] = useField(`${id}_textarea`);
 
-          helpers.setValue(newValues);
-          return;
-        }
-        helpers.setValue([...field.value, item.value]);
-      } else helpers.setValue([item.value]);
-    };
+  useEffect(() => {
+    if (subTextarea.value === undefined) return;
+    helpers.setValue({ ...field.value, answer: subTextarea.value });
+  }, [subTextarea.value]);
+
+  const choose = (idx: number) => {
+    helpers.setValue({ ...field.value, choice: idx, variations: samples });
+  };
+
+  const Options = ({ choice }: { choice: number }) => {
+    // If not enough samples, display nothing special
+    if (!samples || samples.length < (nbSamples ?? DEFAULT_NB_SAMPLES)) {
+      return null;
+    }
 
     return (
       <Box>
         <Text pt="5" textAlign="left" variant="currentBold">
-          Voici les réponses d’autres participants à la même question. Parmi ces
-          réponses, lesquelles considérez-vous comme similaire à votre propre
-          réponse ?
+          Voici les réponses d'autres participants à cette question. Parmi celles-ci, lesquelles considérez-vous comme
+          similaire à votre propre réponse ?
         </Text>
-        {mock.map((item) => {
-          const isSelected = field.value
-            ? field.value.includes(item.value)
-            : false;
+        {samples.map((item: string, idx: number) => {
+          const isSelected = choice === idx;
+
           return (
             <Container
+              key={idx}
               _hover={{ cursor: "pointer" }}
               borderColor={isSelected ? "brand.blue" : "inherit"}
               variant="inputContainer"
-              key={item.id}
-              onClick={() => post(item)}
+              onClick={() => choose(idx)}
               border="1px solid black"
             >
               <Text variant="current" textAlign="left">
-                {item.value}
+                {item}
               </Text>
             </Container>
           );
@@ -96,16 +81,16 @@ export const FreeClassification: React.FC<Props> = ({
   return (
     <>
       <Textarea
+        id={`${id}_textarea`}
         isCollapsed={isCollapsed}
         rows={rows}
         label={label}
         placeholder={placeholder}
-        id={id}
         isRequired={isRequired}
         helpText={helpText}
-        {...field}
+        defaultValue={field?.value?.answer}
       />
-      {!isCollapsed && <Options />}
+      {!isCollapsed && <Options choice={field?.value?.choice} />}
     </>
   );
 };

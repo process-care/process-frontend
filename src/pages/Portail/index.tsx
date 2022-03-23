@@ -64,7 +64,7 @@ export const Portail: React.FC<IRoute> = () => {
           </Text>
           <Text variant={isTablet ? "currentLight" : "baseline"} maxW="1000px">
             <strong>P</strong>latform for <strong>R</strong>esearch <strong>O</strong>nline and <strong>C</strong>itiz
-            <strong>E</strong>n <strong>S</strong>cience <strong>S</strong>urveys. <br />
+            <strong>E</strong>n <strong>S</strong>cience <strong>S</strong>urveys <br />
           </Text>
         </Box>
 

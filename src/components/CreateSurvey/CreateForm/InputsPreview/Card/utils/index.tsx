@@ -13,13 +13,13 @@ import {
   FreeClassification,
   MonoThumbnail,
 } from "components/Fields";
-import { QuestionRedux } from "redux/slices/types";
 import { t } from "static/input";
 import { useAppSelector } from "redux/hooks";
 import { selectors } from "redux/slices/formBuilder";
 
 import { useLocation } from "react-router-dom";
 import { Enum_Question_Type } from "api/graphql/types.generated";
+import { QuestionWithSamples } from "redux/slices/participation/status";
 
 interface Options {
   value: string;
@@ -27,7 +27,10 @@ interface Options {
 }
 
 interface Props {
-  input: QuestionRedux;
+  input: {
+    id: string;
+    attributes: QuestionWithSamples;
+  };
 }
 
 export const RenderInput: React.FC<Props> = ({ input }) => {
@@ -156,15 +159,18 @@ export const RenderInput: React.FC<Props> = ({ input }) => {
     case Enum_Question_Type.FreeClassification:
       return (
         <FreeClassification
+          id={input.id || "free_classification"}
           isCollapsed={isCollapsed}
           isRequired={attributes?.required}
-          id={input.id || "free_classification"}
           rows={attributes?.rows}
+          samples={attributes?.samples}
+          nbSamples={attributes.freeclassification_responses_count}
           label={attributes?.label || t.label}
           placeholder={attributes?.placeholder || t.placeholder}
           helpText={attributes?.help_text || t.help_text}
         />
       );
+
     case Enum_Question_Type.AssociatedClassification:
       return (
         <>
@@ -178,6 +184,7 @@ export const RenderInput: React.FC<Props> = ({ input }) => {
           />
         </>
       );
+
     case Enum_Question_Type.MonoThumbnail:
       return (
         <>

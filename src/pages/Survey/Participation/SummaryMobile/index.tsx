@@ -1,13 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import { PageParticipationRedux } from "redux/slices/participation/page";
 import { PageEntry } from "../ParticipationMenu";
-import {
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-} from "@chakra-ui/react";
+import { Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon } from "@chakra-ui/react";
 interface Props {
   pages: PageParticipationRedux[];
   navigables: boolean[];
@@ -16,13 +10,7 @@ interface Props {
   color: string;
 }
 
-export const SummaryMobile: React.FC<Props> = ({
-  pages,
-  navigables,
-  selectedPage,
-  selectIndex,
-  color,
-}) => {
+export const SummaryMobile: React.FC<Props> = ({ pages, navigables, selectedPage, selectIndex, color }) => {
   return (
     <Accordion allowToggle>
       <AccordionItem
@@ -38,20 +26,22 @@ export const SummaryMobile: React.FC<Props> = ({
             _focus={{ outline: "none", backgroundColor: "transparent" }}
             _hover={{ outline: "none", backgroundColor: "transparent" }}
           >
-            <Box flex="1" textAlign="left">
-              Sommmaire
+            <Box flex="1" textAlign="left" color="black">
+              Pages
             </Box>
-            <AccordionIcon />
+            <AccordionIcon color="black" />
           </AccordionButton>
         </h2>
         <AccordionPanel
           pos="absolute"
           width="100%"
           backgroundColor="white"
+          top="70px"
+          zIndex="10"
           left="0"
           right="0"
-          paddingTop="20px"
-          top="60px"
+          padding="10px"
+          borderBottom="1px solid rgb(234, 234, 239)"
         >
           <Box>
             {pages.map((p, idx) => {

@@ -14,7 +14,7 @@ interface Props {
 
 export const Error: React.FC<Props> = ({ error, message }) => {
   return (
-    <Center display="flex" flexDirection="column">
+    <Center display="flex" flexDirection="column" mt={8}>
       <WarningIcon w={8} h={8} mb={10} color="red.500" />
 
       <Text color="red.500">{message || "Une erreur est survenue ! "}</Text>

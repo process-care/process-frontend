@@ -15,7 +15,12 @@ export const Description: React.FC<Props> = ({ data, onParticipate }) => {
   return (
     <Box w="100%" h="100%">
       <Flex w="100%" pt="40px">
-        <Box>
+        <Box minW="100%">
+          <Box mb="10px" w="100%" d="flex" justifyContent="flex-end">
+            {attributes?.partners_logos?.map((logo: any) => {
+              return <img src={logo?.image} style={{ width: "50px" }} />;
+            })}
+          </Box>
           <Text
             textAlign="left"
             variant="current"

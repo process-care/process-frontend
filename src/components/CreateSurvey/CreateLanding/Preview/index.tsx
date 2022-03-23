@@ -44,6 +44,7 @@ export const Preview: React.FC<Props> = ({ isUserView, data, author, needConsent
   const hasImage = Boolean(coverSrc);
   const hasMedia = hasVideo || hasImage;
   const hasMembers = Boolean(data?.attributes?.members?.length > 0);
+  const hasAboutPage = Boolean(data?.attributes?.about_page);
 
   const onParticipate = useCallback(() => {
     if (!isUserView) {
@@ -125,6 +126,7 @@ export const Preview: React.FC<Props> = ({ isUserView, data, author, needConsent
                 <Tab>Description</Tab>
                 {hasMembers && <Tab>Equipe</Tab>}
                 <Tab>Informations</Tab>
+                {hasAboutPage && <Tab>A propos</Tab>}
               </TabList>
 
               <TabPanels>
@@ -143,6 +145,17 @@ export const Preview: React.FC<Props> = ({ isUserView, data, author, needConsent
 
                 <TabPanel>
                   <Legals data={data} author={author} />
+                </TabPanel>
+                <TabPanel>
+                  <Box h="fit-content" backgroundColor="white" w="100%">
+                    <Text
+                      textAlign="left"
+                      variant="current"
+                      dangerouslySetInnerHTML={{
+                        __html: aboutPage ?? "",
+                      }}
+                    ></Text>
+                  </Box>
                 </TabPanel>
               </TabPanels>
             </Tabs>

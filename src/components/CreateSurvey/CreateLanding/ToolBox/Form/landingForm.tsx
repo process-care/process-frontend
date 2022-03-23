@@ -63,7 +63,7 @@ export const LandingForm: React.FC = () => {
     onSave();
     history.push("/dashboard");
   };
-
+  console.log(landing?.attributes);
   return (
     <Formik validateOnBlur={false} initialValues={landing?.attributes || initialValues} onSubmit={onSubmit}>
       {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment*/}

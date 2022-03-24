@@ -14,7 +14,7 @@ export const Landing: React.FC<IRoute> = () => {
   const { slug } = useParams<{ slug: string }>();
 
   // TODO: Annoying to fetch the survey just to fetch the landing... Search landing with survey slug ?
-  const { data: survey } = useSurveyBySlugQuery(client, { slug });
+  const { data: survey, isLoading: surveyIsLoading } = useSurveyBySlugQuery(client, { slug });
   const fetchedSurvey = survey?.surveys?.data?.[0];
   const landingId = fetchedSurvey?.attributes?.landing?.data?.id ?? "";
   const surveyId = fetchedSurvey?.id ?? "";
@@ -22,7 +22,7 @@ export const Landing: React.FC<IRoute> = () => {
   const { data: landing, isLoading, error } = useLandingQuery(client, { id: landingId }, { enabled: landingId !== "" });
   const author = fetchedSurvey?.attributes?.author;
 
-  if (!fetchedSurvey) {
+  if (!fetchedSurvey && !surveyIsLoading) {
     return <Error message="Cette enquête n'existe pas." />;
   }
 

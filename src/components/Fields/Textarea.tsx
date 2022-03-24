@@ -52,7 +52,7 @@ export const CustomTextarea: React.FC<Props> = ({
             paddingLeft="10px"
             p={isBig ? "30px" : "10px"}
             backgroundColor={"white"}
-            fontSize={isBig ? "16px" : "12px"}
+            fontSize="16px"
             _placeholder={{
               color: "#9E9E9E",
               fontSize: isBig ? "16px" : "12px",

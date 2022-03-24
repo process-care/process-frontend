@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  FormControl,
-  FormHelperText,
-  FormLabel,
-  Box,
-  Flex,
-} from "@chakra-ui/react";
+import { FormControl, FormHelperText, FormLabel, Box } from "@chakra-ui/react";
 
 import { CheckboxContainer, CheckboxControl } from "formik-chakra-ui";
 
@@ -23,31 +17,18 @@ interface Props {
   isCollapsed?: boolean;
 }
 
-export const CustomCheckbox: React.FC<Props> = ({
-  label,
-  helpText,
-  checkbox,
-  isRequired,
-  id,
-  isCollapsed,
-}) => {
+export const CustomCheckbox: React.FC<Props> = ({ label, helpText, checkbox, isRequired, id, isCollapsed }) => {
   return (
     <FormControl id={id} textAlign="left" isRequired={isRequired} pl="0">
       <FormLabel>{label}</FormLabel>
       {!isCollapsed && (
         <>
           <CheckboxContainer name={id} label="" p="0" mt="10px">
-            <Flex p="0">
+            <Box flexWrap="wrap" d="flex">
               {checkbox ? (
                 checkbox.map(({ value, label }) => {
                   return (
-                    <CheckboxControl
-                      key={value}
-                      name={id}
-                      value={value}
-                      isRequired={isRequired}
-                      mr="30px"
-                    >
+                    <CheckboxControl key={value} name={id} value={value} isRequired={isRequired} m={2}>
                       {isRequired ? `${label} *` : label}
                     </CheckboxControl>
                   );
@@ -55,7 +36,7 @@ export const CustomCheckbox: React.FC<Props> = ({
               ) : (
                 <Box p={4} />
               )}
-            </Flex>
+            </Box>
           </CheckboxContainer>
 
           <FormHelperText fontSize="xs">{helpText}</FormHelperText>

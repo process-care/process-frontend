@@ -37,7 +37,7 @@ export const Legals: React.FC<Props> = ({ author, data }) => {
       <Text variant="smallTitle" display="inline-block">
         Le traitement de vos données à caractère personnel est régi par notre Charte du respect de la vie privée
         conformément au Règlement Général sur la Protection des Données 2016/679 du 27 avril 2016 (« RGPD »).
-        <br /> Pour toute question concernant vos données personnelles, vous pouvez contacter le responsabme du projet :
+        <br /> Pour toute question concernant vos données personnelles, vous pouvez contacter le responsable du projet :
       </Text>
       <Text
         display="inline-block"

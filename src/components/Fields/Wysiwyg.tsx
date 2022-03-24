@@ -6,10 +6,9 @@ import { QuestionRedux } from "redux/slices/types";
 
 interface Props {
   id: string;
-  simpleMode?: boolean;
 }
 
-export const Wysiwyg: React.FC<Props> = ({ id, simpleMode }) => {
+export const Wysiwyg: React.FC<Props> = ({ id }) => {
   const { setFieldValue, values } = useFormikContext<QuestionRedux>();
   return React.useMemo(
     () => (
@@ -35,9 +34,9 @@ export const Wysiwyg: React.FC<Props> = ({ id, simpleMode }) => {
             showCharsCounter: false,
             showWordsCounter: false,
             showPlaceholder: false,
-            buttonsMD: ["bold", "italic", "underline", "link", "indent", "ul", "ol", !simpleMode ? "image" : ""],
-            buttonsSM: ["bold", "italic", "underline", "link", "indent", "ul", "ol", !simpleMode ? "image" : ""],
-            buttonsXS: ["bold", "italic", "underline", "link", "indent", "ul", "ol", !simpleMode ? "image" : ""],
+            // buttonsMD: ["bold", "italic", "underline", "link", "indent", "ul", "ol", !simpleMode ? "image" : ""],
+            // buttonsSM: ["bold", "italic", "underline", "link", "indent", "ul", "ol", !simpleMode ? "image" : ""],
+            // buttonsXS: ["bold", "italic", "underline", "link", "indent", "ul", "ol", !simpleMode ? "image" : ""],
           }}
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore

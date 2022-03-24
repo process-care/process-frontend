@@ -137,8 +137,8 @@ const InputForm: React.FC<Props> = ({ order }) => {
                 </Flex>
               </Flex>
               <TitleDivider title="Paramètres de la question" mt="3" />
-              <Box w="100%" m="0 auto" border="1px solid #F7F7F7F7" p="5" backgroundColor="#fdfdfdf1">
-                {type !== "wysiwyg" && (
+              {type !== "wysiwyg" && (
+                <Box w="100%" m="0 auto" border="1px solid #F7F7F7F7" p="5" backgroundColor="#fdfdfdf1">
                   <>
                     <Textarea
                       isCollapsed={false}
@@ -159,30 +159,29 @@ const InputForm: React.FC<Props> = ({ order }) => {
                       isAccordion
                     />
                   </>
-                )}
-                <Flex mb="4" mt="4" w="100%" justifyContent="space-between">
-                  {currentConditions.length === 0 ? (
-                    <Button
-                      variant="roundedTransparent"
-                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                      // @ts-ignore: Pb with props in theme ...
-                      isSmall
-                      onClick={() => createCondition()}
-                    >
-                      {t.add_condition}
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="roundedTransparent"
-                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                      // @ts-ignore: Pb with props in theme ...
-                      isSmall
-                      onClick={() => editCondition(currentConditions[0].id)}
-                    >
-                      {t.edit_condition}
-                    </Button>
-                  )}
-                  {type !== "wysiwyg" && (
+                  <Flex mb="4" mt="4" w="100%" justifyContent="space-between">
+                    {currentConditions.length === 0 ? (
+                      <Button
+                        variant="roundedTransparent"
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore: Pb with props in theme ...
+                        isSmall
+                        onClick={() => createCondition()}
+                      >
+                        {t.add_condition}
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="roundedTransparent"
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore: Pb with props in theme ...
+                        isSmall
+                        onClick={() => editCondition(currentConditions[0].id)}
+                      >
+                        {t.edit_condition}
+                      </Button>
+                    )}
+
                     <Button
                       ml="5"
                       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -193,9 +192,9 @@ const InputForm: React.FC<Props> = ({ order }) => {
                     >
                       {values?.required ? "Rendre la réponse facultative" : "Rendre la réponse obligatoire"}
                     </Button>
-                  )}
-                </Flex>
-              </Box>
+                  </Flex>
+                </Box>
+              )}
               <Box w="100%" mb="100px">
                 {renderFormTemplate(selectedQuestion)}
               </Box>

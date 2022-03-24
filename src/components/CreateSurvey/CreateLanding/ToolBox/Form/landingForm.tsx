@@ -160,7 +160,7 @@ export const LandingForm: React.FC = () => {
                   {t.content_label}
                 </Text>
 
-                <Wysiwyg id="wysiwyg" simpleMode />
+                <Wysiwyg id="wysiwyg" />
 
                 <Text variant="currentBold" mt="5">
                   {t.add_image}

@@ -235,13 +235,14 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
             </Flex>
           </Box>
 
-          <Box mt={10} mb={20}>
+          <Box border="1px solid #F7F7F7F7" p="5" backgroundColor="#fdfdfdf1" w="80%" m="30px auto">
             <Text variant="baseline" textAlign="center" mb={8}>
               Statistiques
             </Text>
 
-            <Filters filters={filters} handleClick={setStatFilter} currentFilter={statFilter} center />
-
+            <Box d="flex" justifyContent="center">
+              <Filters filters={filters} handleClick={setStatFilter} currentFilter={statFilter} center />
+            </Box>
             <Flex mt={5} ml={50} mr={50} justifyContent="space-around">
               <BigNumber value={selectedStats?.consented} label={"consentis"} />
               <BigNumber value={selectedStats?.completed} label={"terminés"} />

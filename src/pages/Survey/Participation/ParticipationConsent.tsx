@@ -39,7 +39,7 @@ export const ParticipationConsent: React.FC<Props> = ({ surveyId, onConsent, onR
   const attributes = survey?.survey?.data?.attributes;
   const url = attributes?.notice_consent?.data?.attributes?.url;
   const { isTablet } = useMediaQueries();
-  if (!attributes?.need_consent) onAccept();
+  // if (!attributes?.need_consent) onAccept();
   if (isLoading) <Box mt="20">Please wait...</Box>;
 
   return (

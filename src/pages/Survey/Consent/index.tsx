@@ -1,8 +1,6 @@
 import React, { useCallback } from "react";
 import { Box, Button } from "@chakra-ui/react";
 import { useHistory, useParams } from "react-router-dom";
-import { useCreateParticipationMutation } from "api/graphql/queries/participation.gql.generated";
-import { client } from "api/gql-client";
 
 // STATIC
 
@@ -12,12 +10,7 @@ export const Consent: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const history = useHistory();
 
-  const { mutateAsync: createParticipation, isLoading } = useCreateParticipationMutation(client);
-
   const onAccept = useCallback(async () => {
-    const res = await createParticipation({
-      values: { consent: true, completed: false },
-    });
     history.push(`/survey/${slug}/participate`);
   }, [slug]);
 
@@ -34,7 +27,6 @@ export const Consent: React.FC = () => {
         </Button>
         <Button onClick={onDecline}>No</Button>
       </Box>
-      {isLoading && <Box mt="20">Please wait...</Box>}
     </Box>
   );
 };

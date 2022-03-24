@@ -1,16 +1,16 @@
-const LS_PARTICIPATION = 'process__participations';
+const LS_PARTICIPATION = "process__participations";
 
-type StoredParticipation = {
-  id: string,
-  completed: boolean,
+export type StoredParticipation = {
+  id: string;
+  completed: boolean;
 };
 
 type StoredParticipations = Record<string, StoredParticipation>;
 
 /**
  * Returns (from the local storage) the participation associated with the given survey slug (if any).
- * @param slug 
- * @returns 
+ * @param slug
+ * @returns
  */
 export function findExistingParticipation(slug: string): StoredParticipation | undefined {
   const participations = readLocalParticipations();
@@ -19,8 +19,8 @@ export function findExistingParticipation(slug: string): StoredParticipation | u
 
 /**
  * Associates and saves a new participation (id) with a the given survey slug in the local storage.
- * @param slug 
- * @param newParticipationId 
+ * @param slug
+ * @param newParticipationId
  */
 export function storeParticipation(slug: string, newParticipationId: string): void {
   const localParticipations = readLocalParticipations();
@@ -30,7 +30,7 @@ export function storeParticipation(slug: string, newParticipationId: string): vo
 
 export function finishParticipation(slug: string | undefined): void {
   if (!slug) {
-    console.error('Missing slug to complete the participation !');
+    console.error("Missing slug to complete the participation !");
     return;
   }
 
@@ -39,7 +39,7 @@ export function finishParticipation(slug: string | undefined): void {
   const participation = localParticipations[slug];
 
   if (!participation) return;
-  
+
   // Mark the target as completed
   localParticipations[slug] = { ...participation, completed: true };
   // Save update list of participations
@@ -48,9 +48,9 @@ export function finishParticipation(slug: string | undefined): void {
 
 /**
  * Returns (from the local storage) all the survey slug / participation associations.
- * @returns 
+ * @returns
  */
 function readLocalParticipations(): StoredParticipations {
-  const data = localStorage.getItem(LS_PARTICIPATION); 
-  return (data) ? JSON.parse(data): {};
+  const data = localStorage.getItem(LS_PARTICIPATION);
+  return data ? JSON.parse(data) : {};
 }

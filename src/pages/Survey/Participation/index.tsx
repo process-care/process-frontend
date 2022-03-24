@@ -3,7 +3,7 @@ import { Box, Button, Center, Flex, Text } from "@chakra-ui/react";
 import { useHistory, useParams } from "react-router-dom";
 import { ParticipationConsent } from "./ParticipationConsent";
 import { ParticipationForm } from "./ParticipationForm";
-import { findExistingParticipation, storeParticipation } from "./localstorage-handlers";
+import { findExistingParticipation, StoredParticipation, storeParticipation } from "./localstorage-handlers";
 import { NL } from "./nl";
 import { Loader } from "components/Spinner";
 
@@ -78,9 +78,13 @@ export const Participation: React.FC<unknown> = () => {
 
 // ---- HOOKS
 
-function useConsentHandlers(slug: string) {
+type ConsentHandler = {
+  onConsent: (participationId: string) => void;
+  onRefuse: () => void;
+  participation: StoredParticipation | undefined;
+};
+export function useConsentHandlers(slug: string): ConsentHandler {
   const history = useHistory();
-
   const existingParticipation = findExistingParticipation(slug);
   const [participation, setParticipation] = useState(existingParticipation);
 

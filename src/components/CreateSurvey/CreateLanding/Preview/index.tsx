@@ -11,6 +11,9 @@ import { Team } from "./Team";
 import { Video } from "components/Video";
 import { API_URL_ROOT } from "constants/api";
 import { Legals } from "./Legals";
+import { useCreateParticipationMutation } from "api/graphql/queries/participation.gql.generated";
+import { client } from "api/gql-client";
+import { useConsentHandlers } from "pages/Survey/Participation";
 // ---- STATICS
 
 const big_placeholder =
@@ -24,11 +27,12 @@ interface Props {
   data?: LandingRedux;
   author?: { email: string; username: string } | null;
   needConsent?: boolean | null | undefined;
+  surveyId?: string;
 }
 
 // ---- COMPONENT
 
-export const Preview: React.FC<Props> = ({ isUserView, data, author, needConsent }) => {
+export const Preview: React.FC<Props> = ({ isUserView, data, author, needConsent, surveyId }) => {
   const { slug } = useParams<{ slug: string }>();
   const history = useHistory();
 
@@ -45,8 +49,10 @@ export const Preview: React.FC<Props> = ({ isUserView, data, author, needConsent
   const hasMedia = hasVideo || hasImage;
   const hasMembers = Boolean(data?.attributes?.members?.length > 0);
   const hasAboutPage = Boolean(data?.attributes?.about_page);
+  const { mutateAsync: createParticipation } = useCreateParticipationMutation(client);
+  const { onConsent } = useConsentHandlers(slug);
 
-  const onParticipate = useCallback(() => {
+  const onParticipate = useCallback(async () => {
     if (!isUserView) {
       alert("Bouton désactivé pendant la prévisualisation.");
       return;
@@ -54,7 +60,12 @@ export const Preview: React.FC<Props> = ({ isUserView, data, author, needConsent
     if (needConsent) {
       history.push(`/survey/${slug}/consent`);
     } else {
-      history.push(`/survey/${slug}/participate`);
+      const res = await createParticipation({
+        values: { consent: true, completed: false, survey: surveyId },
+      });
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore : I don't understand the structure of the answer, because that's supposed to work
+      onConsent(res?.createParticipation?.data?.id);
     }
   }, [slug, isUserView, needConsent]);
 

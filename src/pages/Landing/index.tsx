@@ -16,9 +16,10 @@ export const Landing: React.FC<IRoute> = () => {
   // TODO: Annoying to fetch the survey just to fetch the landing... Search landing with survey slug ?
   const { data: survey } = useSurveyBySlugQuery(client, { slug });
   const fetchedSurvey = survey?.surveys?.data?.[0];
-  const surveyId = fetchedSurvey?.attributes?.landing?.data?.id ?? "";
+  const landingId = fetchedSurvey?.attributes?.landing?.data?.id ?? "";
+  const surveyId = fetchedSurvey?.id ?? "";
 
-  const { data: landing, isLoading, error } = useLandingQuery(client, { id: surveyId }, { enabled: surveyId !== "" });
+  const { data: landing, isLoading, error } = useLandingQuery(client, { id: landingId }, { enabled: landingId !== "" });
   const author = fetchedSurvey?.attributes?.author;
 
   if (!fetchedSurvey) {
@@ -39,6 +40,7 @@ export const Landing: React.FC<IRoute> = () => {
 
   return (
     <Preview
+      surveyId={surveyId}
       data={sanitizeEntity(landing?.landing?.data)}
       isUserView
       author={author?.data?.attributes}

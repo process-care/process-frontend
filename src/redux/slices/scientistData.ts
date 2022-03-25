@@ -44,6 +44,7 @@ export interface GlobalState {
 export interface InitializedSurveyPayload {
   survey: SurveyRedux;
   questions: QuestionRedux[];
+  pages: PageRedux[];
 }
 
 // ----- SLICE
@@ -75,14 +76,14 @@ export const globalSlice = createSlice({
       state.conditions.isLoading = true;
     },
     initializedSurvey: (state: GlobalState, action: PayloadAction<InitializedSurveyPayload>): void => {
-      const { survey, questions } = action.payload;
+      const { survey, questions, pages } = action.payload;
 
       // Set survey
       state.survey.data = survey;
       state.survey.selectedSurvey = survey.id;
       state.survey.order = survey.attributes.order;
 
-      const pages = survey.attributes.pages?.data;
+      // const pages = survey.attributes.pages?.data;
 
       // Set pages
       if (pages) {

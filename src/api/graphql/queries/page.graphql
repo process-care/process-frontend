@@ -1,4 +1,14 @@
 ## ---- MUTATIONS
+
+query pagesBySurveySlug($slug: String!) {
+  pages(filters: { survey: { slug: { eq: $slug } } }) {
+    data {
+      id
+      ...pageEntityFragment
+    }
+  }
+}
+
 mutation addPage($values: PageInput!) {
   createPage(data: $values) {
     data {

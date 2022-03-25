@@ -11,6 +11,7 @@ const initializeEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.initializeSurveys.type),
     switchMap(async (action) => {
+      console.log("YES");
       const response = await sdk.mySurveys({ authorId: action.payload }).then((res) => {
         const data = res.surveys?.data;
         return sanitizeEntities(data);

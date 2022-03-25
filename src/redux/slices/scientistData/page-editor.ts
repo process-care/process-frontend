@@ -94,6 +94,10 @@ const getPages = (state: RootState): PageRedux[] => {
   return pages(state);
 };
 
+const getConditionsPages = (state: RootState): any => {
+  return pages(state)?.map((c) => c.attributes?.conditions?.data?.map((c) => c));
+};
+
 const getSelectedPageId = (state: RootState): Maybe<string> | undefined => state.scientistData.pages.selectedPage;
 
 const getSelectedPage = (state: RootState): PageRedux => {
@@ -109,6 +113,7 @@ export const pageSelectors = {
   getPages,
   getSelectedPage,
   getSelectedPageId,
+  getConditionsPages,
 };
 
 // ---- REDUCERS

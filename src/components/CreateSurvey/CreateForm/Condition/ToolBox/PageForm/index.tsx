@@ -28,11 +28,14 @@ export const PageForm: React.FC = () => {
   const questionsOnSelectedPage = useAppSelector(selectors.questions.getSelectedPageQuestions).map(
     (question) => question.id
   );
-  const conditionsOnSelectedPage = useAppSelector(selectors.conditions.getSelectedPageConditions);
+
+  console.log(selectedPage);
+  const conditionsOnSelectedPage = selectedPage?.attributes?.conditions?.data;
 
   const isNotFirstPage = pages.findIndex((page) => page.id === selectedPageId) > 0;
 
   const isRemoving = entityToRemove === selectedPageId;
+  console.log("sq", conditionsOnSelectedPage && conditionsOnSelectedPage[0]?.id);
 
   const handleSelect = (type: QuestionRedux["attributes"]["type"]) => {
     dispatch(actions.setSelectedQuestion(""));
@@ -103,6 +106,7 @@ export const PageForm: React.FC = () => {
                 changes: {
                   id: selectedPageId,
                   attributes: {
+                    ...values,
                     short_name: values.short_name,
                     name: values.name,
                     is_locked: values.is_locked,
@@ -161,8 +165,8 @@ export const PageForm: React.FC = () => {
                 />
 
                 <Box d="flex" justifyContent="space-between" mt="5">
-                  {isNotFirstPage &&
-                    (conditionsOnSelectedPage.length === 0 ? (
+                  {isNotFirstPage ? (
+                    conditionsOnSelectedPage?.length === 0 ? (
                       <Tooltip
                         label={
                           questionsOnSelectedPage.length === 0
@@ -189,11 +193,16 @@ export const PageForm: React.FC = () => {
                         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                         // @ts-ignore: Pb with props in theme ...
                         isSmall
-                        onClick={() => editCondition(conditionsOnSelectedPage?.[0].id)}
+                        onClick={() =>
+                          editCondition((conditionsOnSelectedPage && conditionsOnSelectedPage[0]?.id) ?? "")
+                        }
                       >
                         {t.edit_condition}
                       </Button>
-                    ))}
+                    )
+                  ) : (
+                    <></>
+                  )}
                   <Tooltip
                     label={"Si la page est bloquée, l'utilisateur ne peut plus modifier le contenu enregistré"}
                     placement="right"

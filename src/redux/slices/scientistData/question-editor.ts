@@ -106,6 +106,11 @@ const getQuestionsByPageId = (state: RootState, pageId: string): QuestionRedux[]
 const getSelectedQuestion = (state: RootState): QuestionRedux | undefined =>
   questionAdapter.getSelectors().selectById(state.scientistData.questions, getSelectedQuestionId(state));
 
+const getQuestionById = (state: RootState, questionId: string | undefined | null): QuestionRedux | undefined => {
+  if (!questionId) return;
+  return questionAdapter.getSelectors().selectById(state.scientistData.questions, questionId);
+};
+
 export const questionsSelectors = {
   error,
   isLoading,
@@ -116,6 +121,7 @@ export const questionsSelectors = {
   getSelectedQuestion,
   getSelectedPageQuestions,
   getQuestionsByPageId,
+  getQuestionById,
 };
 
 // ---- REDUCERS

@@ -1,9 +1,9 @@
-import { ConditionRedux } from "redux/slices/types";
+import { QuestionRedux } from "redux/slices/types";
 
-export const checkIfMultiple = (currentCondition: ConditionRedux): boolean => {
+export const checkIfMultiple = (target: QuestionRedux): boolean => {
   const multipleInput: string[] = ["checkbox", "radio", "select"];
 
-  const attributes = currentCondition?.attributes?.target?.data?.attributes;
+  const attributes = target.attributes;
   const type = attributes?.type !== undefined ? attributes.type : "text_area";
   if (type && multipleInput.includes(type)) {
     return true;

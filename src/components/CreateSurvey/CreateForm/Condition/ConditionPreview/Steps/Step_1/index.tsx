@@ -25,6 +25,7 @@ export const Step_1: React.FC<Props> = ({ selectedCondition, updateStep }) => {
 
   React.useEffect(() => {
     // Select first page if we make a condition on page.
+    // FIXME: This returns to this page when cancelling or saving, instead of the page we edited...
 
     if (isTypePage && pages.length > 0) {
       dispatch(actions.setSelectedPage(pages[0].id));

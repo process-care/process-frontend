@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useMemo } from "react";
 
 import { Button, Flex } from "@chakra-ui/react";
+import { Error } from "components/Error";
 import { operators, operatorsForMultiple } from "constants/operators";
 import { ConditionRedux } from "redux/slices/types";
 import { checkIfMultiple } from "utils/formBuilder/input";
+import { useAppSelector } from "redux/hooks";
+import { questionsSelectors } from "redux/slices/scientistData/question-editor";
 
 interface Props {
   selectedCondition: ConditionRedux;
@@ -11,15 +14,22 @@ interface Props {
 }
 
 export const Step_2: React.FC<Props> = ({ selectedCondition, updateStep }) => {
-  const authorizedOperators = () => {
-    if (checkIfMultiple(selectedCondition)) {
-      return operatorsForMultiple;
-    } else return operators;
-  };
+  const target_question = useAppSelector((state) =>
+    questionsSelectors.getQuestionById(state, selectedCondition.attributes.target?.data?.id)
+  );
+
+  if (!target_question) {
+    return <Error message="Une erreur s'est produite: cette condition ne possède pas de question cible... !" />;
+  }
+
+  const authorizedOperators = useMemo(
+    () => (checkIfMultiple(target_question) ? operatorsForMultiple : operators),
+    [target_question]
+  );
 
   return (
     <Flex flexWrap="wrap" w="100%" justifyContent="center" alignItems="center">
-      {authorizedOperators().map(({ id, name }) => {
+      {authorizedOperators.map(({ id, name }) => {
         const isSelected = id === selectedCondition?.attributes?.operator;
 
         return (

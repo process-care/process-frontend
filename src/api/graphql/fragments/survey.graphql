@@ -65,6 +65,32 @@ fragment surveyEntityFragment on SurveyEntity {
           name
           short_name
           is_locked
+          conditions {
+            data {
+              id
+              attributes {
+                type
+                operator
+                target {
+                  data {
+                    id
+                  }
+                }
+                target_value
+                referer_page {
+                  data {
+                    id
+                  }
+                }
+                referer_question {
+                  data {
+                    id
+                  }
+                }
+                group
+              }
+            }
+          }
         }
       }
     }

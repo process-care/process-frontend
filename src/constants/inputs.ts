@@ -17,45 +17,45 @@ export const inputs: Obj[] = [
   },
   {
     type: Enum_Question_Type.TextArea,
-    name: "Question texte libre",
+    name: "Texte libre",
     category: "simple",
     info: "Création d’une zone de texte. La taille de la zone définit la taille maximale de la réponse ('Petite': 50 caractères; 'Moyenne': 500 caractères; 'Grande': 5000 caractères)",
   },
   {
     type: Enum_Question_Type.Select,
-    name: "Questions liste déroulante",
+    name: "Liste déroulante",
     category: "simple",
     info: "Création d’une liste déroulante comprenant de multiples options de réponse. L’utilisateur ne peut sélectionner qu’une seule option de réponse.",
   },
   {
     type: Enum_Question_Type.Slider,
-    name: "Question curseur",
+    name: "Curseur",
     category: "simple",
     info: "Création d’une échelle numérique. Les bornes de l’échelle peuvent être fixées par les valeurs minimale et maximale. L’intervalle entre deux graduations est personnalisable",
   },
   {
     type: Enum_Question_Type.NumberInput,
-    name: "Question nombre",
+    name: "Nombre",
     category: "simple",
     info: "Création d’un champ nombre. Seules des valeurs numériques peuvent être saisies.  Les valeurs autorisées sont fixées par les valeurs minimales et maximales",
   },
 
   {
     type: Enum_Question_Type.Radio,
-    name: "Question bouton radio",
+    name: "Bouton radio",
     category: "simple",
     info: "Création d’une liste de boutons radios. De multiples options de réponse peuvent être créées mais l’utilisateur ne peut en sélectionner qu’une",
   },
   {
     type: Enum_Question_Type.Checkbox,
-    name: "Question case à cocher",
+    name: "Cases à cocher",
     category: "simple",
     info: "Création d’une liste de cases à cocher. De multiples options de réponse peuvent être créées. L’utilisateur peut sélectionner plusieurs options de réponse (à la différence d’un bouton radio)",
   },
 
   {
     type: Enum_Question_Type.DatePicker,
-    name: "Question date",
+    name: "Date",
     category: "simple",
     info: "Création d’un champ date",
   },

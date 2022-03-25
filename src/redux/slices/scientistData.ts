@@ -95,7 +95,7 @@ export const globalSlice = createSlice({
         sanePages.map((p) => {
           const pageConditions = p.attributes.conditions?.data;
 
-          if (pageConditions) {
+          if (pageConditions && pageConditions.length > 0) {
             const sanePageConditions = sanitizeEntities(pageConditions);
             conditionAdapter.setAll(state.conditions, sanePageConditions);
           }

@@ -2,9 +2,10 @@ import { InputBox } from "components/CreateSurvey/CreateForm/InputsPreview/Input
 import { Input } from "components/Fields";
 import { ConditionRedux } from "redux/slices/types";
 import React from "react";
-import { useAppDispatch } from "redux/hooks";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { actions } from "redux/slices/scientistData";
 import { Box } from "@chakra-ui/react";
+import { questionsSelectors } from "redux/slices/scientistData/question-editor";
 
 const InputNumber = () => {
   return (
@@ -39,11 +40,13 @@ export const renderInput = (selectedCondition: ConditionRedux): React.ReactEleme
     dispatch(actions.setValidityCondition(bool));
   };
 
-  const target_question = selectedCondition?.attributes.target;
+  const target_question = useAppSelector((state) =>
+    questionsSelectors.getQuestionById(state, selectedCondition.attributes.target?.data?.id)
+  );
+
   const Options = () => {
     const answers =
-      target_question?.data?.attributes?.options !== undefined &&
-      Object.values(target_question?.data?.attributes?.options);
+      target_question?.attributes?.options !== undefined && Object.values(target_question?.attributes?.options);
     if (!answers) {
       return <p>Erreur, pas de réponses</p>;
     } else {
@@ -67,7 +70,7 @@ export const renderInput = (selectedCondition: ConditionRedux): React.ReactEleme
     }
   };
 
-  switch (target_question?.data?.attributes?.type) {
+  switch (target_question?.attributes?.type) {
     case "select":
       return <Options />;
       break;

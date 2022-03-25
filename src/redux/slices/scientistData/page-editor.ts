@@ -94,7 +94,6 @@ const getPages = (state: RootState): PageRedux[] => {
   return pages(state);
 };
 
-//  TODO: Refacto any here
 const getSelectedPageId = (state: RootState): Maybe<string> | undefined => state.scientistData.pages.selectedPage;
 
 const getSelectedPage = (state: RootState): PageRedux => {

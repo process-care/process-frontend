@@ -37,13 +37,13 @@ export const ConditionPreview: React.FC<Props> = ({ selectedCondition }) => {
   const renderStep = () => {
     switch (step) {
       case 1:
-        return <Step_1 selectedCondition={selectedCondition} updateStep={(changes) => handleUpdate(changes)} />;
+        return <Step_1 selectedCondition={selectedCondition} updateStep={handleUpdate} />;
         break;
       case 2:
-        return <Step_2 selectedCondition={selectedCondition} updateStep={(changes) => handleUpdate(changes)} />;
+        return <Step_2 selectedCondition={selectedCondition} updateStep={handleUpdate} />;
         break;
       case 3:
-        return <Step_3 selectedCondition={selectedCondition} updateStep={(changes) => handleUpdate(changes)} />;
+        return <Step_3 selectedCondition={selectedCondition} updateStep={handleUpdate} />;
         break;
 
       default:

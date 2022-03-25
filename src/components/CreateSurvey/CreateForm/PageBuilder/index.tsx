@@ -28,6 +28,7 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
   const handlePage = () => {
     dispatch(actions.createPage({ id: survey.id }));
   };
+
   const selectPage = (id: string) => {
     dispatch(actions.setSelectedPage(id));
   };
@@ -37,7 +38,7 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
   return (
     <Flex flexDirection="column" alignItems="center" pt={5} backgroundColor="white" width="100%" position="relative">
       <Box
-        onClick={() => handlePage()}
+        onClick={handlePage}
         mb="10"
         d="flex"
         justifyContent="center"
@@ -57,6 +58,7 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
       <Box h="80%" overflowY="auto" w="100%">
         {pages?.map((page, i) => {
           const isSelected = selectedPage?.id === page.id;
+
           return (
             <Box
               mb={4}
@@ -70,6 +72,7 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
                     <Condition />
                   )}
                 </Box>
+
                 <Box
                   onClick={() => selectPage(page.id)}
                   d="flex"
@@ -103,6 +106,7 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
                   </Box>
                 )}
               </Flex>
+
               <Text mt={1} color="blue.500" fontSize="10" fontWeight={isSelected ? "bold" : ""}>
                 {page?.attributes?.name}
               </Text>

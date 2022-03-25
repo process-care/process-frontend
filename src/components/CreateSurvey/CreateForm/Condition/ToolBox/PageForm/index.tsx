@@ -96,6 +96,7 @@ export const PageForm: React.FC = () => {
               firstRender.current = false;
               return;
             }
+
             dispatch(
               actions.updatePage({
                 id: selectedPageId,

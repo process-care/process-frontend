@@ -5,5 +5,5 @@ export interface EvaluationCondition {
   group?: Maybe<string>;
   operator: Maybe<Enum_Condition_Operator> | undefined;
   target_value: Maybe<string> | undefined;
-  answer?: unknown;
+  answer?: any;
 }

@@ -28,14 +28,9 @@ export const PageForm: React.FC = () => {
   const questionsOnSelectedPage = useAppSelector(selectors.questions.getSelectedPageQuestions).map(
     (question) => question.id
   );
-
-  console.log(selectedPage);
   const conditionsOnSelectedPage = selectedPage?.attributes?.conditions?.data;
-
   const isNotFirstPage = pages.findIndex((page) => page.id === selectedPageId) > 0;
-
   const isRemoving = entityToRemove === selectedPageId;
-  console.log("sq", conditionsOnSelectedPage && conditionsOnSelectedPage[0]?.id);
 
   const handleSelect = (type: QuestionRedux["attributes"]["type"]) => {
     dispatch(actions.setSelectedQuestion(""));
@@ -100,13 +95,13 @@ export const PageForm: React.FC = () => {
               return;
             }
 
+            console.log("VALUES", values);
             dispatch(
               actions.updatePage({
                 id: selectedPageId,
                 changes: {
                   id: selectedPageId,
                   attributes: {
-                    ...values,
                     short_name: values.short_name,
                     name: values.name,
                     is_locked: values.is_locked,

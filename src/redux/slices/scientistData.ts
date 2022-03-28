@@ -27,7 +27,7 @@ import {
 import { initialSurveyState, SurveyEditor, surveyReducers, surveySelectors } from "./scientistData/survey-editor";
 
 import { LastUpdated, ConditionRedux, PageRedux, QuestionRedux, SurveyRedux } from "./types";
-import { hasAttributes, sanitizeEntities } from "api/entity-checker";
+import { sanitizeEntities } from "api/entity-checker";
 import { CheckSurveyQuery } from "api/graphql/sdk.generated";
 
 // ---- TYPES
@@ -89,29 +89,27 @@ export const globalSlice = createSlice({
       if (pages) {
         const sanePages = sanitizeEntities(pages);
         pageAdapter.setAll(state.pages, sanePages);
-
+        // Select first page
         state.pages.selectedPage = sanePages[0].id;
-
         // Set conditions's pages
         sanePages.map((p) => {
           const pageConditions = p.attributes.conditions?.data;
 
-          if (pageConditions && pageConditions.length > 0) {
+          if (pageConditions) {
             const sanePageConditions = sanitizeEntities(pageConditions);
-            conditionAdapter.setAll(state.conditions, sanePageConditions);
+            conditionAdapter.setMany(state.conditions, sanePageConditions);
           }
         });
       }
 
-      // Set questions
-      questionAdapter.setAll(state.questions, questions);
-      const questionsConditions = questions?.map((question) => question?.attributes?.conditions?.data ?? []).flat();
-
-      // Set conditions's questions
-      if (questionsConditions) {
-        questionsConditions.map((condition) => {
-          if (hasAttributes(condition)) {
-            conditionAdapter.setOne(state.conditions, condition);
+      if (questions) {
+        const saneQuestions = sanitizeEntities(questions);
+        questionAdapter.setAll(state.questions, saneQuestions);
+        saneQuestions.map((q) => {
+          const questionConditions = q.attributes.conditions?.data;
+          if (questionConditions) {
+            const saneQuestionConditions = sanitizeEntities(questionConditions);
+            conditionAdapter.setMany(state.conditions, saneQuestionConditions);
           }
         });
       }

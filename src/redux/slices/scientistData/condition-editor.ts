@@ -263,6 +263,11 @@ const getSelectedQuestionsConditions = (state: RootState): ConditionRedux[] => {
 const getSelectedCondition = (state: RootState): ConditionRedux | undefined =>
   conditionAdapter.getSelectors().selectById(state.scientistData.conditions, getSelectedConditionId(state));
 
+const selectById = (state: RootState, condId: string | undefined): ConditionRedux | undefined => {
+  if (!condId) return;
+  return conditionAdapter.getSelectors().selectById(state.scientistData.conditions, condId);
+};
+
 export const conditionsSelectors = {
   error,
   isLoading,
@@ -272,6 +277,7 @@ export const conditionsSelectors = {
   getSelectedCondition,
   getSelectedPageConditions,
   getSelectedQuestionsConditions,
+  selectById,
   getStep,
   getValidity,
   getConditionsByPageId,

@@ -3,16 +3,24 @@ fragment pageFragment on Page {
   short_name
   is_locked
   conditions {
-    data { id }
+    data {
+      id
+      attributes {
+        ...conditionFragment
+      }
+    }
   }
   questions {
-    data { id }
+    data {
+      id
+    }
   }
   survey {
-    data { id }
+    data {
+      id
+    }
   }
 }
-
 
 fragment pageEntityFragment on PageEntity {
   id

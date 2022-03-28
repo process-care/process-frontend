@@ -15,7 +15,6 @@ const initializeEpic: Epic = (action$) =>
         const data = res.surveys?.data[0];
         return sanitizeEntity(data);
       });
-      console.log("YES");
 
       const questions = sdk.questionsBySurveySlug({ slug: action.payload }).then((res) => {
         // Get questions - pages and conditions's questions

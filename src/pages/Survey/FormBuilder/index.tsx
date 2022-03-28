@@ -34,6 +34,10 @@ export const CreateForm: React.FC<IRoute> = () => {
   const drawerIsOpen = useAppSelector(appSelectors.drawerIsOpen);
   const selectedCondition = useAppSelector(selectors.conditions.getSelectedCondition);
   const containerRef = useRef<HTMLDivElement>(null);
+  // const conditionId = useAppSelector(selectors.conditions.getSelectedConditionId);
+
+  // WORK IN PROGRESS
+  // const conditions = useAppSelector((state) => selectors.conditions.selectById(state, conditionId));
 
   useEffect(() => {
     dispatch(actions.initializeSurvey(slug));
@@ -57,6 +61,8 @@ export const CreateForm: React.FC<IRoute> = () => {
   if (isLoading) {
     return <Loader />;
   }
+
+  console.log("selectedCondition", selectedCondition);
 
   return (
     <Box h="100vh" overflow="hidden">

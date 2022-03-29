@@ -12,7 +12,7 @@ import { isInactive } from "./utils";
 import { SvgHover } from "components/SvgHover";
 
 import { actions, selectors } from "redux/slices/scientistData";
-import { ConditionRedux, SurveyRedux } from "redux/slices/types";
+import { SurveyRedux } from "redux/slices/types";
 
 interface Props {
   survey: SurveyRedux;
@@ -33,9 +33,7 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
     dispatch(actions.setSelectedPage(id));
   };
 
-  const conditions: string[] = useAppSelector(selectors.pages.getConditionsPages)?.map(
-    (c: ConditionRedux[]) => c[0]?.id
-  );
+  const pagesConditions = useAppSelector(selectors.conditions.getAllPagesConditions);
 
   return (
     <Flex flexDirection="column" alignItems="center" pt={5} backgroundColor="white" width="100%" position="relative">
@@ -70,7 +68,11 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
             >
               <Flex alignItems="center" position="relative">
                 <Box position="absolute" right="16px" bottom="35px">
-                  {conditions[i] ? <Condition /> : <></>}
+                  {pagesConditions.some((c) => c?.attributes?.referer_page?.data?.id === page.id) ? (
+                    <Condition />
+                  ) : (
+                    <></>
+                  )}
                 </Box>
 
                 <Box

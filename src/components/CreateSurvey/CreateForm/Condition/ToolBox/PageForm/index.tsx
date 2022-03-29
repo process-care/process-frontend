@@ -28,7 +28,10 @@ export const PageForm: React.FC = () => {
   const questionsOnSelectedPage = useAppSelector(selectors.questions.getSelectedPageQuestions).map(
     (question) => question.id
   );
-  const conditionsOnSelectedPage = selectedPage?.attributes?.conditions?.data;
+  // const conditionsOnSelectedPage = selectedPage?.attributes?.conditions?.data;
+  const conditionsOnSelectedPage = useAppSelector(selectors.conditions.getAllPagesConditions).filter(
+    (c) => c?.attributes?.referer_page?.data?.id === selectedPageId
+  );
   const isNotFirstPage = pages.findIndex((page) => page.id === selectedPageId) > 0;
   const isRemoving = entityToRemove === selectedPageId;
 

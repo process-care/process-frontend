@@ -30,7 +30,7 @@ export const Footer: React.FC = () => {
       <Flex justifyContent="space-between" w="100%" mt="20px" textAlign="left">
         <Box>
           <Text variant="currentLight" textDecoration="underline" mt="10px">
-            <a href="mailto:contact@process.care">contact@process.care</a>
+            <a href="mailto:thi.tran-viet@aphp.fr">thi.tran-viet@aphp.fr</a>
           </Text>
           {/* <Text variant="currentLight" textDecoration="underline" mt="10px">
             Mentions légales

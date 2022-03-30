@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Box, Center, Flex, Text } from "@chakra-ui/react";
+import { Box, Center, Flex, Text, useMediaQuery } from "@chakra-ui/react";
 import { useHistory, useParams } from "react-router-dom";
 import { Description } from "./Description";
 import { useAppSelector } from "redux/hooks";
@@ -39,6 +39,7 @@ export const Preview: React.FC<Props> = ({ isUserView, data, author, needConsent
   const aboutPage = useAppSelector(selectors.about);
   const isEditingAbout = useAppSelector(selectors.isEditingAbout);
   const { isTablet } = useMediaQueries();
+  const [isBigPhone] = useMediaQuery(`(max-width: 1070px)`);
   const attributes = data?.attributes;
 
   const hasVideo = Boolean(attributes?.video_url);
@@ -129,7 +130,7 @@ export const Preview: React.FC<Props> = ({ isUserView, data, author, needConsent
             alignItems="flex-end"
             overflow="auto"
           >
-            <Box pos="absolute" top="20px" right="20px" hidden={isTablet}>
+            <Box pos="absolute" top="20px" right="20px" hidden={isBigPhone}>
               <Logo />
             </Box>
             <Tabs w={isTablet ? "90%" : "80%"} m={isTablet ? "30px auto" : "0 auto"}>

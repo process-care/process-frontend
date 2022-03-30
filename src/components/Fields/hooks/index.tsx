@@ -28,7 +28,7 @@ export const useAssociatedLogic = (
     variations: [],
     isMounted: false,
   });
-  const [totalClick, setClick] = useState(0);
+  const [totalClick, setClick] = useState(1);
   const filteredFactors = factors?.filter((f) => f !== null);
   const modalitiesPerFactor = filteredFactors?.map((f) => f.modalities?.length).filter((m) => m !== 0);
   const totalVariations = modalitiesPerFactor?.reduce((a, b) => a * b, 1);

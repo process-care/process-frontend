@@ -4,14 +4,10 @@ import { Avatar } from "@chakra-ui/react";
 import { t } from "static/dashboard";
 import { ReactComponent as Logo } from "assets/logo.svg";
 import { NavLink } from "react-router-dom";
-import { motion } from "framer-motion";
-import { useAuth } from "components/Authentification/hooks";
 import { useDispatch } from "react-redux";
 import { actions } from "redux/slices/application";
 import { actions as appActions } from "redux/slices/scientistData";
 import { useHistory } from "react-router-dom";
-import { useUserQuery } from "components/Dashboard/ProfilForm/user.gql.generated";
-import { client } from "api/gql-client";
 
 export const HEADER_HEIGHT = "65px";
 
@@ -25,23 +21,9 @@ interface Item {
   action?: () => void;
 }
 
-const variants = {
-  open: { opacity: 1 },
-  closed: { opacity: 0 },
-};
-
 export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
   const history = useHistory();
-  const { cookies } = useAuth();
   const dispatch = useDispatch();
-
-  const { data: user } = useUserQuery(client, { id: cookies?.user.id });
-
-  const [isOpen, setIsOpen] = React.useState<boolean>(false);
-
-  const handleClick = () => {
-    setIsOpen((prev) => !prev);
-  };
 
   const logout = () => {
     () => history.push("/connexion");
@@ -74,34 +56,25 @@ export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
 
   const SubMenu = () => {
     return (
-      <motion.nav
-        animate={isOpen ? "open" : "closed"}
-        variants={variants}
-        style={{
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        <Flex zIndex={1} w="300px" justifyContent="space-between" mr="10px" pos="absolute" right="80px">
-          {items.map(({ name, path, action }) => {
-            return (
-              <NavLink
-                onClick={action}
-                key={name}
-                to={path}
-                activeStyle={{
-                  fontStyle: "italic",
-                }}
-              >
-                {name}
-              </NavLink>
-            );
-          })}
-        </Flex>
-      </motion.nav>
+      <Flex zIndex={1} w="300px" justifyContent="space-between" mr="10px" pos="absolute" right="80px">
+        {items.map(({ name, path, action }) => {
+          return (
+            <NavLink
+              onClick={action}
+              key={name}
+              to={path}
+              activeStyle={{
+                fontWeight: "bold",
+                borderBottom: "1px solid black",
+              }}
+            >
+              {name}
+            </NavLink>
+          );
+        })}
+      </Flex>
     );
   };
-  const attributes = user?.usersPermissionsUser?.data?.attributes;
   return (
     <Box
       py={3}
@@ -140,11 +113,9 @@ export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
 
         <Avatar
           _hover={{ cursor: "pointer" }}
-          onClick={handleClick}
           ml="20px"
-          name={attributes?.firstName + " " + attributes?.lastName}
-          w="40px"
-          h="40px"
+          w="30px"
+          h="30px"
           color="white"
           fontSize="14px"
           background="linear-gradient(rgba(194, 165, 249, 1), rgba(0, 132, 255, 1))"

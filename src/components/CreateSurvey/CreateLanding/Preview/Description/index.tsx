@@ -12,16 +12,38 @@ export const Description: React.FC<Props> = ({ data, onParticipate }) => {
   const attributes = data?.attributes;
   const { isTablet } = useMediaQueries();
 
+  const Logo = () => {
+    if (!data?.attributes?.logo) return <></>;
+    return (
+      <img
+        src={data?.attributes?.logo}
+        alt="Logo"
+        style={{
+          width: "120px",
+        }}
+      />
+    );
+  };
+
   return (
     <Box w="100%" h="100%">
-      <Flex w="100%" pt="40px">
-        <Box minW="100%">
-          <Box mb="10px" w="100%" d="flex" justifyContent="flex-end">
+      <Flex w="100%">
+        <Box>
+          <Flex alignItems="center" justifyContent="flex-end" pb="20px">
+            <Box>
+              <Logo />
+            </Box>
             {attributes?.partners_logos?.map((logo: any) => {
-              return <img src={logo?.image} style={{ width: "50px" }} />;
+              return (
+                <Box>
+                  <img src={logo?.image} style={{ width: "120px" }} />
+                </Box>
+              );
             })}
-          </Box>
+          </Flex>
           <Text
+            maxHeight="350px"
+            overflow="auto"
             textAlign="left"
             variant="current"
             dangerouslySetInnerHTML={{

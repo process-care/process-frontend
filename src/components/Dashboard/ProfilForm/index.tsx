@@ -85,9 +85,8 @@ export const ProfilForm: React.FC = () => {
                 <Avatar
                   _hover={{ cursor: "pointer" }}
                   ml="20px"
-                  name={attributes?.firstName + " " + attributes?.lastName}
-                  w="50px"
-                  h="50px"
+                  w="30px"
+                  h="30px"
                   color="white"
                   fontSize="45px"
                   background="linear-gradient(rgba(194, 165, 249, 1),

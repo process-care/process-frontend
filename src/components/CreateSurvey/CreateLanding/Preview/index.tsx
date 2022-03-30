@@ -82,17 +82,7 @@ export const Preview: React.FC<Props> = ({ isUserView, data, author, needConsent
       </Box>
     );
   }
-  const Logo = () => {
-    return (
-      <img
-        src={attributes?.logo ?? ""}
-        alt="Logo"
-        style={{
-          maxHeight: "90px",
-        }}
-      />
-    );
-  };
+
   return (
     <Box h={isTablet ? "fit-content" : "100vh"} w="100%" backgroundColor="white">
       <Flex flexDirection={isTablet ? "column" : "row"}>
@@ -129,9 +119,6 @@ export const Preview: React.FC<Props> = ({ isUserView, data, author, needConsent
             alignItems="flex-end"
             overflow="auto"
           >
-            <Box pos="absolute" top="20px" right="20px" hidden={isTablet}>
-              <Logo />
-            </Box>
             <Tabs w={isTablet ? "90%" : "80%"} m={isTablet ? "30px auto" : "0 auto"}>
               <TabList>
                 <Tab>Description</Tab>

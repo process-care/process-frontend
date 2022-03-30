@@ -13,9 +13,10 @@ export const Description: React.FC<Props> = ({ data, onParticipate }) => {
   const { isTablet } = useMediaQueries();
 
   const Logo = () => {
+    if (!data?.attributes?.logo) return <></>;
     return (
       <img
-        src={data?.attributes?.logo ?? ""}
+        src={data?.attributes?.logo}
         alt="Logo"
         style={{
           width: "120px",

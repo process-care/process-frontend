@@ -124,7 +124,7 @@ export const LandingForm: React.FC = () => {
               <Text variant="baseline" fontWeight="bold" textAlign="left" _hover={{ cursor: "pointer" }} mb="5">
                 Edition de la page d'accueil
               </Text>
-              <TitleDivider title="Bandeau" />
+              <TitleDivider title="Zone titre" />
               <Box border="1px solid #F7F7F7F7" p="5" backgroundColor="#fdfdfdf1">
                 <Textarea
                   id="title"
@@ -200,13 +200,16 @@ export const LandingForm: React.FC = () => {
                 </Button>
               </Box>
 
-              <TitleDivider title="Pied de page" />
+              <TitleDivider title="Page équipe" />
 
               <Box border="1px solid #F7F7F7F7" p="5" backgroundColor="#fdfdfdf1" mb="100px">
                 <Text variant="currentBold" mt="5">
                   {t.team_label}
                 </Text>
                 <RepeatableJobs name="members" cta="Ajouter un membre de l'équipe" />
+              </Box>
+              <TitleDivider title="Logos" />
+              <Box border="1px solid #F7F7F7F7" p="5" backgroundColor="#fdfdfdf1">
                 <Text variant="currentBold" mt="5">
                   {t.partners}
                 </Text>

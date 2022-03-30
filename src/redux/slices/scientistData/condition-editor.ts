@@ -224,6 +224,12 @@ export const hasChanges = (state: RootState): boolean => {
 export const getAllConditions = (state: RootState): ConditionRedux[] =>
   conditionAdapter.getSelectors().selectAll(state.scientistData.conditions);
 
+export const getAllPagesConditions = (state: RootState): ConditionRedux[] =>
+  conditionAdapter
+    .getSelectors()
+    .selectAll(state.scientistData.conditions)
+    .filter((c) => c?.attributes?.type === "page");
+
 export const getAllQuestionsConditionsInSelectedPage = (state: RootState): ConditionRedux[] => {
   return getAllConditions(state).filter(
     (condition) =>
@@ -237,12 +243,6 @@ const getSelectedConditionId = (state: RootState): string => state.scientistData
 
 const getStep = (state: RootState): number => state.scientistData.conditions.step;
 const getValidity = (state: RootState): boolean => state.scientistData.conditions.isValid;
-
-const getSelectedPageConditions = (state: RootState): ConditionRedux[] => {
-  return getAllConditions(state).filter(
-    (condition) => condition?.attributes?.referer_page?.data?.id === state.scientistData.pages.selectedPage
-  );
-};
 
 const getConditionsByPageId = (state: RootState, pageId: string): ConditionRedux[] => {
   return getAllConditions(state).filter((condition) => condition?.attributes?.referer_page?.data?.id === pageId);
@@ -263,6 +263,11 @@ const getSelectedQuestionsConditions = (state: RootState): ConditionRedux[] => {
 const getSelectedCondition = (state: RootState): ConditionRedux | undefined =>
   conditionAdapter.getSelectors().selectById(state.scientistData.conditions, getSelectedConditionId(state));
 
+const selectById = (state: RootState, condId: string | undefined): ConditionRedux | undefined => {
+  if (!condId) return;
+  return conditionAdapter.getSelectors().selectById(state.scientistData.conditions, condId);
+};
+
 export const conditionsSelectors = {
   error,
   isLoading,
@@ -270,8 +275,9 @@ export const conditionsSelectors = {
   getAllConditions,
   getSelectedConditionId,
   getSelectedCondition,
-  getSelectedPageConditions,
   getSelectedQuestionsConditions,
+  getAllPagesConditions,
+  selectById,
   getStep,
   getValidity,
   getConditionsByPageId,

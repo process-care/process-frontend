@@ -67,10 +67,10 @@ type CreatedPayload = {
   lastCreated: string;
 };
 
-type UploadPayload = {
-  id: string;
-  changes: PageRedux;
-};
+// type UploadPayload = {
+//   id: string;
+//   changes: PageRedux;
+// };
 
 // ---- SELECTORS
 
@@ -94,6 +94,10 @@ const getPages = (state: RootState): PageRedux[] => {
   return pages(state);
 };
 
+const getConditionsPages = (state: RootState): any => {
+  return pages(state)?.map((c) => c.attributes?.conditions?.data?.map((c) => c));
+};
+
 const getSelectedPageId = (state: RootState): Maybe<string> | undefined => state.scientistData.pages.selectedPage;
 
 const getSelectedPage = (state: RootState): PageRedux => {
@@ -109,6 +113,7 @@ export const pageSelectors = {
   getPages,
   getSelectedPage,
   getSelectedPageId,
+  getConditionsPages,
 };
 
 // ---- REDUCERS
@@ -123,9 +128,10 @@ export const pageReducer = {
     pageAdapter.addOne(state.pages, action.payload.page);
     state.pages.selectedPage = action.payload.page.id;
   },
-  updatePage: (state: GlobalState, action: PayloadAction<UploadPayload>): void => {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  updatePage: (state: GlobalState, action: any): void => {
     state.pages.lastUpdated = new Date().toISOString();
-    pageAdapter.updateOne(state.pages, action.payload);
+    pageAdapter.updateOne(state.pages, action.payload.changes);
   },
   updatedPage: (state: GlobalState, action: PayloadAction<UpdatedPayload>): void => {
     state.pages.lastUpdated = action.payload.lastUpdated;

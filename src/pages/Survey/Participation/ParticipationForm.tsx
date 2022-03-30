@@ -50,7 +50,6 @@ export const ParticipationForm: React.FC<Props> = ({ surveyId, participationId }
   const { isFirstPage, isLastPage, selectedPage, nextPage, previousPage, selectIndex } = useNavigationHandlers(pages);
 
   const { onFinish } = useFinishHandler(participationId, attributes?.slug);
-
   // Missing data checks
 
   if (isLoading || !selectedPage)

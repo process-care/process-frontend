@@ -15,18 +15,25 @@ const initializeEpic: Epic = (action$) =>
         const data = res.surveys?.data[0];
         return sanitizeEntity(data);
       });
+
       const questions = sdk.questionsBySurveySlug({ slug: action.payload }).then((res) => {
         // Get questions - pages and conditions's questions
         const data = res.questions?.data;
         return sanitizeEntities(data);
       });
+      const pages = sdk.pagesBySurveySlug({ slug: action.payload }).then((res) => {
+        const data = res?.pages?.data;
+        return sanitizeEntities(data);
+      });
 
-      return Promise.all([survey, questions]);
+      return Promise.all([survey, questions, pages]);
     }),
     map((results) => {
       const survey = results[0];
       const questions = results[1];
-      const payload = { survey, questions };
+      const pages = results[2];
+
+      const payload = { survey, questions, pages };
 
       // Raise an error if no survey found
       if (!payload) return actions.error({});

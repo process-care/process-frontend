@@ -33,7 +33,7 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
     dispatch(actions.setSelectedPage(id));
   };
 
-  const conditions = useAppSelector(selectors.conditions.getAllConditions);
+  const pagesConditions = useAppSelector(selectors.conditions.getAllPagesConditions);
 
   return (
     <Flex flexDirection="column" alignItems="center" pt={5} backgroundColor="white" width="100%" position="relative">
@@ -68,8 +68,10 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
             >
               <Flex alignItems="center" position="relative">
                 <Box position="absolute" right="16px" bottom="35px">
-                  {conditions.filter((c) => c?.attributes?.referer_page?.data?.id === page.id)?.length > 0 && (
+                  {pagesConditions.some((c) => c?.attributes?.referer_page?.data?.id === page.id) ? (
                     <Condition />
+                  ) : (
+                    <></>
                   )}
                 </Box>
 

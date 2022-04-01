@@ -18,8 +18,6 @@ const loginEpic: Epic = (action$) =>
           password,
         });
 
-        console.log("login: ", res);
-
         if (res) {
           client.setHeader("Authorization", buildBearer(res.login.jwt));
           localStorage.setItem("process__user", JSON.stringify(res.login));
@@ -95,9 +93,7 @@ const refreshingEpic: Epic = (action$) =>
         return actions.authFailed(msg);
       }
 
-      // Refresh local storage with it
-      console.log("found user: ", res.me);
-
+      // Refresh local storage
       const storedUser = JSON.parse(localStorage.getItem("process__user") ?? "");
       const updated = { ...storedUser, user: { ...storedUser.user, ...res.me } };
       localStorage.setItem("process__user", JSON.stringify(updated));

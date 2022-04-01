@@ -43,8 +43,6 @@ export const authReducers = {
     state.auth.refreshing = true;
   },
   refreshed: (state: GlobalState, action: PayloadAction<MeQuery["me"]>): void => {
-    console.log("refreshed: ", action.payload);
-
     // TODO: Remove this check, it is a type safeguard, but the validation is made in the epic already
     if (!action.payload) return;
 

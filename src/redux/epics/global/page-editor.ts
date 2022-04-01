@@ -52,7 +52,7 @@ const updateEpic: Epic = (action$) =>
     debounceTime(3000),
     switchMap(async (accumulated: any) => {
       const updatedAt: string = new Date().toISOString();
-      console.log("accumulated", accumulated);
+
       await sdk.updatePage({
         id: accumulated.id,
         data: accumulated.changes?.attributes,

@@ -1,39 +1,34 @@
-import { Redirect, Route, RouteProps } from "react-router-dom";
+import { Redirect, Route, RouteProps, useLocation } from "react-router-dom";
 import { useAuth } from "components/Authentification/hooks";
 import { useDispatch } from "react-redux";
 import { actions } from "redux/slices/scientistData";
 import { useAppSelector } from "redux/hooks";
 import { useEffect } from "react";
-export const ProtectedRoutes: React.FC = ({
-  children,
-  ...rest
-}: RouteProps) => {
-  const dispatch = useDispatch();
-  const { isAuthenticated, cookies } = useAuth();
-  const isConnected = useAppSelector(
-    (state) => state.scientistData.auth.isConnected
-  );
 
+export const ProtectedRoutes: React.FC = ({ children, ...rest }: RouteProps) => {
+  const dispatch = useDispatch();
+  const location = useLocation();
+
+  const { isAuthenticated, cookies } = useAuth();
+  const isConnected = useAppSelector((state) => state.scientistData.auth.isConnected);
+
+  // Hydrate redux store with user data if not already done
   useEffect(() => {
-    // Hydrate redux store with user data if not already done
     if (!isConnected) dispatch(actions.logged(cookies));
   }, [isConnected]);
 
-  return (
-    <Route
-      {...rest}
-      render={({ location }) =>
-        isAuthenticated ? (
-          children
-        ) : (
-          <Redirect
-            to={{
-              pathname: "/connexion",
-              state: { from: location },
-            }}
-          />
-        )
-      }
-    />
-  );
+  // User is not authenticated
+  if (!isAuthenticated) {
+    const to = { pathname: "/connexion", state: { from: location } };
+    return <Redirect to={to} />;
+  }
+
+  // User is not validated yet
+  if (!cookies.user.confirmed && location.pathname !== "/attente-de-confirmation") {
+    const to = { pathname: "/attente-de-confirmation", state: { from: location } };
+    return <Redirect to={to} />;
+  }
+
+  // User is okay !
+  return <Route {...rest}>{children}</Route>;
 };

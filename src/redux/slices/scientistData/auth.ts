@@ -4,12 +4,14 @@ import {
   LoginMutationVariables,
   RegisterMutationVariables,
 } from "api/graphql/queries/auth.gql.generated";
+import { MeQuery } from "api/graphql/sdk.generated";
 import { RootState } from "redux/store";
 
 import { GlobalState } from "../scientistData";
 
 // ---- TYPES
 export interface AuthState {
+  refreshing: boolean;
   isLogging: boolean;
   isConnected: boolean;
   errors?: any[];
@@ -19,6 +21,7 @@ export interface AuthState {
 // ---- STATE
 
 export const initialAuthState: AuthState = {
+  refreshing: false,
   isLogging: false,
   isConnected: false,
   data: null,
@@ -35,6 +38,21 @@ export const authReducers = {
     // If the user is blocked OR has no information (= null | undefined) -> it is not connected
     state.auth.isConnected = !(action.payload?.user?.blocked ?? true);
     state.auth.errors = undefined;
+  },
+  refresh: (state: GlobalState): void => {
+    state.auth.refreshing = true;
+  },
+  refreshed: (state: GlobalState, action: PayloadAction<MeQuery["me"]>): void => {
+    console.log("refreshed: ", action.payload);
+
+    // TODO: Remove this check, it is a type safeguard, but the validation is made in the epic already
+    if (!action.payload) return;
+
+    // Reuse JWT with the updated user information
+    const combined = { jwt: state.auth.data?.jwt, user: action.payload };
+    state.auth.data = combined;
+
+    state.auth.refreshing = false;
   },
   signin: (state: GlobalState, _action: PayloadAction<RegisterMutationVariables>): void => {
     state.auth.isConnected = false;

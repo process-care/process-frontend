@@ -10,6 +10,7 @@ import { Participation } from "pages/Survey/Participation";
 import { CreateConsent } from "pages/Survey/CreateConsent";
 import { ForgotPassword } from "pages/Auth/ForgotPassword";
 import { NewPassword } from "pages/Auth/NewPassword";
+import { SuccessPage } from "components/Authentification/SucessPage";
 
 export const routes: IRoute[] = [
   {
@@ -31,7 +32,7 @@ export const routes: IRoute[] = [
     exact: true,
   },
   {
-    name: "Portail process",
+    name: "Portail Process",
     path: "/",
     component: <Portail />,
     exact: true,
@@ -85,6 +86,12 @@ export const protectedRoutes: IRoute[] = [
     name: "Profil",
     path: "/profil",
     component: <Dashboard />,
+    exact: true,
+  },
+  {
+    name: "Attente de confirmation",
+    path: "/attente-de-confirmation",
+    component: <SuccessPage />,
     exact: true,
   },
 ];

@@ -6,6 +6,7 @@ mutation login($identifier: String!, $password: String!) {
       username
       email
       blocked
+      confirmed
     }
   }
 }
@@ -18,6 +19,17 @@ mutation register($email: String!, $username: String!, $password: String!) {
       username
       email
       blocked
+      confirmed
     }
+  }
+}
+
+query me {
+  me {
+    id
+    username
+    email
+    blocked
+    confirmed
   }
 }

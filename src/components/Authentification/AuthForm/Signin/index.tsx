@@ -2,35 +2,39 @@ import React from "react";
 import { Formik, Form } from "formik";
 import { Box, Flex, Button } from "@chakra-ui/react";
 import { Input, Checkbox } from "components/Fields";
-import { SuccessPage } from "../../SucessPage";
 import { SigninSchema } from "../../SiginForm/validationSchema";
 import { actions } from "redux/slices/scientistData";
 import { useDispatch } from "react-redux";
 import { Errors, renderAuthMessage } from "../../Errors";
 import { useAppSelector } from "redux/hooks";
+import { useHistory } from "react-router-dom";
+
+// ---- TYPES
 
 interface Props {
   cancel: () => void;
 }
 
+type Data = {
+  username: string;
+  password: string;
+  confirmPassword: string;
+};
+
+type Auth = {
+  email: string;
+  password: string;
+  username: string;
+};
+
+// ---- COMPONENT
+
 export const SigninForm: React.FC<Props> = ({ cancel }) => {
-  const isSuccess = useAppSelector(
-    (state) => state.scientistData.auth.data?.user?.id
-  );
-  const errors = useAppSelector((state) => state.scientistData.auth.errors);
+  const history = useHistory();
   const dispatch = useDispatch();
 
-  type Data = {
-    username: string;
-    password: string;
-    confirmPassword: string;
-  };
-
-  type Auth = {
-    email: string;
-    password: string;
-    username: string;
-  };
+  const isSuccess = useAppSelector((state) => state.scientistData.auth.data?.user?.id);
+  const errors = useAppSelector((state) => state.scientistData.auth.errors);
 
   const formatData = (data: Data): Auth => {
     return {
@@ -41,7 +45,8 @@ export const SigninForm: React.FC<Props> = ({ cancel }) => {
   };
 
   if (isSuccess) {
-    return <SuccessPage />;
+    const to = { pathname: "/attente-de-confirmation" };
+    history.push(to);
   }
 
   function handleSubmit(data: Data) {
@@ -101,8 +106,7 @@ export const SigninForm: React.FC<Props> = ({ cancel }) => {
                   isRequired="true"
                   checkbox={[
                     {
-                      label:
-                        "J'accepte les conditions générales d’utilisation de la plateforme",
+                      label: "J'accepte les conditions générales d'utilisation de la plateforme",
                       value: "accept",
                     },
                   ]}
@@ -116,12 +120,8 @@ export const SigninForm: React.FC<Props> = ({ cancel }) => {
                 <Button variant="link" onClick={() => cancel()}>
                   Annuler
                 </Button>
-                <Button
-                  type="submit"
-                  disabled={isSubmitting || !isValid || !dirty}
-                  variant="roundedBlue"
-                >
-                  Créer mon compte
+                <Button type="submit" disabled={isSubmitting || !isValid || !dirty} variant="roundedBlue">
+                  {isSubmitting ? "Création en cours..." : "Créer mon compte"}
                 </Button>
               </Flex>
             </Box>

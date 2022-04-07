@@ -25,15 +25,15 @@ export const SuccessPage: React.FC = () => {
 
   const auth = useAppSelector(getUser);
 
-  // Refresh user's data if not confirmed, redirect if it is
+  // Refresh user's data if not validated, redirect if it is
   useEffect(() => {
-    if (auth?.user?.confirmed) {
+    if (auth?.user?.validated) {
       history.push({ pathname: "/dashboard" });
       return;
     }
 
     dispatch(actions.refresh());
-  }, [auth?.user?.confirmed]);
+  }, [auth?.user?.validated]);
 
   // If no auth data, redirect to login
   if (!auth) {

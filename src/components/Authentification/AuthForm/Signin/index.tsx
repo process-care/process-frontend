@@ -45,7 +45,7 @@ export const SigninForm: React.FC<Props> = ({ cancel }) => {
   };
 
   if (isSuccess) {
-    const to = { pathname: "/attente-de-confirmation" };
+    const to = { pathname: "/attente-de-validation" };
     history.push(to);
   }
 

@@ -29,7 +29,7 @@ const loginEpic: Epic = (action$) =>
       }
     }),
     map((res) => {
-      // TODO: If the user is not confirmed yet
+      // TODO: If the user is not validated yet
 
       // If user is correclty logged
       if (res.user) return actions.logged(res.user.login);

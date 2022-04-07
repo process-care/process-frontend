@@ -7,6 +7,7 @@ mutation login($identifier: String!, $password: String!) {
       email
       blocked
       confirmed
+      validated
     }
   }
 }
@@ -20,6 +21,7 @@ mutation register($email: String!, $username: String!, $password: String!) {
       email
       blocked
       confirmed
+      validated
     }
   }
 }
@@ -31,5 +33,6 @@ query me {
     email
     blocked
     confirmed
+    validated
   }
 }

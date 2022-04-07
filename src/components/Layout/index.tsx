@@ -24,7 +24,7 @@ export const Layout: React.FC<Props> = ({ children }) => {
 
   const authPage = [
     "/connexion",
-    "/attente-de-confirmation",
+    "/attente-de-validation",
     "/inscription",
     "/mot-de-passe-oublie",
     "/nouveau-mot-de-passe",

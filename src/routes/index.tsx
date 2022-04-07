@@ -89,8 +89,8 @@ export const protectedRoutes: IRoute[] = [
     exact: true,
   },
   {
-    name: "Attente de confirmation",
-    path: "/attente-de-confirmation",
+    name: "Attente de validation",
+    path: "/attente-de-validation",
     component: <SuccessPage />,
     exact: true,
   },

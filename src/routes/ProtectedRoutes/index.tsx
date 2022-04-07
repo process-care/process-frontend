@@ -24,8 +24,8 @@ export const ProtectedRoutes: React.FC = ({ children, ...rest }: RouteProps) => 
   }
 
   // User is not validated yet
-  if (!cookies.user.confirmed && location.pathname !== "/attente-de-confirmation") {
-    const to = { pathname: "/attente-de-confirmation", state: { from: location } };
+  if (!cookies.user.validated && location.pathname !== "/attente-de-validation") {
+    const to = { pathname: "/attente-de-validation", state: { from: location } };
     return <Redirect to={to} />;
   }
 

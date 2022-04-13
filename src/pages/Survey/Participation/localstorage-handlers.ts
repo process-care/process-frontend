@@ -3,6 +3,7 @@ const LS_PARTICIPATION = "process__participations";
 export type StoredParticipation = {
   id: string;
   completed: boolean;
+  consent: boolean;
 };
 
 type StoredParticipations = Record<string, StoredParticipation>;
@@ -20,11 +21,11 @@ export function findExistingParticipation(slug: string): StoredParticipation | u
 /**
  * Associates and saves a new participation (id) with a the given survey slug in the local storage.
  * @param slug
- * @param newParticipationId
+ * @param participation
  */
-export function storeParticipation(slug: string, newParticipationId: string): void {
+export function storeParticipation(slug: string, participation: StoredParticipation): void {
   const localParticipations = readLocalParticipations();
-  localParticipations[slug] = { id: newParticipationId, completed: false };
+  localParticipations[slug] = participation;
   localStorage.setItem(LS_PARTICIPATION, JSON.stringify(localParticipations));
 }
 

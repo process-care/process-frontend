@@ -87,8 +87,6 @@ type OptionsProps = {
 };
 
 const Options: React.FC<OptionsProps> = ({ choices, samples, nbSamples, onClickChoice }) => {
-  console.log("samples", samples);
-
   // If not enough samples, display nothing special
   if (!samples || samples.length < (nbSamples ?? DEFAULT_NB_SAMPLES)) {
     return <></>;

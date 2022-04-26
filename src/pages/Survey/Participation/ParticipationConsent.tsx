@@ -3,7 +3,6 @@ import { Box, Button, Container, Center } from "@chakra-ui/react";
 
 import { Menu } from "components/Menu/CreateSurvey";
 import { PdfPreview } from "../CreateConsent/PdfPreview";
-import { API_URL_ROOT } from "constants/api";
 import { NL } from "./nl";
 import { useSurveyQuery } from "api/graphql/queries/survey.gql.generated";
 import { client } from "api/gql-client";
@@ -66,11 +65,7 @@ export const ParticipationConsent: React.FC<Props> = ({ surveyId, onConsent, onR
             w={isTablet ? "90%" : "100%"}
             mx="auto"
           >
-            {url ? (
-              <PdfPreview url={`${API_URL_ROOT}${url}`} />
-            ) : (
-              <Box w="450px" h="500px" backgroundColor="gray.100" />
-            )}
+            {url ? <PdfPreview url={url} /> : <Box w="450px" h="500px" backgroundColor="gray.100" />}
           </Box>
         </div>
       </Box>

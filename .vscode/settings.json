@@ -2,6 +2,7 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
-  "eslint.validate": ["javascript"],
-  "workbench.colorCustomizations": {}
+  "eslint.validate": [
+    "javascript"
+  ]
 }

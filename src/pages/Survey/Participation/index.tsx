@@ -50,7 +50,7 @@ export const Participation: React.FC<unknown> = () => {
     return <OverWarning msg={NL.msg.surveyOver} cta={NL.button.backToWelcome} action={goBackHome} />;
   }
 
-  // Redirect if the there is an existing participation
+  // Redirect if the there is an existing participation and consent is already given
   if (participation?.consent && step !== "participate") {
     history.push(`/survey/${slug}/participate`);
   }

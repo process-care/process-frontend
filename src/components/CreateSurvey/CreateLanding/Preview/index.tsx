@@ -9,7 +9,6 @@ import { LandingRedux } from "redux/slices/types";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import { Team } from "./Team";
 import { Video } from "components/Video";
-import { API_URL_ROOT } from "constants/api";
 import { Legals } from "./Legals";
 import { useCreateParticipationMutation } from "api/graphql/queries/participation.gql.generated";
 import { client } from "api/gql-client";
@@ -117,7 +116,7 @@ export const Preview: React.FC<Props> = ({ isUserView, data, author, needConsent
             {hasMedia && (
               <Box mt="30px" position="relative">
                 {hasVideo && <Video url={attributes?.video_url ?? ""} />}
-                {hasImage && <img src={`${API_URL_ROOT}${coverSrc}`} alt={coverName} />}
+                {hasImage && <img src={coverSrc} alt={coverName} />}
               </Box>
             )}
           </Box>

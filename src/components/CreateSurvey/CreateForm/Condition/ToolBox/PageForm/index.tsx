@@ -98,7 +98,6 @@ export const PageForm: React.FC = () => {
               return;
             }
 
-            console.log("VALUES", values);
             dispatch(
               actions.updatePage({
                 id: selectedPageId,

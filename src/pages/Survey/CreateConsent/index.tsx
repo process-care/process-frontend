@@ -7,7 +7,6 @@ import { useHistory, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { UploadFileRemote } from "components/Fields/UploadFileRemote";
 
-import { API_URL_ROOT } from "constants/api";
 import { PdfPreview } from "./PdfPreview";
 import { Switch } from "components/Fields";
 import { actions } from "redux/slices/scientistData";
@@ -63,7 +62,7 @@ export const CreateConsent: React.FC = () => {
         <Menu surveyTitle={attributes?.title} />
         <div className="background__grid">
           <Box h="100%" d="flex" justifyContent="center" overflow="scroll" pt="40px" pb="40px">
-            {url ? <PdfPreview url={`${API_URL_ROOT}${url}`} /> : <Box w="450px" h="80%" backgroundColor="gray.100" />}
+            {url ? <PdfPreview url={url} /> : <Box w="450px" h="80%" backgroundColor="gray.100" />}
           </Box>
         </div>
       </Box>

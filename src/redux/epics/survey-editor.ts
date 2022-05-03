@@ -2,12 +2,10 @@ import { map, switchMap, scan, debounceTime, filter } from "rxjs";
 import { combineEpics, ofType } from "redux-observable";
 import { Epic } from "redux/store";
 import { actions } from "redux/slices/survey-editor";
-import { API_URL } from "constants/api";
 
-import { getHeaders, sdk } from "api/gql-client";
+import { sdk } from "api/gql-client";
 import { sanitizeEntities } from "api/entity-checker";
-import { getSdk, SurveyInput } from "api/graphql/sdk.generated";
-import { GraphQLClient } from "graphql-request";
+import { SurveyInput } from "api/graphql/sdk.generated";
 
 // Watches over "load" survey
 const loadEpic: Epic = (action$) =>
@@ -77,11 +75,7 @@ const postEpic: Epic = (action$, state$) =>
 
       // Create survey and its first page
       try {
-        // hack to refresh the client and get the user token.
-        const surveyRes = await getSdk(new GraphQLClient(API_URL, getHeaders())).createSurvey({
-          values: format,
-        });
-
+        const surveyRes = await sdk.createSurvey({ values: format });
         const surveyId = surveyRes?.createSurvey?.data?.id;
 
         if (surveyId) {

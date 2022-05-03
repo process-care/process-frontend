@@ -39,6 +39,7 @@ fragment surveyEntityFragment on SurveyEntity {
         attributes {
           email
           username
+          validated
         }
       }
     }

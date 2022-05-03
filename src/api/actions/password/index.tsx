@@ -1,11 +1,12 @@
 import axios from "axios";
 
 import { API_URL_ROOT } from "constants/api";
-import { getHeaders } from "../../gql-client";
+import { getAuthorization } from "../../gql-client";
 
 const config = {
-  headers: getHeaders()?.headers,
+  headers: getAuthorization(),
   "Content-Type": "application/json",
+  mode: "cors",
 };
 
 export const changePassword: any = async (currentPassword: string, newPassword: string, confirmNewPassword: string) => {

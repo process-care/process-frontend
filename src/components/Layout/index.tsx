@@ -22,8 +22,15 @@ export const Layout: React.FC<Props> = ({ children }) => {
   const isPortail = pathname === "/";
   const isEditor = pathname.includes("create/landing");
 
-  const authPage = ["/connexion", "/inscription", "/mot-de-passe-oublie", "/nouveau-mot-de-passe"];
+  const authPage = [
+    "/connexion",
+    "/attente-de-validation",
+    "/inscription",
+    "/mot-de-passe-oublie",
+    "/nouveau-mot-de-passe",
+  ];
   const isAuthPage = authPage.includes(pathname);
+
   const renderMenu = () => {
     const isSimpleMenu = ["/dashboard", "/profil"];
 
@@ -32,6 +39,7 @@ export const Layout: React.FC<Props> = ({ children }) => {
     else if (isSurveyPages || isAuthPage || isPortail) return null;
     else return <MainMenu />;
   };
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [location.pathname]);

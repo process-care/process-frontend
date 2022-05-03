@@ -102,9 +102,8 @@ const selectShown = (state: RootState): PageParticipationRedux[] => {
     const evaluations = selectEvaluation(state, p.id);
 
     const show = shouldShow(evaluations);
-    console.log("show", show, p);
-
     if (show) acc.push(p);
+
     return acc;
   }, [] as PageParticipationRedux[]);
 

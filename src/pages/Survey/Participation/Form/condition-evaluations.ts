@@ -11,8 +11,8 @@ import { EvaluationCondition } from "redux/slices/participation/types";
 export function shouldShow(conditions: EvaluationCondition[] | undefined): boolean {
   if (!conditions || conditions.length < 1) return true;
 
-  console.log("evaluating...");
-  console.log("here are the conditions: ", conditions);
+  // console.log("evaluating...");
+  // console.log("here are the conditions: ", conditions);
 
   const groupEvals = conditions.reduce((acc, c) => {
     // Evaluate the condition
@@ -26,7 +26,7 @@ export function shouldShow(conditions: EvaluationCondition[] | undefined): boole
     return acc;
   }, new Map());
 
-  console.log("here are the grouped conditions: ", groupEvals);
+  // console.log("here are the grouped conditions: ", groupEvals);
 
   // If there is at least one true value, the OR chain is valid
   const finalEval = Array.from(groupEvals.values()).some((v) => v === true);
@@ -41,16 +41,17 @@ export function shouldShow(conditions: EvaluationCondition[] | undefined): boole
 function evaluate(c: EvaluationCondition): boolean {
   const { answer, target_value: value, operator } = c;
 
-  console.group("NUF");
-  // console.log("nuf: ", c.operator, answer, value);
-  console.log("operator: ", c.operator);
-  console.log("answer: ", answer);
-  console.log("value: ", value);
-  console.groupEnd();
+  // console.group("NUF");
+  // console.log("operator: ", c.operator);
+  // console.log("answer: ", answer);
+  // console.log("value: ", value);
+  // console.groupEnd();
 
   if (!answer) return false;
   if (!operator) return false;
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore "answer" is unknown but we actually test if fields are there
   const sanitizedValue = answer.answer ?? answer.value ?? answer;
 
   switch (operator) {

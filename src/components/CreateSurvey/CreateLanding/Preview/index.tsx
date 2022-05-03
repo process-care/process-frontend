@@ -9,7 +9,6 @@ import { LandingRedux } from "redux/slices/types";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import { Team } from "./Team";
 import { Video } from "components/Video";
-import { API_URL_ROOT } from "constants/api";
 import { Legals } from "./Legals";
 import { useCreateParticipationMutation } from "api/graphql/queries/participation.gql.generated";
 import { client } from "api/gql-client";
@@ -50,23 +49,34 @@ export const Preview: React.FC<Props> = ({ isUserView, data, author, needConsent
   const hasMembers = Boolean(data?.attributes?.members?.length > 0);
   const hasAboutPage = Boolean(data?.attributes?.about_page);
   const { mutateAsync: createParticipation } = useCreateParticipationMutation(client);
-  const { onConsent } = useConsentHandlers(slug);
+  const { participation, onConsent } = useConsentHandlers(slug);
 
   const onParticipate = useCallback(async () => {
     if (!isUserView) {
       alert("Bouton désactivé pendant la prévisualisation.");
       return;
     }
+
+    // If there is a participation recorded already, skip creation
+    if (participation) {
+      history.push(`/survey/${slug}/participate`);
+      return;
+    }
+
+    // If need consent, go to the consent page
     if (needConsent) {
       history.push(`/survey/${slug}/consent`);
-    } else {
-      const res = await createParticipation({
-        values: { consent: true, completed: false, survey: surveyId },
-      });
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore : I don't understand the structure of the answer, because that's supposed to work
-      onConsent(res?.createParticipation?.data?.id);
+      return;
     }
+
+    // In any other case, create a participation and go to the participate page
+    const res = await createParticipation({
+      values: { consent: true, completed: false, survey: surveyId },
+    });
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore : I don't understand the structure of the answer, because that's supposed to work
+    onConsent(res?.createParticipation?.data?.id);
   }, [slug, isUserView, needConsent]);
 
   if (isEditingAbout) {
@@ -106,7 +116,7 @@ export const Preview: React.FC<Props> = ({ isUserView, data, author, needConsent
             {hasMedia && (
               <Box mt="30px" position="relative">
                 {hasVideo && <Video url={attributes?.video_url ?? ""} />}
-                {hasImage && <img src={`${API_URL_ROOT}${coverSrc}`} alt={coverName} />}
+                {hasImage && <img src={coverSrc} alt={coverName} />}
               </Box>
             )}
           </Box>

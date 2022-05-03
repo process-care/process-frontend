@@ -19,7 +19,6 @@ export const Participation: React.FC<unknown> = () => {
   const { slug, step } = useParams<{ slug: string; step: string }>();
   const history = useHistory();
   const dispatch = useDispatch();
-  // const { data: survey, isLoading } = useSurveyBySlugQuery(client, { slug });
   const { participation, onConsent, onRefuse } = useConsentHandlers(slug);
 
   useEffect(() => {
@@ -51,22 +50,24 @@ export const Participation: React.FC<unknown> = () => {
     return <OverWarning msg={NL.msg.surveyOver} cta={NL.button.backToWelcome} action={goBackHome} />;
   }
 
-  // Redirect if the there is an existing participation
-  if (participation && step !== "participate") {
+  // Redirect if the there is an existing participation and consent is already given
+  if (participation?.consent && step !== "participate") {
     history.push(`/survey/${slug}/participate`);
   }
+
   if (!surveyId) {
     return <p>Une erreur est survenue</p>;
   }
+
+  // CONSENT
   if (step === "consent") {
-    // CONSENT
     return <ParticipationConsent surveyId={surveyId} onConsent={onConsent} onRefuse={onRefuse} />;
   }
 
   // PARTICIPATE
   if (step === "participate") {
     if (!participation) {
-      history.push(`/survey/${slug}/consent`);
+      history.push(`/survey/${slug}`);
       return <Box mt="60">{NL.msg.missingConsent}</Box>;
     }
 
@@ -91,8 +92,9 @@ export function useConsentHandlers(slug: string): ConsentHandler {
   // Consent
   const onConsent = useCallback(
     (newParticipationId) => {
-      setParticipation({ id: newParticipationId, completed: false });
-      storeParticipation(slug, newParticipationId);
+      const newParticipation = { id: newParticipationId, completed: false, consent: true };
+      setParticipation(newParticipation);
+      storeParticipation(slug, newParticipation);
       history.push(`/survey/${slug}/participate`);
     },
     [slug]

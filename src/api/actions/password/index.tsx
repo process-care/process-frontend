@@ -36,6 +36,7 @@ export const resetPassword: any = async (code: string, password: string, passwor
     password,
     passwordConfirmation,
   });
+
   if (res.status === 200) {
     return res;
   } else {

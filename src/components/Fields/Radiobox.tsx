@@ -27,7 +27,7 @@ export const CustomRadioBox: React.FC<Props> = ({ label, helpText, radios, id, m
           <RadioGroup colorScheme="green">
             <HStack flexWrap="wrap" spacing={5}>
               <RadioGroupControl name={id} label="">
-                <Box flexWrap="wrap" d="flex">
+                <Box flexWrap="wrap" d="flex" width={"100%"}>
                   {radios ? (
                     radios.map(({ value, label }) => {
                       return (

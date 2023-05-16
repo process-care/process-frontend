@@ -27,7 +27,7 @@ export const ParticipationMenu: React.FC<MenuProps> = ({ pages, selectIndex, col
       // We can navigate to a page if:
       // first page (idx = 0) OR the previous page is submitable (= valid)
       // AND there is no unnavigable page already up the chain
-      // |-> edge case like: P1 unvalid (accessible) P2 valid (not accessible) P3 (accessible)
+      // |-> edge case like: P1 unvalid (accessible) P2 valid (not accessible) P3 (accessible).
       const isNavigable = ((pages[prevIdx].submitable ?? false) || idx === 0) && !isBlocked;
 
       if (!isNavigable) isBlocked = true;

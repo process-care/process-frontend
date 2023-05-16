@@ -101,7 +101,6 @@ export const ParticipationForm: React.FC<Props> = ({ surveyId, participationId }
     );
   }
 
-  console.log(attributes);
   return (
     <Box>
       <Flex

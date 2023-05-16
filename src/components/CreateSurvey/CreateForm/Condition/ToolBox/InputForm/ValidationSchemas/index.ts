@@ -2,13 +2,11 @@ import * as Yup from "yup";
 
 export const CommonFieldsSchema = Yup.object().shape({
   label: Yup.string()
-    .min(2, "Texte trop court (2min)")
-    .max(200, "Texte trop long (200max)")
+    .min(2, "Texte trop court (2 min)")
+    .max(4000, "Texte trop long (4000 max)")
     .required("Ce champs est requis"),
 
-  internal_title: Yup.string()
-    .min(2, "Texte trop court (2min)")
-    .max(90, "Texte trop long (50max)"),
+  internal_title: Yup.string().min(2, "Texte trop court (2 min)").max(500, "Texte trop long (500 max)"),
   // .required("Ce champs est requis"),
 });
 
@@ -23,16 +21,10 @@ export const MultipleInputFieldsSchema = CommonFieldsSchema.shape({
 export const SliderSchema = CommonFieldsSchema.shape({
   min: Yup.number()
     .required("Ce champs est requis")
-    .lessThan(
-      Yup.ref("max"),
-      "La valeur minimale doit être inférieure à la valeur maximale"
-    ),
+    .lessThan(Yup.ref("max"), "La valeur minimale doit être inférieure à la valeur maximale"),
   max: Yup.number()
     .required("Ce champs est requis")
-    .moreThan(
-      Yup.ref("min"),
-      "La valeur maximale doit être supérieur à la valeur minimale"
-    ),
+    .moreThan(Yup.ref("min"), "La valeur maximale doit être supérieur à la valeur minimale"),
   step: Yup.number().required("Ce champs est requis"),
 });
 

@@ -57,7 +57,7 @@ export const CustomTextarea: React.FC<Props> = ({
               color: "#9E9E9E",
               fontSize: isBig ? "16px" : "12px",
             }}
-            overflow="hidden"
+            overflow="scroll-y"
             isDisabled={isDisabled}
             id={id}
             style={{ resize: "none" }}

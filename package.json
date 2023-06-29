@@ -1,7 +1,8 @@
 {
-  "name": "my-app",
+  "name": "process-frontend",
   "version": "0.1.0",
   "private": true,
+  "description": "Frontend of the Process app.",
   "dependencies": {
     "@chakra-ui/icons": "^1.0.13",
     "@chakra-ui/react": "^1.0.0",
@@ -15,9 +16,9 @@
     "@graphql-codegen/introspection": "^2.1.1",
     "@graphql-codegen/near-operation-file-preset": "^2.2.3",
     "@graphql-codegen/typescript-graphql-files-modules": "^2.1.1",
+    "@graphql-codegen/typescript-graphql-request": "^4.3.3",
     "@graphql-codegen/typescript-operations": "^2.2.2",
     "@graphql-codegen/typescript-react-query": "^3.3.1",
-    "@graphql-codegen/typescript-graphql-request": "^4.3.3",
     "@reduxjs/toolkit": "^1.5.1",
     "@testing-library/react": "^10.2.1",
     "@testing-library/user-event": "^12.0.2",
@@ -32,6 +33,7 @@
     "@types/react-select": "^4.0.15",
     "@types/uuid": "^8.3.0",
     "axios": "^0.21.4",
+    "caniuse-lite": "^1.0.30001509",
     "connected-react-router": "^6.9.1",
     "dayjs": "^1.10.6",
     "dotenv": "^16.0.0",

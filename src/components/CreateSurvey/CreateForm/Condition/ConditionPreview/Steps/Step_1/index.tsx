@@ -1,21 +1,20 @@
-import React from "react";
-
+import { useEffect } from "react";
 import { Container, Text } from "@chakra-ui/react";
-import { useAppDispatch, useAppSelector } from "redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
-import { QuestionRedux } from "redux/slices/types";
-import { ConditionRedux } from "redux/slices/types";
+import { QuestionRedux } from "@/redux/slices/types";
+import { ConditionRedux } from "@/redux/slices/types";
 import { authorizedQuestionTypes } from "./utils";
-import { t } from "static/input";
-import { InputBox } from "components/CreateSurvey/CreateForm/InputsPreview/InputBox";
-import { selectors, actions } from "redux/slices/scientistData";
+import { t } from "@/static/input";
+import { selectors, actions } from "@/redux/slices/scientistData";
+import InputBox from "@/components/CreateSurvey/CreateForm/InputsPreview/InputBox";
 
 interface Props {
   selectedCondition: ConditionRedux;
   updateStep: (d: any) => void;
 }
 
-export const Step_1: React.FC<Props> = ({ selectedCondition, updateStep }) => {
+export default function Step_1({ selectedCondition, updateStep }: Props): JSX.Element {
   const dispatch = useAppDispatch();
   const selectedQuestion = useAppSelector(selectors.questions.getSelectedQuestion);
   const questions = useAppSelector(selectors.questions.getSelectedPageQuestions);
@@ -23,7 +22,7 @@ export const Step_1: React.FC<Props> = ({ selectedCondition, updateStep }) => {
   const order = useAppSelector(selectors.survey.getOrder);
   const isTypePage = selectedCondition?.attributes?.type === "page";
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Select first page if we make a condition on page.
     // FIXME: This returns to this page when cancelling or saving, instead of the page we edited...
 

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import slugify from "slugify";
-import { PageRedux } from "redux/slices/types";
-import { QuestionRedux } from "redux/slices/types";
+import { PageRedux } from "@/redux/slices/types";
+import { QuestionRedux } from "@/redux/slices/types";
 
 export interface SurveyBuilder {
   survey: {

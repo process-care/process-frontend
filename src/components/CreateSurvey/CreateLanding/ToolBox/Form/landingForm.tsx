@@ -1,45 +1,46 @@
+import { useEffect, useCallback, useMemo, useRef } from "react";
 import { Box, Button, Text, Flex } from "@chakra-ui/react";
-import { Textarea } from "components/Fields";
-import { UploadFile } from "components/Fields/Uploadfile";
-import { Wysiwyg } from "components/Fields/Wysiwyg";
 import { Formik, Form } from "formik";
-import React, { useCallback, useMemo, useRef } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 
-import { t } from "static/createLanding";
-import { ColorPicker } from "../ColorPicker";
+import { t } from "@/static/createLanding";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { goTop } from "@/utils/application/scrollTo";
+import { actions, selectors } from "@/redux/slices/landing-editor";
+import { Enum_Question_Rows } from "@/api/graphql/types.generated";
 import { initialValues } from "./utils/initialValues";
-import { useAppDispatch, useAppSelector } from "redux/hooks";
-import { RepeatableJobs } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/RepeatableJobs";
-import { SvgHover } from "components/SvgHover";
+import { Textarea } from "@/components/Fields";
+import RepeatableJobs from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/RepeatableJobs";
+import UploadFile from "@/components/Fields/Uploadfile";
+import Wysiwyg from "@/components/Fields/Wysiwyg/Wysiwyg";
+import UploadFileRemote from "@/components/Fields/UploadFileRemote";
+import Footer from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer";
+import TitleDivider from "@/components/TitleDivider";
+import ColorPicker from "../ColorPicker";
+import SvgHover from "@/components/SvgHover";
 
-import { ReactComponent as Delete } from "assets/delete.svg";
-import { goTop } from "utils/application/scrollTo";
-import { actions, selectors } from "redux/slices/landing-editor";
-import { Footer } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer";
-import { useHistory } from "react-router-dom";
-import { TitleDivider } from "components/TitleDivider";
-import { Enum_Question_Rows } from "api/graphql/types.generated";
-import { UploadFileRemote } from "components/Fields/UploadFileRemote";
+import Delete from "@/assets/delete.svg";
 
-export const LandingForm: React.FC = () => {
-  const history = useHistory();
+export default function LandingForm(): JSX.Element {
+  const router = useRouter()
   const dispatch = useAppDispatch();
 
   // Flag to avoid saving the initial values injected into Formik
   const firstRender = useRef(true);
   const landing = useAppSelector(selectors.getLanding);
 
-  const onSubmit = useCallback((data, { setSubmitting, validateForm }) => {
+  const onSubmit = useCallback((data: any, { setSubmitting, validateForm }: any) => {
     validateForm(data);
     setSubmitting(true);
   }, []);
 
-  const logOnChange = useCallback((e) => console.log(e), []);
+  const logOnChange = useCallback((e: any) => console.log(e), []);
 
   const onEditAbout = useCallback(() => {
     goTop();
     dispatch(actions.editAbout(true));
-  }, []);
+  }, [dispatch]);
 
   const onSave = () => {
     if (!landing?.id) return;
@@ -56,21 +57,20 @@ export const LandingForm: React.FC = () => {
   };
 
   const handleCancel = () => {
-    history.push("/dashboard");
+    router.push("/dashboard");
   };
 
   const handleSubmit = () => {
     onSave();
-    history.push("/dashboard");
+    router.push("/dashboard");
   };
 
   return (
     <Formik validateOnBlur={false} initialValues={landing?.attributes || initialValues} onSubmit={onSubmit}>
-      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment*/}
       {/* @ts-ignore */}
       {({ values, setFieldValue, isValid, isSubmitting }) => {
         // Handle update value
-        React.useEffect(() => {
+        useEffect(() => {
           if (firstRender.current) {
             firstRender.current = false;
             return;
@@ -114,17 +114,16 @@ export const LandingForm: React.FC = () => {
           setFieldValue("video_url", "");
         }, []);
 
-        // Components
+        // Component
         return (
-          <Box pos="relative" p={4} d="flex" textAlign="left">
-            <Form
-              // onBlur={autoSaveDebounce}
-              style={{ width: "100%" }}
-            >
-              <Text variant="baseline" fontWeight="bold" textAlign="left" _hover={{ cursor: "pointer" }} mb="5">
-                Edition de la page d'accueil
+          <Form className="flex flex-col text-left h-full" style={{ width: "100%" }}>
+            <div className="p-4 overflow-auto">    
+              <Text variant="baseline" fontWeight="bold" textAlign="left" _hover={{ cursor: "pointer" }}>
+                Edition de la page d&apos;accueil
               </Text>
+
               <TitleDivider title="Zone titre" />
+
               <Box border="1px solid #F7F7F7F7" p="5" backgroundColor="#fdfdfdf1">
                 <Textarea
                   id="title"
@@ -155,6 +154,7 @@ export const LandingForm: React.FC = () => {
               </Box>
 
               <TitleDivider title="Corps" />
+
               <Box border="1px solid #F7F7F7F7" p="5" backgroundColor="#fdfdfdf1">
                 <Text variant="currentBold" mt={2} mb={2}>
                   {t.content_label}
@@ -186,7 +186,7 @@ export const LandingForm: React.FC = () => {
 
                   <Box mt={7} ml={4} hidden={Boolean(!values?.video_url)}>
                     <SvgHover>
-                      <Delete onClick={onDeleteVideo} />
+                      <Image src={Delete} alt="Delete" onClick={onDeleteVideo} />
                     </SvgHover>
                   </Box>
                 </Flex>
@@ -202,29 +202,32 @@ export const LandingForm: React.FC = () => {
 
               <TitleDivider title="Page équipe" />
 
-              <Box border="1px solid #F7F7F7F7" p="5" backgroundColor="#fdfdfdf1" mb="100px">
+              <Box border="1px solid #F7F7F7F7" p="5" backgroundColor="#fdfdfdf1">
                 <Text variant="currentBold" mt="5">
                   {t.team_label}
                 </Text>
+
                 <RepeatableJobs name="members" cta="Ajouter un membre de l'équipe" />
               </Box>
+
               <TitleDivider title="Logos" />
+
               <Box border="1px solid #F7F7F7F7" p="5" backgroundColor="#fdfdfdf1">
                 <Text variant="currentBold" mt="5">
                   {t.partners}
                 </Text>
+                
                 <RepeatableJobs name="partners_logos" onlyUpload cta="Ajouter un logo partenaire" />
               </Box>
+            </div>
 
-              <Footer
-                w="43%"
-                onSubmit={handleSubmit}
-                disabled={!isValid || isSubmitting}
-                onCancel={handleCancel}
-                hideDelete={true}
-              />
-            </Form>
-          </Box>
+            <Footer
+              onSubmit={handleSubmit}
+              disabled={!isValid || isSubmitting}
+              onCancel={handleCancel}
+              hideDelete={true}
+            />
+          </Form>
         );
       }}
     </Formik>

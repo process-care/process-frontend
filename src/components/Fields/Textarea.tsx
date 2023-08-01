@@ -1,9 +1,8 @@
-import React from "react";
 import { FormControl, FormHelperText, FormLabel, Textarea, Text } from "@chakra-ui/react";
-import { getMaxLength, getRows } from "./utils";
-
 import { useField } from "formik";
-import { Enum_Question_Rows, Maybe } from "api/graphql/types.generated";
+
+import { Enum_Question_Rows, Maybe } from "@/api/graphql/types.generated";
+import { getMaxLength, getRows } from "./utils";
 
 interface Props {
   label: string;
@@ -20,7 +19,8 @@ interface Props {
   autoComplete?: string;
   defaultValue?: string;
 }
-export const CustomTextarea: React.FC<Props> = ({
+
+export default function CustomTextarea({
   label,
   helpText,
   placeholder,
@@ -34,7 +34,7 @@ export const CustomTextarea: React.FC<Props> = ({
   appearance,
   autoComplete,
   defaultValue,
-}) => {
+}: Props): JSX.Element {
   const [field, meta] = useField(id);
   const isBig = appearance === "big";
 

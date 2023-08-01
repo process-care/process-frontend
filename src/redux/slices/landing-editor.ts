@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Landing } from "api/graphql/types.generated";
-import { RootState } from "redux/store";
+import { Landing } from "@/api/graphql/types.generated";
+import { RootState } from "@/redux/store";
 import { DateTime } from "luxon";
 import { LastSaved, LandingRedux } from "./types";
 
@@ -29,6 +29,7 @@ type UploadPayload = {
 };
 
 // ----- SLICE
+
 const SLICE_NAME = "landing-editor";
 
 export const landingEditorSlice = createSlice({

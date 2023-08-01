@@ -1,15 +1,17 @@
+import { useState } from "react";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import React, { useState } from "react";
-
-import { ReactComponent as Logo } from "assets/black_logo.svg";
 import { Form, Formik } from "formik";
-import { Input } from "components/Fields";
-import { forgotPassword } from "api/actions/password";
-import { forgotPasswordSchema } from "./validationSchema";
-import { NavLink } from "react-router-dom";
-import { useMediaQueries } from "utils/hooks/mediaqueries";
+import Link from "next/link";
+import Image from "next/image";
 
-export const ForgotPasswordForm: React.FC = () => {
+import { Input } from "@/components/Fields";
+import { forgotPassword } from "@/api/actions/password";
+import { forgotPasswordSchema } from "./validationSchema";
+import { useMediaQueries } from "@/utils/hooks/mediaqueries";
+
+import Logo from "@/assets/black_logo.svg";
+
+export default function ForgotPasswordForm(): JSX.Element {
   const [isSuccess, setSuccess] = useState(false);
   const [errors, setError] = useState<any>([]);
   const { isTablet } = useMediaQueries();
@@ -22,15 +24,15 @@ export const ForgotPasswordForm: React.FC = () => {
         border="1px solid"
         borderColor="brand.line"
         w={isTablet ? "90%" : "480px"}
-        d="flex"
+        display="flex"
         flexDirection="column"
       >
-        ✅ <br /> Un mail vient d'être envoyer à votre adresse email !
-        <NavLink to="/connexion">
+        ✅ <br /> Un mail vient d&apos;être envoyer à votre adresse email !
+        <Link href="/connexion">
           <Button mt="40px" variant="roundedBlue">
             Revenir à la page de connexion
           </Button>
-        </NavLink>
+        </Link>
       </Box>
     );
   }
@@ -43,8 +45,8 @@ export const ForgotPasswordForm: React.FC = () => {
       borderColor="brand.line"
       w={isTablet ? "90%" : "480px"}
     >
-      <Box d="flex" justifyContent="center" w="150px" m="0 auto">
-        <Logo />
+      <Box display="flex" justifyContent="center" w="150px" m="0 auto">
+        <Image src={Logo} alt="Logo" />
       </Box>
 
       <Formik
@@ -93,11 +95,11 @@ export const ForgotPasswordForm: React.FC = () => {
                     Reinitialiser mon mot de passe
                   </Button>
                   <Box textAlign="center">
-                    <NavLink to="/connexion">
+                    <Link href="/connexion">
                       <Button mt="40px" type="submit" variant="link">
                         Annuler
                       </Button>
-                    </NavLink>
+                    </Link>
                   </Box>
                 </Flex>
               </Box>

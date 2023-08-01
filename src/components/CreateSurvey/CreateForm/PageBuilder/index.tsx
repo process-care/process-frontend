@@ -1,24 +1,24 @@
-import { Box, Flex, Text } from "@chakra-ui/layout";
 import React from "react";
-import { useAppDispatch, useAppSelector } from "redux/hooks";
-import { setIsRemoving } from "redux/slices/formBuilder";
+import { Box, Flex, Text } from "@chakra-ui/layout";
+import Image from "next/image";
 
-import { ReactComponent as Locked } from "./assets/locked.svg";
-import { ReactComponent as Delete } from "./assets/delete.svg";
-import { ReactComponent as Condition } from "./assets/condition.svg";
-import { ReactComponent as Add } from "./assets/add.svg";
-
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setIsRemoving } from "@/redux/slices/formBuilder";
+import { actions, selectors } from "@/redux/slices/scientistData";
+import { SurveyRedux } from "@/redux/slices/types";
 import { isInactive } from "./utils";
-import { SvgHover } from "components/SvgHover";
+import SvgHover from "@/components/SvgHover";
 
-import { actions, selectors } from "redux/slices/scientistData";
-import { SurveyRedux } from "redux/slices/types";
+import Locked from "./assets/locked.svg";
+import Delete from "./assets/delete.svg";
+import Condition from "./assets/condition.svg";
+import Add from "./assets/add.svg";
 
 interface Props {
   survey: SurveyRedux;
 }
 
-const PageBuilder: React.FC<Props> = ({ survey }) => {
+export default function PageBuilder({ survey }: Props): JSX.Element {
   const dispatch = useAppDispatch();
 
   const pages = useAppSelector(selectors.pages.getPages);
@@ -40,7 +40,7 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
       <Box
         onClick={handlePage}
         mb="10"
-        d="flex"
+        display="flex"
         justifyContent="center"
         flexDirection="column"
         alignItems="center"
@@ -49,7 +49,7 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
         }}
       >
         <SvgHover>
-          <Add />
+          <Image src={Add} alt="Add"/>
         </SvgHover>
         <Text variant="xs" mt="2">
           Ajouter une page
@@ -69,7 +69,7 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
               <Flex alignItems="center" position="relative">
                 <Box position="absolute" right="16px" bottom="35px">
                   {pagesConditions.some((c) => c?.attributes?.referer_page?.data?.id === page.id) ? (
-                    <Condition />
+                    <Image src={Condition} alt="Condition" />
                   ) : (
                     <></>
                   )}
@@ -77,7 +77,7 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
 
                 <Box
                   onClick={() => selectPage(page.id)}
-                  d="flex"
+                  display="flex"
                   flexDirection="column"
                   border="1px"
                   backgroundColor={isSelected ? "blue.200" : "transparent"}
@@ -90,7 +90,7 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
                 >
                   {page?.attributes?.is_locked ? (
                     <Box mx="auto">
-                      <Locked />
+                      <Image src={Locked} alt="Locked" />
                     </Box>
                   ) : (
                     <Box p="4px 4px 5px 4px"></Box>
@@ -104,7 +104,7 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
                       dispatch(setIsRemoving(page.id));
                     }}
                   >
-                    <Delete />
+                    <Image src={Delete} alt="Delete" />
                   </Box>
                 )}
               </Flex>
@@ -119,4 +119,3 @@ const PageBuilder: React.FC<Props> = ({ survey }) => {
     </Flex>
   );
 };
-export default PageBuilder;

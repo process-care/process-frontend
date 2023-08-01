@@ -1,10 +1,11 @@
 import { useCallback } from "react";
-import { useHistory } from "react-router-dom";
-import { SURVEY_STATUS } from "types/survey";
-import { CreateLandingMutation, useCreateLandingMutation } from "api/graphql/queries/landing.gql.generated";
-import { client } from "api/gql-client";
-import { useUpdateSurveyMutation } from "api/graphql/queries/survey.gql.generated";
-import { SurveyRedux } from "redux/slices/types";
+import { useRouter } from "next/navigation";
+
+import { SURVEY_STATUS } from "@/types/survey";
+import { CreateLandingMutation, useCreateLandingMutation } from "@/api/graphql/queries/landing.gql.generated";
+import { client } from "@/api/gql-client";
+import { useUpdateSurveyMutation } from "@/api/graphql/queries/survey.gql.generated";
+import { SurveyRedux } from "@/redux/slices/types";
 
 // ---- TYPES
 
@@ -18,7 +19,7 @@ type Navigators = {
 // ---- HOOKS
 
 export const useNavigator = (survey: SurveyRedux | undefined): Navigators => {
-  const history = useHistory();
+  const router = useRouter()
   const { mutateAsync: addLanding } = useCreateLandingMutation(client);
   const { mutateAsync: updateSurvey } = useUpdateSurveyMutation(client);
 
@@ -45,7 +46,7 @@ export const useNavigator = (survey: SurveyRedux | undefined): Navigators => {
         data: { landing: newLanding?.createLanding?.data?.id },
       });
     }
-    history.push(`/survey/${slug}/create/landing`);
+    router.push(`/survey/${slug}/create/landing`);
   }, [survey?.id, survey?.attributes?.slug]);
 
   // Take you to the form editor
@@ -58,19 +59,19 @@ export const useNavigator = (survey: SurveyRedux | undefined): Navigators => {
       return;
     }
 
-    history.push(`/survey/${slug}/create/form`);
+    router.push(`/survey/${slug}/create/form`);
   }, [survey?.id]);
 
   // Take you to the consent page
   const goToConsent = useCallback(() => {
     if (!survey) return;
-    history.push(`/survey/${survey?.attributes?.slug}/create/consent`);
+    router.push(`/survey/${survey?.attributes?.slug}/create/consent`);
   }, [survey?.id]);
 
   // Take you to the survey metadatas page
   const goToSurveyMetadatas = useCallback(() => {
     if (!survey) return;
-    history.push(`/survey/${survey?.attributes?.slug}/create/metadatas`);
+    router.push(`/survey/${survey?.attributes?.slug}/create/metadatas`);
   }, [survey?.id]);
 
   return {

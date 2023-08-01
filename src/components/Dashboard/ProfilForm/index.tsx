@@ -1,19 +1,18 @@
-import React from "react";
+import { useCallback } from "react";
 import { Formik, Form } from "formik";
+import { useRouter } from "next/navigation";
 
+import { client } from "@/api/gql-client";
 import { Avatar, Box, Flex, Text } from "@chakra-ui/react";
-import { useAppDispatch } from "redux/hooks";
-import { actions } from "redux/slices/application";
-
-import { Textarea, Input } from "components/Fields";
-import { Footer } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer";
-import { useHistory } from "react-router-dom";
-import { useAuth } from "components/Authentification/hooks";
-import { Loader } from "components/Spinner";
-import { changePassword } from "api/actions/password";
+import { useAppDispatch } from "@/redux/hooks";
+import { actions } from "@/redux/slices/application";
+import { useAuth } from "@/components/Authentification/hooks";
+import { changePassword } from "@/api/actions/password";
+import { Enum_Question_Rows } from "@/api/graphql/types.generated";
 import { UserQuery, useUpdateUserMutation, useUserQuery } from "./user.gql.generated";
-import { Enum_Question_Rows } from "api/graphql/types.generated";
-import { client } from "api/gql-client";
+import { Textarea, Input } from "@/components/Fields";
+import Footer from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer";
+import Loader from "@/components/Spinner";
 
 // ---- STATICS
 
@@ -35,52 +34,69 @@ export interface UserProfil {
 
 // ---- COMPONENT
 
-export const ProfilForm: React.FC = () => {
+export default function ProfilForm(): JSX.Element {
+  const router = useRouter()
   const dispatch = useAppDispatch();
-  const { cookies } = useAuth();
+  const { isLoading: localAuthIsLoading, cookies } = useAuth();
 
-  const { data: userResult, isLoading } = useUserQuery(client, {
-    id: cookies.user.id,
-  });
+  const { data: userResult, isLoading } = useUserQuery(
+    client,
+    // @ts-ignore : The query is not enabled if this value is undefined
+    { id: cookies?.user?.id},
+    { enabled: Boolean(cookies?.user?.id) }
+  );
   const { mutateAsync: updateMe } = useUpdateUserMutation(client);
 
-  const history = useHistory();
-
   const onCancel = () => {
-    history.push("/dashboard");
+    router.push("/dashboard");
     dispatch(actions.toogleDrawer());
   };
 
-  if (isLoading) {
+  const onSubmit = useCallback((data: any, { setSubmitting, validateForm }: any) => {
+    if (!cookies?.user?.id) return
+
+    validateForm(data);
+    setSubmitting(true);
+
+    // Change password
+    if (data.currentPassword !== "" && data.confirmNewPassword === data.newPassword && data.newPassword !== "") {
+      changePassword(data, cookies.jwt)
+    }
+
+    // Update User in DB
+    updateMe({
+      id: cookies.user.id,
+      data: formatValues(data),
+    });
+
+    // Update UI states
+    setSubmitting(false);
+    dispatch(actions.toogleDrawer());
+  }, [cookies, dispatch, updateMe]);
+
+  // Loader
+
+  if (isLoading || localAuthIsLoading || !cookies?.user?.id) {
     return <Loader />;
   }
 
-  // Shortcut to display on the page
+  // Flags && shortcuts (for display purposes)
+
   const attributes = userResult?.usersPermissionsUser?.data?.attributes;
+
+  // JSX
 
   return (
     <Formik
       enableReinitialize
       validateOnBlur={false}
       initialValues={formatInitialValues(userResult)}
-      onSubmit={(data, { setSubmitting, validateForm }) => {
-        validateForm(data);
-        setSubmitting(true);
-        if (data.currentPassword !== "" && data.confirmNewPassword === data.newPassword && data.newPassword !== "") {
-          changePassword(data.currentPassword, data.newPassword, data.confirmNewPassword);
-        }
-        updateMe({
-          id: cookies.user.id,
-          data: formatValues(data),
-        });
-        setSubmitting(false);
-        dispatch(actions.toogleDrawer());
-      }}
+      onSubmit={onSubmit}
     >
       {({ isValid, isSubmitting, values }) => {
         return (
           <Form>
-            <Box textAlign="center" h="100vh" d="flex" flexDir="column" pt="10px">
+            <Box textAlign="center" h="100vh" display="flex" flexDir="column" pt="10px">
               <Flex alignItems="center" justifyContent="flex-start" ml="20px">
                 <Avatar
                   _hover={{ cursor: "pointer" }}
@@ -89,8 +105,7 @@ export const ProfilForm: React.FC = () => {
                   h="30px"
                   color="white"
                   fontSize="45px"
-                  background="linear-gradient(rgba(194, 165, 249, 1),
-rgba(0, 132, 255, 1))"
+                  background="linear-gradient(rgba(194, 165, 249, 1),rgba(0, 132, 255, 1))"
                 />
                 <Flex flexDir="column" alignItems="flex-start" ml="10px">
                   <Text variant="smallTitle" fontWeight="bold">

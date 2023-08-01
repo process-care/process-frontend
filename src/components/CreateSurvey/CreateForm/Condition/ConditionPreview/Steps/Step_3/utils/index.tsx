@@ -1,11 +1,11 @@
-import { InputBox } from "components/CreateSurvey/CreateForm/InputsPreview/InputBox";
-import { Input } from "components/Fields";
-import { ConditionRedux } from "redux/slices/types";
-import React from "react";
-import { useAppDispatch, useAppSelector } from "redux/hooks";
-import { actions } from "redux/slices/scientistData";
 import { Box } from "@chakra-ui/react";
-import { questionsSelectors } from "redux/slices/scientistData/question-editor";
+
+import { ConditionRedux } from "@/redux/slices/types";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { actions } from "@/redux/slices/scientistData";
+import { questionsSelectors } from "@/redux/slices/scientistData/question-editor";
+import { Input } from "@/components/Fields";
+import InputBox from "@/components/CreateSurvey/CreateForm/InputsPreview/InputBox";
 
 const InputNumber = () => {
   return (
@@ -52,8 +52,9 @@ export const renderInput = (selectedCondition: ConditionRedux): React.ReactEleme
     } else {
       return (
         <ul style={{ width: "100%" }}>
-          {answers.map((option) => (
+          {answers.map((option, idx) => (
             <InputBox
+              key={idx}
               isSelected={selectedCondition?.attributes.target_value === option}
               isOptionMode
               option={option}

@@ -1,6 +1,5 @@
 import {
   configureStore,
-  getDefaultMiddleware,
   AnyAction,
   combineReducers,
 } from "@reduxjs/toolkit";
@@ -10,28 +9,22 @@ import {
   createEpicMiddleware,
 } from "redux-observable";
 
-import { connectRouter } from "connected-react-router";
-import { routerMiddleware } from "connected-react-router";
-import formBuilder from "redux/slices/formBuilder";
-import application from "redux/slices/application";
-import participation from "redux/slices/participation";
-import landingEditor from "redux/slices/landing-editor";
-import surveyEditor from "redux/slices/survey-editor";
+import formBuilder from "@/redux/slices/formBuilder";
+import application from "@/redux/slices/application";
+import participation from "@/redux/slices/participation";
+import landingEditor from "@/redux/slices/landing-editor";
+import surveyEditor from "@/redux/slices/survey-editor";
+import scientistData from "@/redux/slices/scientistData";
 
-import scientistData from "redux/slices/scientistData";
-
-import { landingEditorEpics } from "redux/epics/landing/landing-editor";
-import { surveyEditorEpics } from "redux/epics/survey-editor";
-import { surveysEpics } from "redux/epics/my-surveys";
-import { surveyEpics } from "redux/epics/global/survey";
-import { conditionsEditorEpics } from "redux/epics/global/condition-editor";
-import { authEpics } from "redux/epics/global/auth";
-
-import { pageEditorEpic } from "redux/epics/global/page-editor";
-import { questionEditorEpic } from "redux/epics/global/question-editor";
-
-import { history } from "./history";
-import participationEpics from "redux/epics/participation";
+import { landingEditorEpics } from "@/redux/epics/landing/landing-editor";
+import { surveyEditorEpics } from "@/redux/epics/survey-editor";
+import { surveysEpics } from "@/redux/epics/my-surveys";
+import { surveyEpics } from "@/redux/epics/global/survey";
+import { conditionsEditorEpics } from "@/redux/epics/global/condition-editor";
+import { authEpics } from "@/redux/epics/global/auth";
+import { pageEditorEpic } from "@/redux/epics/global/page-editor";
+import { questionEditorEpic } from "@/redux/epics/global/question-editor";
+import participationEpics from "@/redux/epics/participation";
 
 // ---- EPICS
 
@@ -39,7 +32,7 @@ import participationEpics from "redux/epics/participation";
 export type Epic = ReduxEpic<AnyAction, AnyAction, RootState, unknown>;
 
 // Combine all epics from all the app
-export const rootEpic = combineEpics(
+export const rootEpic = combineEpics<AnyAction,AnyAction,RootState,unknown>(
   landingEditorEpics,
   surveyEditorEpics,
   participationEpics,
@@ -72,22 +65,20 @@ const combinedReducer = combineReducers({
   scientistData,
   editor,
   participation,
-  router: connectRouter(history),
 });
 
 // ---- STORE
 
 export const store = configureStore({
   reducer: combinedReducer,
-  middleware: [
-    ...getDefaultMiddleware(),
-    epicMiddleware,
-    routerMiddleware(history),
-  ],
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware()
+    .concat(epicMiddleware)
 });
 
 // Run all the epics
 epicMiddleware.run(rootEpic);
+
+console.log('store initialized')
 
 // ---- TYPES
 

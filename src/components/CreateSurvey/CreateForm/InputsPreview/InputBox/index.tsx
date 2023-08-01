@@ -1,7 +1,7 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
-import { QuestionRedux } from "redux/slices/types";
-import React from "react";
+
+import { QuestionRedux } from "@/redux/slices/types";
+import InputIcon from "@/components/CreateSurvey/CreateForm/InputIcon";
 
 interface Props {
   onClick: () => void;
@@ -11,13 +11,13 @@ interface Props {
   option?: string | unknown;
 }
 
-export const InputBox: React.FC<Props> = ({
+export default function InputBox({
   onClick,
   input,
   isSelected,
   isOptionMode,
   option,
-}) => {
+}: Props): JSX.Element {
   return (
     <Box
       onClick={onClick}

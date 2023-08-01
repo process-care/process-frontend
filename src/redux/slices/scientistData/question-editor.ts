@@ -1,9 +1,9 @@
 import { createEntityAdapter, PayloadAction } from "@reduxjs/toolkit";
 
-import { RootState } from "redux/store";
+import { RootState } from "@/redux/store";
 import { DateTime } from "luxon";
 import { GlobalState } from "../scientistData";
-import { getNewOrder } from "components/CreateSurvey/CreateForm/Condition/ToolBox/PageForm/utils";
+import { getNewOrder } from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/PageForm/utils";
 import { QuestionRedux } from "../types";
 
 // ----- ENTITY ADAPTER

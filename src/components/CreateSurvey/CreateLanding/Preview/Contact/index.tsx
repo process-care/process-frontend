@@ -1,12 +1,13 @@
 import { Box, Text } from "@chakra-ui/react";
-import { LandingRedux } from "redux/slices/types";
+
+import { LandingRedux } from "@/redux/slices/types";
 
 interface Props {
   author: { email: string; username: string } | undefined | null;
   data: LandingRedux | undefined;
 }
 
-export const Contact: React.FC<Props> = ({ author, data }) => {
+export default function Contact({ author, data }: Props): JSX.Element {
   return (
     <Box w="100%" h="100%">
       <Text variant="smallTitleBold" color="gray.800">

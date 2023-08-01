@@ -1,10 +1,10 @@
 import { PayloadAction, createEntityAdapter } from "@reduxjs/toolkit";
 
-import { RootState } from "redux/store";
+import { RootState } from "@/redux/store";
 import { DateTime } from "luxon";
 import { GlobalState } from "../scientistData";
 import { PageRedux } from "../types";
-import { Maybe } from "api/graphql/types.generated";
+import { Maybe } from "@/api/graphql/types.generated";
 
 // ----- ENTITY ADAPTER
 
@@ -128,7 +128,6 @@ export const pageReducer = {
     pageAdapter.addOne(state.pages, action.payload.page);
     state.pages.selectedPage = action.payload.page.id;
   },
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   updatePage: (state: GlobalState, action: any): void => {
     state.pages.lastUpdated = new Date().toISOString();
     pageAdapter.updateOne(state.pages, action.payload.changes);

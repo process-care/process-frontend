@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Textarea } from "components/Fields";
+import { useEffect, useState } from "react";
 import { useField } from "formik";
 import { Container, Text, Box } from "@chakra-ui/react";
-import { Enum_Question_Rows, Maybe } from "api/graphql/types.generated";
+
+import { Textarea } from "@/components/Fields";
+import { Enum_Question_Rows, Maybe } from "@/api/graphql/types.generated";
 
 interface Props {
   label: string;
@@ -21,7 +22,7 @@ const DEFAULT_NB_SAMPLES = 4;
 
 // ---- COMPONENT
 
-export const FreeClassification: React.FC<Props> = ({
+export default function FreeClassification({
   id,
   label,
   helpText,
@@ -31,7 +32,7 @@ export const FreeClassification: React.FC<Props> = ({
   rows,
   isRequired,
   isCollapsed,
-}) => {
+}: Props): JSX.Element {
   const [field, , helpers] = useField(id);
   const [subTextarea] = useField(`${id}_textarea`);
   // Maintain an internal state as a Set (easy manipulation to avoid duplication)
@@ -95,7 +96,7 @@ const Options: React.FC<OptionsProps> = ({ choices, samples, nbSamples, onClickC
   return (
     <Box>
       <Text pt="5" textAlign="left" variant="currentBold">
-        Voici les réponses d'autres participants à cette question. Parmi celles-ci, lesquelles considérez-vous comme
+        Voici les réponses d&apos;autres participants à cette question. Parmi celles-ci, lesquelles considérez-vous comme
         similaire à votre propre réponse ?
       </Text>
       {samples.map((item: string, idx: number) => {

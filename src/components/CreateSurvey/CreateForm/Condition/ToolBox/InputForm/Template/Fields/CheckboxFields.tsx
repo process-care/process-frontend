@@ -1,10 +1,9 @@
 import { Box } from "@chakra-ui/react";
-import { TitleDivider } from "components/TitleDivider";
-import React from "react";
 
 import { CommonFields, RepeatedFields } from "../index";
+import TitleDivider from "@/components/TitleDivider";
 
-export const CheckboxFields: React.FC = () => {
+export default function CheckboxFields(): JSX.Element {
   return (
     <>
       <TitleDivider title="Contenu" />

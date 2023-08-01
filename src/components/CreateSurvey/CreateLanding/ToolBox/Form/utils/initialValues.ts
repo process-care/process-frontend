@@ -1,4 +1,4 @@
-import { LandingRedux } from "redux/slices/types";
+import { LandingRedux } from "@/redux/slices/types";
 import { colors } from "./../../ColorPicker/utils";
 
 export const initialValues: LandingRedux["attributes"] = {

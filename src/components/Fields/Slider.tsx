@@ -1,11 +1,10 @@
-import React from "react";
+import { useCallback, useEffect } from "react";
 import { Flex, FormControl, FormHelperText, FormLabel, Text } from "@chakra-ui/react";
-
 import { useField } from "formik";
+import Slider from "rc-slider"
+import 'rc-slider/assets/index.css';
 
-import Slider from "rc-slider";
-import "rc-slider/assets/index.css";
-import { Maybe } from "api/graphql/types.generated";
+import { Maybe } from "@/api/graphql/types.generated";
 
 interface Props {
   label: string;
@@ -21,10 +20,14 @@ interface Props {
   isCollapsed?: boolean;
 }
 
-const createSliderWithTooltip = Slider.createSliderWithTooltip;
-const Range = createSliderWithTooltip(Slider);
+// This is following the example in the doc...
+// const Slider = require('rc-slider');
+// const createSliderWithTooltip = Slider.createSliderWithTooltip;
+// const Range = createSliderWithTooltip(Slider.Range);
+// const createSliderWithTooltip = Slider.createSliderWithTooltip;
+// const Range = createSliderWithTooltip(Slider);
 
-export const CustomSlider: React.FC<Props> = ({
+export default function CustomSlider({
   label,
   helpText,
   defaultValue,
@@ -36,16 +39,16 @@ export const CustomSlider: React.FC<Props> = ({
   id,
   isRequired,
   isCollapsed,
-}) => {
+}: Props): JSX.Element {
   const [field, , helpers] = useField(id);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (defaultValue) {
       helpers.setValue(defaultValue);
     }
-  }, [defaultValue]);
+  }, [defaultValue, helpers]);
 
-  const cleanValue = (value: string | number | undefined | null, defaultValue: number): number => {
+  const cleanValue = useCallback((value: string | number | undefined | null, defaultValue: number): number => {
     if (value === undefined || value === null || value === "") {
       return defaultValue;
     } else {
@@ -55,7 +58,7 @@ export const CustomSlider: React.FC<Props> = ({
         return value;
       }
     }
-  };
+  }, []);
 
   return (
     <FormControl isRequired={isRequired} id="email" textAlign="left" h={vertical ? "700px" : "fit-content"}>
@@ -67,7 +70,8 @@ export const CustomSlider: React.FC<Props> = ({
             h={vertical ? "85%" : ""}
             m={vertical ? "30px 0 0 30px" : ""}
           >
-            <Range
+            <Slider
+              range
               reverse={reverse ?? false}
               dots
               min={cleanValue(min, 0)}
@@ -75,9 +79,10 @@ export const CustomSlider: React.FC<Props> = ({
               step={cleanValue(step, 1)}
               defaultValue={defaultValue !== undefined ? parseInt(defaultValue, 10) : 0}
               vertical={!!vertical}
-              onChange={(value) => helpers.setValue(value)}
+              onChange={(value: any) => helpers.setValue(value)}
               value={field.value}
             />
+
             <Flex w="100%" h="100%" justifyContent="space-between" flexDirection={vertical ? "column" : "row"}>
               <Text fontSize="10px" ml="-5px">
                 {reverse || vertical ? max : min}

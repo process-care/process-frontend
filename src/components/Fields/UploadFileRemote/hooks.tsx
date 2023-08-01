@@ -1,13 +1,14 @@
-import { client } from "api/gql-client";
+import { useCallback, useState } from "react";
+import { useField, useFormikContext } from "formik";
+
+import { client } from "@/api/gql-client";
 import {
   useDeleteFileMutation,
   useUploadFileMultipleMutation,
   useUploadFileSingleMutation,
-} from "api/graphql/queries/application.gql.generated";
-import { useField, useFormikContext } from "formik";
+} from "@/api/graphql/queries/application.gql.generated";
 
-import { useState } from "react";
-import { UploadParams } from "redux/slices/application";
+import { UploadParams } from "@/redux/slices/application";
 
 // ---- TYPES
 
@@ -32,9 +33,8 @@ export const useFileHandlers = (
   const { mutateAsync: uploadMultiFile } = useUploadFileMultipleMutation(client);
   const { mutateAsync: deleteFile } = useDeleteFileMutation(client);
 
-  // TODO: useCallback on those
-
-  const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  // Uploader function
+  const handleChange = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.currentTarget.files) return;
     let data = null;
 
@@ -46,29 +46,34 @@ export const useFileHandlers = (
         const uploaded = await uploadMultiFile({ ...target, files });
         data = uploaded.multipleUpload;
 
-        // Remive multiple previous files
+        // Remove multiple previous files
         field.value.map((file: any) => deleteFile({ id: file.data.id }));
       } else {
-        const file = event.currentTarget.files[0];
-        const uploaded = await uploadSingleFile({ ...target, file });
+        const uploaded = await uploadSingleFile({ ...target, file: event.currentTarget.files[0] });
+
+        console.log(uploaded)
+
         data = uploaded?.upload;
 
         // Remove previous file
         deleteFile({ id: field.value.data.id });
       }
     } catch (e: any) {
-      setError(e);
+      onChange('An error occured while uploading the file.')
+      setError(e)
+      return
     }
 
     setFieldValue(target.field, data);
     onChange(`Updated files: ${data}`);
-  };
+  }, [deleteFile, field.value, multiple, onChange, setFieldValue, target, uploadMultiFile, uploadSingleFile])
 
-  const handleDelete = (id: string) => {
+  // Deleter function
+  const handleDelete = useCallback((id: string) => {
     deleteFile({ id });
     setFieldValue(target.field, { data: null });
     onChange(`Deleted: ${id}`);
-  };
+  }, [deleteFile, onChange, setFieldValue, target.field])
 
   return {
     handleChange,

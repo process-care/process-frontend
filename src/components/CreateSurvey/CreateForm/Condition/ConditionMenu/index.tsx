@@ -1,16 +1,16 @@
 import { Box, Text } from "@chakra-ui/react";
-import React from "react";
-import { useAppSelector } from "redux/hooks";
-import { t } from "static/condition";
-import { Group } from "./Group";
-import { ConditionRedux } from "redux/slices/types";
-import { selectors } from "redux/slices/scientistData";
+
+import { useAppSelector } from "@/redux/hooks";
+import { t } from "@/static/condition";
+import { ConditionRedux } from "@/redux/slices/types";
+import { selectors } from "@/redux/slices/scientistData";
+import Group from "./Group";
 
 interface Props {
   selectedCondition: ConditionRedux;
 }
 
-export const ConditionMenu: React.FC<Props> = ({ selectedCondition }) => {
+export default function ConditionMenu({ selectedCondition }: Props): JSX.Element {
   const isValid = useAppSelector((state) => state.scientistData.conditions.isValid);
   const isTypePage = selectedCondition?.attributes.type === "page";
 

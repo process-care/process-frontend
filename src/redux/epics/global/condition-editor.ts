@@ -1,10 +1,10 @@
 import { map, switchMap } from "rxjs";
 import { combineEpics, ofType } from "redux-observable";
-import { Epic, store } from "redux/store";
-import { actions } from "redux/slices/scientistData";
+import { Epic, store } from "@/redux/store";
+import { actions } from "@/redux/slices/scientistData";
 import { v4 as uuidv4 } from "uuid";
-import { sdk } from "api/gql-client";
-import { hasAttributes } from "api/entity-checker";
+import { sdk } from "@/api/gql-client";
+import { hasAttributes } from "@/api/entity-checker";
 
 // ----  CREATE CONDITION
 

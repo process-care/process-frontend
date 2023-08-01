@@ -1,13 +1,13 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 
-import { RootState } from "redux/store";
+import { RootState } from "@/redux/store";
 import { DateTime } from "luxon";
 import { SurveyBuilder } from "../surveyBuilderOLD";
 import slugify from "slugify";
-import { history } from "redux/store/history";
 import { GlobalState } from "../scientistData";
 import { SurveyRedux } from "../types";
-import { CheckSurveyQuery } from "api/graphql/sdk.generated";
+import { CheckSurveyQuery } from "@/api/graphql/sdk.generated";
+// import { push } from "connected-next-router";
 
 // ---- STATE
 
@@ -47,7 +47,7 @@ export const initialSurveyState: SurveyEditor = {
   },
 };
 
-// ---- ACTIONS
+// ---- PAYLOADS
 
 type UpdatePayload = Partial<SurveyBuilder["survey"]>;
 
@@ -58,39 +58,7 @@ type PostedPayload = {
   lastPosted: string;
 };
 
-// ---- SELECTORS
-
-export const error = (state: RootState): any[] | undefined =>
-  state.editor.survey.error;
-export const isLoading = (state: RootState): boolean =>
-  state.scientistData.survey.isLoading;
-export const step = (state: RootState): number => state.editor.survey.step;
-export const hasChanges = (state: RootState): boolean => {
-  const updated = DateTime.fromISO(state.editor.survey.lastUpdated);
-  const saved = DateTime.fromISO(state.editor.survey.lastSaved);
-  return updated > saved;
-};
-
-export const getSelectedSurvey = (state: RootState): SurveyRedux =>
-  state.scientistData.survey.data;
-
-export const getSelectedSurveyId = (state: RootState): string =>
-  state.scientistData.survey.selectedSurvey;
-
-export const getOrder = (state: RootState): string[] =>
-  state.scientistData.survey.order;
-
-export const surveySelectors = {
-  error,
-  isLoading,
-  hasChanges,
-  getSelectedSurvey,
-  getSelectedSurveyId,
-  getOrder,
-  step,
-};
-
-// ---- EXPORTS
+// ---- REDUCERS
 
 export const surveyReducers = {
   update: (state: GlobalState, action: PayloadAction<UpdatePayload>): void => {
@@ -124,7 +92,7 @@ export const surveyReducers = {
     state.survey = initialSurveyState;
 
     setTimeout(() => {
-      history.push(`/dashboard`);
+      // push(`/dashboard`)
     }, 1);
   },
   failed: (state: GlobalState, action: PayloadAction<any>): void => {
@@ -134,4 +102,36 @@ export const surveyReducers = {
   setStep: (state: GlobalState, action: PayloadAction<number>): void => {
     state.survey.step = action.payload;
   },
+};
+
+// ---- SELECTORS
+
+export const error = (state: RootState): any[] | undefined =>
+  state.editor.survey.error;
+export const isLoading = (state: RootState): boolean =>
+  state.scientistData.survey.isLoading;
+export const step = (state: RootState): number => state.editor.survey.step;
+export const hasChanges = (state: RootState): boolean => {
+  const updated = DateTime.fromISO(state.editor.survey.lastUpdated);
+  const saved = DateTime.fromISO(state.editor.survey.lastSaved);
+  return updated > saved;
+};
+
+export const getSelectedSurvey = (state: RootState): SurveyRedux =>
+  state.scientistData.survey.data;
+
+export const getSelectedSurveyId = (state: RootState): string =>
+  state.scientistData.survey.selectedSurvey;
+
+export const getOrder = (state: RootState): string[] =>
+  state.scientistData.survey.order;
+
+export const surveySelectors = {
+  error,
+  isLoading,
+  hasChanges,
+  getSelectedSurvey,
+  getSelectedSurveyId,
+  getOrder,
+  step,
 };

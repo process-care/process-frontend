@@ -1,33 +1,29 @@
-import React, { useEffect, useState, useCallback } from "react";
-
+import { useEffect, useState, useCallback } from "react";
 import { Box, Button, Flex, Text, Tooltip } from "@chakra-ui/react";
+import { InfoIcon } from "@chakra-ui/icons";
 import { Formik, Form } from "formik";
-import { useAppDispatch, useAppSelector } from "redux/hooks";
 
-import { Footer } from "./Template/Footer";
+import { t } from "@/static/condition";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { getDiff, removeEmpty, renderFormTemplate, renderFormValidationSchema } from "./utils";
 import { fields } from "./Template/logic/initialValues";
-import { setIsRemoving } from "redux/slices/formBuilder";
-
-import { t } from "static/condition";
-import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
-import { selectors, actions } from "redux/slices/scientistData";
-import { actions as appActions } from "redux/slices/application";
-
-import { selectors as formBuilderSelectors, actions as formBuilderAction } from "redux/slices/formBuilder";
-import { TitleDivider } from "components/TitleDivider";
-import { getQuestionInfo, getQuestionName } from "constants/inputs";
-import { InfoIcon } from "@chakra-ui/icons";
-import { QuestionRedux } from "redux/slices/types";
-
-import { Input, Textarea } from "components/Fields";
-import { Enum_Question_Rows } from "api/graphql/types.generated";
+import { setIsRemoving } from "@/redux/slices/formBuilder";
+import { selectors, actions } from "@/redux/slices/scientistData";
+import { actions as appActions } from "@/redux/slices/application";
+import { selectors as formBuilderSelectors, actions as formBuilderAction } from "@/redux/slices/formBuilder";
+import { getQuestionInfo, getQuestionName } from "@/constants/inputs";
+import { QuestionRedux } from "@/redux/slices/types";
+import { Input, Textarea } from "@/components/Fields";
+import { Enum_Question_Rows } from "@/api/graphql/types.generated";
+import Footer from "./Template/Footer";
+import InputIcon from "@/components/CreateSurvey/CreateForm/InputIcon";
+import TitleDivider from "@/components/TitleDivider";
 
 interface Props {
   order: string[];
 }
 
-const InputForm: React.FC<Props> = ({ order }) => {
+export default function InputForm({ order }: Props): JSX.Element {
   const dispatch = useAppDispatch();
   const currentConditions = useAppSelector(selectors.conditions.getSelectedQuestionsConditions);
   const isEditing = useAppSelector(formBuilderSelectors.isEditing);
@@ -120,9 +116,9 @@ const InputForm: React.FC<Props> = ({ order }) => {
             <Flex alignItems="center" justifyContent="center" fontSize="30" flexDirection="column" px={5}>
               <Flex alignItems="center" justifyContent="space-between" w="100%" mt="5">
                 <Tooltip placement="bottom" label={getQuestionInfo(type)}>
-                  <Box d="flex" alignItems="center">
+                  <Box display="flex" alignItems="center">
                     <Text variant="baseline" fontWeight="bold" textAlign="left" _hover={{ cursor: "pointer" }}>
-                      {isEditing ? "Edition" : "Création"} d'une {getQuestionName(type)}
+                      {isEditing ? "Edition" : "Création"} d&apos;une {getQuestionName(type)}
                     </Text>
                     <InfoIcon color="gray.300" ml="4" mt="-2" w="3" h="3" _hover={{ cursor: "pointer" }} />
                   </Box>
@@ -163,7 +159,6 @@ const InputForm: React.FC<Props> = ({ order }) => {
                     {currentConditions.length === 0 ? (
                       <Button
                         variant="roundedTransparent"
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                         // @ts-ignore: Pb with props in theme ...
                         isSmall
                         onClick={() => createCondition()}
@@ -173,7 +168,6 @@ const InputForm: React.FC<Props> = ({ order }) => {
                     ) : (
                       <Button
                         variant="roundedTransparent"
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                         // @ts-ignore: Pb with props in theme ...
                         isSmall
                         onClick={() => editCondition(currentConditions[0].id)}
@@ -184,7 +178,6 @@ const InputForm: React.FC<Props> = ({ order }) => {
 
                     <Button
                       ml="5"
-                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                       // @ts-ignore: Pb with props in theme ...
                       isSmall
                       variant={values?.required ? "rounded" : "roundedTransparent"}
@@ -195,6 +188,7 @@ const InputForm: React.FC<Props> = ({ order }) => {
                   </Flex>
                 </Box>
               )}
+              
               <Box w="100%" mb="100px">
                 {renderFormTemplate(selectedQuestion)}
               </Box>
@@ -216,5 +210,3 @@ const InputForm: React.FC<Props> = ({ order }) => {
     </Formik>
   );
 };
-
-export default InputForm;

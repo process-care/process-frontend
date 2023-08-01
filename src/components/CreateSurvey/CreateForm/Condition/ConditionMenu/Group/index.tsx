@@ -1,16 +1,18 @@
 import React from "react";
-import { useAppDispatch, useAppSelector } from "redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { v4 as uuidv4 } from "uuid";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import { Separator } from "../Separator";
-import { ReactComponent as Delete } from "./../assets/delete.svg";
+import Image from "next/image";
 
-import { RemovingConfirmation } from "../../../RemovingConfirmation";
-import { t } from "static/condition";
-import { Operator } from "./Operator";
-import { actions, selectors } from "redux/slices/scientistData";
-import { ConditionRedux } from "redux/slices/types";
-import { Maybe } from "api/graphql/types.generated";
+import { t } from "@/static/condition";
+import { actions, selectors } from "@/redux/slices/scientistData";
+import { ConditionRedux } from "@/redux/slices/types";
+import { Maybe } from "@/api/graphql/types.generated";
+import RemovingConfirmation from "../../../RemovingConfirmation";
+import Separator from "../Separator";
+import Operator from "./Operator";
+
+import Delete from "@/assets/delete.svg";
 
 interface Props {
   currentConditions: ConditionRedux[];
@@ -22,7 +24,7 @@ interface State {
   id: Maybe<string> | undefined | number;
 }
 
-export const Group: React.FC<Props> = ({ currentConditions, groups, selectedCondition }) => {
+export default function Group({ currentConditions, groups, selectedCondition }: Props): JSX.Element {
   const dispatch = useAppDispatch();
   const isValid = useAppSelector(selectors.conditions.getValidity);
 
@@ -107,7 +109,7 @@ export const Group: React.FC<Props> = ({ currentConditions, groups, selectedCond
                 fontSize="10"
                 pt="2px"
               >
-                <Delete />
+                <Image src={Delete} alt="Delete" />
               </Button>
             </Flex>
 
@@ -140,7 +142,7 @@ export const Group: React.FC<Props> = ({ currentConditions, groups, selectedCond
                               {condition?.attributes?.target.data?.attributes?.label}
                             </Text>
                             <Button
-                              d="flex"
+                              display="flex"
                               isDisabled={!isValid}
                               onClick={() => goToFirstStep(condition.id)}
                               variant="link"
@@ -165,7 +167,7 @@ export const Group: React.FC<Props> = ({ currentConditions, groups, selectedCond
                             fontSize="10"
                             pt="2px"
                           >
-                            <Delete />
+                            <Image src={Delete} alt="Delete" />
                           </Button>
                         </Flex>
                       </>

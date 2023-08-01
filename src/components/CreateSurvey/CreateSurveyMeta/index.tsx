@@ -1,43 +1,57 @@
-import React, { useCallback, useEffect, useRef } from "react";
+'use client'
+
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Formik, Form } from "formik";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import { Errors, renderSurveyMessage } from "components/Authentification/Errors";
+import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
+
+import Errors, { renderSurveyMessage } from "@/components/Authentification/Errors";
+import { useAppSelector, useAppDispatch } from "@/redux/hooks";
+import { selectors, actions } from "@/redux/slices/survey-editor";
+import { Enum_Survey_Status } from "@/api/graphql/types.generated";
 import { createSurveySchema } from "../validationSchema";
-import { useAppSelector, useAppDispatch } from "redux/hooks";
-
 import { checkValidity, renderInputs } from "./utils";
-
-import { Link, useParams } from "react-router-dom";
-import { selectors, actions } from "redux/slices/survey-editor";
-import { Enum_Survey_Status } from "api/graphql/types.generated";
 
 // COMPONENT
 
-export const CreateSurveyForm: React.FC = () => {
-  const { slug } = useParams<{ slug: string }>();
+export default function CreateSurveyForm(): JSX.Element {
+  const params = useParams()
+  const router = useRouter();
+  const slug = params.slug as string;
   const dispatch = useAppDispatch();
+  const [submitted, setSubmitted] = useState(false);
 
   // TODO: We could even do this effect when the user opens a side menu in the dashboard, so we "preload" the data
   useEffect(() => {
     if (slug) {
       dispatch(actions.initialize(slug));
     }
-  }, [slug]);
+  }, [dispatch, slug]);
 
   // Flag to avoid saving the initial values injected into Formik
   const firstRender = useRef(true);
   const survey = useAppSelector(selectors.getSurveyDraft);
   const error = useAppSelector(selectors.error);
   const step = useAppSelector(selectors.step);
+  const isPosted = useAppSelector(selectors.isPosted);
 
   // If survey does not have id, it means that it is a draft
   const isDraft = survey?.id === "";
 
-  const onSubmit = useCallback((data, { setSubmitting, validateForm }) => {
+  const onSubmit = useCallback((data: any, { setSubmitting, validateForm }: any) => {
     validateForm(data);
     setSubmitting(true);
+    setSubmitted(true);
     dispatch(actions.post(data));
-  }, []);
+  }, [dispatch]);
+
+  // Redirect if survey has been correctly posted
+  useEffect(() => {
+    if (isPosted && submitted) {
+      router.push('/dashboard')
+    }
+  }, [isPosted, router, submitted]);
 
   return (
     <>
@@ -170,7 +184,7 @@ const Navigatebtn = ({
   if (step === 6 && !previous) {
     if (!isDraft) {
       return (
-        <Link to="/dashboard">
+        <Link href="/dashboard">
           <Button type="submit" variant="roundedBlue" minW="150px">
             Sauvegarder et revenir
           </Button>

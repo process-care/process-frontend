@@ -1,7 +1,6 @@
 import { ButtonGroup, Button, Box } from "@chakra-ui/react";
 
-import React from "react";
-import { t } from "static/global";
+import { t } from "@/static/global";
 
 interface Props {
   onCancel: () => void;
@@ -9,7 +8,7 @@ interface Props {
   disabled?: boolean;
 }
 
-export const Footer: React.FC<Props> = ({ onCancel, disabled, onSubmit }) => {
+export default function Footer({ onCancel, disabled, onSubmit }: Props): JSX.Element {
   return (
     <Box
       position="fixed"
@@ -19,7 +18,7 @@ export const Footer: React.FC<Props> = ({ onCancel, disabled, onSubmit }) => {
       w="24.2%"
       p={4}
     >
-      <ButtonGroup d="flex" justifyContent="space-around">
+      <ButtonGroup display="flex" justifyContent="space-around">
         <Button variant="link" onClick={() => onCancel()} type="button">
           {t.cancel}
         </Button>

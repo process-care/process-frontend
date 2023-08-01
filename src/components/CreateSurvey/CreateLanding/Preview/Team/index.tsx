@@ -1,6 +1,6 @@
 import { Box, Text, Flex, Image, Grid } from "@chakra-ui/react";
-import { Color, Member as MemberType } from "types/landing";
-import React from "react";
+
+import { Color, Member as MemberType } from "@/types/landing";
 
 type Props = {
   members: MemberType[];
@@ -8,7 +8,9 @@ type Props = {
   isUserView?: boolean;
 };
 
-export const Team: React.FC<Props> = ({ members, color_theme, isUserView }) => {
+// ---- COMPONENT
+
+export default function Team({ members, color_theme, isUserView }: Props): JSX.Element {
   if (!members) {
     return <></>;
   }
@@ -28,7 +30,9 @@ export const Team: React.FC<Props> = ({ members, color_theme, isUserView }) => {
   );
 };
 
-const Member: React.FC<MemberType> = ({ job, name, image, color }) => {
+// ---- SUB COMPONENTS
+
+function Member({ job, name, image, color }: MemberType): JSX.Element {
   return (
     <Flex flexDirection="column" justifyContent="center" textAlign="center" mb="30px">
       <Image

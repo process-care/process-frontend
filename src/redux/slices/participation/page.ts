@@ -1,9 +1,9 @@
 import { createEntityAdapter, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { RootState } from "redux/store";
-import { actions as statusAct } from "redux/slices/participation/status";
-import { selectors as answerSelectors } from "redux/slices/participation/answers";
-import { shouldShow } from "pages/Survey/Participation/Form/condition-evaluations";
+import { RootState } from "@/redux/store";
+import { actions as statusAct } from "@/redux/slices/participation/status";
+import { selectors as answerSelectors } from "@/redux/slices/participation/answers";
+import { shouldShow } from "@/utils/participations/condition-evaluations";
 import { EvaluationCondition } from "./types";
 import { PageRedux } from "../types";
 

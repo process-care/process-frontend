@@ -1,9 +1,8 @@
 import { Box } from "@chakra-ui/react";
-import { Wysiwyg } from "components/Fields/Wysiwyg";
 
-import React from "react";
+import Wysiwyg from "@/components/Fields/Wysiwyg/Wysiwyg";
 
-export const WysiwygFields: React.FC = () => {
+export default function WysiwygFields(): JSX.Element {
   return (
     <>
       <Box w="100%" p="5">

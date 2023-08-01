@@ -1,10 +1,10 @@
 import { map, switchMap, filter, scan, debounceTime, timeInterval } from "rxjs";
 import { combineEpics, ofType } from "redux-observable";
-import { Epic } from "redux/store";
+import { Epic } from "@/redux/store";
 
-import { actions, selectors, UpsertedAnswerPayload } from "redux/slices/participation/answers";
-import { sdk } from "api/gql-client";
-import { CreateAnswerMutation, UpdateAnswerMutation } from "api/graphql/sdk.generated";
+import { actions, selectors, UpsertedAnswerPayload } from "@/redux/slices/participation/answers";
+import { sdk } from "@/api/gql-client";
+import { CreateAnswerMutation, UpdateAnswerMutation } from "@/api/graphql/sdk.generated";
 
 const DEBOUNCE_TIME = 3000;
 
@@ -20,7 +20,6 @@ const upsertAnswersEpic: Epic = (action$, state$) =>
       // After the same interval as the debounced time, we reset the accumulator
       if (interval > DEBOUNCE_TIME) acc = {};
 
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore : we are sure we have a questionId, see "filter" above the chain
       acc[value.questionId] = value.value;
       return acc;

@@ -1,18 +1,16 @@
 import React from "react";
-import { Box, Flex, Text } from "@chakra-ui/react";
-import Card from "./Card";
-
-import { QuestionRedux } from "redux/slices/types";
-import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { Formik, Form } from "formik";
-import { Header } from "./Header";
-
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import { Loader } from "components/Spinner";
-import { Error } from "components/Error";
-import { selectors, actions } from "redux/slices/scientistData";
 
-import { NoData } from "components/SurveyGrid/noData";
+import { QuestionRedux } from "@/redux/slices/types";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { selectors, actions } from "@/redux/slices/scientistData";
+import Loader from "@/components/Spinner";
+import Error from "@/components/Error";
+import NoData from "@/components/SurveyGrid/noData";
+import Header from "./Header";
+import Card from "./Card";
 
 export interface Item {
   id: number;
@@ -32,7 +30,7 @@ interface Props {
   surveyId: string;
 }
 
-const InputsPreview: React.FC<Props> = ({ order }) => {
+export default function InputsPreview({ order }: Props): JSX.Element {
   const dispatch = useAppDispatch();
   const selectedPage = useAppSelector(selectors.pages.getSelectedPage);
 
@@ -69,7 +67,7 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
     return (
       <Box
         w="100%"
-        d="flex"
+        display="flex"
         flexDirection="column"
         alignItems="center"
         // h="90%"
@@ -142,5 +140,3 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
     </>
   );
 };
-
-export default InputsPreview;

@@ -1,9 +1,12 @@
+import { useCallback, useRef } from "react";
 import { Box, Button, Text, Flex, FormHelperText, FormControl, FormErrorMessage } from "@chakra-ui/react";
-import React, { useCallback } from "react";
-import { ReactComponent as Delete } from "../assets/delete.svg";
-import { SvgHover } from "components/SvgHover";
+import Image from "next/image";
+
+import { UploadParams } from "@/redux/slices/application";
 import { useFileHandlers } from "./hooks";
-import { UploadParams } from "redux/slices/application";
+import SvgHover from "@/components/SvgHover";
+
+import Delete from "../assets/delete.svg";
 
 // ---- TYPES
 
@@ -41,7 +44,7 @@ interface Content {
 
 // ---- COMPONENT
 
-export const UploadFileRemote: React.FC<Props> = (props: Props) => {
+export default function UploadFileRemote(props: Props): JSX.Element {
   // ⚠️ We need to keep the props structured (in received params above), so we can infer the typing of content later on.
   // If destructured in the parameters above, it seems unable to guess the typing with a safe guard.
   //
@@ -51,7 +54,7 @@ export const UploadFileRemote: React.FC<Props> = (props: Props) => {
   // We can still destructure the rest for convenience. The object is really just needed for the safe guard guessing.
   const { target, multiple, onChange, isDisabled, label, helpText, accept } = props;
 
-  const hiddenFileInput = React.useRef<HTMLInputElement>(null);
+  const hiddenFileInput = useRef<HTMLInputElement>(null);
   const { handleChange, handleDelete, error } = useFileHandlers(target, multiple, onChange);
 
   return (
@@ -65,7 +68,7 @@ export const UploadFileRemote: React.FC<Props> = (props: Props) => {
           {label}
         </Button>
 
-        <Box d="none">
+        <Box display="none">
           <input
             type="file"
             placeholder="upload"
@@ -127,7 +130,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ id, handleDelete }: DeleteB
 
   return (
     <SvgHover>
-      <Delete onClick={callDelete} />
+      <Image src={Delete} alt="Delete" onClick={callDelete} />
     </SvgHover>
   );
 };

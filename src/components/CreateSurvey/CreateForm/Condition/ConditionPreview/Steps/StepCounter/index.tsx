@@ -1,7 +1,7 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import React from "react";
 import { Circle } from "@chakra-ui/react";
-import { t } from "static/condition";
+
+import { t } from "@/static/condition";
 
 const steps = [
   { title: t.steps[0] },
@@ -15,11 +15,11 @@ interface Props {
   navigateTo: (step: number) => void;
 }
 
-export const StepCounter: React.FC<Props> = ({
+export default function StepCounter({
   isDisabled,
   step,
   navigateTo,
-}) => {
+}: Props): JSX.Element {
   return (
     <Flex justifyContent="center" mt={4} w="50%" mx="auto">
       {steps.map((_, i) => {

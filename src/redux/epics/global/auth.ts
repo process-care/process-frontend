@@ -1,9 +1,10 @@
 import { map, switchMap } from "rxjs";
 import { combineEpics, ofType } from "redux-observable";
-import { Epic } from "redux/store";
-import { actions } from "redux/slices/scientistData";
-import { client, sdk } from "api/gql-client";
-import { hasMessage } from "utils/typeguards";
+import { Epic } from "@/redux/store";
+import { actions } from "@/redux/slices/scientistData";
+import { client, sdk } from "@/api/gql-client";
+import { hasMessage } from "@/utils/typeguards";
+import { buildBearer } from "@/utils/auth";
 
 // ----  LOGIN
 
@@ -101,12 +102,6 @@ const refreshingEpic: Epic = (action$) =>
       return actions.refreshed(updated);
     })
   );
-
-// ---- UTILS
-
-function buildBearer(jwt: string | undefined | null) {
-  return jwt && jwt.length > 0 ? `Bearer ${jwt}` : "";
-}
 
 // ---- EXPORT
 

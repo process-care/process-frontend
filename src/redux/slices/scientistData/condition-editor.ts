@@ -1,10 +1,10 @@
 import { createEntityAdapter, createSlice, PayloadAction, Update } from "@reduxjs/toolkit";
 
 // import type { RootState } from "redux/store";
-import { RootState } from "redux/store";
+import { RootState } from "@/redux/store";
 import { DateTime } from "luxon";
 import { GlobalState } from "../scientistData";
-import { Maybe } from "api/graphql/types.generated";
+import { Maybe } from "@/api/graphql/types.generated";
 import { ConditionRedux } from "../types";
 
 // ----- ENTITY ADAPTER

@@ -1,6 +1,6 @@
+import React, { ReactChild } from "react";
 import { Drawer, DrawerBody, DrawerContent, Portal } from "@chakra-ui/react";
 
-import React, { ReactChild } from "react";
 
 interface Props {
   content: ReactChild;
@@ -10,14 +10,14 @@ interface Props {
   isOpen: boolean;
   size?: string;
 }
-const CustomDrawer: React.FC<Props> = ({
-  content,
 
+export default function CustomDrawer({
+  content,
   isOpen,
   onOverlayClick,
   size,
   ...props
-}) => {
+}: Props): JSX.Element {
   return (
     <>
       <Portal>
@@ -38,5 +38,3 @@ const CustomDrawer: React.FC<Props> = ({
     </>
   );
 };
-
-export default CustomDrawer;

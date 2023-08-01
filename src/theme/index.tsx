@@ -226,7 +226,6 @@ const theme = extendTheme({
           overflowY: "auto",
           w: "100%",
           maxW: "53%",
-          height: "100vh",
           [`@media screen and (max-width: ${tablet})`]: {
             height: "100%",
             maxW: "100%",

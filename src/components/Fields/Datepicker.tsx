@@ -1,10 +1,18 @@
-import React from "react";
+import { useMemo } from "react";
 import { FormControl, FormHelperText, FormLabel, FormErrorMessage } from "@chakra-ui/react";
-
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-
+import { format, formatISO } from 'date-fns'
+import { fr } from 'date-fns/locale'
 import { useField } from "formik";
+import { Calendar as CalendarIcon } from "lucide-react"
+ 
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/Shadcn/button"
+import { Calendar } from "@/components/Shadcn/calendar"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/Shadcn/popover"
 
 interface Props {
   id: string;
@@ -14,13 +22,13 @@ interface Props {
   isCollapsed?: boolean;
 }
 
-export const CustomDatePicker: React.FC<Props> = ({ id, label, helpText, isRequired, isCollapsed }) => {
+export default function CustomDatePicker({ id, label, helpText, isRequired, isCollapsed }: Props): JSX.Element {
   const [field, meta, helpers] = useField(id);
-  const selected = field.value ? new Date(field.value) : new Date();
+  const selected = useMemo(() => field.value ? new Date(field.value) : new Date(), [field.value])
 
-  const handleChange = (date: Date) => {
+  const handleChange = (date?: Date) => {
     if (date) {
-      helpers.setValue(date.toISOString());
+      helpers.setValue(formatISO(date, { representation: 'date' }));
     }
   };
 
@@ -29,7 +37,31 @@ export const CustomDatePicker: React.FC<Props> = ({ id, label, helpText, isRequi
       <FormLabel>{label}</FormLabel>
       {!isCollapsed && (
         <>
-          <DatePicker required={isRequired} selected={selected} onChange={handleChange} dateFormat="dd/MM/yyyy" />
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant={"outline"}
+                className={cn(
+                  "w-[280px] justify-start text-left font-normal",
+                  !selected && "text-muted-foreground"
+                )}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {selected ? format(selected, 'PPP', { locale: fr }) : <span>Séléctionner une date</span>}
+              </Button>
+            </PopoverTrigger>
+
+            <PopoverContent className="w-auto p-0">
+              <Calendar
+                locale={fr}
+                mode="single"
+                selected={selected}
+                onSelect={handleChange}
+                initialFocus
+              />
+            </PopoverContent>
+          </Popover>
+
           <FormErrorMessage>{meta.error}</FormErrorMessage>
           <FormHelperText fontSize="xs">{helpText}</FormHelperText>
         </>

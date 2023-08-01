@@ -1,15 +1,15 @@
-import { CustomInput as Input } from "components/Fields/Input";
-import { CustomTextarea as Textarea } from "components/Fields/Textarea";
-import { CustomNumberInput as NumberInput } from "components/Fields/NumberInput";
-import { CustomCheckbox as Checkbox } from "components/Fields/Checkbox";
-import { CustomRadioBox as Radiobox } from "components/Fields/Radiobox";
-import { CustomSelect as Select } from "components/Fields/Select";
-import { CustomSlider as Slider } from "components/Fields/Slider";
-import { CustomSwitch as Switch } from "components/Fields/Switch";
-import { CustomDatePicker as Datepicker } from "components/Fields/Datepicker";
-import { AssociatedClassification } from "components/Fields/AssociatedClassification";
-import { FreeClassification } from "components/Fields/FreeClassification";
-import { MonoThumbnail } from "components/Fields/MonoThumbnail";
+import Input from "@/components/Fields/Input";
+import Textarea from "@/components/Fields/Textarea";
+import NumberInput from "@/components/Fields/NumberInput";
+import Checkbox from "@/components/Fields/Checkbox";
+import Radiobox from "@/components/Fields/Radiobox";
+import Select from "@/components/Fields/Select";
+import Slider from "@/components/Fields/Slider";
+import Switch from "@/components/Fields/Switch";
+import Datepicker from "@/components/Fields/Datepicker";
+import AssociatedClassification from "@/components/Fields/AssociatedClassification";
+import FreeClassification from "@/components/Fields/FreeClassification";
+import MonoThumbnail from "@/components/Fields/MonoThumbnail";
 
 export {
   Input,

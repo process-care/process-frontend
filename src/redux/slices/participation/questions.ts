@@ -1,8 +1,8 @@
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 
-import { actions as statusAct } from "redux/slices/participation/status";
-import { RootState } from "redux/store";
-import { selectors as answerSelectors } from "redux/slices/participation/answers";
+import { actions as statusAct } from "@/redux/slices/participation/status";
+import { RootState } from "@/redux/store";
+import { selectors as answerSelectors } from "@/redux/slices/participation/answers";
 import { EvaluationCondition } from "./types";
 import { QuestionRedux } from "../types";
 

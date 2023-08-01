@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Box,
   useColorModeValue,
@@ -6,32 +5,31 @@ import {
   Text,
   Flex,
 } from "@chakra-ui/react";
-import { useAppDispatch, useAppSelector } from "redux/hooks";
-
-import { QuestionRedux } from "redux/slices/types";
-import { RenderInput } from "./utils";
-import { setIsRemoving } from "redux/slices/formBuilder";
 import { Draggable } from "react-beautiful-dnd";
+import Image from "next/image";
 
-import { ReactComponent as Delete } from "./assets/delete.svg";
-import { ReactComponent as Edit } from "./assets/edit.svg";
-import { ReactComponent as Condition } from "./assets/condition.svg";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { QuestionRedux } from "@/redux/slices/types";
+import { setIsRemoving } from "@/redux/slices/formBuilder";
+import { actions as appActions } from "@/redux/slices/application";
+import { actions, selectors } from "@/redux/slices/scientistData";
+import { actions as formBuilderActions } from "@/redux/slices/formBuilder";
+import { t } from "@/static/input";
+import RemovingConfirmation from "./../../RemovingConfirmation";
+import SvgHover from "@/components/SvgHover";
+import InputIcon from "@/components/CreateSurvey/CreateForm/InputIcon";
+import RenderInput from "./utils";
 
-import { RemovingConfirmation } from "./../../RemovingConfirmation";
-import { actions as appActions } from "redux/slices/application";
-import { actions, selectors } from "redux/slices/scientistData";
-import { actions as formBuilderActions } from "redux/slices/formBuilder";
+import Delete from "./assets/delete.svg";
+import Edit from "./assets/edit.svg";
+import Condition from "./assets/condition.svg";
 
-import { t } from "static/input";
-import { SvgHover } from "components/SvgHover";
-import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
-
-interface CardProps {
+interface Props {
   input: QuestionRedux;
   index: number;
 }
 
-const Card: React.FC<CardProps> = ({ input, index }) => {
+export default function Card({ input, index }: Props): JSX.Element {
   const dispatch = useAppDispatch();
   const { entityToRemove } = useAppSelector((state) => state.editor.form);
   const { status } = useAppSelector((state) => state.scientistData.survey);
@@ -85,7 +83,7 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
             left="-16px"
           >
             <SvgHover>
-              <Delete />
+              <Image src={Delete} alt="Delete" />
             </SvgHover>
           </Box>
 
@@ -128,7 +126,7 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
               </Box>
             </Container>
           </Box>
-          <Box d="flex" flexDirection="row">
+          <Box display="flex" flexDirection="row">
             <Box
               onClick={() => handleEdit()}
               position="absolute"
@@ -136,7 +134,7 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
               _hover={{ cursor: "pointer" }}
             >
               <SvgHover target="circle">
-                <Edit />
+                <Image src={Edit} alt="Edit" />
               </SvgHover>
             </Box>
             <Box
@@ -148,7 +146,7 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
             >
               {getCondition(input).length > 0 && (
                 <SvgHover target="circle">
-                  <Condition />
+                  <Image src={Condition} alt="Condition" />
                 </SvgHover>
               )}
             </Box>
@@ -158,5 +156,3 @@ const Card: React.FC<CardProps> = ({ input, index }) => {
     </Draggable>
   );
 };
-
-export default Card;

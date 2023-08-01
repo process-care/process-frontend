@@ -1,30 +1,38 @@
+"use client"
+
+import { useState } from "react";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import React, { useState } from "react";
-
-import { ReactComponent as Logo } from "assets/black_logo.svg";
 import { Form, Formik } from "formik";
-import { Input } from "components/Fields";
-import { NavLink, useLocation } from "react-router-dom";
-import { resetPassword } from "api/actions/password";
-import { newPasswordSchema } from "./validationSchema";
-import { useMediaQueries } from "utils/hooks/mediaqueries";
+import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
 
-export const NewPasswordForm: React.FC = () => {
+import { Input } from "@/components/Fields";
+import { resetPassword } from "@/api/actions/password";
+import { newPasswordSchema } from "./validationSchema";
+import { useMediaQueries } from "@/utils/hooks/mediaqueries";
+
+import Logo from "@/assets/black_logo.svg";
+
+export default function NewPasswordForm(): JSX.Element {
   const [isSuccess, setSuccess] = useState<boolean>(false);
   const [errors, setError] = useState<any>([]);
-  const query = useQuery();
-  const code = query.get("code");
+
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const code = searchParams.get('code')
+
   const { isTablet } = useMediaQueries();
 
   if (isSuccess) {
     return (
       <Flex flexDir="column">
         ✅ Votre mot de passe à bien été mis à jour !
-        <NavLink to="/connexion">
+        <Link href="/connexion">
           <Button variant="roundedBlue" mt="40px">
             Se connecter
           </Button>
-        </NavLink>
+        </Link>
       </Flex>
     );
   }
@@ -37,8 +45,8 @@ export const NewPasswordForm: React.FC = () => {
       borderColor="brand.line"
       w={isTablet ? "90%" : "480px"}
     >
-      <Box d="flex" justifyContent="center" w="150px" m="0 auto">
-        <Logo />
+      <Box display="flex" justifyContent="center" w="150px" m="0 auto">
+        <Image src={Logo} alt="Logo" />
       </Box>
 
       <Formik
@@ -87,28 +95,23 @@ export const NewPasswordForm: React.FC = () => {
                     isRequired
                   />
                   {errors.length > 0 &&
-                    errors[0].messages.map((err: any) => {
+                    errors[0].messages.map((err: any, idx: number) => {
                       return (
-                        <Text color="red" fontSize="12px" mt="10px">
+                        <Text key={idx} color="red" fontSize="12px" mt="10px">
                           {err.message}
                         </Text>
                       );
                     })}
 
-                  <Button
-                    mt="40px"
-                    type="submit"
-                    disabled={!isValid || isSubmitting}
-                    variant="roundedBlue"
-                  >
+                  <Button mt="40px" type="submit" disabled={!isValid || isSubmitting} variant="roundedBlue">
                     Réinitialiser mon mot de passe
                   </Button>
                   <Box textAlign="center">
-                    <NavLink to="/connexion">
+                    <Link href="/connexion">
                       <Button mt="40px" variant="link">
                         Annuler
                       </Button>
-                    </NavLink>
+                    </Link>
                   </Box>
                 </Flex>
               </Box>
@@ -119,7 +122,3 @@ export const NewPasswordForm: React.FC = () => {
     </Box>
   );
 };
-
-function useQuery() {
-  return new URLSearchParams(useLocation().search);
-}

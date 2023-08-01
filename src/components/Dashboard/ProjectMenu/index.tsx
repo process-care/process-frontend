@@ -1,26 +1,26 @@
-import React, { useMemo, useState } from "react";
-
+import { useMemo, useState } from "react";
 import { Box, Button, Container, Flex, Tooltip, Text } from "@chakra-ui/react";
-import { ReactComponent as Close } from "./assets/close.svg";
-import { ReactComponent as Trash } from "./assets/trash.svg";
-
-import { API_URL_ROOT } from "constants/api";
-import { Filters } from "../Filters";
-
-import { useNavigator } from "components/CreateSurvey/hooks";
-import { RemovingConfirmation } from "components/CreateSurvey/CreateForm/Condition/ToolBox/PageForm/Status";
-// import { Chart } from "../Chart";
-import { renderStatus } from "utils/application/renderStatus";
-import { Loader } from "components/Spinner";
-import { NavLink } from "react-router-dom";
-import { actions, selectors } from "redux/slices/scientistData";
 import { useDispatch } from "react-redux";
-import { useAppSelector } from "redux/hooks";
-import { SURVEY_STATUS } from "types/survey";
-import { useGetSurveyStatsQuery } from "api/graphql/queries/survey.gql.generated";
-import { client } from "api/gql-client";
-import { SurveyRedux } from "redux/slices/types";
-import { Enum_Survey_Status } from "api/graphql/types.generated";
+import Link from "next/link";
+import Image from "next/image";
+
+import { API_URL_ROOT } from "@/constants/api";
+import { useNavigator } from "@/components/CreateSurvey/hooks";
+// import { Chart } from "../Chart";
+import { renderStatus } from "@/utils/application/renderStatus";
+import { actions, selectors } from "@/redux/slices/scientistData";
+import { useAppSelector } from "@/redux/hooks";
+import { SURVEY_STATUS } from "@/types/survey";
+import { useGetSurveyStatsQuery } from "@/api/graphql/queries/survey.gql.generated";
+import { client } from "@/api/gql-client";
+import { SurveyRedux } from "@/redux/slices/types";
+import { Enum_Survey_Status } from "@/api/graphql/types.generated";
+import Loader from "@/components/Spinner";
+import RemovingConfirmation from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/PageForm/Status";
+import Filters from "../Filters";
+
+import Close from "./assets/close.svg";
+import Trash from "./assets/trash.svg";
 
 // ---- STATICS
 
@@ -50,7 +50,7 @@ interface Props {
 
 // ---- COMPONENT
 
-export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
+export default function ProjectMenu({ menuIsOpen, onClose }: Props): JSX.Element {
   const dispatch = useDispatch();
   const [isRemoving, setIsRemoving] = useState(false);
   const selectedSurvey = useAppSelector(selectors.mySurveys.getSelectedSurvey);
@@ -80,7 +80,6 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
   }
 
   // FIXME: Why is it an array ?
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   if (!menuIsOpen || !selectedSurvey || selectedSurvey.length < 1) {
     return <></>;
@@ -133,16 +132,16 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
         />
       ) : (
         <Box>
-          <Box p={1} d="flex" w="100%" justifyContent="space-between">
+          <Box p={1} display="flex" w="100%" justifyContent="space-between">
             <Tooltip label="Fermer">
               <Button onClick={onClose} variant="link">
-                <Close />
+                <Image src={Close} alt="close" />
               </Button>
             </Tooltip>
             <Box>
               <Tooltip label="Supprimer le projet">
                 <Button onClick={handleTrash} variant="link">
-                  <Trash />
+                  <Image src={Trash} alt="trash" />
                 </Button>
               </Tooltip>
             </Box>
@@ -150,7 +149,7 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
 
           <Box p={5} textAlign="left">
             <Tooltip label={"Voir la page d'accueil"} placement="top-start">
-              <NavLink to={`/survey/${selectedSurvey.attributes.slug}`}>
+              <Link href={`/survey/${selectedSurvey.attributes.slug}`}>
                 <Text variant="titleParaLight" mt={4} textAlign="left">
                   {title}
                 </Text>
@@ -162,7 +161,7 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
                 <Text variant="xs" mb={5} textAlign="left" color="brand.gray.200">
                   Enquête mise en ligne le {date.toLocaleDateString()}.
                 </Text>
-              </NavLink>
+              </Link>
             </Tooltip>
             <Flex justifyContent="space-between" alignItems="center">
               {isDraft ? (
@@ -240,7 +239,7 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
               Statistiques
             </Text>
 
-            <Box d="flex" justifyContent="center">
+            <Box display="flex" justifyContent="center">
               <Filters filters={filters} handleClick={setStatFilter} currentFilter={statFilter} center />
             </Box>
             <Flex mt={5} ml={50} mr={50} justifyContent="space-around">
@@ -331,7 +330,7 @@ const BigNumber = ({ value, label }: BigNumberProps) => {
 const Warning = ({ hadLanding, hadQuestion }: { hadLanding: boolean; hadQuestion: boolean | undefined }) => {
   const Message = ({ content }: { content: string }) => {
     return (
-      <Box pl={5} d="flex" alignContent="flex-start">
+      <Box pl={5} display="flex" alignContent="flex-start">
         <Text variant="current">⚠️ {content}</Text>
       </Box>
     );

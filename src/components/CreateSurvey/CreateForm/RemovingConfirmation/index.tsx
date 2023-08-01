@@ -1,7 +1,7 @@
-import { Button, ButtonGroup, Center, Text } from "@chakra-ui/react";
 import React from "react";
+import { Button, ButtonGroup, Center, Text } from "@chakra-ui/react";
 
-import { t } from "static/global";
+import { t } from "@/static/global";
 
 interface Props {
   confirm: () => Promise<void> | any;
@@ -10,12 +10,12 @@ interface Props {
   height?: string;
 }
 
-export const RemovingConfirmation: React.FC<Props> = ({
+export default function RemovingConfirmation({
   confirm,
   close,
   content,
   height,
-}) => {
+}: Props): JSX.Element {
   return (
     <Center
       h={height}
@@ -23,7 +23,7 @@ export const RemovingConfirmation: React.FC<Props> = ({
       backgroundColor="black"
       py="130px"
       px="10px"
-      d="flex"
+      display="flex"
       flexDirection="column"
       color="white"
     >
@@ -31,7 +31,7 @@ export const RemovingConfirmation: React.FC<Props> = ({
       <ButtonGroup
         pos="absolute"
         bottom="10px"
-        d="flex"
+        display="flex"
         justifyContent="space-around"
         w="100%"
       >

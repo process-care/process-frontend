@@ -1,14 +1,14 @@
+import { useCallback, useEffect } from "react";
 import { Box, Text } from "@chakra-ui/react";
-import { Footer } from "../Footer";
-
-import { Wysiwyg } from "components/Fields/Wysiwyg";
 import { Formik, Form } from "formik";
-import React, { useCallback } from "react";
-import { initialValues } from "./utils/initialValues";
-import { useAppDispatch, useAppSelector } from "redux/hooks";
-import { actions, selectors } from "redux/slices/landing-editor";
 
-export const AboutForm: React.FC = () => {
+import { initialValues } from "./utils/initialValues";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { actions, selectors } from "@/redux/slices/landing-editor";
+import Footer from "../Footer";
+import Wysiwyg from "@/components/Fields/Wysiwyg/Wysiwyg";
+
+export default function AboutForm(): JSX.Element {
   const dispatch = useAppDispatch();
 
   const aboutPage = useAppSelector(selectors.about);
@@ -31,7 +31,7 @@ export const AboutForm: React.FC = () => {
       }}
     >
       {({ values }) => {
-        React.useEffect(() => {
+        useEffect(() => {
           dispatch(
             actions.update({
               changes: {
@@ -63,7 +63,7 @@ export const AboutForm: React.FC = () => {
               }}
             >
               <Text variant="baseline" fontWeight="bold" textAlign="left" _hover={{ cursor: "pointer" }} mb="5">
-                Edition de la page d'accueil
+                Edition de la page d&apos;accueil
               </Text>
               <Wysiwyg id="about_page" />
               <Footer

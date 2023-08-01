@@ -3,9 +3,9 @@ import {
   LoginMutation,
   LoginMutationVariables,
   RegisterMutationVariables,
-} from "api/graphql/queries/auth.gql.generated";
-import { MeQuery } from "api/graphql/sdk.generated";
-import { RootState } from "redux/store";
+} from "@/api/graphql/queries/auth.gql.generated";
+import { MeQuery } from "@/api/graphql/sdk.generated";
+import { RootState } from "@/redux/store";
 
 import { GlobalState } from "../scientistData";
 

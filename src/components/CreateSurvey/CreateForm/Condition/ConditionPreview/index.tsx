@@ -1,24 +1,23 @@
-import React from "react";
-
 import { Box, Button, ButtonGroup, Center, Container, Text, Tooltip } from "@chakra-ui/react";
-import { useAppDispatch, useAppSelector } from "redux/hooks";
-import { Step_1 } from "components/CreateSurvey/CreateForm/Condition/ConditionPreview/Steps/Step_1";
-import { Step_2 } from "./Steps/Step_2";
-import { Step_3 } from "./Steps/Step_3";
+import { InfoIcon } from "@chakra-ui/icons";
+
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 // import { StepCounter } from "./Steps/StepCounter";
 import { checkStepValidation } from "./Steps/utils";
-import { ConditionRedux } from "redux/slices/types";
-import { Loader } from "components/Spinner";
-import { actions, selectors } from "redux/slices/scientistData";
-import { Footer } from "../ToolBox/InputForm/Template/Footer";
-import { InfoIcon } from "@chakra-ui/icons";
+import { ConditionRedux } from "@/redux/slices/types";
+import { actions, selectors } from "@/redux/slices/scientistData";
 import { renderTitle } from "./utils";
+import Step_1 from "@/components/CreateSurvey/CreateForm/Condition/ConditionPreview/Steps/Step_1";
+import Step_2 from "./Steps/Step_2";
+import Step_3 from "./Steps/Step_3";
+import Loader from "@/components/Spinner";
+import Footer from "../ToolBox/InputForm/Template/Footer";
 
 interface Props {
   selectedCondition: ConditionRedux;
 }
 
-export const ConditionPreview: React.FC<Props> = ({ selectedCondition }) => {
+export default function ConditionPreview({ selectedCondition }: Props): JSX.Element {
   const dispatch = useAppDispatch();
   const step = useAppSelector(selectors.conditions.getStep);
   const isValid = useAppSelector(selectors.conditions.getValidity);
@@ -83,7 +82,7 @@ export const ConditionPreview: React.FC<Props> = ({ selectedCondition }) => {
         placement="bottom"
         label="Ne peuvent être sélectionnées que les questions de type liste déroulante, radio et case à cocher, antérieures à la question en cours"
       >
-        <Box d="flex" alignItems="center" mt="5">
+        <Box display="flex" alignItems="center" mt="5">
           <Text variant="baseline" fontWeight="bold" textAlign="left" _hover={{ cursor: "pointer" }}>
             {renderTitle(step)}
           </Text>
@@ -94,7 +93,7 @@ export const ConditionPreview: React.FC<Props> = ({ selectedCondition }) => {
       <Center
         mt="5%"
         w="100%"
-        d="flex"
+        display="flex"
         justifyContent="center"
         border="1px solid #F7F7F7F7"
         p="5"
@@ -123,7 +122,7 @@ export const ConditionPreview: React.FC<Props> = ({ selectedCondition }) => {
               Suivant
             </Button>
           ) : (
-            <Box d="none">
+            <Box display="none">
               <Button
                 variant="roundedBlue"
                 isDisabled={checkStepValidation()}

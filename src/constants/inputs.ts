@@ -1,5 +1,5 @@
-import { Enum_Question_Type } from "api/graphql/types.generated";
-import { QuestionRedux } from "redux/slices/types";
+import { Enum_Question_Type } from "@/api/graphql/types.generated";
+import { QuestionRedux } from "@/redux/slices/types";
 
 type Obj = {
   type: QuestionRedux["attributes"]["type"];

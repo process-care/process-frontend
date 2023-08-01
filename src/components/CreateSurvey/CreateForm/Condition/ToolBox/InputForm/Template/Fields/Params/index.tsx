@@ -1,23 +1,24 @@
-import React from "react";
+import { useEffect } from "react";
 import { FieldArray, useField, useFormikContext } from "formik";
-import { Textarea } from "components/Fields";
 import { Flex, Box, Button, Text } from "@chakra-ui/react";
-import { useAppSelector } from "redux/hooks";
-import { selectors as selectorsApplication } from "redux/slices/application";
-import { Enum_Question_Rows } from "api/graphql/types.generated";
+
+import { useAppSelector } from "@/redux/hooks";
+import { selectors as selectorsApplication } from "@/redux/slices/application";
+import { Enum_Question_Rows } from "@/api/graphql/types.generated";
+import { Textarea } from "@/components/Fields";
 
 interface Props {
   name: string;
 }
 
-export const AssociatedSubfields: React.FC<Props> = ({ name }) => {
+export default function AssociatedSubfields({ name }: Props): JSX.Element {
   const [field, meta] = useField(name);
   const { setFieldValue } = useFormikContext();
   const isEditing = useAppSelector(selectorsApplication.isEditing);
 
   const fields = field.value;
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Populate answers field on edit.
     if (isEditing) {
       fields?.map((value: string, index: number) => {
@@ -80,7 +81,6 @@ export const AssociatedSubfields: React.FC<Props> = ({ name }) => {
                   onClick={() => arrayHelpers.push("")}
                   variant="rounded"
                   type="button"
-                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                   // @ts-ignore: Pb with props in theme ...
                   isSmall
                 >

@@ -1,11 +1,10 @@
 import { Flex, Box } from "@chakra-ui/react";
-import { Input, Switch } from "components/Fields";
-import { TitleDivider } from "components/TitleDivider";
-import React from "react";
 
+import { Input, Switch } from "@/components/Fields";
 import { CommonFields } from "../index";
+import TitleDivider from "@/components/TitleDivider";
 
-export const SliderFields: React.FC = () => {
+export default function SliderFields(): JSX.Element {
   return (
     <>
       <TitleDivider title="Contenu" />

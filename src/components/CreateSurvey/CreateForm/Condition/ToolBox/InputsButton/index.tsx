@@ -1,9 +1,9 @@
-import React from "react";
-import { Box, Button, ButtonGroup, Text } from "@chakra-ui/react";
-import { inputs } from "constants/inputs";
 import { v4 as uuidv4 } from "uuid";
-import { QuestionRedux } from "redux/slices/types";
-import { InputIcon } from "components/CreateSurvey/CreateForm/InputIcon";
+import { Box, Button, ButtonGroup, Text } from "@chakra-ui/react";
+
+import { inputs } from "@/constants/inputs";
+import { QuestionRedux } from "@/redux/slices/types";
+import InputIcon from "@/components/CreateSurvey/CreateForm/InputIcon";
 
 interface Props {
   group?: "other" | "simple" | "complex";
@@ -17,13 +17,13 @@ interface Props {
 const Category: React.FC<Props> = ({ onSelect, group }) => {
   const id = uuidv4();
   return (
-    <ButtonGroup d="flex" spacing="2" w="100%" flexWrap="wrap">
+    <ButtonGroup display="flex" spacing="2" w="100%" flexWrap="wrap">
       {inputs.map(({ type, name, category }, i) => {
         if (category === group) {
           return (
             <Button
               flex={["100%", "100%", "30%"]}
-              d="flex"
+              display="flex"
               justifyContent="flex-start"
               variant="box"
               whiteSpace="normal"
@@ -49,7 +49,7 @@ const Category: React.FC<Props> = ({ onSelect, group }) => {
   );
 };
 
-const ToolBox: React.FC<Props> = ({ onSelect }) => {
+export default function ToolBox({ onSelect }: Props): JSX.Element {
   const Title = ({ children }: { children: React.ReactNode }) => {
     return (
       <Text
@@ -76,5 +76,3 @@ const ToolBox: React.FC<Props> = ({ onSelect }) => {
     </>
   );
 };
-
-export default ToolBox;

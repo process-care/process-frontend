@@ -1,4 +1,3 @@
-import React from "react";
 import { FormControl, FormHelperText, FormLabel, Radio, RadioGroup, HStack, Box } from "@chakra-ui/react";
 import { RadioGroupControl } from "formik-chakra-ui";
 
@@ -18,7 +17,7 @@ interface Props {
   isCollapsed?: boolean;
 }
 
-export const CustomRadioBox: React.FC<Props> = ({ label, helpText, radios, id, m, p, isRequired, isCollapsed }) => {
+export default function CustomRadioBox({ label, helpText, radios, id, m, p, isRequired, isCollapsed }: Props): JSX.Element {
   return (
     <FormControl id={id} textAlign="left" m={m} p={p} isRequired={isRequired}>
       <FormLabel>{label}</FormLabel>
@@ -27,7 +26,7 @@ export const CustomRadioBox: React.FC<Props> = ({ label, helpText, radios, id, m
           <RadioGroup colorScheme="green">
             <HStack flexWrap="wrap" spacing={5}>
               <RadioGroupControl name={id} label="">
-                <Box flexWrap="wrap" d="flex" width={"100%"}>
+                <Box flexWrap="wrap" display="flex" width={"100%"}>
                   {radios ? (
                     radios.map(({ value, label }) => {
                       return (

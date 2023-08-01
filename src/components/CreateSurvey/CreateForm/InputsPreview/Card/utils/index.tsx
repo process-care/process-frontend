@@ -1,6 +1,6 @@
-import React from "react";
-
 import { Box } from "@chakra-ui/react";
+import { usePathname, useRouter } from "next/navigation";
+
 import {
   NumberInput,
   Checkbox,
@@ -12,14 +12,12 @@ import {
   AssociatedClassification,
   FreeClassification,
   MonoThumbnail,
-} from "components/Fields";
-import { t } from "static/input";
-import { useAppSelector } from "redux/hooks";
-import { selectors } from "redux/slices/formBuilder";
-
-import { useLocation } from "react-router-dom";
-import { Enum_Question_Type } from "api/graphql/types.generated";
-import { QuestionWithSamples } from "redux/slices/participation/status";
+} from "@/components/Fields";
+import { t } from "@/static/input";
+import { useAppSelector } from "@/redux/hooks";
+import { selectors } from "@/redux/slices/formBuilder";
+import { Enum_Question_Type } from "@/api/graphql/types.generated";
+import { QuestionWithSamples } from "@/redux/slices/participation/status";
 
 interface Options {
   value: string;
@@ -33,9 +31,10 @@ interface Props {
   };
 }
 
-export const RenderInput: React.FC<Props> = ({ input }) => {
-  const location = useLocation();
-  const isCollapsed = useAppSelector(selectors.isCollapseView) && !location.pathname.includes("/participate");
+export default function RenderInput({ input }: Props): JSX.Element {
+  const router = useRouter()
+  const pathname = usePathname()
+  const isCollapsed = useAppSelector(selectors.isCollapseView) && !pathname.includes("/participate");
   const attributes = input?.attributes;
 
   const formatOptions = (): Options[] => {

@@ -3,7 +3,6 @@ import * as Yup from "yup";
 export const newPasswordSchema = Yup.object().shape({
   password: Yup.string()
     .matches(
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       "^(?=.*[A-Za-z])(?=.*d)(?=.*[@$!%*#?&])[A-Za-zd@$!%*#?&]{8,}$",
       "Le mot de passe doit contenir au moins 8 charcatères, une majuscule, une minuscule, un nombre et un charactère spécial"

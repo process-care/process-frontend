@@ -1,7 +1,8 @@
-import React from "react";
 import { Button, Flex, Text } from "@chakra-ui/react";
-import { Color } from "types/landing";
-import { useMediaQueries } from "utils/hooks/mediaqueries";
+import Image from "next/image";
+
+import { Color } from "@/types/landing";
+import { useMediaQueries } from "@/utils/hooks/mediaqueries";
 
 interface Props {
   title?: string;
@@ -10,7 +11,7 @@ interface Props {
   onParticipate: () => void;
 }
 
-export const Header: React.FC<Props> = ({ title, logo, color_theme, onParticipate }) => {
+export default function Header({ title, logo, color_theme, onParticipate }: Props): JSX.Element {
   const { isTablet } = useMediaQueries();
   return (
     <Flex
@@ -23,7 +24,7 @@ export const Header: React.FC<Props> = ({ title, logo, color_theme, onParticipat
       borderBottom="1px solid #e6e6e6"
     >
       {!!logo && logo.length !== 0 && (
-        <img
+        <Image
           src={logo}
           alt="Logo"
           style={{
@@ -47,7 +48,7 @@ export const Header: React.FC<Props> = ({ title, logo, color_theme, onParticipat
           color="white"
           onClick={onParticipate}
         >
-          Participer à l'étude
+          Participer à l&apos;étude
         </Button>
       )}
     </Flex>

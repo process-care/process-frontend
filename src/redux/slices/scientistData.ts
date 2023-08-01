@@ -27,8 +27,8 @@ import {
 import { initialSurveyState, SurveyEditor, surveyReducers, surveySelectors } from "./scientistData/survey-editor";
 
 import { LastUpdated, ConditionRedux, PageRedux, QuestionRedux, SurveyRedux } from "./types";
-import { sanitizeEntities } from "api/entity-checker";
-import { CheckSurveyQuery } from "api/graphql/sdk.generated";
+import { sanitizeEntities } from "@/api/entity-checker";
+import { CheckSurveyQuery } from "@/api/graphql/sdk.generated";
 
 // ---- TYPES
 

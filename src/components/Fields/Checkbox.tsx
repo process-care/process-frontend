@@ -1,6 +1,4 @@
-import React from "react";
 import { FormControl, FormHelperText, FormLabel, Box } from "@chakra-ui/react";
-
 import { CheckboxContainer, CheckboxControl } from "formik-chakra-ui";
 
 interface Checkbox {
@@ -17,14 +15,14 @@ interface Props {
   isCollapsed?: boolean;
 }
 
-export const CustomCheckbox: React.FC<Props> = ({ label, helpText, checkbox, isRequired, id, isCollapsed }) => {
+export default function CustomCheckbox({ label, helpText, checkbox, isRequired, id, isCollapsed }: Props): JSX.Element {
   return (
     <FormControl id={id} textAlign="left" isRequired={isRequired} pl="0">
       <FormLabel>{label}</FormLabel>
       {!isCollapsed && (
         <>
           <CheckboxContainer name={id} label="" p="0" mt="10px">
-            <Box flexWrap="wrap" d="flex">
+            <Box flexWrap="wrap" display="flex">
               {checkbox ? (
                 checkbox.map(({ value, label }) => {
                   return (

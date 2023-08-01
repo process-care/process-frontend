@@ -1,11 +1,10 @@
-import React from "react";
-
-import { Radiobox } from "components/Fields";
-import { TitleDivider } from "components/TitleDivider";
 import { Box } from "@chakra-ui/react";
-import { CommonFields } from "..";
 
-export const TextareaFields: React.FC = () => {
+import { Radiobox } from "@/components/Fields";
+import { CommonFields } from "..";
+import TitleDivider from "@/components/TitleDivider";
+
+export default function TextareaFields(): JSX.Element {
   return (
     <>
       <TitleDivider title="Contenu" />

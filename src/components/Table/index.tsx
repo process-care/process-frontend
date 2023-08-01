@@ -1,8 +1,8 @@
-import * as React from "react";
-import { useTable, Column, useSortBy, HeaderGroup, Row, TableInstance } from "react-table";
-import { Box, Text, Tooltip } from "@chakra-ui/react";
 import { useCallback } from "react";
-import { SurveyBuilder } from "redux/slices/surveyBuilderOLD";
+import { Box, Text, Tooltip } from "@chakra-ui/react";
+import { useTable, Column, useSortBy, HeaderGroup, Row, TableInstance } from "react-table";
+
+import { SurveyBuilder } from "@/redux/slices/surveyBuilderOLD";
 
 // ---- TYPES
 
@@ -29,7 +29,7 @@ const styles = {
 
 // ---- COMPONENT
 
-export const Table: React.FC<Props> = ({ columns, data, onClick }) => {
+export default function Table({ columns, data, onClick }: Props): JSX.Element {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({ columns, data }, useSortBy);
 
   return (
@@ -91,7 +91,6 @@ const TableRow = ({ row, prepareRow, onClick }: TableRowProps) => {
   prepareRow(row);
 
   // FIXME: Obviously both lines below are bad ⤵️
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore : ID does exist
   const survey: SurveyBuilder["survey"] = row.original;
   const click = useCallback(() => onClick(survey), [survey, onClick]);

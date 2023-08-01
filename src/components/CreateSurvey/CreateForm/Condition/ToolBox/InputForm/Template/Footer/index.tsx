@@ -1,9 +1,10 @@
 import { Button, Box, Flex } from "@chakra-ui/react";
-import { SvgHover } from "components/SvgHover";
-import React from "react";
-import { t } from "static/global";
+import Image from "next/image";
 
-import { ReactComponent as Trash } from "assets/trash.svg";
+import SvgHover from "@/components/SvgHover";
+import { t } from "@/static/global";
+
+import Trash from "@/assets/trash.svg";
 
 interface Props {
   onCancel: () => void;
@@ -11,50 +12,41 @@ interface Props {
   disabled?: boolean;
   onDelete?: () => void;
   hideDelete?: boolean;
-  w?: string;
 }
 
-export const Footer: React.FC<Props> = ({
+export default function Footer({
   onCancel,
   disabled,
   onSubmit,
   onDelete,
   hideDelete,
-  w = "43%",
-}) => {
+}:Props ): JSX.Element {
   return (
-    <Box
+    <Flex
+      className="w-full justify-between items-center bg-white border-t border-t-solid border-t-black"
       minW="300px"
-      w={w}
-      position="fixed"
-      bottom="0"
-      backgroundColor="white"
-      borderTop="1px solid"
       px={6}
       py={4}
-      right="-1px"
     >
-      <Flex justifyContent="space-between" alignItems="center">
-        {!hideDelete && (
-          <Box w="70%" pl={4}>
-            <SvgHover>
-              <Trash onClick={() => !!onDelete && onDelete()} />
-            </SvgHover>
-          </Box>
-        )}
+      {!hideDelete && (
+        <Box w="70%" pl={4}>
+          <SvgHover>
+            <Image src={Trash} alt="Trash" onClick={() => !!onDelete && onDelete()} />
+          </SvgHover>
+        </Box>
+      )}
 
-        <Button variant="link" onClick={() => onCancel()} type="button" pr="20">
-          {t.cancel}
-        </Button>
-        <Button
-          type="submit"
-          variant="rounded"
-          disabled={disabled}
-          onClick={() => onSubmit()}
-        >
-          {t.validate}
-        </Button>
-      </Flex>
-    </Box>
+      <Button variant="link" onClick={() => onCancel()} type="button" pr="20">
+        {t.cancel}
+      </Button>
+      <Button
+        type="submit"
+        variant="rounded"
+        disabled={disabled}
+        onClick={() => onSubmit()}
+      >
+        {t.validate}
+      </Button>
+    </Flex>
   );
 };

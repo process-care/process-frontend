@@ -1,5 +1,5 @@
-import { ConditionRedux } from "redux/slices/types";
-import { PageRedux } from "redux/slices/types";
+import { ConditionRedux } from "@/redux/slices/types";
+import { PageRedux } from "@/redux/slices/types";
 
 // Hide current page and page after when we make condition page.
 // Hide page after current page when we make condition input

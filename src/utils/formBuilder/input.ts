@@ -1,4 +1,4 @@
-import { QuestionRedux } from "redux/slices/types";
+import { QuestionRedux } from "@/redux/slices/types";
 
 export const checkIfMultiple = (target: QuestionRedux): boolean => {
   const multipleInput: string[] = ["checkbox", "radio", "select"];

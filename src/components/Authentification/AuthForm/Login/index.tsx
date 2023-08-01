@@ -1,18 +1,20 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
-import React from "react";
+'use client'
 
-import { Form, Formik } from "formik";
-import { Input } from "components/Fields";
-import { NavLink, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { actions } from "redux/slices/scientistData";
-import { useAppSelector } from "redux/hooks";
-import { LoginSchema } from "components/Authentification/SiginForm/validationSchema";
-import { Errors, renderAuthMessage } from "components/Authentification/Errors";
+import { Box, Button, Flex } from "@chakra-ui/react";
+import { Form, Formik } from "formik";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-export const LoginForm: React.FC = () => {
+import { Input } from "@/components/Fields";
+import { actions } from "@/redux/slices/scientistData";
+import { useAppSelector } from "@/redux/hooks";
+import { LoginSchema } from "@/components/Authentification/SiginForm/validationSchema";
+import Errors, { renderAuthMessage } from "@/components/Authentification/Errors";
+
+export default function LoginForm(): JSX.Element {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const router = useRouter();
   const isConnected = useAppSelector((state) => state.scientistData.auth.isConnected);
   const errors = useAppSelector((state) => state.scientistData.auth.errors);
 
@@ -21,7 +23,7 @@ export const LoginForm: React.FC = () => {
   }
 
   if (isConnected) {
-    history.push("/dashboard");
+    router.push("/dashboard");
   }
 
   return (
@@ -58,9 +60,9 @@ export const LoginForm: React.FC = () => {
                   type="password"
                   isRequired="true"
                 />
-                <NavLink to="/mot-de-passe-oublie" style={{ width: "fit-content" }}>
+                <Link href="/mot-de-passe-oublie" style={{ width: "fit-content" }}>
                   <Button variant="link">Mot de passe oublié ? </Button>
-                </NavLink>
+                </Link>
                 <Errors message={renderAuthMessage(errors)} />
                 <Button mt="60px" type="submit" disabled={!isValid || isSubmitting || !dirty} variant="roundedBlue">
                   Connexion

@@ -1,12 +1,11 @@
 import { Box } from "@chakra-ui/react";
-import { NumberInput } from "components/Fields";
-import { TitleDivider } from "components/TitleDivider";
-import React from "react";
 
 import { CommonFields } from "../index";
-import { AssociatedSubfields } from "./AssociatedSubfields";
+import { NumberInput } from "@/components/Fields";
+import TitleDivider from "@/components/TitleDivider";
+import AssociatedSubfields from "./AssociatedSubfields";
 
-export const AssociatedClassificationFields: React.FC = () => {
+export default function AssociatedClassificationFields(): JSX.Element {
   return (
     <>
       <TitleDivider title="Contenu" />

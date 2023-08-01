@@ -1,24 +1,24 @@
-import React from "react";
 import { Formik, Form } from "formik";
-
 import { Box, Container, Text, Flex, Button } from "@chakra-ui/react";
-import { Error } from "components/Error";
-import { ConditionRedux } from "redux/slices/types";
-import { t } from "static/condition";
+import Image from "next/image";
 
-import { ReactComponent as Check } from "./../../assets/check.svg";
+import { t } from "@/static/condition";
+import { ConditionRedux } from "@/redux/slices/types";
+import { checkIfMultiple } from "@/utils/formBuilder/input";
+import { actions, selectors } from "@/redux/slices/scientistData";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { questionsSelectors } from "@/redux/slices/scientistData/question-editor";
 import { renderInput } from "./utils";
-import { checkIfMultiple } from "utils/formBuilder/input";
-import { actions, selectors } from "redux/slices/scientistData";
-import { useAppDispatch, useAppSelector } from "redux/hooks";
-import { questionsSelectors } from "redux/slices/scientistData/question-editor";
+import Error from "@/components/Error";
+
+import Check from "./../../assets/check.svg";
 
 interface Props {
   selectedCondition: ConditionRedux;
   updateStep: (d: any) => void;
 }
 
-export const Step_3: React.FC<Props> = ({ selectedCondition, updateStep }) => {
+export default function Step_3({ selectedCondition, updateStep }: Props): JSX.Element {
   const dispatch = useAppDispatch();
   const isValid = useAppSelector(selectors.conditions.getValidity);
   const handleValidity = (bool: boolean) => {
@@ -60,7 +60,7 @@ export const Step_3: React.FC<Props> = ({ selectedCondition, updateStep }) => {
 
           return (
             <Form onChange={(event) => onChange(event)} style={{ width: "100%" }}>
-              <Box d="flex" mx="auto" alignItems="center" w="100%" justifyContent="space-between">
+              <Box display="flex" mx="auto" alignItems="center" w="100%" justifyContent="space-between">
                 {renderInput(selectedCondition)}
                 <Box
                   pt={6}
@@ -84,7 +84,7 @@ export const Step_3: React.FC<Props> = ({ selectedCondition, updateStep }) => {
               </Box>
               {isValid && isNotEmpty && (
                 <Flex alignItems="center" justifyContent="flex-start" w="100%" mx="auto" mt="2">
-                  <Check />
+                  <Image src={Check} alt="Checkmark" />
                   <Text fontSize="14px" color="brand.green" ml={2}>
                     {t.success}
                   </Text>

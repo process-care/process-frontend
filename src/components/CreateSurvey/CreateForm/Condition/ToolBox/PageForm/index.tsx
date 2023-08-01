@@ -1,23 +1,24 @@
-import React, { useEffect, useRef } from "react";
-import { useAppDispatch, useAppSelector } from "redux/hooks";
-
-import { setIsRemoving } from "redux/slices/formBuilder";
-import { actions as appActions } from "redux/slices/application";
-import { actions, selectors } from "redux/slices/scientistData";
-
-import { Box, Button, Flex, Tooltip, Text } from "@chakra-ui/react";
-import { t } from "static/survey";
-import ToolBox from "../InputsButton";
+import { useEffect, useRef } from "react";
 import { Formik, Form } from "formik";
-import { Textarea } from "components/Fields";
-import { QuestionRedux } from "redux/slices/types";
-import { RemovingConfirmation } from "../../../RemovingConfirmation";
-import { SvgHover } from "components/SvgHover";
-import { ReactComponent as Trash } from "assets/trash.svg";
-import { TitleDivider } from "components/TitleDivider";
-import { Enum_Question_Rows } from "api/graphql/types.generated";
+import { Box, Button, Flex, Tooltip, Text } from "@chakra-ui/react";
+import Image from "next/image";
 
-export const PageForm: React.FC = () => {
+import { t } from "@/static/survey";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setIsRemoving } from "@/redux/slices/formBuilder";
+import { actions as appActions } from "@/redux/slices/application";
+import { actions, selectors } from "@/redux/slices/scientistData";
+import { QuestionRedux } from "@/redux/slices/types";
+import { Enum_Question_Rows } from "@/api/graphql/types.generated";
+import { Textarea } from "@/components/Fields";
+import TitleDivider from "@/components/TitleDivider";
+import RemovingConfirmation from "../../../RemovingConfirmation";
+import SvgHover from "@/components/SvgHover";
+import ToolBox from "../InputsButton";
+
+import Trash from "@/assets/trash.svg";
+
+export default function PageForm(): JSX.Element {
   const dispatch = useAppDispatch();
   const { entityToRemove } = useAppSelector((state) => state.editor.form);
   const firstRender = useRef(true);
@@ -130,7 +131,7 @@ export const PageForm: React.FC = () => {
                       shouldWrapChildren
                     >
                       <SvgHover>
-                        <Trash />
+                        <Image src={Trash} alt="Trash" />
                       </SvgHover>
                     </Tooltip>
                   </Box>
@@ -140,7 +141,7 @@ export const PageForm: React.FC = () => {
               </Flex>
 
               <Text variant="baseline" fontWeight="bold" textAlign="left" _hover={{ cursor: "pointer" }}>
-                Edition d'une page
+                Edition d&apos;une page
               </Text>
               <TitleDivider title="Informations de la page" mt="5" />
               <Box w="100%" m="0 auto" border="1px solid #F7F7F7F7" backgroundColor="#fdfdfdf1" p="5">
@@ -161,7 +162,7 @@ export const PageForm: React.FC = () => {
                   isRequired
                 />
 
-                <Box d="flex" justifyContent="space-between" mt="5">
+                <Box display="flex" justifyContent="space-between" mt="5">
                   {isNotFirstPage ? (
                     conditionsOnSelectedPage?.length === 0 ? (
                       <Tooltip
@@ -176,7 +177,6 @@ export const PageForm: React.FC = () => {
                         <Button
                           disabled={questionsOnSelectedPage.length === 0}
                           variant="roundedTransparent"
-                          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                           // @ts-ignore: Pb with props in theme ...
                           isSmall
                           onClick={() => createCondition()}
@@ -187,7 +187,6 @@ export const PageForm: React.FC = () => {
                     ) : (
                       <Button
                         variant="roundedTransparent"
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                         // @ts-ignore: Pb with props in theme ...
                         isSmall
                         onClick={() =>
@@ -206,7 +205,6 @@ export const PageForm: React.FC = () => {
                   >
                     <Button
                       ml={isNotFirstPage ? "5" : "0"}
-                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                       // @ts-ignore: Pb with props in theme ...
                       isSmall
                       variant={isLocked ? "rounded" : "roundedTransparent"}

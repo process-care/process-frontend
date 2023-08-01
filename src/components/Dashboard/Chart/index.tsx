@@ -1,7 +1,6 @@
 import { Tooltip } from "@chakra-ui/tooltip";
-import React from "react";
 
-export const Chart: React.FC = () => {
+export default function Chart(): JSX.Element {
   return (
     <p>
       <Tooltip label={"charts !"}>

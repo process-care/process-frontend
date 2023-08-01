@@ -1,21 +1,25 @@
+'use client'
+
+import { useState } from "react";
 import { Box, Button, Text } from "@chakra-ui/react";
-import React from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 
-import { ReactComponent as Logo } from "assets/black_logo.svg";
-import { LoginForm } from "./Login";
-import { SigninForm } from "./Signin";
-import { useAppSelector } from "redux/hooks";
-import { useHistory } from "react-router-dom";
-import { useMediaQueries } from "utils/hooks/mediaqueries";
+import { useAppSelector } from "@/redux/hooks";
+import { useMediaQueries } from "@/utils/hooks/mediaqueries";
+import LoginForm from "./Login";
+import SigninForm from "./Signin";
 
-export const AuthForm: React.FC = () => {
-  const history = useHistory();
-  const [isSigninPage, setIsSigninPage] = React.useState(false);
+import Logo from "@/assets/black_logo.svg";
+
+export default function AuthForm(): JSX.Element {
+  const router = useRouter()
+  const [isSigninPage, setIsSigninPage] = useState(false);
   const isConnected = useAppSelector((state) => state.scientistData.auth.isConnected);
   const { isTablet } = useMediaQueries();
 
   if (isConnected) {
-    history.push("/dashboard");
+    router.push("/dashboard");
   }
 
   return (
@@ -26,8 +30,8 @@ export const AuthForm: React.FC = () => {
       borderColor="brand.line"
       w={isTablet ? "90%" : "480px"}
     >
-      <Box d="flex" justifyContent="center" w="150px" m="0 auto">
-        <Logo />
+      <Box display="flex" justifyContent="center" w="150px" m="0 auto">
+        <Image src={Logo} alt="Logo" />
       </Box>
       <Box pt={isTablet ? "20px" : "90px"}>
         {isSigninPage ? <SigninForm cancel={() => setIsSigninPage(false)} /> : <LoginForm />}
@@ -38,7 +42,7 @@ export const AuthForm: React.FC = () => {
           <Text my="3" variant="currentLight">
             OU
           </Text>
-          <Button onClick={() => setIsSigninPage(true)} variant="rounded" isFullWidth>
+          <Button onClick={() => setIsSigninPage(true)} variant="rounded" className="w-full">
             Créer un compte
           </Button>
         </>

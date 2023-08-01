@@ -1,9 +1,8 @@
-import React from "react";
-
-import { Input, NumberInput } from "components/Fields";
 import { Flex } from "@chakra-ui/react";
 
-export const InputFields: React.FC = () => {
+import { Input, NumberInput } from "@/components/Fields";
+
+export default function InputFields(): JSX.Element {
   return (
     <>
       <Flex justifyContent="space-between">

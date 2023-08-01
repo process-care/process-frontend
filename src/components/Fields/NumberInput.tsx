@@ -1,4 +1,3 @@
-import React from "react";
 import {
   FormControl,
   FormHelperText,
@@ -9,9 +8,9 @@ import {
   NumberInputField,
   Text,
 } from "@chakra-ui/react";
-
 import { useField } from "formik";
-import { Maybe } from "api/graphql/types.generated";
+
+import { Maybe } from "@/api/graphql/types.generated";
 
 interface Props {
   label: string;
@@ -28,7 +27,7 @@ interface Props {
   isCollapsed?: boolean;
   appearance?: "light" | "big";
 }
-export const CustomNumberInput: React.FC<Props> = ({
+export default function CustomNumberInput({
   label,
   helpText,
   defaultValue,
@@ -42,7 +41,7 @@ export const CustomNumberInput: React.FC<Props> = ({
   style,
   isCollapsed,
   appearance,
-}) => {
+}: Props): JSX.Element {
   const [field, meta, helpers] = useField(name);
 
   return (
@@ -74,9 +73,11 @@ export const CustomNumberInput: React.FC<Props> = ({
                 fontSize="12px"
               />
             </NumberInput>
-            {inputRightAddon && (
-              <InputRightAddon children={inputRightAddon} p={appearance === "big" ? "30px" : "10px"} />
-            )}
+            {inputRightAddon &&
+              <InputRightAddon p={appearance === "big" ? "30px" : "10px"}>
+                {inputRightAddon}
+              </InputRightAddon>
+            }
           </InputGroup>
           {meta.touched && meta.error && (
             <Text fontSize="10px" color="red" textAlign="right">

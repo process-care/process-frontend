@@ -1,23 +1,26 @@
-import { Box, Button } from "@chakra-ui/react";
-import { Footer } from "components/Footer";
-import { SimpleMenu } from "components/Menu/SimpleMenu";
-import React, { useEffect } from "react";
-import { NavLink, useLocation } from "react-router-dom";
-import { useAuth } from "components/Authentification/hooks";
+"use client"
 
-import MainMenu from "../MainMenu";
-import { useMediaQueries } from "utils/hooks/mediaqueries";
+import { useEffect } from "react";
+import { Box, Button } from "@chakra-ui/react";
 import Div100vh from "react-div-100vh";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+
+import { useAuth } from "@/components/Authentification/hooks";
+import { useMediaQueries } from "@/utils/hooks/mediaqueries";
+import Footer from "@/components/Footer";
+import SimpleMenu from "@/components/Menu/SimpleMenu";
+import MainMenu from "../MainMenu";
 
 interface Props {
   children: React.ReactNode;
 }
 
-export const Layout: React.FC<Props> = ({ children }) => {
+export default function Layout({ children }: Props): JSX.Element {
   const { isAuthenticated } = useAuth();
-  const location = useLocation();
-  const { pathname } = location;
   const { isTablet } = useMediaQueries();
+
+  const pathname = usePathname()
   const isSurveyPages = pathname.search("/survey/") !== -1;
   const isPortail = pathname === "/";
   const isEditor = pathname.includes("create/landing");
@@ -42,7 +45,7 @@ export const Layout: React.FC<Props> = ({ children }) => {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [location.pathname]);
+  }, [pathname]);
 
   const renderFooter = () => {
     if (isPortail) return <Footer />;
@@ -51,7 +54,7 @@ export const Layout: React.FC<Props> = ({ children }) => {
   if ((isTablet && !isSurveyPages && !isPortail && !isAuthPage) || (isTablet && isEditor)) {
     return (
       <Div100vh>
-        <Box h="100%" alignItems="center" d="flex" justifyContent="center" className="background__grid">
+        <Box h="100%" alignItems="center" display="flex" justifyContent="center" className="background__grid">
           <Box
             backgroundColor="white"
             p={isTablet ? "30px 20px" : "50px"}
@@ -60,15 +63,15 @@ export const Layout: React.FC<Props> = ({ children }) => {
             w="90%"
             textAlign="center"
             borderRadius="5px"
-            d="flex"
+            display="flex"
             flexDirection="column"
           >
             Page non disponible sur mobile
-            <NavLink to="/">
+            <Link href="/">
               <Button mt="40px" variant="roundedBlue">
                 Revenir au portail
               </Button>
-            </NavLink>
+            </Link>
           </Box>
         </Box>
       </Div100vh>

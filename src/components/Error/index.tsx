@@ -1,4 +1,3 @@
-import React from "react";
 import { Center, Text } from "@chakra-ui/react";
 import { WarningIcon } from "@chakra-ui/icons";
 
@@ -12,7 +11,7 @@ interface Props {
   message?: string;
 }
 
-export const Error: React.FC<Props> = ({ error, message }) => {
+export default function Error({ error, message }: Props): JSX.Element {
   return (
     <Center display="flex" flexDirection="column" mt={8}>
       <WarningIcon w={8} h={8} mb={10} color="red.500" />

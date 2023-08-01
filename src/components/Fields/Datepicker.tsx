@@ -1,8 +1,8 @@
+// import "react-datepicker/dist/react-datepicker.css";
 import React from "react";
 import { FormControl, FormHelperText, FormLabel, FormErrorMessage } from "@chakra-ui/react";
 
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 
 import { useField } from "formik";
 

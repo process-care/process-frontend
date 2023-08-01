@@ -11,3 +11,4 @@ lib/**/*
 # Modules & builds
 node_modules/**
 build/**
+.next

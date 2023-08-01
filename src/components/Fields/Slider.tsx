@@ -1,10 +1,10 @@
+// import "rc-slider/assets/index.css";
 import React from "react";
 import { Flex, FormControl, FormHelperText, FormLabel, Text } from "@chakra-ui/react";
 
 import { useField } from "formik";
 
 import Slider from "rc-slider";
-import "rc-slider/assets/index.css";
 import { Maybe } from "api/graphql/types.generated";
 
 interface Props {

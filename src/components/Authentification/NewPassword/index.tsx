@@ -1,3 +1,5 @@
+"use client";
+
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
 
@@ -95,12 +97,7 @@ export const NewPasswordForm: React.FC = () => {
                       );
                     })}
 
-                  <Button
-                    mt="40px"
-                    type="submit"
-                    disabled={!isValid || isSubmitting}
-                    variant="roundedBlue"
-                  >
+                  <Button mt="40px" type="submit" disabled={!isValid || isSubmitting} variant="roundedBlue">
                     Réinitialiser mon mot de passe
                   </Button>
                   <Box textAlign="center">

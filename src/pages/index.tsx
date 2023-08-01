@@ -1,3 +1,6 @@
+"use client";
+
+// import "@fontsource/ibm-plex-sans/500.css";
 import { ChakraProvider, ColorModeScript, CSSReset } from "@chakra-ui/react";
 import * as React from "react";
 import { Route, Switch } from "react-router-dom";
@@ -12,14 +15,10 @@ import { store } from "redux/store";
 import { Provider } from "react-redux";
 import { QueryClient, QueryClientProvider } from "react-query";
 
-import "index.css";
 import { ProtectedRoutes } from "routes/ProtectedRoutes";
 import { ConnectedRouter } from "connected-react-router";
 import { history } from "redux/store/history";
-import "jodit/build/jodit.min.css";
-
-import "@fontsource/ibm-plex-sans/300.css";
-import "@fontsource/ibm-plex-sans/500.css";
+import { ReduxProvider } from "redux/provider";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -32,7 +31,7 @@ export const queryClient = new QueryClient({
 const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <Provider store={store}>
+      <ReduxProvider>
         <ColorModeScript />
         <ChakraProvider theme={theme}>
           <CSSReset />
@@ -73,7 +72,7 @@ const App: React.FC = () => {
             </ConnectedRouter>
           </DndProvider>
         </ChakraProvider>
-      </Provider>
+      </ReduxProvider>
     </QueryClientProvider>
   );
 };

@@ -15,9 +15,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
-    "baseUrl": "./src"
+    "jsx": "preserve",
+    "baseUrl": "./src",
+    "incremental": true
   },
-  "include": ["src"],
+  "include": ["src", "pages", "next.config.js"],
   "exclude": ["node_modules", "**/*/generated.ts"]
 }

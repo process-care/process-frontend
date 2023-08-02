@@ -51,10 +51,12 @@ export default function PageBuilder({ survey }: Props): JSX.Element {
         <SvgHover>
           <Image src={Add} alt="Add"/>
         </SvgHover>
+        
         <Text variant="xs" mt="2">
           Ajouter une page
         </Text>
       </Box>
+      
       <Box h="80%" overflowY="auto" w="100%">
         {pages?.map((page, i) => {
           const isSelected = selectedPage?.id === page.id;

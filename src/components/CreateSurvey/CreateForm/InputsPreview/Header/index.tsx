@@ -34,7 +34,8 @@ export default function Header(): JSX.Element {
       justifyContent="space-between"
       w="100%"
       alignItems="center"
-      my="50px"
+      mt="10px"
+      mb="30px"
       pl="50px"
     >
       <ButtonGroup>
@@ -44,6 +45,7 @@ export default function Header(): JSX.Element {
           </Button>
         )}
       </ButtonGroup>
+      
       <ButtonGroup>
         <Button variant="ghost" onClick={() => dispatch(toggleCollapseView())}>
           {isCollapse ? "-" : "="}

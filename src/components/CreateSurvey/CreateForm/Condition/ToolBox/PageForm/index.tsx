@@ -81,7 +81,7 @@ export default function PageForm(): JSX.Element {
   }
 
   return (
-    <Box p={4}>
+    <Box p={4} className="h-[100vh] overflow-auto">
       <Formik
         validateOnBlur={false}
         initialValues={selectedPage["attributes"]}
@@ -143,7 +143,9 @@ export default function PageForm(): JSX.Element {
               <Text variant="baseline" fontWeight="bold" textAlign="left" _hover={{ cursor: "pointer" }}>
                 Edition d&apos;une page
               </Text>
+
               <TitleDivider title="Informations de la page" mt="5" />
+
               <Box w="100%" m="0 auto" border="1px solid #F7F7F7F7" backgroundColor="#fdfdfdf1" p="5">
                 <Textarea
                   id="name"
@@ -217,7 +219,9 @@ export default function PageForm(): JSX.Element {
                   </Tooltip>
                 </Box>
               </Box>
+
               <TitleDivider title="Contenu de la page" />
+
               <Box w="100%" m="0 auto" border="1px solid #F7F7F7F7" p="5" backgroundColor="#fdfdfdf1">
                 <ToolBox onSelect={(type) => handleSelect(type)} />
               </Box>

@@ -112,8 +112,8 @@ export default function InputForm({ order }: Props): JSX.Element {
         }, [values]);
 
         return (
-          <Form>
-            <Flex alignItems="center" justifyContent="center" fontSize="30" flexDirection="column" px={5}>
+          <Form className="h-[100vh] flex flex-col">
+            <div className="flex-grow overflow-auto text-3xl px-5">
               <Flex alignItems="center" justifyContent="space-between" w="100%" mt="5">
                 <Tooltip placement="bottom" label={getQuestionInfo(type)}>
                   <Box display="flex" alignItems="center">
@@ -132,7 +132,9 @@ export default function InputForm({ order }: Props): JSX.Element {
                   </Text>
                 </Flex>
               </Flex>
+
               <TitleDivider title="Paramètres de la question" mt="3" />
+
               {type !== "wysiwyg" && (
                 <Box w="100%" m="0 auto" border="1px solid #F7F7F7F7" p="5" backgroundColor="#fdfdfdf1">
                   <>
@@ -189,21 +191,20 @@ export default function InputForm({ order }: Props): JSX.Element {
                 </Box>
               )}
               
-              <Box w="100%" mb="100px">
+              <Box w="100%" mb="50px">
                 {renderFormTemplate(selectedQuestion)}
               </Box>
+            </div>
 
-              <Footer
-                w="100%"
-                onSubmit={() => console.log("submit")}
-                disabled={!isValid || isSubmitting}
-                onCancel={handleCancel}
-                onDelete={() => {
-                  dispatch(setIsRemoving(selectedQuestionId));
-                  dispatch(appActions.toogleDrawer());
-                }}
-              />
-            </Flex>
+            <Footer
+              onSubmit={() => console.log("submit")}
+              disabled={!isValid || isSubmitting}
+              onCancel={handleCancel}
+              onDelete={() => {
+                dispatch(setIsRemoving(selectedQuestionId));
+                dispatch(appActions.toogleDrawer());
+              }}
+            />
           </Form>
         );
       }}

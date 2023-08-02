@@ -70,10 +70,7 @@ export default function InputsPreview({ order }: Props): JSX.Element {
         display="flex"
         flexDirection="column"
         alignItems="center"
-        // h="90%"
-
         backgroundColor={isDraggingOver ? "brand.gray.100" : "transparent"}
-        // overflowY="auto"
       >
         <Formik
           initialValues={{}}
@@ -84,7 +81,7 @@ export default function InputsPreview({ order }: Props): JSX.Element {
           {() => {
             return (
               <Form style={{ width: "100%" }}>
-                <Flex alignItems="center" justifyContent="center" fontSize="30" flexDirection="column" px={10}>
+                <Flex className="h-full bg-slate-100" alignItems="center" justifyContent="center" fontSize="30" flexDirection="column" px={10}>
                   {children}
                 </Flex>
               </Form>

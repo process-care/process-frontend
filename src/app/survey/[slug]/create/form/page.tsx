@@ -73,12 +73,13 @@ export default function CreateForm({ params }: Props): JSX.Element {
   return (
     <Box h="100vh" overflow="hidden">
       <Drawer isOpen={isOpen} size="md" content={<InputForm order={order} />} />
+      
       <Box display="flex" justifyContent="space-around" w="100%" overflow="hidden">
         <Box w="47%">
           <Menu surveyId={selectedSurveyId} />
 
           <Box display="flex" overflow="hidden" w="100%">
-            <Container variant="createformColumn" w="6%" minW="100px" borderRight="1px" borderColor="gray.200">
+            <Container variant="createformColumn" className="calc(100vh - 65px)"  w="6%" minW="100px" borderRight="1px" borderColor="gray.200">
               <PageBuilder survey={selectedSurvey} />
             </Container>
 
@@ -91,7 +92,7 @@ export default function CreateForm({ params }: Props): JSX.Element {
               flexDirection="column"
               className="background__grid"
               pb="50px"
-              height="100vh"
+              height="calc(100vh - 65px)"
               overflow="auto"
             >
               <Banner />
@@ -101,14 +102,15 @@ export default function CreateForm({ params }: Props): JSX.Element {
                   <ConditionMenu selectedCondition={selectedCondition} />
                 </>
               ) : (
-                <div className="background__grid">
+                <div className="w-full h-full">
                   <InputsPreview order={order} surveyId={selectedSurveyId} />
-                  <Box pb="20px" ref={containerRef} />
+                  <Box className="bg-slate-100" pb="20px" ref={containerRef} />
                 </div>
               )}
             </Container>
           </Box>
         </Box>
+
         <RightPart selectedCondition={selectedCondition} />
       </Box>
     </Box>

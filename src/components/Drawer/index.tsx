@@ -31,7 +31,7 @@ export default function CustomDrawer({
           {...props}
         >
           <DrawerContent background="white" maxW="53%">
-            <DrawerBody p="0 10px">{content}</DrawerBody>
+            <DrawerBody p="0">{content}</DrawerBody>
           </DrawerContent>
         </Drawer>
       </Portal>

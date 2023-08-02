@@ -1,10 +1,11 @@
 'use client'
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { Box, Collapse, Container } from "@chakra-ui/react";
 
 import { client } from "@/api/gql-client";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { useMediaQueries } from "@/utils/hooks/mediaqueries";
 import { actions, selectors } from "@/redux/slices/landing-editor";
 import { useSurveyBySlugQuery } from "@/api/graphql/queries/survey.gql.generated";
 import Menu from "@/components/Menu/CreateForm";
@@ -25,6 +26,7 @@ type Props = {
 
 export default function CreateLanding({ params }: Props): JSX.Element {
   const { slug } = params
+  const { isTablet } = useMediaQueries();
   const { previewMode } = useAppSelector((state) => state.application);
 
   const { data: survey } = useSurveyBySlugQuery(client, { slug });
@@ -55,32 +57,32 @@ export default function CreateLanding({ params }: Props): JSX.Element {
   }
 
   if (!survey || !surveyId) return <Error error={"No survey found..."} />;
+  
+  console.log(previewMode)
 
   return (
-    <Box>
-      <Box display="flex" justifyContent="space-between" w="100%">
-        <Box w={previewMode === "landing" ? "100%" : "57%"} pos="relative" transition="all 400ms">
-          <Box position="fixed" top="0" w="inherit" backgroundColor="white" zIndex="10">
-            <Menu isLanding surveyId={surveyId} />
-          </Box>
-
-          <Box
-            mt={previewMode !== "landing" ? "65px" : "0"}
-            display="flex"
-            justifyContent="space-around"
-            alignItems="center"
-            w="100%"
-            p="0"
-            transition="all 400ms"
-          >
-            <Preview data={data} isUserView={false} />
-          </Box>
+    <Box display="flex" justifyContent="space-between" w="100%">
+      <Box w={previewMode === "landing" ? "100%" : "57%"} pos="relative" transition="all 400ms">
+        <Box position="fixed" top="0" w="inherit" backgroundColor="white" zIndex="10">
+          <Menu isLanding surveyId={surveyId} />
         </Box>
 
-        <Collapse in={previewMode !== "landing"} style={{ width: "43%", transition: "all 400ms" }}>
-          <ToolBox />
-        </Collapse>
+        <Box
+          mt={previewMode !== "landing" ? "65px" : "0"}
+          display="flex"
+          justifyContent="space-around"
+          alignItems="center"
+          w="100%"
+          p="0"
+          transition="all 400ms"
+        >
+          <Preview data={data} isUserView={false} isPreview={Boolean(previewMode)} />
+        </Box>
       </Box>
+
+      <Collapse in={previewMode !== "landing"} style={{ width: "43%", transition: "all 400ms" }}>
+        <ToolBox />
+      </Collapse>
     </Box>
   );
 };

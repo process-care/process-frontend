@@ -47,7 +47,7 @@ function Member({ job, name, image, color }: MemberType): JSX.Element {
       <Text variant="smallTitleBold" mt={7}>
         {name}
       </Text>
-      <Text variant="current" mt={2}>
+      <Text className="font-light text-sm" mt={2}>
         {job}
       </Text>
     </Flex>

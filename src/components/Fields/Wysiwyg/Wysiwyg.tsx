@@ -42,6 +42,7 @@ import { createFontBackgroundColorPlugin, createFontColorPlugin } from "@udecode
 
 interface Props {
   id: string;
+  className?: string;
 }
 
 // ---- STATICS
@@ -49,10 +50,15 @@ interface Props {
 const editableProps = {
   style: {
     padding: '15px',
+    borderLeft: '1px solid rgb(226, 232, 240)',
+    borderRight: '1px solid rgb(226, 232, 240)',
+    borderBottom: '1px solid rgb(226, 232, 240)',
     backgroundColor: 'white',
     borderBottomLeftRadius: '7px',
     borderBottomRightRadius: '7px',
     fontSize: '15px',
+    height: '100%',
+    overflow: 'auto',
   }
 };
 
@@ -106,7 +112,7 @@ const plugins = createPlugins(
 
 // ---- COMPONENT
 
-export default function Wysiwyg({ id }: Props): JSX.Element {
+export default function Wysiwyg({ id, className }: Props): JSX.Element {
   const { setFieldValue, values } = useFormikContext<QuestionRedux>();
   const editorRef = useRef<PlateEditor | null>(null);
 
@@ -132,7 +138,7 @@ export default function Wysiwyg({ id }: Props): JSX.Element {
   }, [id, setFieldValue])
 
   return (
-    <FormControl id={id}  borderWidth="1px" borderRadius="7px">
+    <FormControl id={id} className={className}>
       <PlateProvider
         editorRef={editorRef}
         plugins={plugins}
@@ -140,32 +146,34 @@ export default function Wysiwyg({ id }: Props): JSX.Element {
         onChange={onChange}
       >
         <TooltipProvider>
-          <Toolbar className="rounded-t-[7px] bg-slate-100">
-            <TurnIntoDropdownMenu />
+          <div className="border-[1px] rounded-t-[7px]">
+            <Toolbar className="rounded-t-[7px] bg-slate-100">
+              <TurnIntoDropdownMenu />
 
-            <MarkGroup />
-            <MoreDropdownMenu />
+              <MarkGroup />
+              <MoreDropdownMenu />
 
-            <ToolbarGroup>
-              <ListToolbarButton nodeType={ELEMENT_UL} />
-              <ListToolbarButton nodeType={ELEMENT_OL} />
-              <AlignDropdownMenu />
-            </ToolbarGroup>
-          </Toolbar>
+              <ToolbarGroup>
+                <ListToolbarButton nodeType={ELEMENT_UL} />
+                <ListToolbarButton nodeType={ELEMENT_OL} />
+                <AlignDropdownMenu />
+              </ToolbarGroup>
+            </Toolbar>
 
-          <Toolbar className="border-b-[1px] bg-slate-100">
-            <ToolbarGroup noSeparator>
-              <LinkToolbarButton />
-              <EmojiDropdownMenu />
-            </ToolbarGroup>
+            <Toolbar className="border-t-[1px] bg-slate-100">
+              <ToolbarGroup noSeparator>
+                <LinkToolbarButton />
+                <EmojiDropdownMenu />
+              </ToolbarGroup>
 
-            <ColorGroup />
+              <ColorGroup />
 
-            <ToolbarGroup>
-              <MediaToolbarButton />
-              <TableDropdownMenu />
-            </ToolbarGroup>
-          </Toolbar>
+              <ToolbarGroup>
+                <MediaToolbarButton />
+                <TableDropdownMenu />
+              </ToolbarGroup>
+            </Toolbar>
+          </div>
         </TooltipProvider>
 
         <Plate editableProps={editableProps}>

@@ -5,7 +5,7 @@ import { Formik, Form } from "formik";
 import { initialValues } from "./utils/initialValues";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { actions, selectors } from "@/redux/slices/landing-editor";
-import Footer from "../Footer";
+import Footer from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer";
 import Wysiwyg from "@/components/Fields/Wysiwyg/Wysiwyg";
 
 export default function AboutForm(): JSX.Element {
@@ -48,30 +48,20 @@ export default function AboutForm(): JSX.Element {
 
         // Component
         return (
-          <Form>
-            <Box
-              borderLeft="1px solid"
-              px="4%"
-              w="100%"
-              mx="auto"
-              pt="4"
-              h="100%"
-              sx={{
-                ".jodit-workplace": {
-                  height: "60vh !important",
-                },
-              }}
-            >
+          <Form className="flex flex-col text-left h-full">
+            <div className="p-4 overflow-auto flex-grow">
               <Text variant="baseline" fontWeight="bold" textAlign="left" _hover={{ cursor: "pointer" }} mb="5">
-                Edition de la page d&apos;accueil
+                Edition de la section &ldquo;à propos&rdquo;
               </Text>
-              <Wysiwyg id="about_page" />
-              <Footer
-                // TODO: It's the same... ?
-                onCancel={handleFinish}
-                onSubmit={handleFinish}
-              />
-            </Box>
+
+              <Wysiwyg id="about_page" className="h-[68vh]" />
+            </div>
+
+            <Footer
+              onCancel={handleFinish}
+              onSubmit={handleFinish}
+              hideDelete={true}
+            />
           </Form>
         );
       }}

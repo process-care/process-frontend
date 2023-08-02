@@ -32,11 +32,12 @@ interface Props {
   author?: { email: string; username: string } | null;
   needConsent?: boolean | null | undefined;
   surveyId?: string;
+  isPreview?: boolean;
 }
 
 // ---- COMPONENT
 
-export default function Preview({ isUserView, data, author, needConsent, surveyId }: Props): JSX.Element {
+export default function Preview({ isUserView, data, author, needConsent, surveyId, isPreview }: Props): JSX.Element {
   const router = useRouter()
   const params = useParams()
   const slug = typeof params.slug === 'string' ? params.slug : ''
@@ -88,11 +89,12 @@ export default function Preview({ isUserView, data, author, needConsent, surveyI
     onConsent(res?.createParticipation?.data?.id);
   }, [isInactive, participation, needConsent, createParticipation, surveyId, onConsent, router, slug]);
 
-  const height = useMemo(() => isTablet ? "fit-content" : isUserView ? "100vh" : "calc(100vh - 65px)", [isTablet, isUserView])
+  // Compute heigh according various state of the component
+  const height = useMemo(() => isTablet ? "fit-content" : isUserView || isPreview ? "100vh" : "calc(100vh - 65px)", [isPreview, isTablet, isUserView])
   
   if (isEditingAbout) {
     return (
-      <Box h="fit-content" backgroundColor="white" w="80%" mx="auto" mt="100px" p={10}>
+      <Box h={height} className="overflow-auto p-10 w-full" >
         <Text
           textAlign="left"
           variant="current"
@@ -114,73 +116,65 @@ export default function Preview({ isUserView, data, author, needConsent, surveyI
         py={isTablet ? "30px" : "0px"}
         pos="relative"
         backgroundColor={attributes?.color_theme?.button || "blue"}
+        textAlign="left"
+        px="5%"
       >
-        <Box textAlign="left" px="5%">
-          <Text variant="xxl" fontWeight="bold" color="white" ml="-2px" wordBreak="break-word">
-            {attributes?.title}
-          </Text>
+        <Text variant="xxl" fontWeight="bold" color="white" ml="-2px" wordBreak="break-word">
+          {attributes?.title}
+        </Text>
 
-          <Text variant="smallTitle" color="white" mt="30px" maxHeight="300px" overflow="auto" wordBreak="break-word">
-            {attributes?.subtitle}
-          </Text>
+        <Text variant="smallTitle" color="white" mt="30px" maxHeight="300px" overflow="auto" wordBreak="break-word">
+          {attributes?.subtitle}
+        </Text>
 
-          {hasMedia && (
-            <Box mt="30px" position="relative">
-              {hasVideo && <Video url={attributes?.video_url ?? ""} />}
-              {hasImage && <Image src={coverSrc} alt={coverName} />}
-            </Box>
-          )}
-        </Box>
+        {hasMedia && (
+          <Box mt="30px" position="relative">
+            {hasVideo && <Video url={attributes?.video_url ?? ""} />}
+            {hasImage && <Image src={coverSrc} alt={coverName} />}
+          </Box>
+        )}
       </Center>
       
-      <Box w={isTablet ? "100%" : "67%"}>
-        <Center
-          h={isTablet ? "fit-content" : "100%"}
-          flexDirection="column"
-          textAlign="left"
-          alignItems="flex-end"
-          overflow="auto"
-        >
-          <Tabs w={isTablet ? "90%" : "80%"} m={isTablet ? "30px auto" : "0 auto"}>
-            <TabList>
-              <Tab>Description</Tab>
-              {hasMembers && <Tab>Equipe</Tab>}
-              <Tab>Informations</Tab>
-              {hasAboutPage && <Tab>A propos</Tab>}
-            </TabList>
+      <Center
+        className="pt-10 pb-10 flex-col items-end text-left"
+        w={isTablet ? "100%" : "67%"}
+        h={isTablet ? "fit-content" : "100%"}
+      >
+        <Tabs className="h-fit" w={isTablet ? "90%" : "80%"} m={isTablet ? "30px auto" : "0 auto"}>
+          <TabList>
+            <Tab>Description</Tab>
+            {hasMembers && <Tab>Equipe</Tab>}
+            <Tab>Informations</Tab>
+            {hasAboutPage && <Tab>A propos</Tab>}
+          </TabList>
 
-            <TabPanels>
-              <TabPanel>
-                <Description data={data} inactiveSubmit={isInactive} onParticipate={onParticipate} />
-              </TabPanel>
-              {hasMembers && (
-                <TabPanel>
-                  <Team
-                    members={data?.attributes?.members}
-                    color_theme={data?.attributes?.color_theme}
-                    isUserView={isUserView}
-                  />
-                </TabPanel>
-              )}
+          <TabPanels>
+            <TabPanel>
+              <Description data={data} inactiveSubmit={isInactive} onParticipate={onParticipate} />
+            </TabPanel>
 
+            {hasMembers && (
               <TabPanel>
-                <Legals data={data} author={author} />
+                <Team
+                  members={data?.attributes?.members}
+                  color_theme={data?.attributes?.color_theme}
+                  isUserView={isUserView}
+                />
               </TabPanel>
-              <TabPanel>
-                <Box h="fit-content" backgroundColor="white" w="100%">
-                  <Text
-                    textAlign="left"
-                    variant="current"
-                    dangerouslySetInnerHTML={{
-                      __html: aboutPage ?? "",
-                    }}
-                  ></Text>
-                </Box>
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
-        </Center>
-      </Box>
+            )}
+
+            <TabPanel>
+              <Legals data={data} author={author} />
+            </TabPanel>
+
+            <TabPanel>
+              <Box className="font-light text-sm w-full h-full max-h-[75vh] overflow-auto" dangerouslySetInnerHTML={{
+                __html: aboutPage ?? "",
+              }} />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </Center>
     </Flex>
   );
 };

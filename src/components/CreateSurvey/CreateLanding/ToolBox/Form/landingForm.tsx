@@ -127,7 +127,7 @@ export default function LandingForm(): JSX.Element {
               <Box border="1px solid #F7F7F7F7" p="5" backgroundColor="#fdfdfdf1">
                 <Textarea
                   id="title"
-                  rows={Enum_Question_Rows.Medium}
+                  rows={Enum_Question_Rows.Small}
                   placeholder={t.title_input}
                   label={t.title_input}
                   helpText={t.title_helptext}
@@ -135,7 +135,7 @@ export default function LandingForm(): JSX.Element {
 
                 <Textarea
                   id="subtitle"
-                  rows={Enum_Question_Rows.Large}
+                  rows={Enum_Question_Rows.Medium}
                   placeholder={t.subtitle_input}
                   label={t.subtitle_input}
                   helpText={t.subtitle_helptext}

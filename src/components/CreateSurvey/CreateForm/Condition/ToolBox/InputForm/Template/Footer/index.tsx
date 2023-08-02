@@ -39,6 +39,7 @@ export default function Footer({
       <Button variant="link" onClick={() => onCancel()} type="button" pr="20">
         {t.cancel}
       </Button>
+      
       <Button
         type="submit"
         variant="rounded"

@@ -23,13 +23,11 @@ export default function Footer({
 }:Props ): JSX.Element {
   return (
     <Flex
-      className="w-full justify-between items-center bg-white border-t border-t-solid border-t-black"
+      className="w-full py-4 px-10 justify-between items-center bg-white border-t border-t-solid border-t-black"
       minW="300px"
-      px={6}
-      py={4}
     >
       {!hideDelete && (
-        <Box w="70%" pl={4}>
+        <Box w="70%">
           <SvgHover>
             <Image src={Trash} alt="Trash" onClick={() => !!onDelete && onDelete()} />
           </SvgHover>
@@ -43,6 +41,7 @@ export default function Footer({
       <Button
         type="submit"
         variant="rounded"
+        w="128px"
         disabled={disabled}
         onClick={() => onSubmit()}
       >

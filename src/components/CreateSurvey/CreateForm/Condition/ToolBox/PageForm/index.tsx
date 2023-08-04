@@ -68,7 +68,7 @@ export default function PageForm(): JSX.Element {
   if (isRemoving && Boolean(selectedPageId)) {
     return (
       <RemovingConfirmation
-        height="100%"
+        height="100vh"
         content={`${t.remove_page} ${selectedPage?.attributes?.name} ?`}
         confirm={handleDelete}
         close={() => dispatch(setIsRemoving(""))}

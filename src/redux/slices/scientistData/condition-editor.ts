@@ -244,7 +244,8 @@ const getSelectedConditionId = (state: RootState): string => state.scientistData
 const getStep = (state: RootState): number => state.scientistData.conditions.step;
 const getValidity = (state: RootState): boolean => state.scientistData.conditions.isValid;
 
-const getConditionsByPageId = (state: RootState, pageId: string): ConditionRedux[] => {
+const getConditionsByPageId = (state: RootState, pageId: string | undefined | null): ConditionRedux[] => {
+  if (!pageId) return []
   return getAllConditions(state).filter((condition) => condition?.attributes?.referer_page?.data?.id === pageId);
 };
 
@@ -327,6 +328,7 @@ export const conditionsReducers = {
     state.conditions.lastDeleted = action.payload.lastDeleted;
   },
   deleteGroupCondition: (state: GlobalState, action: PayloadAction<DeleteGroupPayload>): void => {
+    console.log('deleting group condition :', action.payload)
     state.conditions.isDeleting = true;
     conditionAdapter.removeMany(state.conditions, action.payload.conditionsId);
     const { groupId } = action.payload;

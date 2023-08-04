@@ -29,7 +29,7 @@ export default function Step_1({ selectedCondition, updateStep }: Props): JSX.El
     if (isTypePage && pages.length > 0) {
       dispatch(actions.setSelectedPage(pages[0].id));
     }
-  }, [isTypePage]);
+  }, [dispatch, isTypePage, pages]);
 
   const referId = isTypePage
     ? selectedCondition?.attributes?.referer_page?.data?.id

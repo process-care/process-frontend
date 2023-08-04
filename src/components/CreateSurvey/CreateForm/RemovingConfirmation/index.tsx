@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, ButtonGroup, Center, Text } from "@chakra-ui/react";
+import { ButtonGroup, Center, Text } from "@chakra-ui/react";
 
 import { t } from "@/static/global";
 
@@ -10,6 +10,8 @@ interface Props {
   height?: string;
 }
 
+import { Button } from "@/components/Shadcn/button"
+
 export default function RemovingConfirmation({
   confirm,
   close,
@@ -18,28 +20,22 @@ export default function RemovingConfirmation({
 }: Props): JSX.Element {
   return (
     <Center
+      className="absolute mt-5 p-2 w-full flex flex-col bg-black text-white"
       h={height}
-      pos="relative"
-      backgroundColor="black"
-      py="130px"
-      px="10px"
-      display="flex"
-      flexDirection="column"
-      color="white"
     >
       <Text variant="smallTitle">{content}</Text>
-      <ButtonGroup
-        pos="absolute"
-        bottom="10px"
-        display="flex"
-        justifyContent="space-around"
-        w="100%"
-      >
-        <Button variant="link" color="white" onClick={() => close()}>
+
+      <ButtonGroup className="flex justify-around w-1/2 mt-4">
+        <Button className="text-white" variant="link" onClick={close}>
           {t.cancel}
         </Button>
-        <Button variant="rounded" onClick={() => confirm()}>
-          {t.validate}
+
+        <Button
+          variant="destructive"
+          size="sm"
+          onClick={confirm}
+        >
+          {t.remove}
         </Button>
       </ButtonGroup>
     </Center>

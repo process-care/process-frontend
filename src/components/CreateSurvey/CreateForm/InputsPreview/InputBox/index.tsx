@@ -42,13 +42,15 @@ export default function InputBox({
           )}
         </Flex>
       )}
+
       {!isOptionMode && input && (
         <Flex justifyContent="space-between" alignItems="center">
           <Text variant="titleParaLight">{input?.attributes?.label}</Text>
           <Flex alignItems="center">
-            <Text variant="xsMedium" color="brand.gray.200">
+            <Text variant="xsMedium" color={isSelected ? "white" : "brand.gray.200"} className="mr-2">
               {input?.attributes?.internal_title}
             </Text>
+
             <Box>
               <InputIcon type={input?.attributes.type} />
             </Box>

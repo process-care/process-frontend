@@ -12,7 +12,6 @@ import { createAlignPlugin } from '@udecode/plate-alignment';
 import { createComboboxPlugin } from "@udecode/plate-combobox";
 import { createEmojiPlugin } from "@udecode/plate-emoji";
 import { createSelectOnBackspacePlugin } from '@udecode/plate-select';
-import { ListStyleType } from "@udecode/plate-indent-list";
 import { createLinkPlugin } from "@udecode/plate-link";
 import { ELEMENT_IMAGE, ELEMENT_MEDIA_EMBED, createImagePlugin, createMediaEmbedPlugin } from "@udecode/plate-media";
 import { serializeHtml } from '@udecode/plate-serializer-html';
@@ -36,7 +35,7 @@ import { createTablePlugin } from "@udecode/plate-table";
 import { createCodeBlockPlugin } from "@udecode/plate-code-block";
 import { LinkFloatingToolbar } from "./plate-ui/link-floating-toolbar";
 import { ListToolbarButton } from "./plate-ui/list-toolbar-button";
-import { createFontBackgroundColorPlugin, createFontColorPlugin } from "@udecode/plate-font";
+import { createFontBackgroundColorPlugin, createFontColorPlugin, createFontSizePlugin } from "@udecode/plate-font";
 
 // ---- TYPES
 
@@ -91,6 +90,7 @@ const plugins = createPlugins(
     createEmojiPlugin(),
     createFontColorPlugin(),
     createFontBackgroundColorPlugin(),
+    createFontSizePlugin(),
     // Align stuff
     createAlignPlugin({
       inject: {
@@ -116,24 +116,19 @@ export default function Wysiwyg({ id, className }: Props): JSX.Element {
   const { setFieldValue, values } = useFormikContext<QuestionRedux>();
   const editorRef = useRef<PlateEditor | null>(null);
 
-  // const initialValue = useMemo(() => {
-    // const tmpEditor = createPlateEditor({ plugins });
-    // return deserializeHtml(tmpEditor, {
-    //   // @ts-ignore : values type is weird ?
-    //   element: values[id],
-    // });
-
-    // @ts-ignore : values type is weird ?
-  //   return JSON.parse(values[id])
-  // }, [id, values])
+  const initialValue = useMemo(() => {
+    const tmpEditor = createPlateEditor({ plugins })
+    return deserializeHtml(tmpEditor, {
+      // @ts-ignore : values type is weird ?
+      element: values[id],
+    });
+  }, [])
 
   const onChange = useCallback((value: any) => {
     const editor = editorRef.current
     if (!editor) return
 
-    const html = serializeHtml(editor, { nodes: editor.children, convertNewLinesToHtmlBr: true, stripWhitespace: false });
-    // const html = JSON.stringify(value)
-    console.log(html)
+    const html = serializeHtml(editor, { nodes: editor?.children, convertNewLinesToHtmlBr: true, stripWhitespace: false });
     setFieldValue(id, html);
   }, [id, setFieldValue])
 
@@ -142,7 +137,7 @@ export default function Wysiwyg({ id, className }: Props): JSX.Element {
       <PlateProvider
         editorRef={editorRef}
         plugins={plugins}
-        // initialValue={initialValue}
+        initialValue={initialValue}
         onChange={onChange}
       >
         <TooltipProvider>

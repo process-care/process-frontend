@@ -1,3 +1,5 @@
+'use client'
+
 import { useState } from "react";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { Form, Formik } from "formik";

@@ -43,15 +43,12 @@ export default function Description({ inactiveSubmit, data, onParticipate }: Pro
         })}
       </Flex>
 
-      <Text
-        className="font-light text-sm"
-        maxHeight="350px"
-        overflow="auto"
-        textAlign="left"
+      <div
+        className="font-light text-sm max-h-[350px] overflow-auto text-left"
         dangerouslySetInnerHTML={{
           __html: attributes?.wysiwyg ?? "",
         }}
-      ></Text>
+      ></div>
 
       <Flex mt={10} justifyContent="space-between" flexDirection={isTablet ? "column" : "row"}>
         <Button

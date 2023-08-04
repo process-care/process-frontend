@@ -1,3 +1,5 @@
+'use client'
+
 import { Box } from "@chakra-ui/react";
 import Div100vh from "react-div-100vh";
 

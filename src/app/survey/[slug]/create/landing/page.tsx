@@ -57,8 +57,6 @@ export default function CreateLanding({ params }: Props): JSX.Element {
   }
 
   if (!survey || !surveyId) return <Error error={"No survey found..."} />;
-  
-  console.log(previewMode)
 
   return (
     <Box display="flex" justifyContent="space-between" w="100%">

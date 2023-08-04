@@ -126,6 +126,7 @@ export default function Card({ input, index }: Props): JSX.Element {
               </Box>
             </Container>
           </Box>
+          
           <Box display="flex" flexDirection="row">
             <Box
               onClick={() => handleEdit()}

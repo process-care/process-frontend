@@ -81,7 +81,7 @@ export default function InputsPreview({ order }: Props): JSX.Element {
           {() => {
             return (
               <Form style={{ width: "100%" }}>
-                <Flex className="h-full bg-slate-100" alignItems="center" justifyContent="center" fontSize="30" flexDirection="column" px={10}>
+                <Flex className="h-full" alignItems="center" justifyContent="center" flexDirection="column" px={10}>
                   {children}
                 </Flex>
               </Form>

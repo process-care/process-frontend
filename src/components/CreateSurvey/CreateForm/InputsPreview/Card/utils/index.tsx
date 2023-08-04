@@ -147,8 +147,8 @@ export default function RenderInput({ input }: Props): JSX.Element {
     case Enum_Question_Type.Wysiwyg:
       return (
         <Box
-          textAlign="left"
           id={input.id || "wysiwyg"}
+          className="text-left text-sm"
           dangerouslySetInnerHTML={{
             __html: typeof attributes?.wysiwyg !== "string" ? "" : attributes?.wysiwyg,
           }}

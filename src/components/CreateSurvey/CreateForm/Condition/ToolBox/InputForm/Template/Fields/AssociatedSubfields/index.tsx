@@ -85,8 +85,7 @@ export default function AssociatedSubfields({ name }: Props): JSX.Element {
                   onClick={() => arrayHelpers.push("")}
                   variant="rounded"
                   type="button"
-                  // @ts-ignore: Pb with props in theme ...
-                  isSmall
+                  size="sm"
                 >
                   Ajouter un facteur
                 </Button>

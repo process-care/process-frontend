@@ -41,7 +41,7 @@ export const renderInput = (selectedCondition: ConditionRedux): React.ReactEleme
   };
 
   const target_question = useAppSelector((state) =>
-    questionsSelectors.getQuestionById(state, selectedCondition.attributes.target?.data?.id)
+    questionsSelectors.selectQuestionById(state, selectedCondition.attributes.target?.data?.id)
   );
 
   const Options = () => {

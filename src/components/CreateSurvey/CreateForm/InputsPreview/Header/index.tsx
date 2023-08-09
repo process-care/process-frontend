@@ -7,16 +7,10 @@ import { selectors, actions } from "@/redux/slices/scientistData";
 
 export default function Header(): JSX.Element {
   const dispatch = useAppDispatch();
-  const isCollapse = useAppSelector(
-    (state) => state.editor.form.isCollapseView
-  );
+  const isCollapse = useAppSelector((state) => state.editor.form.isCollapseView)
   const order = useAppSelector(selectors.survey.getOrder);
-  const questions = useAppSelector(
-    selectors.questions.getSelectedPageQuestions
-  );
-  const conditions = useAppSelector(
-    selectors.conditions.getAllQuestionsConditionsInSelectedPage
-  );
+  const questions = useAppSelector(selectors.questions.selectSelectedPageQuestions)
+  const conditions = useAppSelector(selectors.conditions.selectAllQuestionsConditionsInSelectedPage)
 
   const idsToDelete = questions.map((q) => q.id);
 

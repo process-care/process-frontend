@@ -15,7 +15,7 @@ interface Props {
 
 export default function Step_2({ selectedCondition, updateStep }: Props): JSX.Element {
   const target_question = useAppSelector((state) =>
-    questionsSelectors.getQuestionById(state, selectedCondition.attributes.target?.data?.id)
+    questionsSelectors.selectQuestionById(state, selectedCondition.attributes.target?.data?.id)
   );
 
   const authorizedOperators = useMemo(() => {
@@ -41,7 +41,11 @@ export default function Step_2({ selectedCondition, updateStep }: Props): JSX.El
             minW="200px"
             // @ts-ignore: Pb with props in theme ...
             isSelected={isSelected}
-            _hover={{ borderColor: "brand.blue", color: "brand.blue" }}
+            borderColor={isSelected ? "brand.blue" : "black"}
+            _hover={{
+              borderColor: "brand.blue",
+              color: isSelected ? "white" : "brand.blue"
+            }}
           >
             {name}
           </Button>

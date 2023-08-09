@@ -6,7 +6,7 @@ import RadioboxFields from "./Fields/RadioboxFields";
 import SelectFields from "./Fields/SelectFields";
 import SliderFields from "./Fields/SliderFields";
 import DatepickerFields from "./Fields/DatepickerFields";
-import RepeatedFields from "./RepeatedFields";
+import RepeatedFields from "./Fields/RepeatedFields";
 import CommonFields from "./Fields/CommonFields";
 import WysiwygFields from "./Fields/WysiwygFields";
 import FreeclassificationFields from "./Fields/FreeclassificationFields";

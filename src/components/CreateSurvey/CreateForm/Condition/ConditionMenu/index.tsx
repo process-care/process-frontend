@@ -16,6 +16,8 @@ export default function ConditionMenu({ selectedCondition }: Props): JSX.Element
 
   const { currentConditions, groups } = useConditionsAndGroups(selectedCondition, isValid, isTypePage)
 
+  console.log("currentConditions", currentConditions)
+
   return (
     <Box className="h-full w-[80%]">
       <Box className="p-4 bg-white border border-solid my-6">
@@ -47,9 +49,11 @@ function useConditionsAndGroups(selectedCondition: ConditionRedux, isValid: bool
   // The selected page can change to we can't use the selector page's conditions.
   const id = selectedCondition?.attributes.referer_page?.data?.id
 
-  const currentQuestionConditions = useAppSelector(selectors.conditions.getSelectedQuestionsConditions)
-  const currentPageConditions = useAppSelector((state) => selectors.conditions.getConditionsByPageId(state, id))
+  const currentQuestionConditions = useAppSelector(selectors.conditions.selectSelectedQuestionsConditions)
+  const currentPageConditions = useAppSelector((state) => selectors.conditions.selectConditionsByPageId(state, { pageId: id }))
 
+  console.log("all fetched conditions : ", currentQuestionConditions, currentPageConditions)
+  
   const currentConditions = isTypePage ? currentPageConditions : currentQuestionConditions
   const groups = currentConditions.map((c: ConditionRedux) => c?.attributes.group)
 

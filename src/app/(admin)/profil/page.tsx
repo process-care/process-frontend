@@ -30,7 +30,7 @@ export default function Dashboard(): JSX.Element {
   const pathname = usePathname()
 
   const dispatch = useDispatch();
-  const surveys = useAppSelector(selectors.mySurveys.getAllSurveys);
+  const surveys = useAppSelector(selectors.mySurveys.selectAllSurveys);
   const error = useAppSelector(selectors.mySurveys.error);
   const isLoading = useAppSelector(selectors.mySurveys.isLoading);
 

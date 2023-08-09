@@ -1,7 +1,7 @@
 import React from "react";
 import { Formik, Form } from "formik";
 import { Box, Flex, Text } from "@chakra-ui/react";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 
 import { QuestionRedux } from "@/redux/slices/types";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
@@ -32,11 +32,10 @@ interface Props {
 
 export default function InputsPreview({ order }: Props): JSX.Element {
   const dispatch = useAppDispatch();
-  const selectedPage = useAppSelector(selectors.pages.getSelectedPage);
 
-  const questions = useAppSelector(selectors.questions.getSelectedPageQuestions);
+  const selectedPage = useAppSelector(selectors.pages.selectSelectedPage);
+  const questions = useAppSelector(selectors.questions.selectSelectedPageQuestions);
   const isLoading = useAppSelector(selectors.questions.isLoading);
-
   const error = useAppSelector(selectors.questions.error);
 
   const renderCard = (input: QuestionRedux, index: number) => {
@@ -46,9 +45,7 @@ export default function InputsPreview({ order }: Props): JSX.Element {
   const onDragEnd = (result: any) => {
     const { destination, source, draggableId } = result;
 
-    if (!destination) {
-      return;
-    }
+    if (!destination) return
 
     if (destination.droppableId === source.droppableId && destination.index === source.index) {
       return;
@@ -109,7 +106,7 @@ export default function InputsPreview({ order }: Props): JSX.Element {
 
   return (
     <>
-      <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
+      <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId={selectedPage.id}>
           {(provided, snapshot) => (
             <>

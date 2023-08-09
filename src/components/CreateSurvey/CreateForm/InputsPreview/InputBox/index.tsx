@@ -24,9 +24,11 @@ export default function InputBox({
       _hover={{
         cursor: "pointer",
         borderColor: "brand.blue",
+        color: isSelected ? "white" : "brand.blue",
       }}
       key={input?.id}
       border="1px solid"
+      borderColor={isSelected ? "brand.blue" : "black"}
       w="100%"
       borderRadius="5px"
       padding="5"

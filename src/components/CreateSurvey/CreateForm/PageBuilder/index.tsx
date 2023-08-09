@@ -21,9 +21,9 @@ interface Props {
 export default function PageBuilder({ survey }: Props): JSX.Element {
   const dispatch = useAppDispatch();
 
-  const pages = useAppSelector(selectors.pages.getPages);
-  const selectedCondition = useAppSelector(selectors.conditions.getSelectedCondition);
-  const selectedPage = useAppSelector(selectors.pages.getSelectedPage);
+  const pages = useAppSelector(selectors.pages.selectPages);
+  const selectedCondition = useAppSelector(selectors.conditions.selectSelectedCondition);
+  const selectedPage = useAppSelector(selectors.pages.selectSelectedPage);
 
   const handlePage = () => {
     dispatch(actions.createPage({ id: survey.id }));
@@ -33,7 +33,7 @@ export default function PageBuilder({ survey }: Props): JSX.Element {
     dispatch(actions.setSelectedPage(id));
   };
 
-  const pagesConditions = useAppSelector(selectors.conditions.getAllPagesConditions);
+  const pagesConditions = useAppSelector(selectors.conditions.selectAllPagesConditions);
 
   return (
     <Flex flexDirection="column" alignItems="center" pt={5} backgroundColor="white" width="100%" position="relative">

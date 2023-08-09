@@ -23,7 +23,7 @@ const answers: Option[] = [
 ];
 
 export default function MonoThumbnailFields(): JSX.Element {
-  const selectedQuestion = useAppSelector(selectors.questions.getSelectedQuestion);
+  const selectedQuestion = useAppSelector(selectors.questions.selectSelectedQuestion);
 
   return (
     <>

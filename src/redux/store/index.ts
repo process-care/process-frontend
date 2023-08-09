@@ -78,8 +78,6 @@ export const store = configureStore({
 // Run all the epics
 epicMiddleware.run(rootEpic);
 
-console.log('store initialized')
-
 // ---- TYPES
 
 // Infer `RootState` from the combined reducers. We CANNOT infer it from the store, since RootState is needed in the epic middleware

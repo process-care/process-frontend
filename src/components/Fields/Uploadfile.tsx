@@ -111,8 +111,7 @@ export default function UploadFile({
         {!hasFilesName && (
           <Button
             variant="roundedTransparent"
-            // @ts-ignore: Pb with props in theme ...
-            isSmall
+            size="sm"
             onClick={() =>
               hiddenFileInput.current !== null &&
               hiddenFileInput.current.click()

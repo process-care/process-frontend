@@ -40,7 +40,7 @@ export default function CreateForm({ params }: Props): JSX.Element {
   const error = useAppSelector(selectors.survey.error);
   // const isCreating = useAppSelector(selectors.questions.isCreating);
   const drawerIsOpen = useAppSelector(appSelectors.drawerIsOpen);
-  const selectedCondition = useAppSelector(selectors.conditions.getSelectedCondition);
+  const selectedCondition = useAppSelector(selectors.conditions.selectSelectedCondition);
   const containerRef = useRef<HTMLDivElement>(null);
   // const conditionId = useAppSelector(selectors.conditions.getSelectedConditionId);
 

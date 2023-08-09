@@ -40,7 +40,7 @@ export default function Group({ currentConditions, groups, selectedCondition }: 
 
   const handleDeleteGroup = useCallback((groupId?: string | null) => {
     if (!groupId) return;
-    const conditionsId = currentConditions.map((c) => c.id)
+    const conditionsId = currentConditions.filter((c) => c.attributes.group === groupId).map((c) => c.id)
     dispatch(actions.deleteGroupCondition({ groupId, conditionsId }))
   }, [dispatch, currentConditions]);
 
@@ -61,7 +61,7 @@ export default function Group({ currentConditions, groups, selectedCondition }: 
         const isLast = i === clean_groups.length - 1
 
         return (
-          <>
+          <div key={groupId}>
             { isRemoving.type === "group" && isRemoving.id === groupId &&
               <RemovingConfirmation
                 key={groupId}
@@ -98,7 +98,7 @@ export default function Group({ currentConditions, groups, selectedCondition }: 
                 </Button>
               </Flex>
             )}
-          </>
+          </div>
         );
       })}
     </Box>

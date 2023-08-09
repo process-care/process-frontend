@@ -13,7 +13,7 @@ const createEpic: Epic = (action$, state$) =>
     ofType(actions.createPage.type),
     switchMap(async (action) => {
       const { id } = action.payload;
-      const pagesLength = selectors.pages.getPages(state$.value).length;
+      const pagesLength = selectors.pages.selectPages(state$.value).length;
 
       const pageData = {
         name: `Page ${pagesLength + 1}`,

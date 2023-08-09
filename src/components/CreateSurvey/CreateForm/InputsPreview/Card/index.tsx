@@ -5,7 +5,7 @@ import {
   Text,
   Flex,
 } from "@chakra-ui/react";
-import { Draggable } from "react-beautiful-dnd";
+import { Draggable } from "@hello-pangea/dnd";
 import Image from "next/image";
 
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
@@ -35,9 +35,7 @@ export default function Card({ input, index }: Props): JSX.Element {
   const { status } = useAppSelector((state) => state.scientistData.survey);
 
   const getCondition = (input: QuestionRedux) =>
-    useAppSelector((state) =>
-      selectors.conditions.getConditionsByQuestionId(state, input.id)
-    );
+    useAppSelector((state) => selectors.conditions.selectConditionsByQuestionId(state, { questionId: input.id }))
 
   const isRemoving = entityToRemove === input.id;
   const color = useColorModeValue("gray.800", "gray.900");
@@ -65,6 +63,7 @@ export default function Card({ input, index }: Props): JSX.Element {
       dispatch(actions.setValidityCondition(true));
     }
   };
+  
   return (
     <Draggable draggableId={input.id} index={index}>
       {/* {(provided, snapshot) => ( */}

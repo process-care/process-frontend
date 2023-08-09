@@ -5,12 +5,6 @@ import { DateTime } from "luxon";
 import { GlobalState } from "../scientistData";
 import { LastDeleted, LastSaved, LastUpdated, SurveyRedux } from "../types";
 
-// ----- ENTITY ADAPTER
-
-export const surveysAdapter = createEntityAdapter<SurveyRedux>({
-  selectId: (survey) => survey.id,
-});
-
 // ---- TYPES
 
 export interface SurveysEditor {
@@ -46,36 +40,11 @@ type UpdatePayload = {
   changes: SurveyRedux;
 };
 
-// ---- SELECTORS
+// ----- ENTITY ADAPTER
 
-export const error = (state: RootState): string | undefined => state.scientistData.surveys.error;
-
-export const isLoading = (state: RootState): boolean => state.scientistData.surveys.isLoading;
-
-export const hasChanges = (state: RootState): boolean => {
-  const updated = DateTime.fromISO(state.scientistData.surveys.lastUpdated);
-  const saved = DateTime.fromISO(state.scientistData.surveys.lastSaved);
-  return updated > saved;
-};
-
-export const getAllSurveys = (state: RootState): SurveyRedux[] =>
-  surveysAdapter.getSelectors().selectAll(state.scientistData.surveys);
-
-const getSelectedSurveyId = (state: RootState): string => state.scientistData.surveys.selectedSurvey;
-
-const getSelectedSurvey = (state: RootState): SurveyRedux | undefined =>
-  surveysAdapter.getSelectors().selectById(state.scientistData.surveys, getSelectedSurveyId(state));
-
-// ---- EXPORTS
-
-export const surveysSelectors = {
-  error,
-  isLoading,
-  hasChanges,
-  getAllSurveys,
-  getSelectedSurvey,
-  getSelectedSurveyId,
-};
+export const surveysAdapter = createEntityAdapter<SurveyRedux>({
+  selectId: (survey) => survey.id,
+});
 
 // ---- REDUCERS
 
@@ -125,3 +94,37 @@ export const surveysReducers = {
   },
   resetMySurveys: (): any => surveysAdapter.getInitialState(initialSurveysState),
 };
+
+// ---- SELECTORS
+
+export const error = (state: RootState): string | undefined => state.scientistData.surveys.error;
+export const isLoading = (state: RootState): boolean => state.scientistData.surveys.isLoading;
+export const hasChanges = (state: RootState): boolean => {
+  const updated = DateTime.fromISO(state.scientistData.surveys.lastUpdated);
+  const saved = DateTime.fromISO(state.scientistData.surveys.lastSaved);
+  return updated > saved;
+};
+
+// MEMOIZED
+
+const {
+  selectAll: selectAllSurveys,
+} = surveysAdapter.getSelectors((state: RootState) => state.scientistData.surveys)
+
+const getSelectedSurveyId = (state: RootState): string => state.scientistData.surveys.selectedSurvey;
+
+const getSelectedSurvey = (state: RootState): SurveyRedux | undefined =>
+  surveysAdapter.getSelectors().selectById(state.scientistData.surveys, getSelectedSurveyId(state));
+
+// ---- EXPORTS
+
+export const surveysSelectors = {
+  error,
+  isLoading,
+  hasChanges,
+  selectAllSurveys,
+  getSelectedSurvey,
+  getSelectedSurveyId,
+};
+
+

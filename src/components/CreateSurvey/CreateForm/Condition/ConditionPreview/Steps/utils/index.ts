@@ -5,7 +5,7 @@ export const checkStepValidation = (): boolean => {
   const isValid = useAppSelector(selectors.conditions.getValidity);
   const step = useAppSelector(selectors.conditions.getStep);
   const selectedCondition = useAppSelector(
-    selectors.conditions.getSelectedCondition
+    selectors.conditions.selectSelectedCondition
   );
 
   const target = selectedCondition?.attributes?.target;

@@ -16,9 +16,9 @@ interface Props {
 
 export default function Step_1({ selectedCondition, updateStep }: Props): JSX.Element {
   const dispatch = useAppDispatch();
-  const selectedQuestion = useAppSelector(selectors.questions.getSelectedQuestion);
-  const questions = useAppSelector(selectors.questions.getSelectedPageQuestions);
-  const pages = useAppSelector(selectors.pages.getPages);
+  const selectedQuestion = useAppSelector(selectors.questions.selectSelectedQuestion);
+  const questions = useAppSelector(selectors.questions.selectSelectedPageQuestions);
+  const pages = useAppSelector(selectors.pages.selectPages);
   const order = useAppSelector(selectors.survey.getOrder);
   const isTypePage = selectedCondition?.attributes?.type === "page";
 

@@ -82,8 +82,7 @@ export default function Modalities({ name }: Props): JSX.Element {
                   onClick={() => arrayHelpers.push("")}
                   variant="rounded"
                   type="button"
-                  // @ts-ignore: Pb with props in theme ...
-                  isSmall
+                  size="sm"
                 >
                   Ajouter un parametre
                 </Button>

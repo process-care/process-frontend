@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { FieldArray, useField, useFormikContext } from "formik";
 import { Flex, Box, Button, Text } from "@chakra-ui/react";
+import { FieldArray, useField, useFormikContext } from "formik";
 
 import { Textarea } from "@/components/Fields";
 import { useAppSelector } from "@/redux/hooks";
@@ -22,7 +22,7 @@ export default function RepeatedFields({ name }: Props): JSX.Element {
     // Populate answers field on edit.
     if (isEditing) {
       fields?.map((value: string, index: number) => {
-        setFieldValue(`options.${index}`, value);
+        setFieldValue(`${name}.${index}`, value);
       });
     }
   }, [isEditing]);
@@ -38,10 +38,10 @@ export default function RepeatedFields({ name }: Props): JSX.Element {
                 <Box key={index} w="100%">
                   <Flex w="100%">
                     <Textarea
-                      id={`options.${index}`}
-                      label={`Option ${index}`}
+                      id={`${name}.${index}`}
+                      label={`Option ${index + 1}`}
                       placeholder={
-                        isEditing ? fields[index] : `Option ${index}`
+                        isEditing ? fields[index] : `Option ${index + 1}`
                       }
                       rows={Enum_Question_Rows.Small}
                       isRequired
@@ -52,7 +52,7 @@ export default function RepeatedFields({ name }: Props): JSX.Element {
                         type="button"
                         onClick={() => {
                           arrayHelpers.remove(index);
-                          setFieldValue(`options.${index}`, undefined);
+                          setFieldValue(`${name}.${index}`, undefined);
                         }}
                       >
                         -
@@ -80,9 +80,8 @@ export default function RepeatedFields({ name }: Props): JSX.Element {
                 <Button
                   onClick={() => arrayHelpers.push("")}
                   variant="rounded"
-                  // @ts-ignore: Pb with props in theme ...
-                  isSmall
                   type="button"
+                  size="sm"
                 >
                   Ajouter une option de réponse
                 </Button>

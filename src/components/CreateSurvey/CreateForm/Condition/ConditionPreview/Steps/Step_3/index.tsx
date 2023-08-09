@@ -26,7 +26,7 @@ export default function Step_3({ selectedCondition, updateStep }: Props): JSX.El
   };
 
   const target_question = useAppSelector((state) =>
-    questionsSelectors.getQuestionById(state, selectedCondition.attributes.target?.data?.id)
+    questionsSelectors.selectQuestionById(state, selectedCondition.attributes.target?.data?.id)
   );
 
   if (!target_question) {

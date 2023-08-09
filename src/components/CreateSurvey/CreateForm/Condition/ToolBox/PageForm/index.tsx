@@ -24,13 +24,13 @@ export default function PageForm(): JSX.Element {
   const firstRender = useRef(true);
 
   const selectedPageId = useAppSelector(selectors.pages.getSelectedPageId);
-  const selectedPage = useAppSelector(selectors.pages.getSelectedPage);
-  const pages = useAppSelector(selectors.pages.getPages);
-  const questionsOnSelectedPage = useAppSelector(selectors.questions.getSelectedPageQuestions).map(
+  const selectedPage = useAppSelector(selectors.pages.selectSelectedPage);
+  const pages = useAppSelector(selectors.pages.selectPages);
+  const questionsOnSelectedPage = useAppSelector(selectors.questions.selectSelectedPageQuestions).map(
     (question) => question.id
   );
   // const conditionsOnSelectedPage = selectedPage?.attributes?.conditions?.data;
-  const conditionsOnSelectedPage = useAppSelector(selectors.conditions.getAllPagesConditions).filter(
+  const conditionsOnSelectedPage = useAppSelector(selectors.conditions.selectAllPagesConditions).filter(
     (c) => c?.attributes?.referer_page?.data?.id === selectedPageId
   );
   const isNotFirstPage = pages.findIndex((page) => page.id === selectedPageId) > 0;
@@ -155,6 +155,7 @@ export default function PageForm(): JSX.Element {
                   helpText="100 signes maximum"
                   isRequired
                 />
+                
                 <Textarea
                   id="short_name"
                   label="Nom court pour la navigation rapide"
@@ -179,8 +180,7 @@ export default function PageForm(): JSX.Element {
                         <Button
                           disabled={questionsOnSelectedPage.length === 0}
                           variant="roundedTransparent"
-                          // @ts-ignore: Pb with props in theme ...
-                          isSmall
+                          size="sm"
                           onClick={() => createCondition()}
                         >
                           {t.add_condition_page}
@@ -189,8 +189,7 @@ export default function PageForm(): JSX.Element {
                     ) : (
                       <Button
                         variant="roundedTransparent"
-                        // @ts-ignore: Pb with props in theme ...
-                        isSmall
+                        size="sm"
                         onClick={() =>
                           editCondition((conditionsOnSelectedPage && conditionsOnSelectedPage[0]?.id) ?? "")
                         }
@@ -207,8 +206,7 @@ export default function PageForm(): JSX.Element {
                   >
                     <Button
                       ml={isNotFirstPage ? "5" : "0"}
-                      // @ts-ignore: Pb with props in theme ...
-                      isSmall
+                      size="sm"
                       variant={isLocked ? "rounded" : "roundedTransparent"}
                       onClick={() => setFieldValue("is_locked", !values.is_locked)}
                     >

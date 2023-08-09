@@ -25,9 +25,9 @@ interface Props {
 
 export default function InputForm({ order }: Props): JSX.Element {
   const dispatch = useAppDispatch();
-  const currentConditions = useAppSelector(selectors.conditions.getSelectedQuestionsConditions);
+  const currentConditions = useAppSelector(selectors.conditions.selectSelectedQuestionsConditions);
   const isEditing = useAppSelector(formBuilderSelectors.isEditing);
-  const selectedQuestion = useAppSelector(selectors.questions.getSelectedQuestion);
+  const selectedQuestion = useAppSelector(selectors.questions.selectSelectedQuestion);
   const selectedQuestionId = useAppSelector(selectors.questions.getSelectedQuestionId);
   const [prevState, setPrevState] = useState<QuestionRedux | undefined>(selectedQuestion);
 
@@ -161,8 +161,7 @@ export default function InputForm({ order }: Props): JSX.Element {
                     {currentConditions.length === 0 ? (
                       <Button
                         variant="roundedTransparent"
-                        // @ts-ignore: Pb with props in theme ...
-                        isSmall
+                        size="sm"
                         onClick={() => createCondition()}
                       >
                         {t.add_condition}
@@ -170,8 +169,7 @@ export default function InputForm({ order }: Props): JSX.Element {
                     ) : (
                       <Button
                         variant="roundedTransparent"
-                        // @ts-ignore: Pb with props in theme ...
-                        isSmall
+                        size="sm"
                         onClick={() => editCondition(currentConditions[0].id)}
                       >
                         {t.edit_condition}
@@ -180,8 +178,7 @@ export default function InputForm({ order }: Props): JSX.Element {
 
                     <Button
                       ml="5"
-                      // @ts-ignore: Pb with props in theme ...
-                      isSmall
+                      size="sm"
                       variant={values?.required ? "rounded" : "roundedTransparent"}
                       onClick={() => setFieldValue("required", !values.required)}
                     >

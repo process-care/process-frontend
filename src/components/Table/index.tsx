@@ -1,52 +1,78 @@
-import { useCallback } from "react";
-import { Box, Text, Tooltip } from "@chakra-ui/react";
-import { useTable, Column, useSortBy, HeaderGroup, Row, TableInstance } from "react-table";
+import { useCallback, useState } from "react";
+import { Tooltip } from "@chakra-ui/react";
+import {
+  useReactTable, getCoreRowModel, getSortedRowModel, flexRender, createColumnHelper,
+  Row, Header, SortingState
+} from "@tanstack/react-table";
 
-import { SurveyBuilder } from "@/redux/slices/surveyBuilderOLD";
+import { SurveyRedux } from "@/redux/slices/types";
+import dayjs from "dayjs";
+import { getLabelStatus } from "@/static/dashboard";
+import { cn } from "@/lib/utils";
 
 // ---- TYPES
 
-// FIXME: If table is generic, then this is a hack, because if we expect a project ID
-// it means that we will use this component only for a table displaying Projects
-type ClickAction = (survey: SurveyBuilder["survey"]) => void;
-
 interface Props {
-  columns: Array<Column<any>>;
   data: any;
   onClick: ClickAction;
 }
 
+type ClickAction = (surveyId: string) => void;
+
 // ---- STYLE
 
 const styles = {
-  thead: {
-    width: "100%",
-    backgroundColor: "white",
-  },
   tr: { borderTop: "1px solid #e7e7e7" },
-  td: { backgroundColor: "#F6F6F6" },
 };
 
 // ---- COMPONENT
 
-export default function Table({ columns, data, onClick }: Props): JSX.Element {
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({ columns, data }, useSortBy);
+const clmHelper = createColumnHelper<SurveyRedux>()
+const columns = [
+  clmHelper.accessor('attributes.status', {
+    header: "Statut",
+    cell: (info) => getLabelStatus(info.getValue()),
+  }),
+  clmHelper.accessor('attributes.createdAt', {
+    header: "Date",
+    cell: (info) => dayjs(info.getValue()).format("DD-MM-YYYY"),
+  }),
+  clmHelper.accessor('attributes.title', {
+    header: "Titre",
+  }),
+  clmHelper.accessor(row => row.attributes.participations?.data.length, {
+    header: "Total",
+    cell: (info) => info.getValue() ?? 0,
+  }),
+]
+
+export default function Table({ data, onClick }: Props): JSX.Element {
+  const [sorting, setSorting] = useState<SortingState>([])
+  const { getHeaderGroups, getRowModel } = useReactTable({
+    columns,
+    data,
+    state: { sorting },
+    onSortingChange: setSorting,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+  })
 
   return (
-    <table {...getTableProps()} width="100%">
-      <thead style={styles.thead}>
-        {headerGroups.map((headerGroup) => (
-          <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((column, i) => (
-              <TableHeader key={i} column={column} />
+    <table width="100%">
+      <thead className="w-full bg-white">
+        {getHeaderGroups().map(headerGroup => (
+          <tr key={headerGroup.id}>
+            {headerGroup.headers.map(header => (
+              <TableHeader key={header.id} header={header} />
             ))}
           </tr>
         ))}
       </thead>
+
       <Tooltip label="Cliquer pour éditer les paramètres du projet" placement="top-start">
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row, j) => (
-            <TableRow key={j} row={row} prepareRow={prepareRow} onClick={onClick} />
+        <tbody>
+          {getRowModel().rows.map(row => (
+            <TableRow key={row.id} row={row} onClick={onClick} />
           ))}
         </tbody>
       </Tooltip>
@@ -59,22 +85,31 @@ export default function Table({ columns, data, onClick }: Props): JSX.Element {
 // -- Table Header
 
 interface TableHeaderProps {
-  column: HeaderGroup;
+  header: Header<SurveyRedux, unknown>
 }
 
-const TableHeader = ({ column }: TableHeaderProps) => {
-  const props = column.getHeaderProps(column.getSortByToggleProps());
-  const content = column.render("Header");
-  const aligned = content !== "Titre" ? "center" : undefined;
+const TableHeader = ({ header }: TableHeaderProps) => {
+  const content = flexRender(
+    header.column.columnDef.header,
+    header.getContext()
+  )
+
+  const aligned = content !== "Titre" ? "text-center" : undefined
+  const width = content !== "Titre" ? "w-[150px]" : undefined
+
+  const sortSymbol = {
+    asc: " ↑", desc: " ↓",
+  }[header.column.getIsSorted() as string] ?? null
 
   return (
-    <th {...props}>
-      <Text variant="current" p="30px" textAlign={aligned}>
-        {content}
-        &nbsp;
-        {column.isSorted ? (column.isSortedDesc ? "↓" : "↑") : "↓"}
-        &nbsp;
-      </Text>
+    <th
+      className={cn(
+        width, aligned,
+        "text-sm cursor-pointer p-[30px] font-normal hover:font-bold"
+      )}
+      onClick={header.column.getToggleSortingHandler()}
+    >
+      {content}{sortSymbol}
     </th>
   );
 };
@@ -82,31 +117,25 @@ const TableHeader = ({ column }: TableHeaderProps) => {
 // -- Table Row
 
 interface TableRowProps {
-  row: Row;
-  prepareRow: TableInstance["prepareRow"];
+  row: Row<SurveyRedux>
   onClick: ClickAction;
 }
 
-const TableRow = ({ row, prepareRow, onClick }: TableRowProps) => {
-  prepareRow(row);
-
-  // FIXME: Obviously both lines below are bad ⤵️
-  // @ts-ignore : ID does exist
-  const survey: SurveyBuilder["survey"] = row.original;
-  const click = useCallback(() => onClick(survey), [survey, onClick]);
+const TableRow = ({ row, onClick }: TableRowProps) => {
+  const surveyId = row.original.id;
+  const click = useCallback(() => onClick(surveyId), [surveyId, onClick]);
 
   return (
-    <tr {...row.getRowProps()} style={styles.tr} onClick={click}>
-      {row.cells.map((cell, i) => {
-        const aligned = i !== 2 ? "center" : undefined;
+    <tr style={styles.tr} onClick={click} className="cursor-pointer bg-slate-100 hover:bg-slate-200">
+      {row.getVisibleCells().map((cell, i) => {
+        const aligned = i !== 2 ? "text-center" : undefined;
 
         return (
-          <td {...cell.getCellProps()} style={styles.td}>
-            <Box p="30px" _hover={{ cursor: "pointer" }}>
-              <Text variant="current" textAlign={aligned}>
-                {cell.render("Cell")}
-              </Text>
-            </Box>
+          <td
+            key={cell.id}
+            className={cn( aligned, "p-[30px] text-sm font-normal" )}
+          >
+            {flexRender(cell.column.columnDef.cell, cell.getContext())}
           </td>
         );
       })}

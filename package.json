@@ -36,6 +36,7 @@
     "@radix-ui/react-tooltip": "^1.0.6",
     "@reduxjs/toolkit": "^1.9.5",
     "@tanstack/react-query": "^4.29.19",
+    "@tanstack/react-table": "^8.9.3",
     "@types/is-hotkey": "^0.1.7",
     "@udecode/plate-alignment": "^22.0.2",
     "@udecode/plate-basic-elements": "^22.0.2",
@@ -98,7 +99,6 @@
     "react-player": "^2.12.0",
     "react-redux": "^8.1.1",
     "react-select": "^5.7.3",
-    "react-table": "^7.8.0",
     "redux-observable": "^2.0.0",
     "rxjs": "^7.8.1",
     "sharp": "^0.32.4",
@@ -120,7 +120,6 @@
     "@types/react": "18.2.14",
     "@types/react-datepicker": "^4.11.2",
     "@types/react-dom": "18.2.6",
-    "@types/react-table": "^7.7.14",
     "@types/uuid": "^9.0.2",
     "raw-loader": "^4.0.2"
   },

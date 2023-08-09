@@ -6,14 +6,13 @@ import dayjs from "dayjs";
 import { useDispatch } from "react-redux";
 import { usePathname, useRouter } from "next/navigation";
 
-import { getLabelStatus, t } from "@/static/dashboard";
-import { SurveyBuilder } from "@/redux/slices/surveyBuilderOLD";
+import { t } from "@/static/dashboard";
 import { useAppSelector } from "@/redux/hooks";
 import { actions as actionsApplication } from "@/redux/slices/application";
 import { useAuth } from "@/components/Authentification/hooks";
 import { actions } from "@/redux/slices/survey-editor";
 import { actions as actionsMySurveys, selectors } from "@/redux/slices/scientistData";
-import { SurveyRedux } from "@/redux/slices/types";
+
 import { HEADER_HEIGHT } from "@/components/Menu/SimpleMenu";
 import Table from "@/components/Table";
 import Loader from "@/components/Spinner";
@@ -30,7 +29,7 @@ export default function Dashboard(): JSX.Element {
   const pathname = usePathname()
 
   const dispatch = useDispatch();
-  const surveys = useAppSelector(selectors.mySurveys.getAllSurveys);
+  const surveys = useAppSelector(selectors.mySurveys.selectAllSurveys);
   const error = useAppSelector(selectors.mySurveys.error);
   const isLoading = useAppSelector(selectors.mySurveys.isLoading);
 
@@ -43,8 +42,8 @@ export default function Dashboard(): JSX.Element {
     setMenuIsOpen(false);
   };
 
-  const toggleMenu = (survey: SurveyBuilder["survey"]) => {
-    dispatch(actionsMySurveys.setSelectedSurvey(survey.id));
+  const toggleMenu = (surveyId: string) => {
+    dispatch(actionsMySurveys.setSelectedSurvey(surveyId));
     if (!isOpen) {
       setMenuIsOpen(true);
     }
@@ -66,46 +65,7 @@ export default function Dashboard(): JSX.Element {
     }
   }, [currentFilter, surveys]);
 
-  const columns = useMemo(
-    () =>
-      t.header.map(({ Header, accessor }) => {
-        if (accessor === "status") {
-          return {
-            Header,
-            accessor: (d: SurveyRedux) => getLabelStatus(d?.attributes?.status),
-          };
-        }
-        if (accessor === "createdAt") {
-          return {
-            Header,
-            accessor: (d: SurveyRedux) => {
-              return dayjs(d?.attributes.createdAt).format("DD-MM-YYYY");
-            },
-          };
-        }
-        if (accessor === "total") {
-          return {
-            Header,
-            accessor: (d: SurveyRedux) => d?.attributes.participations?.data.length,
-          };
-        }
-        if (accessor === "title") {
-          return {
-            Header,
-            accessor: (d: SurveyRedux) => d?.attributes?.title,
-          };
-        } else
-          return {
-            Header,
-            accessor,
-          };
-      }),
-    []
-  );
-
-  const handleDrawer = () => {
-    dispatch(actionsApplication.toogleDrawer());
-  };
+  const handleDrawer = () => dispatch(actionsApplication.toogleDrawer())
 
   const closeDrawer = () => {
     router.push("/dashboard");
@@ -147,8 +107,9 @@ export default function Dashboard(): JSX.Element {
               <Text variant="xl" fontWeight="bold" mb="10px">
                 {surveysLenght > 1 ? `Mes ${surveysLenght} projets` : "Mon projet"}
               </Text>
+
               <Flex justifyContent="space-between" alignItems="flex-end">
-                <Filters filters={t.filters} handleClick={(id) => setCurrentFilter(id)} currentFilter={currentFilter} />
+                <Filters filters={t.filters} handleClick={setCurrentFilter} currentFilter={currentFilter} />
 
                 {hadSurveys && (
                   <>
@@ -158,6 +119,7 @@ export default function Dashboard(): JSX.Element {
                   </>
                 )}
               </Flex>
+
               {hadFilteredSurvys ? (
                 <Box
                   mt={3}
@@ -169,7 +131,7 @@ export default function Dashboard(): JSX.Element {
                     boxShadow: "rgb(33 33 52 / 10%) 0px 1px 4px",
                   }}
                 >
-                  <Table columns={columns} data={data} onClick={toggleMenu} />
+                  <Table data={data} onClick={toggleMenu} />
                 </Box>
               ) : (
                 <Box w="100%" m="0 auto">

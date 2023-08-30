@@ -73,7 +73,7 @@ export default function ProjectMenu({ menuIsOpen, onClose }: Props): JSX.Element
   // We should be doing that much better :/
   if (isLoadingStats) {
     return (
-      <Container variant="rightPart" h="93vh" overflow="scroll" pos="sticky" top="65px">
+      <Container variant="rightPart" overflow="auto" pos="sticky" top="65px">
         <Loader />
       </Container>
     );
@@ -123,7 +123,7 @@ export default function ProjectMenu({ menuIsOpen, onClose }: Props): JSX.Element
 
   return (
     // TODO: Use a % + max-width to limit growth on big screens
-    <Container variant="rightPart" w="53%" h="93vh" overflow="scroll" pos="sticky" top="65px">
+    <Container variant="rightPart" w="53%" overflow="auto" pos="sticky" top="65px">
       {isRemoving ? (
         <RemovingConfirmation
           confirm={handleDelete}

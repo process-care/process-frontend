@@ -95,13 +95,13 @@ export default function Dashboard(): JSX.Element {
   const hadFilteredSurvys = data.length > 0;
 
   return (
-    <Box display="flex" justifyContent="space-around" w="100%">
+    <Box display="flex" h={`calc(100vh - ${HEADER_HEIGHT})`} justifyContent="space-around" w="100%">
       <Box h="80vh">
         <Drawer isOpen={isProfilPage && isOpen} size="md" content={<ProfilForm />} onOverlayClick={closeDrawer} />
       </Box>
 
-      <div className="background__grid" style={{ width: menuIsOpen ? "47%" : "100%" }}>
-        <Container textAlign="left" pt="9" maxW="90%" h={`calc(100vh - ${HEADER_HEIGHT})`}>
+      <div className="background__grid overflow-auto" style={{ width: menuIsOpen ? "47%" : "100%" }}>
+        <Container textAlign="left" py="9" maxW="90%">
           {hadSurveys ? (
             <>
               <Text variant="xl" fontWeight="bold" mb="10px">

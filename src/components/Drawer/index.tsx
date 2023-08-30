@@ -19,22 +19,20 @@ export default function CustomDrawer({
   ...props
 }: Props): JSX.Element {
   return (
-    <>
-      <Portal>
-        <Drawer
-          onClose={() => console.log("_")}
-          placement="right"
-          isFullHeight
-          isOpen={isOpen}
-          size="full"
-          onOverlayClick={onOverlayClick}
-          {...props}
-        >
-          <DrawerContent background="white" maxW="53%">
-            <DrawerBody p="0">{content}</DrawerBody>
-          </DrawerContent>
-        </Drawer>
-      </Portal>
-    </>
+    <Portal>
+      <Drawer
+        onClose={() => console.log("_")}
+        placement="right"
+        isFullHeight
+        isOpen={isOpen}
+        size="full"
+        onOverlayClick={onOverlayClick}
+        {...props}
+      >
+        <DrawerContent background="white" maxW="53%">
+          <DrawerBody p="0">{content}</DrawerBody>
+        </DrawerContent>
+      </Drawer>
+    </Portal>
   );
 };

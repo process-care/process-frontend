@@ -3,7 +3,7 @@ import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { actions, selectors as pageSelectors } from "@/redux/slices/participation/page";
+import { PageParticipationRedux, actions, selectors as pageSelectors } from "@/redux/slices/participation/page";
 import { selectors as questionsSelectors } from "@/redux/slices/participation/questions";
 import { useMediaQueries } from "@/utils/hooks/mediaqueries";
 import { NL } from "@/static/participation";
@@ -39,7 +39,6 @@ export default function Page({
   onFinish,
   isFailed,
 }:Props): JSX.Element {
-  const dispatch = useAppDispatch();
   const { isTablet } = useMediaQueries();
 
   const questions = useAppSelector((state) => questionsSelectors.selectAll(state)).filter(
@@ -65,51 +64,98 @@ export default function Page({
           setSubmitting(true);
         }}
       >
-        {({ isValid }) => {
-          // Update the "submitable" status in redux (only if different)
-          useEffect(() => {
-            if (isValid === page.submitable) return;
-            dispatch(actions.submitable({ id: pageId, submitable: isValid }));
-          }, [isValid, pageId, page.submitable]);
-
-          return (
-            <Form>
-              {/* Questions */}
-              <Box px={isTablet ? "20px" : "10%"}>
-                {orderInPage.map((inputId: string) => (
-                  <Questionator key={inputId} id={inputId} />
-                ))}
-              </Box>
-              {isFailed && (
-                <Box textAlign="right" mr="10%">
-                  <Text color="red.500" variant="current">
-                    {NL.msg.error}
-                  </Text>
-                </Box>
-              )}
-              
-              {/* Navigation */}
-              <Flex justifyContent="flex-end" mt="10" pb="20px" pr={isTablet ? "5%" : "10%"}>
-                {!isFirstPage && (
-                  <Button mr="4" variant="roundedTransparent" onClick={previousPage}>
-                    {NL.button.previous}
-                  </Button>
-                )}
-                {!isLastPage && (
-                  <Button disabled={!isValid} variant="rounded" backgroundColor={currentColor} onClick={nextPage}>
-                    {NL.button.next}
-                  </Button>
-                )}
-                {isLastPage && (
-                  <Button disabled={!isValid} variant="rounded" backgroundColor={currentColor} onClick={onFinish}>
-                    {NL.button.finish}
-                  </Button>
-                )}
-              </Flex>
-            </Form>
-          );
-        }}
+        {({ isValid }) => <DisplayForm
+            page={page}
+            orderInPage={orderInPage}
+            isValid={isValid}
+            isFirstPage={isFirstPage}
+            isLastPage={isLastPage}
+            nextPage={nextPage}
+            previousPage={previousPage}
+            currentColor={currentColor}
+            onFinish={onFinish}
+            isFailed={isFailed}
+          />
+        }
       </Formik>
     </Box>
   );
 };
+
+// ---- SUB COMPONENTS
+
+// NOTE: A lot of props are passed down from the parent without much changes,
+// but this component has been created to encapsulate the hooks and the logic
+// Reminder -> useEffect cannot be used in a loop...
+interface DisplayFormProps {
+  page: PageParticipationRedux
+  orderInPage: string[]
+  isValid: boolean
+  isFirstPage: boolean
+  isLastPage: boolean
+  nextPage: () => void
+  previousPage: () => void
+  currentColor: string
+  onFinish: () => void
+  isFailed: boolean
+}
+
+function DisplayForm({
+  page,
+  orderInPage,
+  isValid,
+  isFirstPage,
+  isLastPage,
+  nextPage,
+  previousPage,
+  currentColor,
+  onFinish,
+  isFailed,
+}: DisplayFormProps): JSX.Element {
+  const dispatch = useAppDispatch()
+  const { isTablet } = useMediaQueries()
+  const pageId = page.id
+
+  // Update the "submitable" status in redux (only if different)
+  useEffect(() => {
+    if (isValid === page.submitable) return;
+    dispatch(actions.submitable({ id: pageId, submitable: isValid }));
+  }, [isValid, pageId, page.submitable, dispatch]);
+
+  return (
+    <Form>
+      {/* Questions */}
+      <Box px={isTablet ? "20px" : "10%"}>
+        {orderInPage.map((inputId: string) => (
+          <Questionator key={inputId} id={inputId} />
+        ))}
+      </Box>
+      {isFailed && (
+        <Box textAlign="right" mr="10%">
+          <Text color="red.500" variant="current">
+            {NL.msg.error}
+          </Text>
+        </Box>
+      )}
+      
+      {/* Navigation */}
+      <Flex justifyContent="flex-end" mt="10" pb="20px" pr={isTablet ? "5%" : "10%"}>
+        {!isFirstPage && (
+          <Button mr="4" variant="roundedTransparent" onClick={previousPage}>
+            {NL.button.previous}
+          </Button>
+        )}
+        {!isLastPage && (
+          <Button disabled={!isValid} variant="rounded" backgroundColor={currentColor} onClick={nextPage}>
+            {NL.button.next}
+          </Button>
+        )}
+        {isLastPage && (
+          <Button disabled={!isValid} variant="rounded" backgroundColor={currentColor} onClick={onFinish}>
+            {NL.button.finish}
+          </Button>
+        )}
+      </Flex>
+    </Form>
+  )
+}

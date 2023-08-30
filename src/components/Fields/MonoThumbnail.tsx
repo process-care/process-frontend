@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Box, Button, Flex, FormLabel, Spinner, Text } from "@chakra-ui/react";
 import { v4 as uuidv4 } from "uuid";
 import { Form, Formik } from "formik";
@@ -89,17 +89,18 @@ export default function MonoThumbnail({
     );
   };
 
-  const sanitizeMono = {
+  const sanitizeMono = useMemo(() => ({
     id: associated_input?.type,
     attributes: {
       ...associated_input,
     },
-  } as QuestionRedux;
+  } as QuestionRedux), [associated_input])
+
 
   useEffect(() => {
     // Generate only if drawer is close (mean no adding new factors /modalities)
     !drawerIsOpen && generate();
-  }, [drawerIsOpen]);
+  }, [drawerIsOpen, generate]);
 
   useEffect(() => {
     // Force re render to reset the field on select change

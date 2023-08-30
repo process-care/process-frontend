@@ -116,7 +116,7 @@ export default function AssociatedClassification({
   useEffect(() => {
     // Generate only if drawer is close (mean no adding new factors /modalities)
     !drawerIsOpen && generate();
-  }, [drawerIsOpen]);
+  }, [drawerIsOpen, generate]);
 
   if (isFinished) {
     return <Text variant="smallTitle">Nous avons bien pris en compte votre sélection !</Text>;

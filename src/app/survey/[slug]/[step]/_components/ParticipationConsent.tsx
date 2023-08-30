@@ -29,11 +29,11 @@ export default function ParticipationConsent({ surveyId, onConsent, onRefuse }: 
     });
     // @ts-ignore : I don't understand the structure of the answer, because that's supposed to work
     onConsent(res?.createParticipation?.data?.id);
-  }, [surveyId]);
+  }, [createParticipation, onConsent, surveyId]);
 
   const onDecline = useCallback(() => {
     onRefuse();
-  }, []);
+  }, [onRefuse]);
 
   const attributes = survey?.survey?.data?.attributes;
   const url = attributes?.notice_consent?.data?.attributes?.url;

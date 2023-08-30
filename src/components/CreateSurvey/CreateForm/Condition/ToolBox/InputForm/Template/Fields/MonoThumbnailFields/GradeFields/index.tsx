@@ -32,7 +32,7 @@ export default function GradeFields({ selectedQuestion }: Props): JSX.Element {
         },
       });
     }
-  }, [savedType, isEditing]);
+  }, [savedType, isEditing, touched, resetForm, selectedQuestion?.attributes]);
 
   return (
     <Box mt="5">

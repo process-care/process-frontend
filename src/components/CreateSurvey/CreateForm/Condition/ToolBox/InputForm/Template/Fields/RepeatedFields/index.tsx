@@ -25,7 +25,7 @@ export default function RepeatedFields({ name }: Props): JSX.Element {
         setFieldValue(`${name}.${index}`, value);
       });
     }
-  }, [isEditing]);
+  }, [fields, isEditing, name, setFieldValue]);
 
   return (
     <Box w="100%">

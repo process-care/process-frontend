@@ -42,7 +42,7 @@ export default function FreeClassification({
   useEffect(() => {
     if (subTextarea.value === undefined) return;
     helpers.setValue({ ...field.value, answer: subTextarea.value });
-  }, [subTextarea.value]);
+  }, [field.value, helpers, subTextarea.value]);
 
   // Use samples initialization to init the field with all default values
   useEffect(() => {
@@ -50,7 +50,7 @@ export default function FreeClassification({
     if (!field?.value?.choices) newValue.choices = [];
     if (!field?.value?.answer) newValue.answer = "";
     helpers.setValue({ ...newValue });
-  }, [samples]);
+  }, [field.value, helpers, samples]);
 
   // Update the internal state on clicks, then update the field with raw values
   const onClickChoice = (idx: number) => {

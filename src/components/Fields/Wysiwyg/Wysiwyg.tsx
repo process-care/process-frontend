@@ -122,6 +122,7 @@ export default function Wysiwyg({ id, className }: Props): JSX.Element {
       // @ts-ignore : values type is weird ?
       element: values[id],
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- only on mount
   }, [])
 
   const onChange = useCallback((value: any) => {

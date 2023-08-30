@@ -32,7 +32,7 @@ export default function PageEntry({
   const goTo = useCallback(() => {
     if (!isNavigable) return;
     selectIndex(index);
-  }, [index, isNavigable]);
+  }, [index, isNavigable, selectIndex]);
 
   return (
     <Box

@@ -51,7 +51,7 @@ export const useAssociatedLogic = (
 
   const maxVariations = useMemo(() => {
     if (totalVariations) return getMaxVariation(totalVariations, TOTAL_CARDS);
-  }, [totalVariations]);
+  }, [TOTAL_CARDS, totalVariations]);
 
   const generate = () => {
     if (maxVariations - 1 === state.variations.length) {

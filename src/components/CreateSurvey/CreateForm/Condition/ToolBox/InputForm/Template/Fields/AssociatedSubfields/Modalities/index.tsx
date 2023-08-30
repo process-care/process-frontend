@@ -26,7 +26,7 @@ export default function Modalities({ name }: Props): JSX.Element {
         setFieldValue(`${name}.modalities.${index}`, value);
       });
     }
-  }, [isEditing]);
+  }, [fields, isEditing, name, setFieldValue]);
 
   return (
     <Box w="100%" pl="20px">

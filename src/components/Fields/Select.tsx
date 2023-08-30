@@ -50,7 +50,7 @@ export default function CustomSelect({
     if (defaultValue && !field.value) {
       setValue(defaultValue);
     }
-  }, [defaultValue]);
+  }, [defaultValue, field.value, setValue]);
 
   const getLabel = () => {
     if (!answers) return;

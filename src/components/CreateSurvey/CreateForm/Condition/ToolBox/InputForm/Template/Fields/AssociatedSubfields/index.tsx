@@ -26,7 +26,7 @@ export default function AssociatedSubfields({ name }: Props): JSX.Element {
         setFieldValue(`${name}.${index}`, value);
       });
     }
-  }, [isEditing]);
+  }, [fields, isEditing, name, setFieldValue]);
 
   return (
     <Box w="100%">

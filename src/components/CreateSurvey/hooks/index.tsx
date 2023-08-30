@@ -47,7 +47,7 @@ export const useNavigator = (survey: SurveyRedux | undefined): Navigators => {
       });
     }
     router.push(`/survey/${slug}/create/landing`);
-  }, [survey?.id, survey?.attributes?.slug]);
+  }, [survey, router, addLanding, updateSurvey]);
 
   // Take you to the form editor
   const goToForm = useCallback(() => {
@@ -60,19 +60,19 @@ export const useNavigator = (survey: SurveyRedux | undefined): Navigators => {
     }
 
     router.push(`/survey/${slug}/create/form`);
-  }, [survey?.id]);
+  }, [router, survey]);
 
   // Take you to the consent page
   const goToConsent = useCallback(() => {
     if (!survey) return;
     router.push(`/survey/${survey?.attributes?.slug}/create/consent`);
-  }, [survey?.id]);
+  }, [router, survey]);
 
   // Take you to the survey metadatas page
   const goToSurveyMetadatas = useCallback(() => {
     if (!survey) return;
     router.push(`/survey/${survey?.attributes?.slug}/create/metadatas`);
-  }, [survey?.id]);
+  }, [router, survey]);
 
   return {
     gotToLanding,

@@ -44,10 +44,10 @@ export function useInitialPageContent(
     }, [] as string[]);
 
     return { questionsId, orderInPage };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page?.id]);
 
   // Select related data from redux
-  // It cannot be memoized, since it's a hook
   const data = useAppSelector((state) => selectors.selectByIds(state, questionsId));
 
   // Recompute the initial answers ONLY when the Page ID changes !
@@ -58,6 +58,7 @@ export function useInitialPageContent(
     }, {} as Record<string, unknown>);
 
     return answers;
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- only when page changes
   }, [page?.id]);
 
   return { initialAnswers, orderInPage };

@@ -3,7 +3,7 @@ import { InfoIcon } from "@chakra-ui/icons";
 
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 // import { StepCounter } from "./Steps/StepCounter";
-import { checkStepValidation } from "./Steps/utils";
+import { useCheckStepValidation } from "./Steps/utils";
 import { ConditionRedux } from "@/redux/slices/types";
 import { actions, selectors } from "@/redux/slices/scientistData";
 import { renderTitle } from "./utils";
@@ -23,6 +23,8 @@ export default function ConditionPreview({ selectedCondition }: Props): JSX.Elem
   const dispatch = useAppDispatch();
   const step = useAppSelector(selectors.conditions.getStep);
   const isValid = useAppSelector(selectors.conditions.getValidity);
+
+  const isStepValide = useCheckStepValidation()
 
   const handleUpdate = (changes: any) => {
     dispatch(
@@ -50,7 +52,7 @@ export default function ConditionPreview({ selectedCondition }: Props): JSX.Elem
   };
 
   if (selectedCondition === undefined) {
-    return <Loader />;
+    return <Loader />
   }
 
   const handleNavigation = (to: number) => {
@@ -113,7 +115,7 @@ export default function ConditionPreview({ selectedCondition }: Props): JSX.Elem
               w="128px"
               variant="roundedBlue"
               className={cn(step !== 3 ? '' : '!hidden')}
-              isDisabled={checkStepValidation()}
+              isDisabled={isStepValide}
               onClick={() => handleNavigation(step + 1)}
             >
               Suivant

@@ -33,9 +33,9 @@ export default function Card({ input, index }: Props): JSX.Element {
   const dispatch = useAppDispatch();
   const { entityToRemove } = useAppSelector((state) => state.editor.form);
   const { status } = useAppSelector((state) => state.scientistData.survey);
-
-  const getCondition = (input: QuestionRedux) =>
-    useAppSelector((state) => selectors.conditions.selectConditionsByQuestionId(state, { questionId: input.id }))
+  const hasConditions = useAppSelector(
+    (state) =>selectors.conditions.selectConditionsByQuestionId(state, { questionId: input.id })
+  ).length > 0
 
   const isRemoving = entityToRemove === input.id;
   const color = useColorModeValue("gray.800", "gray.900");
@@ -144,7 +144,7 @@ export default function Card({ input, index }: Props): JSX.Element {
               right="4px"
               onClick={() => editCondition()}
             >
-              {getCondition(input).length > 0 && (
+              {hasConditions && (
                 <SvgHover target="circle">
                   <Image src={Condition} alt="Condition" />
                 </SvgHover>

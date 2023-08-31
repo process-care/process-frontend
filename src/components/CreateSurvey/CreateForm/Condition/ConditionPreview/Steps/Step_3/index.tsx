@@ -8,7 +8,7 @@ import { checkIfMultiple } from "@/utils/formBuilder/input";
 import { actions, selectors } from "@/redux/slices/scientistData";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { questionsSelectors } from "@/redux/slices/scientistData/question-editor";
-import { renderInput } from "./utils";
+import { RenderedInput } from "./utils";
 import Error from "@/components/Error";
 
 import Check from "./../../assets/check.svg";
@@ -61,7 +61,8 @@ export default function Step_3({ selectedCondition, updateStep }: Props): JSX.El
           return (
             <Form onChange={(event) => onChange(event)} style={{ width: "100%" }}>
               <Box display="flex" mx="auto" alignItems="center" w="100%" justifyContent="space-between">
-                {renderInput(selectedCondition)}
+                <RenderedInput selectedCondition={selectedCondition} />
+
                 <Box
                   pt={6}
                   onClick={() => {
@@ -82,9 +83,11 @@ export default function Step_3({ selectedCondition, updateStep }: Props): JSX.El
                   )}
                 </Box>
               </Box>
+
               {isValid && isNotEmpty && (
                 <Flex alignItems="center" justifyContent="flex-start" w="100%" mx="auto" mt="2">
                   <Image src={Check} alt="Checkmark" />
+                  
                   <Text fontSize="14px" color="brand.green" ml={2}>
                     {t.success}
                   </Text>

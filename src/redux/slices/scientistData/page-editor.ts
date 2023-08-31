@@ -84,7 +84,7 @@ export const pageReducer = {
     pageAdapter.addOne(state.pages, action.payload.page);
     state.pages.selectedPage = action.payload.page.id;
   },
-  updatePage: (state: GlobalState, action: any): void => {
+  updatePage: (state: GlobalState, action: PayloadAction<any>): void => {
     state.pages.lastUpdated = new Date().toISOString();
     pageAdapter.updateOne(state.pages, action.payload.changes);
   },

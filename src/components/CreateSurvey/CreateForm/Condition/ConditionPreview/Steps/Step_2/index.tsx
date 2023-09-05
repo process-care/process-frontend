@@ -14,9 +14,10 @@ interface Props {
 }
 
 export default function Step_2({ selectedCondition, updateStep }: Props): JSX.Element {
-  const target_question = useAppSelector((state) =>
-    questionsSelectors.selectQuestionById(state, selectedCondition.attributes.target?.data?.id)
-  );
+  const target_question = useAppSelector((state) => {
+    if (!selectedCondition.attributes.target?.data?.id) return null
+    return questionsSelectors.selectQuestionById(state, selectedCondition.attributes.target?.data?.id)
+  })
 
   const authorizedOperators = useMemo(() => {
     if (!target_question) return [];

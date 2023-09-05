@@ -13,7 +13,8 @@ export const SigninSchema = Yup.object().shape({
     .min(6, "Le mot de passe doit contenir au moins 6 charactères"),
   confirmPassword: Yup.string()
     .required("Ce champs est requis")
-    .oneOf([Yup.ref("password"), null], "Les mots de passe ne sont pas identiques")
+    // FIXME:  null is not assignable to type 'string | something'
+    .oneOf([Yup.ref("password")/*, null*/], "Les mots de passe ne sont pas identiques")
     .min(6, "Le mot de passe doit contenir au moins 6 charactères"),
   cgv: Yup.array().length(1, "Vous devez accepter les CGV"),
 });

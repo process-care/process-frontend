@@ -1,7 +1,7 @@
 'use client'
 
 import { CSSReset, ChakraProvider, ColorModeScript } from '@chakra-ui/react'
-import { CacheProvider } from '@chakra-ui/next-js'
+// import { CacheProvider } from '@chakra-ui/next-js'
 
 import theme from "@/theme";
 

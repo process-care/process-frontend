@@ -33,10 +33,10 @@ const ITEMS_PER_PAGE = 10;
 // ---- COMPONENT
 
 export default function Portail() {
-  const [currentFilter, setCurrentFilter] = useState<string>(t.filters[0].id);
+  const [currentFilter, setCurrentFilter] = useState<string>(t.filters[0].id)
 
-  const [pagination, setPagination] = useState<number>(0);
-  const { isTablet } = useMediaQueries();
+  const [pagination, setPagination] = useState<number>(0)
+  const { isTablet } = useMediaQueries()
 
   // Get all published surveys
   const { data: publishedResult, isLoading } = useSurveyPublishedQuery(client, {

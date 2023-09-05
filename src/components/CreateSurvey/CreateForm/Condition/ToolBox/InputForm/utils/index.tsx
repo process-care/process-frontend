@@ -41,7 +41,7 @@ export const renderFormTemplate = (input: QuestionRedux | Record<string, any>): 
   }
 };
 
-export const renderFormValidationSchema = (input: QuestionRedux | Record<string, any>): React.ReactFragment => {
+export const renderFormValidationSchema = (input: QuestionRedux | Record<string, any>) => {
   switch (input?.attributes?.type) {
     case "input": return CommonFieldsSchema;
     case "number_input": return CommonFieldsSchema;

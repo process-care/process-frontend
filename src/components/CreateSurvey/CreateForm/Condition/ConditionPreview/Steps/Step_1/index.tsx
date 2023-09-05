@@ -33,7 +33,7 @@ export default function Step_1({ selectedCondition, updateStep }: Props): JSX.El
 
   const referId = isTypePage
     ? selectedCondition?.attributes?.referer_page?.data?.id
-    : selectedCondition?.attributes.referer_question?.data?.id;
+    : selectedCondition?.attributes?.referer_question?.data?.id;
 
   const currentInputIndex = order.findIndex((id: string) => id === referId);
   const questionsBeforeCurrent = order.slice(0, currentInputIndex);

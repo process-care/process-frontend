@@ -17,9 +17,10 @@ interface Props {
 // ---- MAIN COMPONENT
 
 export function RenderedInput ({ selectedCondition }: Props): React.ReactElement | undefined {
-  const target_question = useAppSelector((state) =>
-    questionsSelectors.selectQuestionById(state, selectedCondition.attributes.target?.data?.id)
-  );
+  const target_question = useAppSelector((state) => {
+    if (!selectedCondition.attributes.target?.data?.id) return null
+    return questionsSelectors.selectQuestionById(state, selectedCondition.attributes.target?.data?.id)
+  })
 
   switch (target_question?.attributes?.type) {
     case "radio": // Same as select

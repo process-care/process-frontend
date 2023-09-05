@@ -27,7 +27,7 @@ export default function ConditionMenu({ selectedCondition }: Props): JSX.Element
 
         <Text variant="xsMedium">
           {isTypePage
-            ? selectedCondition?.attributes.referer_page?.data?.attributes?.name
+            ? selectedCondition?.attributes?.referer_page?.data?.attributes?.name
             : selectedCondition?.attributes?.referer_question?.data?.attributes?.label}
         </Text>
 
@@ -47,7 +47,7 @@ export default function ConditionMenu({ selectedCondition }: Props): JSX.Element
 
 function useConditionsAndGroups(selectedCondition: ConditionRedux, isValid: boolean, isTypePage: boolean) {
   // The selected page can change to we can't use the selector page's conditions.
-  const id = selectedCondition?.attributes.referer_page?.data?.id
+  const id = selectedCondition?.attributes?.referer_page?.data?.id
 
   const currentQuestionConditions = useAppSelector(selectors.conditions.selectSelectedQuestionsConditions)
   const currentPageConditions = useAppSelector((state) => selectors.conditions.selectConditionsByPageId(state, { pageId: id }))
@@ -55,7 +55,7 @@ function useConditionsAndGroups(selectedCondition: ConditionRedux, isValid: bool
   console.log("all fetched conditions : ", currentQuestionConditions, currentPageConditions)
   
   const currentConditions = isTypePage ? currentPageConditions : currentQuestionConditions
-  const groups = currentConditions.map((c: ConditionRedux) => c?.attributes.group)
+  const groups = currentConditions.map((c: ConditionRedux) => c?.attributes?.group)
 
   return {
     currentConditions,

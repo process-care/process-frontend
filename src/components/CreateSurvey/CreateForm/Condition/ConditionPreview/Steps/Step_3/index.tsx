@@ -25,9 +25,10 @@ export default function Step_3({ selectedCondition, updateStep }: Props): JSX.El
     dispatch(actions.setValidityCondition(bool));
   };
 
-  const target_question = useAppSelector((state) =>
-    questionsSelectors.selectQuestionById(state, selectedCondition.attributes.target?.data?.id)
-  );
+  const target_question = useAppSelector((state) => {
+    if (!selectedCondition.attributes.target?.data?.id) return null
+    return questionsSelectors.selectQuestionById(state, selectedCondition.attributes.target?.data?.id)
+  })
 
   if (!target_question) {
     return <Error message="Une erreur s'est produite: cette condition ne possède pas de question cible... !" />;

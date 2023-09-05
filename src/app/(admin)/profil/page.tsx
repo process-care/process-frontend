@@ -6,26 +6,25 @@ import dayjs from "dayjs";
 import { useDispatch } from "react-redux";
 import { usePathname, useRouter } from "next/navigation";
 
-import { getLabelStatus, t } from "@/static/dashboard";
-import { SurveyBuilder } from "@/redux/slices/surveyBuilderOLD";
+import { t } from "@/static/dashboard";
 import { useAppSelector } from "@/redux/hooks";
 import { actions as actionsApplication } from "@/redux/slices/application";
 import { useAuth } from "@/components/Authentification/hooks";
 import { actions } from "@/redux/slices/survey-editor";
 import { actions as actionsMySurveys, selectors } from "@/redux/slices/scientistData";
-import { SurveyRedux } from "@/redux/slices/types";
+
 import { HEADER_HEIGHT } from "@/components/Menu/SimpleMenu";
-import Filters from "@/components/Dashboard/Filters";
 import Table from "@/components/Table";
 import Loader from "@/components/Spinner";
 import Error from "@/components/Error";
 import ProjectMenu from "@/components/Dashboard/ProjectMenu";
+import Filters from "@/components/Dashboard/Filters";
 import Drawer from "@/components/Drawer";
 import ProfilForm from "@/components/Dashboard/ProfilForm";
 import NoData from "@/components/SurveyGrid/noData";
 
 export default function Dashboard(): JSX.Element {
-  const { isLoading: authIsLoading, cookies } = useAuth();
+  const { cookies } = useAuth();
   const router = useRouter()
   const pathname = usePathname()
 
@@ -43,8 +42,8 @@ export default function Dashboard(): JSX.Element {
     setMenuIsOpen(false);
   };
 
-  const toggleMenu = (survey: SurveyBuilder["survey"]) => {
-    dispatch(actionsMySurveys.setSelectedSurvey(survey.id));
+  const toggleMenu = (surveyId: string) => {
+    dispatch(actionsMySurveys.setSelectedSurvey(surveyId));
     if (!isOpen) {
       setMenuIsOpen(true);
     }
@@ -66,46 +65,7 @@ export default function Dashboard(): JSX.Element {
     }
   }, [currentFilter, surveys]);
 
-  const columns = useMemo(
-    () =>
-      t.header.map(({ Header, accessor }) => {
-        if (accessor === "status") {
-          return {
-            Header,
-            accessor: (d: SurveyRedux) => getLabelStatus(d?.attributes?.status),
-          };
-        }
-        if (accessor === "createdAt") {
-          return {
-            Header,
-            accessor: (d: SurveyRedux) => {
-              return dayjs(d?.attributes.createdAt).format("DD-MM-YYYY");
-            },
-          };
-        }
-        if (accessor === "total") {
-          return {
-            Header,
-            accessor: (d: SurveyRedux) => d?.attributes.participations?.data.length,
-          };
-        }
-        if (accessor === "title") {
-          return {
-            Header,
-            accessor: (d: SurveyRedux) => d?.attributes?.title,
-          };
-        } else
-          return {
-            Header,
-            accessor,
-          };
-      }),
-    []
-  );
-
-  const handleDrawer = () => {
-    dispatch(actionsApplication.toogleDrawer());
-  };
+  const handleDrawer = () => dispatch(actionsApplication.toogleDrawer())
 
   const closeDrawer = () => {
     router.push("/dashboard");
@@ -118,12 +78,11 @@ export default function Dashboard(): JSX.Element {
   };
 
   useEffect(() => {
-    if (!authIsLoading && cookies?.user?.id) {
-      dispatch(actionsMySurveys.initializeSurveys(cookies.user.id));
-    }
-  }, [authIsLoading, cookies?.user?.id, dispatch]);
+    if (!cookies?.user?.id) return
+    dispatch(actionsMySurveys.initializeSurveys(cookies?.user?.id));
+  }, [cookies?.user?.id, dispatch]);
 
-  if (authIsLoading || isLoading || surveys === undefined) {
+  if (isLoading || surveys === undefined) {
     return <Loader />;
   }
 
@@ -136,20 +95,21 @@ export default function Dashboard(): JSX.Element {
   const hadFilteredSurvys = data.length > 0;
 
   return (
-    <Box display="flex" justifyContent="space-around" w="100%">
+    <Box display="flex" h={`calc(100vh - ${HEADER_HEIGHT})`} justifyContent="space-around" w="100%">
       <Box h="80vh">
         <Drawer isOpen={isProfilPage && isOpen} size="md" content={<ProfilForm />} onOverlayClick={closeDrawer} />
       </Box>
 
-      <div className="background__grid" style={{ width: menuIsOpen ? "47%" : "100%" }}>
-        <Container textAlign="left" pt="9" maxW="90%" h={`calc(100vh - ${HEADER_HEIGHT})`}>
+      <div className="background__grid overflow-auto" style={{ width: menuIsOpen ? "47%" : "100%" }}>
+        <Container textAlign="left" py="9" maxW="90%">
           {hadSurveys ? (
             <>
               <Text variant="xl" fontWeight="bold" mb="10px">
                 {surveysLenght > 1 ? `Mes ${surveysLenght} projets` : "Mon projet"}
               </Text>
+
               <Flex justifyContent="space-between" alignItems="flex-end">
-                <Filters filters={t.filters} handleClick={(id) => setCurrentFilter(id)} currentFilter={currentFilter} />
+                <Filters filters={t.filters} handleClick={setCurrentFilter} currentFilter={currentFilter} />
 
                 {hadSurveys && (
                   <>
@@ -159,6 +119,7 @@ export default function Dashboard(): JSX.Element {
                   </>
                 )}
               </Flex>
+
               {hadFilteredSurvys ? (
                 <Box
                   mt={3}
@@ -170,7 +131,7 @@ export default function Dashboard(): JSX.Element {
                     boxShadow: "rgb(33 33 52 / 10%) 0px 1px 4px",
                   }}
                 >
-                  <Table columns={columns} data={data} onClick={toggleMenu} />
+                  <Table data={data} onClick={toggleMenu} />
                 </Box>
               ) : (
                 <Box w="100%" m="0 auto">

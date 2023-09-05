@@ -7,6 +7,7 @@ import { useFileHandlers } from "./hooks";
 import SvgHover from "@/components/SvgHover";
 
 import Delete from "../assets/delete.svg";
+import { cn } from "@/lib/utils";
 
 // ---- TYPES
 
@@ -57,8 +58,10 @@ export default function UploadFileRemote(props: Props): JSX.Element {
   const hiddenFileInput = useRef<HTMLInputElement>(null);
   const { handleChange, handleDelete, error } = useFileHandlers(target, multiple, onChange);
 
+  const isInvalid = Boolean(error)
+
   return (
-    <FormControl my={4}>
+    <FormControl my={4} isInvalid={isInvalid}>
       <Flex alignItems="center" justifyContent="space-between">
         <Button
           variant="roundedTransparent"
@@ -104,7 +107,7 @@ export default function UploadFileRemote(props: Props): JSX.Element {
         </Flex>
       )}
 
-      <FormErrorMessage mt={1} justifyContent="flex-end" fontSize="10px">
+      <FormErrorMessage mt={1} justifyContent="flex-start" fontSize="10px">
         {error}
       </FormErrorMessage>
 

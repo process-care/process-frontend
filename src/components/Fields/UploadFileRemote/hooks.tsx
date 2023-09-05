@@ -1,14 +1,18 @@
 import { useCallback, useState } from "react";
 import { useField, useFormikContext } from "formik";
 
-import { client } from "@/api/gql-client";
+import { apollo, client } from "@/api/gql-client";
 import {
   useDeleteFileMutation,
   useUploadFileMultipleMutation,
-  useUploadFileSingleMutation,
 } from "@/api/graphql/queries/application.gql.generated";
 
+import {
+  useUploadFileSingleMutation
+} from "@/api/graphql/queries/application.apollo.generated";
+
 import { UploadParams } from "@/redux/slices/application";
+// import { API_URL } from "@/constants/api";
 
 // ---- TYPES
 
@@ -29,8 +33,8 @@ export const useFileHandlers = (
   const { setFieldValue } = useFormikContext();
   const [error, setError] = useState<string>();
 
-  const { mutateAsync: uploadSingleFile } = useUploadFileSingleMutation(client);
-  const { mutateAsync: uploadMultiFile } = useUploadFileMultipleMutation(client);
+  const [uploadFileSingleMutation] = useUploadFileSingleMutation({ client: apollo });
+  const { mutateAsync: uploadMultiFile } = useUploadFileMultipleMutation(client, {}, {});
   const { mutateAsync: deleteFile } = useDeleteFileMutation(client);
 
   // Uploader function
@@ -38,9 +42,7 @@ export const useFileHandlers = (
     if (!event.currentTarget.files) return;
     let data = null;
 
-    // TODO: not sure if a try / catch would work here
     try {
-      // Upload the files
       if (multiple) {
         const files = event.currentTarget.files;
         const uploaded = await uploadMultiFile({ ...target, files });
@@ -49,24 +51,25 @@ export const useFileHandlers = (
         // Remove multiple previous files
         field.value.map((file: any) => deleteFile({ id: file.data.id }));
       } else {
-        const uploaded = await uploadSingleFile({ ...target, file: event.currentTarget.files[0] });
+        const files = event.currentTarget.files
+        const uploaded = await uploadFileSingleMutation({ variables: { ...target, file: files.item(0) }})
 
         console.log(uploaded)
-
-        data = uploaded?.upload;
+        data = uploaded?.data?.upload;
 
         // Remove previous file
-        deleteFile({ id: field.value.data.id });
+        deleteFile({ id: field.value.data.id })
       }
     } catch (e: any) {
+      console.error(e)
       onChange('An error occured while uploading the file.')
-      setError(e)
+      setError('Une erreur est survenue pendant le téléchargement du fichier')
       return
     }
 
     setFieldValue(target.field, data);
     onChange(`Updated files: ${data}`);
-  }, [deleteFile, field.value, multiple, onChange, setFieldValue, target, uploadMultiFile, uploadSingleFile])
+  }, [deleteFile, field.value, multiple, onChange, setFieldValue, target, uploadFileSingleMutation, uploadMultiFile])
 
   // Deleter function
   const handleDelete = useCallback((id: string) => {
@@ -81,3 +84,19 @@ export const useFileHandlers = (
     error,
   };
 };
+
+// async function uploadSingleFile(data: UploadParams & { file: File }) {
+//   const formData = new FormData(data)
+//   const uploaded = await fetch(`${API_URL}/api/upload`, {
+//     method: "POST",
+//     body: file,
+//   })
+  
+//   console.log(uploaded)
+
+//   const data = await uploaded.json()
+  
+//   console.log(data)
+
+//   return data
+// }

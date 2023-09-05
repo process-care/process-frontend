@@ -1,5 +1,8 @@
+'use client'
+
 import { useCallback } from "react"
 import { Box, Button, Container, Center } from "@chakra-ui/react"
+import dynamic from "next/dynamic"
 
 import { NL } from "@/static/participation"
 import { useSurveyQuery } from "@/api/graphql/queries/survey.gql.generated"
@@ -7,7 +10,11 @@ import { client } from "@/api/gql-client"
 import { useCreateParticipationMutation } from "@/api/graphql/queries/participation.gql.generated"
 import { useMediaQueries } from "@/utils/hooks/mediaqueries"
 import Menu from "@/components/Menu/CreateSurvey"
-import PDFPreview from "@/components/PDFPreview"
+
+// @ts-ignore
+const PDFPreviewer = dynamic(() => import("@/components/PDFPreview.tsx"), {
+  ssr: false,
+});
 
 // ---- TYPES
 
@@ -64,7 +71,11 @@ export default function ParticipationConsent({ surveyId, onConsent, onRefuse }: 
             w={isTablet ? "90%" : "100%"}
             mx="auto"
           >
-            {url ? <PDFPreview url={url} /> : <Box w="450px" h="500px" backgroundColor="gray.100" />}
+            { url
+              // @ts-ignore
+             ? <PDFPreviewer url={url} />
+             : <Box w="450px" h="500px" backgroundColor="gray.100" />
+            }
           </Box>
         </div>
       </Box>

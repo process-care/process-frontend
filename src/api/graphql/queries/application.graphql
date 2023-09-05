@@ -29,6 +29,8 @@ mutation uploadFileMultiple(
       id
       attributes {
         name
+        size
+        url
       }
     }
   }

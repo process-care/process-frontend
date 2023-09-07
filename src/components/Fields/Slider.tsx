@@ -4,7 +4,7 @@ import { useField } from "formik";
 import Slider from "rc-slider"
 import 'rc-slider/assets/index.css';
 
-import { Maybe } from "@/api/graphql/types.generated";
+import { Maybe } from "@/api/graphql/types.generated.ts"
 
 interface Props {
   label: string;

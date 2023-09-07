@@ -1,22 +1,22 @@
-import React from "react";
-import { Box, Flex, Text } from "@chakra-ui/layout";
-import Image from "next/image";
+import React from "react"
+import { Box, Flex, Text } from "@chakra-ui/layout"
 
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { setIsRemoving } from "@/redux/slices/formBuilder";
-import { actions, selectors } from "@/redux/slices/scientistData";
-import { SurveyRedux } from "@/redux/slices/types";
-import { isInactive } from "./utils";
-import SvgHover from "@/components/SvgHover";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
+import { setIsRemoving } from "@/redux/slices/formBuilder/index.ts"
+import { actions, selectors } from "@/redux/slices/scientistData.js"
+import { SurveyRedux } from "@/redux/slices/types/index.js"
+import { isInactive } from "./utils/index.ts"
+import SvgHover from "@/components/SvgHover/index.tsx"
 
-import Locked from "./assets/locked.svg";
-import Delete from "./assets/delete.svg";
-import Condition from "./assets/condition.svg";
-import Add from "./assets/add.svg";
+import {  LockIcon, PlusIcon, DeleteIcon, SplitIcon } from "lucide-react"
+
+// ---- TYPES
 
 interface Props {
   survey: SurveyRedux;
 }
+
+// ---- COMPONENT
 
 export default function PageBuilder({ survey }: Props): JSX.Element {
   const dispatch = useAppDispatch();
@@ -49,7 +49,7 @@ export default function PageBuilder({ survey }: Props): JSX.Element {
         }}
       >
         <SvgHover>
-          <Image src={Add} alt="Add"/>
+          <PlusIcon />
         </SvgHover>
         
         <Text variant="xs" mt="2">
@@ -71,7 +71,7 @@ export default function PageBuilder({ survey }: Props): JSX.Element {
               <Flex alignItems="center" position="relative">
                 <Box position="absolute" right="16px" bottom="35px">
                   {pagesConditions.some((c) => c?.attributes?.referer_page?.data?.id === page.id) ? (
-                    <Image src={Condition} alt="Condition" />
+                    <SplitIcon />
                   ) : (
                     <></>
                   )}
@@ -92,7 +92,7 @@ export default function PageBuilder({ survey }: Props): JSX.Element {
                 >
                   {page?.attributes?.is_locked ? (
                     <Box mx="auto">
-                      <Image src={Locked} alt="Locked" />
+                      <LockIcon />
                     </Box>
                   ) : (
                     <Box p="4px 4px 5px 4px"></Box>
@@ -106,7 +106,7 @@ export default function PageBuilder({ survey }: Props): JSX.Element {
                       dispatch(setIsRemoving(page.id));
                     }}
                   >
-                    <Image src={Delete} alt="Delete" />
+                    <DeleteIcon />
                   </Box>
                 )}
               </Flex>

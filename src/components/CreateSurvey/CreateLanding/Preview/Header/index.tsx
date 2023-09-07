@@ -1,8 +1,8 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
-import Image from "next/image";
+import Image from "next/image.js"
 
-import { Color } from "@/types/landing";
-import { useMediaQueries } from "@/utils/hooks/mediaqueries";
+import { Color } from "@/types/landing.ts"
+import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
 
 interface Props {
   title?: string;

@@ -1,9 +1,9 @@
 import { Box } from "@chakra-ui/react";
 
-import { CommonFields } from "../index";
-import { NumberInput } from "@/components/Fields";
-import TitleDivider from "@/components/TitleDivider";
-import AssociatedSubfields from "./AssociatedSubfields";
+import { CommonFields } from "../index.ts"
+import { NumberInput } from "@/components/Fields/index.ts"
+import TitleDivider from "@/components/TitleDivider/index.tsx"
+import AssociatedSubfields from "./AssociatedSubfields/index.tsx"
 
 export default function AssociatedClassificationFields(): JSX.Element {
   return (

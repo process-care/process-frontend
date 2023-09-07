@@ -1,12 +1,12 @@
 import { createEntityAdapter, createSlice, createSelector, PayloadAction, Update } from "@reduxjs/toolkit";
 import { DateTime } from "luxon";
 
-import { RootState } from "@/redux/store";
-import { GlobalState } from "../scientistData";
-import { Maybe } from "@/api/graphql/types.generated";
-import { ConditionRedux } from "../types";
-import { pageSelectors } from "./page-editor";
-import { questionsSelectors } from "./question-editor";
+import { RootState } from "@/redux/store/index.js";
+import { GlobalState } from "../scientistData.js"
+import { Maybe } from "@/api/graphql/types.generated.js"
+import { ConditionRedux } from "../types/index.js"
+import { pageSelectors } from "./page-editor.js"
+import { questionsSelectors } from "./question-editor.js"
 
 // ---- TYPES
 

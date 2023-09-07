@@ -1,18 +1,18 @@
 import { useCallback } from "react";
 import { Formik, Form } from "formik";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation.js"
 
-import { client } from "@/api/gql-client";
+import { client } from "@/api/gql-client.js"
 import { Avatar, Box, Flex, Text } from "@chakra-ui/react";
-import { useAppDispatch } from "@/redux/hooks";
-import { actions } from "@/redux/slices/application";
-import { useAuth } from "@/components/Authentification/hooks";
-import { changePassword } from "@/api/actions/password";
-import { Enum_Question_Rows } from "@/api/graphql/types.generated";
-import { UserQuery, useUpdateUserMutation, useUserQuery } from "./user.gql.generated";
-import { Textarea, Input } from "@/components/Fields";
-import Footer from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer";
-import Loader from "@/components/Spinner";
+import { useAppDispatch } from "@/redux/hooks/index.js"
+import { actions } from "@/redux/slices/application/index.js"
+import { useAuth } from "@/components/Authentification/hooks/index.js";
+import { changePassword } from "@/api/actions/password/index.ts"
+import { Enum_Question_Rows } from "@/api/graphql/types.generated.ts"
+import { UserQuery, useUpdateUserMutation, useUserQuery } from "./user.gql.generated.ts"
+import { Textarea, Input } from "@/components/Fields/index.ts"
+import Footer from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer/index.tsx"
+import Loader from "@/components/Spinner/index.tsx"
 
 // ---- STATICS
 

@@ -4,7 +4,7 @@ import {
   IconButton,
   IconButtonProps,
 } from "@chakra-ui/react";
-import { FaMoon, FaSun } from "react-icons/fa";
+import { FaMoon, FaSun } from "react-icons/fa/index.js"
 
 type Props = Omit<IconButtonProps, "aria-label">;
 

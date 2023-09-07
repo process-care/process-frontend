@@ -3,21 +3,21 @@ import { Box, Button, Flex, Text, Tooltip } from "@chakra-ui/react"
 import { InfoIcon } from "@chakra-ui/icons"
 import { Formik, Form } from "formik"
 
-import { t } from "@/static/condition";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { getDiff, removeEmpty, renderFormTemplate, renderFormValidationSchema } from "./utils";
-import { fields } from "./Template/logic/initialValues";
-import { setIsRemoving } from "@/redux/slices/formBuilder";
-import { selectors, actions } from "@/redux/slices/scientistData";
-import { actions as appActions } from "@/redux/slices/application";
-import { selectors as formBuilderSelectors, actions as formBuilderAction } from "@/redux/slices/formBuilder";
-import { getQuestionInfo, getQuestionName } from "@/constants/inputs";
-import { QuestionRedux } from "@/redux/slices/types";
-import { Input, Textarea } from "@/components/Fields";
-import { Enum_Question_Rows, Enum_Question_Type } from "@/api/graphql/types.generated";
-import Footer from "./Template/Footer";
-import InputIcon from "@/components/CreateSurvey/CreateForm/InputIcon";
-import TitleDivider from "@/components/TitleDivider";
+import { t } from "@/static/condition.ts"
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
+import { getDiff, removeEmpty, renderFormTemplate, renderFormValidationSchema } from "./utils/index.tsx"
+import { fields } from "./Template/logic/initialValues.ts"
+import { setIsRemoving } from "@/redux/slices/formBuilder/index.ts"
+import { selectors, actions } from "@/redux/slices/scientistData.js"
+import { actions as appActions } from "@/redux/slices/application/index.js"
+import { selectors as formBuilderSelectors, actions as formBuilderAction } from "@/redux/slices/formBuilder/index.ts"
+import { getQuestionInfo, getQuestionName } from "@/constants/inputs.ts"
+import { QuestionRedux } from "@/redux/slices/types/index.js"
+import { Input, Textarea } from "@/components/Fields/index.ts"
+import { Enum_Question_Rows, Enum_Question_Type } from "@/api/graphql/types.generated.ts"
+import Footer from "./Template/Footer/index.tsx"
+import InputIcon from "@/components/CreateSurvey/CreateForm/InputIcon/index.tsx"
+import TitleDivider from "@/components/TitleDivider/index.tsx"
 
 interface Props {
   order: string[];

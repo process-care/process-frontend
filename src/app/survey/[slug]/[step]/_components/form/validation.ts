@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { QuestionEntity } from "@/api/graphql/sdk.generated";
+import { QuestionEntity } from "@/api/graphql/sdk.generated.js"
 
 const getTypeValidation = (item: QuestionEntity) => {
   const type = item.attributes?.type;

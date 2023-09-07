@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 
-import { Input, NumberInput } from "@/components/Fields";
+import { Input, NumberInput } from "@/components/Fields/index.ts"
 
 export default function InputFields(): JSX.Element {
   return (

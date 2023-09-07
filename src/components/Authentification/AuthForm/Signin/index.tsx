@@ -4,13 +4,13 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { Formik, Form } from "formik";
 import { Box, Flex, Button } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation.js"
 
-import { Input, Checkbox } from "@/components/Fields";
-import { SigninSchema } from "@/components/Authentification/SiginForm/validationSchema";
-import { actions } from "@/redux/slices/scientistData";
-import Errors, { renderAuthMessage } from "@/components/Authentification/Errors";
-import { useAppSelector } from "@/redux/hooks";
+import { Input, Checkbox } from "@/components/Fields/index.ts"
+import { SigninSchema } from "@/components/Authentification/SiginForm/validationSchema.ts"
+import { actions } from "@/redux/slices/scientistData.js"
+import Errors, { renderAuthMessage } from "@/components/Authentification/Errors/index.tsx"
+import { useAppSelector } from "@/redux/hooks/index.js"
 
 // ---- TYPES
 

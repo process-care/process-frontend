@@ -1,6 +1,6 @@
 import { Box, Text } from "@chakra-ui/react";
 
-import { LandingRedux } from "@/redux/slices/types";
+import { LandingRedux } from "@/redux/slices/types/index.js"
 
 interface Props {
   author: { email: string; username: string } | undefined | null;

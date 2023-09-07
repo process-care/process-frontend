@@ -1,4 +1,4 @@
-import { QuestionRedux } from "@/redux/slices/types";
+import { QuestionRedux } from "@/redux/slices/types/index.js"
 import {
   TextareaFields,
   CheckboxFields,
@@ -12,14 +12,14 @@ import {
   FreeclassificationFields,
   AssociatedClassificationFields,
   MonoThumbnailFields,
-} from "../Template";
+} from "../Template/index.ts"
 import {
   CommonFieldsSchema,
   MultipleInputFieldsSchema,
   SliderSchema,
   WysiwygSchema,
   AssociatedSchema,
-} from "../ValidationSchemas";
+} from "../ValidationSchemas/index.ts"
 
 export const renderFormTemplate = (input: QuestionRedux | Record<string, any>): React.ReactNode => {
   switch (input?.attributes?.type) {

@@ -1,4 +1,4 @@
-import { Enum_Question_Rows, Maybe } from "@/api/graphql/types.generated";
+import { Enum_Question_Rows, Maybe } from "@/api/graphql/types.generated.ts"
 
 export const getRows = (size: Maybe<Enum_Question_Rows> | undefined): number => {
   switch (size) {

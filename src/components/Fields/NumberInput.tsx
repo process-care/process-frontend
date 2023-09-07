@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useField } from "formik";
 
-import { Maybe } from "@/api/graphql/types.generated";
+import { Maybe } from "@/api/graphql/types.generated.ts"
 
 interface Props {
   label: string;

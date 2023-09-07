@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Box, Text } from "@chakra-ui/react";
-import { useAppSelector } from "@/redux/hooks";
+
+import { useAppSelector } from "@/redux/hooks/index.js"
 
 export default function Banner(): JSX.Element {
   const { status, isChecking } = useAppSelector(

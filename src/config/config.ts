@@ -3,4 +3,5 @@ const config = {
     namespace: ".Process",
   },
 };
+
 export default config;

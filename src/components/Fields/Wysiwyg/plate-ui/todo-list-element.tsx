@@ -6,9 +6,9 @@ import {
   useTodoListElementState,
 } from '@udecode/plate-list';
 
-import { cn } from '@/utils/plate-ui';
+import { cn } from '@/utils/ui.ts'
 
-import { Checkbox } from './checkbox';
+import { Checkbox } from './checkbox.tsx'
 
 export type TodoListElementProps = PlateElementProps<
   Value,

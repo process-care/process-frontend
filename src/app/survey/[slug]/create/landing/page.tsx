@@ -3,16 +3,16 @@
 import { useEffect, useMemo } from "react";
 import { Box, Collapse, Container } from "@chakra-ui/react";
 
-import { client } from "@/api/gql-client";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { useMediaQueries } from "@/utils/hooks/mediaqueries";
-import { actions, selectors } from "@/redux/slices/landing-editor";
-import { useSurveyBySlugQuery } from "@/api/graphql/queries/survey.gql.generated";
-import Menu from "@/components/Menu/CreateForm";
-import ToolBox from "@/components/CreateSurvey/CreateLanding/ToolBox";
-import Preview from "@/components/CreateSurvey/CreateLanding/Preview";
-import Loader from "@/components/Spinner";
-import Error from "@/components/Error";
+import { client } from "@/api/gql-client.js"
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
+import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
+import { actions, selectors } from "@/redux/slices/landing-editor.js"
+import { useSurveyBySlugQuery } from "@/api/graphql/queries/survey.gql.generated.js"
+import Menu from "@/components/Menu/CreateForm/index.tsx"
+import ToolBox from "@/components/CreateSurvey/CreateLanding/ToolBox/index.tsx"
+import Preview from "@/components/CreateSurvey/CreateLanding/Preview/index.tsx"
+import Loader from "@/components/Spinner/index.tsx"
+import Error from "@/components/Error/index.tsx"
 
 // ---- TYPES
 

@@ -2,20 +2,18 @@
 
 import { useState, useMemo, useEffect } from 'react'
 import { Box, Text } from '@chakra-ui/react'
-import Image from 'next/image'
+import Image from 'next/image.js'
 
-import Filters from '@/components/Dashboard/Filters'
-import Loader from '@/components/Spinner'
-import SurveyGrid from '@/components/SurveyGrid'
-import NoData from '@/components/SurveyGrid/noData'
+import Filters from '@/components/Dashboard/Filters/index.tsx'
+import Loader from '@/components/Spinner/index.tsx'
+import SurveyGrid from '@/components/SurveyGrid/index.tsx'
+import NoData from '@/components/SurveyGrid/noData/index.tsx'
 
-import ShowMore from "@/assets/ShowMore.svg"
-import Hero from "@/assets/hero.jpg"
+import { client } from '@/api/gql-client.js'
+import { useMediaQueries } from '@/utils/hooks/mediaqueries.js'
 
-import { client } from '@/api/gql-client'
-import { useMediaQueries } from '@/utils/hooks/mediaqueries'
-
-import { useSurveyPublishedQuery } from './portal.gql.generated'
+import { useSurveyPublishedQuery } from './portal.gql.generated.js'
+import { ShowMore } from '@/components/ShowMore.tsx'
 
 // ---- CONSTS
 
@@ -75,11 +73,7 @@ export default function Portail() {
           </Text>
         </Box>
 
-        <Image
-          src={Hero}
-          alt="Process"
-          className='absolute object-cover h-[150px] sm:h-[200px] w-full'
-        />
+        <ShowMore className='absolute object-cover h-[150px] sm:h-[200px] w-full' />
       </Box>
 
       <Box p={isTablet ? "5%" : "2% 5%"} display="flex" justifyContent="space-between" flexDir={isTablet ? "column" : "row"}>
@@ -115,7 +109,7 @@ export default function Portail() {
         >
           <Text variant="current">Afficher plus de Projets</Text>
           <Box margin="0 auto" display="flex" justifyContent="center">
-            <Image src={ShowMore} alt='Show more' />
+            <ShowMore />
           </Box>
         </Box>
       ) : (

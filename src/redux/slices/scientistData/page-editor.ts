@@ -1,10 +1,10 @@
 import { PayloadAction, createEntityAdapter, createSelector } from "@reduxjs/toolkit";
 
-import { RootState } from "@/redux/store";
+import { RootState } from "@/redux/store/index.js";
 import { DateTime } from "luxon";
-import { GlobalState } from "../scientistData";
-import { PageRedux } from "../types";
-import { Maybe } from "@/api/graphql/types.generated";
+import { GlobalState } from "../scientistData.js"
+import { PageRedux } from "../types/index.js"
+import { Maybe } from "@/api/graphql/types.generated.js"
 
 // ---- TYPES
 

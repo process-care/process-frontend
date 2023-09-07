@@ -1,8 +1,8 @@
 import { Box } from "@chakra-ui/react";
 import { Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon } from "@chakra-ui/react";
 
-import { PageParticipationRedux } from "@/redux/slices/participation/page";
-import PageEntry from "./PageEntry";
+import { PageParticipationRedux } from "@/redux/slices/participation/page.js"
+import PageEntry from "./PageEntry.tsx"
 
 // ---- TYPES
 

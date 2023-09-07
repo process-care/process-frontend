@@ -1,10 +1,10 @@
 import { useEffect, useMemo } from "react";
 import { useField } from "formik";
 
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { actions, selectors } from "@/redux/slices/participation/answers";
-import { PageParticipationRedux } from "@/redux/slices/participation/page";
-import { QuestionRedux } from "@/redux/slices/types";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
+import { actions, selectors } from "@/redux/slices/participation/answers.js"
+import { PageParticipationRedux } from "@/redux/slices/participation/page.js"
+import { QuestionRedux } from "@/redux/slices/types/index.js"
 
 // ---- TYPES
 

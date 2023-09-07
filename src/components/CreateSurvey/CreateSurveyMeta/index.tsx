@@ -3,16 +3,16 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Formik, Form, FormikErrors } from "formik";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import { useParams, useRouter } from "next/navigation";
-import Link from "next/link";
+import { useParams, useRouter } from "next/navigation.js"
+import Link from "next/link.js"
 
-import Errors, { renderSurveyMessage } from "@/components/Authentification/Errors";
-import { useAppSelector, useAppDispatch } from "@/redux/hooks";
-import { selectors, actions } from "@/redux/slices/survey-editor";
-import { Enum_Survey_Status, Survey } from "@/api/graphql/types.generated";
-import { createSurveySchema } from "../validationSchema";
-import { checkValidity, renderInputs } from "./utils";
-import { SurveyRedux } from "@/redux/slices/types";
+import Errors, { renderSurveyMessage } from "@/components/Authentification/Errors/index.tsx"
+import { useAppSelector, useAppDispatch } from "@/redux/hooks/index.js"
+import { selectors, actions } from "@/redux/slices/survey-editor.js"
+import { Enum_Survey_Status, Survey } from "@/api/graphql/types.generated.ts"
+import { createSurveySchema } from "../validationSchema/index.tsx"
+import { checkValidity, renderInputs } from "./utils.tsx"
+import { SurveyRedux } from "@/redux/slices/types/index.js"
 
 // COMPONENT
 

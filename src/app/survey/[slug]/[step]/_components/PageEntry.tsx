@@ -2,8 +2,8 @@ import { useCallback } from "react";
 import { Box, Text } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 
-import { PageParticipationRedux } from "@/redux/slices/participation/page";
-import { useMediaQueries } from "@/utils/hooks/mediaqueries";
+import { PageParticipationRedux } from "@/redux/slices/participation/page.js"
+import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
 
 // ---- TYPES
 

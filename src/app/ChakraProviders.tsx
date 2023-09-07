@@ -3,7 +3,7 @@
 import { CSSReset, ChakraProvider, ColorModeScript } from '@chakra-ui/react'
 // import { CacheProvider } from '@chakra-ui/next-js'
 
-import theme from "@/theme";
+import theme from "@/theme/index.tsx"
 
 export function ChakraProviders({ 
     children 

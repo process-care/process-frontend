@@ -2,9 +2,9 @@
 
 import { Box, Center, Container } from "@chakra-ui/react";
 
-import CreateSurveyForm from "@/components/CreateSurvey/CreateSurveyMeta";
-import Menu from "@/components/Menu/CreateSurvey";
-import Timeline from "@/components/CreateSurvey/Timeline";
+import CreateSurveyForm from "@/components/CreateSurvey/CreateSurveyMeta/index.tsx"
+import Menu from "@/components/Menu/CreateSurvey/index.tsx";
+import Timeline from "@/components/CreateSurvey/Timeline/index.tsx"
 
 export default function CreateSurvey(): JSX.Element {
   return (

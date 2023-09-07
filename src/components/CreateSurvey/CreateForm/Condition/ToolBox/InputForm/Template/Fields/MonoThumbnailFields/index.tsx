@@ -1,15 +1,15 @@
 import { Box } from "@chakra-ui/react";
 
-import { Maybe } from "@/api/graphql/sdk.generated";
-import { Enum_Question_Type } from "@/api/graphql/types.generated";
-import { NumberInput, Select } from "@/components/Fields";
-import { useAppSelector } from "@/redux/hooks";
-import { selectors } from "@/redux/slices/scientistData";
+import { Maybe } from "@/api/graphql/sdk.generated.js"
+import { Enum_Question_Type } from "@/api/graphql/types.generated.ts"
+import { NumberInput, Select } from "@/components/Fields/index.ts"
+import { useAppSelector } from "@/redux/hooks/index.js"
+import { selectors } from "@/redux/slices/scientistData.js"
 
-import { CommonFields } from "../../index";
-import TitleDivider from "@/components/TitleDivider";
-import AssociatedSubfields from "../AssociatedSubfields";
-import GradeFields from "./GradeFields";
+import { CommonFields } from "../../index.ts"
+import TitleDivider from "@/components/TitleDivider/index.tsx"
+import AssociatedSubfields from "../AssociatedSubfields/index.tsx"
+import GradeFields from "./GradeFields/index.tsx"
 
 export interface Option {
   label: string;

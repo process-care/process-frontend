@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { LoginMutation } from "@/api/graphql/queries/auth.gql.generated";
+import { LoginMutation } from "@/api/graphql/queries/auth.gql.generated.ts"
 
 export function useAuth() {
   const [value, setValue] = useState<string | null>(null);

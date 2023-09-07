@@ -1,10 +1,10 @@
 import { Grid } from "@chakra-ui/react";
-import Link from "next/link";
+import Link from "next/link.js"
 
-import {SurveyRedux } from "@/redux/slices/types";
-import { useMediaQueries } from "@/utils/hooks/mediaqueries";
-import Loader from "@/components/Spinner";
-import Card from "./Card";
+import {SurveyRedux } from "@/redux/slices/types/index.js"
+import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
+import Loader from "@/components/Spinner/index.tsx"
+import Card from "./Card/index.tsx"
 
 const t = {
   noData: "No surveys here ....",

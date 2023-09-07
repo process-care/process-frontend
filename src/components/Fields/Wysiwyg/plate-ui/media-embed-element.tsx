@@ -15,9 +15,9 @@ import {
   useMediaState,
 } from '@udecode/plate-media';
 
-import { cn } from '@/utils/plate-ui';
+import { cn } from '@/utils/ui.ts'
 
-import { MediaPopover } from './media-popover';
+import { MediaPopover } from './media-popover.tsx'
 
 const MediaEmbedElement = React.forwardRef<
   React.ElementRef<typeof PlateElement>,

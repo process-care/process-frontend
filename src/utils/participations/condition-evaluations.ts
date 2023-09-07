@@ -1,5 +1,5 @@
-import { Enum_Condition_Operator } from "@/api/graphql/types.generated";
-import { EvaluationCondition } from "@/redux/slices/participation/types";
+import { Enum_Condition_Operator } from "@/api/graphql/types.generated.js"
+import { EvaluationCondition } from "@/redux/slices/participation/types.js"
 
 // ---- FUNCTIONS
 

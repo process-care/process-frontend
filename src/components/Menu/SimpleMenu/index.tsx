@@ -1,14 +1,12 @@
 import { Box, Flex, Text, Avatar } from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import Image from "next/image";
+import { useRouter } from "next/navigation.js"
+import Link from "next/link.js"
 
-import { t } from "@/static/dashboard";
-import { actions } from "@/redux/slices/application";
-import { actions as appActions } from "@/redux/slices/scientistData";
-
-import Logo from "@/assets/logo.svg";
+import { t } from "@/static/dashboard.js"
+import { actions } from "@/redux/slices/application/index.js"
+import { actions as appActions } from "@/redux/slices/scientistData.js"
+import { Logo } from "@/components/Logos.tsx";
 
 export const HEADER_HEIGHT = "65px";
 
@@ -76,6 +74,7 @@ export default function SimpleMenu({ isPortail }: Props): JSX.Element {
       </Flex>
     );
   };
+
   return (
     <Box
       py={3}
@@ -95,7 +94,7 @@ export default function SimpleMenu({ isPortail }: Props): JSX.Element {
     >
       <Box display="flex" alignItems="center">
         <Link href="/">
-          <Image src={Logo} alt="Logo" />
+          <Logo />
         </Link>
         {!isPortail && (
           <>

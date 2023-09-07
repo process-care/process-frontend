@@ -8,18 +8,18 @@ import {
   useCodeBlockComboboxState,
 } from '@udecode/plate-code-block';
 
-import { cn } from '@/utils/plate-ui';
-import { Icons } from '@/components/icons';
+import { cn } from '@/utils/ui.ts'
+import { Icons } from '@/components/Icons.tsx'
 
-import { Button } from './button';
+import { Button } from './button.tsx'
 import {
   Command,
   CommandEmpty,
   CommandInput,
   CommandItem,
   CommandList,
-} from './command';
-import { Popover, PopoverContent, PopoverTrigger } from './popover';
+} from './command.tsx'
+import { Popover, PopoverContent, PopoverTrigger } from './popover.tsx'
 
 const languages: { value: string; label: string }[] = [
   { value: 'text', label: 'Plain Text' },

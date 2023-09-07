@@ -5,14 +5,14 @@ import { fr } from 'date-fns/locale'
 import { useField } from "formik";
 import { Calendar as CalendarIcon } from "lucide-react"
  
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/Shadcn/button"
-import { Calendar } from "@/components/Shadcn/calendar"
+import { cn } from '@/utils/ui.ts'
+import { Button } from "@/components/Shadcn/button.tsx"
+import { Calendar } from "@/components/Shadcn/calendar.tsx"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/Shadcn/popover"
+} from "@/components/Shadcn/popover.tsx"
 
 interface Props {
   id: string;

@@ -1,13 +1,12 @@
 import { PayloadAction } from "@reduxjs/toolkit";
+import { DateTime } from "luxon"
+import slugify from "slugify"
 
-import { RootState } from "@/redux/store";
-import { DateTime } from "luxon";
-import { SurveyBuilder } from "../surveyBuilderOLD";
-import slugify from "slugify";
-import { GlobalState } from "../scientistData";
-import { SurveyRedux } from "../types";
-import { CheckSurveyQuery } from "@/api/graphql/sdk.generated";
-// import { push } from "connected-next-router";
+import { RootState } from "@/redux/store/index.js"
+import { SurveyBuilder } from "../surveyBuilderOLD/index.tsx"
+import { GlobalState } from "../scientistData.js"
+import { SurveyRedux } from "../types/index.js"
+import { CheckSurveyQuery } from "@/api/graphql/sdk.generated.js"
 
 // ---- STATE
 

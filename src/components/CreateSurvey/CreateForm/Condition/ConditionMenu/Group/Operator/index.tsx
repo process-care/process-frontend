@@ -1,28 +1,26 @@
 import { Box } from "@chakra-ui/react";
-import { ConditionRedux } from "@/redux/slices/types";
-import Image from "next/image";
+import { ConditionRedux } from "@/redux/slices/types/index.js"
 
-import Different from "./../assets/different.svg";
-import Equal from "./../assets/equal.svg";
-import Infequal from "./../assets/infequal.svg";
-import Inferior from "./../assets/inferior.svg";
-import Supequal from "./../assets/supequal.svg";
-import Superior from "./../assets/superior.svg";
+import * as Operators from "./Symbols.tsx"
+
+// ---- TYPES
 
 interface Props {
   condition: ConditionRedux;
 }
 
+// ---- COMPONENT
+
 export const renderOperator = (
   operators: ConditionRedux["attributes"]["operator"] | undefined
 ): React.ReactElement | string | undefined => {
   switch (operators) {
-    case "not_equal": return <Image src={Different} alt="Different operator" />
-    case "equal": return <Image src={Equal} alt="Equal operator" />
-    case "equal_or_inferior": return <Image src={Infequal} alt="Equal or inferior operator" />
-    case "equal_or_superior": return <Image src={Supequal} alt="Equal or superior operator" />
-    case "inferior": return <Image src={Inferior} alt="Inferior operator" />
-    case "superior": return <Image src={Superior} alt="Superior operator" />
+    case "not_equal": return <Operators.DifferentSymbol />
+    case "equal": return <Operators.EqualSymbol />
+    case "equal_or_inferior": return <Operators.InfequalSymbol />
+    case "equal_or_superior": return <Operators.SupequalSymbol />
+    case "inferior": return <Operators.InferiorSymbol />
+    case "superior": return <Operators.SuperiorSymbol />
 
     default:
       return ""

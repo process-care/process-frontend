@@ -12,12 +12,12 @@ import {
 } from '@udecode/plate-media';
 import { useReadOnly, useSelected } from 'slate-react';
 
-import { Icons } from '@/components/icons';
+import { Icons } from '@/components/Icons.tsx'
 
-import { Button, buttonVariants } from './button';
-import { inputVariants } from './input';
-import { Popover, PopoverAnchor, PopoverContent } from './popover';
-import { Separator } from './separator';
+import { Button, buttonVariants } from './button.tsx'
+import { inputVariants } from './input.tsx'
+import { Popover, PopoverAnchor, PopoverContent } from './popover.tsx'
+import { Separator } from './separator.tsx'
 
 export interface MediaPopoverProps {
   pluginKey?: string;

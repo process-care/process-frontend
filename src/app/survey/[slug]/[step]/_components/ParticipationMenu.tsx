@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 import { Box } from "@chakra-ui/react";
 
-import { PageParticipationRedux } from "@/redux/slices/participation/page";
-import { useMediaQueries } from "@/utils/hooks/mediaqueries";
-import SummaryMobile from "./SummaryMobile";
-import PageEntry from "./PageEntry";
+import { PageParticipationRedux } from "@/redux/slices/participation/page.js"
+import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
+import SummaryMobile from "./SummaryMobile.tsx"
+import PageEntry from "./PageEntry.tsx"
 
 // ---- TYPES
 

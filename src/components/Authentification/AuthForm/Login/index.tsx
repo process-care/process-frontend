@@ -3,14 +3,14 @@
 import { useDispatch } from "react-redux";
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import Link from "next/link.js"
+import { useRouter } from "next/navigation.js"
 
-import { Input } from "@/components/Fields";
-import { actions } from "@/redux/slices/scientistData";
-import { useAppSelector } from "@/redux/hooks";
-import { LoginSchema } from "@/components/Authentification/SiginForm/validationSchema";
-import Errors, { renderAuthMessage } from "@/components/Authentification/Errors";
+import { Input } from "@/components/Fields/index.ts"
+import { actions } from "@/redux/slices/scientistData.js"
+import { useAppSelector } from "@/redux/hooks/index.js"
+import { LoginSchema } from "@/components/Authentification/SiginForm/validationSchema.js"
+import Errors, { renderAuthMessage } from "@/components/Authentification/Errors/index.tsx"
 
 export default function LoginForm(): JSX.Element {
   const dispatch = useDispatch();

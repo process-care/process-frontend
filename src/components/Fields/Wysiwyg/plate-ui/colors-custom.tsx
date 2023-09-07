@@ -3,12 +3,12 @@
 import React from 'react';
 import { useColorsCustom, useColorsCustomState } from '@udecode/plate-font';
 
-import { buttonVariants } from '@/components/Fields/Wysiwyg/plate-ui/button';
-import { DropdownMenuItem } from '@/components/Fields/Wysiwyg/plate-ui/dropdown-menu';
+import { buttonVariants } from '@/components/Fields/Wysiwyg/plate-ui/button.tsx'
+import { DropdownMenuItem } from '@/components/Fields/Wysiwyg/plate-ui/dropdown-menu.tsx'
 
-import { TColor } from './color-dropdown-menu';
-import { ColorDropdownMenuItems } from './color-dropdown-menu-items';
-import { ColorInput } from './color-input';
+import { TColor } from './color-dropdown-menu.tsx'
+import { ColorDropdownMenuItems } from './color-dropdown-menu-items.tsx'
+import { ColorInput } from './color-input.tsx'
 
 type ColorsCustomProps = {
   color?: string;

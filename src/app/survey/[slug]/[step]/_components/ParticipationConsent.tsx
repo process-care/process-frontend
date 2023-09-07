@@ -2,14 +2,14 @@
 
 import { useCallback } from "react"
 import { Box, Button, Container, Center } from "@chakra-ui/react"
-import dynamic from "next/dynamic"
+import dynamic from "next/dynamic.js"
 
-import { NL } from "@/static/participation"
-import { useSurveyQuery } from "@/api/graphql/queries/survey.gql.generated"
-import { client } from "@/api/gql-client"
-import { useCreateParticipationMutation } from "@/api/graphql/queries/participation.gql.generated"
-import { useMediaQueries } from "@/utils/hooks/mediaqueries"
-import Menu from "@/components/Menu/CreateSurvey"
+import { NL } from "@/static/participation.js"
+import { useSurveyQuery } from "@/api/graphql/queries/survey.gql.generated.js"
+import { client } from "@/api/gql-client.js"
+import { useCreateParticipationMutation } from "@/api/graphql/queries/participation.gql.generated.js"
+import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
+import Menu from "@/components/Menu/CreateSurvey/index.tsx"
 
 // @ts-ignore
 const PDFPreviewer = dynamic(() => import("@/components/PDFPreview.tsx"), {

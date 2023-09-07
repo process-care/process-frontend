@@ -1,9 +1,9 @@
 import { map, switchMap, scan, debounceTime } from "rxjs";
 import { combineEpics, ofType } from "redux-observable";
-import { Epic } from "@/redux/store";
-import { actions } from "@/redux/slices/landing-editor";
-import { sdk } from "@/api/gql-client";
-import { sanitizeEntity } from "@/api/entity-checker";
+import { Epic } from "@/redux/store/index.js";
+import { actions } from "@/redux/slices/landing-editor.js"
+import { sdk } from "@/api/gql-client.js"
+import { sanitizeEntity } from "@/api/entity-checker.js"
 
 // Watches over "load" landing
 const loadEpic: Epic = (action$) =>

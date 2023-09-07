@@ -1,17 +1,16 @@
 'use client'
 
-import { useEffect } from "react";
-import { Text, Button, Center, Box } from "@chakra-ui/react";
-import Div100vh from "react-div-100vh";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
+import { useCallback, useEffect } from "react"
+import { Text, Button, Center, Box } from "@chakra-ui/react"
+import Div100vh from "react-div-100vh"
+import { useRouter } from "next/navigation.js"
 
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { actions } from "@/redux/slices/scientistData";
-import { useMediaQueries } from "@/utils/hooks/mediaqueries";
-import { getUser } from "@/redux/slices/scientistData/auth";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
+import { actions } from "@/redux/slices/scientistData.js"
+import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
+import { getUser } from "@/redux/slices/scientistData/auth.js"
 
-import Logo from "@/assets/black_logo.svg";
+import { BlackLogo } from "@/components/Logos.tsx"
 
 const t = {
   title: " 👌 Bienvenue !",
@@ -27,7 +26,7 @@ export default function SuccessPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { isTablet } = useMediaQueries();
-
+  
   const auth = useAppSelector(getUser);
 
   // Refresh user's data if not validated, redirect if it is
@@ -40,24 +39,22 @@ export default function SuccessPage(): JSX.Element {
     dispatch(actions.refresh());
   }, [auth?.user?.validated, dispatch, router]);
 
-  // If no auth data, redirect to login
-  if (!auth) {
-    router.push("/connexion");
-    return <></>;
-  }
-
   // Go to dashboard to attempt a refresh
-  const refreshClick = () => {
+  const refreshClick = useCallback(() => {
     dispatch(actions.logged(auth));
     router.push("/dashboard");
-  };
+  }, [auth, dispatch, router])
 
   // Go to portal
-  const toPortalClick = () => {
+  const toPortalClick = useCallback(() => {
     dispatch(actions.logged(auth));
     router.push("/");
-  };
+  }, [auth, dispatch, router])
 
+  // If no auth data, redirect to login
+  useEffect(() => { if (!auth) router.push("/connexion") })
+  if (!auth) return <></>
+  
   return (
     <Div100vh>
       <Box h="100%" alignItems="center" display="flex" justifyContent="center" className="background__grid">
@@ -69,7 +66,7 @@ export default function SuccessPage(): JSX.Element {
           w={isTablet ? "90%" : "480px"}
         >
           <Box display="flex" justifyContent="center" w="150px" m="0 auto">
-            <Image src={Logo} alt="Logo" />
+            <BlackLogo />
           </Box>
           <Box pt={isTablet ? "20px" : "60px"}>
             <Center h="100%" display="flex" flexDirection="column">

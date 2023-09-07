@@ -4,6 +4,7 @@ const config: CodegenConfig = {
   overwrite: true,
   schema: process.env.GQL_SCHEMA_URL,
   documents: ['src/**/*.graphql'],
+  emitLegacyCommonJSImports: false,
   generates: {
     // Types & Resolvers types in general
     'src/api/graphql/types.generated.ts': {
@@ -20,7 +21,18 @@ const config: CodegenConfig = {
       presetConfig: {
         baseTypesPath: 'api/graphql/types.generated.ts',
       },
-      plugins: ['typescript', 'typescript-operations', 'typescript-graphql-request'],
+      plugins: [
+        'typescript',
+        'typescript-operations',
+        'typescript-graphql-request',
+        {
+          add: {
+            // FIXME: Added no-check while `graphlq-codegen` has a bug with types importing
+            // See https://github.com/dotansimha/graphql-code-generator/issues/9046
+            content: '// @ts-nocheck',
+          },
+        },
+      ],
       config: {
         skipTypename: true, // More readable types
         useIndexSignature: true, // https://github.com/dotansimha/graphql-code-generator/issues/1133
@@ -37,7 +49,7 @@ const config: CodegenConfig = {
       plugins: ['typescript-operations', 'typescript-react-apollo'],
       config: {
         withHooks: true,
-        skipTypename: true, // More readable types
+        skipTypename: false, // More readable types
       },
     },
 

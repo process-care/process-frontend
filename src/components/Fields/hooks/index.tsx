@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useField } from "formik";
 
-import { Maybe } from "@/api/graphql/types.generated";
+import { Maybe } from "@/api/graphql/types.generated.ts"
 
 export interface Factor {
   modalities: {

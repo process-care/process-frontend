@@ -1,13 +1,13 @@
 import React from 'react';
 import { EmojiSettings, UseEmojiPickerType } from '@udecode/plate-emoji';
 
-import { cn } from '@/utils/plate-ui';
+import { cn } from '@/utils/ui.ts'
 
-import { EmojiPickerContent } from './emoji-picker-content';
-import { EmojiPickerNavigation } from './emoji-picker-navigation';
-import { EmojiPickerPreview } from './emoji-picker-preview';
-import { EmojiPickerSearchAndClear } from './emoji-picker-search-and-clear';
-import { EmojiPickerSearchBar } from './emoji-picker-search-bar';
+import { EmojiPickerContent } from './emoji-picker-content.tsx'
+import { EmojiPickerNavigation } from './emoji-picker-navigation.tsx'
+import { EmojiPickerPreview } from './emoji-picker-preview.tsx'
+import { EmojiPickerSearchAndClear } from './emoji-picker-search-and-clear.tsx'
+import { EmojiPickerSearchBar } from './emoji-picker-search-bar.tsx'
 
 export function EmojiPicker({
   i18n,

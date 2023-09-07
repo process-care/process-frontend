@@ -1,10 +1,10 @@
-import { map, switchMap } from "rxjs";
-import { combineEpics, ofType } from "redux-observable";
-import { Epic } from "@/redux/store";
-import { actions } from "@/redux/slices/scientistData";
-import { client, sdk } from "@/api/gql-client";
-import { hasMessage } from "@/utils/typeguards";
-import { buildBearer } from "@/utils/auth";
+import { map, switchMap } from "rxjs"
+import { combineEpics, ofType } from "redux-observable"
+import { Epic } from "@/redux/store/index.js"
+import { actions } from "@/redux/slices/scientistData.js"
+import { client, sdk } from "@/api/gql-client.js"
+import { hasMessage } from "@/utils/typeguards/index.js"
+import { buildBearer } from "@/utils/auth.js"
 
 // ----  LOGIN
 

@@ -4,8 +4,8 @@ import * as React from 'react';
 import { DialogProps } from '@radix-ui/react-dialog';
 import { Command as CommandPrimitive } from 'cmdk';
 
-import { cn } from '@/utils/plate-ui';
-import { Icons } from '@/components/icons';
+import { cn } from '@/utils/ui.ts'
+import { Icons } from '@/components/Icons.tsx'
 
 import { Dialog, DialogContent } from './dialog';
 

@@ -4,17 +4,17 @@ import { useRef, useMemo, useEffect, useCallback } from "react";
 import { Box, Container, Text } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { useDispatch } from "react-redux";
-import { useRouter } from "next/navigation";
-import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation.js"
+import dynamic from "next/dynamic.js"
 
-import { Switch } from "@/components/Fields";
-import { actions } from "@/redux/slices/scientistData";
-import { SurveyBySlugQuery, useSurveyBySlugQuery } from "@/api/graphql/queries/survey.gql.generated";
-import { client } from "@/api/gql-client";
-import Loader from "@/components/Spinner";
-import Menu from "@/components/Menu/CreateSurvey";
-import UploadFileRemote from "@/components/Fields/UploadFileRemote";
-import Footer from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer";
+import { Switch } from "@/components/Fields/index.ts"
+import { actions } from "@/redux/slices/scientistData.js"
+import { SurveyBySlugQuery, useSurveyBySlugQuery } from "@/api/graphql/queries/survey.gql.generated.js"
+import { client } from "@/api/gql-client.js"
+import Loader from "@/components/Spinner/index.tsx"
+import Menu from "@/components/Menu/CreateSurvey/index.tsx";
+import UploadFileRemote from "@/components/Fields/UploadFileRemote/index.tsx"
+import Footer from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer/index.tsx"
 
 // @ts-ignore
 const PDFPreviewer = dynamic(() => import("@/components/PDFPreview.tsx"), {

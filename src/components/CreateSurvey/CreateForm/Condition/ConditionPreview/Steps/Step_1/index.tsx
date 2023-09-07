@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { Container, Text } from "@chakra-ui/react";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
 
-import { QuestionRedux } from "@/redux/slices/types";
-import { ConditionRedux } from "@/redux/slices/types";
-import { authorizedQuestionTypes } from "./utils";
-import { t } from "@/static/input";
-import { selectors, actions } from "@/redux/slices/scientistData";
-import InputBox from "@/components/CreateSurvey/CreateForm/InputsPreview/InputBox";
+import { QuestionRedux } from "@/redux/slices/types/index.js"
+import { ConditionRedux } from "@/redux/slices/types/index.js"
+import { authorizedQuestionTypes } from "./utils/index.ts"
+import { t } from "@/static/input.ts"
+import { selectors, actions } from "@/redux/slices/scientistData.js"
+import InputBox from "@/components/CreateSurvey/CreateForm/InputsPreview/InputBox/index.tsx"
 
 interface Props {
   selectedCondition: ConditionRedux;

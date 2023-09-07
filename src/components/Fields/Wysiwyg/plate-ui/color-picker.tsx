@@ -2,14 +2,14 @@
 
 import React from 'react';
 
-import { cn } from '@/utils/plate-ui';
-import { buttonVariants } from '@/components/Fields/Wysiwyg/plate-ui/button';
-import { DropdownMenuItem } from '@/components/Fields/Wysiwyg/plate-ui/dropdown-menu';
-import { Separator } from '@/components/Fields/Wysiwyg/plate-ui/separator';
+import { cn } from '@/utils/ui.ts'
+import { buttonVariants } from '@/components/Fields/Wysiwyg/plate-ui/button.tsx'
+import { DropdownMenuItem } from '@/components/Fields/Wysiwyg/plate-ui/dropdown-menu.tsx'
+import { Separator } from '@/components/Fields/Wysiwyg/plate-ui/separator.tsx'
 
-import { TColor } from './color-dropdown-menu';
-import { ColorDropdownMenuItems } from './color-dropdown-menu-items';
-import { ColorsCustom } from './colors-custom';
+import { TColor } from './color-dropdown-menu.tsx'
+import { ColorDropdownMenuItems } from './color-dropdown-menu-items.tsx'
+import { ColorsCustom } from './colors-custom.tsx'
 
 type ColorPickerProps = {
   color?: string;

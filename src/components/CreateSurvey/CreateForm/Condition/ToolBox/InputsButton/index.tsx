@@ -1,9 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
 import { Box, Button, ButtonGroup, Text } from "@chakra-ui/react";
 
-import { inputs } from "@/constants/inputs";
-import { QuestionRedux } from "@/redux/slices/types";
-import InputIcon from "@/components/CreateSurvey/CreateForm/InputIcon";
+import { inputs } from "@/constants/inputs.ts"
+import { QuestionRedux } from "@/redux/slices/types/index.js"
+import InputIcon from "@/components/CreateSurvey/CreateForm/InputIcon/index.tsx"
 
 interface Props {
   group?: "other" | "simple" | "complex";

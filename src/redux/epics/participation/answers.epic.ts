@@ -1,10 +1,10 @@
 import { map, switchMap, filter, scan, debounceTime, timeInterval } from "rxjs";
 import { combineEpics, ofType } from "redux-observable";
-import { Epic } from "@/redux/store";
+import { Epic } from "@/redux/store/index.js";
 
-import { actions, selectors, UpsertedAnswerPayload } from "@/redux/slices/participation/answers";
-import { sdk } from "@/api/gql-client";
-import { CreateAnswerMutation, UpdateAnswerMutation } from "@/api/graphql/sdk.generated";
+import { actions, selectors, UpsertedAnswerPayload } from "@/redux/slices/participation/answers.js"
+import { sdk } from "@/api/gql-client.js"
+import { CreateAnswerMutation, UpdateAnswerMutation } from "@/api/graphql/sdk.generated.js"
 
 const DEBOUNCE_TIME = 3000;
 

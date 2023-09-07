@@ -2,7 +2,7 @@ import React from 'react';
 import { PlateElement, PlateElementProps } from '@udecode/plate-common';
 import { cva, VariantProps } from 'class-variance-authority';
 
-import { cn } from '@/utils/plate-ui';
+import { cn } from '@/utils/ui.ts'
 
 const listVariants = cva('m-0 ps-6', {
   variants: {

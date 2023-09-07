@@ -1,13 +1,11 @@
 import { useCallback, useRef } from "react";
 import { Box, Button, Text, Flex, FormHelperText, FormControl, FormErrorMessage } from "@chakra-ui/react";
-import Image from "next/image";
+import Image from "next/image.js"
 
-import { UploadParams } from "@/redux/slices/application";
-import { useFileHandlers } from "./hooks";
-import SvgHover from "@/components/SvgHover";
-
-import Delete from "../assets/delete.svg";
-import { cn } from "@/lib/utils";
+import { UploadParams } from "@/redux/slices/application/index.js"
+import { useFileHandlers } from "./hooks.ts"
+import SvgHover from "@/components/SvgHover/index.tsx"
+import { DeleteIcon } from "lucide-react";
 
 // ---- TYPES
 
@@ -133,7 +131,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ id, handleDelete }: DeleteB
 
   return (
     <SvgHover>
-      <Image src={Delete} alt="Delete" onClick={callDelete} />
+      <DeleteIcon onClick={callDelete} />
     </SvgHover>
   );
 };

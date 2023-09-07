@@ -8,7 +8,7 @@ import {
 import { ELEMENT_H1 } from '@udecode/plate-heading';
 import { ELEMENT_PARAGRAPH } from '@udecode/plate-paragraph';
 
-import { cn } from '@/utils/plate-ui';
+import { cn } from '@/utils/ui.ts'
 
 export const Placeholder = (props: PlaceholderProps) => {
   const { children, placeholder, nodeProps } = props;

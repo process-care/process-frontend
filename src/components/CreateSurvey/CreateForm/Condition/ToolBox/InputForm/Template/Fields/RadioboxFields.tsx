@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 
-import { CommonFields, RepeatedFields } from "../index";
-import TitleDivider from "@/components/TitleDivider";
+import { CommonFields, RepeatedFields } from "../index.ts"
+import TitleDivider from "@/components/TitleDivider/index.tsx"
 
 export default function RadioboxFields(): JSX.Element {
   return (

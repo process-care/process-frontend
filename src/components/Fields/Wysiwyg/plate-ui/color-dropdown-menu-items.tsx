@@ -3,17 +3,17 @@
 import React from 'react';
 import { DropdownMenuItemProps } from '@radix-ui/react-dropdown-menu';
 
-import { cn } from '@/utils/plate-ui';
-import { Icons } from '@/components/icons';
-import { buttonVariants } from '@/components/Fields/Wysiwyg/plate-ui/button';
-import { DropdownMenuItem } from '@/components/Fields/Wysiwyg/plate-ui/dropdown-menu';
+import { cn } from '@/utils/ui.ts'
+import { Icons } from '@/components/Icons.tsx'
+import { buttonVariants } from '@/components/Fields/Wysiwyg/plate-ui/button.tsx'
+import { DropdownMenuItem } from '@/components/Fields/Wysiwyg/plate-ui/dropdown-menu.tsx'
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from '@/components/Fields/Wysiwyg/plate-ui/tooltip';
+} from '@/components/Fields/Wysiwyg/plate-ui/tooltip.tsx'
 
-import { TColor } from './color-dropdown-menu';
+import { TColor } from './color-dropdown-menu.tsx'
 
 type ColorDropdownMenuItemProps = {
   value: string;

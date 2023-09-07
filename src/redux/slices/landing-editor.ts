@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Landing } from "@/api/graphql/types.generated";
-import { RootState } from "@/redux/store";
+import { Landing } from "@/api/graphql/types.generated.js"
+import { RootState } from "@/redux/store/index.js";
 import { DateTime } from "luxon";
-import { LastSaved, LandingRedux } from "./types";
+import { LastSaved, LandingRedux } from "./types/index.js"
 
 // ---- STATE
 

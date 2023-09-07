@@ -1,9 +1,9 @@
 'use client'
 
 import { useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation.js"
 
-import { useLocalParticipation, StoredParticipation } from "./localstorage-handlers";
+import { useLocalParticipation, StoredParticipation } from "./localstorage-handlers.js"
 
 type ConsentHandler = {
   onConsent: (participationId: string) => void;

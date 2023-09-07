@@ -1,5 +1,5 @@
-import { Center, Text } from "@chakra-ui/react";
-import { WarningIcon } from "@chakra-ui/icons";
+import { Center, Text } from "@chakra-ui/react"
+import { WarningIcon } from "@chakra-ui/icons"
 
 interface Props {
   error?:

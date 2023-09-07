@@ -2,12 +2,12 @@ import { useCallback, useEffect } from "react";
 import { Box, Text } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 
-import { initialValues } from "./utils/initialValues";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { actions, selectors } from "@/redux/slices/landing-editor";
-import Footer from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer";
-import Wysiwyg from "@/components/Fields/Wysiwyg/Wysiwyg";
-import { LandingRedux } from "@/redux/slices/types";
+import { initialValues } from "./utils/initialValues.ts"
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
+import { actions, selectors } from "@/redux/slices/landing-editor.ts"
+import Footer from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer/index.tsx"
+import Wysiwyg from "@/components/Fields/Wysiwyg/Wysiwyg.tsx"
+import { LandingRedux } from "@/redux/slices/types/index.js"
 
 export default function AboutForm(): JSX.Element {
   const aboutPage = useAppSelector(selectors.about);

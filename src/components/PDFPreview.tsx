@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Text, Flex, Button, Box } from "@chakra-ui/react";
 import { Document, Page, pdfjs } from "react-pdf";
 
-import { useMediaQueries } from "@/utils/hooks/mediaqueries";
+import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
 
 // ---- STATICS
 

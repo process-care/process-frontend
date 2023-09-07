@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation.js"
 
 import {
   NumberInput,
@@ -12,12 +12,12 @@ import {
   AssociatedClassification,
   FreeClassification,
   MonoThumbnail,
-} from "@/components/Fields";
-import { t } from "@/static/input";
-import { useAppSelector } from "@/redux/hooks";
-import { selectors } from "@/redux/slices/formBuilder";
-import { Enum_Question_Type } from "@/api/graphql/types.generated";
-import { QuestionWithSamples } from "@/redux/slices/participation/status";
+} from "@/components/Fields/index.ts"
+import { t } from "@/static/input.ts"
+import { useAppSelector } from "@/redux/hooks/index.js"
+import { selectors } from "@/redux/slices/formBuilder/index.ts"
+import { Enum_Question_Type } from "@/api/graphql/types.generated.ts"
+import { QuestionWithSamples } from "@/redux/slices/participation/status.ts"
 
 interface Options {
   value: string;

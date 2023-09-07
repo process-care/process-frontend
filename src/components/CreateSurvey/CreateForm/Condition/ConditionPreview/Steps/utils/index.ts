@@ -1,5 +1,5 @@
-import { useAppSelector } from "@/redux/hooks";
-import { selectors } from "@/redux/slices/scientistData";
+import { useAppSelector } from "@/redux/hooks/index.js"
+import { selectors } from "@/redux/slices/scientistData.js"
 
 export const useCheckStepValidation = (): boolean => {
   const isValid = useAppSelector(selectors.conditions.getValidity);

@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
 
-import Wysiwyg from "@/components/Fields/Wysiwyg/Wysiwyg";
+import Wysiwyg from "@/components/Fields/Wysiwyg/Wysiwyg.tsx"
 
 export default function WysiwygFields(): JSX.Element {
   return (

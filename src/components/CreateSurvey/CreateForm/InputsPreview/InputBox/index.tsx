@@ -1,7 +1,7 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 
-import { QuestionRedux } from "@/redux/slices/types";
-import InputIcon from "@/components/CreateSurvey/CreateForm/InputIcon";
+import { QuestionRedux } from "@/redux/slices/types/index.js"
+import InputIcon from "@/components/CreateSurvey/CreateForm/InputIcon/index.tsx"
 
 interface Props {
   onClick: () => void;

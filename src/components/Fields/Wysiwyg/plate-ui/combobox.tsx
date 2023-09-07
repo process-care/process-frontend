@@ -23,7 +23,7 @@ import {
 } from '@udecode/plate-common';
 import { createVirtualRef } from '@udecode/plate-floating';
 
-import { cn } from '@/utils/plate-ui';
+import { cn } from '@/utils/ui.ts'
 
 export function ComboboxItem<TData extends Data = NoData>({
   combobox,

@@ -3,7 +3,7 @@
 import { Box } from "@chakra-ui/react";
 import Div100vh from "react-div-100vh";
 
-import AuthForm from "@/components/Authentification/AuthForm";
+import AuthForm from "@/components/Authentification/AuthForm/index.tsx"
 
 export default function Login(): JSX.Element {
   return (

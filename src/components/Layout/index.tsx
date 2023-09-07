@@ -3,14 +3,14 @@
 import { useEffect } from "react";
 import { Box, Button } from "@chakra-ui/react";
 import Div100vh from "react-div-100vh";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
+import { usePathname } from "next/navigation.js"
+import Link from "next/link.js"
 
-import { useAuth } from "@/components/Authentification/hooks";
-import { useMediaQueries } from "@/utils/hooks/mediaqueries";
-import Footer from "@/components/Footer";
-import SimpleMenu from "@/components/Menu/SimpleMenu";
-import MainMenu from "../MainMenu";
+import { useAuth } from "@/components/Authentification/hooks/index.js";
+import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
+import Footer from "@/components/Footer/index.tsx"
+import SimpleMenu from "@/components/Menu/SimpleMenu/index.tsx"
+import MainMenu from "../MainMenu/index.tsx"
 
 interface Props {
   children: React.ReactNode;

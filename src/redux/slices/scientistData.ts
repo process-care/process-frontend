@@ -1,34 +1,34 @@
-import { createSlice, EntityState, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, EntityState, PayloadAction } from "@reduxjs/toolkit"
 
-import { authReducers, authSelectors, AuthState, initialAuthState } from "./scientistData/auth";
+import { authReducers, authSelectors, AuthState, initialAuthState } from "./scientistData/auth.js"
 import {
   conditionAdapter,
   ConditionEditor,
   conditionsReducers,
   conditionsSelectors,
   initialConditionState,
-} from "./scientistData/condition-editor";
+} from "./scientistData/condition-editor.js"
 import {
   initialSurveysState,
   surveysAdapter,
   SurveysEditor,
   surveysReducers,
   surveysSelectors,
-} from "./scientistData/surveys";
+} from "./scientistData/surveys.js"
 
-import { pageAdapter, PageEditor, pageReducer, pageSelectors, initialPageState } from "./scientistData/page-editor";
+import { pageAdapter, PageEditor, pageReducer, pageSelectors, initialPageState } from "./scientistData/page-editor.js"
 import {
   initialQuestionState,
   questionAdapter,
   QuestionEditor,
   questionsReducers,
   questionsSelectors,
-} from "./scientistData/question-editor";
-import { initialSurveyState, SurveyEditor, surveyReducers, surveySelectors } from "./scientistData/survey-editor";
+} from "./scientistData/question-editor.js"
+import { initialSurveyState, SurveyEditor, surveyReducers, surveySelectors } from "./scientistData/survey-editor.js";
 
-import { LastUpdated, ConditionRedux, PageRedux, QuestionRedux, SurveyRedux } from "./types";
-import { sanitizeEntities } from "@/api/entity-checker";
-import { CheckSurveyQuery } from "@/api/graphql/sdk.generated";
+import { LastUpdated, ConditionRedux, PageRedux, QuestionRedux, SurveyRedux } from "./types/index.js";
+import { sanitizeEntities } from "@/api/entity-checker.js";
+import { CheckSurveyQuery } from "@/api/graphql/sdk.generated.js";
 
 // ---- TYPES
 
@@ -157,5 +157,5 @@ export const selectors = {
   auth: authSelectors,
 };
 
-export const actions = globalSlice.actions;
-export default globalSlice.reducer;
+export const actions = globalSlice.actions
+export default globalSlice.reducer

@@ -6,7 +6,7 @@ import {
   useMarkToolbarButtonState,
 } from '@udecode/plate-common';
 
-import { ToolbarButton, ToolbarButtonProps } from './toolbar';
+import { ToolbarButton, ToolbarButtonProps } from './toolbar.tsx'
 
 export interface MarkToolbarButtonProps
   extends Pick<ToolbarButtonProps, 'tooltip' | 'children'> {

@@ -10,13 +10,13 @@ import {
   useFloatingLinkSelectors,
 } from '@udecode/plate-link';
 
-import { cn } from '@/utils/plate-ui';
-import { Icons } from '@/components/icons';
+import { cn } from '@/utils/ui.ts'
+import { Icons } from '@/components/Icons.tsx'
 
-import { buttonVariants } from './button';
-import { inputVariants } from './input';
-import { popoverVariants } from './popover';
-import { Separator } from './separator';
+import { buttonVariants } from './button.tsx'
+import { inputVariants } from './input.tsx'
+import { popoverVariants } from './popover.tsx'
+import { Separator } from './separator.tsx'
 
 export function LinkFloatingToolbar({ readOnly }: TEditableProps) {
   const isEditing = useFloatingLinkSelectors().isEditing();

@@ -5,7 +5,7 @@ import {
   UseEmojiPickerType,
 } from '@udecode/plate-emoji';
 
-import { cn } from '@/utils/plate-ui';
+import { cn } from '@/utils/ui.ts'
 
 export type EmojiPickerNavigationProps = Pick<
   UseEmojiPickerType,

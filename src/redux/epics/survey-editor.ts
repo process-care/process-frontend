@@ -1,11 +1,11 @@
 import { map, switchMap, scan, debounceTime, filter } from "rxjs";
 import { combineEpics, ofType } from "redux-observable";
-import { Epic } from "@/redux/store";
-import { actions } from "@/redux/slices/survey-editor";
+import { Epic } from "@/redux/store/index.js";
+import { actions } from "@/redux/slices/survey-editor.js"
 
-import { sdk } from "@/api/gql-client";
-import { sanitizeEntities } from "@/api/entity-checker";
-import { SurveyInput } from "@/api/graphql/sdk.generated";
+import { sdk } from "@/api/gql-client.js"
+import { sanitizeEntities } from "@/api/entity-checker.js"
+import { SurveyInput } from "@/api/graphql/sdk.generated.js"
 
 // Watches over "load" survey
 const loadEpic: Epic = (action$) =>

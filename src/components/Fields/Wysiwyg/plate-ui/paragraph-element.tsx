@@ -1,7 +1,7 @@
 import React from 'react';
 import { PlateElement, PlateElementProps } from '@udecode/plate-common';
 
-import { cn } from '@/utils/plate-ui';
+import { cn } from '@/utils/ui.ts'
 
 const ParagraphElement = React.forwardRef<
   React.ElementRef<typeof PlateElement>,

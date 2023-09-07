@@ -3,20 +3,20 @@
 import { useCallback, useMemo } from "react";
 import { Box, Center, Flex, Text } from "@chakra-ui/react";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
-import { useParams, useRouter } from "next/navigation";
-import Image from "next/image";
+import { useParams, useRouter } from "next/navigation.js"
+import Image from "next/image.js"
 
-import { useAppSelector } from "@/redux/hooks";
-import { selectors } from "@/redux/slices/landing-editor";
-import { useMediaQueries } from "@/utils/hooks/mediaqueries";
-import { LandingRedux } from "@/redux/slices/types";
-import { useCreateParticipationMutation } from "@/api/graphql/queries/participation.gql.generated";
-import { client } from "@/api/gql-client";
-import { useConsentHandlers } from "@/utils/participations/consent-handler";
-import Video from "@/components/Video";
-import Description from "./Description";
-import Legals from "./Legals";
-import Team from "./Team";
+import { useAppSelector } from "@/redux/hooks/index.js"
+import { selectors } from "@/redux/slices/landing-editor.ts"
+import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
+import { LandingRedux } from "@/redux/slices/types/index.js"
+import { useCreateParticipationMutation } from "@/api/graphql/queries/participation.gql.generated.js";
+import { client } from "@/api/gql-client.js"
+import { useConsentHandlers } from "@/utils/participations/consent-handler.ts"
+import Video from "@/components/Video/index.tsx"
+import Description from "./Description/index.tsx"
+import Legals from "./Legals/index.tsx"
+import Team from "./Team/index.tsx"
 
 // ---- STATICS
 

@@ -9,22 +9,22 @@ import {
   createEpicMiddleware,
 } from "redux-observable";
 
-import formBuilder from "@/redux/slices/formBuilder";
-import application from "@/redux/slices/application";
-import participation from "@/redux/slices/participation";
-import landingEditor from "@/redux/slices/landing-editor";
-import surveyEditor from "@/redux/slices/survey-editor";
-import scientistData from "@/redux/slices/scientistData";
+import formBuilder from "@/redux/slices/formBuilder/index.js"
+import application from "@/redux/slices/application/index.js"
+import participation from "@/redux/slices/participation/index.js"
+import landingEditor from "@/redux/slices/landing-editor.js"
+import surveyEditor from "@/redux/slices/survey-editor.js"
+import scientistData from "@/redux/slices/scientistData.js"
 
-import { landingEditorEpics } from "@/redux/epics/landing/landing-editor";
-import { surveyEditorEpics } from "@/redux/epics/survey-editor";
-import { surveysEpics } from "@/redux/epics/my-surveys";
-import { surveyEpics } from "@/redux/epics/global/survey";
-import { conditionsEditorEpics } from "@/redux/epics/global/condition-editor";
-import { authEpics } from "@/redux/epics/global/auth";
-import { pageEditorEpic } from "@/redux/epics/global/page-editor";
-import { questionEditorEpic } from "@/redux/epics/global/question-editor";
-import participationEpics from "@/redux/epics/participation";
+import { landingEditorEpics } from "@/redux/epics/landing/landing-editor.js";
+import { surveyEditorEpics } from "@/redux/epics/survey-editor.js"
+import { surveysEpics } from "@/redux/epics/my-surveys.js"
+import { surveyEpics } from "@/redux/epics/global/survey.js"
+import { conditionsEditorEpics } from "@/redux/epics/global/condition-editor.js"
+import { authEpics } from "@/redux/epics/global/auth.js"
+import { pageEditorEpic } from "@/redux/epics/global/page-editor.js"
+import { questionEditorEpic } from "@/redux/epics/global/question-editor.js"
+import participationEpics from "@/redux/epics/participation/index.js"
 
 // ---- EPICS
 

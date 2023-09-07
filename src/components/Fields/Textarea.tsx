@@ -1,8 +1,8 @@
 import { FormControl, FormHelperText, FormLabel, Textarea, Text } from "@chakra-ui/react";
 import { useField } from "formik";
 
-import { Enum_Question_Rows, Maybe } from "@/api/graphql/types.generated";
-import { getMaxLength, getRows } from "./utils";
+import { Enum_Question_Rows, Maybe } from "@/api/graphql/types.generated.ts"
+import { getMaxLength, getRows } from "./utils/index.ts"
 
 interface Props {
   label: string;

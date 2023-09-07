@@ -1,8 +1,8 @@
 import { Flex, Box } from "@chakra-ui/react";
 
-import { Input, Switch } from "@/components/Fields";
-import { CommonFields } from "../index";
-import TitleDivider from "@/components/TitleDivider";
+import { Input, Switch } from "@/components/Fields/index.ts"
+import { CommonFields } from "../index.ts"
+import TitleDivider from "@/components/TitleDivider/index.tsx"
 
 export default function SliderFields(): JSX.Element {
   return (

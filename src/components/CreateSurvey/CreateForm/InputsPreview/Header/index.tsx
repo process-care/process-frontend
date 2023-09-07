@@ -1,9 +1,9 @@
 import { Button, ButtonGroup, Flex } from "@chakra-ui/react";
 
-import { t } from "@/static/input";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { toggleCollapseView } from "@/redux/slices/formBuilder";
-import { selectors, actions } from "@/redux/slices/scientistData";
+import { t } from "@/static/input.ts"
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
+import { toggleCollapseView } from "@/redux/slices/formBuilder/index.ts"
+import { selectors, actions } from "@/redux/slices/scientistData.js"
 
 export default function Header(): JSX.Element {
   const dispatch = useAppDispatch();

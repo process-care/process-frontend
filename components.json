@@ -10,6 +10,6 @@
   },
   "aliases": {
     "components": "@/components/Shadcn",
-    "utils": "@/utils/plate-ui"
+    "utils": "@/utils/ui"
   }
 }

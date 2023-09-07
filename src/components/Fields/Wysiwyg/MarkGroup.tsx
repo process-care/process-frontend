@@ -1,8 +1,8 @@
-import { MARK_BOLD, MARK_ITALIC, MARK_UNDERLINE, MARK_STRIKETHROUGH, MARK_CODE } from "@udecode/plate-basic-marks";
+import { MARK_BOLD, MARK_ITALIC } from "@udecode/plate-basic-marks";
 
-import { Icons } from "@/components/icons";
-import { MarkToolbarButton } from "./plate-ui/mark-toolbar-button";
-import { ToolbarGroup } from "./plate-ui/toolbar";
+import { Icons } from "@/components/Icons.tsx"
+import { MarkToolbarButton } from "./plate-ui/mark-toolbar-button.tsx"
+import { ToolbarGroup } from "./plate-ui/toolbar.tsx"
 
 export default function MarkGroup (): JSX.Element {
   return (

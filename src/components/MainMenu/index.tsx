@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
-import Link from "next/link";
+import Link from "next/link.js"
 
-import { routes } from "@/routes";
+import { routes } from "@/types/routes.ts"
 
 const mainRoutes = ["/connexion", "/survey/create", "/dashboard", "/"];
 

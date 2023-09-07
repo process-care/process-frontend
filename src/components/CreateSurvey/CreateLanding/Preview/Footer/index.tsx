@@ -7,11 +7,11 @@ import {
   Image,
   Grid,
 } from "@chakra-ui/react";
-import Link from "next/link";
+import Link from "next/link.js"
 
-import { t } from "@/static/createLanding";
-import { Color } from "@/types/landing";
-import { useMediaQueries } from "@/utils/hooks/mediaqueries";
+import { t } from "@/static/createLanding.ts"
+import { Color } from "@/types/landing.ts"
+import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
 
 type Props = {
   partners_logos: string[];

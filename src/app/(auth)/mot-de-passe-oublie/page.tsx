@@ -3,7 +3,7 @@
 import { Box } from "@chakra-ui/react";
 import Div100vh from "react-div-100vh";
 
-import ForgotPasswordForm from "@/components/Authentification/ForgotPasswordForm";
+import ForgotPasswordForm from "@/components/Authentification/ForgotPasswordForm/index.tsx"
 
 export default function ForgotPassword(): JSX.Element {
   return (

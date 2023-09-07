@@ -3,16 +3,16 @@
 import { useCallback, useEffect } from "react";
 import { Box, Button, Center, Flex, Text } from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation.js"
 
-import { useAppSelector } from "@/redux/hooks";
-import { actions, selectors } from "@/redux/slices/scientistData";
-import { SURVEY_STATUS } from "@/types/survey";
-import { NL } from "@/static/participation";
-import { useConsentHandlers } from "@/utils/participations/consent-handler";
-import Loader from "@/components/Spinner";
-import ParticipationConsent from "./_components/ParticipationConsent";
-import ParticipationForm from "./_components/ParticipationForm";
+import { useAppSelector } from "@/redux/hooks/index.js"
+import { actions, selectors } from "@/redux/slices/scientistData.js"
+import { SURVEY_STATUS } from "@/types/survey.js"
+import { NL } from "@/static/participation.js"
+import { useConsentHandlers } from "@/utils/participations/consent-handler.js"
+import Loader from "@/components/Spinner/index.tsx"
+import ParticipationConsent from "./_components/ParticipationConsent.tsx"
+import ParticipationForm from "./_components/ParticipationForm.tsx"
 
 // ---- TYPES
 

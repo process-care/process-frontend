@@ -5,17 +5,17 @@ import { ReactNode } from 'react';
 import * as ToolbarPrimitive from '@radix-ui/react-toolbar';
 import { cva, VariantProps } from 'class-variance-authority';
 
-import { cn } from '@/utils/plate-ui';
-import { Icons } from '@/components/icons';
+import { cn } from '@/utils/ui.ts'
+import { Icons } from '@/components/Icons.tsx'
 
-import { Separator } from './separator';
-import { ToggleProps, toggleVariants } from './toggle';
+import { Separator } from './separator.tsx'
+import { ToggleProps, toggleVariants } from './toggle.tsx'
 import {
   Tooltip,
   TooltipContent,
   TooltipPortal,
   TooltipTrigger,
-} from './tooltip';
+} from './tooltip.tsx'
 
 const toolbarVariants = cva(
   'relative flex select-none items-stretch gap-1 bg-background'

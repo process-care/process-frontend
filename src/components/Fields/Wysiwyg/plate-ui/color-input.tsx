@@ -3,7 +3,7 @@
 import React from 'react';
 import { useColorInput } from '@udecode/plate-font';
 
-import { cn } from '@/utils/plate-ui';
+import { cn } from '@/utils/ui.ts'
 
 export function ColorInput({
   value = '#000000',

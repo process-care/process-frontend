@@ -9,12 +9,11 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/react";
 import { useField, useFormikContext } from "formik";
-import Image from "next/image";
+import Image from "next/image.js"
 
-import { toBase64 } from "@/components/CreateSurvey/CreateLanding/ToolBox/Form/utils";
-import SvgHover from "@/components/SvgHover";
-
-import Delete from "./assets/delete.svg";
+import { toBase64 } from "@/components/CreateSurvey/CreateLanding/ToolBox/Form/utils/index.ts"
+import SvgHover from "@/components/SvgHover/index.tsx"
+import { DeleteIcon } from "lucide-react";
 
 interface Props {
   label: string;
@@ -148,7 +147,7 @@ export default function UploadFile({
         )}
         {hasFilesName && !multiple && (
           <SvgHover>
-            <Image src={Delete} alt="Delete" onClick={() => handleDelete()} />
+            <DeleteIcon onClick={() => handleDelete()} />
           </SvgHover>
         )}
       </Flex>
@@ -162,7 +161,7 @@ export default function UploadFile({
                 </Text>
                 {hasFilesName && (
                   <SvgHover>
-                    <Image src={Delete} alt="Delete" onClick={() => handleDelete(name)} />
+                    <DeleteIcon onClick={() => handleDelete(name)} />
                   </SvgHover>
                 )}
               </Flex>

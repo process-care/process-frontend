@@ -1,11 +1,11 @@
 import { map, switchMap } from "rxjs";
 import { combineEpics, ofType } from "redux-observable";
-import { Epic } from "@/redux/store";
-import { actions } from "@/redux/slices/scientistData";
+import { Epic } from "@/redux/store/index.js"
+import { actions } from "@/redux/slices/scientistData.js"
 
-import { sdk } from "@/api/gql-client";
-import { CreateQuestionMutation } from "@/api/graphql/sdk.generated";
-import { sanitizeEntity } from "@/api/entity-checker";
+import { sdk } from "@/api/gql-client.js"
+import { CreateQuestionMutation } from "@/api/graphql/sdk.generated.js"
+import { sanitizeEntity } from "@/api/entity-checker.js"
 
 // ----  CREATE QUESTION
 

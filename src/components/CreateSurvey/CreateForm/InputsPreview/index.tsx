@@ -3,14 +3,14 @@ import { Formik, Form } from "formik";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 
-import { QuestionRedux } from "@/redux/slices/types";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { selectors, actions } from "@/redux/slices/scientistData";
-import Loader from "@/components/Spinner";
-import Error from "@/components/Error";
-import NoData from "@/components/SurveyGrid/noData";
-import Header from "./Header";
-import Card from "./Card";
+import { QuestionRedux } from "@/redux/slices/types/index.js"
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
+import { selectors, actions } from "@/redux/slices/scientistData.js"
+import Loader from "@/components/Spinner/index.tsx"
+import Error from "@/components/Error/index.tsx"
+import NoData from "@/components/SurveyGrid/noData/index.tsx"
+import Header from "./Header/index.tsx"
+import Card from "./Card/index.tsx"
 
 export interface Item {
   id: number;

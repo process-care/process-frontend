@@ -1,7 +1,7 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { Circle } from "@chakra-ui/react";
 
-import { t } from "@/static/condition";
+import { t } from "@/static/condition.ts"
 
 const steps = [
   { title: t.steps[0] },

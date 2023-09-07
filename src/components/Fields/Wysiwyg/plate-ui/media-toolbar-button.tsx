@@ -5,9 +5,9 @@ import {
   useMediaToolbarButton,
 } from '@udecode/plate-media';
 
-import { Icons } from '@/components/icons';
+import { Icons } from '@/components/Icons.tsx'
 
-import { ToolbarButton } from './toolbar';
+import { ToolbarButton } from './toolbar.tsx'
 
 export function MediaToolbarButton({
   nodeType,

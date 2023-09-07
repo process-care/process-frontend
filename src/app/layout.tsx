@@ -2,15 +2,15 @@
 
 import { useState } from 'react'
 import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { HTML5Backend } from "react-dnd-html5-backend"
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Inter } from 'next/font/google'
 
 import './globals.css'
 
-import Layout from '@/components/Layout';
-import { ReduxProvider } from '@/redux/ReduxProvider'
-import { ChakraProviders } from './ChakraProviders';
+import Layout from '@/components/Layout/index.tsx'
+import { ReduxProvider } from '@/redux/ReduxProvider.tsx'
+import { ChakraProviders } from './ChakraProviders.tsx'
 
 const inter = Inter({ subsets: ['latin'] })
 

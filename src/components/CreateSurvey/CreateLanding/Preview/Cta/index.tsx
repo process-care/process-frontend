@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/react";
 
-import { useMediaQueries } from "@/utils/hooks/mediaqueries";
-import { LandingRedux } from "@/redux/slices/types";
+import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
+import { LandingRedux } from "@/redux/slices/types/index.js"
 
 interface Props {
   data?: LandingRedux;

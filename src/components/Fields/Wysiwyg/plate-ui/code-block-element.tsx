@@ -9,9 +9,9 @@ import {
 } from '@udecode/plate-code-block';
 import { PlateElement, PlateElementProps, Value } from '@udecode/plate-common';
 
-import { cn } from '@/utils/plate-ui';
+import { cn } from '@/utils/ui.ts'
 
-import { CodeBlockCombobox } from './code-block-combobox';
+import { CodeBlockCombobox } from './code-block-combobox.tsx'
 
 const CodeBlockElement = forwardRef<
   HTMLDivElement,

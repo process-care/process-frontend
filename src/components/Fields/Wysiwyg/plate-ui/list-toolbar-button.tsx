@@ -5,9 +5,9 @@ import {
   useListToolbarButtonState,
 } from '@udecode/plate-list';
 
-import { Icons } from '@/components/icons';
+import { Icons } from '@/components/Icons.tsx'
 
-import { ToolbarButton } from './toolbar';
+import { ToolbarButton } from './toolbar.tsx'
 
 export function ListToolbarButton({
   nodeType = ELEMENT_UL,

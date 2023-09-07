@@ -1,19 +1,19 @@
 import { Button, ButtonGroup, Center, Text, Tooltip } from "@chakra-ui/react";
 import { InfoIcon } from "@chakra-ui/icons";
 
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
 // import { StepCounter } from "./Steps/StepCounter";
-import { useCheckStepValidation } from "./Steps/utils";
-import { ConditionRedux } from "@/redux/slices/types";
-import { actions, selectors } from "@/redux/slices/scientistData";
-import { renderTitle } from "./utils";
-import Step_1 from "@/components/CreateSurvey/CreateForm/Condition/ConditionPreview/Steps/Step_1";
-import Step_2 from "./Steps/Step_2";
-import Step_3 from "./Steps/Step_3";
-import Loader from "@/components/Spinner";
-import Footer from "../ToolBox/InputForm/Template/Footer";
-import { cn } from "@/lib/utils";
-import InfoBox from "@/components/Banner/InfoBox";
+import { useCheckStepValidation } from "./Steps/utils/index.ts"
+import { ConditionRedux } from "@/redux/slices/types/index.js"
+import { actions, selectors } from "@/redux/slices/scientistData.js"
+import { renderTitle } from "./utils/index.ts"
+import Step_1 from "@/components/CreateSurvey/CreateForm/Condition/ConditionPreview/Steps/Step_1/index.tsx"
+import Step_2 from "./Steps/Step_2/index.tsx"
+import Step_3 from "./Steps/Step_3/index.tsx"
+import Loader from "@/components/Spinner/index.tsx"
+import Footer from "../ToolBox/InputForm/Template/Footer/index.tsx"
+import InfoBox from "@/components/Banner/InfoBox.tsx"
+import { cn } from '@/utils/ui.ts'
 
 interface Props {
   selectedCondition: ConditionRedux;

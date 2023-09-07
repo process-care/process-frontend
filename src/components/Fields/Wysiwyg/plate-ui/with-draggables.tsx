@@ -17,7 +17,7 @@ import {
 import { ELEMENT_OL, ELEMENT_UL } from '@udecode/plate-list';
 import { ELEMENT_PARAGRAPH } from '@udecode/plate-paragraph';
 
-import { Draggable, DraggableProps } from './draggable';
+import { Draggable, DraggableProps } from './draggable.tsx'
 
 export const withDraggable = (
   Component: FC,

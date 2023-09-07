@@ -11,11 +11,11 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from '@/components/Fields/Wysiwyg/plate-ui/dropdown-menu';
-import { ToolbarButton } from '@/components/Fields/Wysiwyg/plate-ui/toolbar';
+} from '@/components/Fields/Wysiwyg/plate-ui/dropdown-menu.tsx'
+import { ToolbarButton } from '@/components/Fields/Wysiwyg/plate-ui/toolbar.tsx'
 
-import { DEFAULT_COLORS, DEFAULT_CUSTOM_COLORS } from './color-constants';
-import { ColorPicker } from './color-picker';
+import { DEFAULT_COLORS, DEFAULT_CUSTOM_COLORS } from './color-constants.ts'
+import { ColorPicker } from './color-picker.tsx'
 
 export type TColor = {
   name: string;

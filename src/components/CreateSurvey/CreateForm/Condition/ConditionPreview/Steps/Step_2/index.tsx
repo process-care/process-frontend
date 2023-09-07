@@ -1,12 +1,12 @@
 import { useMemo } from "react";
 import { Button, Flex } from "@chakra-ui/react";
 
-import { operators, operatorsForMultiple } from "@/constants/operators";
-import { ConditionRedux } from "@/redux/slices/types";
-import { checkIfMultiple } from "@/utils/formBuilder/input";
-import { useAppSelector } from "@/redux/hooks";
-import { questionsSelectors } from "@/redux/slices/scientistData/question-editor";
-import Error from "@/components/Error";
+import { operators, operatorsForMultiple } from "@/constants/operators.ts"
+import { ConditionRedux } from "@/redux/slices/types/index.js"
+import { checkIfMultiple } from "@/utils/formBuilder/input.ts"
+import { useAppSelector } from "@/redux/hooks/index.js"
+import { questionsSelectors } from "@/redux/slices/scientistData/question-editor.ts"
+import Error from "@/components/Error/index.tsx"
 
 interface Props {
   selectedCondition: ConditionRedux;

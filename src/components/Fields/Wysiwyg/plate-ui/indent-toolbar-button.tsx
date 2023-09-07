@@ -1,9 +1,9 @@
 import React from 'react';
 import { useIndentButton } from '@udecode/plate-indent';
 
-import { Icons } from '@/components/icons';
+import { Icons } from '@/components/Icons.tsx'
 
-import { ToolbarButton } from './toolbar';
+import { ToolbarButton } from './toolbar.tsx'
 
 export function IndentToolbarButton() {
   const { props } = useIndentButton();

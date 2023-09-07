@@ -1,17 +1,15 @@
 import { Formik, Form } from "formik";
-import { Box, Container, Text, Flex, Button } from "@chakra-ui/react";
-import Image from "next/image";
+import { Box, Container, Text, Flex, Button } from "@chakra-ui/react"
 
-import { t } from "@/static/condition";
-import { ConditionRedux } from "@/redux/slices/types";
-import { checkIfMultiple } from "@/utils/formBuilder/input";
-import { actions, selectors } from "@/redux/slices/scientistData";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { questionsSelectors } from "@/redux/slices/scientistData/question-editor";
-import { RenderedInput } from "./utils";
-import Error from "@/components/Error";
-
-import Check from "./../../assets/check.svg";
+import { t } from "@/static/condition.ts"
+import { ConditionRedux } from "@/redux/slices/types/index.js"
+import { checkIfMultiple } from "@/utils/formBuilder/input.ts"
+import { actions, selectors } from "@/redux/slices/scientistData.js"
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
+import { questionsSelectors } from "@/redux/slices/scientistData/question-editor.ts"
+import { RenderedInput } from "./utils/index.tsx"
+import Error from "@/components/Error/index.tsx"
+import { CheckIcon } from "lucide-react"
 
 interface Props {
   selectedCondition: ConditionRedux;
@@ -87,7 +85,7 @@ export default function Step_3({ selectedCondition, updateStep }: Props): JSX.El
 
               {isValid && isNotEmpty && (
                 <Flex alignItems="center" justifyContent="flex-start" w="100%" mx="auto" mt="2">
-                  <Image src={Check} alt="Checkmark" />
+                  <CheckIcon />
                   
                   <Text fontSize="14px" color="brand.green" ml={2}>
                     {t.success}

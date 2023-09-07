@@ -1,8 +1,8 @@
 import React from 'react';
 import { UseEmojiPickerType } from '@udecode/plate-emoji';
 
-import { cn } from '@/utils/plate-ui';
-import { Icons } from '@/components/icons';
+import { cn } from '@/utils/ui.ts'
+import { Icons } from '@/components/Icons.tsx'
 
 export type EmojiPickerSearchAndClearProps = Pick<
   UseEmojiPickerType,

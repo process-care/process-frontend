@@ -1,10 +1,10 @@
 import { Box, Text } from "@chakra-ui/react";
 
-import { useAppSelector } from "@/redux/hooks";
-import { t } from "@/static/condition";
-import { ConditionRedux } from "@/redux/slices/types";
-import { selectors } from "@/redux/slices/scientistData";
-import Group from "./Group";
+import { useAppSelector } from "@/redux/hooks/index.js"
+import { t } from "@/static/condition.ts"
+import { ConditionRedux } from "@/redux/slices/types/index.js"
+import { selectors } from "@/redux/slices/scientistData.js"
+import Group from "./Group/index.tsx"
 
 interface Props {
   selectedCondition: ConditionRedux;

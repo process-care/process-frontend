@@ -1,18 +1,17 @@
 import React, { useCallback } from "react";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
 import { v4 as uuidv4 } from "uuid";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import Image from "next/image";
+import Image from "next/image.js"
 
-import { t } from "@/static/condition";
-import { actions, selectors } from "@/redux/slices/scientistData";
-import { ConditionRedux } from "@/redux/slices/types";
-import { Maybe } from "@/api/graphql/types.generated";
-import RemovingConfirmation from "../../../RemovingConfirmation";
-import Separator from "../Separator";
-import Operator from "./Operator";
-
-import Delete from "@/assets/delete.svg";
+import { t } from "@/static/condition.ts"
+import { actions, selectors } from "@/redux/slices/scientistData.js"
+import { ConditionRedux } from "@/redux/slices/types/index.js"
+import { Maybe } from "@/api/graphql/types.generated.ts"
+import RemovingConfirmation from "../../../RemovingConfirmation/index.tsx"
+import Separator from "../Separator/index.tsx"
+import Operator from "./Operator/index.tsx"
+import { DeleteIcon } from "lucide-react";
 
 interface Props {
   currentConditions: ConditionRedux[];
@@ -164,7 +163,7 @@ function GroupContent({
           fontSize="10"
           pt="2px"
         >
-          <Image src={Delete} alt="Delete" />
+          <DeleteIcon />
         </Button>
       </Flex>
 
@@ -222,7 +221,7 @@ function GroupContent({
                       fontSize="10"
                       pt="2px"
                     >
-                      <Image src={Delete} alt="Delete" />
+                      <DeleteIcon />
                     </Button>
                   </Flex>
                 </>

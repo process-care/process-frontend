@@ -1,10 +1,10 @@
 import { Box, Button, Flex, Circle, Text } from "@chakra-ui/react";
-import Link from "next/link";
+import Link from "next/link.js"
 
-import { useAppSelector, useAppDispatch } from "@/redux/hooks";
-import { actions, selectors } from "@/redux/slices/survey-editor";
-import { SurveyRedux } from "@/redux/slices/types";
-import { t } from "./static";
+import { useAppSelector, useAppDispatch } from "@/redux/hooks/index.js"
+import { actions, selectors } from "@/redux/slices/survey-editor.js"
+import { SurveyRedux } from "@/redux/slices/types/index.js"
+import { t } from "./static.ts"
 
 // ---- TYPES
 

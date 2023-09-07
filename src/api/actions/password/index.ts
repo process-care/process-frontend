@@ -1,7 +1,7 @@
-import axios from "axios";
+import axios from "axios"
 
-import { API_URL_ROOT } from "@/constants/api";
-import { buildBearer } from "@/utils/auth";
+import { API_URL_ROOT } from '@/constants/api.js'
+import { buildBearer } from "@/utils/auth.js"
 
 // -- Change password
 

@@ -4,9 +4,9 @@ import {
   useLinkToolbarButtonState,
 } from '@udecode/plate-link';
 
-import { Icons } from '@/components/icons';
+import { Icons } from '@/components/Icons.tsx'
 
-import { ToolbarButton } from './toolbar';
+import { ToolbarButton } from './toolbar.tsx'
 
 export function LinkToolbarButton() {
   const state = useLinkToolbarButtonState();

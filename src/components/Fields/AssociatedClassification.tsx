@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Box, Flex, FormLabel, Spinner, Text } from "@chakra-ui/react";
 import { v4 as uuidv4 } from "uuid";
-import Image from "next/image";
+import Image from "next/image.js"
 
-import { useAppSelector } from "@/redux/hooks";
-import { selectors } from "@/redux/slices/application";
-import { useMediaQueries } from "@/utils/hooks/mediaqueries";
-import { Maybe } from "@/api/graphql/types.generated";
-import { useAssociatedLogic } from "./hooks";
+import { useAppSelector } from "@/redux/hooks/index.js"
+import { selectors } from "@/redux/slices/application/index.js"
+import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
+import { Maybe } from "@/api/graphql/types.generated.ts"
+import { useAssociatedLogic } from "./hooks/index.tsx"
 
 interface Props {
   label: string;

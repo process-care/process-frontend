@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
-import { cn } from '@/lib/utils';
 import { InfoIcon } from 'lucide-react';
+
+import { cn } from '@/utils/ui.ts'
 
 type Props = {
   className?: string;

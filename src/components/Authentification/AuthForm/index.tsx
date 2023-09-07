@@ -2,15 +2,13 @@
 
 import { useState } from "react";
 import { Box, Button, Text } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
+import { useRouter } from "next/navigation.js"
 
-import { useAppSelector } from "@/redux/hooks";
-import { useMediaQueries } from "@/utils/hooks/mediaqueries";
-import LoginForm from "./Login";
-import SigninForm from "./Signin";
-
-import Logo from "@/assets/black_logo.svg";
+import { useAppSelector } from "@/redux/hooks/index.js"
+import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
+import LoginForm from "./Login/index.tsx"
+import SigninForm from "./Signin/index.tsx"
+import { BlackLogo } from "@/components/Logos.tsx"
 
 export default function AuthForm(): JSX.Element {
   const router = useRouter()
@@ -31,7 +29,7 @@ export default function AuthForm(): JSX.Element {
       w={isTablet ? "90%" : "480px"}
     >
       <Box display="flex" justifyContent="center" w="150px" m="0 auto">
-        <Image src={Logo} alt="Logo" />
+        <BlackLogo />
       </Box>
       <Box pt={isTablet ? "20px" : "90px"}>
         {isSigninPage ? <SigninForm cancel={() => setIsSigninPage(false)} /> : <LoginForm />}

@@ -1,12 +1,11 @@
 import { CheckIcon } from "@chakra-ui/icons";
 import { CircularProgress, Flex, Text } from "@chakra-ui/react";
-import Link from "next/link";
-import Image from "next/image";
+import Link from "next/link.js"
+import Image from "next/image.js"
+import { StepBackIcon } from "lucide-react"
 
-import { useAppSelector } from "@/redux/hooks";
-import { useMediaQueries } from "@/utils/hooks/mediaqueries";
-
-import Back from "./assets/back.svg";
+import { useAppSelector } from "@/redux/hooks/index.js"
+import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
 
 interface Props {
   surveyTitle?: string | null | undefined;
@@ -25,7 +24,7 @@ export default function Menu({ surveyTitle }: Props): JSX.Element {
     >
       <Link href={`/dashboard`}>
         <Flex ml={isTablet ? "0" : "50px"} alignItems="center">
-          <Image src={Back} alt="Back" />
+          <StepBackIcon />
           <Text fontSize="12px" ml={2} mr="30px">
             Dashboard
           </Text>

@@ -6,7 +6,7 @@ import {
   useTableCellElementState,
 } from '@udecode/plate-table';
 
-import { cn } from '@/utils/plate-ui';
+import { cn } from '@/utils/ui.ts'
 
 export interface TableCellElementProps extends PlateElementProps {
   hideBorder?: boolean;

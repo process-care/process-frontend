@@ -16,9 +16,9 @@ import {
 } from '@udecode/plate-media';
 import { useFocused, useReadOnly, useSelected } from 'slate-react';
 
-import { cn } from '@/utils/plate-ui';
+import { cn } from '@/utils/ui.ts'
 
-import { MediaPopover } from './media-popover';
+import { MediaPopover } from './media-popover.tsx'
 
 const align = 'center';
 

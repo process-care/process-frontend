@@ -1,11 +1,11 @@
 import { createEntityAdapter, createSelector, PayloadAction } from "@reduxjs/toolkit";
 import { DateTime } from "luxon";
 
-import { RootState } from "@/redux/store";
-import { GlobalState } from "../scientistData";
-import { getNewOrder } from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/PageForm/utils";
-import { QuestionRedux } from "../types";
-import { pageSelectors } from "./page-editor";
+import { RootState } from "@/redux/store/index.js";
+import { GlobalState } from "../scientistData.js"
+import { getNewOrder } from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/PageForm/utils/index.js"
+import { QuestionRedux } from "../types/index.js"
+import { pageSelectors } from "./page-editor.js"
 
 // ---- TYPES
 

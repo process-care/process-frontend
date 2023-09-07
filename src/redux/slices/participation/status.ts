@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Page, Question, Answer } from "@/api/graphql/sdk.generated";
-import { SafeEntity } from "@/api/entity-checker";
+import { Page, Question, Answer } from "@/api/graphql/sdk.generated.js"
+import { SafeEntity } from "@/api/entity-checker.js"
 
 // ---- TYPES
 

@@ -3,7 +3,7 @@
 import { Box } from "@chakra-ui/react";
 import Div100vh from "react-div-100vh";
 
-import NewPasswordForm from "@/components/Authentification/NewPassword";
+import NewPasswordForm from "@/components/Authentification/NewPassword/index.tsx";
 
 export default function NewPassword(): JSX.Element {
   return (

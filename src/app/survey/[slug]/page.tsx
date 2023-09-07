@@ -1,12 +1,12 @@
 'use client'
 
-import { client } from "@/api/gql-client";
-import { useSurveyBySlugQuery } from "@/api/graphql/queries/survey.gql.generated";
-import { useLandingQuery } from "@/api/graphql/queries/landing.gql.generated";
-import { sanitizeEntity } from "@/api/entity-checker";
-import Loader from "@/components/Spinner";
-import Error from "@/components/Error";
-import Preview from "@/components/CreateSurvey/CreateLanding/Preview";
+import { client } from "@/api/gql-client.js"
+import { useSurveyBySlugQuery } from "@/api/graphql/queries/survey.gql.generated.js"
+import { useLandingQuery } from "@/api/graphql/queries/landing.gql.generated.js"
+import { sanitizeEntity } from "@/api/entity-checker.js"
+import Loader from "@/components/Spinner/index.tsx"
+import Error from "@/components/Error/index.tsx"
+import Preview from "@/components/CreateSurvey/CreateLanding/Preview/index.tsx"
 
 // ---- TYPES
 

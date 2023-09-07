@@ -1,7 +1,7 @@
 import React from "react";
 import { ButtonGroup, Center, Text } from "@chakra-ui/react";
 
-import { t } from "@/static/global";
+import { t } from "@/static/global.ts"
 
 interface Props {
   confirm: () => Promise<void> | any;
@@ -10,7 +10,7 @@ interface Props {
   height?: string;
 }
 
-import { Button } from "@/components/Shadcn/button"
+import { Button } from "@/components/Shadcn/button.tsx"
 
 export default function RemovingConfirmation({
   confirm,

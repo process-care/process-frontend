@@ -2,15 +2,15 @@ import { useEffect, useMemo, useState } from "react";
 import { Box, Button, Flex, FormLabel, Spinner, Text } from "@chakra-ui/react";
 import { v4 as uuidv4 } from "uuid";
 import { Form, Formik } from "formik";
-import Image from "next/image";
+import Image from "next/image.js"
 
-import { useAppSelector } from "@/redux/hooks";
-import { selectors } from "@/redux/slices/application";
-import { QuestionRedux } from "@/redux/slices/types";
-import { Maybe } from "@/api/graphql/types.generated";
-import { useAssociatedLogic } from "./hooks";
-import RenderInput from "@/components/CreateSurvey/CreateForm/InputsPreview/Card/utils";
-import TitleDivider from "@/components/TitleDivider";
+import { useAppSelector } from "@/redux/hooks/index.js"
+import { selectors } from "@/redux/slices/application/index.js"
+import { QuestionRedux } from "@/redux/slices/types/index.js"
+import { Maybe } from "@/api/graphql/types.generated.ts"
+import { useAssociatedLogic } from "./hooks/index.tsx"
+import RenderInput from "@/components/CreateSurvey/CreateForm/InputsPreview/Card/utils/index.tsx"
+import TitleDivider from "@/components/TitleDivider/index.tsx"
 
 interface Factor {
   modalities: {

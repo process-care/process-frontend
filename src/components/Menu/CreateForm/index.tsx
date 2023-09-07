@@ -1,20 +1,18 @@
-import { useState, useEffect } from "react";
-import { Flex, Text, Button, Collapse, CircularProgress } from "@chakra-ui/react";
-import { CheckIcon } from "@chakra-ui/icons";
-import Link from "next/link";
-import Image from "next/image";
+import { useState, useEffect } from "react"
+import { Flex, Text, Button, Collapse, CircularProgress } from "@chakra-ui/react"
+import { CheckIcon } from "@chakra-ui/icons"
+import { StepBackIcon } from "lucide-react"
+import Link from "next/link.js"
 
-import { t } from "@/static/input";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { actions as appActions } from "@/redux/slices/application";
-import { actions as globalActions } from "@/redux/slices/scientistData";
-import { selectors } from "@/redux/slices/landing-editor";
-import { selectors as globalSelectors } from "@/redux/slices/scientistData";
-import { useSurveyQuery } from "@/api/graphql/queries/survey.gql.generated";
-import { client } from "@/api/gql-client";
-import Loader from "@/components/Spinner";
-
-import Back from "./assets/back.svg";
+import { t } from "@/static/input.js"
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
+import { actions as appActions } from "@/redux/slices/application/index.js"
+import { actions as globalActions } from "@/redux/slices/scientistData.js"
+import { selectors } from "@/redux/slices/landing-editor.js"
+import { selectors as globalSelectors } from "@/redux/slices/scientistData.js"
+import { useSurveyQuery } from "@/api/graphql/queries/survey.gql.generated.js"
+import { client } from "@/api/gql-client.js"
+import Loader from "@/components/Spinner/index.tsx"
 
 // ---- STATIC
 
@@ -89,7 +87,7 @@ export default function Menu({ isLanding, surveyId }: Props): JSX.Element {
         >
           <Link href="/dashboard">
             <Flex ml="50px" alignItems="center">
-              <Image src={Back} alt="Back" />
+              <StepBackIcon />
               <Text fontSize="12px" ml={2} mr="30px">
                 {nl.button.dashboard}
               </Text>

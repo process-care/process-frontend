@@ -1,4 +1,4 @@
-import { Input } from "@/components/Fields";
+import { Input } from "@/components/Fields/index.ts"
 import { Box } from "@chakra-ui/react";
 
 interface Props {

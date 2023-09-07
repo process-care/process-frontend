@@ -45,28 +45,28 @@ import {
   ELEMENT_TR,
 } from '@udecode/plate-table';
 
-import { BlockquoteElement } from '@/components/Fields/Wysiwyg/plate-ui/blockquote-element';
-import { CodeBlockElement } from '@/components/Fields/Wysiwyg/plate-ui/code-block-element';
-import { CodeLeaf } from '@/components/Fields/Wysiwyg/plate-ui/code-leaf';
-import { CodeLineElement } from '@/components/Fields/Wysiwyg/plate-ui/code-line-element';
-import { CodeSyntaxLeaf } from '@/components/Fields/Wysiwyg/plate-ui/code-syntax-leaf';
-import { HeadingElement } from '@/components/Fields/Wysiwyg/plate-ui/heading-element';
-import { HighlightLeaf } from '@/components/Fields/Wysiwyg/plate-ui/highlight-leaf';
-import { HrElement } from '@/components/Fields/Wysiwyg/plate-ui/hr-element';
-import { ImageElement } from '@/components/Fields/Wysiwyg/plate-ui/image-element';
-import { LinkElement } from '@/components/Fields/Wysiwyg/plate-ui/link-element';
-import { ListElement } from '@/components/Fields/Wysiwyg/plate-ui/list-element';
-import { MediaEmbedElement } from '@/components/Fields/Wysiwyg/plate-ui/media-embed-element';
-import { ParagraphElement } from '@/components/Fields/Wysiwyg/plate-ui/paragraph-element';
-import { withPlaceholders } from '@/components/Fields/Wysiwyg/plate-ui/placeholder';
+import { BlockquoteElement } from '@/components/Fields/Wysiwyg/plate-ui/blockquote-element.tsx'
+import { CodeBlockElement } from '@/components/Fields/Wysiwyg/plate-ui/code-block-element.tsx'
+import { CodeLeaf } from '@/components/Fields/Wysiwyg/plate-ui/code-leaf.tsx'
+import { CodeLineElement } from '@/components/Fields/Wysiwyg/plate-ui/code-line-element.tsx'
+import { CodeSyntaxLeaf } from '@/components/Fields/Wysiwyg/plate-ui/code-syntax-leaf.tsx'
+import { HeadingElement } from '@/components/Fields/Wysiwyg/plate-ui/heading-element.tsx'
+import { HighlightLeaf } from '@/components/Fields/Wysiwyg/plate-ui/highlight-leaf.tsx'
+import { HrElement } from '@/components/Fields/Wysiwyg/plate-ui/hr-element.tsx'
+import { ImageElement } from '@/components/Fields/Wysiwyg/plate-ui/image-element.tsx'
+import { LinkElement } from '@/components/Fields/Wysiwyg/plate-ui/link-element.tsx'
+import { ListElement } from '@/components/Fields/Wysiwyg/plate-ui/list-element.tsx'
+import { MediaEmbedElement } from '@/components/Fields/Wysiwyg/plate-ui/media-embed-element.tsx'
+import { ParagraphElement } from '@/components/Fields/Wysiwyg/plate-ui/paragraph-element.tsx'
+import { withPlaceholders } from '@/components/Fields/Wysiwyg/plate-ui/placeholder.tsx'
 import {
   TableCellElement,
   TableCellHeaderElement,
-} from '@/components/Fields/Wysiwyg/plate-ui/table-cell-element';
-import { TableElement } from '@/components/Fields/Wysiwyg/plate-ui/table-element';
-import { TableRowElement } from '@/components/Fields/Wysiwyg/plate-ui/table-row-element';
-import { TodoListElement } from '@/components/Fields/Wysiwyg/plate-ui/todo-list-element';
-import { withDraggables } from '@/components/Fields/Wysiwyg/plate-ui/with-draggables';
+} from '@/components/Fields/Wysiwyg/plate-ui/table-cell-element.tsx'
+import { TableElement } from '@/components/Fields/Wysiwyg/plate-ui/table-element.tsx'
+import { TableRowElement } from '@/components/Fields/Wysiwyg/plate-ui/table-row-element.tsx'
+import { TodoListElement } from '@/components/Fields/Wysiwyg/plate-ui/todo-list-element.tsx'
+import { withDraggables } from '@/components/Fields/Wysiwyg/plate-ui/with-draggables.tsx'
 
 export const createPlateUI = (
   overrideByKey?: Partial<Record<string, PlatePluginComponent>>,

@@ -2,10 +2,10 @@ import { useEffect } from "react";
 import { Flex, Box, Button, Text } from "@chakra-ui/react";
 import { FieldArray, useField, useFormikContext } from "formik";
 
-import { Textarea } from "@/components/Fields";
-import { useAppSelector } from "@/redux/hooks";
-import { selectors as selectorsApplication } from "@/redux/slices/application";
-import { Enum_Question_Rows } from "@/api/graphql/types.generated";
+import { Textarea } from "@/components/Fields/index.ts"
+import { useAppSelector } from "@/redux/hooks/index.js"
+import { selectors as selectorsApplication } from "@/redux/slices/application/index.js"
+import { Enum_Question_Rows } from "@/api/graphql/types.generated.ts"
 
 interface Props {
   name: string;

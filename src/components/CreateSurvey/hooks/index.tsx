@@ -1,11 +1,11 @@
 import { useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation.js"
 
-import { SURVEY_STATUS } from "@/types/survey";
-import { CreateLandingMutation, useCreateLandingMutation } from "@/api/graphql/queries/landing.gql.generated";
-import { client } from "@/api/gql-client";
-import { useUpdateSurveyMutation } from "@/api/graphql/queries/survey.gql.generated";
-import { SurveyRedux } from "@/redux/slices/types";
+import { SURVEY_STATUS } from "@/types/survey.js"
+import { CreateLandingMutation, useCreateLandingMutation } from "@/api/graphql/queries/landing.gql.generated.ts"
+import { client } from "@/api/gql-client.js"
+import { useUpdateSurveyMutation } from "@/api/graphql/queries/survey.gql.generated.js"
+import { SurveyRedux } from "@/redux/slices/types/index.js"
 
 // ---- TYPES
 

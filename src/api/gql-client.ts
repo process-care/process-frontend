@@ -2,6 +2,8 @@ import { GraphQLClient } from "graphql-request"
 import { ApolloClient, InMemoryCache } from "@apollo/client"
 import { createUploadLink } from 'apollo-upload-client'
 
+import { API_URL } from "@/constants/api.js"
+import { getSdk } from "./graphql/sdk.generated.js"
 
 // Client Initialization
 // Is exposed because we need to set the header at some point

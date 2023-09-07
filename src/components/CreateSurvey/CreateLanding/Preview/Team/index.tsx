@@ -1,6 +1,6 @@
 import { Box, Text, Flex, Image, Grid } from "@chakra-ui/react";
 
-import { Color, Member as MemberType } from "@/types/landing";
+import { Color, Member as MemberType } from "@/types/landing.ts"
 
 type Props = {
   members: MemberType[];

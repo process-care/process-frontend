@@ -2,9 +2,9 @@
 
 import { useEffect } from 'react'
 
-import { useAuth } from '@/components/Authentification/hooks';
-import { client } from '@/api/gql-client';
-import { buildBearer } from '@/utils/auth';
+import { useAuth } from '@/components/Authentification/hooks/index.js';
+import { client } from '@/api/gql-client.js'
+import { buildBearer } from '@/utils/auth.js'
 
 
 // ---- TYPES

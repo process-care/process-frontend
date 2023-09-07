@@ -3,6 +3,7 @@ import { useFormikContext } from "formik";
 import { FormControl } from "@chakra-ui/react";
 
 import { Plate, PlateEditor, PlateProvider, RenderAfterEditable, createPlateEditor, createPlugins, deserializeHtml } from '@udecode/plate-common';
+import { createFontBackgroundColorPlugin, createFontColorPlugin, createFontSizePlugin } from "@udecode/plate-font"
 import { createBasicMarksPlugin } from '@udecode/plate-basic-marks';
 import { createBlockquotePlugin } from '@udecode/plate-block-quote';
 import { ELEMENT_PARAGRAPH, createParagraphPlugin } from '@udecode/plate-paragraph';
@@ -16,26 +17,25 @@ import { createLinkPlugin } from "@udecode/plate-link";
 import { ELEMENT_IMAGE, ELEMENT_MEDIA_EMBED, createImagePlugin, createMediaEmbedPlugin } from "@udecode/plate-media";
 import { serializeHtml } from '@udecode/plate-serializer-html';
 
-import { QuestionRedux } from "@/redux/slices/types";
 
-import { createPlateUI } from '@/utils/create-plate-ui';
-import { Toolbar, ToolbarGroup } from "@/components/Fields/Wysiwyg/plate-ui/toolbar";
-import { TooltipProvider } from "./plate-ui/tooltip";
-import { TurnIntoDropdownMenu } from "./plate-ui/turn-into-dropdown-menu";
-import { TableDropdownMenu } from "./plate-ui/table-dropdown-menu";
-import { MediaToolbarButton } from "./plate-ui/media-toolbar-button";
-import { LinkToolbarButton } from "./plate-ui/link-toolbar-button";
-import { AlignDropdownMenu } from "./plate-ui/align-dropdown-menu";
-import { EmojiDropdownMenu } from "./plate-ui/emoji-dropdown-menu";
-import { MoreDropdownMenu } from "./plate-ui/more-dropdown-menu";
+import { createPlateUI } from '@/utils/create-plate-ui.ts'
+import { Toolbar, ToolbarGroup } from "@/components/Fields/Wysiwyg/plate-ui/toolbar.tsx"
+import { TooltipProvider } from "./plate-ui/tooltip.tsx"
+import { TurnIntoDropdownMenu } from "./plate-ui/turn-into-dropdown-menu.tsx"
+import { TableDropdownMenu } from "./plate-ui/table-dropdown-menu.tsx"
+import { MediaToolbarButton } from "./plate-ui/media-toolbar-button.tsx"
+import { LinkToolbarButton } from "./plate-ui/link-toolbar-button.tsx"
+import { AlignDropdownMenu } from "./plate-ui/align-dropdown-menu.tsx"
+import { EmojiDropdownMenu } from "./plate-ui/emoji-dropdown-menu.tsx"
+import { MoreDropdownMenu } from "./plate-ui/more-dropdown-menu.tsx"
+import { QuestionRedux } from "@/redux/slices/types/index.js"
 
-import MarkGroup from "./MarkGroup";
-import ColorGroup from "./ColorGroup";
+import MarkGroup from "./MarkGroup.tsx"
+import ColorGroup from "./ColorGroup.tsx"
 import { createTablePlugin } from "@udecode/plate-table";
 import { createCodeBlockPlugin } from "@udecode/plate-code-block";
-import { LinkFloatingToolbar } from "./plate-ui/link-floating-toolbar";
-import { ListToolbarButton } from "./plate-ui/list-toolbar-button";
-import { createFontBackgroundColorPlugin, createFontColorPlugin, createFontSizePlugin } from "@udecode/plate-font";
+import { LinkFloatingToolbar } from "./plate-ui/link-floating-toolbar.tsx"
+import { ListToolbarButton } from "./plate-ui/list-toolbar-button.tsx"
 
 // ---- TYPES
 

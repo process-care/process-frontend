@@ -1,22 +1,21 @@
 import { useEffect, useRef } from "react";
 import { Formik, Form } from "formik";
 import { Box, Button, Flex, Tooltip, Text } from "@chakra-ui/react";
-import Image from "next/image";
+import Image from "next/image.js"
 
-import { t } from "@/static/survey";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { setIsRemoving } from "@/redux/slices/formBuilder";
-import { actions as appActions } from "@/redux/slices/application";
-import { actions, selectors } from "@/redux/slices/scientistData";
-import { QuestionRedux } from "@/redux/slices/types";
-import { Enum_Question_Rows } from "@/api/graphql/types.generated";
-import { Textarea } from "@/components/Fields";
-import TitleDivider from "@/components/TitleDivider";
-import RemovingConfirmation from "../../../RemovingConfirmation";
-import SvgHover from "@/components/SvgHover";
-import ToolBox from "../InputsButton";
-
-import Trash from "@/assets/trash.svg";
+import { t } from "@/static/survey.ts"
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
+import { setIsRemoving } from "@/redux/slices/formBuilder/index.ts"
+import { actions as appActions } from "@/redux/slices/application/index.js"
+import { actions, selectors } from "@/redux/slices/scientistData.js"
+import { QuestionRedux } from "@/redux/slices/types/index.js"
+import { Enum_Question_Rows } from "@/api/graphql/types.generated.ts"
+import { Textarea } from "@/components/Fields/index.ts"
+import TitleDivider from "@/components/TitleDivider/index.tsx"
+import RemovingConfirmation from "../../../RemovingConfirmation/index.tsx"
+import SvgHover from "@/components/SvgHover/index.tsx"
+import ToolBox from "../InputsButton/index.tsx"
+import { Icons } from "@/components/Icons.tsx"
 
 export default function PageForm(): JSX.Element {
   const dispatch = useAppDispatch()
@@ -156,7 +155,7 @@ function FormDisplay({ selectedPageId, questionsOnSelectedPage, values, setField
               shouldWrapChildren
             >
               <SvgHover>
-                <Image src={Trash} alt="Trash" />
+                <Icons.delete />
               </SvgHover>
             </Tooltip>
           </Box>

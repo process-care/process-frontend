@@ -1,26 +1,23 @@
 import { useMemo, useState } from "react";
 import { Box, Button, Container, Flex, Tooltip, Text } from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
-import Link from "next/link";
-import Image from "next/image";
+import Link from "next/link.js"
 
-import { API_URL_ROOT } from "@/constants/api";
-import { useNavigator } from "@/components/CreateSurvey/hooks";
+import { API_URL_ROOT } from "@/constants/api.ts"
+import { useNavigator } from "@/components/CreateSurvey/hooks/index.tsx"
 // import { Chart } from "../Chart";
-import { renderStatus } from "@/utils/application/renderStatus";
-import { actions, selectors } from "@/redux/slices/scientistData";
-import { useAppSelector } from "@/redux/hooks";
-import { SURVEY_STATUS } from "@/types/survey";
-import { useGetSurveyStatsQuery } from "@/api/graphql/queries/survey.gql.generated";
-import { client } from "@/api/gql-client";
-import { SurveyRedux } from "@/redux/slices/types";
-import { Enum_Survey_Status } from "@/api/graphql/types.generated";
-import Loader from "@/components/Spinner";
-import RemovingConfirmation from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/PageForm/Status";
-import Filters from "../Filters";
-
-import Close from "./assets/close.svg";
-import Trash from "./assets/trash.svg";
+import { renderStatus } from "@/utils/application/renderStatus.tsx"
+import { actions, selectors } from "@/redux/slices/scientistData.js"
+import { useAppSelector } from "@/redux/hooks/index.js"
+import { SURVEY_STATUS } from "@/types/survey.js"
+import { useGetSurveyStatsQuery } from "@/api/graphql/queries/survey.gql.generated.js"
+import { client } from "@/api/gql-client.js"
+import { SurveyRedux } from "@/redux/slices/types/index.js"
+import { Enum_Survey_Status } from "@/api/graphql/types.generated.ts"
+import Loader from "@/components/Spinner/index.tsx"
+import RemovingConfirmation from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/PageForm/Status/index.tsx"
+import Filters from "../Filters/index.tsx"
+import { Icons } from "@/components/Icons.tsx"
 
 // ---- STATICS
 
@@ -135,13 +132,13 @@ export default function ProjectMenu({ menuIsOpen, onClose }: Props): JSX.Element
           <Box p={1} display="flex" w="100%" justifyContent="space-between">
             <Tooltip label="Fermer">
               <Button onClick={onClose} variant="link">
-                <Image src={Close} alt="close" />
+                <Icons.close />
               </Button>
             </Tooltip>
             <Box>
               <Tooltip label="Supprimer le projet">
                 <Button onClick={handleTrash} variant="link">
-                  <Image src={Trash} alt="trash" />
+                  <Icons.delete />
                 </Button>
               </Tooltip>
             </Box>

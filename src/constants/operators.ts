@@ -1,4 +1,4 @@
-import IOperator from "@/types/operator";
+import IOperator from "@/types/operator.js"
 
 export const operatorsForMultiple: IOperator[] = [
   {

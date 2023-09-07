@@ -1,9 +1,9 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "@/redux/store";
 import { DateTime } from "luxon";
 import slugify from "slugify";
-import { LastPosted, LastSaved, SurveyRedux } from "./types";
-// import { push } from "connected-next-router";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+
+import { RootState } from "@/redux/store/index.js";
+import { LastPosted, LastSaved, SurveyRedux } from "./types/index.js"
 
 // ---- STATE
 

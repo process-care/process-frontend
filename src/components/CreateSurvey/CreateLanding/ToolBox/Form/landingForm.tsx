@@ -1,27 +1,26 @@
 import { useEffect, useCallback, useMemo, useRef } from "react";
 import { Box, Button, Text, Flex } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
+import { useRouter } from "next/navigation.js"
+import Image from "next/image.js"
 
-import { t } from "@/static/createLanding";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { goTop } from "@/utils/application/scrollTo";
-import { actions, selectors } from "@/redux/slices/landing-editor";
-import { Enum_Question_Rows } from "@/api/graphql/types.generated";
-import { initialValues } from "./utils/initialValues";
-import { Textarea } from "@/components/Fields";
-import RepeatableJobs from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/RepeatableJobs";
-import UploadFile from "@/components/Fields/Uploadfile";
-import Wysiwyg from "@/components/Fields/Wysiwyg/Wysiwyg";
-import UploadFileRemote from "@/components/Fields/UploadFileRemote";
-import Footer from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer";
-import TitleDivider from "@/components/TitleDivider";
-import ColorPicker from "../ColorPicker";
-import SvgHover from "@/components/SvgHover";
-
-import Delete from "@/assets/delete.svg";
-import { LandingRedux } from "@/redux/slices/types";
+import { t } from "@/static/createLanding.ts"
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
+import { goTop } from "@/utils/application/scrollTo.ts"
+import { actions, selectors } from "@/redux/slices/landing-editor.ts"
+import { LandingRedux } from "@/redux/slices/types/index.js"
+import { Enum_Question_Rows } from "@/api/graphql/types.generated.ts"
+import { initialValues } from "./utils/initialValues.ts"
+import { Textarea } from "@/components/Fields/index.ts"
+import RepeatableJobs from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/RepeatableJobs/index.tsx"
+import UploadFile from "@/components/Fields/Uploadfile.tsx"
+import Wysiwyg from "@/components/Fields/Wysiwyg/Wysiwyg.tsx"
+import UploadFileRemote from "@/components/Fields/UploadFileRemote/index.tsx"
+import Footer from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer/index.tsx"
+import TitleDivider from "@/components/TitleDivider/index.tsx"
+import ColorPicker from "../ColorPicker/index.tsx"
+import SvgHover from "@/components/SvgHover/index.tsx"
+import { DeleteIcon } from "lucide-react";
 
 export default function LandingForm(): JSX.Element {
   const landing = useAppSelector(selectors.getLanding);
@@ -166,7 +165,7 @@ function FormDisplay({ landing, values, setFieldValue, isValid, isSubmitting }: 
 
             <Box mt={7} ml={4} hidden={Boolean(!values?.video_url)}>
               <SvgHover>
-                <Image src={Delete} alt="Delete" onClick={onDeleteVideo} />
+                <DeleteIcon onClick={onDeleteVideo} />
               </SvgHover>
             </Box>
           </Flex>

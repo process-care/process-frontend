@@ -2,8 +2,8 @@ import { FormControl, FormHelperText, FormLabel } from "@chakra-ui/react";
 import { useField, useFormikContext } from "formik";
 import CreatableSelect from "react-select/creatable";
 
-import { t } from "@/static/survey";
-import { useMediaQueries } from "@/utils/hooks/mediaqueries";
+import { t } from "@/static/survey.ts"
+import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
 
 interface Options {
   value: string | undefined;

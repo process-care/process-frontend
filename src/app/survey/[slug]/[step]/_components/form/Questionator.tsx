@@ -1,11 +1,11 @@
 import { Box } from "@chakra-ui/react";
 
-import { useAppSelector } from "@/redux/hooks";
-import { selectors } from "@/redux/slices/participation/questions";
-import { useMediaQueries } from "@/utils/hooks/mediaqueries";
-import { shouldShow } from "@/utils/participations/condition-evaluations";
-import { useAnswerSaver } from "./answer-hooks";
-import RenderInput from "@/components/CreateSurvey/CreateForm/InputsPreview/Card/utils";
+import { useAppSelector } from "@/redux/hooks/index.js"
+import { selectors } from "@/redux/slices/participation/questions.js"
+import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
+import { shouldShow } from "@/utils/participations/condition-evaluations.js"
+import { useAnswerSaver } from "./answer-hooks.js"
+import RenderInput from "@/components/CreateSurvey/CreateForm/InputsPreview/Card/utils/index.tsx"
 
 // ---- TYPES
 

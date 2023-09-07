@@ -2,14 +2,14 @@ import { useEffect } from "react";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { PageParticipationRedux, actions, selectors as pageSelectors } from "@/redux/slices/participation/page";
-import { selectors as questionsSelectors } from "@/redux/slices/participation/questions";
-import { useMediaQueries } from "@/utils/hooks/mediaqueries";
-import { NL } from "@/static/participation";
-import { formSchema } from "./validation";
-import { useInitialPageContent } from "./answer-hooks";
-import Questionator from "./Questionator";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
+import { PageParticipationRedux, actions, selectors as pageSelectors } from "@/redux/slices/participation/page.js"
+import { selectors as questionsSelectors } from "@/redux/slices/participation/questions.js"
+import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
+import { NL } from "@/static/participation.js"
+import { formSchema } from "./validation.js"
+import { useInitialPageContent } from "./answer-hooks.js"
+import Questionator from "./Questionator.tsx"
 
 // ---- TYPES
 

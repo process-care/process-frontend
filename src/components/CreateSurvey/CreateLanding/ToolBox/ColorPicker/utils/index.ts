@@ -1,4 +1,4 @@
-import { Color } from "@/types/landing";
+import { Color } from "@/types/landing.ts"
 
 export const colors: Color[] = [
   {

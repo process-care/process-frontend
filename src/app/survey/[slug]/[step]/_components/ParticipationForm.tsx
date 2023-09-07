@@ -2,21 +2,21 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { Box, Button, Center, Flex, Text } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation.js"
 
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { actions } from "@/redux/slices/participation/status";
-import { PageParticipationRedux, selectors } from "@/redux/slices/participation/page";
-import { selectors as scientistDataSelectors } from "@/redux/slices/scientistData";
-import { client } from "@/api/gql-client";
-import { useSurveyQuery } from "@/api/graphql/queries/survey.gql.generated";
-import { useFinishParticipationMutation } from "@/api/graphql/queries/participation.gql.generated";
-import { useMediaQueries } from "@/utils/hooks/mediaqueries";
-import { useLocalParticipation } from "@/utils/participations/localstorage-handlers";
-import Error from "@/components/Error";
-import Loader from "@/components/Spinner";
-import ParticipationMenu from "./ParticipationMenu";
-import Page from "./form/Page";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
+import { actions } from "@/redux/slices/participation/status.js"
+import { PageParticipationRedux, selectors } from "@/redux/slices/participation/page.js"
+import { selectors as scientistDataSelectors } from "@/redux/slices/scientistData.js"
+import { client } from "@/api/gql-client.js"
+import { useSurveyQuery } from "@/api/graphql/queries/survey.gql.generated.js"
+import { useFinishParticipationMutation } from "@/api/graphql/queries/participation.gql.generated.js";
+import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
+import { useLocalParticipation } from "@/utils/participations/localstorage-handlers.js"
+import Error from "@/components/Error/index.tsx"
+import Loader from "@/components/Spinner/index.tsx"
+import ParticipationMenu from "./ParticipationMenu.tsx"
+import Page from "./form/Page.tsx"
 
 // ---- TYPES
 

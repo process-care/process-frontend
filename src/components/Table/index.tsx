@@ -1,14 +1,14 @@
-import { useCallback, useState } from "react";
-import { Tooltip } from "@chakra-ui/react";
-import dayjs from "dayjs";
+import { useCallback, useState } from "react"
+import { Tooltip } from "@chakra-ui/react"
+import dayjs from "dayjs"
 import {
   useReactTable, getCoreRowModel, getSortedRowModel, flexRender, createColumnHelper,
   Row, Header, SortingState
-} from "@tanstack/react-table";
+} from "@tanstack/react-table"
 
-import { SurveyRedux } from "@/redux/slices/types";
-import { getLabelStatus } from "@/static/dashboard";
-import { cn } from "@/lib/utils";
+import { SurveyRedux } from "@/redux/slices/types/index.js"
+import { getLabelStatus } from "@/static/dashboard.js"
+import { cn } from '@/utils/ui.ts'
 
 // ---- TYPES
 

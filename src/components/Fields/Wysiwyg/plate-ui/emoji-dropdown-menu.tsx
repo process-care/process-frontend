@@ -4,15 +4,15 @@ import {
   useEmojiDropdownMenuState,
 } from '@udecode/plate-emoji';
 
-import { Icons } from '@/components/icons';
-import { EmojiToolbarDropdown } from '@/components/Fields/Wysiwyg/plate-ui/emoji-toolbar-dropdown';
+import { Icons } from '@/components/Icons.tsx'
+import { EmojiToolbarDropdown } from '@/components/Fields/Wysiwyg/plate-ui/emoji-toolbar-dropdown.tsx'
 import {
   ToolbarButton,
   ToolbarButtonProps,
-} from '@/components/Fields/Wysiwyg/plate-ui/toolbar';
+} from '@/components/Fields/Wysiwyg/plate-ui/toolbar.tsx'
 
-import { emojiCategoryIcons, emojiSearchIcons } from './emoji-icons';
-import { EmojiPicker } from './emoji-picker';
+import { emojiCategoryIcons, emojiSearchIcons } from './emoji-icons.tsx'
+import { EmojiPicker } from './emoji-picker.tsx'
 
 type EmojiDropdownMenuProps = {
   options?: EmojiDropdownMenuOptions;

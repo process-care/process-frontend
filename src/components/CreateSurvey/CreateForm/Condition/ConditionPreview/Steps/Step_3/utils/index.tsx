@@ -1,12 +1,12 @@
 import { useCallback } from "react";
 import { Box } from "@chakra-ui/react";
 
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { actions } from "@/redux/slices/scientistData";
-import { ConditionRedux } from "@/redux/slices/types";
-import { questionsSelectors } from "@/redux/slices/scientistData/question-editor";
-import { Input } from "@/components/Fields";
-import InputBox from "@/components/CreateSurvey/CreateForm/InputsPreview/InputBox";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
+import { actions } from "@/redux/slices/scientistData.js"
+import { ConditionRedux } from "@/redux/slices/types/index.js"
+import { questionsSelectors } from "@/redux/slices/scientistData/question-editor.ts"
+import { Input } from "@/components/Fields/index.ts"
+import InputBox from "@/components/CreateSurvey/CreateForm/InputsPreview/InputBox/index.tsx"
 
 // ---- TYPES
 

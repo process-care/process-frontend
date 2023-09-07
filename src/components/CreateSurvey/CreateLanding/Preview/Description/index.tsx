@@ -1,9 +1,9 @@
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import Image from "next/image";
+import Image from "next/image.js"
 
-import { LandingRedux } from "@/redux/slices/types";
-import { useMediaQueries } from "@/utils/hooks/mediaqueries";
-import { t } from "@/static/createLanding";
+import { LandingRedux } from "@/redux/slices/types/index.js"
+import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
+import { t } from "@/static/createLanding.ts"
 
 interface Props {
   inactiveSubmit: boolean;

@@ -1,10 +1,8 @@
 import { Button, Box, Flex } from "@chakra-ui/react";
-import Image from "next/image";
 
-import SvgHover from "@/components/SvgHover";
-import { t } from "@/static/global";
-
-import Trash from "@/assets/trash.svg";
+import SvgHover from "@/components/SvgHover/index.tsx"
+import { t } from "@/static/global.ts"
+import { Icons } from "@/components/Icons.tsx";
 
 interface Props {
   onCancel: () => void;
@@ -29,7 +27,7 @@ export default function Footer({
       {!hideDelete && (
         <Box w="70%">
           <SvgHover>
-            <Image src={Trash} alt="Trash" onClick={() => !!onDelete && onDelete()} />
+            <Icons.delete onClick={() => !!onDelete && onDelete()} />
           </SvgHover>
         </Box>
       )}

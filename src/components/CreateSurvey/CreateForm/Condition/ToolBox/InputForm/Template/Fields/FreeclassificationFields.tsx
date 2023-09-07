@@ -1,8 +1,8 @@
 import { Box } from "@chakra-ui/react";
 
-import { NumberInput, Radiobox } from "@/components/Fields";
-import { CommonFields } from "../index";
-import TitleDivider from "@/components/TitleDivider";
+import { NumberInput, Radiobox } from "@/components/Fields/index.ts"
+import { CommonFields } from "../index.ts"
+import TitleDivider from "@/components/TitleDivider/index.tsx"
 
 export default function FreeclassificationFields(): JSX.Element {
   return (

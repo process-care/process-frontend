@@ -5,24 +5,20 @@ import {
   Text,
   Flex,
 } from "@chakra-ui/react";
-import { Draggable } from "@hello-pangea/dnd";
-import Image from "next/image";
+import { Draggable } from "@hello-pangea/dnd"
+import { EditIcon, DeleteIcon, SplitIcon } from "lucide-react"
 
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { QuestionRedux } from "@/redux/slices/types";
-import { setIsRemoving } from "@/redux/slices/formBuilder";
-import { actions as appActions } from "@/redux/slices/application";
-import { actions, selectors } from "@/redux/slices/scientistData";
-import { actions as formBuilderActions } from "@/redux/slices/formBuilder";
-import { t } from "@/static/input";
-import RemovingConfirmation from "./../../RemovingConfirmation";
-import SvgHover from "@/components/SvgHover";
-import InputIcon from "@/components/CreateSurvey/CreateForm/InputIcon";
-import RenderInput from "./utils";
-
-import Delete from "./assets/delete.svg";
-import Edit from "./assets/edit.svg";
-import Condition from "./assets/condition.svg";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
+import { QuestionRedux } from "@/redux/slices/types/index.js"
+import { setIsRemoving } from "@/redux/slices/formBuilder/index.ts"
+import { actions as appActions } from "@/redux/slices/application/index.js"
+import { actions, selectors } from "@/redux/slices/scientistData.js"
+import { actions as formBuilderActions } from "@/redux/slices/formBuilder/index.ts"
+import { t } from "@/static/input.ts"
+import RemovingConfirmation from "./../../RemovingConfirmation/index.tsx"
+import SvgHover from "@/components/SvgHover/index.tsx"
+import InputIcon from "@/components/CreateSurvey/CreateForm/InputIcon/index.tsx"
+import RenderInput from "./utils/index.tsx"
 
 interface Props {
   input: QuestionRedux;
@@ -82,7 +78,7 @@ export default function Card({ input, index }: Props): JSX.Element {
             left="-16px"
           >
             <SvgHover>
-              <Image src={Delete} alt="Delete" />
+              <DeleteIcon />
             </SvgHover>
           </Box>
 
@@ -134,7 +130,7 @@ export default function Card({ input, index }: Props): JSX.Element {
               _hover={{ cursor: "pointer" }}
             >
               <SvgHover target="circle">
-                <Image src={Edit} alt="Edit" />
+                <EditIcon />
               </SvgHover>
             </Box>
             <Box
@@ -146,7 +142,7 @@ export default function Card({ input, index }: Props): JSX.Element {
             >
               {hasConditions && (
                 <SvgHover target="circle">
-                  <Image src={Condition} alt="Condition" />
+                  <SplitIcon />
                 </SvgHover>
               )}
             </Box>

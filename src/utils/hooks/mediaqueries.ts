@@ -1,5 +1,5 @@
 import { useMediaQuery } from "@chakra-ui/react";
-import { mobile, tablet, desktop, bigScreen, extraBigScreen } from "@/theme";
+import { mobile, tablet, desktop, bigScreen, extraBigScreen } from "@/theme/index.tsx";
 
 interface MediaQueries {
   isMobile: boolean;

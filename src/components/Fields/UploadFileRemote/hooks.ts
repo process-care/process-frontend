@@ -1,18 +1,18 @@
 import { useCallback, useState } from "react";
 import { useField, useFormikContext } from "formik";
 
-import { apollo, client } from "@/api/gql-client";
+import { apollo, client } from "@/api/gql-client.js"
 import {
   useDeleteFileMutation,
   useUploadFileMultipleMutation,
-} from "@/api/graphql/queries/application.gql.generated";
+} from "@/api/graphql/queries/application.gql.generated.js"
 
 import {
   useUploadFileSingleMutation
-} from "@/api/graphql/queries/application.apollo.generated";
+} from "@/api/graphql/queries/application.apollo.generated.js"
 
-import { UploadParams } from "@/redux/slices/application";
-// import { API_URL } from "@/constants/api";
+import { UploadParams } from "@/redux/slices/application/index.js"
+// import { API_URL } from "@/constants/api.ts"
 
 // ---- TYPES
 

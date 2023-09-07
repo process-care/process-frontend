@@ -3,15 +3,13 @@
 import { useState } from "react";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
-import Link from "next/link";
-import Image from "next/image";
+import Link from "next/link.js"
 
-import { Input } from "@/components/Fields";
-import { forgotPassword } from "@/api/actions/password";
-import { forgotPasswordSchema } from "./validationSchema";
-import { useMediaQueries } from "@/utils/hooks/mediaqueries";
-
-import Logo from "@/assets/black_logo.svg";
+import { Input } from "@/components/Fields/index.ts"
+import { forgotPassword } from "@/api/actions/password/index.ts"
+import { forgotPasswordSchema } from "./validationSchema.ts"
+import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
+import { BlackLogo } from "@/components/Logos.tsx";
 
 export default function ForgotPasswordForm(): JSX.Element {
   const [isSuccess, setSuccess] = useState(false);
@@ -48,7 +46,7 @@ export default function ForgotPasswordForm(): JSX.Element {
       w={isTablet ? "90%" : "480px"}
     >
       <Box display="flex" justifyContent="center" w="150px" m="0 auto">
-        <Image src={Logo} alt="Logo" />
+        <BlackLogo />
       </Box>
 
       <Formik

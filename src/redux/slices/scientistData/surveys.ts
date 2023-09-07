@@ -1,9 +1,9 @@
 import { PayloadAction, createEntityAdapter } from "@reduxjs/toolkit";
-
-import { RootState } from "@/redux/store";
 import { DateTime } from "luxon";
-import { GlobalState } from "../scientistData";
-import { LastDeleted, LastSaved, LastUpdated, SurveyRedux } from "../types";
+
+import { RootState } from "@/redux/store/index.js";
+import { GlobalState } from "../scientistData.js"
+import { LastDeleted, LastSaved, LastUpdated, SurveyRedux } from "../types/index.js"
 
 // ---- TYPES
 

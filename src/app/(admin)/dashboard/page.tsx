@@ -4,24 +4,25 @@ import { useState, useEffect, useMemo } from "react";
 import { Box, Container, Text, Flex, Button } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useDispatch } from "react-redux";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation.js"
 
-import { t } from "@/static/dashboard";
-import { useAppSelector } from "@/redux/hooks";
-import { actions as actionsApplication } from "@/redux/slices/application";
-import { useAuth } from "@/components/Authentification/hooks";
-import { actions } from "@/redux/slices/survey-editor";
-import { actions as actionsMySurveys, selectors } from "@/redux/slices/scientistData";
+import { t } from "@/static/dashboard.js";
+import { useAppSelector } from "@/redux/hooks/index.js";
+import { actions as actionsApplication } from "@/redux/slices/application/index.js";
+import { actions as actionsMySurveys, selectors } from "@/redux/slices/scientistData.js";
+import { useAuth } from "@/components/Authentification/hooks/index.js"
+import { actions } from "@/redux/slices/survey-editor.js"
 
-import { HEADER_HEIGHT } from "@/components/Menu/SimpleMenu";
-import Table from "@/components/Table";
-import Loader from "@/components/Spinner";
-import Error from "@/components/Error";
-import ProjectMenu from "@/components/Dashboard/ProjectMenu";
-import Filters from "@/components/Dashboard/Filters";
-import Drawer from "@/components/Drawer";
-import ProfilForm from "@/components/Dashboard/ProfilForm";
-import NoData from "@/components/SurveyGrid/noData";
+import ProjectMenu from "@/components/Dashboard/ProjectMenu/index.tsx"
+import Filters from "@/components/Dashboard/Filters/index.tsx"
+import Drawer from "@/components/Drawer/index.tsx"
+import ProfilForm from "@/components/Dashboard/ProfilForm/index.tsx"
+import NoData from "@/components/SurveyGrid/noData/index.tsx"
+
+import { HEADER_HEIGHT } from "@/components/Menu/SimpleMenu/index.tsx"
+import Table from "@/components/Table/index.tsx"
+import Loader from "@/components/Spinner/index.tsx"
+import Error from "@/components/Error/index.tsx"
 
 export default function Dashboard(): JSX.Element {
   const { cookies } = useAuth();

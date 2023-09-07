@@ -4,19 +4,19 @@ import { useEffect, useRef } from "react";
 import { Box, Container } from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
 
-import { selectors as appSelectors } from "@/redux/slices/application";
-import InputsPreview from "@/components/CreateSurvey/CreateForm/InputsPreview";
-import Drawer from "@/components/Drawer";
-import InputForm from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm";
-import PageBuilder from "@/components/CreateSurvey/CreateForm/PageBuilder";
-import { useAppSelector } from "@/redux/hooks";
-import { actions, selectors } from "@/redux/slices/scientistData";
-import Menu from "@/components/Menu/CreateForm";
-import RightPart from "@/components/Layout/RightPart";
-import Error from "@/components/Error";
-import Banner from "@/components/Banner";
-import Loader from "@/components/Spinner";
-import ConditionMenu from "@/components/CreateSurvey/CreateForm/Condition/ConditionMenu";
+import { selectors as appSelectors } from "@/redux/slices/application/index.js"
+import InputsPreview from "@/components/CreateSurvey/CreateForm/InputsPreview/index.tsx"
+import Drawer from "@/components/Drawer/index.tsx"
+import InputForm from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/index.tsx"
+import PageBuilder from "@/components/CreateSurvey/CreateForm/PageBuilder/index.tsx"
+import { useAppSelector } from "@/redux/hooks/index.js"
+import { actions, selectors } from "@/redux/slices/scientistData.js"
+import Menu from "@/components/Menu/CreateForm/index.tsx"
+import RightPart from "@/components/Layout/RightPart/index.tsx"
+import Error from "@/components/Error/index.tsx"
+import Banner from "@/components/Banner/index.tsx"
+import Loader from "@/components/Spinner/index.tsx"
+import ConditionMenu from "@/components/CreateSurvey/CreateForm/Condition/ConditionMenu/index.tsx"
 
 // ---- TYPES
 

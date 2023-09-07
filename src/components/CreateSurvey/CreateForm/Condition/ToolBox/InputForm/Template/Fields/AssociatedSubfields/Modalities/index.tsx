@@ -2,11 +2,11 @@ import { useEffect } from "react";
 import { FieldArray, useField, useFormikContext } from "formik";
 import { Flex, Box, Button, Text } from "@chakra-ui/react";
 
-import { useAppSelector } from "@/redux/hooks";
-import { selectors as selectorsApplication } from "@/redux/slices/application";
-import { Enum_Question_Rows } from "@/api/graphql/types.generated";
-import { Textarea } from "@/components/Fields";
-import UploadFile from "@/components/Fields/Uploadfile";
+import { useAppSelector } from "@/redux/hooks/index.js"
+import { selectors as selectorsApplication } from "@/redux/slices/application/index.js"
+import { Enum_Question_Rows } from "@/api/graphql/types.generated.ts"
+import { Textarea } from "@/components/Fields/index.ts"
+import UploadFile from "@/components/Fields/Uploadfile.tsx"
 
 interface Props {
   name: string;

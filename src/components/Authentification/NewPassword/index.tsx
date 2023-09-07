@@ -3,16 +3,15 @@
 import { useState } from "react";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
-import { useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
-import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation.js"
+import Link from "next/link.js"
+import Image from "next/image.js"
 
-import { Input } from "@/components/Fields";
-import { resetPassword } from "@/api/actions/password";
-import { newPasswordSchema } from "./validationSchema";
-import { useMediaQueries } from "@/utils/hooks/mediaqueries";
-
-import Logo from "@/assets/black_logo.svg";
+import { Input } from "@/components/Fields/index.ts"
+import { resetPassword } from "@/api/actions/password/index.ts"
+import { newPasswordSchema } from "./validationSchema.ts"
+import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
+import { BlackLogo } from "@/components/Logos.tsx"
 
 export default function NewPasswordForm(): JSX.Element {
   const [isSuccess, setSuccess] = useState<boolean>(false);
@@ -46,7 +45,7 @@ export default function NewPasswordForm(): JSX.Element {
       w={isTablet ? "90%" : "480px"}
     >
       <Box display="flex" justifyContent="center" w="150px" m="0 auto">
-        <Image src={Logo} alt="Logo" />
+        <BlackLogo />
       </Box>
 
       <Formik

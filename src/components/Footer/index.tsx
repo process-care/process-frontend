@@ -1,10 +1,7 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import Image from "next/image";
 
-import { useMediaQueries } from "@/utils/hooks/mediaqueries";
-
-import Logo from "@/assets/logo_footer.svg";
-import LogoMobile from "@/assets/logo_footer_mobile.svg";
+import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
+import { MobileFooterLogo, FooterLogo } from "../Logos.tsx";
 
 export default function Footer(): JSX.Element {
   const { isTablet } = useMediaQueries();
@@ -25,8 +22,8 @@ export default function Footer(): JSX.Element {
     >
       <Box h="20px">
         { isTablet
-          ? <Image src={LogoMobile} alt="Logo Mobile" />
-          : <Image src={Logo} alt="Logo" />
+          ? <MobileFooterLogo />
+          : <FooterLogo />
         }
       </Box>
       

@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useField } from "formik";
 import { Container, Text, Box } from "@chakra-ui/react";
 
-import { Textarea } from "@/components/Fields";
-import { Enum_Question_Rows, Maybe } from "@/api/graphql/types.generated";
+import { Textarea } from "@/components/Fields/index.ts"
+import { Enum_Question_Rows, Maybe } from "@/api/graphql/types.generated.ts"
 
 interface Props {
   label: string;

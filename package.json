@@ -5,9 +5,9 @@
   "description": "Frontend of the Process app",
   "type": "module",
   "scripts": {
-    "dev": "next dev --turbo",
-    "install": "pnpm run build",
-    "build": "pnpm run codegen && next build",
+    "dev": "next dev",
+    "install": "npm run build",
+    "build": "npm run codegen && next build",
     "start": "next start",
     "lint": "next lint",
     "codegen": "graphql-codegen --config codegen.ts -r dotenv/config"

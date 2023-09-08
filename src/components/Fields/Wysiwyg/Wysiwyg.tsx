@@ -117,10 +117,13 @@ export default function Wysiwyg({ id, className }: Props): JSX.Element {
   const editorRef = useRef<PlateEditor | null>(null);
 
   const initialValue = useMemo(() => {
+    // @ts-ignore : we access through a dynamic key
+    const content = values[id]
+    if (!content) return
+
     const tmpEditor = createPlateEditor({ plugins })
     return deserializeHtml(tmpEditor, {
-      // @ts-ignore : values type is weird ?
-      element: values[id],
+      element: content,
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps -- only on mount
   }, [])

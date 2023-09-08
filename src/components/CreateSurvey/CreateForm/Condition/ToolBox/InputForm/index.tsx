@@ -92,8 +92,13 @@ function FormDisplay({
 
   const { createCondition, editCondition } = useConditionActions(selectedQuestionId)
 
+  const handleDelete = useCallback(() => {
+    dispatch(setIsRemoving(selectedQuestionId));
+    dispatch(appActions.toogleDrawer());
+  }, [dispatch, selectedQuestionId])
+
   useEffect(() => {
-    const newChanges = getDiff(values, selectedQuestion);
+    const newChanges = getDiff(values, selectedQuestion)
 
     if (values) {
       dispatch(
@@ -107,9 +112,11 @@ function FormDisplay({
             },
           },
         })
-      );
+      )
     }
-  }, [dispatch, selectedQuestion, selectedQuestionId, values]);
+  // `selectedQuestion` is updated by the dispatch, so we can't have it in the deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, selectedQuestionId, values])
 
   return (
     <Form className="h-[100vh] flex flex-col">
@@ -197,10 +204,7 @@ function FormDisplay({
         onSubmit={() => console.log("submit")}
         disabled={!isValid || isSubmitting}
         onCancel={handleCancel}
-        onDelete={() => {
-          dispatch(setIsRemoving(selectedQuestionId));
-          dispatch(appActions.toogleDrawer());
-        }}
+        onDelete={handleDelete}
       />
     </Form>
   );
@@ -220,8 +224,10 @@ function useEventHandlers(selectedQuestion: QuestionRedux | undefined, selectedQ
 
   // Effect to save state to get diff
   useEffect(() => {
-    setPrevState(prevState);
-  }, [prevState, selectedQuestionId]);
+    setPrevState(prevState)
+  // We ignore prevState to avoid infinite loop
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedQuestionId])
 
   // Submit callback
   const handleSubmit = useCallback((data: any, { setSubmitting, validateForm }: any) => {

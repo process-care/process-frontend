@@ -1,11 +1,10 @@
 'use client'
 
-import { useEffect, useMemo } from "react";
-import { Box, Collapse, Container } from "@chakra-ui/react";
+import { useEffect } from "react";
+import { Box, Collapse } from "@chakra-ui/react";
 
 import { client } from "@/api/gql-client.js"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
-import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
 import { actions, selectors } from "@/redux/slices/landing-editor.js"
 import { useSurveyBySlugQuery } from "@/api/graphql/queries/survey.gql.generated.js"
 import Menu from "@/components/Menu/CreateForm/index.tsx"
@@ -26,37 +25,31 @@ type Props = {
 
 export default function CreateLanding({ params }: Props): JSX.Element {
   const { slug } = params
-  const { isTablet } = useMediaQueries();
-  const { previewMode } = useAppSelector((state) => state.application);
+  const { previewMode } = useAppSelector((state) => state.application)
 
-  const { data: survey } = useSurveyBySlugQuery(client, { slug });
-  const landingId = survey?.surveys?.data[0]?.attributes?.landing?.data?.id;
-  const surveyId = survey?.surveys?.data[0]?.id;
+  const { data: survey } = useSurveyBySlugQuery(client, { slug })
+  const landingId = survey?.surveys?.data?.[0]?.attributes?.landing?.data?.id
+  const surveyId = survey?.surveys?.data?.[0]?.id
 
-  const dispatch = useAppDispatch();
-  const data = useAppSelector(selectors.getLanding);
-  const isLoading = useAppSelector(selectors.isLoading);
-  const error = useAppSelector(selectors.error);
+  const dispatch = useAppDispatch()
+  const data = useAppSelector(selectors.getLanding)
+  const isLoading = useAppSelector(selectors.isLoading)
+  const error = useAppSelector(selectors.error)
 
-  // TODO: We could even do this effect when the user opens a side menu in the dashboard, so we "preload" the data
+  // Load Landing data when arriving on this page
   useEffect(() => {
     if (!landingId) {
-      console.warn("No landing ID to load.");
+      console.info("No landing ID to load.");
       return;
     }
 
+    console.info("Loading landing data...")
     dispatch(actions.load(landingId));
   }, [dispatch, landingId]);
 
-  if (error) {
-    return <Error error={error} />;
-  }
-
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  if (!survey || !surveyId) return <Error error={"No survey found..."} />;
+  if (error) return <Error error={error} />
+  if (isLoading) return <Loader />
+  if (!survey || !surveyId) return <Error error={"No survey found..."} />
 
   return (
     <Box display="flex" justifyContent="space-between" w="100%">

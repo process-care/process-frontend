@@ -61,7 +61,9 @@ function FormDisplay({ landing, values}: FormDisplayProps): JSX.Element {
         },
       })
     );
-  }, [dispatch, landing?.attributes, landing?.id, values.about_page]);
+  // Update only when about-page changes
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, values.about_page]);
 
   // Component
   return (

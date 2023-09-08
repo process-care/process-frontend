@@ -109,7 +109,9 @@ function FormDisplay({ survey, values, errors, isSubmitting }: FormDisplayProps)
         },
       })
     );
-  }, [dispatch, isDraft, survey?.id, values]);
+  // Updat eonly when values changes
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [values]);
 
   // Handle update meta values
   useEffect(() => {
@@ -131,7 +133,9 @@ function FormDisplay({ survey, values, errors, isSubmitting }: FormDisplayProps)
         },
       })
     );
-  }, [dispatch, isDraft, survey?.id, values]);
+  // Updat eonly when values changes
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [values]);
 
   return (
     <Box w="100%">

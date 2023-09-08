@@ -90,7 +90,7 @@ export const globalSlice = createSlice({
         const sanePages = sanitizeEntities(pages);
         pageAdapter.setAll(state.pages, sanePages);
         // Select first page
-        state.pages.selectedPage = sanePages[0].id;
+        state.pages.selectedPage = sanePages?.[0]?.id
         // Set conditions's pages
         sanePages.map((p) => {
           const pageConditions = p.attributes.conditions?.data;

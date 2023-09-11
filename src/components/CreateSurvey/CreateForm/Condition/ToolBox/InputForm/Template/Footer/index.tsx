@@ -2,7 +2,7 @@ import { Button, Box, Flex } from "@chakra-ui/react";
 
 import SvgHover from "@/components/SvgHover/index.tsx"
 import { t } from "@/static/global.ts"
-import { Icons } from "@/components/Icons.tsx";
+import { Icons } from "@/components/icons";
 
 interface Props {
   onCancel: () => void;

@@ -5,7 +5,7 @@ import {
   useLineHeightDropdownMenuState,
 } from '@udecode/plate-line-height';
 
-import { Icons } from '@/components/Icons.tsx'
+import { Icons } from '@/components/icons.tsx'
 
 import {
   DropdownMenu,

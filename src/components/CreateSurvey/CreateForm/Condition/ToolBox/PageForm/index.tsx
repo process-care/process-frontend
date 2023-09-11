@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Formik, Form } from "formik";
-import { Box, Button, Flex, Tooltip, Text } from "@chakra-ui/react";
-import Image from "next/image.js"
+import { Box, Button, Flex, Tooltip, Text } from "@chakra-ui/react"
 
 import { t } from "@/static/survey.ts"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
@@ -15,7 +14,7 @@ import TitleDivider from "@/components/TitleDivider/index.tsx"
 import RemovingConfirmation from "../../../RemovingConfirmation/index.tsx"
 import SvgHover from "@/components/SvgHover/index.tsx"
 import ToolBox from "../InputsButton/index.tsx"
-import { Icons } from "@/components/Icons.tsx"
+import { Icons } from "@/components/icons.tsx"
 
 export default function PageForm(): JSX.Element {
   const dispatch = useAppDispatch()

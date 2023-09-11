@@ -9,7 +9,7 @@ import { Input } from "@/components/Fields/index.ts"
 import { forgotPassword } from "@/api/actions/password/index.ts"
 import { forgotPasswordSchema } from "./validationSchema.ts"
 import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
-import { BlackLogo } from "@/components/Logos.tsx";
+import { BlackLogo } from "@/components/logos.tsx";
 
 export default function ForgotPasswordForm(): JSX.Element {
   const [isSuccess, setSuccess] = useState(false);

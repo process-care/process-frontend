@@ -11,7 +11,7 @@ import { Input } from "@/components/Fields/index.ts"
 import { resetPassword } from "@/api/actions/password/index.ts"
 import { newPasswordSchema } from "./validationSchema.ts"
 import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
-import { BlackLogo } from "@/components/Logos.tsx"
+import { BlackLogo } from "@/components/logos.tsx"
 
 export default function NewPasswordForm(): JSX.Element {
   const [isSuccess, setSuccess] = useState<boolean>(false);

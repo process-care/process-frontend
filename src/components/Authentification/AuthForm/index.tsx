@@ -8,7 +8,7 @@ import { useAppSelector } from "@/redux/hooks/index.js"
 import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
 import LoginForm from "./Login/index.tsx"
 import SigninForm from "./Signin/index.tsx"
-import { BlackLogo } from "@/components/Logos.tsx"
+import { BlackLogo } from "@/components/logos.tsx"
 
 export default function AuthForm(): JSX.Element {
   const router = useRouter()

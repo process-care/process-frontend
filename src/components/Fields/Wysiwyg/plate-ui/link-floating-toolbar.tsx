@@ -11,7 +11,7 @@ import {
 } from '@udecode/plate-link';
 
 import { cn } from '@/utils/ui.ts'
-import { Icons } from '@/components/Icons.tsx'
+import { Icons } from '@/components/icons.tsx'
 
 import { buttonVariants } from './button.tsx'
 import { inputVariants } from './input.tsx'

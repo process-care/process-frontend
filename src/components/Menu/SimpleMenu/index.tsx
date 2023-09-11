@@ -6,7 +6,7 @@ import Link from "next/link.js"
 import { t } from "@/static/dashboard.js"
 import { actions } from "@/redux/slices/application/index.js"
 import { actions as appActions } from "@/redux/slices/scientistData.js"
-import { Logo } from "@/components/Logos.tsx";
+import { Logo } from "@/components/logos";
 
 export const HEADER_HEIGHT = "65px";
 

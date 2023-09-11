@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import Image from "next/image.js"
 
 import { LandingRedux } from "@/redux/slices/types/index.js"

@@ -7,7 +7,7 @@ import {
   usePlateEditorState,
 } from '@udecode/plate-common';
 
-import { Icons } from '@/components/Icons.tsx'
+import { Icons } from '@/components/icons.tsx'
 
 import {
   DropdownMenu,

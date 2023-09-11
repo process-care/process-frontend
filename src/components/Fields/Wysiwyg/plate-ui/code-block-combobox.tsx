@@ -9,7 +9,7 @@ import {
 } from '@udecode/plate-code-block';
 
 import { cn } from '@/utils/ui.ts'
-import { Icons } from '@/components/Icons.tsx'
+import { Icons } from '@/components/icons.tsx'
 
 import { Button } from './button.tsx'
 import {

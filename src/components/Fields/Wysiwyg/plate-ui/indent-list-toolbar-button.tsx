@@ -5,7 +5,7 @@ import {
   useIndentListToolbarButtonState,
 } from '@udecode/plate-indent-list';
 
-import { Icons } from '@/components/Icons.tsx'
+import { Icons } from '@/components/icons.tsx'
 
 import { ToolbarButton, ToolbarButtonProps } from './toolbar.tsx'
 

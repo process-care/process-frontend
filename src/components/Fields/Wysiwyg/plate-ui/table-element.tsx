@@ -19,7 +19,7 @@ import {
 import { useReadOnly } from 'slate-react';
 
 import { cn } from '@/utils/ui.ts'
-import { Icons, iconVariants } from '@/components/Icons.tsx'
+import { Icons, iconVariants } from '@/components/icons.tsx'
 
 import { Button } from './button.tsx'
 import {

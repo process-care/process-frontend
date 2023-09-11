@@ -4,7 +4,7 @@ import {
   useEmojiDropdownMenuState,
 } from '@udecode/plate-emoji';
 
-import { Icons } from '@/components/Icons.tsx'
+import { Icons } from '@/components/icons.tsx'
 import { EmojiToolbarDropdown } from '@/components/Fields/Wysiwyg/plate-ui/emoji-toolbar-dropdown.tsx'
 import {
   ToolbarButton,

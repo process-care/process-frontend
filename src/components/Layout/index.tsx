@@ -1,12 +1,12 @@
 "use client"
 
-import { useEffect } from "react";
-import { Box, Button } from "@chakra-ui/react";
-import Div100vh from "react-div-100vh";
+import { useEffect } from "react"
+import { Box, Button } from "@chakra-ui/react"
+import { use100vh } from "react-div-100vh"
 import { usePathname } from "next/navigation.js"
 import Link from "next/link.js"
 
-import { useAuth } from "@/components/Authentification/hooks/index.js";
+import { useAuth } from "@/components/Authentification/hooks/index.js"
 import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
 import Footer from "@/components/Footer/index.tsx"
 import SimpleMenu from "@/components/Menu/SimpleMenu/index.tsx"
@@ -17,8 +17,9 @@ interface Props {
 }
 
 export default function Layout({ children }: Props): JSX.Element {
-  const { isAuthenticated } = useAuth();
-  const { isTablet } = useMediaQueries();
+  const { isAuthenticated } = useAuth()
+  const { isTablet } = useMediaQueries()
+  const height = use100vh()
 
   const pathname = usePathname()
   const isSurveyPages = pathname.search("/survey/") !== -1;
@@ -53,29 +54,27 @@ export default function Layout({ children }: Props): JSX.Element {
 
   if ((isTablet && !isSurveyPages && !isPortail && !isAuthPage) || (isTablet && isEditor)) {
     return (
-      <Div100vh>
-        <Box h="100%" alignItems="center" display="flex" justifyContent="center" className="background__grid">
-          <Box
-            backgroundColor="white"
-            p={isTablet ? "30px 20px" : "50px"}
-            border="1px solid"
-            borderColor="brand.line"
-            w="90%"
-            textAlign="center"
-            borderRadius="5px"
-            display="flex"
-            flexDirection="column"
-          >
-            Page non disponible sur mobile
-            <Link href="/">
-              <Button mt="40px" variant="roundedBlue">
-                Revenir au portail
-              </Button>
-            </Link>
-          </Box>
+      <Box h={height ?? '100vh'} alignItems="center" display="flex" justifyContent="center" className="background__grid">
+        <Box
+          backgroundColor="white"
+          p={isTablet ? "30px 20px" : "50px"}
+          border="1px solid"
+          borderColor="brand.line"
+          w="90%"
+          textAlign="center"
+          borderRadius="5px"
+          display="flex"
+          flexDirection="column"
+        >
+          Page non disponible sur mobile
+          <Link href="/">
+            <Button mt="40px" variant="roundedBlue">
+              Revenir au portail
+            </Button>
+          </Link>
         </Box>
-      </Div100vh>
-    );
+      </Box>
+    )
   }
 
   return (

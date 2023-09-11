@@ -1,6 +1,6 @@
 import { MARK_BG_COLOR, MARK_COLOR } from "@udecode/plate-font"
 
-import { Icons, iconVariants } from "@/components/Icons.tsx"
+import { Icons, iconVariants } from "@/components/icons.tsx"
 import { ToolbarGroup } from "./plate-ui/toolbar.tsx"
 import { ColorDropdownMenu } from "./plate-ui/color-dropdown-menu.tsx"
 

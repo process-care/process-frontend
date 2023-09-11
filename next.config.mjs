@@ -4,9 +4,6 @@ const nextConfig = {
   // experimental: {
   //   fullySpecified: true,
   // },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
   
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {

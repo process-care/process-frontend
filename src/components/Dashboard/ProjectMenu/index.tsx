@@ -17,7 +17,7 @@ import { Enum_Survey_Status } from "@/api/graphql/types.generated.ts"
 import Loader from "@/components/Spinner/index.tsx"
 import RemovingConfirmation from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/PageForm/Status/index.tsx"
 import Filters from "../Filters/index.tsx"
-import { Icons } from "@/components/Icons.tsx"
+import { Icons } from "@/components/icons.tsx"
 
 // ---- STATICS
 

@@ -1,8 +1,8 @@
-import { useEffect, useCallback, useMemo, useRef } from "react";
-import { Box, Button, Text, Flex } from "@chakra-ui/react";
+import { useEffect, useCallback, useMemo, useRef } from "react"
+import { Box, Button, Text, Flex } from "@chakra-ui/react"
 import { Formik, Form } from "formik";
 import { useRouter } from "next/navigation.js"
-import Image from "next/image.js"
+import { DeleteIcon } from "lucide-react"
 
 import { t } from "@/static/createLanding.ts"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
@@ -20,7 +20,6 @@ import Footer from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/Input
 import TitleDivider from "@/components/TitleDivider/index.tsx"
 import ColorPicker from "../ColorPicker/index.tsx"
 import SvgHover from "@/components/SvgHover/index.tsx"
-import { DeleteIcon } from "lucide-react";
 
 export default function LandingForm(): JSX.Element {
   const landing = useAppSelector(selectors.getLanding);

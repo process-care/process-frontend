@@ -12,7 +12,7 @@ import {
 } from '@udecode/plate-media';
 import { useReadOnly, useSelected } from 'slate-react';
 
-import { Icons } from '@/components/Icons.tsx'
+import { Icons } from '@/components/icons.tsx'
 
 import { Button, buttonVariants } from './button.tsx'
 import { inputVariants } from './input.tsx'

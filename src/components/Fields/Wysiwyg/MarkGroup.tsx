@@ -1,6 +1,6 @@
 import { MARK_BOLD, MARK_ITALIC } from "@udecode/plate-basic-marks";
 
-import { Icons } from "@/components/Icons.tsx"
+import { Icons } from "@/components/icons.tsx"
 import { MarkToolbarButton } from "./plate-ui/mark-toolbar-button.tsx"
 import { ToolbarGroup } from "./plate-ui/toolbar.tsx"
 

@@ -1,16 +1,16 @@
 'use client'
 
 import { Box } from "@chakra-ui/react";
-import Div100vh from "react-div-100vh";
+import { use100vh } from "react-div-100vh";
 
 import AuthForm from "@/components/Authentification/AuthForm/index.tsx"
 
 export default function Login(): JSX.Element {
+  const height = use100vh()
+
   return (
-    <Div100vh>
-      <Box h="100%" alignItems="center" display="flex" justifyContent="center" className="background__grid">
-        <AuthForm />
-      </Box>
-    </Div100vh>
+    <Box h={height ?? '100vh'} alignItems="center" display="flex" justifyContent="center" className="background__grid">
+      <AuthForm />
+    </Box>
   );
 };

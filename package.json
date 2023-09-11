@@ -12,6 +12,9 @@
     "lint": "next lint",
     "codegen": "graphql-codegen --config codegen.ts -r dotenv/config"
   },
+  "engines": {
+    "node": "20.5.0"
+  },
   "dependencies": {
     "@apollo/client": "^3.8.1",
     "@chakra-ui/icons": "^2.1.0",
@@ -92,6 +95,7 @@
     "next": "^13.4.19",
     "next-redux-wrapper": "^8.1.0",
     "postcss": "8.4.24",
+    "raw-loader": "^4.0.2",
     "rc-slider": "^10.2.1",
     "react": "^18.2.0",
     "react-datepicker": "^4.15.0",
@@ -128,8 +132,7 @@
     "@types/react": "^18.2.21",
     "@types/react-datepicker": "^4.11.2",
     "@types/react-dom": "^18.2.6",
-    "@types/uuid": "^9.0.2",
-    "raw-loader": "^4.0.2"
+    "@types/uuid": "^9.0.2"
   },
   "pnpm": {}
 }

@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Formik, Form } from "formik";
-import { Box, Button, Flex, Tooltip, Text } from "@chakra-ui/react";
-import Image from "next/image.js"
+import { Box, Button, Flex, Tooltip, Text } from "@chakra-ui/react"
 
 import { t } from "@/static/survey.ts"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"

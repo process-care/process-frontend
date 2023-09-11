@@ -1,14 +1,14 @@
-import { Box, Flex, Text, Avatar } from "@chakra-ui/react";
-import { useDispatch } from "react-redux";
+import { Box, Flex, Text, Avatar } from "@chakra-ui/react"
+import { useDispatch } from "react-redux"
 import { useRouter } from "next/navigation.js"
 import Link from "next/link.js"
 
 import { t } from "@/static/dashboard.js"
 import { actions } from "@/redux/slices/application/index.js"
 import { actions as appActions } from "@/redux/slices/scientistData.js"
-import { Logo } from "@/components/logos";
+import { Logo } from "@/components/Logos.tsx"
 
-export const HEADER_HEIGHT = "65px";
+export const HEADER_HEIGHT = "65px"
 
 interface Props {
   isPortail?: boolean;

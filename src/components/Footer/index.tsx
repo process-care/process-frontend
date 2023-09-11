@@ -1,7 +1,7 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react"
 
 import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
-import { MobileFooterLogo, FooterLogo } from "../logos.tsx";
+import { FooterLogo, MobileFooterLogo } from "@/components/Logos.tsx"
 
 export default function Footer(): JSX.Element {
   const { isTablet } = useMediaQueries();

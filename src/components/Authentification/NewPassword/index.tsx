@@ -1,17 +1,16 @@
 "use client"
 
-import { useState } from "react";
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import { Form, Formik } from "formik";
+import { useState } from "react"
+import { Box, Button, Flex, Text } from "@chakra-ui/react"
+import { Form, Formik } from "formik"
 import { useRouter, useSearchParams } from "next/navigation.js"
 import Link from "next/link.js"
-import Image from "next/image.js"
 
 import { Input } from "@/components/Fields/index.ts"
 import { resetPassword } from "@/api/actions/password/index.ts"
 import { newPasswordSchema } from "./validationSchema.ts"
 import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
-import { BlackLogo } from "@/components/logos.tsx"
+import { BlackLogo } from "@/components/Logos.tsx"
 
 export default function NewPasswordForm(): JSX.Element {
   const [isSuccess, setSuccess] = useState<boolean>(false);

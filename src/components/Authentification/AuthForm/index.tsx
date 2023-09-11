@@ -1,14 +1,14 @@
 'use client'
 
 import { useState } from "react";
-import { Box, Button, Text } from "@chakra-ui/react";
+import { Box, Button, Text } from "@chakra-ui/react"
 import { useRouter } from "next/navigation.js"
 
 import { useAppSelector } from "@/redux/hooks/index.js"
 import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
 import LoginForm from "./Login/index.tsx"
 import SigninForm from "./Signin/index.tsx"
-import { BlackLogo } from "@/components/logos.tsx"
+import { BlackLogo } from "@/components/Logos.tsx"
 
 export default function AuthForm(): JSX.Element {
   const router = useRouter()

@@ -10,7 +10,7 @@ import { actions } from "@/redux/slices/scientistData.js"
 import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
 import { getUser } from "@/redux/slices/scientistData/auth.js"
 
-import { BlackLogo } from "@/components/logos"
+import { BlackLogo } from "@/components/Logos.tsx"
 
 const t = {
   title: " 👌 Bienvenue !",

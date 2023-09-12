@@ -6,9 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "install": "npm run build",
     "build": "npm run codegen && next build",
-    "start": "next start",
+    "start": "next start -p $PORT",
     "lint": "next lint",
     "codegen": "graphql-codegen --config codegen.ts -r dotenv/config"
   },

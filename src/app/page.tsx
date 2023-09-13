@@ -14,6 +14,7 @@ import { useMediaQueries } from '@/utils/hooks/mediaqueries.js'
 
 import { useSurveyPublishedQuery } from './portal.gql.generated.js'
 import { ShowMore } from '@/components/ShowMore.tsx'
+import heroCover from '@/../public/hero.jpg'
 
 // ---- CONSTS
 
@@ -73,7 +74,11 @@ export default function Portail() {
           </Text>
         </Box>
 
-        <ShowMore className='absolute object-cover h-[150px] sm:h-[200px] w-full' />
+        <Image
+          src={heroCover}
+          alt="Process cover"
+          className='absolute object-cover h-[150px] sm:h-[200px] w-full'
+        />
       </Box>
 
       <Box p={isTablet ? "5%" : "2% 5%"} display="flex" justifyContent="space-between" flexDir={isTablet ? "column" : "row"}>

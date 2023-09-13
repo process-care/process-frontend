@@ -12,14 +12,14 @@ export function ShowMore({ className }: Props) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clip-path="url(#clip0_330_53)">
-      <path d="M23.0002 32.5268V12.7278" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M32.8997 22.6273H13.1008" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <g clipPath="url(#clip0_330_53)">
+        <path d="M23.0002 32.5268V12.7278" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M32.8997 22.6273H13.1008" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
       </g>
       <defs>
-      <clipPath id="clip0_330_53">
-      <rect width="32" height="32" fill="white" transform="translate(23) rotate(45)"/>
-      </clipPath>
+        <clipPath id="clip0_330_53">
+          <rect width="32" height="32" fill="white" transform="translate(23) rotate(45)"/>
+        </clipPath>
       </defs>
     </svg>
   )

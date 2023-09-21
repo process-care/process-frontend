@@ -238,6 +238,7 @@ const theme = extendTheme({
         },
       },
     },
+    
     Text: {
       variants: {
         xxs: () => ({

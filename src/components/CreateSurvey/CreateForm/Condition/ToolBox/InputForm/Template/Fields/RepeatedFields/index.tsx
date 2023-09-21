@@ -47,7 +47,8 @@ export default function RepeatedFields({ name }: Props): JSX.Element {
                       isRequired
                       isCollapsed={false}
                     />
-                    <Flex ml={3} mt={8}>
+
+                    <Flex ml={3} mt="52px">
                       <Button
                         type="button"
                         onClick={() => {
@@ -57,6 +58,7 @@ export default function RepeatedFields({ name }: Props): JSX.Element {
                       >
                         -
                       </Button>
+
                       {(index + 1 === field.value.length ||
                         (index + 1 !== 1 && isEditing)) && (
                         <Button
@@ -70,6 +72,7 @@ export default function RepeatedFields({ name }: Props): JSX.Element {
                       )}
                     </Flex>
                   </Flex>
+
                   <Text mt={1} fontSize="10px" color="red">
                     {meta.error}
                   </Text>

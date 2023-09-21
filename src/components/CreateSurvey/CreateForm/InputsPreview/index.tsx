@@ -67,7 +67,6 @@ export default function InputsPreview({ order }: Props): JSX.Element {
         display="flex"
         flexDirection="column"
         alignItems="center"
-        backgroundColor={isDraggingOver ? "brand.gray.100" : "transparent"}
       >
         <Formik
           initialValues={{}}

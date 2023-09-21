@@ -1,12 +1,11 @@
 import {
   Box,
   useColorModeValue,
-  Container,
   Text,
   Flex,
 } from "@chakra-ui/react";
 import { Draggable } from "@hello-pangea/dnd"
-import { EditIcon, DeleteIcon, SplitIcon } from "lucide-react"
+import { SlidersIcon, MinusIcon, SplitIcon } from "lucide-react"
 
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
 import { QuestionRedux } from "@/redux/slices/types/index.js"
@@ -16,9 +15,10 @@ import { actions, selectors } from "@/redux/slices/scientistData.js"
 import { actions as formBuilderActions } from "@/redux/slices/formBuilder/index.ts"
 import { t } from "@/static/input.ts"
 import RemovingConfirmation from "./../../RemovingConfirmation/index.tsx"
-import SvgHover from "@/components/SvgHover/index.tsx"
 import InputIcon from "@/components/CreateSurvey/CreateForm/InputIcon/index.tsx"
 import RenderInput from "./utils/index.tsx"
+import ButtonIcon from "@/components/ButtonIcon.tsx";
+import { cn } from "@/utils/ui.ts";
 
 interface Props {
   input: QuestionRedux;
@@ -72,81 +72,62 @@ export default function Card({ input, index }: Props): JSX.Element {
           {...provided.dragHandleProps}
           ref={provided.innerRef}
         >
-          <Box
+          <ButtonIcon
+            icon={MinusIcon}
+            type="delete"
             onClick={() => dispatch(setIsRemoving(input.id))}
-            position="sticky"
-            left="-16px"
+          />
+
+          <div
+            key={input.id}
+            className={cn(
+              "mx-2 my-5 p-4 border rounded-[5px] bg-white w-full max-w-[unset] cursor-grab border-gray-300",
+              errorsListId?.includes(input.id) ? "border-red-500" : ""
+            )}
           >
-            <SvgHover>
-              <DeleteIcon />
-            </SvgHover>
-          </Box>
-
-          <Box key={input.id} w="100%">
-            <Container
-              variant="inputContainer"
-              padding={isRemoving ? 0 : 4}
-              borderColor={
-                errorsListId?.includes(input.id) ? "red.500" : "gray.300"
-              }
-            >
-              <Box color={color}>
-                {!isRemoving && (
-                  <Flex w="100%" justifyContent="space-between" pb={4}>
-                    <Text variant="xsMedium">
-                      {input?.attributes?.internal_title}
-                    </Text>
-                    <Box>
-                      <InputIcon type={input?.attributes.type} />
-                    </Box>
-                  </Flex>
-                )}
-
-                {isRemoving && (
-                  <RemovingConfirmation
-                    content={`${t.removing_confirmation} ${input?.attributes.internal_title} ?`}
-                    confirm={handleDelete}
-                    close={() => dispatch(setIsRemoving(""))}
-                  />
-                )}
-
-                <Box
-                  position="relative"
-                  top="-7px"
-                  mb="10px"
-                  display={isRemoving ? "none" : ""}
-                >
-                  <RenderInput input={input} />
-                </Box>
-              </Box>
-            </Container>
-          </Box>
-          
-          <Box display="flex" flexDirection="row">
-            <Box
-              onClick={() => handleEdit()}
-              position="absolute"
-              right="-16px"
-              _hover={{ cursor: "pointer" }}
-            >
-              <SvgHover target="circle">
-                <EditIcon />
-              </SvgHover>
-            </Box>
-            <Box
-              _hover={{ cursor: "pointer" }}
-              position="absolute"
-              top="10px"
-              right="4px"
-              onClick={() => editCondition()}
-            >
-              {hasConditions && (
-                <SvgHover target="circle">
-                  <SplitIcon />
-                </SvgHover>
+            <Box color={color}>
+              {!isRemoving && (
+                <Flex w="100%" justifyContent="space-between" pb={4}>
+                  <Text variant="xsMedium">
+                    {input?.attributes?.internal_title}
+                  </Text>
+                  <Box>
+                    <InputIcon type={input?.attributes.type} />
+                  </Box>
+                </Flex>
               )}
+
+              {isRemoving && (
+                <RemovingConfirmation
+                  content={`${t.removing_confirmation} ${input?.attributes.internal_title} ?`}
+                  confirm={handleDelete}
+                  close={() => dispatch(setIsRemoving(""))}
+                />
+              )}
+
+              <Box
+                position="relative"
+                top="-7px"
+                mb="10px"
+                display={isRemoving ? "none" : ""}
+              >
+                <RenderInput input={input} />
+              </Box>
             </Box>
-          </Box>
+          </div>
+          
+          <ButtonIcon
+            icon={SlidersIcon}
+            onClick={handleEdit}
+          />
+
+          {hasConditions && (
+            <ButtonIcon
+              className="absolute top-[8px] right-[19px]"
+              icon={SplitIcon}
+              onClick={editCondition}
+            />
+          )}
         </Flex>
       )}
     </Draggable>

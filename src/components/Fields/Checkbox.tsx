@@ -21,21 +21,17 @@ export default function CustomCheckbox({ label, helpText, checkbox, isRequired, 
       <FormLabel>{label}</FormLabel>
       {!isCollapsed && (
         <>
-          <CheckboxContainer name={id} label="" p="0" mt="10px">
             <Box flexWrap="wrap" display="flex">
-              {checkbox ? (
+              {checkbox && (
                 checkbox.map(({ value, label }) => {
                   return (
-                    <CheckboxControl key={value} name={id} value={value} isRequired={isRequired} m={2}>
-                      {isRequired ? `${label} *` : label}
+                    <CheckboxControl key={value} name={id} value={value} isRequired={isRequired} m={2} maxW="100%" overflow="hidden">
+                      {label}
                     </CheckboxControl>
                   );
                 })
-              ) : (
-                <Box p={4} />
               )}
             </Box>
-          </CheckboxContainer>
 
           <FormHelperText fontSize="xs">{helpText}</FormHelperText>
         </>

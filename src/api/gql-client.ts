@@ -9,6 +9,9 @@ import { getSdk } from "./graphql/sdk.generated.js"
 // Is exposed because we need to set the header at some point
 export const client = new GraphQLClient(API_URL, {
   mode: "cors",
+  headers: {
+    "Authorization": "",
+  }
 });
 
 export const apollo = new ApolloClient({

@@ -1,8 +1,8 @@
-import { Button, Box, Flex } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react"
 
-import SvgHover from "@/components/SvgHover/index.tsx"
 import { t } from "@/static/global.ts"
-import { Icons } from "@/components/icons";
+import ButtonIcon from "@/components/ButtonIcon"
+import { Trash2Icon } from "lucide-react"
 
 interface Props {
   onCancel: () => void;
@@ -20,31 +20,32 @@ export default function Footer({
   hideDelete,
 }:Props ): JSX.Element {
   return (
-    <Flex
-      className="w-full py-4 px-10 justify-between items-center bg-white border-t border-t-solid border-t-black"
-      minW="300px"
-    >
-      {!hideDelete && (
-        <Box w="70%">
-          <SvgHover>
-            <Icons.delete onClick={() => !!onDelete && onDelete()} />
-          </SvgHover>
-        </Box>
-      )}
+    <div className="w-full py-4 px-10 flex flex-row-reverse justify-between items-center bg-white border-t border-t-solid border-t-black min-w-[300px]">
+      {/* Action group */}
+      <div>
+        <Button variant="link" onClick={() => onCancel()} type="button" mr="20">
+          {t.cancel}
+        </Button>
+        
+        <Button
+          type="submit"
+          variant="rounded"
+          w="128px"
+          disabled={disabled}
+          onClick={() => onSubmit()}
+        >
+          {t.validate}
+        </Button>
+      </div>
 
-      <Button variant="link" onClick={() => onCancel()} type="button" pr="20">
-        {t.cancel}
-      </Button>
-      
-      <Button
-        type="submit"
-        variant="rounded"
-        w="128px"
-        disabled={disabled}
-        onClick={() => onSubmit()}
-      >
-        {t.validate}
-      </Button>
-    </Flex>
+      {/* Delete */}
+      {!hideDelete && (
+        <ButtonIcon
+          icon={Trash2Icon}
+          onClick={() => !!onDelete && onDelete()}
+          type="plain"
+        />
+      )}
+    </div>
   );
 };

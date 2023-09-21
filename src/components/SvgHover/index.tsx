@@ -16,6 +16,7 @@ export default function SvgHover({
     fill: color,
     transition: "all 200ms",
   };
+  
   return (
     <Box
       sx={

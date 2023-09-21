@@ -1,14 +1,15 @@
-import React from "react"
+import React, { useCallback } from "react"
 import { Box, Flex, Text } from "@chakra-ui/layout"
 
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
 import { setIsRemoving } from "@/redux/slices/formBuilder/index.ts"
 import { actions, selectors } from "@/redux/slices/scientistData.js"
-import { SurveyRedux } from "@/redux/slices/types/index.js"
+import { PageRedux, SurveyRedux } from "@/redux/slices/types/index.js"
 import { isInactive } from "./utils/index.ts"
-import SvgHover from "@/components/SvgHover/index.tsx"
 
-import {  LockIcon, PlusIcon, DeleteIcon, SplitIcon } from "lucide-react"
+import {  LockIcon, PlusIcon, MinusIcon, SplitIcon } from "lucide-react"
+import ButtonIcon from "@/components/ButtonIcon.tsx"
+import { cn } from "@/utils/ui.ts"
 
 // ---- TYPES
 
@@ -19,21 +20,15 @@ interface Props {
 // ---- COMPONENT
 
 export default function PageBuilder({ survey }: Props): JSX.Element {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
-  const pages = useAppSelector(selectors.pages.selectPages);
-  const selectedCondition = useAppSelector(selectors.conditions.selectSelectedCondition);
-  const selectedPage = useAppSelector(selectors.pages.selectSelectedPage);
+  const pages = useAppSelector(selectors.pages.selectPages)
+  const selectedCondition = useAppSelector(selectors.conditions.selectSelectedCondition)
+  const selectedPage = useAppSelector(selectors.pages.selectSelectedPage)
 
-  const handlePage = () => {
-    dispatch(actions.createPage({ id: survey.id }));
-  };
-
-  const selectPage = (id: string) => {
-    dispatch(actions.setSelectedPage(id));
-  };
-
-  const pagesConditions = useAppSelector(selectors.conditions.selectAllPagesConditions);
+  const handlePage = useCallback(() => {
+    dispatch(actions.createPage({ id: survey.id }))
+  }, [dispatch, survey.id])
 
   return (
     <Flex flexDirection="column" alignItems="center" pt={5} backgroundColor="white" width="100%" position="relative">
@@ -48,76 +43,96 @@ export default function PageBuilder({ survey }: Props): JSX.Element {
           cursor: "pointer",
         }}
       >
-        <SvgHover>
-          <PlusIcon />
-        </SvgHover>
-        
+        <ButtonIcon icon={PlusIcon} />  
         <Text variant="xs" mt="2">
           Ajouter une page
         </Text>
       </Box>
       
-      <Box h="80%" overflowY="auto" w="100%">
-        {pages?.map((page, i) => {
-          const isSelected = selectedPage?.id === page.id;
+      {pages?.map((page, i) => {
+        const inactive = isInactive(selectedCondition, pages, i)
 
-          return (
-            <Box
-              mb={4}
-              w="100%"
-              key={page.id}
-              visibility={isInactive(selectedCondition, pages, i) ? "hidden" : "visible"}
-            >
-              <Flex alignItems="center" position="relative">
-                <Box position="absolute" right="16px" bottom="35px">
-                  {pagesConditions.some((c) => c?.attributes?.referer_page?.data?.id === page.id) ? (
-                    <SplitIcon />
-                  ) : (
-                    <></>
-                  )}
-                </Box>
-
-                <Box
-                  onClick={() => selectPage(page.id)}
-                  display="flex"
-                  flexDirection="column"
-                  border="1px"
-                  backgroundColor={isSelected ? "blue.200" : "transparent"}
-                  m="0 auto"
-                  borderColor={isSelected ? "blue.500" : "gray.300"}
-                  key={page.id}
-                  py={4}
-                  px={3}
-                  _hover={{ cursor: "pointer" }}
-                >
-                  {page?.attributes?.is_locked ? (
-                    <Box mx="auto">
-                      <LockIcon />
-                    </Box>
-                  ) : (
-                    <Box p="4px 4px 5px 4px"></Box>
-                  )}
-                </Box>
-                {i !== 0 && (
-                  <Box
-                    _hover={{ cursor: "pointer" }}
-                    onClick={() => {
-                      selectPage(page.id);
-                      dispatch(setIsRemoving(page.id));
-                    }}
-                  >
-                    <DeleteIcon />
-                  </Box>
-                )}
-              </Flex>
-
-              <Text mt={1} color="blue.500" fontSize="10" fontWeight={isSelected ? "bold" : ""}>
-                {page?.attributes?.name}
-              </Text>
-            </Box>
-          );
-        })}
-      </Box>
+        return (
+          <PageDisplay
+            key={page.id}
+            idx={i}
+            page={page}
+            selectedPage={selectedPage}
+            inactive={inactive}
+          />
+        )
+      })}
     </Flex>
   );
 };
+
+// ---- SUB COMPONENT
+
+interface PageDisplayProps {
+  page: PageRedux
+  selectedPage: PageRedux | undefined
+  inactive: boolean
+  idx: number
+}
+
+function PageDisplay({
+  idx,
+  page,
+  selectedPage,
+  inactive,
+}: PageDisplayProps): JSX.Element {
+  const dispatch = useAppDispatch()
+  const isSelected = selectedPage?.id === page.id
+
+  const selectPage = useCallback(() => {
+    dispatch(actions.setSelectedPage(page.id))
+  }, [dispatch, page.id])
+
+  const deletePage = useCallback(() => {
+    dispatch(actions.setSelectedPage(page.id))
+    dispatch(setIsRemoving(page.id))
+  }, [dispatch, page.id])
+
+  // FIXME: Update this, it's too consuming...
+  const pagesConditions = useAppSelector(selectors.conditions.selectAllPagesConditions)
+
+  return (
+    <div key={page.id} className={cn(
+      "w-full mb-6 flex flex-col items-center relative",
+      inactive ? "hidden" : "visible"
+    )}>
+      {/* Page display */}
+      <div key={page.id} onClick={selectPage}
+        className={cn(
+          "flex flex-col space-y-1 items-center justify-center w-[55px] h-[70px] border hover:cursor-pointer",
+          isSelected ? "bg-blue-200 border-blue-500" : "bg-transparent border-gray-300"
+        )}
+      >
+        {/* Status Icons */}
+        {pagesConditions.some((c) => c?.attributes?.referer_page?.data?.id === page.id) && (
+          <SplitIcon size={17} color="gray" />
+        )}
+
+        {page?.attributes?.is_locked && (
+          <LockIcon size={17} color="gray" />
+        )}
+      </div>
+
+      {/* Delete shortcut */}
+      {idx !== 0 && (
+        <ButtonIcon
+          icon={MinusIcon}
+          size={10}
+          type="delete"
+          className="absolute top-[-9px] left-[-2px]"
+          onClick={deletePage}
+        />
+      )}
+
+      {/* Page title */}
+      <Text mt={1} color="blue.500" fontSize="10" fontWeight={isSelected ? "bold" : ""}>
+        {page?.attributes?.name}
+      </Text>
+    </div>
+  )
+}

@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
 import { v4 as uuidv4 } from "uuid";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import Image from "next/image.js"
+import { MinusIcon } from "lucide-react"
 
 import { t } from "@/static/condition.ts"
 import { actions, selectors } from "@/redux/slices/scientistData.js"
@@ -11,7 +11,7 @@ import { Maybe } from "@/api/graphql/types.generated.ts"
 import RemovingConfirmation from "../../../RemovingConfirmation/index.tsx"
 import Separator from "../Separator/index.tsx"
 import Operator from "./Operator/index.tsx"
-import { DeleteIcon } from "lucide-react";
+import ButtonIcon from "@/components/ButtonIcon.tsx"
 
 interface Props {
   currentConditions: ConditionRedux[];
@@ -139,6 +139,10 @@ function GroupContent({
     dispatch(actions.createCondition({ refererId, type, group: groupId }))
   }, [dispatch, groupId, refererId, type])
 
+  const removeGroup = useCallback(() => {
+    setRemoving({ type: "group", id: groupId })
+  }, [setRemoving, groupId])
+
   return (
     <Box className="p-4 my-5 bg-white border border-solid" key={groupId}>
       <Flex alignItems="center" justifyContent="space-around" w="100%">
@@ -154,17 +158,12 @@ function GroupContent({
           <strong>{t.group_condition} #{idx + 1}</strong> - {groupId}
         </Box>
 
-        <Button
-          onClick={() => {
-            setRemoving({ type: "group", id: groupId });
-          }}
-          variant="link"
-          color="brand.blue"
-          fontSize="10"
-          pt="2px"
-        >
-          <DeleteIcon />
-        </Button>
+        <ButtonIcon
+          icon={MinusIcon}
+          type="delete"
+          size={10}
+          onClick={removeGroup}
+        />
       </Flex>
 
       {currentConditions.map((condition: ConditionRedux, index: number) => {
@@ -195,6 +194,7 @@ function GroupContent({
                       <Text fontSize="14" fontWeight="bold" color="black">
                         {condition?.attributes?.target.data?.attributes?.label}
                       </Text>
+
                       <Button
                         display="flex"
                         isDisabled={!isValid}
@@ -209,20 +209,12 @@ function GroupContent({
                       </Button>
                     </Flex>
 
-                    <Button
-                      onClick={() => {
-                        setRemoving({
-                          type: "condition",
-                          id: condition.id,
-                        });
-                      }}
-                      variant="link"
-                      color="brand.blue"
-                      fontSize="10"
-                      pt="2px"
-                    >
-                      <DeleteIcon />
-                    </Button>
+                    <ButtonIcon
+                      icon={MinusIcon}
+                      size={10}
+                      type="delete"
+                      onClick={() => setRemoving({ type: "condition", id: condition.id })}
+                    />
                   </Flex>
                 </>
               )}

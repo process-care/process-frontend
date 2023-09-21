@@ -71,14 +71,6 @@ export default function RepeatableJobs({ name, onlyUpload, cta }: Props): JSX.El
                       >
                         Supprimer
                       </Button>
-                      {/* <SvgHover>
-                        <Delete
-                          onClick={() => {
-                            arrayHelpers.remove(index);
-                            setFieldValue(`${name}.${index}`, undefined);
-                          }}
-                        />
-                      </SvgHover> */}
 
                       {(index + 1 === field.value.length ||
                         (index + 1 !== 1 && isEditing)) && (

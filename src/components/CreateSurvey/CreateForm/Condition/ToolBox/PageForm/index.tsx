@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Formik, Form } from "formik";
-import { Box, Button, Flex, Tooltip, Text } from "@chakra-ui/react"
+import { Box, Button, Tooltip, Text } from "@chakra-ui/react"
+import { Trash2Icon } from "lucide-react"
 
 import { t } from "@/static/survey.ts"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
@@ -12,9 +13,8 @@ import { Enum_Question_Rows } from "@/api/graphql/types.generated.ts"
 import { Textarea } from "@/components/Fields/index.ts"
 import TitleDivider from "@/components/TitleDivider/index.tsx"
 import RemovingConfirmation from "../../../RemovingConfirmation/index.tsx"
-import SvgHover from "@/components/SvgHover/index.tsx"
 import ToolBox from "../InputsButton/index.tsx"
-import { Icons } from "@/components/icons.tsx"
+import ButtonIcon from "@/components/ButtonIcon.tsx"
 
 export default function PageForm(): JSX.Element {
   const dispatch = useAppDispatch()
@@ -48,7 +48,7 @@ export default function PageForm(): JSX.Element {
   }
 
   if (!selectedPage || !selectedPageId) {
-    return <></>;
+    return <></>
   }
 
   return (
@@ -141,32 +141,26 @@ function FormDisplay({ selectedPageId, questionsOnSelectedPage, values, setField
 
   return (
     <Form>
-      <Flex w="100%" justifyContent="flex-end">
-        {isNotFirstPage ? (
-          <Box
-            onClick={() => {
-              dispatch(setIsRemoving(selectedPageId));
-            }}
+      <div className="flex flex-row justify-between items-center">
+        <Text variant="baseline" fontWeight="bold" textAlign="left" _hover={{ cursor: "pointer" }}>
+          Edition d&apos;une page
+        </Text>
+
+        {isNotFirstPage && (
+          <Tooltip
+            label="Cliquer ici pour supprimer la page séléctionnée"
+            placement="right"
+            shouldWrapChildren
           >
-            <Tooltip
-              label="Cliquer ici pour supprimer la page séléctionnée"
-              placement="right"
-              shouldWrapChildren
-            >
-              <SvgHover>
-                <Icons.delete />
-              </SvgHover>
-            </Tooltip>
-          </Box>
-        ) : (
-          <Box mt={5} />
+            <ButtonIcon
+              type="plain"
+              icon={Trash2Icon}
+              onClick={() => dispatch(setIsRemoving(selectedPageId))}
+            />
+          </Tooltip>
         )}
-      </Flex>
-
-      <Text variant="baseline" fontWeight="bold" textAlign="left" _hover={{ cursor: "pointer" }}>
-        Edition d&apos;une page
-      </Text>
-
+      </div>
+      
       <TitleDivider title="Informations de la page" mt="5" />
 
       <Box w="100%" m="0 auto" border="1px solid #F7F7F7F7" backgroundColor="#fdfdfdf1" p="5">

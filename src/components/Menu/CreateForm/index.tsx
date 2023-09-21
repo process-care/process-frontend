@@ -97,6 +97,7 @@ export default function Menu({ isLanding, surveyId }: Props): JSX.Element {
           <Text fontSize="12px" textTransform="uppercase" isTruncated maxWidth="250px">
             {data?.survey?.data?.attributes?.title}
           </Text>
+          
           <Flex pos="absolute" right="10px">
             {inProgress && <ChangesInProgress />}
             {done && <ChangesSaved />}

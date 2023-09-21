@@ -343,7 +343,6 @@ const selectConditionsByQuestionId = createSelector(
   [ selectAllConditions, (_state, args) => args?.questionId ],
   (conditions, questionId) => {
     const found = conditions.filter((condition) => condition?.attributes?.referer_question?.data?.id === questionId)
-    console.log('Conditions BY question ID :', questionId, found)
     return found
   }
 )
@@ -352,7 +351,6 @@ const selectSelectedQuestionsConditions = createSelector(
   [ selectAllConditions, questionsSelectors.getSelectedQuestionId ],
   (conditions, selectedQuestionId) => {
     const found = conditions.filter((condition) => condition?.attributes?.referer_question?.data?.id === selectedQuestionId)
-    console.log('Conditions BY SELECTED question :', selectedQuestionId, found)
     return found
   }
 )

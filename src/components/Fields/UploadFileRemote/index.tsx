@@ -1,6 +1,5 @@
 import { useCallback, useRef } from "react";
 import { Box, Button, Text, Flex, FormHelperText, FormControl, FormErrorMessage } from "@chakra-ui/react";
-import Image from "next/image.js"
 
 import { UploadParams } from "@/redux/slices/application/index.js"
 import { useFileHandlers } from "./hooks.ts"

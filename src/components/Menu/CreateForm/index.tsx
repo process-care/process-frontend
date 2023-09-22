@@ -85,8 +85,8 @@ export default function Menu({ isLanding, surveyId }: Props): JSX.Element {
           justifyContent="flex-start"
           alignItems="center"
         >
-          <Link href="/dashboard">
-            <Flex ml="50px" alignItems="center">
+          <Link className="hover:text-process-blue" href="/dashboard">
+            <Flex alignItems="center">
               <StepBackIcon />
               <Text fontSize="12px" ml={2} mr="30px">
                 {nl.button.dashboard}

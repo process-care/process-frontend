@@ -1,5 +1,3 @@
-import { Box } from "@chakra-ui/react"
-
 import SvgHover from "@/components/SvgHover/index.tsx"
 import { Enum_Question_Type, Maybe } from "@/api/graphql/types.generated.ts"
 import * as Symbols from "./InputSymbols.tsx"
@@ -28,8 +26,8 @@ export const renderInput = (type: Props["type"]): React.ReactElement => {
 
 export default function InputIcon({ type }: Props): JSX.Element {
   return (
-    <Box>
-      <SvgHover>{renderInput(type)}</SvgHover>
-    </Box>
+    <SvgHover>
+      {renderInput(type)}
+    </SvgHover>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
 import { v4 as uuidv4 } from "uuid";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
@@ -24,35 +24,27 @@ interface State {
 }
 
 export default function Group({ currentConditions, groups, selectedCondition }: Props): JSX.Element {
-  const dispatch = useAppDispatch();
-  const [isRemoving, setRemoving] = React.useState<State>({ id: "", type: null });
+  const dispatch = useAppDispatch()
+  const [isRemoving, setRemoving] = useState<State>({ id: "", type: null })
 
-  const isValid = useAppSelector(selectors.conditions.getValidity);
-  const currentCondition = currentConditions?.find((c: ConditionRedux) => c.id === selectedCondition.id);
-  const clean_groups = groups?.filter((v, i, a) => a.findIndex((t) => t === v) === i);
+  const isValid = useAppSelector(selectors.conditions.getValidity)
+  const currentCondition = currentConditions?.find((c: ConditionRedux) => c.id === selectedCondition.id)
+  const clean_groups = groups?.filter((v, i, a) => a.findIndex((t) => t === v) === i)
 
-  const isPageType = currentCondition?.attributes?.type === "page";
-  const type = isPageType ? "page" : "question";
+  const isPageType = currentCondition?.attributes?.type === "page"
+  const type = isPageType ? "page" : "question"
   const refererId = isPageType
     ? currentCondition?.attributes?.referer_page?.data?.id
-    : currentCondition?.attributes?.referer_question?.data?.id;
-
-  const handleDeleteGroup = useCallback((groupId?: string | null) => {
-    if (!groupId) return;
-    const conditionsId = currentConditions.filter((c) => c.attributes.group === groupId).map((c) => c.id)
-    dispatch(actions.deleteGroupCondition({ groupId, conditionsId }))
-  }, [dispatch, currentConditions]);
+    : currentCondition?.attributes?.referer_question?.data?.id
 
   const goToFirstStep = useCallback((id: string) => {
     dispatch(actions.setSelectedCondition(id));
     dispatch(actions.setStep(1));
-  }, [dispatch]);
+  }, [dispatch])
 
-  const createCondition = useCallback(() => {
+  const createGroup = useCallback(() => {
     dispatch(actions.createCondition({ refererId, type, group: uuidv4() }))
   }, [dispatch, refererId, type])
-  
-  console.log(currentCondition)
 
   return (
     <Box className="relative pb-10">
@@ -61,15 +53,6 @@ export default function Group({ currentConditions, groups, selectedCondition }: 
 
         return (
           <div key={groupId}>
-            { isRemoving.type === "group" && isRemoving.id === groupId &&
-              <RemovingConfirmation
-                key={groupId}
-                content={t.removing_group_confirmation}
-                confirm={() => handleDeleteGroup(groupId)}
-                close={() => setRemoving({ type: null, id: "" })}
-              />
-            }
-
             <GroupContent
               idx={i}
               groupId={groupId}
@@ -91,7 +74,7 @@ export default function Group({ currentConditions, groups, selectedCondition }: 
                   variant="link"
                   opacity={0.5}
                   fontSize="10"
-                  onClick={createCondition}
+                  onClick={createGroup}
                 >
                   {t.add_group}
                 </Button>
@@ -105,6 +88,8 @@ export default function Group({ currentConditions, groups, selectedCondition }: 
 };
 
 // ---- SUB COMPONENTS
+
+// -- GROUP
 
 type GroupContentProps = {
   idx: number
@@ -129,11 +114,7 @@ function GroupContent({
   setRemoving,
   goToFirstStep,
 }: GroupContentProps): JSX.Element {
-  const dispatch = useAppDispatch();
-
-  const handleDelete = useCallback((id: string) => {
-    dispatch(actions.deleteCondition(id));
-  }, [dispatch])
+  const dispatch = useAppDispatch()
 
   const createCondition = useCallback(() => {
     dispatch(actions.createCondition({ refererId, type, group: groupId }))
@@ -143,9 +124,20 @@ function GroupContent({
     setRemoving({ type: "group", id: groupId })
   }, [setRemoving, groupId])
 
+  const handleDeleteGroup = useCallback((groupId?: string | null) => {
+    if (!groupId) return;
+    const conditionsId = currentConditions.filter((c) => c.attributes.group === groupId).map((c) => c.id)
+    dispatch(actions.deleteGroupCondition({ groupId, conditionsId }))
+  }, [dispatch, currentConditions]);
+
+  const conditionsInGroup = useMemo(() =>
+    currentConditions.filter((c) => c.attributes.group === groupId)
+  , [currentConditions, groupId])
+
   return (
-    <Box className="p-4 my-5 bg-white border border-solid" key={groupId}>
-      <Flex alignItems="center" justifyContent="space-around" w="100%">
+    <Box className="relative p-4 my-5 bg-white border border-solid" key={groupId}>
+      {/* Title */}
+      <Flex className="mb-2" alignItems="center" justifyContent="space-around" w="100%">
         <Box
           w="100%"
           fontSize="10px"
@@ -166,93 +158,145 @@ function GroupContent({
         />
       </Flex>
 
-      {currentConditions.map((condition: ConditionRedux, index: number) => {
-        const isLast = index === currentConditions.length - 1;
-
-        if (condition?.attributes?.group === groupId) {
-          if (isRemoving.type === "condition" && isRemoving.id === condition.id) {
-            return (
-              <RemovingConfirmation
-                key={condition.id}
-                content={t.removing_condition_confirmation}
-                confirm={() => handleDelete(condition.id)}
-                close={() => setRemoving({ type: null, id: "" })}
-              />
-            );
-          }
-
-          return (
-            <Box textAlign="left" key={condition.id} py={1}>
-              {condition?.attributes?.target?.data?.attributes?.label && (
-                <>
-                  <Text fontSize="10" color="brand.gray.200">
-                    Pour la question
-                  </Text>
-
-                  <Flex alignItems="flex-start" justifyContent="space-between">
-                    <Flex alignItems="flex-start">
-                      <Text fontSize="14" fontWeight="bold" color="black">
-                        {condition?.attributes?.target.data?.attributes?.label}
-                      </Text>
-
-                      <Button
-                        display="flex"
-                        isDisabled={!isValid}
-                        onClick={() => goToFirstStep(condition.id)}
-                        variant="link"
-                        color="brand.blue"
-                        fontSize="10"
-                        pt={1}
-                        justifyContent="flex-end"
-                      >
-                        Edit
-                      </Button>
-                    </Flex>
-
-                    <ButtonIcon
-                      icon={MinusIcon}
-                      size={10}
-                      type="delete"
-                      onClick={() => setRemoving({ type: "condition", id: condition.id })}
-                    />
-                  </Flex>
-                </>
-              )}
-
-              {condition?.attributes?.operator !== null && (
-                <Flex alignItems="center">
-                  <Operator condition={condition} />
-
-                  <Box ml={2}>
-                    <Text mt={2} fontSize="10" color="brand.gray.200">
-                      {t.response}
-                    </Text>
-                    <Text fontSize="14" color="black" mb={2}>
-                      {condition?.attributes?.target_value}
-                    </Text>
-                  </Box>
-                </Flex>
-              )}
-
-              {condition?.attributes?.target_value && <Separator value="ET" isLast={isLast} />}
-
-              {
-                <Flex justifyContent="flex-end">
-                  <Button
-                    isDisabled={!isValid}
-                    variant="link"
-                    opacity={0.5}
-                    fontSize="10"
-                    onClick={createCondition}
-                  >
-                    {t.add_condition}
-                  </Button>
-                </Flex>
-              }
-            </Box>
-          );
-        }
+      {/* Conditions */}
+      { conditionsInGroup.map((condition: ConditionRedux, index: number) => {
+        const isLast = index === conditionsInGroup.length - 1
+        console.log("condition", condition.id)
+        console.log("isLast", isLast)
+        console.log("index", index)
+        console.log(conditionsInGroup.length)
+        return (
+          <Condition
+            key={condition.id}
+            condition={condition}
+            isLast={isLast}
+            isRemoving={isRemoving}
+            setRemoving={setRemoving}
+            isValid={isValid}
+            goToFirstStep={goToFirstStep}
+          />
+        )
       })}
+
+      {/* Add condition button */}
+      <Flex justifyContent="flex-end">
+        <Button
+          isDisabled={!isValid}
+          variant="link"
+          opacity={0.5}
+          fontSize="10"
+          onClick={createCondition}
+        >
+          {t.add_condition}
+        </Button>
+      </Flex>
+
+      {/* Confirmation group deletion overlay */}
+      { isRemoving.type === "group" && isRemoving.id === groupId &&
+        <RemovingConfirmation
+          key={groupId}
+          content={t.removing_group_confirmation}
+          confirm={() => handleDeleteGroup(groupId)}
+          close={() => setRemoving({ type: null, id: "" })}
+        />
+      }
+    </Box>
+  )
+}
+
+// -- CONDITION
+
+interface ConditionProps {
+  condition: ConditionRedux
+  isRemoving: State
+  setRemoving: React.Dispatch<React.SetStateAction<State>>
+  isValid: boolean
+  goToFirstStep: (id: string) => void
+  isLast: boolean
+}
+
+function Condition({
+  condition,
+  isRemoving,
+  setRemoving,
+  isValid,
+  goToFirstStep,
+  isLast
+}: ConditionProps): JSX.Element {
+  const dispatch = useAppDispatch()
+
+  const handleDelete = useCallback(() => {
+    dispatch(actions.deleteCondition(condition.id))
+  }, [condition.id, dispatch])
+
+  const showDeletion = isRemoving.type === "condition" && isRemoving.id === condition.id
+
+  return (
+    <Box className="relative" textAlign="left" key={condition.id} my={2}>
+      {condition?.attributes?.target?.data?.attributes?.label && (
+        <>
+          <Text fontSize="10" color="brand.gray.200">
+            Pour la question
+          </Text>
+
+          <Flex alignItems="flex-start" justifyContent="space-between">
+            <Flex alignItems="flex-start">
+              <Text fontSize="14" fontWeight="bold" color="black">
+                {condition?.attributes?.target.data?.attributes?.label}
+              </Text>
+
+              <Button
+                display="flex"
+                isDisabled={!isValid}
+                onClick={() => goToFirstStep(condition.id)}
+                variant="link"
+                color="brand.blue"
+                fontSize="10"
+                pt={1}
+                justifyContent="flex-end"
+              >
+                Edit
+              </Button>
+            </Flex>
+
+            <ButtonIcon
+              icon={MinusIcon}
+              size={10}
+              type="delete"
+              onClick={() => setRemoving({ type: "condition", id: condition.id })}
+            />
+          </Flex>
+        </>
+      )}
+
+      {condition?.attributes?.operator !== null && (
+        <Flex alignItems="center">
+          <Operator condition={condition} />
+
+          <Box ml={2}>
+            <Text mt={2} fontSize="10" color="brand.gray.200">
+              {t.response}
+            </Text>
+            <Text fontSize="14" color="black" mb={2}>
+              {condition?.attributes?.target_value}
+            </Text>
+          </Box>
+        </Flex>
+      )}
+
+      {/* Confirmation condition deletion overlay */}
+      {showDeletion && (
+        <RemovingConfirmation
+          key={condition.id}
+          content={t.removing_condition_confirmation}
+          confirm={handleDelete}
+          close={() => setRemoving({ type: null, id: "" })}
+        />
+      )}
+
+      {condition?.attributes?.target_value &&
+        <Separator value="ET" isLast={isLast} />
+      }
     </Box>
   )
 }

@@ -72,50 +72,46 @@ export default function Card({ input, index }: Props): JSX.Element {
           {...provided.dragHandleProps}
           ref={provided.innerRef}
         >
+          {/* Left action buttons */}
           <ButtonIcon
             icon={MinusIcon}
             type="delete"
             onClick={() => dispatch(setIsRemoving(input.id))}
           />
 
+          {/* Middle card */}
           <div
             key={input.id}
             className={cn(
-              "mx-2 my-5 p-4 border rounded-[5px] bg-white w-full max-w-[unset] cursor-grab border-gray-300",
+              "relative mx-2 my-5 border rounded-[5px] bg-white w-full max-w-[unset] cursor-grab border-gray-300",
               errorsListId?.includes(input.id) ? "border-red-500" : ""
             )}
           >
-            <Box color={color}>
-              {!isRemoving && (
-                <Flex w="100%" justifyContent="space-between" pb={4}>
-                  <Text variant="xsMedium">
-                    {input?.attributes?.internal_title}
-                  </Text>
-                  <Box>
-                    <InputIcon type={input?.attributes.type} />
-                  </Box>
-                </Flex>
-              )}
+            {/* Input card content */}
+            <Box className="m-4" color={color}>
+              <Flex w="100%" justifyContent="space-between" pb={4}>
+                <Text variant="xsMedium">
+                  {input?.attributes?.internal_title}
+                </Text>
+                <InputIcon type={input?.attributes.type} />
+              </Flex>
 
-              {isRemoving && (
-                <RemovingConfirmation
-                  content={`${t.removing_confirmation} ${input?.attributes.internal_title} ?`}
-                  confirm={handleDelete}
-                  close={() => dispatch(setIsRemoving(""))}
-                />
-              )}
-
-              <Box
-                position="relative"
-                top="-7px"
-                mb="10px"
-                display={isRemoving ? "none" : ""}
-              >
+              <Box position="relative" top="-7px" mb="10px">
                 <RenderInput input={input} />
               </Box>
             </Box>
+
+            {/* Confirmation card overlay when deleting */}
+            {isRemoving && (
+              <RemovingConfirmation
+                content={`${t.removing_confirmation} ${input?.attributes.internal_title} ?`}
+                confirm={handleDelete}
+                close={() => dispatch(setIsRemoving(""))}
+              />
+            )}
           </div>
           
+          {/* Right action buttons */}
           <ButtonIcon
             icon={SlidersIcon}
             onClick={handleEdit}

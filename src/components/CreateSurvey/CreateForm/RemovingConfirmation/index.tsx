@@ -1,6 +1,6 @@
-import React from "react";
-import { ButtonGroup, Center, Text } from "@chakra-ui/react";
+import { ButtonGroup, Center, Text } from "@chakra-ui/react"
 
+import { Button } from "@/components/Shadcn/button.tsx"
 import { t } from "@/static/global.ts"
 
 interface Props {
@@ -10,8 +10,6 @@ interface Props {
   height?: string;
 }
 
-import { Button } from "@/components/Shadcn/button.tsx"
-
 export default function RemovingConfirmation({
   confirm,
   close,
@@ -20,7 +18,11 @@ export default function RemovingConfirmation({
 }: Props): JSX.Element {
   return (
     <Center
-      className="absolute mt-5 p-2 w-full flex flex-col bg-black text-white"
+      className="
+        min-w-fit
+        absolute top-0 left-0 p-4 w-full h-full flex flex-col
+        bg-black text-white border rounded-[5px] border-black
+      "
       h={height}
     >
       <Text variant="smallTitle">{content}</Text>

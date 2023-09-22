@@ -109,6 +109,7 @@ export default function Preview({ isUserView, data, author, needConsent, surveyI
   return (
     <Flex h={height} w="100%" backgroundColor="white" flexDirection={isTablet ? "column" : "row"}>
       <Center
+        className="flex flex-col"
         w={isTablet ? "100%" : "33%"}
         minW="400px"
         borderRight="1px solid rgb(234, 234, 239)"

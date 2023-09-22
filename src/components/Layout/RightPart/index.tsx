@@ -9,7 +9,7 @@ interface Props {
 }
 export default function RightPart({ selectedCondition }: Props): JSX.Element {
   return (
-    <Container variant="rightPart">
+    <Container className="relative" variant="rightPart">
       {selectedCondition?.id !== undefined ? (
         <ConditionPreview selectedCondition={selectedCondition} />
       ) : (

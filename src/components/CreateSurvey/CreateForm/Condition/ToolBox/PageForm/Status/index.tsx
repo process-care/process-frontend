@@ -22,6 +22,7 @@ export default function RemovingConfirmation({
       <Text fontSize="25px" color="white" mb={10}>
         {content}
       </Text>
+
       <ButtonGroup
         color="white"
         w="100%"
@@ -33,6 +34,7 @@ export default function RemovingConfirmation({
         <Button variant="link" color="white" onClick={() => close()}>
           Annuler
         </Button>
+        
         <Button variant="roundedBlue" onClick={() => confirm()}>
           Oui
         </Button>

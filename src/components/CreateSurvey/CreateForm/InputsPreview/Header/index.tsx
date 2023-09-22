@@ -1,9 +1,10 @@
-import { Button, ButtonGroup, Flex } from "@chakra-ui/react";
+import { Button, ButtonGroup, Flex, Tooltip } from "@chakra-ui/react";
 
 import { t } from "@/static/input.ts"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
 import { toggleCollapseView } from "@/redux/slices/formBuilder/index.ts"
 import { selectors, actions } from "@/redux/slices/scientistData.js"
+import { GanttChartSquareIcon, SquareIcon } from "lucide-react";
 
 export default function Header(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -30,21 +31,23 @@ export default function Header(): JSX.Element {
       alignItems="center"
       mt="10px"
       mb="30px"
-      pl="50px"
+      pl="30px"
+      pr="14px"
     >
-      <ButtonGroup>
-        {order.length > 0 && (
-          <Button variant="link" fontSize="10px" onClick={deleteAll}>
-            {t.delete_all_inputs}
-          </Button>
-        )}
-      </ButtonGroup>
-      
-      <ButtonGroup>
-        <Button variant="ghost" onClick={() => dispatch(toggleCollapseView())}>
-          {isCollapse ? "-" : "="}
+      {order.length > 0 && (
+        <Button variant="link" fontSize="10px" onClick={deleteAll}>
+          {t.delete_all_inputs}
         </Button>
-      </ButtonGroup>
+      )}
+      
+      <Tooltip placement="top" label={isCollapse ? t.expand_view : t.collapse_view}>
+        <Button variant="ghost" onClick={() => dispatch(toggleCollapseView())}>
+          { isCollapse
+            ? <SquareIcon size={20} />
+            : <GanttChartSquareIcon size={20} />
+          }
+        </Button>
+      </Tooltip>
     </Flex>
   );
 };

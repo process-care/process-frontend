@@ -26,6 +26,8 @@ export default function PageBuilder({ survey }: Props): JSX.Element {
   const selectedCondition = useAppSelector(selectors.conditions.selectSelectedCondition)
   const selectedPage = useAppSelector(selectors.pages.selectSelectedPage)
 
+  const isEditingCondition = selectedCondition !== undefined
+
   const handlePage = useCallback(() => {
     dispatch(actions.createPage({ id: survey.id }))
   }, [dispatch, survey.id])
@@ -51,7 +53,7 @@ export default function PageBuilder({ survey }: Props): JSX.Element {
       
       {pages?.map((page, i) => {
         const inactive = isInactive(selectedCondition, pages, i)
-
+        
         return (
           <PageDisplay
             key={page.id}
@@ -59,6 +61,7 @@ export default function PageBuilder({ survey }: Props): JSX.Element {
             page={page}
             selectedPage={selectedPage}
             inactive={inactive}
+            isEditingCondition={isEditingCondition}
           />
         )
       })}
@@ -73,6 +76,7 @@ interface PageDisplayProps {
   selectedPage: PageRedux | undefined
   inactive: boolean
   idx: number
+  isEditingCondition?: boolean
 }
 
 function PageDisplay({
@@ -80,6 +84,7 @@ function PageDisplay({
   page,
   selectedPage,
   inactive,
+  isEditingCondition,
 }: PageDisplayProps): JSX.Element {
   const dispatch = useAppDispatch()
   const isSelected = selectedPage?.id === page.id
@@ -119,7 +124,7 @@ function PageDisplay({
       </div>
 
       {/* Delete shortcut */}
-      {idx !== 0 && (
+      {idx !== 0 && !isEditingCondition && (
         <ButtonIcon
           icon={MinusIcon}
           size={10}

@@ -1,11 +1,9 @@
 import { Box, Flex, Text, Avatar } from "@chakra-ui/react"
 import { useDispatch } from "react-redux"
-import { useRouter } from "next/navigation.js"
 import Link from "next/link.js"
 
 import { t } from "@/static/dashboard.js"
 import { actions } from "@/redux/slices/application/index.js"
-import { actions as appActions } from "@/redux/slices/scientistData.js"
 import { Logo } from "@/components/Logos.tsx"
 
 export const HEADER_HEIGHT = "65px"
@@ -21,16 +19,7 @@ interface Item {
 }
 
 export default function SimpleMenu({ isPortail }: Props): JSX.Element {
-  const router = useRouter();
-  const dispatch = useDispatch();
-
-  const logout = () => {
-    () => router.push("/connexion");
-    localStorage.removeItem("process__user");
-    dispatch(appActions.logout());
-    // Kill redux data
-    window.location.reload();
-  };
+  const dispatch = useDispatch()
 
   const handleDrawer = () => {
     dispatch(actions.toogleDrawer());
@@ -40,7 +29,7 @@ export default function SimpleMenu({ isPortail }: Props): JSX.Element {
     {
       name: "Mon profil",
       path: "/profil",
-      action: () => handleDrawer(),
+      action: handleDrawer,
     },
     {
       name: "Mes enquêtes",
@@ -48,8 +37,7 @@ export default function SimpleMenu({ isPortail }: Props): JSX.Element {
     },
     {
       name: "Se déconnecter",
-      path: "/connexion",
-      action: () => logout(),
+      path: "/deconnexion",
     },
   ];
 

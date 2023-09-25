@@ -35,7 +35,7 @@ export default function ButtonIcon({ type = "round", icon : Icon, color, size, c
 function variants(type: string) {
   switch (type) {
     case "delete":
-      return { variant: "rounded-full bg-red-500 hover:bg-red-700 p-[4px] text-white", defaultSize: 14 }
+      return { variant: "rounded-full bg-gray-300 hover:bg-red-500 p-[4px] text-white", defaultSize: 14 }
 
     case "round":
       return { variant: "rounded-full bg-black hover:bg-process-blue p-[4px] text-white", defaultSize: 14 }

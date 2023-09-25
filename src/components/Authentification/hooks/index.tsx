@@ -7,9 +7,9 @@ export function useAuth() {
 
   // Initial fetch from storage
   useEffect(() => {
-    setValue(localStorage.getItem("process__user"));
-    setIsLoading(false);
-  }, []);
+    setValue(localStorage.getItem("process__user"))
+    setIsLoading(false)
+  }, [])
 
   // If no value, return a empty structure
   if (!value) {
@@ -17,14 +17,14 @@ export function useAuth() {
       isLoading,
       cookies: null,
       isAuthenticated: false,
-    };
-    
+    }
   }
 
-  const cookies: LoginMutation["login"] = JSON.parse(value);
+  const cookies: LoginMutation["login"] = JSON.parse(value)
+
   return {
     isLoading,
     cookies,
     isAuthenticated: !cookies.user?.blocked && !!cookies.jwt,
-  };
+  }
 };

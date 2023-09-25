@@ -79,13 +79,13 @@ export default function CreateForm({ params }: Props): JSX.Element {
           <Menu surveyId={selectedSurveyId} />
 
           <Box display="flex" overflow="hidden" w="100%">
-            <Container variant="createformColumn" className="calc(100vh - 65px)"  w="6%" minW="100px" borderRight="1px" borderColor="gray.200">
+            <Container variant="createformColumn" h="calc(100vh - 65px)" w="6%" minW="100px" borderRight="1px" borderColor="gray.200">
               <PageBuilder survey={selectedSurvey} />
             </Container>
 
             <Container
               className="flex flex-col justify-center items-center bg-slate-100 overflow-auto p-0"
-              height="calc(100vh - 65px)"
+              h="calc(100vh - 65px)"
               w="94%"
               maxWidth="unset"
               minWidth="unset"

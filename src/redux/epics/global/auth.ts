@@ -103,6 +103,18 @@ const refreshingEpic: Epic = (action$) =>
     })
   );
 
+// ---- LOGOUT
+
+const logoutEpic: Epic = (action$) =>
+  action$.pipe(
+    ofType(actions.logout.type),
+    switchMap(async (_action) => {
+      client.setHeader("Authorization", "")
+      localStorage.removeItem("process__user")
+      return actions.disconnected()
+    })
+  )
+
 // ---- EXPORT
 
-export const authEpics = combineEpics(loginEpic, signinEpic, refreshingEpic);
+export const authEpics = combineEpics(loginEpic, logoutEpic, signinEpic, refreshingEpic);

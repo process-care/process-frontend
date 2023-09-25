@@ -12,45 +12,59 @@ import Footer from "@/components/Footer/index.tsx"
 import SimpleMenu from "@/components/Menu/SimpleMenu/index.tsx"
 import MainMenu from "../MainMenu/index.tsx"
 
+// ---- TYPES
+
 interface Props {
   children: React.ReactNode;
 }
 
+// ---- CONSTANTS
+
+const authPage = [
+  "/connexion",
+  "/deconnexion",
+  "/attente-de-validation",
+  "/inscription",
+  "/mot-de-passe-oublie",
+  "/nouveau-mot-de-passe",
+]
+
+const simplePage = [
+  "/dashboard",
+  "/profil"
+]
+
+// ---- COMPONENT
+
 export default function Layout({ children }: Props): JSX.Element {
-  const { isAuthenticated } = useAuth()
+  const { isLoading, isAuthenticated } = useAuth()
   const { isTablet } = useMediaQueries()
+  const pathname = usePathname()
   const height = use100vh()
 
-  const pathname = usePathname()
-  const isSurveyPages = pathname.search("/survey/") !== -1;
-  const isPortail = pathname === "/";
-  const isEditor = pathname.includes("create/landing");
-
-  const authPage = [
-    "/connexion",
-    "/attente-de-validation",
-    "/inscription",
-    "/mot-de-passe-oublie",
-    "/nouveau-mot-de-passe",
-  ];
-  const isAuthPage = authPage.includes(pathname);
+  const isSurveyPages = pathname.search("/survey/") !== -1
+  const isPortail = pathname === "/"
+  const isEditor = pathname.includes("create/landing")
+  const isAuthPage = authPage.includes(pathname)
 
   const renderMenu = () => {
-    const isSimpleMenu = ["/dashboard", "/profil"];
-
-    if (isSimpleMenu.includes(pathname)) return <SimpleMenu />;
-    if (isPortail && isAuthenticated) return <SimpleMenu isPortail />;
-    else if (isSurveyPages || isAuthPage || isPortail) return null;
-    else return <MainMenu />;
+    // Menu are only for authenticated users
+    if (isLoading || !isAuthenticated) return null
+    
+    // Menu for the base pages
+    if (simplePage.includes(pathname)) return <SimpleMenu />
+    // Menu for the portal
+    if (isPortail) return <SimpleMenu isPortail />
+    // No menu for survey or auth pages
+    if (isSurveyPages || isAuthPage) return null
+    
+    // Default
+    return <MainMenu />
   };
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [pathname]);
-
-  const renderFooter = () => {
-    if (isPortail) return <Footer />;
-  };
 
   if ((isTablet && !isSurveyPages && !isPortail && !isAuthPage) || (isTablet && isEditor)) {
     return (
@@ -80,8 +94,12 @@ export default function Layout({ children }: Props): JSX.Element {
   return (
     <Box textAlign="center" fontSize="xl">
       {renderMenu()}
+
       {children}
-      {renderFooter()}
+
+      { isPortail &&
+        <Footer />
+      }
     </Box>
   );
 };

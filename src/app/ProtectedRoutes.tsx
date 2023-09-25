@@ -1,34 +1,60 @@
-// import { Redirect, Route, RouteProps, useLocation } from "react-router-dom";
-// import { useAuth } from "components/Authentification/hooks";
-// import { useDispatch } from "react-redux";
-// import { actions } from "redux/slices/scientistData";
-// import { useAppSelector } from "redux/hooks";
-// import { useEffect } from "react";
+'use client'
 
-// export const ProtectedRoutes: React.FC = ({ children, ...rest }: RouteProps) => {
-//   const dispatch = useDispatch();
-//   const location = useLocation();
+import { useEffect } from 'react'
+import { redirect, usePathname } from 'next/navigation'
+import { useDispatch } from "react-redux"
 
-//   const { isAuthenticated, cookies } = useAuth();
-//   const isConnected = useAppSelector((state) => state.scientistData.auth.isConnected);
+import { useAppSelector } from '@/redux/hooks'
+import { useAuth } from '@/components/Authentification/hooks/index'
+import { client } from '@/api/gql-client'
+import { buildBearer } from '@/utils/auth'
+import { actions } from "@/redux/slices/scientistData"
+import Loader from '@/components/Spinner'
 
-//   // Hydrate redux store with user data if not already done
-//   useEffect(() => {
-//     if (!isConnected) dispatch(actions.logged(cookies));
-//   }, [isConnected]);
+// ---- TYPES
 
-//   // User is not authenticated
-//   if (!isAuthenticated) {
-//     const to = { pathname: "/connexion", state: { from: location } };
-//     return <Redirect to={to} />;
-//   }
+type Props = {
+  children: React.ReactNode
+}
 
-//   // User is not validated yet
-//   if (!cookies.user.validated && location.pathname !== "/attente-de-validation") {
-//     const to = { pathname: "/attente-de-validation", state: { from: location } };
-//     return <Redirect to={to} />;
-//   }
+// ---- COMPONENT
 
-//   // User is okay !
-//   return <Route {...rest}>{children}</Route>;
-// };
+export default function ProtectedRoutes({ children }: Props): JSX.Element {
+  const dispatch = useDispatch()
+  const pathname = usePathname()
+
+  const { isLoading, isAuthenticated, cookies } = useAuth()
+  const isConnected = useAppSelector((state) => state.scientistData.auth.isConnected)
+
+  // Hydrate redux store with user data if not already done
+  useEffect(() => {
+    if (isLoading) return
+
+    if (!isConnected && cookies) {
+      dispatch(actions.logged(cookies))
+      client.setHeader("Authorization", buildBearer(cookies.jwt))
+    }
+  // We will update only when "isConnected" or "isLoading" changes
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isConnected, isLoading])
+
+  // While it's loading, we wait
+  if (isLoading) return <Loader />
+
+  // User is not authenticated, redirect
+  if (!isAuthenticated) {
+    redirect("/connexion")
+  }
+
+  // User is not validated yet, redirect
+  if (!cookies?.user?.validated && pathname !== "/attente-de-validation") {
+    redirect("/attente-de-validation")
+  }
+
+  // User is okay !
+  return (
+    <>
+      {children}
+    </>
+  )
+}

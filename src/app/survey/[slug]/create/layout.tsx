@@ -1,6 +1,6 @@
 'use client'
 
-import ProtectedRoutes from '../ProtectedRoutes'
+import ProtectedRoutes from '@/app/ProtectedRoutes'
 
 // ---- TYPES
 
@@ -10,7 +10,7 @@ type Props = {
 
 // ---- COMPONENT
 
-export default function RestrictedAdminLayout({ children }: Props) {
+export default function RestrictedCreateLayout({ children }: Props) {
   return (
     <ProtectedRoutes>
       {children}

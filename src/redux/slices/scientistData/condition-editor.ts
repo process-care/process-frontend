@@ -250,9 +250,7 @@ export const conditionsReducers = {
     state.conditions.lastDeleted = action.payload.lastDeleted;
   },
   deleteGroupCondition: (state: GlobalState, action: PayloadAction<DeleteGroupPayload>): void => {
-    state.conditions.isDeleting = true;
-
-    console.log('deleting group condition :', action.payload)
+    state.conditions.isDeleting = true
     const { groupId, conditionsId } = action.payload
 
     // Remove all conditions from this group
@@ -266,9 +264,8 @@ export const conditionsReducers = {
     }
   },
   deletedGroupCondition: (state: GlobalState, action: PayloadAction<DeletedPayload>): void => {
-    console.log("deleted group blablabla")
-    state.conditions.isDeleting = false;
-    state.conditions.lastDeleted = action.payload.lastDeleted;
+    state.conditions.isDeleting = false
+    state.conditions.lastDeleted = action.payload.lastDeleted
   },
   saveCondition: (state: GlobalState, _action: PayloadAction): void => {
     state.conditions.isSaving = true;

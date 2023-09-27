@@ -134,7 +134,7 @@ function FormConsentement({ values, isValid, isSubmitting, surveyId, refetch }: 
       actions.updateSurvey({
         id: surveyId,
         needConsent: Array.isArray(values.needConsent) ? values.needConsent.includes('on') : Boolean(values.needConsent),
-        noticeConsent: values.consentement,
+        noticeConsent: values.noticeConsent,
       })
     );
 
@@ -143,7 +143,7 @@ function FormConsentement({ values, isValid, isSubmitting, surveyId, refetch }: 
   }, [dispatch, refetch, surveyId, values]);
 
   const targets = useMemo(() => ({
-    consentement: { refId: surveyId, ref: "survey", field: "consentement" }
+    consentement: { refId: surveyId, ref: "survey", field: "noticeConsent" }
   }), [surveyId]);
 
   return (

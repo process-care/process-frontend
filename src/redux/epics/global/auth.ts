@@ -2,7 +2,7 @@ import { map, switchMap } from "rxjs"
 import { combineEpics, ofType } from "redux-observable"
 import { Epic } from "@/redux/store/index.js"
 import { actions } from "@/redux/slices/scientistData.js"
-import { client, sdk } from "@/api/gql-client.js"
+import { apollo, client, sdk } from "@/api/gql-client.js"
 import { hasMessage } from "@/utils/typeguards/index.js"
 import { buildBearer } from "@/utils/auth.js"
 
@@ -110,6 +110,7 @@ const logoutEpic: Epic = (action$) =>
     ofType(actions.logout.type),
     switchMap(async (_action) => {
       client.setHeader("Authorization", "")
+      apollo.clearStore()
       localStorage.removeItem("process__user")
       return actions.disconnected()
     })

@@ -43,8 +43,6 @@ export default function Participation({ params }: Props): JSX.Element {
   const status = survey?.attributes?.status;
   const goBackHome = useCallback(() => router.push("/"), [router]);
 
-  console.log("participation", participation)
-
   // If there is already a completed participation in local storage
   if (participation?.completed) {
     return <OverWarning msg={NL.msg.thxParticipation} cta={NL.button.backToWelcome} action={goBackHome} />;

@@ -16,7 +16,7 @@ const config: CodegenConfig = {
       },
     },
 
-    // Config SDK for each queries.gql file
+    // SDK -> Config for each queries.gql file
     'src/api/graphql/sdk.generated.ts': {
       presetConfig: {
         baseTypesPath: 'api/graphql/types.generated.ts',
@@ -39,7 +39,7 @@ const config: CodegenConfig = {
       },
     },
 
-    // [TEST] graphql-request doesn't support upload for now, we need another way ?
+    // [TEST] Apollo -> graphql-request doesn't support upload for now, we need another way ?
     'src/api/graphql/apollo.generated.ts': {
       preset: 'near-operation-file',
       presetConfig: {
@@ -53,7 +53,7 @@ const config: CodegenConfig = {
       },
     },
 
-    // [LEGACY] Config React Query for each queries.gql file (with hooks)
+    // [LEGACY] React Query -> Config for each queries.gql file (with hooks)
     // Note: This was used before the SDK was created. There are still parts of the application relying on those.
     'src/api/graphql/gql.generated.ts': {
       preset: 'near-operation-file',

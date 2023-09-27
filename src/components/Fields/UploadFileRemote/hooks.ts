@@ -39,8 +39,8 @@ export const useFileHandlers = (
 
   // Uploader function
   const handleChange = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!event.currentTarget.files) return;
-    let data = null;
+    if (!event.currentTarget.files) return
+    let data = null
 
     try {
       if (multiple) {
@@ -53,12 +53,10 @@ export const useFileHandlers = (
       } else {
         const files = event.currentTarget.files
         const uploaded = await uploadFileSingleMutation({ variables: { ...target, file: files.item(0) }})
-
-        console.log(uploaded)
-        data = uploaded?.data?.upload;
+        data = uploaded?.data?.upload?.data
 
         // Remove previous file
-        deleteFile({ id: field.value.data.id })
+        if (field?.value?.data?.id) deleteFile({ id: field.value.data.id })
       }
     } catch (e: any) {
       console.error(e)
@@ -67,15 +65,15 @@ export const useFileHandlers = (
       return
     }
 
-    setFieldValue(target.field, data);
-    onChange(`Updated files: ${data}`);
+    setFieldValue(target.field, data)
+    onChange(`Updated files: ${ data }`)
   }, [deleteFile, field.value, multiple, onChange, setFieldValue, target, uploadFileSingleMutation, uploadMultiFile])
 
   // Deleter function
   const handleDelete = useCallback((id: string) => {
-    deleteFile({ id });
-    setFieldValue(target.field, { data: null });
-    onChange(`Deleted: ${id}`);
+    deleteFile({ id })
+    setFieldValue(target.field, null)
+    onChange(`Deleted: ${id}`)
   }, [deleteFile, onChange, setFieldValue, target.field])
 
   return {

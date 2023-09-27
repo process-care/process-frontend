@@ -161,10 +161,6 @@ function GroupContent({
       {/* Conditions */}
       { conditionsInGroup.map((condition: ConditionRedux, index: number) => {
         const isLast = index === conditionsInGroup.length - 1
-        console.log("condition", condition.id)
-        console.log("isLast", isLast)
-        console.log("index", index)
-        console.log(conditionsInGroup.length)
         return (
           <Condition
             key={condition.id}

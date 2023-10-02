@@ -1,7 +1,7 @@
-'use client';
+'use client'
 
-import * as React from 'react';
-import * as DialogPrimitive from '@radix-ui/react-dialog';
+import * as React from 'react'
+import * as DialogPrimitive from '@radix-ui/react-dialog'
 
 import { cn } from '@/utils/ui.ts'
 import { Icons } from '@/components/icons'

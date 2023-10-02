@@ -1,24 +1,24 @@
-import { useEffect, useState } from "react";
-import { useField } from "formik";
-import { Container, Text, Box } from "@chakra-ui/react";
+import { useEffect, useState } from "react"
+import { useField } from "formik"
+import { Container, Text, Box } from "@chakra-ui/react"
 
 import { Textarea } from "@/components/Fields/index.ts"
 import { Enum_Question_Rows, Maybe } from "@/api/graphql/types.generated.ts"
 
 interface Props {
-  label: string;
-  helpText?: string;
-  placeholder: string;
-  rows: Maybe<Enum_Question_Rows> | undefined;
-  samples?: string[];
-  nbSamples?: Maybe<number>;
-  isRequired?: any;
-  id: string;
-  isCollapsed?: boolean;
-  autoComplete?: string;
+  label: string
+  helpText?: string
+  placeholder: string
+  rows: Maybe<Enum_Question_Rows> | undefined
+  samples?: string[]
+  nbSamples?: Maybe<number>
+  isRequired?: any
+  id: string
+  isCollapsed?: boolean
+  autoComplete?: string
 }
 
-const DEFAULT_NB_SAMPLES = 4;
+const DEFAULT_NB_SAMPLES = 4
 
 // ---- COMPONENT
 
@@ -33,31 +33,35 @@ export default function FreeClassification({
   isRequired,
   isCollapsed,
 }: Props): JSX.Element {
-  const [field, , helpers] = useField(id);
-  const [subTextarea] = useField(`${id}_textarea`);
+  const [field, , helpers] = useField(id)
+  const [subTextarea] = useField(`${id}_textarea`)
   // Maintain an internal state as a Set (easy manipulation to avoid duplication)
-  const [choices] = useState<Set<number>>(new Set(field?.value?.choices ?? []));
+  const [choices] = useState<Set<number>>(new Set(field?.value?.choices ?? []))
 
   // Update the textarea value when the something is typed
   useEffect(() => {
-    if (subTextarea.value === undefined) return;
-    helpers.setValue({ ...field.value, answer: subTextarea.value });
-  }, [field.value, helpers, subTextarea.value]);
+    if (subTextarea.value === undefined) return
+    helpers.setValue({ ...field.value, answer: subTextarea.value })
+  // `field.value` is not part of the deps because it would trigger an infinite loop
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [helpers, subTextarea.value]);
 
   // Use samples initialization to init the field with all default values
   useEffect(() => {
-    const newValue = { ...field.value, variations: samples };
-    if (!field?.value?.choices) newValue.choices = [];
-    if (!field?.value?.answer) newValue.answer = "";
-    helpers.setValue({ ...newValue });
-  }, [field.value, helpers, samples]);
+    const newValue = { ...field.value, variations: samples }
+    if (!field?.value?.choices) newValue.choices = []
+    if (!field?.value?.answer) newValue.answer = ""
+    helpers.setValue({ ...newValue })
+  // `field.value` is not part of the deps because it would trigger an infinite loop
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [helpers, samples]);
 
   // Update the internal state on clicks, then update the field with raw values
   const onClickChoice = (idx: number) => {
-    if (choices.has(idx)) choices.delete(idx);
-    else choices.add(idx);
-    helpers.setValue({ ...field.value, choices: [...choices] });
-  };
+    if (choices.has(idx)) choices.delete(idx)
+    else choices.add(idx)
+    helpers.setValue({ ...field.value, choices: [...choices] })
+  }
 
   return (
     <>
@@ -90,7 +94,7 @@ type OptionsProps = {
 const Options: React.FC<OptionsProps> = ({ choices, samples, nbSamples, onClickChoice }) => {
   // If not enough samples, display nothing special
   if (!samples || samples.length < (nbSamples ?? DEFAULT_NB_SAMPLES)) {
-    return <></>;
+    return <></>
   }
 
   return (
@@ -118,5 +122,5 @@ const Options: React.FC<OptionsProps> = ({ choices, samples, nbSamples, onClickC
         );
       })}
     </Box>
-  );
-};
+  )
+}

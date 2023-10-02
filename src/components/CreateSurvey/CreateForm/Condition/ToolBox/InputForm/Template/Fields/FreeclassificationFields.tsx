@@ -16,6 +16,7 @@ export default function FreeclassificationFields(): JSX.Element {
         backgroundColor="#fdfdfdf1"
       >
         <CommonFields />
+        
         <Radiobox
           p="10px 0"
           label="Nombre de charactères de la réponse"
@@ -27,6 +28,7 @@ export default function FreeclassificationFields(): JSX.Element {
           id="rows"
           helpText="Limite du nombre de caractères"
         />
+
         <NumberInput
           style={{ width: "45%" }}
           name="freeclassification_responses_count"

@@ -84,8 +84,8 @@ export default function CreateConsent({ params }: Props): JSX.Element {
           initialValues={formatInitialValues(survey)}
           enableReinitialize
           onSubmit={(data, { setSubmitting, validateForm }) => {
-            validateForm(data);
-            setSubmitting(true);
+            validateForm(data)
+            setSubmitting(true)
           }}
         >
           {({ values, isValid, isSubmitting }) => {

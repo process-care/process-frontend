@@ -12,7 +12,7 @@ export const CommonFieldsSchema = Yup.object().shape({
 
 // Common + answers
 export const MultipleInputFieldsSchema = CommonFieldsSchema.shape({
-  answers: Yup.array().nullable().min(2, "Il faut au moins deux réponses"),
+  options: Yup.array().nullable().min(2, "Il faut au moins deux réponses"),
   // .required("Merci de renseigner deux réponses au minumum"),
 });
 

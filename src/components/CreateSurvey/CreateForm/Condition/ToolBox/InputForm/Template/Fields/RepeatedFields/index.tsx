@@ -16,7 +16,7 @@ export default function RepeatedFields({ name }: Props): JSX.Element {
   const { setFieldValue } = useFormikContext();
   const isEditing = useAppSelector(selectorsApplication.isEditing);
 
-  const fields = field.value;
+  const fields = field.value
 
   useEffect(() => {
     // Populate answers field on edit.

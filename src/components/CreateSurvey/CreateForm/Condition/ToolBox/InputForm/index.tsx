@@ -38,7 +38,7 @@ export default function InputForm({ order }: Props): JSX.Element {
   return (
     <Formik
       validationSchema={renderFormValidationSchema(selectedQuestion)}
-      initialValues={selectedQuestion ? removeEmpty(selectedQuestion) : fields[type]}
+      initialValues={{ ...fields[type], ...removeEmpty(selectedQuestion) }}
       onSubmit={handleSubmit}
     >
       <FormDisplay
@@ -79,7 +79,10 @@ function FormDisplay({
     values,
     isSubmitting,
     isValid,
+    errors
   } = useFormikContext<Question | Record<string, unknown>>()
+
+  if (Object.keys(errors).length > 0) console.error('The form contains errors', errors)
 
   const { createCondition, editCondition } = useConditionActions(selectedQuestionId)
 
@@ -90,7 +93,6 @@ function FormDisplay({
 
   useEffect(() => {
     const newChanges = getDiff(values, selectedQuestion)
-
     if (values) {
       dispatch(actions.updateQuestion({
         id: selectedQuestionId,

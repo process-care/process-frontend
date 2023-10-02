@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/react"
-import { usePathname, useRouter } from "next/navigation.js"
+import { usePathname } from "next/navigation.js"
 
 import {
   NumberInput,
@@ -33,7 +33,6 @@ interface Props {
 }
 
 export default function RenderInput({ input }: Props): JSX.Element {
-  const router = useRouter()
   const pathname = usePathname()
   const isCollapsed = useAppSelector(selectors.isCollapseView) && !pathname.includes("/participate")
   const attributes = input?.attributes;

@@ -47,7 +47,8 @@ export default function CustomInput({
   isAccordion,
   appearance,
 }: Props): JSX.Element {
-  const [field, meta] = useField(name);
+  const [field, meta] = useField(name)
+  
   return (
     <FormControl isRequired={isRequired} id={name} textAlign="left" style={style} isInvalid={!!meta.error}>
       {isAccordion ? (

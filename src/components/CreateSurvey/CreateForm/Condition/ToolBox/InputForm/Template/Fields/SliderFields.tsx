@@ -40,6 +40,7 @@ export default function SliderFields(): JSX.Element {
             />
           </Box>
         </Flex>
+
         <Flex justifyContent="space-between" w="100%" mb={5}>
           <Box w="45%">
             <Input
@@ -51,12 +52,15 @@ export default function SliderFields(): JSX.Element {
               placeholder="1"
             />
           </Box>
+
           <Box w="45%"></Box>
         </Flex>
 
-        <Switch label="Slider en vue verticale" id="vertical" />
+        <Switch label="Slider en vue verticale" id="vertical" defaultChecked={false} />
+
         <Box mb={4} />
-        <Switch label="Slider en vue inversée" id="reverse" />
+
+        <Switch label="Slider en vue inversée" id="reverse" defaultChecked={false} />
       </Box>
     </>
   );

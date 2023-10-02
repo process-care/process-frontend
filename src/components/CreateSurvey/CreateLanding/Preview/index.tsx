@@ -17,6 +17,7 @@ import Video from "@/components/Video/index.tsx"
 import Description from "./Description/index.tsx"
 import Legals from "./Legals/index.tsx"
 import Team from "./Team/index.tsx"
+import { useWysiwygSerializer } from "@/components/Fields/Wysiwyg/Wysiwyg.tsx";
 
 // ---- STATICS
 
@@ -40,25 +41,28 @@ interface Props {
 export default function Preview({ isUserView, data, author, needConsent, surveyId, isPreview }: Props): JSX.Element {
   const router = useRouter()
   const params = useParams()
+  const { isTablet } = useMediaQueries()
+
   const slug = typeof params.slug === 'string' ? params.slug : ''
-  
-  const aboutPage = useAppSelector(selectors.about);
-  const isEditingAbout = useAppSelector(selectors.isEditingAbout);
-  const { isTablet } = useMediaQueries();
-  const attributes = data?.attributes;
+  const attributes = data?.attributes
+  const coverSrc = attributes?.cover?.data?.attributes?.url ?? ""
+  const coverName = attributes?.cover?.data?.attributes?.name ?? ""
+  const isEditingAbout = useAppSelector(selectors.isEditingAbout)
 
-  const hasVideo = Boolean(attributes?.video_url);
-  const coverSrc = attributes?.cover?.data?.attributes?.url ?? "";
-  const coverName = attributes?.cover?.data?.attributes?.name ?? "";
+  // Get the about page raw data and serialize it for display
+  const aboutPage = useAppSelector(selectors.about)
+  const aboutHtml = useWysiwygSerializer(aboutPage)
 
-  const hasImage = Boolean(coverSrc);
-  const hasMedia = hasVideo || hasImage;
-  const hasMembers = Boolean(data?.attributes?.members?.length > 0);
-  const hasAboutPage = Boolean(data?.attributes?.about_page);
-  const { mutateAsync: createParticipation } = useCreateParticipationMutation(client);
-  const { loading, participation, onConsent } = useConsentHandlers(slug);
+  // Actions
+  const { mutateAsync: createParticipation } = useCreateParticipationMutation(client)
+  const { loading, participation, onConsent } = useConsentHandlers(slug)
 
-  // Flag for participate button
+  // Flags
+  const hasVideo = Boolean(attributes?.video_url)
+  const hasImage = Boolean(coverSrc)
+  const hasMedia = hasVideo || hasImage
+  const hasMembers = Boolean(data?.attributes?.members?.length > 0)
+  const hasAboutPage = Boolean(data?.attributes?.about)
   const isInactive = !isUserView || loading
 
   // Callback for participate button
@@ -99,7 +103,7 @@ export default function Preview({ isUserView, data, author, needConsent, surveyI
           textAlign="left"
           variant="current"
           dangerouslySetInnerHTML={{
-            __html: aboutPage || big_placeholder,
+            __html: aboutHtml || big_placeholder,
           }}
         ></Text>
       </Box>
@@ -170,7 +174,7 @@ export default function Preview({ isUserView, data, author, needConsent, surveyI
 
             <TabPanel>
               <Box className="font-light text-sm w-full h-full max-h-[75vh] overflow-auto" dangerouslySetInnerHTML={{
-                __html: aboutPage ?? "",
+                __html: aboutHtml ?? "",
               }} />
             </TabPanel>
           </TabPanels>

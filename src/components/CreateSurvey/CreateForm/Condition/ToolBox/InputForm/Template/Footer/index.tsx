@@ -23,7 +23,7 @@ export default function Footer({
     <div className="w-full py-4 px-10 flex flex-row-reverse justify-between items-center bg-white border-t border-t-solid border-t-black min-w-[300px]">
       {/* Action group */}
       <div>
-        <Button variant="link" onClick={() => onCancel()} type="button" mr="20">
+        <Button variant="link" onClick={onCancel} type="button" mr="20">
           {t.cancel}
         </Button>
         
@@ -32,7 +32,7 @@ export default function Footer({
           variant="rounded"
           w="128px"
           disabled={disabled}
-          onClick={() => onSubmit()}
+          onClick={onSubmit}
         >
           {t.validate}
         </Button>

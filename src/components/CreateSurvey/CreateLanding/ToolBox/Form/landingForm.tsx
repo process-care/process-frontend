@@ -138,7 +138,7 @@ function FormDisplay({ landing, values, setFieldValue, isValid, isSubmitting }: 
             {t.content_label}
           </Text>
 
-          <Wysiwyg id="wysiwyg" />
+          <Wysiwyg id="presentation" />
 
           <Text variant="currentBold" mt="5">
             {t.add_image}

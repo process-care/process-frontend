@@ -88,6 +88,6 @@ export const fields: { [type: string]: Record<string, unknown> } = {
   wysiwyg: {
     internal_title: "",
     internal_description: "",
-    wysiwyg: "",
+    infozone: "",
   },
 };

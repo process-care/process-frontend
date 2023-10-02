@@ -30,7 +30,7 @@ type Props = {
 
 export default function CreateForm({ params }: Props): JSX.Element {
   const { slug } = params
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   const isOpen = useAppSelector((state) => state.application.drawerIsOpen);
   const selectedSurvey = useAppSelector(selectors.survey.getSelectedSurvey);
@@ -63,11 +63,11 @@ export default function CreateForm({ params }: Props): JSX.Element {
     }
   }, [drawerIsOpen]);
   if (error) {
-    return <Error error={error} />;
+    return <Error error={error} />
   }
 
   if (isLoading) {
-    return <Loader />;
+    return <Loader />
   }
 
   return (

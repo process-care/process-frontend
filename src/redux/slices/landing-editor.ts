@@ -81,8 +81,8 @@ export const hasMembers = (state: RootState): boolean => getAttributes(state)?.m
 export const getLanding = (state: RootState): LandingRedux | undefined => state.editor.landing.data;
 export const members = (state: RootState): LandingRedux["attributes"]["members"] => getAttributes(state)?.members;
 
-export const about = (state: RootState): LandingRedux["attributes"]["about_page"] | undefined =>
-  getAttributes(state)?.about_page;
+export const about = (state: RootState): LandingRedux["attributes"]["about"] | undefined =>
+  getAttributes(state)?.about
 
 type HeaderData = Partial<Pick<Landing, "title" | "color_theme" | "logo">>;
 

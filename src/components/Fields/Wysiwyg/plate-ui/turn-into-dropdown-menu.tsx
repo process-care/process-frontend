@@ -108,7 +108,7 @@ export function TurnIntoDropdownMenu(props: DropdownMenuProps) {
         </ToolbarButton>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="start" className="min-w-0">
+      <DropdownMenuContent align="start" className="z-[2000] min-w-0">
         <DropdownMenuLabel>Turn into</DropdownMenuLabel>
 
         <DropdownMenuRadioGroup
@@ -129,7 +129,7 @@ export function TurnIntoDropdownMenu(props: DropdownMenuProps) {
             // }
 
             collapseSelection(editor);
-            focusEditor(editor);
+            // focusEditor(editor);
           }}
         >
           {items.map(({ value: itemValue, label, icon: Icon }) => (

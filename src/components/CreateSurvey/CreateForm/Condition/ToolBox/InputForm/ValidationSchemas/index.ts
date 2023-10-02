@@ -32,7 +32,7 @@ export const SliderSchema = CommonFieldsSchema.shape({
 
 export const WysiwygSchema = Yup.object().shape({
   internal_title: Yup.string().required("Ce champs est requis"),
-  wysiwyg: Yup.string(),
+  infozone: Yup.array(),
 });
 
 // Associated Classification

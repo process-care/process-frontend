@@ -1,8 +1,8 @@
-import { useCallback, useMemo, useRef } from "react";
-import { useFormikContext } from "formik";
-import { FormControl } from "@chakra-ui/react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useField } from "formik"
+import { FormControl } from "@chakra-ui/react"
 
-import { Plate, PlateEditor, PlateProvider, RenderAfterEditable, createPlateEditor, createPlugins, deserializeHtml } from '@udecode/plate-common';
+import { Plate, PlateEditor, PlateProvider, RenderAfterEditable, createPlateEditor, createPlugins } from '@udecode/plate-common';
 import { createFontBackgroundColorPlugin, createFontColorPlugin, createFontSizePlugin } from "@udecode/plate-font"
 import { createBasicMarksPlugin } from '@udecode/plate-basic-marks';
 import { createBlockquotePlugin } from '@udecode/plate-block-quote';
@@ -15,8 +15,6 @@ import { createEmojiPlugin } from "@udecode/plate-emoji";
 import { createSelectOnBackspacePlugin } from '@udecode/plate-select';
 import { createLinkPlugin } from "@udecode/plate-link";
 import { ELEMENT_IMAGE, ELEMENT_MEDIA_EMBED, createImagePlugin, createMediaEmbedPlugin } from "@udecode/plate-media";
-import { serializeHtml } from '@udecode/plate-serializer-html';
-
 
 import { createPlateUI } from '@/utils/create-plate-ui.ts'
 import { Toolbar, ToolbarGroup } from "@/components/Fields/Wysiwyg/plate-ui/toolbar.tsx"
@@ -28,7 +26,6 @@ import { LinkToolbarButton } from "./plate-ui/link-toolbar-button.tsx"
 import { AlignDropdownMenu } from "./plate-ui/align-dropdown-menu.tsx"
 import { EmojiDropdownMenu } from "./plate-ui/emoji-dropdown-menu.tsx"
 import { MoreDropdownMenu } from "./plate-ui/more-dropdown-menu.tsx"
-import { QuestionRedux } from "@/redux/slices/types/index.js"
 
 import MarkGroup from "./MarkGroup.tsx"
 import ColorGroup from "./ColorGroup.tsx"
@@ -36,6 +33,8 @@ import { createTablePlugin } from "@udecode/plate-table";
 import { createCodeBlockPlugin } from "@udecode/plate-code-block";
 import { LinkFloatingToolbar } from "./plate-ui/link-floating-toolbar.tsx"
 import { ListToolbarButton } from "./plate-ui/list-toolbar-button.tsx"
+import { useDebounce } from "@/utils/hooks/debounce.ts";
+import { serializeHtml } from "@udecode/plate-serializer-html";
 
 // ---- TYPES
 
@@ -61,7 +60,7 @@ const editableProps = {
   }
 };
 
-const plugins = createPlugins(
+export const plugins = createPlugins(
   [
     // Basics
     createBasicMarksPlugin(),
@@ -113,28 +112,22 @@ const plugins = createPlugins(
 // ---- COMPONENT
 
 export default function Wysiwyg({ id, className }: Props): JSX.Element {
-  const { setFieldValue, values } = useFormikContext<QuestionRedux>();
-  const editorRef = useRef<PlateEditor | null>(null);
+  const editorRef = useRef<PlateEditor | null>(null)
+  const [_field, { initialValue, error }, { setValue }] = useField(id)
+  const [rawValue, setRawValue] = useState<any>(null)
+  const debouncedValue = useDebounce(rawValue, 500)
 
-  const initialValue = useMemo(() => {
-    // @ts-ignore : we access through a dynamic key
-    const content = values[id]
-    if (!content) return
+  if (error) console.error(error)
 
-    const tmpEditor = createPlateEditor({ plugins })
-    return deserializeHtml(tmpEditor, {
-      element: content,
-    });
-  // eslint-disable-next-line react-hooks/exhaustive-deps -- only on mount
+  // Update internale state on keystrokes
+  const onChange = useCallback((input: any) => {
+    setRawValue(input)
   }, [])
 
-  const onChange = useCallback((value: any) => {
-    const editor = editorRef.current
-    if (!editor) return
-
-    const html = serializeHtml(editor, { nodes: editor?.children, convertNewLinesToHtmlBr: true, stripWhitespace: false });
-    setFieldValue(id, html);
-  }, [id, setFieldValue])
+  // Update the field (which triggers an update) only on debounced value change
+  useEffect(() => {
+    if (debouncedValue) setValue(debouncedValue)
+  }, [debouncedValue, id, setValue])
 
   return (
     <FormControl id={id} className={className}>
@@ -179,17 +172,28 @@ export default function Wysiwyg({ id, className }: Props): JSX.Element {
           <LinkFloatingToolbar />
         </Plate>
       </PlateProvider>
-      
-      {/* <div>
-        <JoditReact
-          config={{
-            uploader: {
-              insertImageAsBase64URI: true,
-            },
-            enableDragAndDropFileToEditor: true,
-          }}
-        />
-      </div> */}
     </FormControl>
   );
-};
+}
+
+// ---- HOOKS
+
+export function useWysiwygSerializer(value: any) {
+  // Create a temporary editor
+  const tmpEditor = useMemo(() => createPlateEditor({ plugins }), [])
+
+  // Serialize the html
+  const html = useMemo(() => {
+    if (!value) return null
+    return serializeHtml(
+      tmpEditor,
+      {
+        nodes: value,
+        convertNewLinesToHtmlBr: true,
+        stripWhitespace: false
+      }
+    )
+  }, [tmpEditor, value])
+
+  return html
+}

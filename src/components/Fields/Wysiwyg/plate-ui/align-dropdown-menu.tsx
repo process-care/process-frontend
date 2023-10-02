@@ -60,7 +60,7 @@ export function AlignDropdownMenu({
         </ToolbarButton>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="start" className="min-w-0">
+      <DropdownMenuContent align="start" className="z-[2000] min-w-0">
         <DropdownMenuRadioGroup
           className="flex flex-col gap-0.5"
           {...radioGroupProps}

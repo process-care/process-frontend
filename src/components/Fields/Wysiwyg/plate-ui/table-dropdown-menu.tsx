@@ -48,7 +48,7 @@ export function TableDropdownMenu(props: DropdownMenuProps) {
 
       <DropdownMenuContent
         align="start"
-        className="flex w-[180px] min-w-0 flex-col gap-0.5"
+        className="z-[2000] flex w-[180px] min-w-0 flex-col gap-0.5"
       >
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>

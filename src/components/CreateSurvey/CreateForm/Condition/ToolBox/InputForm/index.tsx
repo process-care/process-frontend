@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react"
 import { Box, Button, Flex, Text, Tooltip } from "@chakra-ui/react"
 import { InfoIcon } from "@chakra-ui/icons"
-import { Formik, Form } from "formik"
+import { Formik, Form, useFormikContext } from "formik"
 
 import { t } from "@/static/condition.ts"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
@@ -14,13 +14,13 @@ import { selectors as formBuilderSelectors, actions as formBuilderAction } from 
 import { getQuestionInfo, getQuestionName } from "@/constants/inputs.ts"
 import { QuestionRedux } from "@/redux/slices/types/index.js"
 import { Input, Textarea } from "@/components/Fields/index.ts"
-import { Enum_Question_Rows, Enum_Question_Type } from "@/api/graphql/types.generated.ts"
+import { Enum_Question_Rows, Enum_Question_Type, Question } from "@/api/graphql/types.generated.ts"
 import Footer from "./Template/Footer/index.tsx"
 import InputIcon from "@/components/CreateSurvey/CreateForm/InputIcon/index.tsx"
 import TitleDivider from "@/components/TitleDivider/index.tsx"
 
 interface Props {
-  order: string[];
+  order: string[]
 }
 
 export default function InputForm({ order }: Props): JSX.Element {
@@ -32,30 +32,23 @@ export default function InputForm({ order }: Props): JSX.Element {
   const { handleSubmit, handleCancel } = useEventHandlers(selectedQuestion, selectedQuestionId, isEditing)
   
   if (!selectedQuestion || !type) {
-    return <></>;
+    return <></>
   }
 
   return (
     <Formik
-      validateOnBlur
       validationSchema={renderFormValidationSchema(selectedQuestion)}
       initialValues={selectedQuestion ? removeEmpty(selectedQuestion) : fields[type]}
       onSubmit={handleSubmit}
     >
-      {({ isValid, isSubmitting, values, setFieldValue }) =>
-        <FormDisplay
-          selectedQuestion={selectedQuestion}
-          selectedQuestionId={selectedQuestionId}
-          type={type}
-          values={values}
-          order={order}
-          isEditing={isEditing}
-          isValid={isValid}
-          isSubmitting={isSubmitting}
-          setFieldValue={setFieldValue}
-          handleCancel={handleCancel}
-        />
-      }
+      <FormDisplay
+        selectedQuestion={selectedQuestion}
+        selectedQuestionId={selectedQuestionId}
+        type={type}
+        order={order}
+        isEditing={isEditing}
+        handleCancel={handleCancel}
+      />
     </Formik>
   );
 };
@@ -66,12 +59,8 @@ interface FormDisplayProps {
   selectedQuestion: QuestionRedux
   selectedQuestionId: string
   type: Enum_Question_Type
-  values: any
   order: string[]
   isEditing: boolean
-  isValid?: boolean
-  isSubmitting?: boolean
-  setFieldValue: (field: string, value: any) => void
   handleCancel: () => void
 }
 
@@ -79,16 +68,18 @@ function FormDisplay({
   selectedQuestion,
   selectedQuestionId,
   type,
-  values,
   order,
   isEditing,
-  isValid,
-  isSubmitting,
-  setFieldValue,
   handleCancel,
 }: FormDisplayProps): JSX.Element {
   const dispatch = useAppDispatch()
   const currentConditions = useAppSelector(selectors.conditions.selectSelectedQuestionsConditions)
+  const {
+    setFieldValue,
+    values,
+    isSubmitting,
+    isValid,
+  } = useFormikContext<Question | Record<string, unknown>>()
 
   const { createCondition, editCondition } = useConditionActions(selectedQuestionId)
 
@@ -101,18 +92,13 @@ function FormDisplay({
     const newChanges = getDiff(values, selectedQuestion)
 
     if (values) {
-      dispatch(
-        actions.updateQuestion({
+      dispatch(actions.updateQuestion({
+        id: selectedQuestionId,
+        changes: {
           id: selectedQuestionId,
-
-          changes: {
-            id: selectedQuestionId,
-            attributes: {
-              ...newChanges,
-            },
-          },
-        })
-      )
+          attributes: { ...newChanges },
+        },
+      }))
     }
   // `selectedQuestion` is updated by the dispatch, so we can't have it in the deps
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -164,6 +150,7 @@ function FormDisplay({
                 isAccordion
               />
             </>
+
             <Flex mb="4" mt="4" w="100%" justifyContent="space-between">
               {currentConditions.length === 0 ? (
                 <Button
@@ -194,14 +181,18 @@ function FormDisplay({
             </Flex>
           </Box>
         )}
-        
+
+        { type === "wysiwyg" && (
+          <input type="hidden" name="infozone" id="infozone" />
+        )}
+
         <Box w="100%" mb="50px">
           {renderFormTemplate(selectedQuestion)}
         </Box>
       </div>
 
       <Footer
-        onSubmit={() => console.log("submit")}
+        onSubmit={() => console.info("Submitting modifications")}
         disabled={!isValid || isSubmitting}
         onCancel={handleCancel}
         onDelete={handleDelete}
@@ -231,11 +222,11 @@ function useEventHandlers(selectedQuestion: QuestionRedux | undefined, selectedQ
 
   // Submit callback
   const handleSubmit = useCallback((data: any, { setSubmitting, validateForm }: any) => {
-    validateForm(data);
-    setSubmitting(true);
-    dispatch(actions.saveQuestion({ changes: data }));
-    setSubmitting(false);
-  }, [dispatch]);
+    validateForm(data)
+    setSubmitting(true)
+    dispatch(actions.saveQuestion({ changes: data }))
+    setSubmitting(false)
+  }, [dispatch])
 
   // Cancel callback
   const handleCancel = useCallback(async () => {

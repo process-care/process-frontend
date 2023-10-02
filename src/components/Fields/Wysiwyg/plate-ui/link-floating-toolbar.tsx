@@ -39,7 +39,7 @@ export function LinkFloatingToolbar({ readOnly }: TEditableProps) {
   if (readOnly) return null;
 
   const input = (
-    <div className="flex w-[330px] flex-col">
+    <div className="z-[2000] flex w-[330px] flex-col">
       <div className="flex items-center">
         <div className="flex items-center pl-3 text-muted-foreground">
           <Icons.link className="h-4 w-4" />

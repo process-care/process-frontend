@@ -1,9 +1,10 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react"
 import Image from "next/image.js"
 
+import { t } from "@/static/createLanding.ts"
 import { LandingRedux } from "@/redux/slices/types/index.js"
 import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
-import { t } from "@/static/createLanding.ts"
+import { useWysiwygSerializer } from "@/components/Fields/Wysiwyg/Wysiwyg"
 
 interface Props {
   inactiveSubmit: boolean;
@@ -12,26 +13,23 @@ interface Props {
 }
 
 export default function Description({ inactiveSubmit, data, onParticipate }: Props): JSX.Element {
-  const attributes = data?.attributes;
-  const { isTablet } = useMediaQueries();
+  const attributes = data?.attributes
+  const { isTablet } = useMediaQueries()
 
-  const Logo = () => {
-    if (!data?.attributes?.logo) return <></>;
-    return (
-      <Image
-        src={data?.attributes?.logo}
-        alt="Logo"
-        width={120}
-        height={120}
-      />
-    );
-  };
+  const html = useWysiwygSerializer(attributes?.presentation)
 
   return (
     <Flex className="w-full h-full flex-col">
       <Flex alignItems="center" justifyContent="flex-end" pb="20px">
         <Box>
-          <Logo />
+          {data?.attributes?.logo && 
+            <Image
+              src={data?.attributes?.logo}
+              alt="Logo"
+              width={120}
+              height={120}
+            />
+          }
         </Box>
 
         {attributes?.partners_logos?.map((logo: any, idx: number) => {
@@ -46,7 +44,7 @@ export default function Description({ inactiveSubmit, data, onParticipate }: Pro
       <div
         className="font-light text-sm max-h-[350px] overflow-auto text-left"
         dangerouslySetInnerHTML={{
-          __html: attributes?.wysiwyg ?? "",
+          __html: html ?? "",
         }}
       ></div>
 

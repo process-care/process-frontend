@@ -9,7 +9,7 @@ export const initialValues: LandingRedux["attributes"] = {
   subtitle: "",
   title: "",
   video_url: "",
-  wysiwyg: "",
+  presentation: "",
   partners_logos: [],
-  about_page: "",
+  about: "",
 };

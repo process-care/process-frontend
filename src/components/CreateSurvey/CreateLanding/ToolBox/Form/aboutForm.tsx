@@ -20,7 +20,7 @@ export default function AboutForm(): JSX.Element {
   return (
     <Formik
       validateOnBlur={false}
-      initialValues={{ about_page: aboutPage } || initialValues}
+      initialValues={{ about: aboutPage } || initialValues}
       enableReinitialize
       onSubmit={(data, { setSubmitting, validateForm }) => {
         validateForm(data);
@@ -56,14 +56,14 @@ function FormDisplay({ landing, values}: FormDisplayProps): JSX.Element {
           attributes: {
             ...landing?.attributes,
             title: landing?.attributes?.title,
-            about_page: values.about_page,
+            about: values.about,
           },
         },
       })
     );
   // Update only when about-page changes
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, values.about_page]);
+  }, [dispatch, values.about])
 
   // Component
   return (
@@ -73,7 +73,7 @@ function FormDisplay({ landing, values}: FormDisplayProps): JSX.Element {
           Edition de la section &ldquo;à propos&rdquo;
         </Text>
 
-        <Wysiwyg id="about_page" className="h-[68vh]" />
+        <Wysiwyg id="about" className="h-[68vh]" />
       </div>
 
       <Footer

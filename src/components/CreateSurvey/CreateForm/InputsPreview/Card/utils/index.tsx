@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react"
 import { usePathname, useRouter } from "next/navigation.js"
 
 import {
@@ -18,6 +18,7 @@ import { useAppSelector } from "@/redux/hooks/index.js"
 import { selectors } from "@/redux/slices/formBuilder/index.ts"
 import { Enum_Question_Type } from "@/api/graphql/types.generated.ts"
 import { QuestionWithSamples } from "@/redux/slices/participation/status.ts"
+import { useWysiwygSerializer } from "@/components/Fields/Wysiwyg/Wysiwyg"
 
 interface Options {
   value: string;
@@ -34,7 +35,7 @@ interface Props {
 export default function RenderInput({ input }: Props): JSX.Element {
   const router = useRouter()
   const pathname = usePathname()
-  const isCollapsed = useAppSelector(selectors.isCollapseView) && !pathname.includes("/participate");
+  const isCollapsed = useAppSelector(selectors.isCollapseView) && !pathname.includes("/participate")
   const attributes = input?.attributes;
 
   const formatOptions = (): Options[] => {
@@ -48,6 +49,9 @@ export default function RenderInput({ input }: Props): JSX.Element {
       return arr as Options[];
     } else return [];
   };
+
+// Serialize the wysiwyg raw value if there is one
+const infozoneHtml = useWysiwygSerializer(input?.attributes?.infozone)
 
   switch (attributes?.type) {
     case Enum_Question_Type.NumberInput:
@@ -150,7 +154,7 @@ export default function RenderInput({ input }: Props): JSX.Element {
           id={input.id || "wysiwyg"}
           className="text-left text-sm"
           dangerouslySetInnerHTML={{
-            __html: typeof attributes?.wysiwyg !== "string" ? "" : attributes?.wysiwyg,
+            __html: infozoneHtml ?? '',
           }}
         />
       );

@@ -1,11 +1,10 @@
 import { Flex, Box } from "@chakra-ui/react";
-import { Input, Switch } from "components/Fields";
-import { TitleDivider } from "components/TitleDivider";
-import React from "react";
 
-import { CommonFields } from "../index";
+import { Input, Switch } from "@/components/Fields/index.ts"
+import { CommonFields } from "../index.ts"
+import TitleDivider from "@/components/TitleDivider/index.tsx"
 
-export const SliderFields: React.FC = () => {
+export default function SliderFields(): JSX.Element {
   return (
     <>
       <TitleDivider title="Contenu" />
@@ -41,6 +40,7 @@ export const SliderFields: React.FC = () => {
             />
           </Box>
         </Flex>
+
         <Flex justifyContent="space-between" w="100%" mb={5}>
           <Box w="45%">
             <Input
@@ -52,12 +52,15 @@ export const SliderFields: React.FC = () => {
               placeholder="1"
             />
           </Box>
+
           <Box w="45%"></Box>
         </Flex>
 
-        <Switch label="Slider en vue verticale" id="vertical" />
+        <Switch label="Slider en vue verticale" id="vertical" defaultChecked={false} />
+
         <Box mb={4} />
-        <Switch label="Slider en vue inversée" id="reverse" />
+
+        <Switch label="Slider en vue inversée" id="reverse" defaultChecked={false} />
       </Box>
     </>
   );

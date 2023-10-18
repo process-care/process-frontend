@@ -1,9 +1,10 @@
-import React, { ReactElement, useEffect } from "react";
+import { useEffect } from "react";
 import { FormControl, FormHelperText, FormLabel } from "@chakra-ui/react";
-import { t } from "static/survey";
 import { useField } from "formik";
 import Select from "react-select";
-import { useMediaQueries } from "utils/hooks/mediaqueries";
+
+import { t } from "@/static/survey.ts"
+import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
 
 interface Options {
   label: string;
@@ -27,7 +28,7 @@ interface IProvided {
   provided: Record<string, unknown>;
 }
 
-export const CustomSelect: React.FC<Props> = ({
+export default function CustomSelect({
   label,
   helpText,
   placeholder,
@@ -38,7 +39,7 @@ export const CustomSelect: React.FC<Props> = ({
   isMulti = false,
   defaultValue,
   appearance,
-}): ReactElement => {
+}: Props): JSX.Element {
   const { isTablet } = useMediaQueries();
   const isBig = appearance === "big";
 
@@ -49,7 +50,7 @@ export const CustomSelect: React.FC<Props> = ({
     if (defaultValue && !field.value) {
       setValue(defaultValue);
     }
-  }, [defaultValue]);
+  }, [defaultValue, field.value, setValue]);
 
   const getLabel = () => {
     if (!answers) return;
@@ -103,7 +104,7 @@ export const CustomSelect: React.FC<Props> = ({
             isMulti={isMulti}
             styles={customStyles}
             id={id}
-            isRequired={isRequired}
+            required={isRequired}
             placeholder={placeholder}
             noOptionsMessage={() => t.not_found}
             options={answers}

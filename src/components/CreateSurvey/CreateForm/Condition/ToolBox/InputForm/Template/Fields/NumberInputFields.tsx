@@ -1,12 +1,10 @@
-import React from "react";
-
 import { Box, Flex } from "@chakra-ui/react";
-import { NumberInput, Input } from "components/Fields";
 
-import { TitleDivider } from "components/TitleDivider";
-import { CommonFields } from "..";
+import { NumberInput, Input } from "@/components/Fields/index.ts"
+import { CommonFields } from "../index.ts"
+import TitleDivider from "@/components/TitleDivider/index.tsx"
 
-export const NumberInputFields: React.FC = () => {
+export default function NumberInputFields(): JSX.Element {
   return (
     <>
       <TitleDivider title="Contenu" />

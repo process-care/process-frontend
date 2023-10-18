@@ -1,4 +1,4 @@
-import * as Yup from "yup";
+import * as Yup from "yup"
 
 export const CommonFieldsSchema = Yup.object().shape({
   label: Yup.string()
@@ -12,7 +12,7 @@ export const CommonFieldsSchema = Yup.object().shape({
 
 // Common + answers
 export const MultipleInputFieldsSchema = CommonFieldsSchema.shape({
-  answers: Yup.array().nullable().min(2, "Il faut au moins deux réponses"),
+  options: Yup.array().nullable().min(2, "Il faut au moins deux réponses"),
   // .required("Merci de renseigner deux réponses au minumum"),
 });
 
@@ -32,7 +32,7 @@ export const SliderSchema = CommonFieldsSchema.shape({
 
 export const WysiwygSchema = Yup.object().shape({
   internal_title: Yup.string().required("Ce champs est requis"),
-  wysiwyg: Yup.string(),
+  infozone: Yup.array(),
 });
 
 // Associated Classification

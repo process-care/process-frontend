@@ -1,85 +1,105 @@
-import { Box, Button } from "@chakra-ui/react";
-import { Footer } from "components/Footer";
-import { SimpleMenu } from "components/Menu/SimpleMenu";
-import React, { useEffect } from "react";
-import { NavLink, useLocation } from "react-router-dom";
-import { useAuth } from "components/Authentification/hooks";
+"use client"
 
-import MainMenu from "../MainMenu";
-import { useMediaQueries } from "utils/hooks/mediaqueries";
-import Div100vh from "react-div-100vh";
+import { useEffect } from "react"
+import { Box, Button } from "@chakra-ui/react"
+import { use100vh } from "react-div-100vh"
+import { usePathname } from "next/navigation.js"
+import Link from "next/link.js"
+
+import { useAuth } from "@/components/Authentification/hooks/index.js"
+import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
+import Footer from "@/components/Footer/index.tsx"
+import SimpleMenu from "@/components/Menu/SimpleMenu/index.tsx"
+import MainMenu from "../MainMenu/index.tsx"
+
+// ---- TYPES
 
 interface Props {
   children: React.ReactNode;
 }
 
-export const Layout: React.FC<Props> = ({ children }) => {
-  const { isAuthenticated } = useAuth();
-  const location = useLocation();
-  const { pathname } = location;
-  const { isTablet } = useMediaQueries();
-  const isSurveyPages = pathname.search("/survey/") !== -1;
-  const isPortail = pathname === "/";
-  const isEditor = pathname.includes("create/landing");
+// ---- CONSTANTS
 
-  const authPage = [
-    "/connexion",
-    "/attente-de-validation",
-    "/inscription",
-    "/mot-de-passe-oublie",
-    "/nouveau-mot-de-passe",
-  ];
-  const isAuthPage = authPage.includes(pathname);
+const authPage = [
+  "/connexion",
+  "/deconnexion",
+  "/attente-de-validation",
+  "/inscription",
+  "/mot-de-passe-oublie",
+  "/nouveau-mot-de-passe",
+]
+
+const simplePage = [
+  "/dashboard",
+  "/profil"
+]
+
+// ---- COMPONENT
+
+export default function Layout({ children }: Props): JSX.Element {
+  const { isLoading, isAuthenticated } = useAuth()
+  const { isTablet } = useMediaQueries()
+  const pathname = usePathname()
+  const height = use100vh()
+
+  const isSurveyPages = pathname.search("/survey/") !== -1
+  const isPortail = pathname === "/"
+  const isEditor = pathname.includes("create/landing")
+  const isAuthPage = authPage.includes(pathname)
 
   const renderMenu = () => {
-    const isSimpleMenu = ["/dashboard", "/profil"];
-
-    if (isSimpleMenu.includes(pathname)) return <SimpleMenu />;
-    if (isPortail && isAuthenticated) return <SimpleMenu isPortail />;
-    else if (isSurveyPages || isAuthPage || isPortail) return null;
-    else return <MainMenu />;
+    // Menu are only for authenticated users
+    if (isLoading || !isAuthenticated) return null
+    
+    // Menu for the base pages
+    if (simplePage.includes(pathname)) return <SimpleMenu />
+    // Menu for the portal
+    if (isPortail) return <SimpleMenu isPortail />
+    // No menu for survey or auth pages
+    if (isSurveyPages || isAuthPage) return null
+    
+    // Default
+    return <MainMenu />
   };
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [location.pathname]);
-
-  const renderFooter = () => {
-    if (isPortail) return <Footer />;
-  };
+  }, [pathname]);
 
   if ((isTablet && !isSurveyPages && !isPortail && !isAuthPage) || (isTablet && isEditor)) {
     return (
-      <Div100vh>
-        <Box h="100%" alignItems="center" d="flex" justifyContent="center" className="background__grid">
-          <Box
-            backgroundColor="white"
-            p={isTablet ? "30px 20px" : "50px"}
-            border="1px solid"
-            borderColor="brand.line"
-            w="90%"
-            textAlign="center"
-            borderRadius="5px"
-            d="flex"
-            flexDirection="column"
-          >
-            Page non disponible sur mobile
-            <NavLink to="/">
-              <Button mt="40px" variant="roundedBlue">
-                Revenir au portail
-              </Button>
-            </NavLink>
-          </Box>
+      <Box h={height ?? '100vh'} alignItems="center" display="flex" justifyContent="center" className="background__grid">
+        <Box
+          backgroundColor="white"
+          p={isTablet ? "30px 20px" : "50px"}
+          border="1px solid"
+          borderColor="brand.line"
+          w="90%"
+          textAlign="center"
+          borderRadius="5px"
+          display="flex"
+          flexDirection="column"
+        >
+          Page non disponible sur mobile
+          <Link href="/">
+            <Button mt="40px" variant="roundedBlue">
+              Revenir au portail
+            </Button>
+          </Link>
         </Box>
-      </Div100vh>
-    );
+      </Box>
+    )
   }
 
   return (
     <Box textAlign="center" fontSize="xl">
       {renderMenu()}
+
       {children}
-      {renderFooter()}
+
+      { isPortail &&
+        <Footer />
+      }
     </Box>
   );
 };

@@ -1,19 +1,30 @@
-import { LoginMutation } from "api/graphql/queries/auth.gql.generated";
+import { useEffect, useState } from "react";
+import { LoginMutation } from "@/api/graphql/queries/auth.gql.generated.ts"
 
-export const useAuth: any = () => {
-  const data = localStorage.getItem("process__user");
+export function useAuth() {
+  const [value, setValue] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  if (data) {
-    const cookies: LoginMutation["login"] = JSON.parse(data);
+  // Initial fetch from storage
+  useEffect(() => {
+    setValue(localStorage.getItem("process__user"))
+    setIsLoading(false)
+  }, [])
+
+  // If no value, return a empty structure
+  if (!value) {
     return {
-      cookies,
-      isAuthenticated: !cookies.user?.blocked && !!cookies.jwt,
-    };
-  } else {
-    return {
-      user: null,
-      jwt: null,
+      isLoading,
+      cookies: null,
       isAuthenticated: false,
-    };
+    }
+  }
+
+  const cookies: LoginMutation["login"] = JSON.parse(value)
+
+  return {
+    isLoading,
+    cookies,
+    isAuthenticated: !cookies.user?.blocked && !!cookies.jwt,
   }
 };

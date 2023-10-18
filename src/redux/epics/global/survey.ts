@@ -1,9 +1,9 @@
 import { map, switchMap } from "rxjs";
 import { combineEpics, ofType } from "redux-observable";
-import { Epic } from "redux/store";
-import { actions } from "redux/slices/scientistData";
-import { sdk } from "api/gql-client";
-import { sanitizeEntities, sanitizeEntity } from "api/entity-checker";
+import { Epic } from "@/redux/store/index.js"
+import { actions } from "@/redux/slices/scientistData.js"
+import { sdk } from "@/api/gql-client.js"
+import { sanitizeEntities, sanitizeEntity } from "@/api/entity-checker.js"
 
 // Watches over "initialize" currentsurvey
 const initializeEpic: Epic = (action$) =>
@@ -60,7 +60,6 @@ const updateOrderEpic: Epic = (action$, state$) =>
   );
 
 // Watches over "update" currentsurvey => update the needConsent change
-
 const updateSurveyEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.updateSurvey.type),
@@ -70,7 +69,7 @@ const updateSurveyEpic: Epic = (action$) =>
         id: payload.id,
         data: {
           need_consent: payload.needConsent,
-          notice_consent: payload?.noticeConsent?.data?.id,
+          notice_consent: payload?.noticeConsent?.id,
         },
       });
     }),

@@ -1,7 +1,7 @@
-import { Button, ButtonGroup, Center, Text } from "@chakra-ui/react";
-import React from "react";
+import { ButtonGroup, Center, Text } from "@chakra-ui/react"
 
-import { t } from "static/global";
+import { Button } from "@/components/Shadcn/button.tsx"
+import { t } from "@/static/global.ts"
 
 interface Props {
   confirm: () => Promise<void> | any;
@@ -10,36 +10,34 @@ interface Props {
   height?: string;
 }
 
-export const RemovingConfirmation: React.FC<Props> = ({
+export default function RemovingConfirmation({
   confirm,
   close,
   content,
   height,
-}) => {
+}: Props): JSX.Element {
   return (
     <Center
+      className="
+        min-w-fit
+        absolute top-0 left-0 p-4 w-full h-full flex flex-col
+        bg-black text-white border rounded-[5px] border-black
+      "
       h={height}
-      pos="relative"
-      backgroundColor="black"
-      py="130px"
-      px="10px"
-      d="flex"
-      flexDirection="column"
-      color="white"
     >
       <Text variant="smallTitle">{content}</Text>
-      <ButtonGroup
-        pos="absolute"
-        bottom="10px"
-        d="flex"
-        justifyContent="space-around"
-        w="100%"
-      >
-        <Button variant="link" color="white" onClick={() => close()}>
+
+      <ButtonGroup className="flex justify-around w-1/2 mt-4">
+        <Button className="text-white" variant="link" onClick={close}>
           {t.cancel}
         </Button>
-        <Button variant="rounded" onClick={() => confirm()}>
-          {t.validate}
+
+        <Button
+          variant="destructive"
+          size="sm"
+          onClick={confirm}
+        >
+          {t.remove}
         </Button>
       </ButtonGroup>
     </Center>

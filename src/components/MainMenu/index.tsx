@@ -1,17 +1,16 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
 import { Box, Flex } from "@chakra-ui/react";
+import Link from "next/link.js"
 
-import { routes } from "routes";
+import { routes } from "@/types/routes.ts"
 
 const mainRoutes = ["/connexion", "/survey/create", "/dashboard", "/"];
 
-const MainMenu: React.FC = () => {
+export default function MainMenu(): JSX.Element {
   return (
     <Flex>
       <Box
         p={5}
-        d="flex"
+        display="flex"
         justifyContent="space-around"
         alignItems="center"
         w="80%"
@@ -22,21 +21,15 @@ const MainMenu: React.FC = () => {
         {routes.map(({ name, path }) => {
           if (mainRoutes.includes(path))
             return (
-              <NavLink
+              <Link
                 key={name}
-                to={path}
-                exact
-                activeStyle={{
-                  fontStyle: "italic",
-                }}
+                href={path}
               >
                 {name}
-              </NavLink>
+              </Link>
             );
         })}
       </Box>
     </Flex>
   );
 };
-
-export default MainMenu;

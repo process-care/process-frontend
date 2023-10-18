@@ -1,49 +1,45 @@
 import { Text } from "@chakra-ui/react";
-import { useMemo } from "react";
+import { useCallback } from "react";
 
 interface Props {
   message: string;
 }
 
-export const Errors: React.FC<Props> = ({ message }) => {
-  const renderStatus = useMemo(
-    () => (message: string) => {
-      switch (message) {
-        case "Auth.form.error.invalid":
-          return "Identifiant ou mot de passe incorrect";
-          break;
-        case "Invalid identifier or password":
-          return "Identifiant ou mot de passe incorrect";
-          break;
-        case "Auth.form.error.email.taken":
-          return "Un compte existe déja avec cet email de contact ou ce nom d'utilisateur";
-          break;
-        case "Duplicate entry":
-          return "Le titre du projet existe déja.";
-          break;
-        case "Your account has been blocked by the administrator.":
-          return "Votre compte a été bloqué par l'administrateur.";
-          break;
-        case "Email already taken":
-          return "Un compte existe déja avec cet email de contact";
-          break;
-        case "Bad Request":
-          return "Une erreur est survenue, merci de vérifier votre email et mot de passe.";
-          break;
-        case "User Not Found":
-          return "Utilisateur non trouvé.";
-          break;
-        case "Cannot read property 'id' of undefined":
-          return "Une erreur est survenue (pb id).";
-          break;
+export default function Errors({ message }: Props): JSX.Element {
+  const renderStatus = useCallback((message: string) => {
+    switch (message) {
+      case "Auth.form.error.invalid":
+        return "Identifiant ou mot de passe incorrect";
 
-        default:
-          return message;
-          break;
-      }
-    },
-    [message]
-  );
+      case "Invalid identifier or password":
+        return "Identifiant ou mot de passe incorrect";
+
+      case "Auth.form.error.email.taken":
+        return "Un compte existe déja avec cet email de contact ou ce nom d'utilisateur";
+
+      case "Duplicate entry":
+        return "Le titre du projet existe déja.";
+
+      case "Your account has been blocked by the administrator.":
+        return "Votre compte a été bloqué par l'administrateur.";
+
+      case "Email already taken":
+        return "Un compte existe déja avec cet email de contact";
+
+      case "Bad Request":
+        return "Une erreur est survenue, merci de vérifier votre email et mot de passe.";
+
+      case "User Not Found":
+        return "Utilisateur non trouvé.";
+
+      case "Cannot read property 'id' of undefined":
+        return "Une erreur est survenue (pb id).";
+
+      default:
+        return message;
+    }
+  }, []);
+
   return (
     <Text variant="xs" color="brand.red" textAlign="right" mb="-10px">
       {renderStatus(message)}
@@ -51,13 +47,13 @@ export const Errors: React.FC<Props> = ({ message }) => {
   );
 };
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+// ---- UTILS
+
 export const renderAuthMessage = (errors: any): string => {
   if (!errors) return "";
   return errors?.map((e: any) => e.message)[0];
 };
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const renderSurveyMessage = (errors: any): string => {
   return errors?.map((e: any) => e.message)[0];
 };

@@ -1,6 +1,6 @@
-import React from "react";
+import { Box } from "@chakra-ui/react"
+import { usePathname } from "next/navigation.js"
 
-import { Box } from "@chakra-ui/react";
 import {
   NumberInput,
   Checkbox,
@@ -12,14 +12,13 @@ import {
   AssociatedClassification,
   FreeClassification,
   MonoThumbnail,
-} from "components/Fields";
-import { t } from "static/input";
-import { useAppSelector } from "redux/hooks";
-import { selectors } from "redux/slices/formBuilder";
-
-import { useLocation } from "react-router-dom";
-import { Enum_Question_Type } from "api/graphql/types.generated";
-import { QuestionWithSamples } from "redux/slices/participation/status";
+} from "@/components/Fields/index.ts"
+import { t } from "@/static/input.ts"
+import { useAppSelector } from "@/redux/hooks/index.js"
+import { selectors } from "@/redux/slices/formBuilder/index.ts"
+import { Enum_Question_Type } from "@/api/graphql/types.generated.ts"
+import { QuestionWithSamples } from "@/redux/slices/participation/status.ts"
+import { useWysiwygSerializer } from "@/components/Fields/Wysiwyg/Wysiwyg"
 
 interface Options {
   value: string;
@@ -33,9 +32,9 @@ interface Props {
   };
 }
 
-export const RenderInput: React.FC<Props> = ({ input }) => {
-  const location = useLocation();
-  const isCollapsed = useAppSelector(selectors.isCollapseView) && !location.pathname.includes("/participate");
+export default function RenderInput({ input }: Props): JSX.Element {
+  const pathname = usePathname()
+  const isCollapsed = useAppSelector(selectors.isCollapseView) && !pathname.includes("/participate")
   const attributes = input?.attributes;
 
   const formatOptions = (): Options[] => {
@@ -49,6 +48,9 @@ export const RenderInput: React.FC<Props> = ({ input }) => {
       return arr as Options[];
     } else return [];
   };
+
+// Serialize the wysiwyg raw value if there is one
+const infozoneHtml = useWysiwygSerializer(input?.attributes?.infozone)
 
   switch (attributes?.type) {
     case Enum_Question_Type.NumberInput:
@@ -148,10 +150,10 @@ export const RenderInput: React.FC<Props> = ({ input }) => {
     case Enum_Question_Type.Wysiwyg:
       return (
         <Box
-          textAlign="left"
           id={input.id || "wysiwyg"}
+          className="text-left text-sm"
           dangerouslySetInnerHTML={{
-            __html: typeof attributes?.wysiwyg !== "string" ? "" : attributes?.wysiwyg,
+            __html: infozoneHtml ?? '',
           }}
         />
       );

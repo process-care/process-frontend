@@ -2,7 +2,7 @@
 // If no input on this page Get the index of the last question in previous page and push the new question after it.
 // If we are on the first page, just push it.
 
-import { RootState } from "redux/store";
+import { RootState } from "@/redux/store/index.js";
 
 export const getNewOrder: any = (
   global: RootState["scientistData"],

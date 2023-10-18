@@ -1,13 +1,11 @@
-import React from "react";
 import {
   FormControl,
   FormHelperText,
   FormLabel,
   FormErrorMessage,
-} from "@chakra-ui/react";
-
-import { useField } from "formik";
-import { SwitchControl } from "formik-chakra-ui";
+} from "@chakra-ui/react"
+import { useField } from "formik"
+import { SwitchControl } from "formik-chakra-ui"
 
 interface Props {
   label: string;
@@ -20,16 +18,18 @@ interface Props {
   size?: "lg" | "md" | "sm";
 }
 
-export const CustomSwitch: React.FC<Props> = ({
+export default function CustomSwitch({
   label,
   helpText,
   id,
   p,
   m,
   isRequired,
+  defaultChecked,
   size = "md",
-}) => {
-  const [, meta] = useField(id);
+}: Props): JSX.Element {
+  const [field, meta] = useField(id)
+
   return (
     <FormControl
       isRequired={isRequired}
@@ -37,20 +37,24 @@ export const CustomSwitch: React.FC<Props> = ({
       textAlign="left"
       p={p}
       m={m}
-      d="flex"
+      display="flex"
       alignItems="center"
     >
       <SwitchControl
-        name={id}
         id={id}
+        name={id}
         size={size}
         mt={-3}
         isRequired={isRequired}
+        defaultChecked={defaultChecked}
       />
+
       <FormLabel ml={5} mt={-2} fontSize={size}>
         {label}
       </FormLabel>
+
       <FormErrorMessage>{meta.error}</FormErrorMessage>
+
       <FormHelperText fontSize="xs">{helpText}</FormHelperText>
     </FormControl>
   );

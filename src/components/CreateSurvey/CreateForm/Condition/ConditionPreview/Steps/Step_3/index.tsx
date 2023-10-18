@@ -1,33 +1,32 @@
-import React from "react";
 import { Formik, Form } from "formik";
+import { Box, Container, Text, Flex, Button } from "@chakra-ui/react"
 
-import { Box, Container, Text, Flex, Button } from "@chakra-ui/react";
-import { Error } from "components/Error";
-import { ConditionRedux } from "redux/slices/types";
-import { t } from "static/condition";
-
-import { ReactComponent as Check } from "./../../assets/check.svg";
-import { renderInput } from "./utils";
-import { checkIfMultiple } from "utils/formBuilder/input";
-import { actions, selectors } from "redux/slices/scientistData";
-import { useAppDispatch, useAppSelector } from "redux/hooks";
-import { questionsSelectors } from "redux/slices/scientistData/question-editor";
+import { t } from "@/static/condition.ts"
+import { ConditionRedux } from "@/redux/slices/types/index.js"
+import { checkIfMultiple } from "@/utils/formBuilder/input.ts"
+import { actions, selectors } from "@/redux/slices/scientistData.js"
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
+import { questionsSelectors } from "@/redux/slices/scientistData/question-editor.ts"
+import { RenderedInput } from "./utils/index.tsx"
+import Error from "@/components/Error/index.tsx"
+import { CheckIcon } from "lucide-react"
 
 interface Props {
   selectedCondition: ConditionRedux;
   updateStep: (d: any) => void;
 }
 
-export const Step_3: React.FC<Props> = ({ selectedCondition, updateStep }) => {
+export default function Step_3({ selectedCondition, updateStep }: Props): JSX.Element {
   const dispatch = useAppDispatch();
   const isValid = useAppSelector(selectors.conditions.getValidity);
   const handleValidity = (bool: boolean) => {
     dispatch(actions.setValidityCondition(bool));
   };
 
-  const target_question = useAppSelector((state) =>
-    questionsSelectors.getQuestionById(state, selectedCondition.attributes.target?.data?.id)
-  );
+  const target_question = useAppSelector((state) => {
+    if (!selectedCondition.attributes.target?.data?.id) return null
+    return questionsSelectors.selectQuestionById(state, selectedCondition.attributes.target?.data?.id)
+  })
 
   if (!target_question) {
     return <Error message="Une erreur s'est produite: cette condition ne possède pas de question cible... !" />;
@@ -60,8 +59,9 @@ export const Step_3: React.FC<Props> = ({ selectedCondition, updateStep }) => {
 
           return (
             <Form onChange={(event) => onChange(event)} style={{ width: "100%" }}>
-              <Box d="flex" mx="auto" alignItems="center" w="100%" justifyContent="space-between">
-                {renderInput(selectedCondition)}
+              <Box display="flex" mx="auto" alignItems="center" w="100%" justifyContent="space-between">
+                <RenderedInput selectedCondition={selectedCondition} />
+
                 <Box
                   pt={6}
                   onClick={() => {
@@ -82,9 +82,11 @@ export const Step_3: React.FC<Props> = ({ selectedCondition, updateStep }) => {
                   )}
                 </Box>
               </Box>
+
               {isValid && isNotEmpty && (
                 <Flex alignItems="center" justifyContent="flex-start" w="100%" mx="auto" mt="2">
-                  <Check />
+                  <CheckIcon />
+                  
                   <Text fontSize="14px" color="brand.green" ml={2}>
                     {t.success}
                   </Text>

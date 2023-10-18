@@ -1,10 +1,10 @@
 import { map, switchMap, scan, debounceTime } from "rxjs";
 import { combineEpics, ofType } from "redux-observable";
-import { Epic } from "redux/store";
-import { actions, selectors } from "redux/slices/scientistData";
-import { sanitizeEntity } from "api/entity-checker";
-import { sdk } from "api/gql-client";
-import { AddPageMutation } from "api/graphql/sdk.generated";
+import { Epic } from "@/redux/store/index.js"
+import { actions, selectors } from "@/redux/slices/scientistData.js"
+import { sanitizeEntity } from "@/api/entity-checker.js"
+import { sdk } from "@/api/gql-client.js"
+import { AddPageMutation } from "@/api/graphql/sdk.generated.js"
 
 // ----  CREATE PAGE
 
@@ -13,7 +13,7 @@ const createEpic: Epic = (action$, state$) =>
     ofType(actions.createPage.type),
     switchMap(async (action) => {
       const { id } = action.payload;
-      const pagesLength = selectors.pages.getPages(state$.value).length;
+      const pagesLength = selectors.pages.selectPages(state$.value).length;
 
       const pageData = {
         name: `Page ${pagesLength + 1}`,

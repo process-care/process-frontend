@@ -1,26 +1,23 @@
-import React, { useMemo, useState } from "react";
-
+import { useMemo, useState } from "react";
 import { Box, Button, Container, Flex, Tooltip, Text } from "@chakra-ui/react";
-import { ReactComponent as Close } from "./assets/close.svg";
-import { ReactComponent as Trash } from "./assets/trash.svg";
-
-import { API_URL_ROOT } from "constants/api";
-import { Filters } from "../Filters";
-
-import { useNavigator } from "components/CreateSurvey/hooks";
-import { RemovingConfirmation } from "components/CreateSurvey/CreateForm/Condition/ToolBox/PageForm/Status";
-// import { Chart } from "../Chart";
-import { renderStatus } from "utils/application/renderStatus";
-import { Loader } from "components/Spinner";
-import { NavLink } from "react-router-dom";
-import { actions, selectors } from "redux/slices/scientistData";
 import { useDispatch } from "react-redux";
-import { useAppSelector } from "redux/hooks";
-import { SURVEY_STATUS } from "types/survey";
-import { useGetSurveyStatsQuery } from "api/graphql/queries/survey.gql.generated";
-import { client } from "api/gql-client";
-import { SurveyRedux } from "redux/slices/types";
-import { Enum_Survey_Status } from "api/graphql/types.generated";
+import Link from "next/link.js"
+
+import { API_URL_ROOT } from "@/constants/api.ts"
+import { useNavigator } from "@/components/CreateSurvey/hooks/index.tsx"
+// import { Chart } from "../Chart";
+import { renderStatus } from "@/utils/application/renderStatus.tsx"
+import { actions, selectors } from "@/redux/slices/scientistData.js"
+import { useAppSelector } from "@/redux/hooks/index.js"
+import { SURVEY_STATUS } from "@/types/survey.js"
+import { useGetSurveyStatsQuery } from "@/api/graphql/queries/survey.gql.generated.js"
+import { client } from "@/api/gql-client.js"
+import { SurveyRedux } from "@/redux/slices/types/index.js"
+import { Enum_Survey_Status } from "@/api/graphql/types.generated.ts"
+import Loader from "@/components/Spinner/index.tsx"
+import RemovingConfirmation from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/PageForm/Status/index.tsx"
+import Filters from "../Filters/index.tsx"
+import { Icons } from "@/components/icons.tsx"
 
 // ---- STATICS
 
@@ -50,7 +47,7 @@ interface Props {
 
 // ---- COMPONENT
 
-export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
+export default function ProjectMenu({ menuIsOpen, onClose }: Props): JSX.Element {
   const dispatch = useDispatch();
   const [isRemoving, setIsRemoving] = useState(false);
   const selectedSurvey = useAppSelector(selectors.mySurveys.getSelectedSurvey);
@@ -73,14 +70,13 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
   // We should be doing that much better :/
   if (isLoadingStats) {
     return (
-      <Container variant="rightPart" h="93vh" overflow="scroll" pos="sticky" top="65px">
+      <Container variant="rightPart" overflow="auto" pos="sticky" top="65px">
         <Loader />
       </Container>
     );
   }
 
   // FIXME: Why is it an array ?
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   if (!menuIsOpen || !selectedSurvey || selectedSurvey.length < 1) {
     return <></>;
@@ -124,7 +120,7 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
 
   return (
     // TODO: Use a % + max-width to limit growth on big screens
-    <Container variant="rightPart" w="53%" h="93vh" overflow="scroll" pos="sticky" top="65px">
+    <Container variant="rightPart" w="53%" overflow="auto" pos="sticky" top="65px">
       {isRemoving ? (
         <RemovingConfirmation
           confirm={handleDelete}
@@ -133,16 +129,16 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
         />
       ) : (
         <Box>
-          <Box p={1} d="flex" w="100%" justifyContent="space-between">
+          <Box p={1} display="flex" w="100%" justifyContent="space-between">
             <Tooltip label="Fermer">
               <Button onClick={onClose} variant="link">
-                <Close />
+                <Icons.close />
               </Button>
             </Tooltip>
             <Box>
               <Tooltip label="Supprimer le projet">
                 <Button onClick={handleTrash} variant="link">
-                  <Trash />
+                  <Icons.delete />
                 </Button>
               </Tooltip>
             </Box>
@@ -150,7 +146,7 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
 
           <Box p={5} textAlign="left">
             <Tooltip label={"Voir la page d'accueil"} placement="top-start">
-              <NavLink to={`/survey/${selectedSurvey.attributes.slug}`}>
+              <Link href={`/survey/${selectedSurvey.attributes.slug}`}>
                 <Text variant="titleParaLight" mt={4} textAlign="left">
                   {title}
                 </Text>
@@ -162,7 +158,7 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
                 <Text variant="xs" mb={5} textAlign="left" color="brand.gray.200">
                   Enquête mise en ligne le {date.toLocaleDateString()}.
                 </Text>
-              </NavLink>
+              </Link>
             </Tooltip>
             <Flex justifyContent="space-between" alignItems="center">
               {isDraft ? (
@@ -240,7 +236,7 @@ export const ProjectMenu: React.FC<Props> = ({ menuIsOpen, onClose }) => {
               Statistiques
             </Text>
 
-            <Box d="flex" justifyContent="center">
+            <Box display="flex" justifyContent="center">
               <Filters filters={filters} handleClick={setStatFilter} currentFilter={statFilter} center />
             </Box>
             <Flex mt={5} ml={50} mr={50} justifyContent="space-around">
@@ -331,7 +327,7 @@ const BigNumber = ({ value, label }: BigNumberProps) => {
 const Warning = ({ hadLanding, hadQuestion }: { hadLanding: boolean; hadQuestion: boolean | undefined }) => {
   const Message = ({ content }: { content: string }) => {
     return (
-      <Box pl={5} d="flex" alignContent="flex-start">
+      <Box pl={5} display="flex" alignContent="flex-start">
         <Text variant="current">⚠️ {content}</Text>
       </Box>
     );

@@ -1,19 +1,18 @@
-import React from "react";
+import { useCallback } from "react";
 import { Formik, Form } from "formik";
+import { useRouter } from "next/navigation.js"
 
+import { client } from "@/api/gql-client.js"
 import { Avatar, Box, Flex, Text } from "@chakra-ui/react";
-import { useAppDispatch } from "redux/hooks";
-import { actions } from "redux/slices/application";
-
-import { Textarea, Input } from "components/Fields";
-import { Footer } from "components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer";
-import { useHistory } from "react-router-dom";
-import { useAuth } from "components/Authentification/hooks";
-import { Loader } from "components/Spinner";
-import { changePassword } from "api/actions/password";
-import { UserQuery, useUpdateUserMutation, useUserQuery } from "./user.gql.generated";
-import { Enum_Question_Rows } from "api/graphql/types.generated";
-import { client } from "api/gql-client";
+import { useAppDispatch } from "@/redux/hooks/index.js"
+import { actions } from "@/redux/slices/application/index.js"
+import { useAuth } from "@/components/Authentification/hooks/index.js";
+import { changePassword } from "@/api/actions/password/index.ts"
+import { Enum_Question_Rows } from "@/api/graphql/types.generated.ts"
+import { UserQuery, useUpdateUserMutation, useUserQuery } from "./user.gql.generated.ts"
+import { Textarea, Input } from "@/components/Fields/index.ts"
+import Footer from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer/index.tsx"
+import Loader from "@/components/Spinner/index.tsx"
 
 // ---- STATICS
 
@@ -35,63 +34,82 @@ export interface UserProfil {
 
 // ---- COMPONENT
 
-export const ProfilForm: React.FC = () => {
+export default function ProfilForm(): JSX.Element {
+  const router = useRouter()
   const dispatch = useAppDispatch();
-  const { cookies } = useAuth();
+  const { isLoading: localAuthIsLoading, cookies } = useAuth();
 
-  const { data: userResult, isLoading } = useUserQuery(client, {
-    id: cookies.user.id,
-  });
+  const { data: userResult, isLoading } = useUserQuery(
+    client,
+    // @ts-ignore : The query is not enabled if this value is undefined
+    { id: cookies?.user?.id},
+    { enabled: Boolean(cookies?.user?.id) }
+  );
   const { mutateAsync: updateMe } = useUpdateUserMutation(client);
 
-  const history = useHistory();
-
   const onCancel = () => {
-    history.push("/dashboard");
+    router.push("/dashboard");
     dispatch(actions.toogleDrawer());
   };
 
-  if (isLoading) {
+  const onSubmit = useCallback((data: any, { setSubmitting, validateForm }: any) => {
+    if (!cookies?.user?.id) return
+
+    validateForm(data);
+    setSubmitting(true);
+
+    // Change password
+    if (data.currentPassword !== "" && data.confirmNewPassword === data.newPassword && data.newPassword !== "") {
+      changePassword(data, cookies.jwt)
+    }
+
+    // Update User in DB
+    updateMe({
+      id: cookies.user.id,
+      data: formatValues(data),
+    });
+
+    // Update UI states
+    setSubmitting(false);
+    dispatch(actions.toogleDrawer());
+  }, [cookies, dispatch, updateMe]);
+
+  // Loader
+
+  if (isLoading || localAuthIsLoading || !cookies?.user?.id) {
     return <Loader />;
   }
 
-  // Shortcut to display on the page
+  // Flags && shortcuts (for display purposes)
+
   const attributes = userResult?.usersPermissionsUser?.data?.attributes;
+
+  // JSX
 
   return (
     <Formik
       enableReinitialize
       validateOnBlur={false}
       initialValues={formatInitialValues(userResult)}
-      onSubmit={(data, { setSubmitting, validateForm }) => {
-        validateForm(data);
-        setSubmitting(true);
-        if (data.currentPassword !== "" && data.confirmNewPassword === data.newPassword && data.newPassword !== "") {
-          changePassword(data.currentPassword, data.newPassword, data.confirmNewPassword);
-        }
-        updateMe({
-          id: cookies.user.id,
-          data: formatValues(data),
-        });
-        setSubmitting(false);
-        dispatch(actions.toogleDrawer());
-      }}
+      onSubmit={onSubmit}
     >
       {({ isValid, isSubmitting, values }) => {
         return (
-          <Form>
-            <Box textAlign="center" h="100vh" d="flex" flexDir="column" pt="10px">
-              <Flex alignItems="center" justifyContent="flex-start" ml="20px">
+          <Form className="h-screen flex flex-col text-center">
+            <Flex
+              className="w-full flex-col items-center justify-center overflow-auto px-10 py-10"
+              fontSize="30"
+            >
+              <Flex className="mt-20 justify-start items-center">
                 <Avatar
                   _hover={{ cursor: "pointer" }}
-                  ml="20px"
                   w="30px"
                   h="30px"
                   color="white"
                   fontSize="45px"
-                  background="linear-gradient(rgba(194, 165, 249, 1),
-rgba(0, 132, 255, 1))"
+                  background="linear-gradient(rgba(194, 165, 249, 1),rgba(0, 132, 255, 1))"
                 />
+
                 <Flex flexDir="column" alignItems="flex-start" ml="10px">
                   <Text variant="smallTitle" fontWeight="bold">
                     {attributes?.firstName} {attributes?.lastName}
@@ -102,91 +120,86 @@ rgba(0, 132, 255, 1))"
                 </Flex>
               </Flex>
 
-              <Flex
-                alignItems="center"
-                justifyContent="center"
-                fontSize="30"
-                flexDirection="column"
-                px={10}
-                w="100%"
-                pt="10px"
-              >
-                <Textarea
-                  isCollapsed={false}
-                  rows={Enum_Question_Rows.Small}
-                  label="Prénom"
-                  placeholder="Renseigner votre prénom"
-                  id="firstName"
-                  isRequired
-                />
-                <Textarea
-                  isCollapsed={false}
-                  rows={Enum_Question_Rows.Small}
-                  label="Nom"
-                  placeholder="Renseigner votre nom"
-                  id="lastName"
-                  isRequired
-                />
-                <Textarea
-                  isCollapsed={false}
-                  rows={Enum_Question_Rows.Small}
-                  label="Email de contact"
-                  placeholder="Renseigner votre email"
-                  id="email"
-                  isRequired
-                />
-                <Textarea
-                  isCollapsed={false}
-                  rows={Enum_Question_Rows.Small}
-                  label="Profession"
-                  placeholder="Renseigner votre profession"
-                  id="job"
-                />
-                <Textarea
-                  isCollapsed={false}
-                  rows={Enum_Question_Rows.Small}
-                  label="Institution"
-                  placeholder="Renseigner votre institution"
-                  id="institution"
-                />
-                <Text variant="smallTitle" py="20px">
-                  {t.changePassword}
-                </Text>
+              <Textarea
+                isCollapsed={false}
+                rows={Enum_Question_Rows.Small}
+                label="Prénom"
+                placeholder="Renseigner votre prénom"
+                id="firstName"
+                isRequired
+              />
 
-                <Input
-                  isCollapsed={false}
-                  label="Mot de passe actuel"
-                  placeholder="Renseigner votre mot de passe actuel"
-                  name="currentPassword"
-                  type="password"
-                />
-                <Input
-                  isCollapsed={false}
-                  label="Nouveau mot de passe"
-                  placeholder="Renseigner votre nouveau mot de passe"
-                  name="newPassword"
-                  type="password"
-                />
+              <Textarea
+                isCollapsed={false}
+                rows={Enum_Question_Rows.Small}
+                label="Nom"
+                placeholder="Renseigner votre nom"
+                id="lastName"
+                isRequired
+              />
 
-                <Input
-                  isCollapsed={false}
-                  label="Confirmation du nouveau mot de passe"
-                  placeholder="Confimer votre nouveau mot de passe"
-                  name="confirmNewPassword"
-                  type="password"
-                />
-                <Footer
-                  w="100%"
-                  hideDelete
-                  onSubmit={() => console.log(values)}
-                  disabled={!isValid || isSubmitting}
-                  onCancel={() => onCancel()}
-                  onDelete={() => {
-                    dispatch(actions.toogleDrawer());
-                  }}
-                />
-              </Flex>
-            </Box>
+              <Textarea
+                isCollapsed={false}
+                rows={Enum_Question_Rows.Small}
+                label="Email de contact"
+                placeholder="Renseigner votre email"
+                id="email"
+                isRequired
+              />
+
+              <Textarea
+                isCollapsed={false}
+                rows={Enum_Question_Rows.Small}
+                label="Profession"
+                placeholder="Renseigner votre profession"
+                id="job"
+              />
+
+              <Textarea
+                isCollapsed={false}
+                rows={Enum_Question_Rows.Small}
+                label="Institution"
+                placeholder="Renseigner votre institution"
+                id="institution"
+              />
+
+              <Text variant="smallTitle" py="20px">
+                {t.changePassword}
+              </Text>
+
+              <Input
+                isCollapsed={false}
+                label="Mot de passe actuel"
+                placeholder="Renseigner votre mot de passe actuel"
+                name="currentPassword"
+                type="password"
+              />
+              <Input
+                isCollapsed={false}
+                label="Nouveau mot de passe"
+                placeholder="Renseigner votre nouveau mot de passe"
+                name="newPassword"
+                type="password"
+              />
+
+              <Input
+                isCollapsed={false}
+                label="Confirmation du nouveau mot de passe"
+                placeholder="Confimer votre nouveau mot de passe"
+                name="confirmNewPassword"
+                type="password"
+              />
+            </Flex>
+
+            <Footer
+              hideDelete
+              onSubmit={() => console.log(values)}
+              disabled={!isValid || isSubmitting}
+              onCancel={() => onCancel()}
+              onDelete={() => {
+                dispatch(actions.toogleDrawer());
+              }}
+            />
           </Form>
         );
       }}

@@ -1,9 +1,10 @@
-import { map, switchMap } from "rxjs";
-import { combineEpics, ofType } from "redux-observable";
-import { Epic } from "redux/store";
-import { actions } from "redux/slices/scientistData";
-import { client, sdk } from "api/gql-client";
-import { hasMessage } from "utils/typeguards";
+import { map, switchMap } from "rxjs"
+import { combineEpics, ofType } from "redux-observable"
+import { Epic } from "@/redux/store/index.js"
+import { actions } from "@/redux/slices/scientistData.js"
+import { apollo, client, sdk } from "@/api/gql-client.js"
+import { hasMessage } from "@/utils/typeguards/index.js"
+import { buildBearer } from "@/utils/auth.js"
 
 // ----  LOGIN
 
@@ -102,12 +103,19 @@ const refreshingEpic: Epic = (action$) =>
     })
   );
 
-// ---- UTILS
+// ---- LOGOUT
 
-function buildBearer(jwt: string | undefined | null) {
-  return jwt && jwt.length > 0 ? `Bearer ${jwt}` : "";
-}
+const logoutEpic: Epic = (action$) =>
+  action$.pipe(
+    ofType(actions.logout.type),
+    switchMap(async (_action) => {
+      client.setHeader("Authorization", "")
+      apollo.clearStore()
+      localStorage.removeItem("process__user")
+      return actions.disconnected()
+    })
+  )
 
 // ---- EXPORT
 
-export const authEpics = combineEpics(loginEpic, signinEpic, refreshingEpic);
+export const authEpics = combineEpics(loginEpic, logoutEpic, signinEpic, refreshingEpic);

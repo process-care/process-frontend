@@ -1,4 +1,4 @@
-import { Enum_Survey_Status, Maybe } from "api/graphql/types.generated";
+import { Enum_Survey_Status, Maybe } from "@/api/graphql/types.generated.js"
 
 interface StatusTrad {
   trad: "Non publié" | "Finalisé" | "Archivé" | "En cours";

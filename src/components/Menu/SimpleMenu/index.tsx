@@ -1,15 +1,12 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
-import React from "react";
-import { Avatar } from "@chakra-ui/react";
-import { t } from "static/dashboard";
-import { ReactComponent as Logo } from "assets/logo.svg";
-import { NavLink } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { actions } from "redux/slices/application";
-import { actions as appActions } from "redux/slices/scientistData";
-import { useHistory } from "react-router-dom";
+import { Box, Flex, Text, Avatar } from "@chakra-ui/react"
+import { useDispatch } from "react-redux"
+import Link from "next/link.js"
 
-export const HEADER_HEIGHT = "65px";
+import { t } from "@/static/dashboard.js"
+import { actions } from "@/redux/slices/application/index.js"
+import { Logo } from "@/components/Logos.tsx"
+
+export const HEADER_HEIGHT = "65px"
 
 interface Props {
   isPortail?: boolean;
@@ -21,17 +18,8 @@ interface Item {
   action?: () => void;
 }
 
-export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
-  const history = useHistory();
-  const dispatch = useDispatch();
-
-  const logout = () => {
-    () => history.push("/connexion");
-    localStorage.removeItem("process__user");
-    dispatch(appActions.logout());
-    // Kill redux data
-    window.location.reload();
-  };
+export default function SimpleMenu({ isPortail }: Props): JSX.Element {
+  const dispatch = useDispatch()
 
   const handleDrawer = () => {
     dispatch(actions.toogleDrawer());
@@ -41,7 +29,7 @@ export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
     {
       name: "Mon profil",
       path: "/profil",
-      action: () => handleDrawer(),
+      action: handleDrawer,
     },
     {
       name: "Mes enquêtes",
@@ -49,8 +37,7 @@ export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
     },
     {
       name: "Se déconnecter",
-      path: "/connexion",
-      action: () => logout(),
+      path: "/deconnexion",
     },
   ];
 
@@ -59,27 +46,28 @@ export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
       <Flex zIndex={1} w="300px" justifyContent="space-between" mr="10px" pos="absolute" right="80px">
         {items.map(({ name, path, action }) => {
           return (
-            <NavLink
+            <Link
               onClick={action}
               key={name}
-              to={path}
-              activeStyle={{
-                fontWeight: "bold",
-                borderBottom: "1px solid black",
-              }}
+              href={path}
+              // activeStyle={{
+              //   fontWeight: "bold",
+              //   borderBottom: "1px solid black",
+              // }}
             >
               {name}
-            </NavLink>
+            </Link>
           );
         })}
       </Flex>
     );
   };
+
   return (
     <Box
       py={3}
       px={6}
-      d="flex"
+      display="flex"
       justifyContent="space-between"
       alignItems="center"
       w="100%"
@@ -92,10 +80,10 @@ export const SimpleMenu: React.FC<Props> = ({ isPortail }) => {
       backgroundColor="white"
       zIndex={1}
     >
-      <Box d="flex" alignItems="center">
-        <NavLink to="/">
+      <Box display="flex" alignItems="center">
+        <Link href="/">
           <Logo />
-        </NavLink>
+        </Link>
         {!isPortail && (
           <>
             <Text variant="smallTitle" ml="10px" color="gray">

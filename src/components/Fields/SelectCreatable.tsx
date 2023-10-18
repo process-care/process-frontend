@@ -1,9 +1,9 @@
-import React, { ReactElement } from "react";
 import { FormControl, FormHelperText, FormLabel } from "@chakra-ui/react";
-import { t } from "static/survey";
 import { useField, useFormikContext } from "formik";
 import CreatableSelect from "react-select/creatable";
-import { useMediaQueries } from "utils/hooks/mediaqueries";
+
+import { t } from "@/static/survey.ts"
+import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
 
 interface Options {
   value: string | undefined;
@@ -27,7 +27,7 @@ interface IProvided {
   provided: Record<string, unknown>;
 }
 
-export const CustomCreatableSelect: React.FC<Props> = ({
+export default function CustomCreatableSelect({
   label,
   helpText,
   placeholder,
@@ -38,7 +38,7 @@ export const CustomCreatableSelect: React.FC<Props> = ({
   isMulti,
   name,
   appearance,
-}): ReactElement => {
+}: Props): JSX.Element {
   const [field, ,] = useField(id);
   const { isTablet } = useMediaQueries();
   const isBig = appearance === "big";
@@ -85,7 +85,7 @@ export const CustomCreatableSelect: React.FC<Props> = ({
             styles={customStyles}
             id={id}
             name={name}
-            isRequired={isRequired}
+            required={isRequired}
             placeholder={placeholder}
             noOptionsMessage={() => t.not_found}
             options={answers}

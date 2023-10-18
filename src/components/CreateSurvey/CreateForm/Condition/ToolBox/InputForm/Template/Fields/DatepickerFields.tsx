@@ -1,9 +1,9 @@
 import { Box } from "@chakra-ui/react";
-import { TitleDivider } from "components/TitleDivider";
-import React from "react";
-import { CommonFields } from "./CommonFields";
 
-export const DatepickerFields: React.FC = () => {
+import TitleDivider from "@/components/TitleDivider/index.tsx"
+import CommonFields from "./CommonFields.tsx"
+
+export default function DatepickerFields(): JSX.Element {
   return (
     <>
       <TitleDivider title="Contenu" />

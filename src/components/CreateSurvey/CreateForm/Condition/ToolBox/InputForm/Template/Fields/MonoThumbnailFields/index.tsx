@@ -1,15 +1,15 @@
 import { Box } from "@chakra-ui/react";
-import { Maybe } from "api/graphql/sdk.generated";
-import { Enum_Question_Type } from "api/graphql/types.generated";
-import { NumberInput, Select } from "components/Fields";
-import { TitleDivider } from "components/TitleDivider";
-import React from "react";
-import { useAppSelector } from "redux/hooks";
-import { selectors } from "redux/slices/scientistData";
 
-import { CommonFields } from "../../index";
-import { AssociatedSubfields } from "../AssociatedSubfields";
-import { GradeFields } from "./GradeFields";
+import { Maybe } from "@/api/graphql/sdk.generated.js"
+import { Enum_Question_Type } from "@/api/graphql/types.generated.ts"
+import { NumberInput, Select } from "@/components/Fields/index.ts"
+import { useAppSelector } from "@/redux/hooks/index.js"
+import { selectors } from "@/redux/slices/scientistData.js"
+
+import { CommonFields } from "../../index.ts"
+import TitleDivider from "@/components/TitleDivider/index.tsx"
+import AssociatedSubfields from "../AssociatedSubfields/index.tsx"
+import GradeFields from "./GradeFields/index.tsx"
 
 export interface Option {
   label: string;
@@ -22,8 +22,8 @@ const answers: Option[] = [
   { label: "Question bouton radio", value: Enum_Question_Type.Radio },
 ];
 
-export const MonoThumbnailFields: React.FC = () => {
-  const selectedQuestion = useAppSelector(selectors.questions.getSelectedQuestion);
+export default function MonoThumbnailFields(): JSX.Element {
+  const selectedQuestion = useAppSelector(selectors.questions.selectSelectedQuestion);
 
   return (
     <>

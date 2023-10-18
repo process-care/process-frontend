@@ -1,16 +1,10 @@
 export const renderTitle = (step: number): string => {
   switch (step) {
-    case 1:
-      return "Sélectionner la question conditionnant l’affichage de la question en cours";
-      break;
-    case 2:
-      return "Sélectionner un opérateur pour définir la condition";
-      break;
-    case 3:
-      return "Sélectionner une valeur pour définir la condition";
-      break;
+    case 1: return "Question conditionnant l'affichage";
+    case 2: return "Opérateur de comparaison";
+    case 3: return "Valeur à comparer";
+    
     default:
       return "";
-      break;
   }
 };

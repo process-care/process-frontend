@@ -1,8 +1,16 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Box, Button, Flex, FormLabel, Spinner, Text } from "@chakra-ui/react";
 import { v4 as uuidv4 } from "uuid";
 import { Form, Formik } from "formik";
-import { useAppSelector } from "redux/hooks";
+import Image from "next/image.js"
+
+import { useAppSelector } from "@/redux/hooks/index.js"
+import { selectors } from "@/redux/slices/application/index.js"
+import { QuestionRedux } from "@/redux/slices/types/index.js"
+import { Maybe } from "@/api/graphql/types.generated.ts"
+import { useAssociatedLogic } from "./hooks/index.tsx"
+import RenderInput from "@/components/CreateSurvey/CreateForm/InputsPreview/Card/utils/index.tsx"
+import TitleDivider from "@/components/TitleDivider/index.tsx"
 
 interface Factor {
   modalities: {
@@ -11,12 +19,6 @@ interface Factor {
   }[];
   title: string;
 }
-import { selectors } from "redux/slices/application";
-import { RenderInput } from "components/CreateSurvey/CreateForm/InputsPreview/Card/utils";
-import { useAssociatedLogic } from "./hooks";
-import { TitleDivider } from "components/TitleDivider";
-import { QuestionRedux } from "redux/slices/types";
-import { Maybe } from "api/graphql/types.generated";
 
 interface Props {
   label: string;
@@ -30,7 +32,7 @@ interface Props {
 
 const TOTAL_CARDS = 1;
 
-export const MonoThumbnail: React.FC<Props> = ({
+export default function MonoThumbnail({
   label,
   helpText,
   isCollapsed,
@@ -38,7 +40,7 @@ export const MonoThumbnail: React.FC<Props> = ({
   maxLoop = 5,
   name,
   associated_input,
-}) => {
+}: Props): JSX.Element {
   const [mount, setMount] = useState(true);
 
   const { generate, handleClick, state, filteredFactors, totalClick, maxVariations, isFinished } = useAssociatedLogic(
@@ -71,7 +73,7 @@ export const MonoThumbnail: React.FC<Props> = ({
               ) : (
                 <Box>
                   {factor?.modalities[random]?.file && (
-                    <img
+                    <Image
                       src={factor?.modalities[random]?.file}
                       alt={factor?.modalities[random]?.description}
                       style={{ maxWidth: "30px", margin: "0 auto" }}
@@ -86,17 +88,19 @@ export const MonoThumbnail: React.FC<Props> = ({
       </Box>
     );
   };
-  const sanitizeMono = {
+
+  const sanitizeMono = useMemo(() => ({
     id: associated_input?.type,
     attributes: {
       ...associated_input,
     },
-  } as QuestionRedux;
+  } as QuestionRedux), [associated_input])
+
 
   useEffect(() => {
     // Generate only if drawer is close (mean no adding new factors /modalities)
     !drawerIsOpen && generate();
-  }, [drawerIsOpen]);
+  }, [drawerIsOpen, generate]);
 
   useEffect(() => {
     // Force re render to reset the field on select change
@@ -119,7 +123,7 @@ export const MonoThumbnail: React.FC<Props> = ({
       {!isCollapsed && (
         <Flex flexDir="column">
           <Box>
-            <Box d="flex" justifyContent="space-around" w="100%">
+            <Box display="flex" justifyContent="space-around" w="100%">
               {[...Array(TOTAL_CARDS)].map((_, i) => (
                 <Card index={i} key={i} />
               ))}
@@ -142,7 +146,7 @@ export const MonoThumbnail: React.FC<Props> = ({
                           <RenderInput input={sanitizeMono} />
                         </Box>
                       )}
-                      <Box d="flex" justifyContent="flex-end" w="100%" mt="20px" pr="30px">
+                      <Box display="flex" justifyContent="flex-end" w="100%" mt="20px" pr="30px">
                         <Button type="button" variant="rounded" onClick={() => validate(values)}>
                           Valider ma réponse
                         </Button>

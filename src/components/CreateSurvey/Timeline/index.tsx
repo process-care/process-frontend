@@ -1,10 +1,10 @@
 import { Box, Button, Flex, Circle, Text } from "@chakra-ui/react";
-import React from "react";
-import { NavLink } from "react-router-dom";
-import { useAppSelector, useAppDispatch } from "redux/hooks";
-import { actions, selectors } from "redux/slices/survey-editor";
-import { SurveyRedux } from "redux/slices/types";
-import { t } from "./static";
+import Link from "next/link.js"
+
+import { useAppSelector, useAppDispatch } from "@/redux/hooks/index.js"
+import { actions, selectors } from "@/redux/slices/survey-editor.js"
+import { SurveyRedux } from "@/redux/slices/types/index.js"
+import { t } from "./static.ts"
 
 // ---- TYPES
 
@@ -21,17 +21,17 @@ interface IStep {
 
 // ---- COMPONENT
 
-export const Timeline: React.FC = () => {
+export default function Timeline(): JSX.Element {
   const survey = useAppSelector(selectors.getSurveyDraft);
   const step = useAppSelector(selectors.step);
   return (
     <Box p="8px 20px 0 30px" pos="relative">
       <Flex justifyContent="flex-end">
-        <NavLink to="/dashboard">
+        <Link href="/dashboard">
           <Button variant="link" color="gray.600">
             {t.cancel}
           </Button>
-        </NavLink>
+        </Link>
       </Flex>
       <RenderSteps survey={survey} step={step} />
     </Box>
@@ -40,7 +40,7 @@ export const Timeline: React.FC = () => {
 
 // --- SUBCOMPONENT
 
-const RenderSteps: React.FC<Props> = ({ survey, step }) => {
+function RenderSteps({ survey, step }: Props) {
   const dispatch = useAppDispatch();
 
   const navigateTo = (target: number) => {
@@ -58,7 +58,7 @@ const RenderSteps: React.FC<Props> = ({ survey, step }) => {
         zIndex={3}
         opacity={isCompleted || isCurrent ? 1 : 0.2}
         textAlign="left"
-        d="flex"
+        display="flex"
         justifyContent="flex-start"
         alignItems="flex-start"
         _hover={{ cursor: isCompleted ? "pointer" : "not-allowed" }}

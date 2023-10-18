@@ -1,15 +1,15 @@
-import { CustomInput as Input } from "components/Fields/Input";
-import { CustomTextarea as Textarea } from "components/Fields/Textarea";
-import { CustomNumberInput as NumberInput } from "components/Fields/NumberInput";
-import { CustomCheckbox as Checkbox } from "components/Fields/Checkbox";
-import { CustomRadioBox as Radiobox } from "components/Fields/Radiobox";
-import { CustomSelect as Select } from "components/Fields/Select";
-import { CustomSlider as Slider } from "components/Fields/Slider";
-import { CustomSwitch as Switch } from "components/Fields/Switch";
-import { CustomDatePicker as Datepicker } from "components/Fields/Datepicker";
-import { AssociatedClassification } from "components/Fields/AssociatedClassification";
-import { FreeClassification } from "components/Fields/FreeClassification";
-import { MonoThumbnail } from "components/Fields/MonoThumbnail";
+import Input from "@/components/Fields/Input.tsx"
+import Textarea from "@/components/Fields/Textarea.tsx"
+import NumberInput from "@/components/Fields/NumberInput.tsx"
+import Checkbox from "@/components/Fields/Checkbox.tsx"
+import Radiobox from "@/components/Fields/Radiobox.tsx"
+import Select from "@/components/Fields/Select.tsx"
+import Slider from "@/components/Fields/Slider.tsx"
+import Switch from "@/components/Fields/Switch.tsx"
+import Datepicker from "@/components/Fields/Datepicker.tsx"
+import AssociatedClassification from "@/components/Fields/AssociatedClassification.tsx"
+import FreeClassification from "@/components/Fields/FreeClassification.tsx"
+import MonoThumbnail from "@/components/Fields/MonoThumbnail.tsx"
 
 export {
   Input,

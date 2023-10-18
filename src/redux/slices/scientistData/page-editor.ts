@@ -1,16 +1,10 @@
-import { PayloadAction, createEntityAdapter } from "@reduxjs/toolkit";
+import { PayloadAction, createEntityAdapter, createSelector } from "@reduxjs/toolkit";
 
-import { RootState } from "redux/store";
+import { RootState } from "@/redux/store/index.js";
 import { DateTime } from "luxon";
-import { GlobalState } from "../scientistData";
-import { PageRedux } from "../types";
-import { Maybe } from "api/graphql/types.generated";
-
-// ----- ENTITY ADAPTER
-
-export const pageAdapter = createEntityAdapter<PageRedux>({
-  selectId: (page) => page.id,
-});
+import { GlobalState } from "../scientistData.js"
+import { PageRedux } from "../types/index.js"
+import { Maybe } from "@/api/graphql/types.generated.js"
 
 // ---- TYPES
 
@@ -72,49 +66,11 @@ type CreatedPayload = {
 //   changes: PageRedux;
 // };
 
-// ---- SELECTORS
+// ----- ENTITY ADAPTER
 
-export const error = (state: RootState): string | undefined => state.scientistData.pages.error;
-export const isLoading = (state: RootState): boolean => state.scientistData.pages.isLoading;
-export const hasChanges = (state: RootState): boolean => {
-  const updated = DateTime.fromISO(state.scientistData.questions.lastUpdated);
-  const saved = DateTime.fromISO(state.scientistData.questions.lastSaved);
-  return updated > saved;
-};
-
-export const pages = (state: RootState): PageRedux[] => pageAdapter.getSelectors().selectAll(state.scientistData.pages);
-
-// const getPages = (state: RootState): PageRedux[] => {
-//   return pages(state).filter(
-//     (page) => page?.attributes?.survey?.data?.id === state.scientistData.survey.selectedSurvey
-//   );
-// };
-
-const getPages = (state: RootState): PageRedux[] => {
-  return pages(state);
-};
-
-const getConditionsPages = (state: RootState): any => {
-  return pages(state)?.map((c) => c.attributes?.conditions?.data?.map((c) => c));
-};
-
-const getSelectedPageId = (state: RootState): Maybe<string> | undefined => state.scientistData.pages.selectedPage;
-
-const getSelectedPage = (state: RootState): PageRedux => {
-  return pages(state).filter((pages) => pages?.id === state.scientistData.pages.selectedPage)[0];
-};
-
-// ---- EXPORTS
-
-export const pageSelectors = {
-  error,
-  isLoading,
-  hasChanges,
-  getPages,
-  getSelectedPage,
-  getSelectedPageId,
-  getConditionsPages,
-};
+export const pageAdapter = createEntityAdapter<PageRedux>({
+  selectId: (page) => page.id,
+});
 
 // ---- REDUCERS
 
@@ -128,8 +84,7 @@ export const pageReducer = {
     pageAdapter.addOne(state.pages, action.payload.page);
     state.pages.selectedPage = action.payload.page.id;
   },
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  updatePage: (state: GlobalState, action: any): void => {
+  updatePage: (state: GlobalState, action: PayloadAction<any>): void => {
     state.pages.lastUpdated = new Date().toISOString();
     pageAdapter.updateOne(state.pages, action.payload.changes);
   },
@@ -164,3 +119,45 @@ export const pageReducer = {
     state.pages.redirectToPage = action.payload;
   },
 };
+
+// ---- SELECTORS
+
+const getSelectedPageId = (state: RootState): Maybe<string> | undefined => state.scientistData.pages.selectedPage
+export const error = (state: RootState): string | undefined => state.scientistData.pages.error;
+export const isLoading = (state: RootState): boolean => state.scientistData.pages.isLoading;
+export const hasChanges = (state: RootState): boolean => {
+  const updated = DateTime.fromISO(state.scientistData.questions.lastUpdated);
+  const saved = DateTime.fromISO(state.scientistData.questions.lastSaved);
+  return updated > saved;
+};
+
+// MEMOIZED SELECTORS
+
+// From the entity adapter
+const {
+  selectAll: selectPages,
+} = pageAdapter.getSelectors((state: RootState) => state.scientistData.pages)
+
+
+const selectConditionsPages = createSelector(
+  selectPages,
+  (pages) => pages?.map((c) => c.attributes?.conditions?.data?.map((c) => c))
+)
+
+const selectSelectedPage = createSelector(
+  [ selectPages, getSelectedPageId ],
+  (pages, selectedPageId) => pages?.find((page) => page?.id === selectedPageId)
+)
+
+// ---- EXPORTS
+
+export const pageSelectors = {
+  error,
+  isLoading,
+  hasChanges,
+  selectPages,
+  selectConditionsPages,
+  selectSelectedPage,
+  getSelectedPageId,
+};
+

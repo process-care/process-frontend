@@ -1,40 +1,39 @@
-import React from "react";
-
+import { useEffect } from "react";
 import { Container, Text } from "@chakra-ui/react";
-import { useAppDispatch, useAppSelector } from "redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
 
-import { QuestionRedux } from "redux/slices/types";
-import { ConditionRedux } from "redux/slices/types";
-import { authorizedQuestionTypes } from "./utils";
-import { t } from "static/input";
-import { InputBox } from "components/CreateSurvey/CreateForm/InputsPreview/InputBox";
-import { selectors, actions } from "redux/slices/scientistData";
+import { QuestionRedux } from "@/redux/slices/types/index.js"
+import { ConditionRedux } from "@/redux/slices/types/index.js"
+import { authorizedQuestionTypes } from "./utils/index.ts"
+import { t } from "@/static/input.ts"
+import { selectors, actions } from "@/redux/slices/scientistData.js"
+import InputBox from "@/components/CreateSurvey/CreateForm/InputsPreview/InputBox/index.tsx"
 
 interface Props {
   selectedCondition: ConditionRedux;
   updateStep: (d: any) => void;
 }
 
-export const Step_1: React.FC<Props> = ({ selectedCondition, updateStep }) => {
+export default function Step_1({ selectedCondition, updateStep }: Props): JSX.Element {
   const dispatch = useAppDispatch();
-  const selectedQuestion = useAppSelector(selectors.questions.getSelectedQuestion);
-  const questions = useAppSelector(selectors.questions.getSelectedPageQuestions);
-  const pages = useAppSelector(selectors.pages.getPages);
+  const selectedQuestion = useAppSelector(selectors.questions.selectSelectedQuestion);
+  const questions = useAppSelector(selectors.questions.selectSelectedPageQuestions);
+  const pages = useAppSelector(selectors.pages.selectPages);
   const order = useAppSelector(selectors.survey.getOrder);
   const isTypePage = selectedCondition?.attributes?.type === "page";
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Select first page if we make a condition on page.
     // FIXME: This returns to this page when cancelling or saving, instead of the page we edited...
 
     if (isTypePage && pages.length > 0) {
       dispatch(actions.setSelectedPage(pages[0].id));
     }
-  }, [isTypePage]);
+  }, [dispatch, isTypePage, pages]);
 
   const referId = isTypePage
     ? selectedCondition?.attributes?.referer_page?.data?.id
-    : selectedCondition?.attributes.referer_question?.data?.id;
+    : selectedCondition?.attributes?.referer_question?.data?.id;
 
   const currentInputIndex = order.findIndex((id: string) => id === referId);
   const questionsBeforeCurrent = order.slice(0, currentInputIndex);

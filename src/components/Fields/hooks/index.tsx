@@ -1,6 +1,7 @@
-import { Maybe } from "api/graphql/types.generated";
+import { useMemo, useState } from "react";
 import { useField } from "formik";
-import React, { useState } from "react";
+
+import { Maybe } from "@/api/graphql/types.generated.ts"
 
 export interface Factor {
   modalities: {
@@ -15,7 +16,6 @@ interface State {
   isMounted: boolean;
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const useAssociatedLogic = (
   factors: Factor[],
   name: string,
@@ -49,9 +49,9 @@ export const useAssociatedLogic = (
     return _A(n, k) / factorialize(k);
   };
 
-  const maxVariations = React.useMemo(() => {
+  const maxVariations = useMemo(() => {
     if (totalVariations) return getMaxVariation(totalVariations, TOTAL_CARDS);
-  }, [totalVariations]);
+  }, [TOTAL_CARDS, totalVariations]);
 
   const generate = () => {
     if (maxVariations - 1 === state.variations.length) {

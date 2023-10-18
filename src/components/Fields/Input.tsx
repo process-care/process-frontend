@@ -1,4 +1,3 @@
-import React from "react";
 import {
   FormControl,
   FormHelperText,
@@ -13,7 +12,6 @@ import {
   AccordionPanel,
   AccordionIcon,
 } from "@chakra-ui/react";
-
 import { useField } from "formik";
 
 interface Props {
@@ -34,7 +32,7 @@ interface Props {
   appearance?: "light" | "big";
 }
 
-export const CustomInput: React.FC<Props> = ({
+export default function CustomInput({
   label,
   helpText,
   placeholder,
@@ -48,8 +46,9 @@ export const CustomInput: React.FC<Props> = ({
   autoComplete,
   isAccordion,
   appearance,
-}) => {
-  const [field, meta] = useField(name);
+}: Props): JSX.Element {
+  const [field, meta] = useField(name)
+  
   return (
     <FormControl isRequired={isRequired} id={name} textAlign="left" style={style} isInvalid={!!meta.error}>
       {isAccordion ? (
@@ -79,7 +78,12 @@ export const CustomInput: React.FC<Props> = ({
                       autoComplete={autoComplete}
                       p={appearance === "big" ? "30px" : "10px"}
                     />
-                    {inputRightAddon && <InputRightAddon children={inputRightAddon} h="40px" />}
+
+                    { inputRightAddon &&
+                      <InputRightAddon h="40px">
+                        {inputRightAddon}
+                      </InputRightAddon>
+                    }
                   </InputGroup>
                   <FormErrorMessage mt={1} justifyContent="flex-end" fontSize="10px">
                     {meta.error}
@@ -108,7 +112,12 @@ export const CustomInput: React.FC<Props> = ({
                   autoComplete={autoComplete}
                   p={appearance === "big" ? "30px" : "10px"}
                 />
-                {inputRightAddon && <InputRightAddon children={inputRightAddon} h="40px" />}
+
+                { inputRightAddon &&
+                  <InputRightAddon h="40px">
+                    {inputRightAddon}
+                  </InputRightAddon>
+                }
               </InputGroup>
               <FormErrorMessage mt={1} justifyContent="flex-end" fontSize="10px">
                 {meta.error}

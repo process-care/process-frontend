@@ -1,12 +1,11 @@
-import React from "react";
-import { Input } from "components/Fields";
+import { Input } from "@/components/Fields/index.ts"
 import { Box } from "@chakra-ui/react";
 
 interface Props {
   noPlacehoder?: boolean;
 }
 
-export const CommonFields: React.FC<Props> = ({ noPlacehoder = false }) => {
+export default function CommonFields({ noPlacehoder = false }: Props): JSX.Element {
   return (
     <Box>
       {!noPlacehoder && (

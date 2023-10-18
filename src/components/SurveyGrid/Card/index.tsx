@@ -1,8 +1,8 @@
 import { Badge, Box, Button, Circle, Flex, GridItem, Text } from "@chakra-ui/react";
-import React from "react";
-import { SurveyRedux } from "redux/slices/types";
-import { renderStatus } from "utils/application/renderStatus";
-import { useMediaQueries } from "utils/hooks/mediaqueries";
+
+import { SurveyRedux } from "@/redux/slices/types/index.js"
+import { renderStatus } from "@/utils/application/renderStatus.tsx"
+import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
 
 // STATIC
 
@@ -18,7 +18,7 @@ interface Props {
 
 // COMPONENT
 
-export const Card: React.FC<Props> = ({ data }) => {
+export default function Card({ data }: Props): JSX.Element {
   const attributes = data?.attributes;
   const { isTablet } = useMediaQueries();
 

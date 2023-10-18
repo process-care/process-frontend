@@ -1,10 +1,10 @@
 import { Grid } from "@chakra-ui/react";
-import React from "react";
-import { Loader } from "components/Spinner";
-import { NavLink } from "react-router-dom";
-import { Card } from "./Card";
-import { SurveyRedux } from "redux/slices/types";
-import { useMediaQueries } from "utils/hooks/mediaqueries";
+import Link from "next/link.js"
+
+import {SurveyRedux } from "@/redux/slices/types/index.js"
+import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
+import Loader from "@/components/Spinner/index.tsx"
+import Card from "./Card/index.tsx"
 
 const t = {
   noData: "No surveys here ....",
@@ -15,7 +15,7 @@ interface Props {
   isLoading: boolean;
 }
 
-export const SurveyGrid: React.FC<Props> = ({ surveys, isLoading }) => {
+export default function SurveyGrid({ surveys, isLoading }: Props): JSX.Element {
   const { isTablet } = useMediaQueries();
   if (isLoading) {
     return <Loader />;
@@ -36,9 +36,9 @@ export const SurveyGrid: React.FC<Props> = ({ surveys, isLoading }) => {
     >
       {surveys.map((survey: SurveyRedux) => {
         return (
-          <NavLink key={survey?.id} to={`/survey/${survey?.attributes?.slug}`}>
+          <Link key={survey?.id} href={`/survey/${survey?.attributes?.slug}`}>
             <Card data={survey} />
-          </NavLink>
+          </Link>
         );
       })}
     </Grid>

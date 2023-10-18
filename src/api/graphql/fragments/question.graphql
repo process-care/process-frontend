@@ -20,7 +20,7 @@ fragment questionMetadataFragment on Question {
   units
   factors
   max_loop
-  wysiwyg
+  infozone
   step
   internal_title
   associated_input

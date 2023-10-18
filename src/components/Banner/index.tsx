@@ -1,8 +1,9 @@
+import { useEffect, useState } from "react";
 import { Box, Text } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import { useAppSelector } from "redux/hooks";
 
-export const Banner: React.FC = () => {
+import { useAppSelector } from "@/redux/hooks/index.js"
+
+export default function Banner(): JSX.Element {
   const { status, isChecking } = useAppSelector(
     (state) => state.scientistData.survey
   );
@@ -40,16 +41,16 @@ export const Banner: React.FC = () => {
     return (
       <Box w="100%" p="5px" backgroundColor="brand.green">
         <Text variant="current" color="white">
-          C'est un succès !
+          C&apos;est un succès !
         </Text>
       </Box>
     );
   } else
     return (
       <Box w="100%" p="5px" backgroundColor="brand.alert">
-        {status?.checkSurvey?.errors?.map((error: any) => {
+        {status?.checkSurvey?.errors?.map((error: any, idx: number) => {
           return (
-            <Box textAlign="left" pl="10%">
+            <Box key={idx} textAlign="left" pl="10%">
               <Text variant="current" color="brand.red">
                 Erreur sur la page: {error.pageId}
               </Text>

@@ -1,3 +1,4 @@
+import { useRef, useState } from "react";
 import {
   Box,
   Button,
@@ -7,11 +8,12 @@ import {
   FormControl,
   FormErrorMessage,
 } from "@chakra-ui/react";
-import React from "react";
 import { useField, useFormikContext } from "formik";
-import { ReactComponent as Delete } from "./assets/delete.svg";
-import { SvgHover } from "components/SvgHover";
-import { toBase64 } from "components/CreateSurvey/CreateLanding/ToolBox/Form/utils";
+import Image from "next/image.js"
+
+import { toBase64 } from "@/components/CreateSurvey/CreateLanding/ToolBox/Form/utils/index.ts"
+import SvgHover from "@/components/SvgHover/index.tsx"
+import { DeleteIcon } from "lucide-react";
 
 interface Props {
   label: string;
@@ -28,7 +30,7 @@ export interface IBase64 {
   name: string | undefined;
 }
 
-export const UploadFile: React.FC<Props> = ({
+export default function UploadFile({
   label,
   id,
   helpText,
@@ -36,10 +38,10 @@ export const UploadFile: React.FC<Props> = ({
   multiple,
   onChange,
   accept,
-}) => {
-  const hiddenFileInput = React.useRef<HTMLInputElement>(null);
+}: Props): JSX.Element {
+  const hiddenFileInput = useRef<HTMLInputElement>(null);
   const [field, meta] = useField(id);
-  const [filesName, setFilesName] = React.useState<any>([field.value]);
+  const [filesName, setFilesName] = useState<any>([field.value]);
   const { setFieldValue } = useFormikContext();
 
   const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -108,9 +110,7 @@ export const UploadFile: React.FC<Props> = ({
         {!hasFilesName && (
           <Button
             variant="roundedTransparent"
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore: Pb with props in theme ...
-            isSmall
+            size="sm"
             onClick={() =>
               hiddenFileInput.current !== null &&
               hiddenFileInput.current.click()
@@ -120,7 +120,7 @@ export const UploadFile: React.FC<Props> = ({
             {label}
           </Button>
         )}
-        <Box d="none">
+        <Box display="none">
           <input
             type="file"
             placeholder="upload"
@@ -147,7 +147,7 @@ export const UploadFile: React.FC<Props> = ({
         )}
         {hasFilesName && !multiple && (
           <SvgHover>
-            <Delete onClick={() => handleDelete()} />
+            <DeleteIcon onClick={() => handleDelete()} />
           </SvgHover>
         )}
       </Flex>
@@ -161,7 +161,7 @@ export const UploadFile: React.FC<Props> = ({
                 </Text>
                 {hasFilesName && (
                   <SvgHover>
-                    <Delete onClick={() => handleDelete(name)} />
+                    <DeleteIcon onClick={() => handleDelete(name)} />
                   </SvgHover>
                 )}
               </Flex>

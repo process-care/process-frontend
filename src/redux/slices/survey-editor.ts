@@ -1,9 +1,9 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "redux/store";
 import { DateTime } from "luxon";
 import slugify from "slugify";
-import { history } from "redux/store/history";
-import { LastPosted, LastSaved, SurveyRedux } from "./types";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+
+import { RootState } from "@/redux/store/index.js";
+import { LastPosted, LastSaved, SurveyRedux } from "./types/index.js"
 
 // ---- STATE
 
@@ -18,12 +18,15 @@ export interface SurveyEditor {
   data: SurveyRedux;
   draft?: SurveyRedux;
   step: number;
+  // Flag to know when the survey creation is a success (to react in the UI accordingly)
+  isPosted: boolean
 }
 
 const initialState: SurveyEditor = {
   isLoading: true,
   isPosting: false,
   isFailed: false,
+  isPosted: false,
   lastUpdated: new Date().toISOString(),
   lastSaved: new Date().toISOString(),
   lastPosted: new Date().toISOString(),
@@ -41,6 +44,7 @@ export type UpdatePayload = {
 };
 
 // ----- SLICE
+
 const SLICE_NAME = "survey-editor";
 
 export const surveyEditorSlice = createSlice({
@@ -48,7 +52,7 @@ export const surveyEditorSlice = createSlice({
   initialState,
   reducers: {
     initialize: (state, _action: PayloadAction<string>) => {
-      state.isLoading = true;
+      state = initialState;
     },
     initialized: (state, action: PayloadAction<InitializedPayload>) => {
       state.isLoading = false;
@@ -80,13 +84,9 @@ export const surveyEditorSlice = createSlice({
     },
     posted: (state, action: PayloadAction<LastPosted>) => {
       state.isPosting = false;
-      const { lastPosted } = action.payload;
-      state.lastPosted = lastPosted;
-      state = initialState;
-
-      setTimeout(() => {
-        history.push(`/dashboard`);
-      }, 1);
+      state.isPosted = true;
+      state.isFailed = false;
+      state.lastPosted = action.payload.lastPosted;
     },
     failed: (state, action: PayloadAction<any[]>) => {
       state.isFailed = true;
@@ -103,6 +103,7 @@ export const surveyEditorSlice = createSlice({
 
 export const error = (state: RootState): any[] | undefined => state.editor.survey.error;
 export const isLoading = (state: RootState): boolean => state.editor.survey.isLoading;
+export const isPosted = (state: RootState): boolean => state.editor.survey.isPosted;
 export const step = (state: RootState): number => state.editor.survey.step;
 export const hasChanges = (state: RootState): boolean => {
   const updated = DateTime.fromISO(state.editor.survey.lastUpdated);
@@ -117,6 +118,7 @@ export const getSurveyDraft = (state: RootState): SurveyRedux | undefined => sta
 export const selectors = {
   error,
   isLoading,
+  isPosted,
   hasChanges,
   survey,
   getSurveyDraft,

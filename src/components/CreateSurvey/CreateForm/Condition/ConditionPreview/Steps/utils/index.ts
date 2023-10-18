@@ -1,11 +1,11 @@
-import { useAppSelector } from "redux/hooks";
-import { selectors } from "redux/slices/scientistData";
+import { useAppSelector } from "@/redux/hooks/index.js"
+import { selectors } from "@/redux/slices/scientistData.js"
 
-export const checkStepValidation = (): boolean => {
+export const useCheckStepValidation = (): boolean => {
   const isValid = useAppSelector(selectors.conditions.getValidity);
   const step = useAppSelector(selectors.conditions.getStep);
   const selectedCondition = useAppSelector(
-    selectors.conditions.getSelectedCondition
+    selectors.conditions.selectSelectedCondition
   );
 
   const target = selectedCondition?.attributes?.target;

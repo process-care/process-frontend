@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Flex, FormLabel, Spinner, Text } from "@chakra-ui/react";
 import { v4 as uuidv4 } from "uuid";
-import { useAppSelector } from "redux/hooks";
-import { selectors } from "redux/slices/application";
-import { useMediaQueries } from "utils/hooks/mediaqueries";
-import { useAssociatedLogic } from "./hooks";
-import { Maybe } from "api/graphql/types.generated";
+import Image from "next/image.js"
+
+import { useAppSelector } from "@/redux/hooks/index.js"
+import { selectors } from "@/redux/slices/application/index.js"
+import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
+import { Maybe } from "@/api/graphql/types.generated.ts"
+import { useAssociatedLogic } from "./hooks/index.tsx"
 
 interface Props {
   label: string;
@@ -26,14 +28,14 @@ interface Factor {
 
 const TOTAL_CARDS = 2;
 
-export const AssociatedClassification: React.FC<Props> = ({
+export default function AssociatedClassification({
   label,
   helpText,
   isCollapsed,
   factors,
   maxLoop = 5,
   name,
-}) => {
+}: Props): JSX.Element {
   const { isTablet } = useMediaQueries();
   const { generate, handleClick, state, filteredFactors, totalClick, maxVariations, isFinished } = useAssociatedLogic(
     factors,
@@ -95,7 +97,7 @@ export const AssociatedClassification: React.FC<Props> = ({
               ) : (
                 <Box>
                   {factor?.modalities[random]?.file && (
-                    <img
+                    <Image
                       src={factor?.modalities[random]?.file}
                       alt={factor?.modalities[random]?.description}
                       style={{ maxWidth: "30px", margin: "0 auto" }}
@@ -114,7 +116,7 @@ export const AssociatedClassification: React.FC<Props> = ({
   useEffect(() => {
     // Generate only if drawer is close (mean no adding new factors /modalities)
     !drawerIsOpen && generate();
-  }, [drawerIsOpen]);
+  }, [drawerIsOpen, generate]);
 
   if (isFinished) {
     return <Text variant="smallTitle">Nous avons bien pris en compte votre sélection !</Text>;
@@ -130,7 +132,7 @@ export const AssociatedClassification: React.FC<Props> = ({
       {!isCollapsed && (
         <Flex flexDir="column">
           <Box>
-            <Box d="flex" justifyContent="space-around" flexDirection={isTablet ? "column" : "row"} w="100%">
+            <Box display="flex" justifyContent="space-around" flexDirection={isTablet ? "column" : "row"} w="100%">
               {[...Array(TOTAL_CARDS)].map((_, i) => (
                 <Card index={i} key={i} />
               ))}

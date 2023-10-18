@@ -1,11 +1,11 @@
 import { map, switchMap, filter } from "rxjs";
 import { combineEpics, ofType } from "redux-observable";
-import { Epic } from "redux/store";
+import { Epic } from "@/redux/store/index.js";
 
-import { sdk } from "api/gql-client";
-import { actions as statusAct } from "redux/slices/participation/status";
-import { sanitizeEntities } from "api/entity-checker";
-import { AnswersByParticipationQuery, Enum_Question_Type, QuestionsBySurveySlugQuery } from "api/graphql/sdk.generated";
+import { sdk } from "@/api/gql-client.js"
+import { actions as statusAct } from "@/redux/slices/participation/status.js"
+import { sanitizeEntities } from "@/api/entity-checker.js"
+import { AnswersByParticipationQuery, Enum_Question_Type, QuestionsBySurveySlugQuery } from "@/api/graphql/sdk.generated.js"
 
 // ---- EPIC
 
@@ -52,7 +52,6 @@ function processQuestions(res: QuestionsBySurveySlugQuery) {
         nbSamples: question.attributes.freeclassification_responses_count ?? 4,
       });
 
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       question.attributes.samples = dataSamples?.classificationSamples?.samples;
     }

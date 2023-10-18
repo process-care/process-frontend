@@ -1,9 +1,10 @@
+import { useCallback, useRef } from "react";
 import { Box, Button, Text, Flex, FormHelperText, FormControl, FormErrorMessage } from "@chakra-ui/react";
-import React, { useCallback } from "react";
-import { ReactComponent as Delete } from "../assets/delete.svg";
-import { SvgHover } from "components/SvgHover";
-import { useFileHandlers } from "./hooks";
-import { UploadParams } from "redux/slices/application";
+
+import { UploadParams } from "@/redux/slices/application/index.js"
+import { useFileHandlers } from "./hooks.ts"
+import SvgHover from "@/components/SvgHover/index.tsx"
+import { DeleteIcon } from "lucide-react";
 
 // ---- TYPES
 
@@ -41,7 +42,7 @@ interface Content {
 
 // ---- COMPONENT
 
-export const UploadFileRemote: React.FC<Props> = (props: Props) => {
+export default function UploadFileRemote(props: Props): JSX.Element {
   // ⚠️ We need to keep the props structured (in received params above), so we can infer the typing of content later on.
   // If destructured in the parameters above, it seems unable to guess the typing with a safe guard.
   //
@@ -51,11 +52,13 @@ export const UploadFileRemote: React.FC<Props> = (props: Props) => {
   // We can still destructure the rest for convenience. The object is really just needed for the safe guard guessing.
   const { target, multiple, onChange, isDisabled, label, helpText, accept } = props;
 
-  const hiddenFileInput = React.useRef<HTMLInputElement>(null);
+  const hiddenFileInput = useRef<HTMLInputElement>(null);
   const { handleChange, handleDelete, error } = useFileHandlers(target, multiple, onChange);
 
+  const isInvalid = Boolean(error)
+
   return (
-    <FormControl my={4}>
+    <FormControl my={4} isInvalid={isInvalid}>
       <Flex alignItems="center" justifyContent="space-between">
         <Button
           variant="roundedTransparent"
@@ -65,7 +68,7 @@ export const UploadFileRemote: React.FC<Props> = (props: Props) => {
           {label}
         </Button>
 
-        <Box d="none">
+        <Box display="none">
           <input
             type="file"
             placeholder="upload"
@@ -101,7 +104,7 @@ export const UploadFileRemote: React.FC<Props> = (props: Props) => {
         </Flex>
       )}
 
-      <FormErrorMessage mt={1} justifyContent="flex-end" fontSize="10px">
+      <FormErrorMessage mt={1} justifyContent="flex-start" fontSize="10px">
         {error}
       </FormErrorMessage>
 
@@ -127,7 +130,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ id, handleDelete }: DeleteB
 
   return (
     <SvgHover>
-      <Delete onClick={callDelete} />
+      <DeleteIcon onClick={callDelete} />
     </SvgHover>
   );
 };

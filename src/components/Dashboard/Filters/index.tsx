@@ -1,4 +1,3 @@
-import React from "react";
 import { Box, Flex, Text } from "@chakra-ui/react";
 
 export interface Filter {
@@ -13,7 +12,7 @@ interface Props {
   center?: boolean;
 }
 
-export const Filters: React.FC<Props> = ({ filters, handleClick, currentFilter, center }) => {
+export default function Filters({ filters, handleClick, currentFilter, center }: Props): JSX.Element {
   return (
     <Flex justifyContent={center ? "center" : undefined} w="fit-content">
       {filters.map(({ label, id }) => {

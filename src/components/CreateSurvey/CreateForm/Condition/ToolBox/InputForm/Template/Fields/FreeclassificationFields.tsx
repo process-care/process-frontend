@@ -1,11 +1,10 @@
-import React from "react";
-
-import { NumberInput, Radiobox } from "components/Fields";
-import { CommonFields } from "../index";
-import { TitleDivider } from "components/TitleDivider";
 import { Box } from "@chakra-ui/react";
 
-export const FreeclassificationFields: React.FC = () => {
+import { NumberInput, Radiobox } from "@/components/Fields/index.ts"
+import { CommonFields } from "../index.ts"
+import TitleDivider from "@/components/TitleDivider/index.tsx"
+
+export default function FreeclassificationFields(): JSX.Element {
   return (
     <>
       <TitleDivider title="Contenu" />
@@ -17,6 +16,7 @@ export const FreeclassificationFields: React.FC = () => {
         backgroundColor="#fdfdfdf1"
       >
         <CommonFields />
+        
         <Radiobox
           p="10px 0"
           label="Nombre de charactères de la réponse"
@@ -28,6 +28,7 @@ export const FreeclassificationFields: React.FC = () => {
           id="rows"
           helpText="Limite du nombre de caractères"
         />
+
         <NumberInput
           style={{ width: "45%" }}
           name="freeclassification_responses_count"

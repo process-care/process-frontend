@@ -1,16 +1,11 @@
-import { createEntityAdapter, PayloadAction } from "@reduxjs/toolkit";
-
-import { RootState } from "redux/store";
+import { createEntityAdapter, createSelector, PayloadAction } from "@reduxjs/toolkit";
 import { DateTime } from "luxon";
-import { GlobalState } from "../scientistData";
-import { getNewOrder } from "components/CreateSurvey/CreateForm/Condition/ToolBox/PageForm/utils";
-import { QuestionRedux } from "../types";
 
-// ----- ENTITY ADAPTER
-
-export const questionAdapter = createEntityAdapter<QuestionRedux>({
-  selectId: (question) => question.id,
-});
+import { RootState } from "@/redux/store/index.js";
+import { GlobalState } from "../scientistData.js"
+import { getNewOrder } from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/PageForm/utils/index.js"
+import { QuestionRedux } from "../types/index.js"
+import { pageSelectors } from "./page-editor.js"
 
 // ---- TYPES
 
@@ -77,52 +72,11 @@ type CreatedPayload = {
   global: GlobalState;
 };
 
-// ---- SELECTORS
+// ----- ENTITY ADAPTER
 
-export const error = (state: RootState): string | undefined => state.scientistData.questions.error;
-export const isLoading = (state: RootState): boolean => state.scientistData.questions.isLoading;
-export const isCreating = (state: RootState): boolean => state.scientistData.questions.isCreating;
-export const questionsHasChanges = (state: RootState): boolean => {
-  const updated = DateTime.fromISO(state.scientistData.questions.lastUpdated);
-  const saved = DateTime.fromISO(state.scientistData.questions.lastSaved);
-  return updated > saved;
-};
-
-export const questions = (state: RootState): QuestionRedux[] =>
-  questionAdapter.getSelectors().selectAll(state.scientistData.questions);
-
-const getSelectedQuestionId = (state: RootState): string => state.scientistData.questions.selectedQuestion;
-
-const getSelectedPageQuestions = (state: RootState): QuestionRedux[] => {
-  return questions(state).filter(
-    (question) => question?.attributes?.page?.data?.id === state.scientistData.pages.selectedPage
-  );
-};
-
-const getQuestionsByPageId = (state: RootState, pageId: string): QuestionRedux[] => {
-  return questions(state).filter((question) => question?.attributes?.page?.data?.id === pageId);
-};
-
-const getSelectedQuestion = (state: RootState): QuestionRedux | undefined =>
-  questionAdapter.getSelectors().selectById(state.scientistData.questions, getSelectedQuestionId(state));
-
-const getQuestionById = (state: RootState, questionId: string | undefined | null): QuestionRedux | undefined => {
-  if (!questionId) return;
-  return questionAdapter.getSelectors().selectById(state.scientistData.questions, questionId);
-};
-
-export const questionsSelectors = {
-  error,
-  isLoading,
-  isCreating,
-  questionsHasChanges,
-  questions,
-  getSelectedQuestionId,
-  getSelectedQuestion,
-  getSelectedPageQuestions,
-  getQuestionsByPageId,
-  getQuestionById,
-};
+export const questionAdapter = createEntityAdapter<QuestionRedux>({
+  selectId: (question) => question.id,
+});
 
 // ---- REDUCERS
 
@@ -177,3 +131,55 @@ export const questionsReducers = {
     state.questions.selectedQuestion = action.payload;
   },
 };
+
+// ---- SELECTORS
+
+const getSelectedQuestionId = (state: RootState): string => state.scientistData.questions.selectedQuestion;
+
+export const error = (state: RootState): string | undefined => state.scientistData.questions.error;
+export const isLoading = (state: RootState): boolean => state.scientistData.questions.isLoading;
+export const isCreating = (state: RootState): boolean => state.scientistData.questions.isCreating;
+export const questionsHasChanges = (state: RootState): boolean => {
+  const updated = DateTime.fromISO(state.scientistData.questions.lastUpdated);
+  const saved = DateTime.fromISO(state.scientistData.questions.lastSaved);
+  return updated > saved;
+};
+
+// MEMOIZED
+
+const localizedSelectors = questionAdapter.getSelectors();
+
+const {
+  selectAll: selectAllQuestions,
+  selectById: selectQuestionById,
+} = questionAdapter.getSelectors((state: RootState) => state.scientistData.questions)
+
+const selectSelectedPageQuestions = createSelector(
+  [ selectAllQuestions, pageSelectors.getSelectedPageId],
+  (questions, selectedPageId) => questions.filter((question) => question?.attributes?.page?.data?.id === selectedPageId)
+)
+
+const selectQuestionsByPageId = createSelector(
+  [ selectAllQuestions, (_: any, args: { pageId: string }) => args?.pageId ],
+  (questions, pageId) => questions.filter((question) => question?.attributes?.page?.data?.id === pageId)
+)
+
+const selectSelectedQuestion = createSelector(
+  [ (state) => state.scientistData.questions, getSelectedQuestionId ],
+  (questions, selectedQuestionId) => localizedSelectors.selectById(questions, selectedQuestionId)
+)
+
+// ---- EXPORTS
+
+export const questionsSelectors = {
+  error,
+  isLoading,
+  isCreating,
+  questionsHasChanges,
+  getSelectedQuestionId,
+  selectSelectedQuestion,
+  selectSelectedPageQuestions,
+  selectQuestionsByPageId,
+  selectQuestionById
+};
+

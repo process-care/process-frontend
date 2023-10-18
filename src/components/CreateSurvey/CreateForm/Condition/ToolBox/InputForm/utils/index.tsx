@@ -1,5 +1,4 @@
-import { QuestionRedux } from "redux/slices/types";
-import React from "react";
+import { QuestionRedux } from "@/redux/slices/types/index.js"
 import {
   TextareaFields,
   CheckboxFields,
@@ -13,89 +12,50 @@ import {
   FreeclassificationFields,
   AssociatedClassificationFields,
   MonoThumbnailFields,
-} from "../Template";
+} from "../Template/index.ts"
 import {
   CommonFieldsSchema,
   MultipleInputFieldsSchema,
   SliderSchema,
   WysiwygSchema,
   AssociatedSchema,
-} from "../ValidationSchemas";
+} from "../ValidationSchemas/index.ts"
 
 export const renderFormTemplate = (input: QuestionRedux | Record<string, any>): React.ReactNode => {
   switch (input?.attributes?.type) {
-    case "input":
-      return <InputFields />;
-      break;
-    case "number_input":
-      return <NumberInputFields />;
-      break;
-    case "checkbox":
-      return <CheckboxFields />;
-      break;
-    case "radio":
-      return <RadioboxFields />;
-      break;
-    case "select":
-      return <SelectFields />;
-      break;
-    case "slider":
-      return <SliderFields />;
-      break;
-    case "text_area":
-      return <TextareaFields />;
-      break;
-    case "date_picker":
-      return <DatepickerFields />;
-      break;
-    case "wysiwyg":
-      return <WysiwygFields />;
-    case "free_classification":
-      return <FreeclassificationFields />;
-    case "associated_classification":
-      return <AssociatedClassificationFields />;
-    case "mono_thumbnail":
-      return <MonoThumbnailFields />;
+    case "input": return <InputFields />;
+    case "number_input": return <NumberInputFields />;
+    case "checkbox": return <CheckboxFields />;
+    case "radio": return <RadioboxFields />;
+    case "select": return <SelectFields />;
+    case "slider": return <SliderFields />;
+    case "text_area": return <TextareaFields />;
+    case "date_picker": return <DatepickerFields />;
+    case "wysiwyg": return <WysiwygFields />;
+    case "free_classification": return <FreeclassificationFields />;
+    case "associated_classification": return <AssociatedClassificationFields />;
+    case "mono_thumbnail": return <MonoThumbnailFields />;
+    
     default:
       return <TextareaFields />;
-      break;
   }
 };
 
-export const renderFormValidationSchema = (input: QuestionRedux | Record<string, any>): React.ReactFragment => {
+export const renderFormValidationSchema = (input: QuestionRedux | Record<string, any>) => {
   switch (input?.attributes?.type) {
-    case "input":
-      return CommonFieldsSchema;
-      break;
-    case "number_input":
-      return CommonFieldsSchema;
-      break;
-    case "checkbox":
-      return MultipleInputFieldsSchema;
-      break;
-    case "radio":
-      return MultipleInputFieldsSchema;
-      break;
-    case "select":
-      return MultipleInputFieldsSchema;
-      break;
-    case "slider":
-      return SliderSchema;
-      break;
-    case "text_area":
-      return CommonFieldsSchema;
-      break;
-    case "date_picker":
-      return CommonFieldsSchema;
-      break;
-    case "wysiwyg":
-      return WysiwygSchema;
-    case "associated_classification":
-      return AssociatedSchema;
+    case "input": return CommonFieldsSchema;
+    case "number_input": return CommonFieldsSchema;
+    case "checkbox": return MultipleInputFieldsSchema;
+    case "radio": return MultipleInputFieldsSchema;
+    case "select": return MultipleInputFieldsSchema;
+    case "slider": return SliderSchema;
+    case "text_area": return CommonFieldsSchema;
+    case "date_picker": return CommonFieldsSchema;
+    case "wysiwyg": return WysiwygSchema;
+    case "associated_classification": return AssociatedSchema;
 
     default:
       return CommonFieldsSchema;
-      break;
   }
 };
 

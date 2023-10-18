@@ -1,5 +1,5 @@
-import { AnswerParticipationRedux } from "./answers";
-import { InitializedPayload } from "./status";
+import { AnswerParticipationRedux } from "./answers.js"
+import { InitializedPayload } from "./status.js"
 
 export function sanitizeAnswers(answers: InitializedPayload['answers']): AnswerParticipationRedux[] {
   const sanitized = answers.reduce((acc, a) => {

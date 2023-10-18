@@ -1,6 +1,6 @@
 // FIXME: trasnform the sub fields like landing and such.............. :(
 
-import { SurveyEntityResponse, SurveyEntityResponseCollection } from "api/graphql/types.generated";
+import { SurveyEntityResponse, SurveyEntityResponseCollection } from "@/api/graphql/types.generated.js"
 
   
 /**

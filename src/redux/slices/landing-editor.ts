@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Landing } from "api/graphql/types.generated";
-import { RootState } from "redux/store";
+import { Landing } from "@/api/graphql/types.generated.js"
+import { RootState } from "@/redux/store/index.js";
 import { DateTime } from "luxon";
-import { LastSaved, LandingRedux } from "./types";
+import { LastSaved, LandingRedux } from "./types/index.js"
 
 // ---- STATE
 
@@ -29,6 +29,7 @@ type UploadPayload = {
 };
 
 // ----- SLICE
+
 const SLICE_NAME = "landing-editor";
 
 export const landingEditorSlice = createSlice({
@@ -80,8 +81,8 @@ export const hasMembers = (state: RootState): boolean => getAttributes(state)?.m
 export const getLanding = (state: RootState): LandingRedux | undefined => state.editor.landing.data;
 export const members = (state: RootState): LandingRedux["attributes"]["members"] => getAttributes(state)?.members;
 
-export const about = (state: RootState): LandingRedux["attributes"]["about_page"] | undefined =>
-  getAttributes(state)?.about_page;
+export const about = (state: RootState): LandingRedux["attributes"]["about"] | undefined =>
+  getAttributes(state)?.about
 
 type HeaderData = Partial<Pick<Landing, "title" | "color_theme" | "logo">>;
 

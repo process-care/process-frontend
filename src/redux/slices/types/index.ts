@@ -1,11 +1,11 @@
-import { SafeEntity } from "api/entity-checker";
+import { SafeEntity } from "@/api/entity-checker.js";
 import {
   Condition,
   Landing,
   Page,
   Question,
   Survey,
-} from "api/graphql/sdk.generated";
+} from "@/api/graphql/sdk.generated.js";
 
 // ----- SAFE ENTITY
 

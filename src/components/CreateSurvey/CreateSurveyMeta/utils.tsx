@@ -1,7 +1,8 @@
-import { Enum_Question_Rows } from "api/graphql/types.generated";
-import { Input, Select, Textarea } from "components/Fields";
 import { FormikErrors } from "formik";
-import { SurveyBuilder } from "redux/slices/surveyBuilderOLD";
+
+import { Enum_Question_Rows } from "@/api/graphql/types.generated.ts"
+import { Input, Select, Textarea } from "@/components/Fields/index.ts"
+import { SurveyBuilder } from "@/redux/slices/surveyBuilderOLD/index.tsx"
 
 // TODO : Get the list of all the tags from the backend
 const t = {

@@ -5,7 +5,7 @@ interface Props {
   w?: string;
 }
 
-export const NoData: React.FC<Props> = ({ content, w = "80%" }) => {
+export default function NoData({ content, w = "80%" }: Props): JSX.Element {
   return (
     <Box
       p="80px"

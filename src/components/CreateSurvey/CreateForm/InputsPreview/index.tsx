@@ -1,18 +1,16 @@
 import React from "react";
-import { Box, Flex, Text } from "@chakra-ui/react";
-import Card from "./Card";
-
-import { QuestionRedux } from "redux/slices/types";
-import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { Formik, Form } from "formik";
-import { Header } from "./Header";
+import { Box, Flex, Text } from "@chakra-ui/react";
+import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import { Loader } from "components/Spinner";
-import { Error } from "components/Error";
-import { selectors, actions } from "redux/slices/scientistData";
-
-import { NoData } from "components/SurveyGrid/noData";
+import { QuestionRedux } from "@/redux/slices/types/index.js"
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
+import { selectors, actions } from "@/redux/slices/scientistData.js"
+import Loader from "@/components/Spinner/index.tsx"
+import Error from "@/components/Error/index.tsx"
+import NoData from "@/components/SurveyGrid/noData/index.tsx"
+import Header from "./Header/index.tsx"
+import Card from "./Card/index.tsx"
 
 export interface Item {
   id: number;
@@ -32,13 +30,12 @@ interface Props {
   surveyId: string;
 }
 
-const InputsPreview: React.FC<Props> = ({ order }) => {
+export default function InputsPreview({ order }: Props): JSX.Element {
   const dispatch = useAppDispatch();
-  const selectedPage = useAppSelector(selectors.pages.getSelectedPage);
 
-  const questions = useAppSelector(selectors.questions.getSelectedPageQuestions);
+  const selectedPage = useAppSelector(selectors.pages.selectSelectedPage);
+  const questions = useAppSelector(selectors.questions.selectSelectedPageQuestions);
   const isLoading = useAppSelector(selectors.questions.isLoading);
-
   const error = useAppSelector(selectors.questions.error);
 
   const renderCard = (input: QuestionRedux, index: number) => {
@@ -48,9 +45,7 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
   const onDragEnd = (result: any) => {
     const { destination, source, draggableId } = result;
 
-    if (!destination) {
-      return;
-    }
+    if (!destination) return
 
     if (destination.droppableId === source.droppableId && destination.index === source.index) {
       return;
@@ -69,13 +64,9 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
     return (
       <Box
         w="100%"
-        d="flex"
+        display="flex"
         flexDirection="column"
         alignItems="center"
-        // h="90%"
-
-        backgroundColor={isDraggingOver ? "brand.gray.100" : "transparent"}
-        // overflowY="auto"
       >
         <Formik
           initialValues={{}}
@@ -86,7 +77,7 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
           {() => {
             return (
               <Form style={{ width: "100%" }}>
-                <Flex alignItems="center" justifyContent="center" fontSize="30" flexDirection="column" px={10}>
+                <Flex className="h-full" alignItems="center" justifyContent="center" flexDirection="column" px={10}>
                   {children}
                 </Flex>
               </Form>
@@ -114,7 +105,7 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
 
   return (
     <>
-      <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
+      <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId={selectedPage.id}>
           {(provided, snapshot) => (
             <>
@@ -142,5 +133,3 @@ const InputsPreview: React.FC<Props> = ({ order }) => {
     </>
   );
 };
-
-export default InputsPreview;

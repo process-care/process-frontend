@@ -1,9 +1,8 @@
-import React from "react";
 import { Spinner, Center } from "@chakra-ui/react";
 
-export const Loader: React.FC = () => {
+export default function Loader(): JSX.Element {
   return (
-    <Center h="100vh">
+    <Center h="40vh">
       <Spinner size="xs" />
     </Center>
   );

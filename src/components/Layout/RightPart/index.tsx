@@ -1,16 +1,15 @@
-import React from "react";
-
 import { Container } from "@chakra-ui/react";
-import { PageForm } from "components/CreateSurvey/CreateForm/Condition/ToolBox/PageForm";
-import { ConditionRedux } from "redux/slices/types";
-import { ConditionPreview } from "components/CreateSurvey/CreateForm/Condition/ConditionPreview";
+
+import { ConditionRedux } from "@/redux/slices/types/index.js"
+import PageForm from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/PageForm/index.tsx"
+import ConditionPreview from "@/components/CreateSurvey/CreateForm/Condition/ConditionPreview/index.tsx"
 
 interface Props {
   selectedCondition: ConditionRedux | undefined;
 }
-export const RightPart: React.FC<Props> = ({ selectedCondition }) => {
+export default function RightPart({ selectedCondition }: Props): JSX.Element {
   return (
-    <Container variant="rightPart">
+    <Container className="relative" variant="rightPart">
       {selectedCondition?.id !== undefined ? (
         <ConditionPreview selectedCondition={selectedCondition} />
       ) : (

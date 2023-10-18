@@ -1,17 +1,12 @@
-import { createEntityAdapter, createSlice, PayloadAction, Update } from "@reduxjs/toolkit";
-
-// import type { RootState } from "redux/store";
-import { RootState } from "redux/store";
+import { createEntityAdapter, createSlice, createSelector, PayloadAction, Update } from "@reduxjs/toolkit";
 import { DateTime } from "luxon";
-import { GlobalState } from "../scientistData";
-import { Maybe } from "api/graphql/types.generated";
-import { ConditionRedux } from "../types";
 
-// ----- ENTITY ADAPTER
-
-export const conditionAdapter = createEntityAdapter<ConditionRedux>({
-  selectId: (condition) => condition.id,
-});
+import { RootState } from "@/redux/store/index.js";
+import { GlobalState } from "../scientistData.js"
+import { Maybe } from "@/api/graphql/types.generated.js"
+import { ConditionRedux } from "../types/index.js"
+import { pageSelectors } from "./page-editor.js"
+import { questionsSelectors } from "./question-editor.js"
 
 // ---- TYPES
 
@@ -122,7 +117,14 @@ type CreatedPayload = {
   redirectToPage: string;
 };
 
+// ----- ENTITY ADAPTER
+
+export const conditionAdapter = createEntityAdapter<ConditionRedux>({
+  selectId: (condition) => condition.id,
+});
+
 // ----- SLICE
+
 const SLICE_NAME = "condition-editor";
 
 export const conditionSlice = createSlice({
@@ -211,85 +213,6 @@ export const conditionSlice = createSlice({
   },
 });
 
-// ---- SELECTORS
-
-export const error = (state: RootState): string | undefined => state.scientistData.questions.error;
-export const isLoading = (state: RootState): boolean => state.scientistData.questions.isLoading;
-export const hasChanges = (state: RootState): boolean => {
-  const updated = DateTime.fromISO(state.scientistData.questions.lastUpdated);
-  const saved = DateTime.fromISO(state.scientistData.questions.lastSaved);
-  return updated > saved;
-};
-
-export const getAllConditions = (state: RootState): ConditionRedux[] =>
-  conditionAdapter.getSelectors().selectAll(state.scientistData.conditions);
-
-export const getAllPagesConditions = (state: RootState): ConditionRedux[] =>
-  conditionAdapter
-    .getSelectors()
-    .selectAll(state.scientistData.conditions)
-    .filter((c) => c?.attributes?.type === "page");
-
-export const getAllQuestionsConditionsInSelectedPage = (state: RootState): ConditionRedux[] => {
-  return getAllConditions(state).filter(
-    (condition) =>
-      condition?.attributes.type === "question" &&
-      condition?.attributes.referer_question?.data?.attributes?.page?.data?.id ===
-        state.scientistData.pages.selectedPage
-  );
-};
-
-const getSelectedConditionId = (state: RootState): string => state.scientistData.conditions.selectedCondition;
-
-const getStep = (state: RootState): number => state.scientistData.conditions.step;
-const getValidity = (state: RootState): boolean => state.scientistData.conditions.isValid;
-
-const getConditionsByPageId = (state: RootState, pageId: string): ConditionRedux[] => {
-  return getAllConditions(state).filter((condition) => condition?.attributes?.referer_page?.data?.id === pageId);
-};
-
-const getConditionsByQuestionId = (state: RootState, questionsId: string): ConditionRedux[] => {
-  return getAllConditions(state).filter(
-    (condition) => condition?.attributes?.referer_question?.data?.id === questionsId
-  );
-};
-
-const getSelectedQuestionsConditions = (state: RootState): ConditionRedux[] => {
-  return getAllConditions(state).filter(
-    (condition) => condition.attributes?.referer_question?.data?.id === state.scientistData.questions.selectedQuestion
-  );
-};
-
-const getSelectedCondition = (state: RootState): ConditionRedux | undefined =>
-  conditionAdapter.getSelectors().selectById(state.scientistData.conditions, getSelectedConditionId(state));
-
-const selectById = (state: RootState, condId: string | undefined): ConditionRedux | undefined => {
-  if (!condId) return;
-  return conditionAdapter.getSelectors().selectById(state.scientistData.conditions, condId);
-};
-
-export const conditionsSelectors = {
-  error,
-  isLoading,
-  hasChanges,
-  getAllConditions,
-  getSelectedConditionId,
-  getSelectedCondition,
-  getSelectedQuestionsConditions,
-  getAllPagesConditions,
-  selectById,
-  getStep,
-  getValidity,
-  getConditionsByPageId,
-  getConditionsByQuestionId,
-  getAllQuestionsConditionsInSelectedPage,
-};
-
-// ---- EXPORTS
-
-export const actions = conditionSlice.actions;
-export default conditionSlice.reducer;
-
 export const conditionsReducers = {
   createCondition: (state: GlobalState, _action: PayloadAction<CreatePayload>): void => {
     state.conditions.isCreating = true;
@@ -327,9 +250,12 @@ export const conditionsReducers = {
     state.conditions.lastDeleted = action.payload.lastDeleted;
   },
   deleteGroupCondition: (state: GlobalState, action: PayloadAction<DeleteGroupPayload>): void => {
-    state.conditions.isDeleting = true;
-    conditionAdapter.removeMany(state.conditions, action.payload.conditionsId);
-    const { groupId } = action.payload;
+    state.conditions.isDeleting = true
+    const { groupId, conditionsId } = action.payload
+
+    // Remove all conditions from this group
+    conditionAdapter.removeMany(state.conditions, conditionsId);
+
     const entities = conditionAdapter.getSelectors().selectAll(state.conditions);
     const sameGroup = entities.filter((e) => e?.attributes?.group === groupId);
     if (sameGroup.length === 0) state.conditions.selectedCondition = "";
@@ -338,8 +264,8 @@ export const conditionsReducers = {
     }
   },
   deletedGroupCondition: (state: GlobalState, action: PayloadAction<DeletedPayload>): void => {
-    state.conditions.isDeleting = false;
-    state.conditions.lastDeleted = action.payload.lastDeleted;
+    state.conditions.isDeleting = false
+    state.conditions.lastDeleted = action.payload.lastDeleted
   },
   saveCondition: (state: GlobalState, _action: PayloadAction): void => {
     state.conditions.isSaving = true;
@@ -365,4 +291,89 @@ export const conditionsReducers = {
   setValidityCondition: (state: GlobalState, action: PayloadAction<boolean>): void => {
     state.conditions.isValid = action.payload;
   },
+};
+
+// ---- SELECTORS
+
+const getSelectedConditionId = (state: RootState): string => state.scientistData.conditions.selectedCondition
+const getStep = (state: RootState): number => state.scientistData.conditions.step;
+const getValidity = (state: RootState): boolean => state.scientistData.conditions.isValid;
+
+export const error = (state: RootState): string | undefined => state.scientistData.questions.error;
+export const isLoading = (state: RootState): boolean => state.scientistData.questions.isLoading;
+export const hasChanges = (state: RootState): boolean => {
+  const updated = DateTime.fromISO(state.scientistData.questions.lastUpdated);
+  const saved = DateTime.fromISO(state.scientistData.questions.lastSaved);
+  return updated > saved;
+};
+
+// MEMOIZED
+
+const localizedSelectors = conditionAdapter.getSelectors()
+
+const {
+  selectAll: selectAllConditions,
+  selectById: selectById,
+} = conditionAdapter.getSelectors((state: RootState) => state.scientistData.conditions)
+
+const selectAllPagesConditions = createSelector(
+  selectAllConditions,
+  (conditions) => conditions.filter((c) => c?.attributes?.type === "page")
+)
+
+const selectAllQuestionsConditionsInSelectedPage = createSelector(
+  [ selectAllConditions, pageSelectors.getSelectedPageId ],
+  (conditions, selectedPageId) => conditions.filter((condition) =>
+    condition?.attributes.type === "question" &&
+    condition?.attributes.referer_question?.data?.attributes?.page?.data?.id === selectedPageId
+  )
+)
+
+const selectConditionsByPageId = createSelector(
+  [ selectAllConditions, (_state, args) => args?.pageId ],
+  (conditions, pageId) => (!pageId)
+    ? []
+    : conditions.filter((condition) => condition?.attributes?.referer_page?.data?.id === pageId)
+)
+
+const selectConditionsByQuestionId = createSelector(
+  [ selectAllConditions, (_state, args) => args?.questionId ],
+  (conditions, questionId) => {
+    const found = conditions.filter((condition) => condition?.attributes?.referer_question?.data?.id === questionId)
+    return found
+  }
+)
+
+const selectSelectedQuestionsConditions = createSelector(
+  [ selectAllConditions, questionsSelectors.getSelectedQuestionId ],
+  (conditions, selectedQuestionId) => {
+    const found = conditions.filter((condition) => condition?.attributes?.referer_question?.data?.id === selectedQuestionId)
+    return found
+  }
+)
+
+const selectSelectedCondition = createSelector(
+  [ (state) => state.scientistData.conditions, getSelectedConditionId ],
+  (conditions, selectedConditionId) => localizedSelectors.selectById(conditions, selectedConditionId)
+)
+
+// ---- EXPORTS
+
+export default conditionSlice.reducer;
+export const actions = conditionSlice.actions;
+
+export const conditionsSelectors = {
+  error,
+  isLoading,
+  hasChanges,
+  getSelectedConditionId,
+  selectSelectedCondition,
+  selectSelectedQuestionsConditions,
+  selectAllPagesConditions,
+  selectById,
+  getStep,
+  getValidity,
+  selectConditionsByPageId,
+  selectConditionsByQuestionId,
+  selectAllQuestionsConditionsInSelectedPage,
 };

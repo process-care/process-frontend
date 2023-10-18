@@ -1,5 +1,5 @@
-import { LandingRedux } from "redux/slices/types";
-import { colors } from "./../../ColorPicker/utils";
+import { LandingRedux } from "@/redux/slices/types/index.js"
+import { colors } from "./../../ColorPicker/utils/index.ts"
 
 export const initialValues: LandingRedux["attributes"] = {
   color_theme: colors[0],
@@ -9,7 +9,7 @@ export const initialValues: LandingRedux["attributes"] = {
   subtitle: "",
   title: "",
   video_url: "",
-  wysiwyg: "",
+  presentation: "",
   partners_logos: [],
-  about_page: "",
+  about: "",
 };

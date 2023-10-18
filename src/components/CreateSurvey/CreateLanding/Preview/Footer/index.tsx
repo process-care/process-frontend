@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Flex,
   Box,
@@ -8,17 +7,18 @@ import {
   Image,
   Grid,
 } from "@chakra-ui/react";
-import { t } from "static/createLanding";
-import { NavLink } from "react-router-dom";
-import { Color } from "types/landing";
-import { useMediaQueries } from "utils/hooks/mediaqueries";
+import Link from "next/link.js"
+
+import { t } from "@/static/createLanding.ts"
+import { Color } from "@/types/landing.ts"
+import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
 
 type Props = {
   partners_logos: string[];
   color_theme?: Color;
 };
 
-export const Footer: React.FC<Props> = ({ partners_logos, color_theme }) => {
+export default function Footer({ partners_logos, color_theme }: Props): JSX.Element {
   const { isTablet } = useMediaQueries();
 
   return (
@@ -61,7 +61,7 @@ export const Footer: React.FC<Props> = ({ partners_logos, color_theme }) => {
         </Grid>
         <Box
           px={4}
-          d="flex"
+          display="flex"
           justifyContent={isTablet ? "center" : "space-between"}
           flexDir={isTablet ? "column" : "row"}
         >
@@ -73,11 +73,11 @@ export const Footer: React.FC<Props> = ({ partners_logos, color_theme }) => {
           </Button>
         </Box>
       </Flex>
-      <NavLink to="/">
+      <Link href="/">
         <Text textAlign={isTablet ? "center" : "right"} variant="xxs" p={4}>
           {t.credits}
         </Text>
-      </NavLink>
+      </Link>
     </Box>
   );
 };

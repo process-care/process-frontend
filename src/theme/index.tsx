@@ -1,4 +1,4 @@
-import { extendTheme } from "@chakra-ui/react";
+import { StyleFunctionProps, extendTheme } from "@chakra-ui/react";
 import "@fontsource/ibm-plex-sans";
 
 export const mobile = "30em";
@@ -36,12 +36,14 @@ const theme = extendTheme({
         marginTop: "10px",
       },
     },
+    
     FormHelperText: {
       baseStyle: {
         fontSize: "5px",
         fontFamily: "IBM Plex Sans",
       },
     },
+
     Textarea: {
       baseStyle: {
         fontWeight: 500,
@@ -52,6 +54,7 @@ const theme = extendTheme({
 
     Button: {
       sizes: {
+        sm: {},
         xl: {
           h: "56px",
           fontSize: "lg",
@@ -70,7 +73,7 @@ const theme = extendTheme({
             color: "gray.600",
           },
         }),
-        box: (props: any) => ({
+        box: (props: StyleFunctionProps) => ({
           border: "1px solid",
           borderColor: "black",
           borderRadius: "4px",
@@ -116,15 +119,15 @@ const theme = extendTheme({
             },
           },
         }),
-        rounded: ({ isSmall }: { isSmall: boolean }) => ({
+        rounded: ({ size }: StyleFunctionProps) => ({
           bg: "black",
           borderRadius: "4px",
           color: "white",
-          padding: isSmall ? "0 20px" : "25px 30px",
+          padding: size === 'sm' ? "0 20px" : "25px 30px",
           border: "1px solid",
           fontWeight: 600,
           fontSize: "0.75rem",
-          height: isSmall ? "30px" : 10,
+          height: size === 'sm' ? "30px" : 10,
           _hover: {
             bg: "gray.700",
             color: "white",
@@ -153,15 +156,15 @@ const theme = extendTheme({
             lineHeight: "18,2px",
           },
         }),
-        roundedTransparent: ({ isSmall }: { isSmall: boolean }) => ({
+        roundedTransparent: ({ size }: StyleFunctionProps) => ({
           bg: "transparent",
           borderRadius: "4px",
           fontSize: "12px",
           color: "black",
           fontWeight: 300,
-          padding: isSmall ? "0 20px" : "25px 30px",
+          padding: size === 'sm' ? "0 20px" : "25px 30px",
           border: "1px solid",
-          height: isSmall ? "30px" : 10,
+          height: size === 'sm' ? "30px" : 10,
           _hover: {
             bg: "black",
             color: "white",
@@ -187,7 +190,7 @@ const theme = extendTheme({
           padding: "5",
           backgroundColor: "#fdfdfdf1",
         }),
-        inputContainer: (props: any) => ({
+        inputContainer: (props: StyleFunctionProps) => ({
           margin: 5,
           border: "1px",
           padding: 4,
@@ -206,7 +209,7 @@ const theme = extendTheme({
           width: "100%",
           height: "1px",
         }),
-        createformColumn: (props: any) => ({
+        createformColumn: (props: StyleFunctionProps) => ({
           bg: props.colorMode === "dark" ? "gray.200" : "white",
           color: props.colorMode === "dark" ? "white" : "gray.800",
           height: "100vh",
@@ -226,7 +229,6 @@ const theme = extendTheme({
           overflowY: "auto",
           w: "100%",
           maxW: "53%",
-          height: "100vh",
           [`@media screen and (max-width: ${tablet})`]: {
             height: "100%",
             maxW: "100%",
@@ -236,6 +238,7 @@ const theme = extendTheme({
         },
       },
     },
+    
     Text: {
       variants: {
         xxs: () => ({
@@ -340,4 +343,5 @@ const theme = extendTheme({
     },
   },
 });
+
 export default theme;

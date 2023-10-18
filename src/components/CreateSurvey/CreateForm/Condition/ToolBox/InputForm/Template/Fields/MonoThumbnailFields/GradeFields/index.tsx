@@ -1,19 +1,20 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Box, Flex } from "@chakra-ui/react";
-import { QuestionRedux } from "redux/slices/types";
-import { Input, NumberInput, Textarea } from "components/Fields";
-import { RepeatedFields } from "../../..";
 import { useFormikContext } from "formik";
-import { Enum_Question_Rows } from "api/graphql/types.generated";
-import { useAppSelector } from "redux/hooks";
-import { selectors as formBuilderSelectors } from "redux/slices/formBuilder";
+
+import { QuestionRedux } from "@/redux/slices/types/index.js"
+import { RepeatedFields } from "../../../index.ts"
+import { Enum_Question_Rows } from "@/api/graphql/types.generated.ts"
+import { useAppSelector } from "@/redux/hooks/index.js"
+import { selectors as formBuilderSelectors } from "@/redux/slices/formBuilder/index.ts"
+import { Input, NumberInput, Textarea } from "@/components/Fields/index.ts"
 
 const ID = "associated_input";
 interface Props {
   selectedQuestion: QuestionRedux | undefined;
 }
 
-export const GradeFields: React.FC<Props> = ({ selectedQuestion }) => {
+export default function GradeFields({ selectedQuestion }: Props): JSX.Element {
   const isEditing = useAppSelector(formBuilderSelectors.isEditing);
 
   const { resetForm, touched } = useFormikContext<QuestionRedux["attributes"]>();
@@ -31,7 +32,7 @@ export const GradeFields: React.FC<Props> = ({ selectedQuestion }) => {
         },
       });
     }
-  }, [savedType, isEditing]);
+  }, [savedType, isEditing, touched, resetForm, selectedQuestion?.attributes]);
 
   return (
     <Box mt="5">

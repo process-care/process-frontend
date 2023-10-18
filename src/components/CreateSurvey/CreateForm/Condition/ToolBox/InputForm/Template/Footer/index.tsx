@@ -1,9 +1,8 @@
-import { Button, Box, Flex } from "@chakra-ui/react";
-import { SvgHover } from "components/SvgHover";
-import React from "react";
-import { t } from "static/global";
+import { Button } from "@chakra-ui/react"
 
-import { ReactComponent as Trash } from "assets/trash.svg";
+import { t } from "@/static/global.ts"
+import ButtonIcon from "@/components/ButtonIcon"
+import { Trash2Icon } from "lucide-react"
 
 interface Props {
   onCancel: () => void;
@@ -11,50 +10,42 @@ interface Props {
   disabled?: boolean;
   onDelete?: () => void;
   hideDelete?: boolean;
-  w?: string;
 }
 
-export const Footer: React.FC<Props> = ({
+export default function Footer({
   onCancel,
   disabled,
   onSubmit,
   onDelete,
   hideDelete,
-  w = "43%",
-}) => {
+}:Props ): JSX.Element {
   return (
-    <Box
-      minW="300px"
-      w={w}
-      position="fixed"
-      bottom="0"
-      backgroundColor="white"
-      borderTop="1px solid"
-      px={6}
-      py={4}
-      right="-1px"
-    >
-      <Flex justifyContent="space-between" alignItems="center">
-        {!hideDelete && (
-          <Box w="70%" pl={4}>
-            <SvgHover>
-              <Trash onClick={() => !!onDelete && onDelete()} />
-            </SvgHover>
-          </Box>
-        )}
-
-        <Button variant="link" onClick={() => onCancel()} type="button" pr="20">
+    <div className="w-full py-4 px-10 flex flex-row-reverse justify-between items-center bg-white border-t border-t-solid border-t-black min-w-[300px]">
+      {/* Action group */}
+      <div>
+        <Button variant="link" onClick={onCancel} type="button" mr="20">
           {t.cancel}
         </Button>
+        
         <Button
           type="submit"
           variant="rounded"
+          w="128px"
           disabled={disabled}
-          onClick={() => onSubmit()}
+          onClick={onSubmit}
         >
           {t.validate}
         </Button>
-      </Flex>
-    </Box>
+      </div>
+
+      {/* Delete */}
+      {!hideDelete && (
+        <ButtonIcon
+          icon={Trash2Icon}
+          onClick={() => !!onDelete && onDelete()}
+          type="plain"
+        />
+      )}
+    </div>
   );
 };

@@ -1,13 +1,16 @@
+'use client'
+
 import React from "react";
+import { useDispatch } from "react-redux";
 import { Formik, Form } from "formik";
 import { Box, Flex, Button } from "@chakra-ui/react";
-import { Input, Checkbox } from "components/Fields";
-import { SigninSchema } from "../../SiginForm/validationSchema";
-import { actions } from "redux/slices/scientistData";
-import { useDispatch } from "react-redux";
-import { Errors, renderAuthMessage } from "../../Errors";
-import { useAppSelector } from "redux/hooks";
-import { useHistory } from "react-router-dom";
+import { useRouter } from "next/navigation.js"
+
+import { Input, Checkbox } from "@/components/Fields/index.ts"
+import { SigninSchema } from "@/components/Authentification/SiginForm/validationSchema.ts"
+import { actions } from "@/redux/slices/scientistData.js"
+import Errors, { renderAuthMessage } from "@/components/Authentification/Errors/index.tsx"
+import { useAppSelector } from "@/redux/hooks/index.js"
 
 // ---- TYPES
 
@@ -29,8 +32,8 @@ type Auth = {
 
 // ---- COMPONENT
 
-export const SigninForm: React.FC<Props> = ({ cancel }) => {
-  const history = useHistory();
+export default function SigninForm({ cancel }: Props): JSX.Element {
+  const router = useRouter()
   const dispatch = useDispatch();
 
   const isSuccess = useAppSelector((state) => state.scientistData.auth.data?.user?.id);
@@ -45,8 +48,7 @@ export const SigninForm: React.FC<Props> = ({ cancel }) => {
   };
 
   if (isSuccess) {
-    const to = { pathname: "/attente-de-validation" };
-    history.push(to);
+    router.push("/attente-de-validation");
   }
 
   function handleSubmit(data: Data) {

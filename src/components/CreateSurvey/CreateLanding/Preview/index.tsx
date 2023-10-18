@@ -1,18 +1,24 @@
-import React, { useCallback } from "react";
+'use client'
+
+import { useCallback, useMemo } from "react";
 import { Box, Center, Flex, Text } from "@chakra-ui/react";
-import { useHistory, useParams } from "react-router-dom";
-import { Description } from "./Description";
-import { useAppSelector } from "redux/hooks";
-import { selectors } from "redux/slices/landing-editor";
-import { useMediaQueries } from "utils/hooks/mediaqueries";
-import { LandingRedux } from "redux/slices/types";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
-import { Team } from "./Team";
-import { Video } from "components/Video";
-import { Legals } from "./Legals";
-import { useCreateParticipationMutation } from "api/graphql/queries/participation.gql.generated";
-import { client } from "api/gql-client";
-import { useConsentHandlers } from "pages/Survey/Participation";
+import { useParams, useRouter } from "next/navigation.js"
+import Image from "next/image.js"
+
+import { useAppSelector } from "@/redux/hooks/index.js"
+import { selectors } from "@/redux/slices/landing-editor.ts"
+import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
+import { LandingRedux } from "@/redux/slices/types/index.js"
+import { useCreateParticipationMutation } from "@/api/graphql/queries/participation.gql.generated.js";
+import { client } from "@/api/gql-client.js"
+import { useConsentHandlers } from "@/utils/participations/consent-handler.ts"
+import Video from "@/components/Video/index.tsx"
+import Description from "./Description/index.tsx"
+import Legals from "./Legals/index.tsx"
+import Team from "./Team/index.tsx"
+import { useWysiwygSerializer } from "@/components/Fields/Wysiwyg/Wysiwyg.tsx";
+
 // ---- STATICS
 
 const big_placeholder =
@@ -27,45 +33,54 @@ interface Props {
   author?: { email: string; username: string } | null;
   needConsent?: boolean | null | undefined;
   surveyId?: string;
+  isPreview?: boolean;
 }
 
 // ---- COMPONENT
 
-export const Preview: React.FC<Props> = ({ isUserView, data, author, needConsent, surveyId }) => {
-  const { slug } = useParams<{ slug: string }>();
-  const history = useHistory();
+export default function Preview({ isUserView, data, author, needConsent, surveyId, isPreview }: Props): JSX.Element {
+  const router = useRouter()
+  const params = useParams()
+  const { isTablet } = useMediaQueries()
 
-  const aboutPage = useAppSelector(selectors.about);
-  const isEditingAbout = useAppSelector(selectors.isEditingAbout);
-  const { isTablet } = useMediaQueries();
-  const attributes = data?.attributes;
+  const slug = typeof params.slug === 'string' ? params.slug : ''
+  const attributes = data?.attributes
+  const coverSrc = attributes?.cover?.data?.attributes?.url ?? ""
+  const coverName = attributes?.cover?.data?.attributes?.name ?? ""
+  const isEditingAbout = useAppSelector(selectors.isEditingAbout)
 
-  const hasVideo = Boolean(attributes?.video_url);
-  const coverSrc = attributes?.cover?.data?.attributes?.url;
-  const coverName = attributes?.cover?.data?.attributes?.name ?? "";
+  // Get the about page raw data and serialize it for display
+  const aboutPage = useAppSelector(selectors.about)
+  const aboutHtml = useWysiwygSerializer(aboutPage)
 
-  const hasImage = Boolean(coverSrc);
-  const hasMedia = hasVideo || hasImage;
-  const hasMembers = Boolean(data?.attributes?.members?.length > 0);
-  const hasAboutPage = Boolean(data?.attributes?.about_page);
-  const { mutateAsync: createParticipation } = useCreateParticipationMutation(client);
-  const { participation, onConsent } = useConsentHandlers(slug);
+  // Actions
+  const { mutateAsync: createParticipation } = useCreateParticipationMutation(client)
+  const { loading, participation, onConsent } = useConsentHandlers(slug)
 
+  // Flags
+  const hasVideo = Boolean(attributes?.video_url)
+  const hasImage = Boolean(coverSrc)
+  const hasMedia = hasVideo || hasImage
+  const hasMembers = Boolean(data?.attributes?.members?.length > 0)
+  const hasAboutPage = Boolean(data?.attributes?.about)
+  const isInactive = !isUserView || loading
+
+  // Callback for participate button
   const onParticipate = useCallback(async () => {
-    if (!isUserView) {
-      alert("Bouton désactivé pendant la prévisualisation.");
+    if (isInactive) {
+      alert("Bouton désactivé pendant la prévisualisation / le chargement.");
       return;
     }
 
     // If there is a participation recorded already, skip creation
     if (participation) {
-      history.push(`/survey/${slug}/participate`);
+      router.push(`/survey/${slug}/participate`);
       return;
     }
 
     // If need consent, go to the consent page
     if (needConsent) {
-      history.push(`/survey/${slug}/consent`);
+      router.push(`/survey/${slug}/consent`);
       return;
     }
 
@@ -74,19 +89,21 @@ export const Preview: React.FC<Props> = ({ isUserView, data, author, needConsent
       values: { consent: true, completed: false, survey: surveyId },
     });
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore : I don't understand the structure of the answer, because that's supposed to work
     onConsent(res?.createParticipation?.data?.id);
-  }, [slug, isUserView, needConsent]);
+  }, [isInactive, participation, needConsent, createParticipation, surveyId, onConsent, router, slug]);
 
+  // Compute heigh according various state of the component
+  const height = useMemo(() => isTablet ? "fit-content" : isUserView || isPreview ? "100vh" : "calc(100vh - 65px)", [isPreview, isTablet, isUserView])
+  
   if (isEditingAbout) {
     return (
-      <Box h="fit-content" backgroundColor="white" w="80%" mx="auto" mt="100px" p={10}>
+      <Box h={height} className="overflow-auto p-10 w-full" >
         <Text
           textAlign="left"
           variant="current"
           dangerouslySetInnerHTML={{
-            __html: aboutPage || big_placeholder,
+            __html: aboutHtml || big_placeholder,
           }}
         ></Text>
       </Box>
@@ -94,82 +111,75 @@ export const Preview: React.FC<Props> = ({ isUserView, data, author, needConsent
   }
 
   return (
-    <Box h={isTablet ? "fit-content" : "100vh"} w="100%" backgroundColor="white">
-      <Flex flexDirection={isTablet ? "column" : "row"}>
-        <Center
-          w={isTablet ? "100%" : "33%"}
-          minW="400px"
-          borderRight="1px solid rgb(234, 234, 239)"
-          h={isTablet ? "fit-content" : "100vh"}
-          py={isTablet ? "30px" : "0px"}
-          pos="relative"
-          backgroundColor={attributes?.color_theme?.button || "blue"}
-        >
-          <Box textAlign="left" px="5%">
-            <Text variant="xxl" fontWeight="bold" color="white" ml="-2px" wordBreak="break-word">
-              {attributes?.title}
-            </Text>
+    <Flex h={height} w="100%" backgroundColor="white" flexDirection={isTablet ? "column" : "row"}>
+      <Center
+        className="flex flex-col"
+        w={isTablet ? "100%" : "33%"}
+        minW="400px"
+        borderRight="1px solid rgb(234, 234, 239)"
+        h={isTablet ? "fit-content" : ""}
+        py={isTablet ? "30px" : "0px"}
+        pos="relative"
+        backgroundColor={attributes?.color_theme?.button || "blue"}
+        textAlign="left"
+        px="5%"
+      >
+        <Text variant="xxl" fontWeight="bold" color="white" ml="-2px" wordBreak="break-word">
+          {attributes?.title}
+        </Text>
 
-            <Text variant="smallTitle" color="white" mt="30px" maxHeight="300px" overflow="auto" wordBreak="break-word">
-              {attributes?.subtitle}
-            </Text>
-            {hasMedia && (
-              <Box mt="30px" position="relative">
-                {hasVideo && <Video url={attributes?.video_url ?? ""} />}
-                {hasImage && <img src={coverSrc} alt={coverName} />}
-              </Box>
-            )}
+        <Text variant="smallTitle" color="white" mt="30px" maxHeight="300px" overflow="auto" wordBreak="break-word">
+          {attributes?.subtitle}
+        </Text>
+
+        {hasMedia && (
+          <Box mt="30px" position="relative">
+            {hasVideo && <Video url={attributes?.video_url ?? ""} />}
+            {hasImage && <Image src={coverSrc} alt={coverName} />}
           </Box>
-        </Center>
-        <Box w={isTablet ? "100%" : "67%"}>
-          <Center
-            h={isTablet ? "fit-content" : "100vh"}
-            flexDirection="column"
-            textAlign="left"
-            alignItems="flex-end"
-            overflow="auto"
-          >
-            <Tabs w={isTablet ? "90%" : "80%"} m={isTablet ? "30px auto" : "0 auto"}>
-              <TabList>
-                <Tab>Description</Tab>
-                {hasMembers && <Tab>Equipe</Tab>}
-                <Tab>Informations</Tab>
-                {hasAboutPage && <Tab>A propos</Tab>}
-              </TabList>
+        )}
+      </Center>
+      
+      <Center
+        className="pt-10 pb-10 flex-col items-end text-left"
+        w={isTablet ? "100%" : "67%"}
+        h={isTablet ? "fit-content" : "100%"}
+      >
+        <Tabs className="h-fit" w={isTablet ? "90%" : "80%"} m={isTablet ? "30px auto" : "0 auto"}>
+          <TabList>
+            <Tab>Description</Tab>
+            {hasMembers && <Tab>Equipe</Tab>}
+            <Tab>Informations</Tab>
+            {hasAboutPage && <Tab>A propos</Tab>}
+          </TabList>
 
-              <TabPanels>
-                <TabPanel>
-                  <Description data={data} onParticipate={onParticipate} />
-                </TabPanel>
-                {hasMembers && (
-                  <TabPanel>
-                    <Team
-                      members={data?.attributes?.members}
-                      color_theme={data?.attributes?.color_theme}
-                      isUserView={isUserView}
-                    />
-                  </TabPanel>
-                )}
+          <TabPanels>
+            <TabPanel>
+              <Description data={data} inactiveSubmit={isInactive} onParticipate={onParticipate} />
+            </TabPanel>
 
-                <TabPanel>
-                  <Legals data={data} author={author} />
-                </TabPanel>
-                <TabPanel>
-                  <Box h="fit-content" backgroundColor="white" w="100%">
-                    <Text
-                      textAlign="left"
-                      variant="current"
-                      dangerouslySetInnerHTML={{
-                        __html: aboutPage ?? "",
-                      }}
-                    ></Text>
-                  </Box>
-                </TabPanel>
-              </TabPanels>
-            </Tabs>
-          </Center>
-        </Box>
-      </Flex>
-    </Box>
+            {hasMembers && (
+              <TabPanel>
+                <Team
+                  members={data?.attributes?.members}
+                  color_theme={data?.attributes?.color_theme}
+                  isUserView={isUserView}
+                />
+              </TabPanel>
+            )}
+
+            <TabPanel>
+              <Legals data={data} author={author} />
+            </TabPanel>
+
+            <TabPanel>
+              <Box className="font-light text-sm w-full h-full max-h-[75vh] overflow-auto" dangerouslySetInnerHTML={{
+                __html: aboutHtml ?? "",
+              }} />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </Center>
+    </Flex>
   );
 };

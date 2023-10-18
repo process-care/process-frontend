@@ -1,30 +1,31 @@
-import React from "react";
-import { FieldArray, useField, useFormikContext } from "formik";
-import { Textarea } from "components/Fields";
+import { useEffect } from "react";
 import { Flex, Box, Button, Text } from "@chakra-ui/react";
-import { useAppSelector } from "redux/hooks";
-import { selectors as selectorsApplication } from "redux/slices/application";
-import { Enum_Question_Rows } from "api/graphql/types.generated";
+import { FieldArray, useField, useFormikContext } from "formik";
+
+import { Textarea } from "@/components/Fields/index.ts"
+import { useAppSelector } from "@/redux/hooks/index.js"
+import { selectors as selectorsApplication } from "@/redux/slices/application/index.js"
+import { Enum_Question_Rows } from "@/api/graphql/types.generated.ts"
 
 interface Props {
   name: string;
 }
 
-export const RepeatedFields: React.FC<Props> = ({ name }) => {
+export default function RepeatedFields({ name }: Props): JSX.Element {
   const [field, meta] = useField(name);
   const { setFieldValue } = useFormikContext();
   const isEditing = useAppSelector(selectorsApplication.isEditing);
 
-  const fields = field.value;
+  const fields = field.value
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Populate answers field on edit.
     if (isEditing) {
       fields?.map((value: string, index: number) => {
-        setFieldValue(`options.${index}`, value);
+        setFieldValue(`${name}.${index}`, value);
       });
     }
-  }, [isEditing]);
+  }, [fields, isEditing, name, setFieldValue]);
 
   return (
     <Box w="100%">
@@ -37,25 +38,27 @@ export const RepeatedFields: React.FC<Props> = ({ name }) => {
                 <Box key={index} w="100%">
                   <Flex w="100%">
                     <Textarea
-                      id={`options.${index}`}
-                      label={`Option ${index}`}
+                      id={`${name}.${index}`}
+                      label={`Option ${index + 1}`}
                       placeholder={
-                        isEditing ? fields[index] : `Option ${index}`
+                        isEditing ? fields[index] : `Option ${index + 1}`
                       }
                       rows={Enum_Question_Rows.Small}
                       isRequired
                       isCollapsed={false}
                     />
-                    <Flex ml={3} mt={8}>
+
+                    <Flex ml={3} mt="52px">
                       <Button
                         type="button"
                         onClick={() => {
                           arrayHelpers.remove(index);
-                          setFieldValue(`options.${index}`, undefined);
+                          setFieldValue(`${name}.${index}`, undefined);
                         }}
                       >
                         -
                       </Button>
+
                       {(index + 1 === field.value.length ||
                         (index + 1 !== 1 && isEditing)) && (
                         <Button
@@ -69,6 +72,7 @@ export const RepeatedFields: React.FC<Props> = ({ name }) => {
                       )}
                     </Flex>
                   </Flex>
+
                   <Text mt={1} fontSize="10px" color="red">
                     {meta.error}
                   </Text>
@@ -79,10 +83,8 @@ export const RepeatedFields: React.FC<Props> = ({ name }) => {
                 <Button
                   onClick={() => arrayHelpers.push("")}
                   variant="rounded"
-                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                  // @ts-ignore: Pb with props in theme ...
-                  isSmall
                   type="button"
+                  size="sm"
                 >
                   Ajouter une option de réponse
                 </Button>

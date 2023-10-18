@@ -1,31 +1,33 @@
-import React, { useMemo } from "react";
-
+import { useMemo } from "react";
 import { Button, Flex } from "@chakra-ui/react";
-import { Error } from "components/Error";
-import { operators, operatorsForMultiple } from "constants/operators";
-import { ConditionRedux } from "redux/slices/types";
-import { checkIfMultiple } from "utils/formBuilder/input";
-import { useAppSelector } from "redux/hooks";
-import { questionsSelectors } from "redux/slices/scientistData/question-editor";
+
+import { operators, operatorsForMultiple } from "@/constants/operators.ts"
+import { ConditionRedux } from "@/redux/slices/types/index.js"
+import { checkIfMultiple } from "@/utils/formBuilder/input.ts"
+import { useAppSelector } from "@/redux/hooks/index.js"
+import { questionsSelectors } from "@/redux/slices/scientistData/question-editor.ts"
+import Error from "@/components/Error/index.tsx"
 
 interface Props {
   selectedCondition: ConditionRedux;
   updateStep: (d: any) => void;
 }
 
-export const Step_2: React.FC<Props> = ({ selectedCondition, updateStep }) => {
-  const target_question = useAppSelector((state) =>
-    questionsSelectors.getQuestionById(state, selectedCondition.attributes.target?.data?.id)
+export default function Step_2({ selectedCondition, updateStep }: Props): JSX.Element {
+  const target_question = useAppSelector((state) => {
+    if (!selectedCondition.attributes.target?.data?.id) return null
+    return questionsSelectors.selectQuestionById(state, selectedCondition.attributes.target?.data?.id)
+  })
+
+  const authorizedOperators = useMemo(() => {
+    if (!target_question) return [];
+    return checkIfMultiple(target_question) ? operatorsForMultiple : operators
+    }, [target_question]
   );
 
   if (!target_question) {
     return <Error message="Une erreur s'est produite: cette condition ne possède pas de question cible... !" />;
   }
-
-  const authorizedOperators = useMemo(
-    () => (checkIfMultiple(target_question) ? operatorsForMultiple : operators),
-    [target_question]
-  );
 
   return (
     <Flex flexWrap="wrap" w="100%" justifyContent="center" alignItems="center">
@@ -38,10 +40,13 @@ export const Step_2: React.FC<Props> = ({ selectedCondition, updateStep }) => {
             key={id}
             variant="box"
             minW="200px"
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore: Pb with props in theme ...
             isSelected={isSelected}
-            _hover={{ borderColor: "brand.blue", color: "brand.blue" }}
+            borderColor={isSelected ? "brand.blue" : "black"}
+            _hover={{
+              borderColor: "brand.blue",
+              color: isSelected ? "white" : "brand.blue"
+            }}
           >
             {name}
           </Button>

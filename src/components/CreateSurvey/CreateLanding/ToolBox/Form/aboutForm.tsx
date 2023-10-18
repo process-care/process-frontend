@@ -1,80 +1,86 @@
+import { useCallback, useEffect } from "react";
 import { Box, Text } from "@chakra-ui/react";
-import { Footer } from "../Footer";
-
-import { Wysiwyg } from "components/Fields/Wysiwyg";
 import { Formik, Form } from "formik";
-import React, { useCallback } from "react";
-import { initialValues } from "./utils/initialValues";
-import { useAppDispatch, useAppSelector } from "redux/hooks";
-import { actions, selectors } from "redux/slices/landing-editor";
 
-export const AboutForm: React.FC = () => {
-  const dispatch = useAppDispatch();
+import { initialValues } from "./utils/initialValues.ts"
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
+import { actions, selectors } from "@/redux/slices/landing-editor.ts"
+import Footer from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer/index.tsx"
+import Wysiwyg from "@/components/Fields/Wysiwyg/Wysiwyg.tsx"
+import { LandingRedux } from "@/redux/slices/types/index.js"
 
+export default function AboutForm(): JSX.Element {
   const aboutPage = useAppSelector(selectors.about);
   const landing = useAppSelector(selectors.getLanding);
-  const handleFinish = useCallback(() => {
-    dispatch(actions.editAbout(false));
-  }, []);
 
   if (!landing) {
     return <p>Une erreur est survenue</p>;
   }
+  
   return (
     <Formik
       validateOnBlur={false}
-      initialValues={{ about_page: aboutPage } || initialValues}
+      initialValues={{ about: aboutPage } || initialValues}
       enableReinitialize
       onSubmit={(data, { setSubmitting, validateForm }) => {
         validateForm(data);
         setSubmitting(true);
       }}
     >
-      {({ values }) => {
-        React.useEffect(() => {
-          dispatch(
-            actions.update({
-              changes: {
-                id: landing?.id,
-                attributes: {
-                  ...landing?.attributes,
-                  title: landing?.attributes?.title,
-                  about_page: values.about_page,
-                },
-              },
-            })
-          );
-        }, [values.about_page]);
-
-        // Component
-        return (
-          <Form>
-            <Box
-              borderLeft="1px solid"
-              px="4%"
-              w="100%"
-              mx="auto"
-              pt="4"
-              h="100%"
-              sx={{
-                ".jodit-workplace": {
-                  height: "60vh !important",
-                },
-              }}
-            >
-              <Text variant="baseline" fontWeight="bold" textAlign="left" _hover={{ cursor: "pointer" }} mb="5">
-                Edition de la page d'accueil
-              </Text>
-              <Wysiwyg id="about_page" />
-              <Footer
-                // TODO: It's the same... ?
-                onCancel={handleFinish}
-                onSubmit={handleFinish}
-              />
-            </Box>
-          </Form>
-        );
-      }}
+      {({ values }) =>
+        <FormDisplay landing={landing} values={values} />
+      }
     </Formik>
   );
 };
+
+// ---- SUB COMPONENT
+
+interface FormDisplayProps {
+  landing: LandingRedux
+  values: any
+}
+
+function FormDisplay({ landing, values}: FormDisplayProps): JSX.Element {
+  const dispatch = useAppDispatch();
+
+  const handleFinish = useCallback(() => {
+    dispatch(actions.editAbout(false));
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(
+      actions.update({
+        changes: {
+          id: landing?.id,
+          attributes: {
+            ...landing?.attributes,
+            title: landing?.attributes?.title,
+            about: values.about,
+          },
+        },
+      })
+    );
+  // Update only when about-page changes
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, values.about])
+
+  // Component
+  return (
+    <Form className="flex flex-col text-left h-full">
+      <div className="p-4 overflow-auto flex-grow">
+        <Text variant="baseline" fontWeight="bold" textAlign="left" _hover={{ cursor: "pointer" }} mb="5">
+          Edition de la section &ldquo;à propos&rdquo;
+        </Text>
+
+        <Wysiwyg id="about" className="h-[68vh]" />
+      </div>
+
+      <Footer
+        onCancel={handleFinish}
+        onSubmit={handleFinish}
+        hideDelete={true}
+      />
+    </Form>
+  );
+}

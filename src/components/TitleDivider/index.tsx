@@ -7,12 +7,12 @@ interface Props {
   mb?: string;
 }
 
-export const TitleDivider: React.FC<Props> = ({
+export default function TitleDivider({
   title,
   mt = "10",
   mb = "5",
   children,
-}) => {
+}: Props): JSX.Element {
   return (
     <Flex
       alignItems="center"

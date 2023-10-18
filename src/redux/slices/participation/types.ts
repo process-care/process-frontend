@@ -1,4 +1,4 @@
-import { Enum_Condition_Operator, Maybe } from "api/graphql/sdk.generated";
+import { Enum_Condition_Operator, Maybe } from "@/api/graphql/sdk.generated.js"
 
 export interface EvaluationCondition {
   id: string;

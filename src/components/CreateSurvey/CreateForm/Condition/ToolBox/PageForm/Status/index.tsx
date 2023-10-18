@@ -1,5 +1,4 @@
 import { Flex, Button, ButtonGroup, Text } from "@chakra-ui/react";
-import React from "react";
 
 interface Props {
   confirm: () => void;
@@ -7,11 +6,11 @@ interface Props {
   content: string;
 }
 
-export const RemovingConfirmation: React.FC<Props> = ({
+export default function RemovingConfirmation({
   confirm,
   close,
   content,
-}) => {
+}: Props): JSX.Element {
   return (
     <Flex
       backgroundColor="black"
@@ -23,10 +22,11 @@ export const RemovingConfirmation: React.FC<Props> = ({
       <Text fontSize="25px" color="white" mb={10}>
         {content}
       </Text>
+
       <ButtonGroup
         color="white"
         w="100%"
-        d="flex"
+        display="flex"
         justifyContent="space-around"
         pos="absolute"
         bottom="30px"
@@ -34,6 +34,7 @@ export const RemovingConfirmation: React.FC<Props> = ({
         <Button variant="link" color="white" onClick={() => close()}>
           Annuler
         </Button>
+        
         <Button variant="roundedBlue" onClick={() => confirm()}>
           Oui
         </Button>

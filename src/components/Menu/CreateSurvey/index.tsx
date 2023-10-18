@@ -1,16 +1,17 @@
 import { CheckIcon } from "@chakra-ui/icons";
 import { CircularProgress, Flex, Text } from "@chakra-ui/react";
-import React from "react";
-import { NavLink } from "react-router-dom";
-import { useAppSelector } from "redux/hooks";
-import { useMediaQueries } from "utils/hooks/mediaqueries";
-import { ReactComponent as Back } from "./assets/back.svg";
+import Link from "next/link.js"
+import Image from "next/image.js"
+import { StepBackIcon } from "lucide-react"
+
+import { useAppSelector } from "@/redux/hooks/index.js"
+import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
 
 interface Props {
   surveyTitle?: string | null | undefined;
 }
 
-export const Menu: React.FC<Props> = ({ surveyTitle }) => {
+export default function Menu({ surveyTitle }: Props): JSX.Element {
   const { isSaving } = useAppSelector((state) => state.application);
   const { isTablet } = useMediaQueries();
   return (
@@ -21,14 +22,14 @@ export const Menu: React.FC<Props> = ({ surveyTitle }) => {
       justifyContent="flex-start"
       alignItems="center"
     >
-      <NavLink to={`/dashboard`}>
+      <Link href={`/dashboard`}>
         <Flex ml={isTablet ? "0" : "50px"} alignItems="center">
-          <Back />
+          <StepBackIcon />
           <Text fontSize="12px" ml={2} mr="30px">
             Dashboard
           </Text>
         </Flex>
-      </NavLink>
+      </Link>
       <Text fontSize="12px" textTransform="uppercase" isTruncated maxWidth="250px">
         {surveyTitle}
       </Text>

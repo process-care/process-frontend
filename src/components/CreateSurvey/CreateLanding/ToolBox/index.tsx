@@ -1,16 +1,15 @@
-import React from "react";
 import { Container } from "@chakra-ui/react";
 
-import { LandingForm } from "./Form/landingForm";
-import { useAppSelector } from "redux/hooks";
-import { AboutForm } from "./Form/aboutForm";
-import { selectors } from "redux/slices/landing-editor";
+import { useAppSelector } from "@/redux/hooks/index.js"
+import { selectors } from "@/redux/slices/landing-editor.ts"
+import LandingForm from "./Form/landingForm.tsx"
+import AboutForm from "./Form/aboutForm.tsx"
 
-export const ToolBox: React.FC = () => {
+export default function ToolBox(): JSX.Element {
   const isEditingAbout = useAppSelector(selectors.isEditingAbout);
 
   return (
-    <Container variant="rightPart" maxWidth="100%" transition="all 400ms" overflow="scroll" height="100vh">
+    <Container variant="rightPart" maxWidth="100%" h="100vh" transition="all 400ms">
       {isEditingAbout ? <AboutForm /> : <LandingForm />}
     </Container>
   );

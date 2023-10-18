@@ -1,42 +1,41 @@
-import { Drawer, DrawerBody, DrawerContent, Portal } from "@chakra-ui/react";
-
-import React, { ReactChild } from "react";
+import { Drawer, DrawerBody, DrawerContent, DrawerOverlay, Portal } from "@chakra-ui/react"
 
 interface Props {
-  content: ReactChild;
-  buttonVariant?: string;
-  padding?: string;
-  onOverlayClick?: () => void;
-  isOpen: boolean;
-  size?: string;
+  content: JSX.Element
+  buttonVariant?: string
+  padding?: string
+  onOverlayClick?: () => void
+  isOpen: boolean
+  size?: string
 }
-const CustomDrawer: React.FC<Props> = ({
-  content,
 
+export default function CustomDrawer({
+  content,
   isOpen,
   onOverlayClick,
   size,
   ...props
-}) => {
+}: Props): JSX.Element {
   return (
-    <>
-      <Portal>
-        <Drawer
-          onClose={() => console.log("_")}
-          placement="right"
-          isFullHeight
-          isOpen={isOpen}
-          size="full"
-          onOverlayClick={onOverlayClick}
-          {...props}
-        >
-          <DrawerContent background="white" maxW="53%">
-            <DrawerBody p="0 10px">{content}</DrawerBody>
-          </DrawerContent>
-        </Drawer>
-      </Portal>
-    </>
+    <Portal>
+      <Drawer
+        onClose={noop}
+        placement="right"
+        isFullHeight
+        isOpen={isOpen}
+        size="full"
+        onOverlayClick={onOverlayClick}
+        {...props}
+        closeOnEsc={true}
+      >
+        <DrawerContent background="white" maxW="53%">
+          <DrawerBody p="0">{content}</DrawerBody>
+        </DrawerContent>
+      </Drawer>
+    </Portal>
   );
 };
 
-export default CustomDrawer;
+// ---- UTILS
+
+function noop() {}

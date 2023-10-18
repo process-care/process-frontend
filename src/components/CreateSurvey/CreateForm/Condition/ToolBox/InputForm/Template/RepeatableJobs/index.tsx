@@ -1,11 +1,11 @@
-import React from "react";
 import { FieldArray, useField, useFormikContext } from "formik";
-import { Textarea } from "components/Fields";
 import { Flex, Box, Button, Text } from "@chakra-ui/react";
-import { useAppSelector } from "redux/hooks";
-import { UploadFile } from "components/Fields/Uploadfile";
-import { selectors as selectorsApplication } from "redux/slices/application";
-import { Enum_Question_Rows } from "api/graphql/types.generated";
+
+import { useAppSelector } from "@/redux/hooks/index.js"
+import { selectors as selectorsApplication } from "@/redux/slices/application/index.js"
+import { Enum_Question_Rows } from "@/api/graphql/types.generated.ts"
+import { Textarea } from "@/components/Fields/index.ts"
+import UploadFile from "@/components/Fields/Uploadfile.tsx"
 
 interface Props {
   name: string;
@@ -13,7 +13,7 @@ interface Props {
   cta: string;
 }
 
-export const RepeatableJobs: React.FC<Props> = ({ name, onlyUpload, cta }) => {
+export default function RepeatableJobs({ name, onlyUpload, cta }: Props): JSX.Element {
   const [field, meta] = useField(name);
   const { setFieldValue } = useFormikContext();
   const isEditing = useAppSelector(selectorsApplication.isEditing);
@@ -71,14 +71,6 @@ export const RepeatableJobs: React.FC<Props> = ({ name, onlyUpload, cta }) => {
                       >
                         Supprimer
                       </Button>
-                      {/* <SvgHover>
-                        <Delete
-                          onClick={() => {
-                            arrayHelpers.remove(index);
-                            setFieldValue(`${name}.${index}`, undefined);
-                          }}
-                        />
-                      </SvgHover> */}
 
                       {(index + 1 === field.value.length ||
                         (index + 1 !== 1 && isEditing)) && (

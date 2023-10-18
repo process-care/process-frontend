@@ -1,9 +1,9 @@
 import { createEntityAdapter, createSlice, PayloadAction, Update } from "@reduxjs/toolkit";
-import { Maybe } from "api/graphql/types.generated";
+import { Maybe } from "@/api/graphql/types.generated.js"
 
-import { actions as statusAct } from "redux/slices/participation/status";
-import { RootState } from "redux/store";
-import { sanitizeAnswers } from "./utils";
+import { actions as statusAct } from "@/redux/slices/participation/status.js"
+import { RootState } from "@/redux/store/index.js";
+import { sanitizeAnswers } from "./utils.js"
 
 // ---- INITIAL STATE
 

@@ -1,5 +1,4 @@
 import { Box } from "@chakra-ui/react";
-import React from "react";
 
 interface Props {
   children: React.ReactElement;
@@ -7,16 +6,17 @@ interface Props {
   target?: string;
 }
 
-export const SvgHover: React.FC<Props> = ({
+export default function SvgHover({
   children,
   color = "brand.blue",
   target,
-}) => {
+}: Props): JSX.Element {
   const style = {
     cursor: "pointer",
     fill: color,
     transition: "all 200ms",
   };
+  
   return (
     <Box
       sx={

@@ -1,12 +1,11 @@
 import { Flex, Box, Text } from "@chakra-ui/react";
-import React from "react";
 
 interface Props {
   isLast: boolean;
   value: "ET" | "OU";
 }
 
-export const Separator: React.FC<Props> = ({ isLast, value }) => {
+export default function Separator({ isLast, value }: Props): JSX.Element {
   return (
     <Flex alignItems="center" justifyContent="space-between" mt={2}>
       <Box borderTop="1px solid" w="45%" borderColor="brand.line" />

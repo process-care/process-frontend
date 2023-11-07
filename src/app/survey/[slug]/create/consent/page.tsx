@@ -1,25 +1,20 @@
 'use client'
 
-import { useRef, useMemo, useEffect, useCallback } from "react";
-import { Box, Container, Text } from "@chakra-ui/react";
-import { Form, Formik } from "formik";
-import { useDispatch } from "react-redux";
+import { useRef, useMemo, useEffect, useCallback } from "react"
+import { Box, Container, Text } from "@chakra-ui/react"
+import { Form, Formik } from "formik"
+import { useDispatch } from "react-redux"
 import { useRouter } from "next/navigation.js"
-import dynamic from "next/dynamic.js"
 
 import { Switch } from "@/components/Fields/index.ts"
 import { actions } from "@/redux/slices/scientistData.js"
 import { SurveyBySlugQuery, useSurveyBySlugQuery } from "@/api/graphql/queries/survey.gql.generated.js"
 import { client } from "@/api/gql-client.js"
 import Loader from "@/components/Spinner/index.tsx"
-import Menu from "@/components/Menu/CreateSurvey/index.tsx";
+import Menu from "@/components/Menu/CreateSurvey/index.tsx"
 import UploadFileRemote from "@/components/Fields/UploadFileRemote/index.tsx"
 import Footer from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer/index.tsx"
-
-// @ts-ignore
-const PDFPreviewer = dynamic(() => import("@/components/PDFPreview.tsx"), {
-  ssr: false,
-});
+import PDFPreview from "@/components/PDFPreview"
 
 // ---- STATICS
 
@@ -55,7 +50,7 @@ export default function CreateConsent({ params }: Props): JSX.Element {
   // FIXME: Refactor ça ? Pourquoi c'est une fonction ?
   const formatInitialValues = (survey: SurveyBySlugQuery | undefined) => {
     return {
-      consentement: survey?.surveys?.data[0]?.attributes?.notice_consent?.data,
+      noticeConsent: survey?.surveys?.data[0]?.attributes?.notice_consent?.data,
       needConsent: survey?.surveys?.data[0]?.attributes?.need_consent,
     };
   };
@@ -69,10 +64,9 @@ export default function CreateConsent({ params }: Props): JSX.Element {
       <Box w="100%">
         <Menu surveyTitle={attributes?.title} />
 
-        <div className="flex flex-col justify-center h-[calc(100vh-65px)] p-2 overflow-auto bg-gray-100">
+        <div className="h-[calc(100vh-65px)] p-2 bg-gray-100">
           { url
-            // @ts-ignore
-            ? <PDFPreviewer url={url} />
+            ? <PDFPreview url={url} />
             : <span className="text-base font-light italic">{ t.placeholderPreview }</span>
           }
         </div>
@@ -116,13 +110,11 @@ interface FormProps {
 }
 
 function FormConsentement({ values, isValid, isSubmitting, surveyId, refetch }: FormProps) {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const router = useRouter()
-  const firstRender = useRef(true);
+  const firstRender = useRef(true)
 
-  const goToDashboard = () => {
-    router.push("/dashboard");
-  };
+  const goToDashboard = () => { router.push("/dashboard") }
 
   useEffect(() => {
     if (firstRender.current) {
@@ -139,8 +131,8 @@ function FormConsentement({ values, isValid, isSubmitting, surveyId, refetch }: 
     );
 
     // FIXME: Refetch this sh*t better
-    setTimeout(refetch, 500);
-  }, [dispatch, refetch, surveyId, values]);
+    setTimeout(refetch, 500)
+  }, [dispatch, refetch, surveyId, values.noticeConsent, values.needConsent])
 
   const targets = useMemo(() => ({
     consentement: { refId: surveyId, ref: "survey", field: "noticeConsent" }
@@ -162,7 +154,7 @@ function FormConsentement({ values, isValid, isSubmitting, surveyId, refetch }: 
         </Box>
 
         {values.needConsent && (
-          <UploadConsentement target={targets.consentement} content={values.consentement} />
+          <UploadConsentement target={targets.consentement} content={values.noticeConsent} />
         )}
       </div>
 

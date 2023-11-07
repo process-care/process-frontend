@@ -4,7 +4,8 @@ import { Box, Button, Text, Flex, FormHelperText, FormControl, FormErrorMessage 
 import { UploadParams } from "@/redux/slices/application/index.js"
 import { useFileHandlers } from "./hooks.ts"
 import SvgHover from "@/components/SvgHover/index.tsx"
-import { DeleteIcon } from "lucide-react";
+import { DeleteIcon, MinusIcon } from "lucide-react";
+import ButtonIcon from "@/components/ButtonIcon.tsx";
 
 // ---- TYPES
 
@@ -50,10 +51,10 @@ export default function UploadFileRemote(props: Props): JSX.Element {
   // Kept in one object: `if (props.multiple && props.content) props.content[0].id` <- WORKS (content is well guessed)
   //
   // We can still destructure the rest for convenience. The object is really just needed for the safe guard guessing.
-  const { target, multiple, onChange, isDisabled, label, helpText, accept } = props;
+  const { target, multiple, onChange, isDisabled, label, helpText, accept } = props
 
-  const hiddenFileInput = useRef<HTMLInputElement>(null);
-  const { handleChange, handleDelete, error } = useFileHandlers(target, multiple, onChange);
+  const hiddenFileInput = useRef<HTMLInputElement>(null)
+  const { handleChange, handleDelete, error } = useFileHandlers(target, multiple, onChange, hiddenFileInput)
 
   const isInvalid = Boolean(error)
 
@@ -129,8 +130,12 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ id, handleDelete }: DeleteB
   }, [id, handleDelete]);
 
   return (
-    <SvgHover>
-      <DeleteIcon onClick={callDelete} />
-    </SvgHover>
+    <ButtonIcon
+      icon={MinusIcon}
+      size={10}
+      type="delete"
+      className="ml-2"
+      onClick={callDelete}
+    />
   );
 };

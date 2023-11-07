@@ -1,25 +1,20 @@
-import { useCallback, useState } from "react";
-import { useField, useFormikContext } from "formik";
+import { useCallback, useState } from "react"
+import { useField, useFormikContext } from "formik"
 
-import { apollo, client } from "@/api/gql-client.js"
+import { apollo } from "@/api/gql-client.js"
 import {
   useDeleteFileMutation,
+  useUploadFileSingleMutation,
   useUploadFileMultipleMutation,
-} from "@/api/graphql/queries/application.gql.generated.js"
-
-import {
-  useUploadFileSingleMutation
 } from "@/api/graphql/queries/application.apollo.generated.js"
-
 import { UploadParams } from "@/redux/slices/application/index.js"
-// import { API_URL } from "@/constants/api.ts"
 
 // ---- TYPES
 
 type FileHandlers = {
-  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  handleDelete: (id: string) => void;
-  error?: string;
+  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  handleDelete: (id: string) => void
+  error?: string
 };
 
 // ---- CUSTOM HOOK
@@ -27,15 +22,16 @@ type FileHandlers = {
 export const useFileHandlers = (
   target: UploadParams,
   multiple: boolean | undefined,
-  onChange: (msg: string | undefined | null) => void
+  onChange: (msg: string | undefined | null) => void,
+  hiddenFileInput: React.RefObject<HTMLInputElement>
 ): FileHandlers => {
-  const [field] = useField(target.field);
-  const { setFieldValue } = useFormikContext();
-  const [error, setError] = useState<string>();
+  const [field] = useField(target.field)
+  const { setFieldValue } = useFormikContext()
+  const [error, setError] = useState<string>()
 
-  const [uploadFileSingleMutation] = useUploadFileSingleMutation({ client: apollo });
-  const { mutateAsync: uploadMultiFile } = useUploadFileMultipleMutation(client, {}, {});
-  const { mutateAsync: deleteFile } = useDeleteFileMutation(client);
+  const [ uploadSingleFile ] = useUploadFileSingleMutation({ client: apollo })
+  const [ uploadMultiFile ] = useUploadFileMultipleMutation({ client: apollo })
+  const [ deleteFile ] = useDeleteFileMutation({ client: apollo })
 
   // Uploader function
   const handleChange = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,18 +41,18 @@ export const useFileHandlers = (
     try {
       if (multiple) {
         const files = event.currentTarget.files;
-        const uploaded = await uploadMultiFile({ ...target, files });
-        data = uploaded.multipleUpload;
+        const uploaded = await uploadMultiFile({ variables: { ...target, files }})
+        data = uploaded.data?.multipleUpload
 
         // Remove multiple previous files
-        field.value.map((file: any) => deleteFile({ id: file.data.id }));
+        field.value.map((file: any) => deleteFile({ variables: { id: file.data.id }}))
       } else {
         const files = event.currentTarget.files
-        const uploaded = await uploadFileSingleMutation({ variables: { ...target, file: files.item(0) }})
+        const uploaded = await uploadSingleFile({ variables: { ...target, file: files.item(0) }})
         data = uploaded?.data?.upload?.data
 
         // Remove previous file
-        if (field?.value?.data?.id) deleteFile({ id: field.value.data.id })
+        if (field?.value?.data?.id) deleteFile({ variables: { id: field.value.data.id }})
       }
     } catch (e: any) {
       console.error(e)
@@ -67,34 +63,19 @@ export const useFileHandlers = (
 
     setFieldValue(target.field, data)
     onChange(`Updated files: ${ data }`)
-  }, [deleteFile, field.value, multiple, onChange, setFieldValue, target, uploadFileSingleMutation, uploadMultiFile])
+  }, [deleteFile, field.value, multiple, onChange, setFieldValue, target, uploadSingleFile, uploadMultiFile])
 
   // Deleter function
   const handleDelete = useCallback((id: string) => {
-    deleteFile({ id })
+    deleteFile({ variables: { id }})
     setFieldValue(target.field, null)
+    if (hiddenFileInput.current) hiddenFileInput.current.value = ''
     onChange(`Deleted: ${id}`)
-  }, [deleteFile, onChange, setFieldValue, target.field])
+  }, [deleteFile, hiddenFileInput, onChange, setFieldValue, target.field])
 
   return {
     handleChange,
     handleDelete,
     error,
-  };
-};
-
-// async function uploadSingleFile(data: UploadParams & { file: File }) {
-//   const formData = new FormData(data)
-//   const uploaded = await fetch(`${API_URL}/api/upload`, {
-//     method: "POST",
-//     body: file,
-//   })
-  
-//   console.log(uploaded)
-
-//   const data = await uploaded.json()
-  
-//   console.log(data)
-
-//   return data
-// }
+  }
+}

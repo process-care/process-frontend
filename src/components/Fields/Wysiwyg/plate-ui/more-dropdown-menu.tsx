@@ -23,9 +23,9 @@ export function MoreDropdownMenu(props: DropdownMenuProps) {
   const openState = useOpenState();
 
   return (
-    <DropdownMenu modal={false} {...openState} {...props}>
-      <DropdownMenuTrigger asChild>
-        <ToolbarButton pressed={openState.open} tooltip="Insert">
+    <DropdownMenu modal={true} {...openState} {...props}>
+      <DropdownMenuTrigger asChild type="button">
+        <ToolbarButton pressed={openState.open} tooltip="Insert" type="button">
           <Icons.more />
         </ToolbarButton>
       </DropdownMenuTrigger>

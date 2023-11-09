@@ -75,8 +75,8 @@ const items = [
 const defaultItem = items.find((item) => item.value === ELEMENT_PARAGRAPH)!;
 
 export function TurnIntoDropdownMenu(props: DropdownMenuProps) {
-  const editor = usePlateEditorState();
-  const openState = useOpenState();
+  const editor = usePlateEditorState()
+  const openState = useOpenState()
 
   let value: string = ELEMENT_PARAGRAPH;
   if (isCollapsed(editor?.selection)) {
@@ -90,18 +90,18 @@ export function TurnIntoDropdownMenu(props: DropdownMenuProps) {
     }
   }
 
-  const selectedItem =
-    items.find((item) => item.value === value) ?? defaultItem;
-  const { icon: SelectedItemIcon, label: selectedItemLabel } = selectedItem;
+  const selectedItem = items.find((item) => item.value === value) ?? defaultItem
+  const { icon: SelectedItemIcon, label: selectedItemLabel } = selectedItem
 
   return (
-    <DropdownMenu modal={false} {...openState} {...props}>
-      <DropdownMenuTrigger asChild>
+    <DropdownMenu modal={true} {...openState} {...props}>
+      <DropdownMenuTrigger asChild type="button">
         <ToolbarButton
           pressed={openState.open}
           tooltip="Turn into"
           isDropdown
           className="lg:min-w-[130px]"
+          type="button"
         >
           <SelectedItemIcon className="h-5 w-5 lg:hidden" />
           <span className="max-lg:hidden">{selectedItemLabel}</span>

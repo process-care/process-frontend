@@ -184,10 +184,6 @@ function FormDisplay({
           </Box>
         )}
 
-        { type === "wysiwyg" && (
-          <input type="hidden" name="infozone" id="infozone" />
-        )}
-
         <Box w="100%" mb="50px">
           {renderFormTemplate(selectedQuestion)}
         </Box>
@@ -224,6 +220,7 @@ function useEventHandlers(selectedQuestion: QuestionRedux | undefined, selectedQ
 
   // Submit callback
   const handleSubmit = useCallback((data: any, { setSubmitting, validateForm }: any) => {
+    console.log('submitting form through Formik')
     validateForm(data)
     setSubmitting(true)
     dispatch(actions.saveQuestion({ changes: data }))

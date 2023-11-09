@@ -39,7 +39,7 @@ export function TableDropdownMenu(props: DropdownMenuProps) {
   const openState = useOpenState();
 
   return (
-    <DropdownMenu modal={false} {...openState} {...props}>
+    <DropdownMenu modal={true} {...openState} {...props}>
       <DropdownMenuTrigger asChild>
         <ToolbarButton pressed={openState.open} tooltip="Table" isDropdown>
           <Icons.table />

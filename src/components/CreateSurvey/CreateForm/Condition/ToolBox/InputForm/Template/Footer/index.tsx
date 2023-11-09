@@ -5,11 +5,11 @@ import ButtonIcon from "@/components/ButtonIcon"
 import { Trash2Icon } from "lucide-react"
 
 interface Props {
-  onCancel: () => void;
-  onSubmit: () => void;
-  disabled?: boolean;
-  onDelete?: () => void;
-  hideDelete?: boolean;
+  onCancel: () => void
+  onSubmit: () => void
+  disabled?: boolean
+  onDelete?: () => void
+  hideDelete?: boolean
 }
 
 export default function Footer({
@@ -47,5 +47,5 @@ export default function Footer({
         />
       )}
     </div>
-  );
-};
+  )
+}

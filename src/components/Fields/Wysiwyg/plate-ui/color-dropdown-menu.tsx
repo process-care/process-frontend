@@ -43,7 +43,7 @@ export function ColorDropdownMenu({
   const { menuProps, buttonProps } = useColorDropdownMenu(state);
 
   return (
-    <DropdownMenu modal={false} {...menuProps}>
+    <DropdownMenu modal={true} {...menuProps}>
       <DropdownMenuTrigger asChild>
         <ToolbarButton tooltip={tooltip} {...buttonProps}>
           {children}

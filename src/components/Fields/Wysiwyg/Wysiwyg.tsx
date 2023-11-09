@@ -130,50 +130,48 @@ export default function Wysiwyg({ id, className }: Props): JSX.Element {
   }, [debouncedValue, id, setValue])
 
   return (
-    <FormControl id={id} className={className}>
-      <PlateProvider
-        editorRef={editorRef}
-        plugins={plugins}
-        initialValue={initialValue}
-        onChange={onChange}
-      >
-        <TooltipProvider>
-          <div className="border-[1px] rounded-t-[7px]">
-            <Toolbar className="rounded-t-[7px] bg-slate-100">
-              <TurnIntoDropdownMenu />
+    <PlateProvider
+      editorRef={editorRef}
+      plugins={plugins}
+      initialValue={initialValue}
+      onChange={onChange}
+    >
+      <TooltipProvider>
+        <div className="border-[1px] rounded-t-[7px]">
+          <Toolbar className="rounded-t-[7px] bg-slate-100">
+            <TurnIntoDropdownMenu />
 
-              <MarkGroup />
-              <MoreDropdownMenu />
+            <MarkGroup />
+            <MoreDropdownMenu />
 
-              <ToolbarGroup>
-                <ListToolbarButton nodeType={ELEMENT_UL} />
-                <ListToolbarButton nodeType={ELEMENT_OL} />
-                <AlignDropdownMenu />
-              </ToolbarGroup>
-            </Toolbar>
+            <ToolbarGroup>
+              <ListToolbarButton nodeType={ELEMENT_UL} />
+              <ListToolbarButton nodeType={ELEMENT_OL} />
+              <AlignDropdownMenu />
+            </ToolbarGroup>
+          </Toolbar>
 
-            <Toolbar className="border-t-[1px] bg-slate-100">
-              <ToolbarGroup noSeparator>
-                <LinkToolbarButton />
-                <EmojiDropdownMenu />
-              </ToolbarGroup>
+          <Toolbar className="border-t-[1px] bg-slate-100">
+            <ToolbarGroup noSeparator>
+              <LinkToolbarButton />
+              <EmojiDropdownMenu />
+            </ToolbarGroup>
 
-              <ColorGroup />
+            <ColorGroup />
 
-              <ToolbarGroup>
-                <MediaToolbarButton />
-                <TableDropdownMenu />
-              </ToolbarGroup>
-            </Toolbar>
-          </div>
-        </TooltipProvider>
+            <ToolbarGroup>
+              <MediaToolbarButton />
+              <TableDropdownMenu />
+            </ToolbarGroup>
+          </Toolbar>
+        </div>
+      </TooltipProvider>
 
-        <Plate editableProps={editableProps}>
-          <LinkFloatingToolbar />
-        </Plate>
-      </PlateProvider>
-    </FormControl>
-  );
+      <Plate editableProps={editableProps}>
+        <LinkFloatingToolbar />
+      </Plate>
+    </PlateProvider>
+  )
 }
 
 // ---- HOOKS

@@ -52,8 +52,10 @@ export function AlignDropdownMenu({
     items.find((item) => item.value === radioGroupProps.value)?.icon ??
     Icons.alignLeft;
 
+  // console.log('AlignDropdownMenu', props, state, radioGroupProps, children)
+
   return (
-    <DropdownMenu modal={false} {...openState} {...props}>
+    <DropdownMenu modal={true} {...openState} {...props}>
       <DropdownMenuTrigger asChild>
         <ToolbarButton pressed={openState.open} tooltip="Align" isDropdown>
           <IconValue />

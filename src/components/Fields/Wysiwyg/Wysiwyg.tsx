@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useField } from "formik"
-import { FormControl } from "@chakra-ui/react"
 
 import { Plate, PlateEditor, PlateProvider, RenderAfterEditable, createPlateEditor, createPlugins } from '@udecode/plate-common';
 import { createFontBackgroundColorPlugin, createFontColorPlugin, createFontSizePlugin } from "@udecode/plate-font"
@@ -35,6 +34,7 @@ import { LinkFloatingToolbar } from "./plate-ui/link-floating-toolbar.tsx"
 import { ListToolbarButton } from "./plate-ui/list-toolbar-button.tsx"
 import { useDebounce } from "@/utils/hooks/debounce.ts";
 import { serializeHtml } from "@udecode/plate-serializer-html";
+import { createHighlightPlugin } from "@udecode/plate-highlight";
 
 // ---- TYPES
 
@@ -90,6 +90,7 @@ export const plugins = createPlugins(
     createFontColorPlugin(),
     createFontBackgroundColorPlugin(),
     createFontSizePlugin(),
+    createHighlightPlugin(),
     // Align stuff
     createAlignPlugin({
       inject: {

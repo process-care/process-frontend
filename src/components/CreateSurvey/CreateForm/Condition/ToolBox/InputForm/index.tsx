@@ -18,6 +18,7 @@ import { Enum_Question_Rows, Enum_Question_Type, Question } from "@/api/graphql/
 import Footer from "./Template/Footer/index.tsx"
 import InputIcon from "@/components/CreateSurvey/CreateForm/InputIcon/index.tsx"
 import TitleDivider from "@/components/TitleDivider/index.tsx"
+import { noop } from "@/utils/commons.ts"
 
 interface Props {
   order: string[]
@@ -190,7 +191,7 @@ function FormDisplay({
       </div>
 
       <Footer
-        onSubmit={() => console.info("Submitting modifications")}
+        onSubmit={noop}
         disabled={!isValid || isSubmitting}
         onCancel={handleCancel}
         onDelete={handleDelete}
@@ -220,7 +221,6 @@ function useEventHandlers(selectedQuestion: QuestionRedux | undefined, selectedQ
 
   // Submit callback
   const handleSubmit = useCallback((data: any, { setSubmitting, validateForm }: any) => {
-    console.log('submitting form through Formik')
     validateForm(data)
     setSubmitting(true)
     dispatch(actions.saveQuestion({ changes: data }))

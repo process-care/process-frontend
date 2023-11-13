@@ -31,7 +31,7 @@ export default function PageBuilder({ survey }: Props): JSX.Element {
   const handlePage = useCallback(() => {
     dispatch(actions.createPage({ id: survey.id }))
   }, [dispatch, survey.id])
-
+  
   return (
     <Flex flexDirection="column" alignItems="center" pt={5} backgroundColor="white" width="100%" position="relative">
       <Box

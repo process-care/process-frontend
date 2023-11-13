@@ -72,20 +72,21 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
 
   h1 {
-    @apply text-4xl font-bold;
+    @apply text-4xl font-bold mb-1 mt-4
   }
 
   h2 {
-    @apply text-3xl font-bold;
+    @apply text-3xl font-bold mb-1 mt-2
   }
 
   h3 {
-    @apply text-2xl font-bold;
+    @apply text-2xl font-bold mb-1
   }
 
   ul {

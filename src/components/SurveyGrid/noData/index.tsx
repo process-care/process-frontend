@@ -15,9 +15,6 @@ export default function NoData({ content, w = "80%" }: Props): JSX.Element {
       borderRadius="5px"
       textAlign="center"
     >
-      <Text variant="xl" mb="20px">
-        🤌
-      </Text>
       <Text variant="current">{content}</Text>
     </Box>
   );

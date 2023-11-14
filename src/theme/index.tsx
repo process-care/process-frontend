@@ -8,6 +8,14 @@ export const bigScreen = "80em";
 export const extraBigScreen = "96em";
 
 const theme = extendTheme({
+  styles: {
+    global: {
+      ".slate-a": {
+        color: 'brand.blue',
+        textDecoration: 'underline',
+      }
+    }
+  },
   fonts: {
     body: "IBM Plex Sans",
     heading: "IBM Plex Sans",

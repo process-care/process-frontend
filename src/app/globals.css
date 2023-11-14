@@ -72,7 +72,32 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
+  }
+
+  h1 {
+    @apply text-4xl font-bold mb-1 mt-4
+  }
+
+  h2 {
+    @apply text-3xl font-bold mb-1 mt-2
+  }
+
+  h3 {
+    @apply text-2xl font-bold mb-1
+  }
+
+  ul {
+    @apply list-disc ps-4
+  }
+
+  ol {
+    @apply list-decimal ps-4
+  }
+  
+  blockquote {
+    @apply border-l-2 border-accent pl-4 my-1 italic
   }
 }

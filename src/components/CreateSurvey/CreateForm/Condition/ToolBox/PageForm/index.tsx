@@ -95,26 +95,25 @@ function FormDisplay({ selectedPageId, questionsOnSelectedPage, values, setField
   const conditionsOnSelectedPage = useAppSelector(selectors.conditions.selectAllPagesConditions)
     .filter((c) => c?.attributes?.referer_page?.data?.id === selectedPageId)
 
+  // Auto update the page when the user change the name
   useEffect(() => {
     if (firstRender.current) {
-      firstRender.current = false;
-      return;
+      firstRender.current = false
+      return
     }
 
+    const { short_name, name, is_locked } = values
     dispatch(
       actions.updatePage({
         id: selectedPageId,
         changes: {
-          id: selectedPageId,
-          attributes: {
-            short_name: values.short_name,
-            name: values.name,
-            is_locked: values.is_locked,
-          },
+          attributes: { short_name, name, is_locked },
         },
       })
     )
-  }, [dispatch, selectedPageId, values]);
+  // In this case, we don't want to update the page when we change the selected page
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, values])
 
   const handleSelect = (type: QuestionRedux["attributes"]["type"]) => {
     dispatch(actions.setSelectedQuestion(""));

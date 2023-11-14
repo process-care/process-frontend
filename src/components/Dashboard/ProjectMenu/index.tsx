@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Box, Button, Container, Flex, Tooltip, Text } from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
 import Link from "next/link.js"
@@ -48,10 +48,14 @@ interface Props {
 // ---- COMPONENT
 
 export default function ProjectMenu({ menuIsOpen, onClose }: Props): JSX.Element {
-  const dispatch = useDispatch();
-  const [isRemoving, setIsRemoving] = useState(false);
-  const selectedSurvey = useAppSelector(selectors.mySurveys.getSelectedSurvey);
+  const dispatch = useDispatch()
 
+  const [isRemoving, setIsRemoving] = useState(false)
+  const [statFilter, setStatFilter] = useState<Filter>(Filter.Day)
+
+  const selectedSurvey = useAppSelector(selectors.mySurveys.getSelectedSurvey)
+
+  // Get survey data
   const {
     title,
     description,
@@ -60,12 +64,41 @@ export default function ProjectMenu({ menuIsOpen, onClose }: Props): JSX.Element
     statistics,
     exportURL,
     isLoadingStats,
-  } = useSurveyData(selectedSurvey?.id);
+  } = useSurveyData(selectedSurvey?.id)
 
-  const { gotToLanding, goToForm, goToConsent, goToSurveyMetadatas } = useNavigator(selectedSurvey);
-  const { isDraft, isArchived, hadLanding, hadQuestion, canPublish } = useWarning(selectedSurvey);
+  const { gotToLanding, goToForm, goToConsent, goToSurveyMetadatas } = useNavigator(selectedSurvey)
+  const { isDraft, isArchived, hadLanding, hadQuestion, canPublish } = useWarning(selectedSurvey)
 
-  const [statFilter, setStatFilter] = useState<Filter>(Filter.Day);
+  // TODO: Wait for redux type : statFilter wich is filter[0].id have to be type with statistic key from api
+  const selectedStats = statistics && statistics[statFilter];
+
+  const changeStatus = (status: SurveyRedux["attributes"]["status"]) => {
+    if (!selectedSurvey?.id) return
+
+    dispatch(
+      actions.updateSurveys({
+        id: selectedSurvey.id,
+        changes: {
+          id: selectedSurvey.id,
+          attributes: {
+            slug: selectedSurvey.attributes.slug,
+            status,
+          },
+        },
+      })
+    )
+  }
+
+  // Various action handles
+  const signalForbidenAction = useCallback(() => console.info("Forbidden action."), [])
+  const handleArchive = () => { changeStatus(Enum_Survey_Status.Archived) }
+  const handlePublish = () => { changeStatus(Enum_Survey_Status.Pending) }
+  const handleTrash = useCallback(() => { setIsRemoving(true) }, [])
+  const handleDelete = () => {
+    if (!selectedSurvey?.id) return
+    dispatch(actions.deleteSurvey(selectedSurvey.id))
+    onClose()
+  };
 
   // We should be doing that much better :/
   if (isLoadingStats) {
@@ -79,45 +112,9 @@ export default function ProjectMenu({ menuIsOpen, onClose }: Props): JSX.Element
   // FIXME: Why is it an array ?
   // @ts-ignore
   if (!menuIsOpen || !selectedSurvey || selectedSurvey.length < 1) {
-    return <></>;
+    return <></>
   }
-
-  // TODO: Wait for redux type : statFilter wich is filter[0].id have to be type with statistic key from api
-  const selectedStats = statistics && statistics[statFilter];
-
-  const handleTrash = () => {
-    setIsRemoving(true);
-  };
-
-  const handleDelete = () => {
-    dispatch(actions.deleteSurvey(selectedSurvey.id));
-    onClose();
-  };
-
-  const changeStatus = (status: SurveyRedux["attributes"]["status"]) => {
-    if (!selectedSurvey.id) return;
-    dispatch(
-      actions.updateSurveys({
-        id: selectedSurvey.id,
-        changes: {
-          id: selectedSurvey.id,
-          attributes: {
-            slug: selectedSurvey.attributes.slug,
-            status,
-          },
-        },
-      })
-    );
-  };
-
-  const handleArchive = () => {
-    changeStatus(Enum_Survey_Status.Archived);
-  };
-
-  const handlePublish = () => {
-    changeStatus(Enum_Survey_Status.Pending);
-  };
-
+  
   return (
     // TODO: Use a % + max-width to limit growth on big screens
     <Container variant="rightPart" w="53%" overflow="auto" pos="sticky" top="65px">
@@ -179,14 +176,16 @@ export default function ProjectMenu({ menuIsOpen, onClose }: Props): JSX.Element
               </Tooltip>
             </Flex>
           </Box>
+
           {isDraft && <Warning hadLanding={hadLanding} hadQuestion={hadQuestion} />}
+
           <Box mt={4}>
             <Flex>
               <ActionButton
                 top
                 right
                 label={` ${hadLanding ? "Modifier" : "Créer"} la page d'accueil`}
-                onClick={isArchived ? () => console.log("forbidden") : gotToLanding}
+                onClick={isArchived ? signalForbidenAction : gotToLanding}
                 disabled={isArchived}
               />
               <ActionButton
@@ -194,20 +193,20 @@ export default function ProjectMenu({ menuIsOpen, onClose }: Props): JSX.Element
                 right
                 disabled={!isDraft}
                 label={` ${hadQuestion ? "Modifier" : "Créer"} le formulaire`}
-                onClick={!isDraft ? () => console.log("forbidden") : goToForm}
+                onClick={!isDraft ? signalForbidenAction : goToForm}
               />
               <ActionButton
                 top
                 disabled={!isDraft}
                 label={"Modifier le consentement"}
-                onClick={!isDraft ? () => console.log("forbidden") : goToConsent}
+                onClick={!isDraft ? signalForbidenAction : goToConsent}
               />
               <ActionButton
                 disabled={!isDraft}
                 top
                 left
                 label={"Modifier les données du projet"}
-                onClick={!isDraft ? () => console.log("forbidden") : goToSurveyMetadatas}
+                onClick={!isDraft ? signalForbidenAction : goToSurveyMetadatas}
               />
             </Flex>
             <Flex>
@@ -216,17 +215,17 @@ export default function ProjectMenu({ menuIsOpen, onClose }: Props): JSX.Element
                 right
                 bottom
                 label={"Archiver"}
-                onClick={isArchived ? () => console.log("forbidden") : handleArchive}
+                onClick={isArchived ? signalForbidenAction : handleArchive}
                 disabled={isArchived}
               />
-              <ActionButton disabled top right bottom label={"Dupliquer"} onClick={() => console.log("forbiden")} />
+              <ActionButton disabled top right bottom label={"Dupliquer"} onClick={signalForbidenAction} />
 
               <ActionButton
                 disabled
                 top
                 bottom
                 label={"Archiver & Dupliquer"}
-                onClick={() => console.log("forbiden")}
+                onClick={signalForbidenAction}
               />
             </Flex>
           </Box>
@@ -243,17 +242,6 @@ export default function ProjectMenu({ menuIsOpen, onClose }: Props): JSX.Element
               <BigNumber value={selectedStats?.consented} label={"consentis"} />
               <BigNumber value={selectedStats?.completed} label={"terminés"} />
             </Flex>
-
-            {/* <Flex
-              mt={55}
-              ml={50}
-              mr={50}
-              flexDirection="column"
-              alignItems="flex-start"
-            >
-              <div>Progression de la complétion</div>
-              <Chart />
-            </Flex> */}
           </Box>
         </Box>
       )}

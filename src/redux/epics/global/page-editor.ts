@@ -49,7 +49,7 @@ const updateEpic: Epic = (action$) =>
     ofType(actions.updatePage.type),
     map((action) => action.payload),
     scan((acc, payload) => Object.assign({}, acc, payload), {}),
-    debounceTime(3000),
+    debounceTime(2000),
     switchMap(async (accumulated: any) => {
       const updatedAt: string = new Date().toISOString();
 

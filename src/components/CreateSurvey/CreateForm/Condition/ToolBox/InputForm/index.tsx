@@ -18,6 +18,7 @@ import { Enum_Question_Rows, Enum_Question_Type, Question } from "@/api/graphql/
 import Footer from "./Template/Footer/index.tsx"
 import InputIcon from "@/components/CreateSurvey/CreateForm/InputIcon/index.tsx"
 import TitleDivider from "@/components/TitleDivider/index.tsx"
+import { noop } from "@/utils/commons.ts"
 
 interface Props {
   order: string[]
@@ -184,17 +185,13 @@ function FormDisplay({
           </Box>
         )}
 
-        { type === "wysiwyg" && (
-          <input type="hidden" name="infozone" id="infozone" />
-        )}
-
         <Box w="100%" mb="50px">
           {renderFormTemplate(selectedQuestion)}
         </Box>
       </div>
 
       <Footer
-        onSubmit={() => console.info("Submitting modifications")}
+        onSubmit={noop}
         disabled={!isValid || isSubmitting}
         onCancel={handleCancel}
         onDelete={handleDelete}

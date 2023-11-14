@@ -70,9 +70,7 @@ export default function InputsPreview({ order }: Props): JSX.Element {
       >
         <Formik
           initialValues={{}}
-          onSubmit={(data) => {
-            console.log("DATA :", data);
-          }}
+          onSubmit={(data) => { console.log("DATA :", data) }}
         >
           {() => {
             return (

@@ -38,14 +38,9 @@ export default function CreateLanding({ params }: Props): JSX.Element {
 
   // Load Landing data when arriving on this page
   useEffect(() => {
-    if (!landingId) {
-      console.info("No landing ID to load.");
-      return;
-    }
-
-    console.info("Loading landing data...")
-    dispatch(actions.load(landingId));
-  }, [dispatch, landingId]);
+    if (!landingId) return
+    dispatch(actions.load(landingId))
+  }, [dispatch, landingId])
 
   if (error) return <Error error={error} />
   if (isLoading) return <Loader />

@@ -1,11 +1,11 @@
 "use client"
 
+import { PropsWithChildren } from "react"
 import { Box, Text } from "@chakra-ui/react"
 import Image from 'next/image'
 
 import { useMediaQueries } from "@/utils/hooks/mediaqueries"
 import heroCover from '@/../public/hero.jpg'
-import { PropsWithChildren, ReactPropTypes } from "react"
 
 export default function LegalPage() {
   const { isTablet } = useMediaQueries()

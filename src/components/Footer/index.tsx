@@ -12,7 +12,6 @@ export default function Footer(): JSX.Element {
       backgroundColor="black"
       h="200px"
       color="white"
-      mx="auto"
       p={isTablet ? "5%" : "30px"}
       display="flex"
       justifyContent={isTablet ? "center" : "flex-start"}
@@ -34,11 +33,11 @@ export default function Footer(): JSX.Element {
       <Flex justifyContent="space-between" w="100%" mt="20px" textAlign="left">
         <Box>
           <Text variant="currentLight" textDecoration="underline" mt="10px">
-            <a href="mailto:thi.tran-viet@aphp.fr">thi.tran-viet@aphp.fr</a>
+            <a href="/legal">Mentions légales</a>
           </Text>
-          {/* <Text variant="currentLight" textDecoration="underline" mt="10px">
-            Mentions légales
-          </Text> */}
+          <Text variant="currentLight" mt="10px">
+            Contact : <a className="underline" href="mailto:thi.tran-viet@aphp.fr">thi.tran-viet@aphp.fr</a>
+          </Text>
         </Box>
         {/* <Text variant="currentLight" textDecoration="underline" mt="10px">
           CGU

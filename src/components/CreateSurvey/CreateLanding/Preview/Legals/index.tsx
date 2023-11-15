@@ -57,7 +57,7 @@ export default function Legals({ author, data }: Props): JSX.Element {
       </Text>
 
       <Text className="font-light text-sm" mt="20px">
-        Site généré à partir de la plateforme PROCESS de l&apos;Université Paris Cité.
+        Vous pouvez retrouver les mentions légales <a href="/legal" className="underline text-blue-400">sur cette page</a>.
       </Text>
     </Box>
   );

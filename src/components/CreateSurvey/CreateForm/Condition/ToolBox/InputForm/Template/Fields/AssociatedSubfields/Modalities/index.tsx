@@ -6,7 +6,7 @@ import { useAppSelector } from "@/redux/hooks/index.js"
 import { selectors as selectorsApplication } from "@/redux/slices/application/index.js"
 import { Enum_Question_Rows } from "@/api/graphql/types.generated.ts"
 import { Textarea } from "@/components/Fields/index.ts"
-import UploadFile from "@/components/Fields/Uploadfile.tsx"
+import UploadFile from "@/components/Fields/UploadFile"
 
 interface Props {
   name: string;

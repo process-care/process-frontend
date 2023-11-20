@@ -120,22 +120,18 @@ export default function UploadFile({
             {label}
           </Button>
         )}
+
         <Box display="none">
           <input
             type="file"
             placeholder="upload"
             ref={hiddenFileInput}
-            // onChange={(event) => {
-            //   setFieldValue(
-            //     id,
-            //     event.currentTarget.files && event.currentTarget.files[0]
-            //   );
-            // }}
-            onChange={(event) => handleChange(event)}
+            onChange={handleChange}
             accept={accept}
             multiple={multiple}
           />
         </Box>
+
         {!multiple && (
           <Flex>
             {filesName.map((name: string) => (
@@ -145,12 +141,14 @@ export default function UploadFile({
             ))}
           </Flex>
         )}
+
         {hasFilesName && !multiple && (
           <SvgHover>
             <DeleteIcon onClick={() => handleDelete()} />
           </SvgHover>
         )}
       </Flex>
+
       {multiple && (
         <Flex flexDirection="column" mt={2}>
           {filesName.map((name: string) => {
@@ -159,19 +157,22 @@ export default function UploadFile({
                 <Text my={1} variant="xsMedium" isTruncated maxWidth="150px">
                   {name}
                 </Text>
+
                 {hasFilesName && (
                   <SvgHover>
                     <DeleteIcon onClick={() => handleDelete(name)} />
                   </SvgHover>
                 )}
               </Flex>
-            );
+            )
           })}
         </Flex>
       )}
+
       <FormErrorMessage mt={1} justifyContent="flex-end" fontSize="10px">
         {meta.error}
       </FormErrorMessage>
+
       <FormHelperText mt={2} lineHeight={1.4} fontSize="xs" color="gray.400">
         {helpText}
       </FormHelperText>

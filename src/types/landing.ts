@@ -1,4 +1,4 @@
-import { IBase64 } from "@/components/Fields/Uploadfile.tsx"
+import { IBase64 } from "@/components/Fields/UploadFile"
 
 export interface Media {
   id: string;

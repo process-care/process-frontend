@@ -15,10 +15,10 @@ interface Props {
 }
 
 export default function GradeFields({ selectedQuestion }: Props): JSX.Element {
-  const isEditing = useAppSelector(formBuilderSelectors.isEditing);
+  const isEditing = useAppSelector(formBuilderSelectors.isEditing)
 
-  const { resetForm, touched } = useFormikContext<QuestionRedux["attributes"]>();
-  const savedType = selectedQuestion?.attributes.associated_input?.type;
+  const { resetForm, touched } = useFormikContext<QuestionRedux["attributes"]>()
+  const savedType = selectedQuestion?.attributes.associated_input?.type
 
   useEffect(() => {
     if (savedType && Object.keys(touched).length > 0) {
@@ -32,7 +32,9 @@ export default function GradeFields({ selectedQuestion }: Props): JSX.Element {
         },
       });
     }
-  }, [savedType, isEditing, touched, resetForm, selectedQuestion?.attributes]);
+  // We need to reset the form only on certain conditions (not with every touch and such)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [savedType, isEditing])
 
   return (
     <Box mt="5">
@@ -46,8 +48,8 @@ export default function GradeFields({ selectedQuestion }: Props): JSX.Element {
       />
       {renderTemplate(selectedQuestion)}
     </Box>
-  );
-};
+  )
+}
 
 const renderTemplate = (selectedQuestion: QuestionRedux | undefined) => {
   switch (selectedQuestion?.attributes?.associated_input?.type) {
@@ -117,4 +119,4 @@ const renderTemplate = (selectedQuestion: QuestionRedux | undefined) => {
     default:
       break;
   }
-};
+}

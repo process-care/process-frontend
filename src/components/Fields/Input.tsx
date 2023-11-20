@@ -88,7 +88,7 @@ export default function CustomInput({
                   <FormErrorMessage mt={1} justifyContent="flex-end" fontSize="10px">
                     {meta.error}
                   </FormErrorMessage>
-                  <FormHelperText fontSize="xs">{helpText}</FormHelperText>
+                  <FormHelperText fontSize="xs" cursor="default">{helpText}</FormHelperText>
                 </>
               )}
             </AccordionPanel>

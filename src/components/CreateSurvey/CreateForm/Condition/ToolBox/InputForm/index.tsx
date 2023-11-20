@@ -148,7 +148,7 @@ function FormDisplay({
                 label="Id dans la base de donnée"
                 placeholder="Renseigner le nom interne de votre question"
                 name="internal_title"
-                helpText="Ce champ vous permet de donner un titre à la question,il n'est pas visible par les utilisateurs."
+                helpText="Ce champ vous permet de donner un titre à la question, il n'est pas visible par les utilisateurs."
                 isRequired="false"
                 isAccordion
               />

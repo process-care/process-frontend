@@ -133,19 +133,19 @@ export default function Menu({ isLanding, surveyId }: Props): JSX.Element {
 
 function ChangesInProgress() {
   return (
-    <Text variant="xs" mr="40px" color="brand.blue" top="10px" pos="relative">
-      <CircularProgress mr={2} isIndeterminate color="brand.blue" size="2" />
-      {nl.msg.hasChanges}
-    </Text>
-  );
+    <div className="flex flex-row mr-10 text-process-blue relative items-center">
+      <CircularProgress mr={2} isIndeterminate color="brand.blue" size="3" />
+      <Text variant="xs">{nl.msg.hasChanges}</Text>
+    </div>
+  )
 }
 
 function ChangesSaved() {
   return (
-    <Text variant="xs" mr="40px" color="brand.green" top="10px" pos="relative">
-      <CheckIcon mr="7px" />
-      {nl.msg.changesSaved}
-    </Text>
+    <div className="flex flex-row mr-10 text-process-green relative items-center">
+      <CheckIcon mr="7px" scale={3} />
+      <Text variant="xs">{nl.msg.changesSaved}</Text>
+    </div>
   );
 }
 

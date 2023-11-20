@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState } from "react"
 import {
   Box,
   Button,
@@ -7,13 +7,12 @@ import {
   FormHelperText,
   FormControl,
   FormErrorMessage,
-} from "@chakra-ui/react";
-import { useField, useFormikContext } from "formik";
-import Image from "next/image.js"
+} from "@chakra-ui/react"
+import { useField, useFormikContext } from "formik"
+import { DeleteIcon } from "lucide-react"
 
 import { toBase64 } from "@/components/CreateSurvey/CreateLanding/ToolBox/Form/utils/index.ts"
 import SvgHover from "@/components/SvgHover/index.tsx"
-import { DeleteIcon } from "lucide-react";
 
 interface Props {
   label: string;
@@ -30,7 +29,7 @@ export interface IBase64 {
   name: string | undefined;
 }
 
-export default function UploadFile({
+export default function UploadFileInline({
   label,
   id,
   helpText,

@@ -1,11 +1,10 @@
-import { useCallback, useRef } from "react";
-import { Box, Button, Text, Flex, FormHelperText, FormControl, FormErrorMessage } from "@chakra-ui/react";
+import { useCallback, useRef } from "react"
+import { Box, Button, Text, Flex, FormHelperText, FormControl, FormErrorMessage } from "@chakra-ui/react"
+import { MinusIcon } from "lucide-react"
 
-import { UploadParams } from "@/redux/slices/application/index.js"
 import { useFileHandlers } from "./hooks.ts"
-import { MinusIcon } from "lucide-react";
-import ButtonIcon from "@/components/ButtonIcon.tsx";
-import { url } from "inspector";
+import { UploadParams } from "@/redux/slices/application/index.js"
+import ButtonIcon from "@/components/ButtonIcon.tsx"
 
 // ---- TYPES
 

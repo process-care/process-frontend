@@ -126,7 +126,7 @@ function FormConsentement({ values, isValid, isSubmitting, surveyId, refetch }: 
       actions.updateSurvey({
         id: surveyId,
         needConsent: Array.isArray(values.needConsent) ? values.needConsent.includes('on') : Boolean(values.needConsent),
-        noticeConsent: values.noticeConsent,
+        noticeConsent: values?.noticeConsent?.data,
       })
     );
 

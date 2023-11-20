@@ -84,7 +84,7 @@ export default function CreateForm({ params }: Props): JSX.Element {
             </Container>
 
             <Container
-              className="flex flex-col justify-center items-center bg-slate-100 overflow-auto p-0"
+              className="flex flex-col justify-center items-center bg-slate-100 overflow-auto p-0 relative"
               h="calc(100vh - 65px)"
               w="94%"
               maxWidth="unset"

@@ -28,11 +28,14 @@ export default function Legals({ author, data }: Props): JSX.Element {
       <Text variant="smallTitleBold">Hébergement :</Text>
 
       <Text mb="30px" className="font-light text-sm">
-        Site généré à partir de la plateforme PROCESS de l&apos;Université Paris Cité Site.
-        <br />Le site est hébergé par la société Scalingo, 13 rue Jacques Peirotes, 67000 Strasbourg, France. (<a className="underling text-blue-500" href="https://scalingo.com/fr/contact" target="_blank">Page de contact</a>)
-        <br />Le stockage des données personnelles des utilisateurs est exclusivement réalisé sur les centres de
-        données (&quot;clusters&quot;) de la société Outscale, dont le siège social est situé 1 rue Royale, 92210 Saint-Cloud, France.
-        <br />Tous les clusters Outscale sur lesquels les données du site sont stockées sont localisés en France.
+        Site généré à partir de la plateforme PROCESS de l&apos;Université Paris Cité.<br/><br/>
+
+        Le site est hébergé par la société Scalingo, 13 rue Jacques Peirotes, 67000 Strasbourg, France. (<a className="underling text-blue-500" href="https://scalingo.com/fr/contact" target="_blank">Page de contact</a>)<br/>
+        Le site et les données sont hébergés sur des serveurs agréés hébergeurs de données de santé.<br/><br/>
+
+        Le stockage des données personnelles des utilisateurs est exclusivement réalisé sur les centres de données (&quot;clusters&quot;)
+        de la société Outscale, dont le siège social est situé 1 rue Royale, 92210 Saint-Cloud, France.<br/>
+        Tous les clusters Outscale sur lesquels les données du site sont stockées sont localisés en France.
       </Text>
 
       <Text variant="smallTitleBold">Vie privée</Text>
@@ -54,7 +57,7 @@ export default function Legals({ author, data }: Props): JSX.Element {
       </Text>
 
       <Text className="font-light text-sm" mt="20px">
-        Site généré à partir de la plateforme PROCESS de l&apos;Université Paris Cité.
+        Vous pouvez retrouver les mentions légales <a href="/legal" className="underline text-blue-400">sur cette page</a>.
       </Text>
     </Box>
   );

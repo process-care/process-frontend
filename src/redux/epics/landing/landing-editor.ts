@@ -35,13 +35,14 @@ const updateEpic: Epic = (action$, state$) =>
         throw new Error("No Landing ID to save the modifications to.");
       }
 
-      const savingAt = new Date().toISOString();
-      const attributes = accumulated?.changes?.attributes;
-      // Change cover data to match correct LandingInput type
-      const data = { ...attributes, cover: attributes?.cover?.data?.id };
+      const savingAt = new Date().toISOString()
+      const attributes = accumulated?.changes?.attributes
 
-      await sdk.updateLanding({ id: currentLandingId, data });
-      return savingAt;
+      // Change cover data to match correct LandingInput type
+      const data = { ...attributes, cover: attributes?.cover?.data?.id }
+
+      await sdk.updateLanding({ id: currentLandingId, data })
+      return savingAt
     }),
     map((savedDate) => actions.updated({ lastSaved: savedDate }))
   );

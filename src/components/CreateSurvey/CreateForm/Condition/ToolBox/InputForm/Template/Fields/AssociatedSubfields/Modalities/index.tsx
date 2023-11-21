@@ -6,7 +6,7 @@ import { useAppSelector } from "@/redux/hooks/index.js"
 import { selectors as selectorsApplication } from "@/redux/slices/application/index.js"
 import { Enum_Question_Rows } from "@/api/graphql/types.generated.ts"
 import { Textarea } from "@/components/Fields/index.ts"
-import UploadFile from "@/components/Fields/Uploadfile.tsx"
+import UploadFileInline from "@/components/Fields/Upload/UploadFileInline"
 
 interface Props {
   name: string;
@@ -48,7 +48,7 @@ export default function Modalities({ name }: Props): JSX.Element {
                         isCollapsed={false}
                       />
 
-                      <UploadFile
+                      <UploadFileInline
                         onChange={(file) => console.log(file)}
                         label="Ajouter une image à la modalité"
                         id={`${name}.${index}.file`}

@@ -133,9 +133,9 @@ export default function Preview({ isUserView, data, author, needConsent, surveyI
         </Text>
 
         {hasMedia && (
-          <Box mt="30px" position="relative">
+          <Box height="250px" width="100%" mt="30px" position="relative">
             {hasVideo && <Video url={attributes?.video_url ?? ""} />}
-            {hasImage && <Image src={coverSrc} alt={coverName} />}
+            {hasImage && <Image fill={true} objectFit="contain" src={coverSrc} alt={coverName} sizes="(max-width: 768px) 100vw, 33vw" />}
           </Box>
         )}
       </Center>

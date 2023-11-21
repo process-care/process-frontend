@@ -43,7 +43,7 @@ export default function Layout({ children }: Props): JSX.Element {
   const height = use100vh()
 
   const isSurveyPages = pathname.search("/survey/") !== -1
-  const isPortail = pathname === "/"
+  const isPortail = pathname === "/" || pathname === "/legal"
   const isEditor = pathname.includes("create/landing")
   const isAuthPage = authPage.includes(pathname)
 
@@ -92,7 +92,7 @@ export default function Layout({ children }: Props): JSX.Element {
   }
 
   return (
-    <Box textAlign="center" fontSize="xl">
+    <Box className="flex flex-col h-screen" textAlign="center" fontSize="xl">
       {renderMenu()}
 
       {children}

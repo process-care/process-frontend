@@ -1,11 +1,11 @@
-import { FieldArray, useField, useFormikContext } from "formik";
-import { Flex, Box, Button, Text } from "@chakra-ui/react";
+import { FieldArray, useField, useFormikContext } from "formik"
+import { Flex, Box, Button, Text } from "@chakra-ui/react"
 
 import { useAppSelector } from "@/redux/hooks/index.js"
 import { selectors as selectorsApplication } from "@/redux/slices/application/index.js"
 import { Enum_Question_Rows } from "@/api/graphql/types.generated.ts"
 import { Textarea } from "@/components/Fields/index.ts"
-import UploadFile from "@/components/Fields/Uploadfile.tsx"
+import UploadFileRemote from "@/components/Fields/Upload/UploadFileRemote"
 
 interface Props {
   name: string;
@@ -14,10 +14,11 @@ interface Props {
 }
 
 export default function RepeatableJobs({ name, onlyUpload, cta }: Props): JSX.Element {
-  const [field, meta] = useField(name);
-  const { setFieldValue } = useFormikContext();
-  const isEditing = useAppSelector(selectorsApplication.isEditing);
-  const fields = field.value;
+  const [field, meta] = useField(name)
+  const { setFieldValue } = useFormikContext()
+  const isEditing = useAppSelector(selectorsApplication.isEditing)
+  const fields = field.value
+
   return (
     <Box w="100%">
       <FieldArray
@@ -40,6 +41,7 @@ export default function RepeatableJobs({ name, onlyUpload, cta }: Props): JSX.El
                             isCollapsed={false}
                             {...field}
                           />
+
                           <Textarea
                             id={`${name}.${index}.job`}
                             label="Job"
@@ -51,10 +53,14 @@ export default function RepeatableJobs({ name, onlyUpload, cta }: Props): JSX.El
                           />
                         </>
                       )}
-                      <UploadFile
-                        onChange={(e) => console.log(e)}
+
+                      <UploadFileRemote
+                        target={ { field: `${name}.${index}.image` } }
                         label="Ajouter une photo"
-                        id={`${name}.${index}.image`}
+                        accept="image/*"
+                        onChange={(e) => console.log(e)}
+                        multiple={false}
+                        urlOnly={true}
                       />
                     </Box>
 
@@ -86,6 +92,7 @@ export default function RepeatableJobs({ name, onlyUpload, cta }: Props): JSX.El
                       )}
                     </Flex>
                   </Flex>
+                  
                   <Text mt={1} fontSize="10px" color="red">
                     {meta.error}
                   </Text>

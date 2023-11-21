@@ -12,7 +12,7 @@ import { SurveyBySlugQuery, useSurveyBySlugQuery } from "@/api/graphql/queries/s
 import { client } from "@/api/gql-client.js"
 import Loader from "@/components/Spinner/index.tsx"
 import Menu from "@/components/Menu/CreateSurvey/index.tsx"
-import UploadFileRemote from "@/components/Fields/UploadFileRemote/index.tsx"
+import UploadFileRemote from "@/components/Fields/Upload/UploadFileRemote"
 import Footer from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer/index.tsx"
 import PDFPreview from "@/components/PDFPreview"
 
@@ -67,7 +67,7 @@ export default function CreateConsent({ params }: Props): JSX.Element {
         <div className="h-[calc(100vh-65px)] p-2 bg-gray-100">
           { url
             ? <PDFPreview url={url} />
-            : <span className="text-base font-light italic">{ t.placeholderPreview }</span>
+            : <div className="text-base font-light italic my-20">{ t.placeholderPreview }</div>
           }
         </div>
       </Box>
@@ -126,7 +126,7 @@ function FormConsentement({ values, isValid, isSubmitting, surveyId, refetch }: 
       actions.updateSurvey({
         id: surveyId,
         needConsent: Array.isArray(values.needConsent) ? values.needConsent.includes('on') : Boolean(values.needConsent),
-        noticeConsent: values.noticeConsent,
+        noticeConsent: values?.noticeConsent?.data,
       })
     );
 

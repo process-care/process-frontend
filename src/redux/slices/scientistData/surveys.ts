@@ -62,11 +62,18 @@ export const surveysReducers = {
   },
 
   updateSurveys: (state: GlobalState, action: PayloadAction<UpdatePayload>): void => {
-    state.surveys.lastUpdated = new Date().toISOString();
-    surveysAdapter.updateOne(state.surveys, action.payload);
+    state.surveys.lastUpdated = new Date().toISOString()
+    // Fuse payload changes with existing attributes (updateOne only does a shallow merge)
+    const current = surveysAdapter.getSelectors().selectById(state.surveys, action.payload.id)
+    const merged = {
+      id: action.payload.id,
+      changes: { attributes: { ...current?.attributes, ...action.payload.changes.attributes } }
+    }
+    // Update the survey
+    surveysAdapter.updateOne(state.surveys, merged)
   },
   updatedSurveys: (state: GlobalState, action: PayloadAction<LastUpdated>): void => {
-    state.surveys.lastUpdated = action.payload.lastUpdated;
+    state.surveys.lastUpdated = action.payload.lastUpdated
   },
   setSelectedSurvey: (state: GlobalState, action: PayloadAction<string>): void => {
     state.surveys.selectedSurvey = action.payload;

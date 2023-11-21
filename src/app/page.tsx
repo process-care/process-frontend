@@ -62,7 +62,7 @@ export default function Portail() {
   const totalCount = publishedResult?.surveys?.meta.pagination.total;
 
   return (
-    <Box w="100%">
+    <Box className='grow' w="100%">
       <Box position="relative" h={isTablet ? "150px" : "200px"}>
         <Box position="absolute" color="white" zIndex="2" top="20px" left={isTablet ? "5%" : "70px"}>
           <Text variant="xxl" fontWeight="900" maxW="1000px" w="auto" textAlign="left" marginLeft="-3px" mb="10px">
@@ -103,6 +103,7 @@ export default function Portail() {
       ) : (
         <NoData content="Nous n'avons pas trouvé d'enquêtes pour votre recherche." w="90%" />
       )}
+
       {totalCount && state.length < totalCount ? (
         <Box
           pos="relative"
@@ -121,5 +122,5 @@ export default function Portail() {
         <></>
       )}
     </Box>
-  );
-};
+  )
+}

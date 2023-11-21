@@ -40,15 +40,13 @@ export default function MonoThumbnailFields(): JSX.Element {
 
         <AssociatedSubfields name="factors" />
         <TitleDivider title="Question associée" />
-        <Box w="45%">
-          <Select
-            label="Merci de selectionner le type de question à associer"
-            id="associated_input.type"
-            answers={answers}
-            placeholder="Choisir une question"
-            defaultValue={answers[0].value ?? ""}
-          />
-        </Box>
+        <Select
+          label="Type de question à associer"
+          id="associated_input.type"
+          answers={answers}
+          placeholder="Choisir une question"
+          defaultValue={answers[0].value ?? ""}
+        />
 
         <GradeFields selectedQuestion={selectedQuestion} />
       </Box>

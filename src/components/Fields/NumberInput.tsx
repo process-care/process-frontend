@@ -42,8 +42,8 @@ export default function CustomNumberInput({
   isCollapsed,
   appearance,
 }: Props): JSX.Element {
-  const [field, meta, helpers] = useField(name);
-
+  const [field, meta, helpers] = useField(name)
+  
   return (
     <FormControl isRequired={isRequired} id={name} textAlign="left" style={style} isInvalid={!!meta.error}>
       <FormLabel>{label}</FormLabel>
@@ -57,10 +57,8 @@ export default function CustomNumberInput({
               allowMouseWheel
               w="100%"
               fontSize="12px"
-              value={field.value}
-              onChange={(e) => {
-                helpers.setValue(parseInt(e));
-              }}
+              value={field.value ?? ''}
+              onChange={(e) => { helpers.setValue(parseInt(e)) }}
             >
               <NumberInputField
                 backgroundColor="white"
@@ -73,17 +71,20 @@ export default function CustomNumberInput({
                 fontSize="12px"
               />
             </NumberInput>
+
             {inputRightAddon &&
               <InputRightAddon p={appearance === "big" ? "30px" : "10px"}>
                 {inputRightAddon}
               </InputRightAddon>
             }
           </InputGroup>
+
           {meta.touched && meta.error && (
             <Text fontSize="10px" color="red" textAlign="right">
               {meta.error}
             </Text>
           )}
+
           <FormHelperText fontSize="xs">{helpText}</FormHelperText>
         </>
       )}

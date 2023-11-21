@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState } from "react"
 import {
   Box,
   Button,
@@ -7,13 +7,12 @@ import {
   FormHelperText,
   FormControl,
   FormErrorMessage,
-} from "@chakra-ui/react";
-import { useField, useFormikContext } from "formik";
-import Image from "next/image.js"
+} from "@chakra-ui/react"
+import { useField, useFormikContext } from "formik"
+import { DeleteIcon } from "lucide-react"
 
 import { toBase64 } from "@/components/CreateSurvey/CreateLanding/ToolBox/Form/utils/index.ts"
 import SvgHover from "@/components/SvgHover/index.tsx"
-import { DeleteIcon } from "lucide-react";
 
 interface Props {
   label: string;
@@ -30,7 +29,7 @@ export interface IBase64 {
   name: string | undefined;
 }
 
-export default function UploadFile({
+export default function UploadFileInline({
   label,
   id,
   helpText,
@@ -120,22 +119,18 @@ export default function UploadFile({
             {label}
           </Button>
         )}
+
         <Box display="none">
           <input
             type="file"
             placeholder="upload"
             ref={hiddenFileInput}
-            // onChange={(event) => {
-            //   setFieldValue(
-            //     id,
-            //     event.currentTarget.files && event.currentTarget.files[0]
-            //   );
-            // }}
-            onChange={(event) => handleChange(event)}
+            onChange={handleChange}
             accept={accept}
             multiple={multiple}
           />
         </Box>
+
         {!multiple && (
           <Flex>
             {filesName.map((name: string) => (
@@ -145,12 +140,14 @@ export default function UploadFile({
             ))}
           </Flex>
         )}
+
         {hasFilesName && !multiple && (
           <SvgHover>
             <DeleteIcon onClick={() => handleDelete()} />
           </SvgHover>
         )}
       </Flex>
+
       {multiple && (
         <Flex flexDirection="column" mt={2}>
           {filesName.map((name: string) => {
@@ -159,19 +156,22 @@ export default function UploadFile({
                 <Text my={1} variant="xsMedium" isTruncated maxWidth="150px">
                   {name}
                 </Text>
+
                 {hasFilesName && (
                   <SvgHover>
                     <DeleteIcon onClick={() => handleDelete(name)} />
                   </SvgHover>
                 )}
               </Flex>
-            );
+            )
           })}
         </Flex>
       )}
+
       <FormErrorMessage mt={1} justifyContent="flex-end" fontSize="10px">
         {meta.error}
       </FormErrorMessage>
+
       <FormHelperText mt={2} lineHeight={1.4} fontSize="xs" color="gray.400">
         {helpText}
       </FormHelperText>

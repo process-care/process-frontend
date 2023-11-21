@@ -13,24 +13,30 @@ import { Enum_Question_Rows } from "@/api/graphql/types.generated.ts"
 import { initialValues } from "./utils/initialValues.ts"
 import { Textarea } from "@/components/Fields/index.ts"
 import RepeatableJobs from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/RepeatableJobs/index.tsx"
-import UploadFile from "@/components/Fields/Uploadfile.tsx"
 import Wysiwyg from "@/components/Fields/Wysiwyg/Wysiwyg.tsx"
-import UploadFileRemote from "@/components/Fields/UploadFileRemote/index.tsx"
+import UploadFileRemote from "@/components/Fields/Upload/UploadFileRemote.tsx"
 import Footer from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer/index.tsx"
 import TitleDivider from "@/components/TitleDivider/index.tsx"
 import ColorPicker from "../ColorPicker/index.tsx"
 import SvgHover from "@/components/SvgHover/index.tsx"
 
 export default function LandingForm(): JSX.Element {
-  const landing = useAppSelector(selectors.getLanding);
+  const landing = useAppSelector(selectors.getLanding)
 
   const onSubmit = useCallback((data: any, { setSubmitting, validateForm }: any) => {
-    validateForm(data);
-    setSubmitting(true);
-  }, []);
+    validateForm(data)
+    setSubmitting(true)
+  }, [])
+
+  // TODO: Refactor. This is a small hack to avoid having `null` values for text area
+  const saneInitialValues = useMemo(() => {
+    const fused = { ...initialValues, ...landing?.attributes }
+    if (!fused.video_url) fused.video_url = ""
+    return fused
+  }, [landing?.attributes])
 
   return (
-    <Formik validateOnBlur={false} initialValues={landing?.attributes || initialValues} onSubmit={onSubmit}>
+    <Formik validateOnBlur={false} initialValues={saneInitialValues} onSubmit={onSubmit}>
       {({ values, setFieldValue, isValid, isSubmitting }) =>
         <FormDisplay
           landing={landing}
@@ -123,7 +129,14 @@ function FormDisplay({ landing, values, setFieldValue, isValid, isSubmitting }: 
             {t.label_logo}
           </Text>
 
-          <UploadFile onChange={logOnChange} label={t.logo_cta} id="logo" helpText={t.logo_helptext} />
+          <UploadFileRemote
+            accept="image/*"
+            onChange={logOnChange}
+            label={t.logo_cta}
+            target={ { field: "logo" } }
+            helpText={t.logo_helptext}
+            urlOnly={true}
+          />
 
           <Text variant="currentBold" mt={9}>
             {t.theme_label}
@@ -145,8 +158,8 @@ function FormDisplay({ landing, values, setFieldValue, isValid, isSubmitting }: 
           </Text>
 
           <UploadFileRemote
-            accept=".jpg,.png,.jpeg"
-            target={targets?.cover}
+            accept="image/*"
+            target={targets.cover}
             content={values.cover?.data}
             label={t.image_cta}
             helpText={t.logo_helptext}

@@ -1,11 +1,10 @@
-import { useCallback, useRef } from "react";
-import { Box, Button, Text, Flex, FormHelperText, FormControl, FormErrorMessage } from "@chakra-ui/react";
+import { useCallback, useRef } from "react"
+import { Box, Button, Text, Flex, FormHelperText, FormControl, FormErrorMessage } from "@chakra-ui/react"
+import { MinusIcon } from "lucide-react"
 
-import { UploadParams } from "@/redux/slices/application/index.js"
 import { useFileHandlers } from "./hooks.ts"
-import SvgHover from "@/components/SvgHover/index.tsx"
-import { DeleteIcon, MinusIcon } from "lucide-react";
-import ButtonIcon from "@/components/ButtonIcon.tsx";
+import { UploadParams } from "@/redux/slices/application/index.js"
+import ButtonIcon from "@/components/ButtonIcon.tsx"
 
 // ---- TYPES
 
@@ -16,6 +15,7 @@ interface BaseProps {
   onChange: (msg: string | null | undefined) => void;
   target: UploadParams;
   accept: string;
+  urlOnly?: boolean
 }
 
 type SingleContent = BaseProps & {
@@ -51,10 +51,10 @@ export default function UploadFileRemote(props: Props): JSX.Element {
   // Kept in one object: `if (props.multiple && props.content) props.content[0].id` <- WORKS (content is well guessed)
   //
   // We can still destructure the rest for convenience. The object is really just needed for the safe guard guessing.
-  const { target, multiple, onChange, isDisabled, label, helpText, accept } = props
+  const { target, multiple, onChange, isDisabled, label, helpText, accept, urlOnly } = props
 
   const hiddenFileInput = useRef<HTMLInputElement>(null)
-  const { handleChange, handleDelete, error } = useFileHandlers(target, multiple, onChange, hiddenFileInput)
+  const { handleChange, handleDelete, error } = useFileHandlers(target, multiple, onChange, hiddenFileInput, urlOnly)
 
   const isInvalid = Boolean(error)
 

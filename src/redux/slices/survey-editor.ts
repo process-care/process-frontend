@@ -7,17 +7,22 @@ import { LastPosted, LastSaved, SurveyRedux } from "./types/index.js"
 
 // ---- STATE
 
+export interface IsomorphicSurvey {
+  id: string
+  attributes: Omit<SurveyRedux["attributes"], 'keywords'> & { keywords?: SurveyRedux["attributes"]['keywords'] | string | null },
+}
+
 export interface SurveyEditor {
-  isLoading: boolean;
-  isPosting: boolean;
-  isFailed: boolean;
-  error?: any[];
-  lastUpdated: string;
-  lastSaved: string;
-  lastPosted: string;
-  data: SurveyRedux;
-  draft?: SurveyRedux;
-  step: number;
+  isLoading: boolean
+  isPosting: boolean
+  isFailed: boolean
+  error?: any[]
+  lastUpdated: string
+  lastSaved: string
+  lastPosted: string
+  data: IsomorphicSurvey
+  draft?: SurveyRedux
+  step: number
   // Flag to know when the survey creation is a success (to react in the UI accordingly)
   isPosted: boolean
 }
@@ -40,7 +45,7 @@ type InitializedPayload = SurveyRedux[];
 
 export type UpdatePayload = {
   id: string;
-  changes: SurveyRedux;
+  changes: IsomorphicSurvey
 };
 
 // ----- SLICE
@@ -60,14 +65,14 @@ export const surveyEditorSlice = createSlice({
       state.data = survey[0];
     },
     update: (state, action: PayloadAction<UpdatePayload>) => {
-      state.lastUpdated = new Date().toISOString();
-      const updated = { ...state.data, ...action.payload.changes };
-      state.data = updated;
+      state.lastUpdated = new Date().toISOString()
+      const updated = { ...state.data, ...action.payload.changes }
+      state.data = updated
     },
     updateMetas: (state, action: PayloadAction<UpdatePayload>) => {
-      state.lastUpdated = new Date().toISOString();
-      const updated = { ...state.data, ...action.payload.changes };
-      state.data = updated;
+      state.lastUpdated = new Date().toISOString()
+      const updated = { ...state.data, ...action.payload.changes }
+      state.data = updated
 
       // // auto-generate slug
       if (action.payload?.changes?.attributes?.title) {
@@ -111,9 +116,9 @@ export const hasChanges = (state: RootState): boolean => {
   return updated > saved;
 };
 
-export const survey = (state: RootState): SurveyRedux | undefined => state.editor.survey.data;
+export const survey = (state: RootState): IsomorphicSurvey | undefined => state.editor.survey.data
 
-export const getSurveyDraft = (state: RootState): SurveyRedux | undefined => state.editor.survey.data;
+export const getSurveyDraft = (state: RootState): IsomorphicSurvey | undefined => state.editor.survey.data
 
 export const selectors = {
   error,

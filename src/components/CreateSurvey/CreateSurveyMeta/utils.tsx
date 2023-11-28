@@ -1,4 +1,4 @@
-import { FormikErrors } from "formik";
+import { FormikErrors } from "formik"
 
 import { Enum_Question_Rows } from "@/api/graphql/types.generated.ts"
 import { Input, Select, Textarea } from "@/components/Fields/index.ts"
@@ -26,6 +26,8 @@ const t = {
     { label: "ADN RNME", value: "ADN RNME" },
   ],
 };
+
+// ---- COMPONENTS
 
 // Need to create this two Inout here to fix the mount pb (loose of default value)
 const KeyWords = () => {
@@ -56,18 +58,20 @@ const Language = () => {
   );
 };
 
+// ---- RENDER FUNCTION
+
 export const renderInputs = (step: number): React.ReactElement => {
   switch (step) {
     case 1:
       return (
         <Input appearance="big" name="title" placeholder="Titre du projet" label="Renseigner le titre du projet" />
-      );
-      break;
+      )
+
     case 2:
       return (
         <Input appearance="big" name="slug" placeholder="Url du projet" label="Valider ou modifier l'url du projet" />
-      );
-      break;
+      )
+
     case 3:
       return (
         <Textarea
@@ -78,26 +82,25 @@ export const renderInputs = (step: number): React.ReactElement => {
           label="Renseigner la description du projet"
           helpText="Description publique, affichée aux utilisateurs de PROCESS. 500 signes max"
         />
-      );
-      break;
+      )
 
     case 4:
-      return <KeyWords />;
-      break;
+      return <KeyWords />
+
     case 5:
-      return <Language />;
-      break;
+      return <Language />
+
     case 6:
       return (
         <Input appearance="big" name="email" placeholder="Email de contact" label="Renseigner l'email de contact" />
-      );
-      break;
+      )
 
     default:
-      return <></>;
-      break;
+      return <></>
   }
-};
+}
+
+// ---- UTILS
 
 export const checkValidity = (
   step: number,
@@ -124,4 +127,4 @@ export const checkValidity = (
   if (step === 6) {
     return email !== "" && !errors.email;
   } else return false;
-};
+}

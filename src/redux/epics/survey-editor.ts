@@ -6,22 +6,24 @@ import { actions } from "@/redux/slices/survey-editor.js"
 import { sdk } from "@/api/gql-client.js"
 import { sanitizeEntities } from "@/api/entity-checker.js"
 import { SurveyInput } from "@/api/graphql/sdk.generated.js"
+import { Enum_Survey_Status } from "@/api/graphql/types.generated";
 
 // Watches over "load" survey
 const loadEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.initialize.type),
     switchMap(async (action) => {
-      const slug = action.payload;
+      const slug = action.payload
 
       const result = await sdk.surveyBySlug({ slug }).then((res) => {
-        const data = res.surveys?.data;
-        return sanitizeEntities(data);
-      });
-      return result;
+        const data = res.surveys?.data
+        return sanitizeEntities(data)
+      })
+
+      return result
     }),
     map((result) => {
-      return actions.initialized(result);
+      return actions.initialized(result)
     })
   );
 
@@ -31,52 +33,43 @@ const updateEpic: Epic = (action$, state$) =>
     ofType(actions.update.type),
     filter(() => {
       // If surveyId is undefined, it means we are creating a new survey and we don't need to update it
-      const surveyId = state$.value.editor.survey.data.id;
-
-      return Boolean(surveyId);
+      const surveyId = state$.value.editor.survey.data.id
+      return Boolean(surveyId)
     }),
     map((action) => action.payload?.changes?.attributes),
     scan((acc, payload) => Object.assign({}, acc, payload), {}),
     debounceTime(500),
-    switchMap(async (accumulated: SurveyInput) => {
-      const savingAt = new Date().toISOString();
-      const surveyId = state$.value.editor.survey.data?.id;
-      await sdk.updateSurvey({ id: surveyId, data: accumulated });
-      return savingAt;
+    switchMap(async (accumulated: any) => {
+      const savingAt = new Date().toISOString()
+      const surveyId = state$.value.editor.survey.data?.id
+
+      const sanitized = sanitizeMeta(accumulated)
+      await sdk.updateSurvey({ id: surveyId, data: sanitized })
+      return savingAt
     }),
     map((savedDate) => actions.updated({ lastSaved: savedDate }))
   );
 
-// Watches over any "update" for the survey
+// Watches over any "post" for the survey
 const postEpic: Epic = (action$, state$) =>
   action$.pipe(
     ofType(actions.post.type),
     filter(() => {
       // If surveyId is defined, it means we don't need to create it
-      const surveyId = state$.value.editor.survey.data?.id;
-      return !surveyId;
+      const surveyId = state$.value.editor.survey.data?.id
+      return !surveyId
     }),
     switchMap(async () => {
-      const data = state$.value.editor.survey.data?.attributes as SurveyInput;
+      const data = state$.value.editor.survey.data?.attributes
       const format = {
-        slug: data.slug,
-        title: data.title,
-        description: data.description,
-        language: data.language,
-        status: "draft",
-        keywords: [
-          {
-            label: data.keywords,
-            value: data.keywords,
-          },
-        ],
-        email: data.email,
-      } as SurveyInput;
+        ...sanitizeMeta(data),
+        status: Enum_Survey_Status.Draft,
+      }
 
       // Create survey and its first page
       try {
-        const surveyRes = await sdk.createSurvey({ values: format });
-        const surveyId = surveyRes?.createSurvey?.data?.id;
+        const surveyRes = await sdk.createSurvey({ values: format })
+        const surveyId = surveyRes?.createSurvey?.data?.id
 
         if (surveyId) {
           await sdk.addPage({
@@ -86,12 +79,12 @@ const postEpic: Epic = (action$, state$) =>
               short_name: `P1`,
               survey: surveyId,
             },
-          });
+          })
         }
 
-        return surveyRes;
+        return surveyRes
       } catch (error: any) {
-        return error;
+        return error
       }
     }),
     map((surveyRes) => {
@@ -107,3 +100,29 @@ const postEpic: Epic = (action$, state$) =>
   );
 
 export const surveyEditorEpics = combineEpics(loadEpic, updateEpic, postEpic);
+
+// ---- UTILS
+
+function sanitizeMeta(data: any): SurveyInput {
+  const sanitized: any = {}
+
+  // Loop over all the fields of `data` and sanitize them
+  for (const [key, value] of Object.entries(data)) {
+    switch (key) {
+      case "keywords":
+        sanitized[key] = [
+          {
+            label: value,
+            value: value,
+          },
+        ]
+        break
+
+      default:
+        sanitized[key] = value
+        break
+    }
+  }
+
+  return sanitized
+}

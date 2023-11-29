@@ -56,7 +56,7 @@ export default function SliderFields(): JSX.Element {
           <Box w="45%"></Box>
         </Flex>
 
-        <Switch label="Slider en vue verticale" id="vertical" defaultChecked={false} />
+        {/* <Switch label="Slider en vue verticale" id="vertical" defaultChecked={false} /> */}
 
         <Box mb={4} />
 

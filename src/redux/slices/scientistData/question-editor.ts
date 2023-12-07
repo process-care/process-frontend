@@ -89,6 +89,7 @@ export const questionsReducers = {
     questionAdapter.addOne(state.questions, action.payload.question);
     state.survey.order = getNewOrder(action.payload.global, action.payload.question.id);
     state.questions.selectedQuestion = action.payload.question.id;
+    state.questions.isCreating = false;
   },
   updateQuestion: (state: GlobalState, action: PayloadAction<UpdatePayload>): void => {
     state.questions.lastUpdated = new Date().toISOString();
@@ -147,7 +148,7 @@ export const questionsHasChanges = (state: RootState): boolean => {
 
 // MEMOIZED
 
-const localizedSelectors = questionAdapter.getSelectors();
+const localizedSelectors = questionAdapter.getSelectors()
 
 const {
   selectAll: selectAllQuestions,

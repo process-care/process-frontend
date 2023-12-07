@@ -35,11 +35,10 @@ export default function CreateForm({ params }: Props): JSX.Element {
   const isOpen = useAppSelector((state) => state.application.drawerIsOpen);
   const selectedSurvey = useAppSelector(selectors.survey.getSelectedSurvey);
   const selectedSurveyId = useAppSelector(selectors.survey.getSelectedSurveyId);
-  const isLoading = useAppSelector(selectors.survey.isLoading);
+  const isLoading = useAppSelector(selectors.survey.isLoading)
+  const isCreating = useAppSelector(selectors.questions.isCreating)
   const order = useAppSelector(selectors.survey.getOrder);
   const error = useAppSelector(selectors.survey.error);
-  // const isCreating = useAppSelector(selectors.questions.isCreating);
-  const drawerIsOpen = useAppSelector(appSelectors.drawerIsOpen);
   const selectedCondition = useAppSelector(selectors.conditions.selectSelectedCondition);
   const containerRef = useRef<HTMLDivElement>(null);
   // const conditionId = useAppSelector(selectors.conditions.getSelectedConditionId);
@@ -52,16 +51,16 @@ export default function CreateForm({ params }: Props): JSX.Element {
   }, [dispatch, slug]);
 
   useEffect(() => {
-    if (drawerIsOpen) {
-      setTimeout(() => {
-        containerRef?.current?.scrollIntoView({
-          behavior: "smooth",
-          block: "nearest",
-          inline: "start",
-        });
-      }, 500);
-    }
-  }, [drawerIsOpen]);
+    if (!isCreating) return
+    setTimeout(() => {
+      containerRef?.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "start",
+      })
+    }, 200)
+  }, [isCreating])
+
   if (error) {
     return <Error error={error} />
   }

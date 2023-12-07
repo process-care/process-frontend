@@ -1,6 +1,6 @@
-import { useEffect } from "react";
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import { Form, Formik } from "formik";
+import { useCallback, useEffect, useRef } from "react"
+import { Box, Button, Flex, Text } from "@chakra-ui/react"
+import { Form, Formik } from "formik"
 
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
 import { PageParticipationRedux, actions, selectors as pageSelectors } from "@/redux/slices/participation/page.js"
@@ -39,20 +39,22 @@ export default function Page({
   onFinish,
   isFailed,
 }:Props): JSX.Element {
-  const { isTablet } = useMediaQueries();
+  const { isTablet } = useMediaQueries()
 
   const questions = useAppSelector((state) => questionsSelectors.selectAll(state)).filter(
     (q) => q?.attributes?.page?.data?.id === pageId
-  );
-  const page = useAppSelector((state) => pageSelectors.selectById(state, pageId));
-  const { orderInPage, initialAnswers } = useInitialPageContent(page, order, questions);
+  )
+  const page = useAppSelector((state) => pageSelectors.selectById(state, pageId))
+  const { orderInPage, initialAnswers } = useInitialPageContent(page, order, questions)
+
+  const [formRef, nextPageWithScroll] = useTopScrollerWrapper(nextPage)
 
   // If page is empty
-  if (!page) return <Box mt="60">{NL.msg.nodata}</Box>;
+  if (!page) return <Box mt="60">{NL.msg.nodata}</Box>
 
   // Final render
   return (
-    <Box overflow="auto" pt={isTablet ? "30px" : "60px"}>
+    <Box overflow="auto" pt={isTablet ? "30px" : "60px"} ref={formRef}>
       <Formik
         validateOnBlur
         validateOnMount
@@ -70,7 +72,7 @@ export default function Page({
             isValid={isValid}
             isFirstPage={isFirstPage}
             isLastPage={isLastPage}
-            nextPage={nextPage}
+            nextPage={nextPageWithScroll}
             previousPage={previousPage}
             currentColor={currentColor}
             onFinish={onFinish}
@@ -79,8 +81,8 @@ export default function Page({
         }
       </Formik>
     </Box>
-  );
-};
+  )
+}
 
 // ---- SUB COMPONENTS
 
@@ -118,9 +120,9 @@ function DisplayForm({
 
   // Update the "submitable" status in redux (only if different)
   useEffect(() => {
-    if (isValid === page.submitable) return;
-    dispatch(actions.submitable({ id: pageId, submitable: isValid }));
-  }, [isValid, pageId, page.submitable, dispatch]);
+    if (isValid === page.submitable) return
+    dispatch(actions.submitable({ id: pageId, submitable: isValid }))
+  }, [isValid, pageId, page.submitable, dispatch])
 
   return (
     <Form>
@@ -130,6 +132,7 @@ function DisplayForm({
           <Questionator key={inputId} id={inputId} />
         ))}
       </Box>
+
       {isFailed && (
         <Box textAlign="right" mr="10%">
           <Text color="red.500" variant="current">
@@ -158,4 +161,22 @@ function DisplayForm({
       </Flex>
     </Form>
   )
+}
+
+// ---- HOOKS
+
+function useTopScrollerWrapper(callback: () => void): [React.RefObject<HTMLDivElement>, () => void] {
+  const targetRef = useRef<HTMLDivElement>(null)
+
+  // Wrap `nextPage` with a scroll to top effect
+  const wrapped = useCallback(() => {
+    callback()
+    targetRef?.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+      inline: "start"
+    })
+  }, [callback])
+
+  return [targetRef, wrapped]
 }

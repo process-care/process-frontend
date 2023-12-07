@@ -34,24 +34,24 @@ export enum DIRECTION {
 
 export default function ParticipationForm({ surveyId, participationId }: Props): JSX.Element {
   const router = useRouter()
-  const dispatch = useAppDispatch();
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [isFailed, setIsFailed] = useState(false);
+  const dispatch = useAppDispatch()
+  const [isSuccess, setIsSuccess] = useState(false)
+  const [isFailed, setIsFailed] = useState(false)
 
-  const { data, isLoading, isError } = useSurveyQuery(client, { id: surveyId });
-  const pages = useAppSelector(selectors.selectShown);
-  const survey = useAppSelector(scientistDataSelectors.survey.getSelectedSurvey);
-  const slug = survey.attributes.slug;
-  const attributes = data?.survey?.data?.attributes;
+  const { data, isLoading, isError } = useSurveyQuery(client, { id: surveyId })
+  const pages = useAppSelector(selectors.selectShown)
+  const survey = useAppSelector(scientistDataSelectors.survey.getSelectedSurvey)
+  const slug = survey.attributes.slug
+  const attributes = data?.survey?.data?.attributes
 
-  const { isTablet } = useMediaQueries();
+  const { isTablet } = useMediaQueries()
 
   useEffect(() => {
-    dispatch(actions.initialize({ surveyId, participationId, slug }));
-  }, [surveyId, participationId, dispatch, slug]);
+    dispatch(actions.initialize({ surveyId, participationId, slug }))
+  }, [surveyId, participationId, dispatch, slug])
 
-  const { isFirstPage, isLastPage, selectedPage, nextPage, previousPage, selectIndex } = useNavigationHandlers(pages);
-  const { onFinish } = useFinishHandler(participationId, slug);
+  const { isFirstPage, isLastPage, selectedPage, nextPage, previousPage, selectIndex } = useNavigationHandlers(pages)
+  const { onFinish } = useFinishHandler(participationId, slug)
   
   // Missing data checks
 
@@ -60,13 +60,14 @@ export default function ParticipationForm({ surveyId, participationId }: Props):
       <Center>
         <Loader />
       </Center>
-    );
+    )
+
   if (isError || !data)
     return (
       <Center>
         <Error message="Il n'y a pas de donnée sur le formulaire." />
       </Center>
-    );
+    )
 
   const currentColor = attributes?.landing?.data?.attributes?.color_theme?.button || "black";
   const order = attributes?.order;
@@ -74,13 +75,13 @@ export default function ParticipationForm({ surveyId, participationId }: Props):
   const handleSubmit = () => {
     onFinish()
       .then(() => {
-        setIsSuccess(true);
+        setIsSuccess(true)
       })
       .catch((err) => {
         setIsFailed(true);
         console.log(err);
-      });
-  };
+      })
+  }
 
   if (isSuccess) {
     return (
@@ -187,20 +188,20 @@ export default function ParticipationForm({ surveyId, participationId }: Props):
         </Box>
       </Flex>
     </Box>
-  );
-};
+  )
+}
 
 // ---- HOOKS
 
 function useFinishHandler(participationId: string, slug: string) {
-  const { mutateAsync: finishParticipationApi } = useFinishParticipationMutation(client);
-  const { finishParticipation } = useLocalParticipation(slug);
+  const { mutateAsync: finishParticipationApi } = useFinishParticipationMutation(client)
+  const { finishParticipation } = useLocalParticipation(slug)
 
   const onFinish = useCallback(async () => {
     // Tell the API we're done and wait for it to be saved
-    await finishParticipationApi({ id: participationId, completedAt: new Date() });
-    finishParticipation();
-  }, [finishParticipationApi, participationId, finishParticipation]);
+    await finishParticipationApi({ id: participationId, completedAt: new Date() })
+    finishParticipation()
+  }, [finishParticipationApi, participationId, finishParticipation])
 
   return {
     onFinish,
@@ -208,29 +209,29 @@ function useFinishHandler(participationId: string, slug: string) {
 }
 
 function useNavigationHandlers(pages: PageParticipationRedux[] | undefined) {
-  const [selectedIdx, setSelectedIdx] = useState(0);
-  const selectedPage = pages?.[selectedIdx];
+  const [selectedIdx, setSelectedIdx] = useState(0)
+  const selectedPage = pages?.[selectedIdx]
 
   const onNavigate = useCallback(
     (direction: DIRECTION) => {
       let newIdx;
-      const nbPages = pages?.length ?? 0;
+      const nbPages = pages?.length ?? 0
 
       if (direction === DIRECTION.Next) {
-        const up = selectedIdx + 1;
-        newIdx = up > nbPages ? nbPages : up;
+        const up = selectedIdx + 1
+        newIdx = up > nbPages ? nbPages : up
       } else {
-        const down = selectedIdx - 1;
-        newIdx = down < 0 ? 0 : down;
+        const down = selectedIdx - 1
+        newIdx = down < 0 ? 0 : down
       }
 
-      setSelectedIdx(newIdx);
+      setSelectedIdx(newIdx)
     },
     [pages?.length, selectedIdx]
   );
 
-  const nextPage = useCallback(() => onNavigate(DIRECTION.Next), [onNavigate]);
-  const previousPage = useCallback(() => onNavigate(DIRECTION.Previous), [onNavigate]);
+  const nextPage = useCallback(() => onNavigate(DIRECTION.Next), [onNavigate])
+  const previousPage = useCallback(() => onNavigate(DIRECTION.Previous), [onNavigate])
 
   return {
     isFirstPage: selectedIdx === 0,
@@ -239,5 +240,5 @@ function useNavigationHandlers(pages: PageParticipationRedux[] | undefined) {
     selectIndex: setSelectedIdx,
     nextPage,
     previousPage,
-  };
+  }
 }

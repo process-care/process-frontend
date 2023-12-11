@@ -17,6 +17,7 @@ export default function AssociatedClassificationFields(): JSX.Element {
         backgroundColor="#fdfdfdf1"
       >
         <CommonFields noPlacehoder />
+
         <NumberInput
           placeholder="ex: 4"
           style={{ width: "45%" }}
@@ -24,6 +25,7 @@ export default function AssociatedClassificationFields(): JSX.Element {
           name="max_loop"
           isCollapsed={false}
         />
+        
         <AssociatedSubfields name="factors" />
       </Box>
     </>

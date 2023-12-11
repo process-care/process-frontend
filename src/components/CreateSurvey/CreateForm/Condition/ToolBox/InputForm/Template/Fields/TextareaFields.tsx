@@ -18,14 +18,15 @@ export default function TextareaFields(): JSX.Element {
         <CommonFields />
 
         <Radiobox
-          p="10px 0"
+          id="rows"
           label="Taille de la zone de réponse"
+          p="10px 0"
           radios={[
             { value: "small", label: "Petite" },
             { value: "medium", label: "Moyenne" },
             { value: "large", label: "Grande" },
           ]}
-          id="rows"
+          isRequired={true}
         />
       </Box>
     </>

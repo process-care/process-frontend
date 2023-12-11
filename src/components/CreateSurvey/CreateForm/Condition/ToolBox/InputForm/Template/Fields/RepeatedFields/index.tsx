@@ -34,7 +34,7 @@ export default function RepeatedFields({ name }: Props): JSX.Element {
         render={(arrayHelpers) => (
           <Box w="100%">
             {/* If no options yet, display a button to add the first one */}
-            { options?.length === 0 && (
+            { (!options || options?.length === 0) && (
               <AddButton error={meta.error} arrayHelpers={arrayHelpers} />
             )}
 
@@ -56,8 +56,8 @@ export default function RepeatedFields({ name }: Props): JSX.Element {
         )}
       />
     </Box>
-  );
-};
+  )
+}
 
 // ---- SUB COMPONENTS
 
@@ -131,6 +131,7 @@ function AddButton({ error, arrayHelpers }: { error: string | undefined, arrayHe
       >
         Ajouter une option de réponse
       </Button>
+
       <Text mt={1} fontSize="10px" color="red">
         { error }
       </Text>

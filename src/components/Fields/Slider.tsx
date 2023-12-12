@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { Flex, FormControl, FormHelperText, FormLabel, Text } from "@chakra-ui/react";
 import { useField } from "formik";
 import Slider from "rc-slider"
@@ -60,6 +60,12 @@ export default function CustomSlider({
     }
   }, []);
 
+  const initValue = useMemo(() => {
+    if (defaultValue !== undefined) return parseInt(defaultValue, 10)
+    if (reverse) return cleanValue(max, 10)
+    return cleanValue(min, 0)
+  }, [defaultValue, reverse, cleanValue, max, min])
+
   return (
     <FormControl isRequired={isRequired} id="email" textAlign="left" h={vertical ? "700px" : "fit-content"}>
       <FormLabel>{label}</FormLabel>
@@ -77,7 +83,7 @@ export default function CustomSlider({
               min={cleanValue(min, 0)}
               max={cleanValue(max, 10)}
               step={cleanValue(step, 1)}
-              defaultValue={defaultValue !== undefined ? parseInt(defaultValue, 10) : 0}
+              defaultValue={initValue}
               vertical={!!vertical}
               onChange={(value: any) => helpers.setValue(value)}
               value={field.value}

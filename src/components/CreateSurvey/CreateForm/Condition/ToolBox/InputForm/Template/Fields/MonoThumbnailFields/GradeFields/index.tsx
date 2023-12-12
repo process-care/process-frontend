@@ -71,8 +71,8 @@ const renderTemplate = (selectedQuestion: QuestionRedux | undefined) => {
             placeholder="Ex:10"
           />
         </Flex>
-      );
-      break;
+      )
+
     case "slider":
       return (
         <Box>
@@ -111,12 +111,12 @@ const renderTemplate = (selectedQuestion: QuestionRedux | undefined) => {
             </Box>
           </Flex>
         </Box>
-      );
-      break;
+      )
+
     case "radio":
-      return <RepeatedFields name={`${ID}.options`} />;
-      break;
+      return <RepeatedFields name={`${ID}.options`} />
+
     default:
-      break;
+      break
   }
 }

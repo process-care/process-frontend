@@ -39,7 +39,9 @@ export default function MonoThumbnailFields(): JSX.Element {
         />
 
         <AssociatedSubfields name="factors" />
+        
         <TitleDivider title="Question associée" />
+
         <Select
           label="Type de question à associer"
           id="associated_input.type"

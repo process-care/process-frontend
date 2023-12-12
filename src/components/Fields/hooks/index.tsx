@@ -1,157 +1,96 @@
-import { useMemo, useState } from "react";
-import { useField } from "formik";
+import { useCallback, useMemo, useState } from "react"
+import { useField } from "formik"
 
-import { Maybe } from "@/api/graphql/types.generated.ts"
+// ---- TYPES & STATICS
 
 export interface Factor {
-  modalities: {
-    file: any;
-    description: string;
-  }[];
-  title: string;
+  modalities: Modality[]
+  title: string
 }
 
-interface State {
-  variations: number[][][];
-  isMounted: boolean;
+export interface Modality {
+  file: any
+  description: string
 }
+
+export interface FactorState {
+  variations: number[][][]
+  isMounted: boolean
+}
+
+// ---- HOOKS
 
 export const useAssociatedLogic = (
   factors: Factor[],
   name: string,
-  maxLoop: Maybe<number> | undefined,
+  maxLoop: number,
   TOTAL_CARDS: number
 ) => {
-  const [field, , helpers] = useField(name);
+  const [field, , helpers] = useField(name)
+  const [state, setState] = useState<FactorState>({ variations: [], isMounted: false })
+  const [step, setStep] = useState(0)
 
-  const [state, setState] = useState<State>({
-    variations: [],
-    isMounted: false,
-  });
-  const [totalClick, setClick] = useState(1);
-  const filteredFactors = factors?.filter((f) => f !== null);
-  const modalitiesPerFactor = filteredFactors?.map((f) => f.modalities?.length).filter((m) => m !== 0);
-  const totalVariations = modalitiesPerFactor?.reduce((a, b) => a * b, 1);
+  const filteredFactors = useMemo(
+    () => factors?.filter((f) => f !== null),
+    [factors]
+  )
 
-  const getMaxVariation: any = (n: number, k: number) => {
-    const factorialize: any = (num: number) => {
-      if (num < 0) return -1;
-      else if (num === 0) return 1;
-      else {
-        return num * factorialize(num - 1);
-      }
-    };
-
-    const _A = (n: number, k: number) => {
-      return factorialize(n) / factorialize(n - k);
-    };
-
-    return _A(n, k) / factorialize(k);
-  };
-
+  const modalitiesPerFactor = useMemo(() =>
+    filteredFactors?.map((f) => f.modalities?.length).filter((m) => m !== 0),
+    [filteredFactors]
+  )
+  
   const maxVariations = useMemo(() => {
-    if (totalVariations) return getMaxVariation(totalVariations, TOTAL_CARDS);
-  }, [TOTAL_CARDS, totalVariations]);
+    const totalVariations = modalitiesPerFactor?.reduce((a, b) => a * b, 1)
+    return getMaxVariation(totalVariations, TOTAL_CARDS)
+  }, [TOTAL_CARDS, modalitiesPerFactor])
 
-  const generate = () => {
-    if (maxVariations - 1 === state.variations.length) {
-      return;
-    }
-    if (!modalitiesPerFactor) {
-      return;
-    }
-    const randomize = () => {
-      return modalitiesPerFactor?.map((m) => Math.floor(Math.random() * m));
-    };
+  // Callback to add a new variation to the stack
+  const generate = useCallback(() => { 
+    if (maxVariations - 1 === state.variations.length) return
+    if (!modalitiesPerFactor) return
 
-    const card1 = randomize();
-    const card2 = randomize();
+    // Generate a random and unique variation
+    const variation = generateUniqueVariation(modalitiesPerFactor, state.variations)
 
-    const variation = [card1, card2];
+    // Save the new variation in the state
+    setState({
+      variations: [...state.variations, variation],
+      isMounted: true,
+    })
+  }, [maxVariations, modalitiesPerFactor, state.variations])
 
-    const cardsAreSame = (arrA: number[], arrB: number[]) => {
-      return JSON.stringify(arrA) === JSON.stringify(arrB);
-    };
+  // Callback to save the new value in the formik field and generate a new variation
+  const handleClick = useCallback((cardIdx: number, values?: any) => {
+    // Record new click
+    setStep(prev => prev + 1)
 
-    if (cardsAreSame(card1, card2)) {
-      generate();
-    } else if (
-      state.variations.some((v) => JSON.stringify(v) === JSON.stringify(variation)) ||
-      state.variations.some((v) => JSON.stringify(v) === JSON.stringify(variation.reverse()))
-    ) {
-      generate();
-    } else {
-      setState({
-        ...state,
-        variations: [...state.variations, variation],
-        isMounted: true,
-      });
-    }
-  };
-  const handleClick = (cardIdx: number, values?: any) => {
-    generate();
-    setClick(totalClick + 1);
+    // Sanitize the new payload
+    const lastVariation = state.variations[state.variations.length - 1]
+    const payload = formatPayload(values, cardIdx, TOTAL_CARDS, lastVariation, filteredFactors)
 
-    const formatPayload = () => {
-      const lastVariation = state.variations[state.variations.length - 1];
-
-      const format = (el: number) => {
-        return filteredFactors?.map((f, idx) => {
-          return {
-            [f.title]: f.modalities[lastVariation[el][idx]].description,
-          };
-        });
-      };
-
-      // If values !== undefined, it means that the we are on MonoThumbnail, we dont need choice but we need associated_input
-
-      if (values) {
-        const isRadiobox = Boolean(values.attributes.radio);
-        return {
-          variations: [...Array(TOTAL_CARDS)].map((_, idx) => format(idx))[0],
-          associated_input: values,
-
-          value: isRadiobox ? values.attributes.radio : values[values.attributes.type],
-        };
-      } else
-        return {
-          variations: [...Array(TOTAL_CARDS)].map((_, idx) => format(idx)),
-          choice: cardIdx,
-        };
-    };
-
+    // Save the new value in the formik field
     if (!field.value) {
-      helpers.setValue([formatPayload()]);
+      helpers.setValue([payload])
     } else {
-      helpers.setValue([...field.value, formatPayload()]);
+      helpers.setValue([...field.value, payload])
     }
-  };
 
-  // console.group("Algos");
-  // console.log("maxVariations", maxVariations); // 27
-  // console.log("maxLoop", maxLoop); // 4
-  // console.log("totalClick", totalClick); // 0
-  // console.groupEnd();
+    // Regenerate a new variation on the stack
+    generate()
+  }, [field.value, filteredFactors, generate, helpers, state.variations, TOTAL_CARDS])
+
+  // console.group("Algo vignette")
+  // console.log("max variations", maxVariations)
+  // console.log("max loop", maxLoop)
+  // console.log("step number", step)
+  // console.groupEnd()
 
   // TODO: refactor this
 
   const isFinished =
-    maxLoop &&
-    (totalClick === (maxVariations - 1 > maxLoop ? maxLoop : maxVariations) ||
-      field.value?.length === (maxLoop || maxVariations));
-
-  const checkIsFinished = () => {
-    const loop = typeof maxLoop === "string" && parseInt(maxLoop);
-    const hadValue = field.value?.length > 0;
-    const valueLenght = field.value?.length;
-    const limit = loop > maxVariations ? maxVariations : loop;
-
-    if (hadValue) {
-      return valueLenght === limit;
-    } else {
-      return totalClick === limit;
-    }
-  };
+    step === Math.min(maxVariations, maxLoop)
+    || field.value?.length === Math.min(maxLoop, maxVariations)
 
   return {
     generate,
@@ -159,9 +98,142 @@ export const useAssociatedLogic = (
     setState,
     state,
     filteredFactors,
-    totalClick,
+    step,
     maxVariations,
     isFinished,
-    checkIsFinished,
-  };
-};
+  }
+}
+
+// ---- LOGIC
+
+// Max number of tries to generate a variation
+const TIMEOUT = 1000
+
+function generateVariation(modalitiesPerFactor: number[]): number[][] {
+  let cardA: number[]
+  let cardB: number[]
+  let i = 0
+
+  // Generate a pair of cards until they are different
+  do {
+    cardA = randomize(modalitiesPerFactor)
+    cardB = randomize(modalitiesPerFactor)
+    i++ // Safety system to avoid infinite loop
+  } while (arraysAreSame(cardA, cardB) && i < TIMEOUT)
+
+  if (i > TIMEOUT || arraysAreSame(cardA, cardB)) {
+    console.error("Timeout reached - Could not generate a correct variation.")
+    console.error("Card A", cardA)
+    console.error("Card B", cardB)
+  }
+
+  return [cardA, cardB]
+}
+
+function generateUniqueVariation(modalitiesPerFactor: number[], existingVariations: number[][][]): number[][] {
+  let created: number[][]
+  let i = 0
+
+  // Generate a variation until it is not in the existing variations
+  do {
+    created = generateVariation(modalitiesPerFactor)
+    i++ // Safety system to avoid infinite loop
+  } while (existingVariations.some((v) => variationsAreSame(v, created)) && i < TIMEOUT)
+
+  if (i > TIMEOUT) {
+    console.error("Timeout reached - Could not generate a unique variation.")
+    console.error("Variation ", created)
+  }
+
+  return created
+}
+
+function formatPayload(values: any, cardIdx: number, TOTAL_CARDS: number, lastVariation: number[][], factors: Factor[]) {
+  const format = (el: number) => {
+    return factors?.map((f, idx) => (
+      { [f.title]: f.modalities[lastVariation[el][idx]].description }
+    ))
+  }
+
+  // If values !== undefined, it means that the we are on AssociatedClassification, we need choice but we dont need associated_input
+  if (!values) {
+    return {
+      variations: [...Array(TOTAL_CARDS)].map((_, idx) => format(idx)),
+      choice: cardIdx,
+    }
+  }
+
+  // Else, that means we are on MonoThumbnail, we dont need choice but we need associated_input
+  const isRadiobox = Boolean(values.attributes.radio)
+  return {
+    variations: [...Array(TOTAL_CARDS)].map((_, idx) => format(idx))[0],
+    associated_input: values,
+    value: isRadiobox ? values.attributes.radio : values[values.attributes.type],
+  }
+}
+
+// ---- HELPERS
+
+function getMaxVariation(n: number, k: number): number {
+  return permutations(n, k) / factorialize(k)
+}
+
+function factorialize(num: number): number {
+  if (num < 0) return -1
+  if (num === 0) return 1
+  
+  return num * factorialize(num - 1)
+}
+
+function permutations(n: number, k: number): number {
+  return factorialize(n) / factorialize(n - k)
+}
+
+function randomize(array: number[]): number[] {
+  return array?.map((m) => Math.floor(Math.random() * m))
+}
+
+// Function that compares if 2 arrays composed of numbers are the same
+function arraysAreSame(arrA: number[], arrB: number[]): boolean {
+  if (arrA.length !== arrB.length) {
+    return false
+  }
+
+  for (let i = 0; i < arrA.length; i++) {
+    if (arrA[i] !== arrB[i]) {
+      return false
+    }
+  }
+
+  return true
+}
+
+/**
+ * Function that compares pair of variations. They are equal if they have the same cards, no matter the order.
+ * Note : Variations with duplicate cards inside are not possible.
+ * 
+ * Examples :
+ * const cardA = [0, 1]
+ * const cardB = [1, 0]
+ * const cardC = [1, 1]
+ * const cardD = [0, 0]
+ * 
+ * const variationA = [cardA, cardB]
+ * const variationB = [cardC, cardD] // unique
+ * const variationC = [cardA, cardC] // unique
+ * const variationD = [cardA, cardB] // same as variationA
+ * const variationE = [cardB, cardA] // same as variationA
+ */
+function variationsAreSame(varA: number[][], varB: number[][]): boolean {
+  if (varA.length !== varB.length) {
+    return false
+  }
+
+  for (let i = 0; i < varA.length; i++) {
+    if (!varB.some((v) => arraysAreSame(varA[i], v))) {
+      return false
+    }
+  }
+
+  return true
+}

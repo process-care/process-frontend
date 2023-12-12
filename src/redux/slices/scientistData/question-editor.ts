@@ -67,10 +67,9 @@ type CreatePayload = {
 };
 
 type CreatedPayload = {
-  question: QuestionRedux;
-  lastCreated: string;
-  global: GlobalState;
-};
+  question: QuestionRedux
+  lastCreated: string
+}
 
 // ----- ENTITY ADAPTER
 
@@ -82,13 +81,18 @@ export const questionAdapter = createEntityAdapter<QuestionRedux>({
 
 export const questionsReducers = {
   createQuestion: (state: GlobalState, _action: PayloadAction<CreatePayload>): void => {
-    state.questions.isCreating = true;
+    state.questions.isCreating = true
   },
   createdQuestion: (state: GlobalState, action: PayloadAction<CreatedPayload>): void => {
-    state.questions.lastCreated = action.payload.lastCreated;
-    questionAdapter.addOne(state.questions, action.payload.question);
-    state.survey.order = getNewOrder(action.payload.global, action.payload.question.id);
-    state.questions.selectedQuestion = action.payload.question.id;
+    const { question, lastCreated } = action.payload
+
+    questionAdapter.addOne(state.questions, question)
+    state.questions.selectedQuestion = question.id
+
+    state.survey.order = getNewOrder(state, question.id)
+    
+    state.questions.lastCreated = lastCreated
+    state.questions.isCreating = false
   },
   updateQuestion: (state: GlobalState, action: PayloadAction<UpdatePayload>): void => {
     state.questions.lastUpdated = new Date().toISOString();
@@ -147,7 +151,7 @@ export const questionsHasChanges = (state: RootState): boolean => {
 
 // MEMOIZED
 
-const localizedSelectors = questionAdapter.getSelectors();
+const localizedSelectors = questionAdapter.getSelectors()
 
 const {
   selectAll: selectAllQuestions,

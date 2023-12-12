@@ -17,6 +17,7 @@ export default function CreateSurvey(): JSX.Element {
           </Center>
         </div>
       </Box>
+      
       <Container variant="rightPart" maxW="25%">
         <Timeline />
       </Container>

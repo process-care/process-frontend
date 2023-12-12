@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Formik, Form, FormikErrors } from "formik";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { useParams, useRouter } from "next/navigation.js"
@@ -8,11 +8,10 @@ import Link from "next/link.js"
 
 import Errors, { renderSurveyMessage } from "@/components/Authentification/Errors/index.tsx"
 import { useAppSelector, useAppDispatch } from "@/redux/hooks/index.js"
-import { selectors, actions } from "@/redux/slices/survey-editor.js"
+import { selectors, actions, IsomorphicSurvey } from "@/redux/slices/survey-editor.js"
 import { Enum_Survey_Status, Survey } from "@/api/graphql/types.generated.ts"
 import { createSurveySchema } from "../validationSchema/index.tsx"
 import { checkValidity, renderInputs } from "./utils.tsx"
-import { SurveyRedux } from "@/redux/slices/types/index.js"
 
 // COMPONENT
 
@@ -29,15 +28,15 @@ export default function CreateSurveyForm(): JSX.Element {
     dispatch(actions.initialize(slug));
   }, [dispatch, slug]);
 
-  const survey = useAppSelector(selectors.getSurveyDraft);
-  const isPosted = useAppSelector(selectors.isPosted);
+  const survey = useAppSelector(selectors.getSurveyDraft)
+  const isPosted = useAppSelector(selectors.isPosted)
 
   const onSubmit = useCallback((data: any, { setSubmitting, validateForm }: any) => {
-    validateForm(data);
-    setSubmitting(true);
-    setSubmitted(true);
-    dispatch(actions.post(data));
-  }, [dispatch]);
+    validateForm(data)
+    setSubmitting(true)
+    setSubmitted(true)
+    dispatch(actions.post(data))
+  }, [dispatch])
 
   // Redirect if survey has been correctly posted
   useEffect(() => {
@@ -46,10 +45,23 @@ export default function CreateSurveyForm(): JSX.Element {
     }
   }, [isPosted, router, submitted]);
 
+  const initialValues = useMemo(() => {
+    if (!survey?.attributes) return { slug: "", keywords: '' }
+    
+    let keywords = (typeof survey.attributes?.keywords === 'string')
+      ? survey.attributes?.keywords
+      : survey.attributes?.keywords?.[0]?.label
+    
+    return {
+      ...survey.attributes,
+      keywords: keywords ?? "",
+    }
+  }, [survey])
+
   return (
     <>
       <Formik
-        initialValues={survey?.attributes ?? { slug: "" }}
+        initialValues={initialValues}
         enableReinitialize
         validationSchema={createSurveySchema}
         onSubmit={onSubmit}
@@ -72,8 +84,10 @@ export default function CreateSurveyForm(): JSX.Element {
 // -- Form display
 
 interface FormDisplayProps {
-  survey: SurveyRedux | undefined
-  values: Survey
+  survey: IsomorphicSurvey | undefined
+  // This allows us to redefine the type of keywords
+  // It has to be transformed into a string to be displayed in the input
+  values: Omit<Survey, 'keywords'> & { keywords: string }
   errors: FormikErrors<Survey>
   isSubmitting: boolean
 }
@@ -92,7 +106,6 @@ function FormDisplay({ survey, values, errors, isSubmitting }: FormDisplayProps)
   // Handle update survey values
   useEffect(() => {
     if (!survey?.id || isDraft) return
-
     dispatch(
       actions.update({
         id: survey.id,
@@ -111,7 +124,7 @@ function FormDisplay({ survey, values, errors, isSubmitting }: FormDisplayProps)
     );
   // Updat eonly when values changes
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [values]);
+  }, [values])
 
   // Handle update meta values
   useEffect(() => {
@@ -133,7 +146,7 @@ function FormDisplay({ survey, values, errors, isSubmitting }: FormDisplayProps)
         },
       })
     );
-  // Updat eonly when values changes
+  // Update only when values changes
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values]);
 
@@ -153,6 +166,7 @@ function FormDisplay({ survey, values, errors, isSubmitting }: FormDisplayProps)
         <Box my="auto" w="60%" mt="80px">
           <Flex alignItems="center" justifyContent="flex-end" flexDirection="column" w="100%">
             {renderInputs(step)}
+
             <Box w="100%" textAlign="right">
               <Errors message={renderSurveyMessage(error)} />
             </Box>

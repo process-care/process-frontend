@@ -2,14 +2,14 @@ import { Box, Button, Flex, Circle, Text } from "@chakra-ui/react";
 import Link from "next/link.js"
 
 import { useAppSelector, useAppDispatch } from "@/redux/hooks/index.js"
-import { actions, selectors } from "@/redux/slices/survey-editor.js"
+import { IsomorphicSurvey, actions, selectors } from "@/redux/slices/survey-editor.js"
 import { SurveyRedux } from "@/redux/slices/types/index.js"
 import { t } from "./static.ts"
 
 // ---- TYPES
 
 interface Props {
-  survey: SurveyRedux | undefined;
+  survey: IsomorphicSurvey | undefined;
   step: number;
 }
 
@@ -24,6 +24,7 @@ interface IStep {
 export default function Timeline(): JSX.Element {
   const survey = useAppSelector(selectors.getSurveyDraft);
   const step = useAppSelector(selectors.step);
+
   return (
     <Box p="8px 20px 0 30px" pos="relative">
       <Flex justifyContent="flex-end">
@@ -33,6 +34,7 @@ export default function Timeline(): JSX.Element {
           </Button>
         </Link>
       </Flex>
+
       <RenderSteps survey={survey} step={step} />
     </Box>
   );
@@ -106,6 +108,7 @@ function RenderSteps({ survey, step }: Props) {
       </Box>
     );
   };
+
   return (
     <Box>
       {t.steps.map((data: any) => {

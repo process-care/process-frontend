@@ -50,21 +50,6 @@ const Category: React.FC<Props> = ({ onSelect, group }) => {
 };
 
 export default function ToolBox({ onSelect }: Props): JSX.Element {
-  const Title = ({ children }: { children: React.ReactNode }) => {
-    return (
-      <Text
-        variant="xxs"
-        fontWeight="bold"
-        textTransform="uppercase"
-        whiteSpace="normal"
-        textAlign="left"
-        mb="2"
-        mt="2"
-      >
-        {children}
-      </Text>
-    );
-  };
   return (
     <>
       <Title>Contenu statique</Title>
@@ -74,5 +59,21 @@ export default function ToolBox({ onSelect }: Props): JSX.Element {
       <Title>Questions complexes</Title>
       <Category onSelect={onSelect} group="complex" />
     </>
-  );
-};
+  )
+}
+
+function Title({ children }: { children: React.ReactNode }) {
+  return (
+    <Text
+      variant="xxs"
+      fontWeight="bold"
+      textTransform="uppercase"
+      whiteSpace="normal"
+      textAlign="left"
+      mb="2"
+      mt="2"
+    >
+      {children}
+    </Text>
+  )
+}

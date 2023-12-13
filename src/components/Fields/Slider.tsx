@@ -75,11 +75,14 @@ export default function CustomSlider({
             flexDirection={vertical ? "row" : "column"}
             h={vertical ? "85%" : ""}
             m={vertical ? "30px 0 0 30px" : ""}
+            marginTop={5}
           >
             <Slider
+              className="cursor-pointer"
               range
               reverse={reverse ?? false}
               dots
+              dotStyle={{ height: 18, width: 18, bottom: -7 }}
               min={cleanValue(min, 0)}
               max={cleanValue(max, 10)}
               step={cleanValue(step, 1)}
@@ -89,12 +92,12 @@ export default function CustomSlider({
               value={field.value}
             />
 
-            <Flex w="100%" h="100%" justifyContent="space-between" flexDirection={vertical ? "column" : "row"}>
-              <Text fontSize="10px" ml="-5px">
+            <Flex w="100%" h="100%" marginTop={1} justifyContent="space-between" flexDirection={vertical ? "column" : "row"}>
+              <Text fontSize="12px" ml="-2px">
                 {reverse || vertical ? max : min}
               </Text>
 
-              <Text fontSize="10px" mr="-5px">
+              <Text fontSize="12px" mr="-7px">
                 {reverse || vertical ? min : max}
               </Text>
             </Flex>

@@ -34,14 +34,15 @@ export default function Team({ members, color_theme, isUserView }: Props): JSX.E
 
 function Member({ job, name, image, color }: MemberType): JSX.Element {
   return (
-    <Flex flexDirection="column" justifyContent="center" textAlign="center" mb="30px">
+    <Flex minWidth={100} flexDirection="column" justifyContent="center" textAlign="center" mb="30px">
       <Image
-        fallbackSrc={`https://via.placeholder.com/150/${color?.replace("#", "")}/${color?.replace("#", "")}`}
-        borderRadius="full"
-        boxSize="100px"
         src={image}
         alt={name}
-        mx="auto"
+        fallbackSrc={`https://via.placeholder.com/150/${color?.replace("#", "")}/${color?.replace("#", "")}`}
+        width={100}
+        height={100}
+        sizes="20vw"
+        className="object-cover mx-auto rounded-full"
       />
 
       <Text variant="smallTitleBold" mt={7}>

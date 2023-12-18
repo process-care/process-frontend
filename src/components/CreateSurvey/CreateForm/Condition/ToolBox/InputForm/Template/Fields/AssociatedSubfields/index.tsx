@@ -28,8 +28,6 @@ export default function AssociatedSubfields({ name }: Props): JSX.Element {
     }
   }, [factors, isEditing, name, setFieldValue])
 
-  console.log(factors)
-
   return (
     <Box w="100%">
       <FieldArray

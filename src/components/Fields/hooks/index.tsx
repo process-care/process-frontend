@@ -36,18 +36,19 @@ export const useAssociatedLogic = (
   )
 
   const modalitiesPerFactor = useMemo(() =>
-    filteredFactors?.map((f) => f.modalities?.length).filter((m) => m !== 0),
+    filteredFactors?.map((f) => f.modalities?.length ?? 0).filter((m) => m !== 0),
     [filteredFactors]
   )
-  
+
   const maxVariations = useMemo(() => {
-    const totalVariations = modalitiesPerFactor?.reduce((a, b) => a * b, 1)
+    const totalVariations = modalitiesPerFactor?.reduce((a, b) => a * b, 1) ?? 0
+    if (totalVariations === 0) return 0
     return getMaxVariation(totalVariations, TOTAL_CARDS)
   }, [TOTAL_CARDS, modalitiesPerFactor])
 
   // Callback to add a new variation to the stack
   const generate = useCallback(() => { 
-    if (maxVariations - 1 === state.variations.length) return
+    if (maxVariations === state.variations.length) return
     if (!modalitiesPerFactor) return
 
     // Generate a random and unique variation
@@ -121,8 +122,8 @@ function generateVariation(modalitiesPerFactor: number[]): number[][] {
     i++ // Safety system to avoid infinite loop
   } while (arraysAreSame(cardA, cardB) && i < TIMEOUT)
 
-  if (i > TIMEOUT || arraysAreSame(cardA, cardB)) {
-    console.error("Timeout reached - Could not generate a correct variation.")
+  if (arraysAreSame(cardA, cardB)) {
+    console.error("Timeout reached - Could not generate a unique variation.")
     console.error("Card A", cardA)
     console.error("Card B", cardB)
   }
@@ -179,13 +180,18 @@ function getMaxVariation(n: number, k: number): number {
 }
 
 function factorialize(num: number): number {
-  if (num < 0) return -1
-  if (num === 0) return 1
+  if (isNaN(num)) {
+    throw new Error('Input is not a number')
+  }
   
+  if (num < 0) throw new Error('Factorial is not defined for negative numbers')
+  if (num === 0) return 1
+
   return num * factorialize(num - 1)
 }
 
 function permutations(n: number, k: number): number {
+  if (n < k) return 0
   return factorialize(n) / factorialize(n - k)
 }
 

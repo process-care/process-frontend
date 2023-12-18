@@ -6,7 +6,6 @@ import Image from "next/image.js"
 import { useAppSelector } from "@/redux/hooks/index.js"
 import { selectors } from "@/redux/slices/application/index.js"
 import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
-import { Maybe } from "@/api/graphql/types.generated.ts"
 import { FactorState, useAssociatedLogic } from "./hooks/index.tsx"
 
 // ---- TYPES & STATICS

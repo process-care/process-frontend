@@ -1,10 +1,9 @@
 'use client'
 
-import { useEffect, useRef } from "react";
-import { Box, Container } from "@chakra-ui/react";
-import { useDispatch } from "react-redux";
+import { useEffect, useRef } from "react"
+import { Box, Container } from "@chakra-ui/react"
+import { useDispatch } from "react-redux"
 
-import { selectors as appSelectors } from "@/redux/slices/application/index.js"
 import InputsPreview from "@/components/CreateSurvey/CreateForm/InputsPreview/index.tsx"
 import Drawer from "@/components/Drawer/index.tsx"
 import InputForm from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/index.tsx"
@@ -32,15 +31,15 @@ export default function CreateForm({ params }: Props): JSX.Element {
   const { slug } = params
   const dispatch = useDispatch()
 
-  const isOpen = useAppSelector((state) => state.application.drawerIsOpen);
-  const selectedSurvey = useAppSelector(selectors.survey.getSelectedSurvey);
-  const selectedSurveyId = useAppSelector(selectors.survey.getSelectedSurveyId);
+  const isOpen = useAppSelector((state) => state.application.drawerIsOpen)
+  const selectedSurvey = useAppSelector(selectors.survey.getSelectedSurvey)
+  const selectedSurveyId = useAppSelector(selectors.survey.getSelectedSurveyId)
   const isLoading = useAppSelector(selectors.survey.isLoading)
   const isCreating = useAppSelector(selectors.questions.isCreating)
-  const order = useAppSelector(selectors.survey.getOrder);
-  const error = useAppSelector(selectors.survey.error);
-  const selectedCondition = useAppSelector(selectors.conditions.selectSelectedCondition);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const order = useAppSelector(selectors.survey.getOrder)
+  const error = useAppSelector(selectors.survey.error)
+  const selectedCondition = useAppSelector(selectors.conditions.selectSelectedCondition)
+  const containerRef = useRef<HTMLDivElement>(null)
   // const conditionId = useAppSelector(selectors.conditions.getSelectedConditionId);
 
   // WORK IN PROGRESS

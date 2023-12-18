@@ -1,33 +1,33 @@
-import { createEntityAdapter, createSlice, PayloadAction, Update } from "@reduxjs/toolkit";
+import { createEntityAdapter, createSlice, PayloadAction, Update } from "@reduxjs/toolkit"
 import { Maybe } from "@/api/graphql/types.generated.js"
 
 import { actions as statusAct } from "@/redux/slices/participation/status.js"
-import { RootState } from "@/redux/store/index.js";
+import { RootState } from "@/redux/store/index.js"
 import { sanitizeAnswers } from "./utils.js"
 
 // ---- INITIAL STATE
 
 export interface AnswerParticipationRedux {
-  id?: string | null;
-  questionId: string;
-  value: unknown;
+  id?: string | null
+  questionId: string
+  value: unknown
 }
 
 // ---- ACTIONS
 
 export type UpsertAnswerPayload = {
-  questionId: string;
-  value: string;
-};
+  questionId: string
+  value: string
+}
 
 export type UpsertedAnswerPayload = {
-  created: Update<AnswerParticipationRedux>[];
-  updated: Update<AnswerParticipationRedux>[];
-};
+  created: Update<AnswerParticipationRedux>[]
+  updated: Update<AnswerParticipationRedux>[]
+}
 
 // ---- SLICE
 
-const SLICE_NAME = "answers";
+const SLICE_NAME = "answers"
 
 const adapter = createEntityAdapter<AnswerParticipationRedux>({
   selectId: (a) => a.questionId,
@@ -38,17 +38,17 @@ export const slice = createSlice({
   initialState: adapter.getInitialState(),
   reducers: {
     update: (state, action: PayloadAction<UpsertAnswerPayload>) => {
-      adapter.upsertOne(state, action.payload);
+      adapter.upsertOne(state, action.payload)
     },
     updated: (state, action: PayloadAction<UpsertedAnswerPayload>) => {
       // Update only those who have been created to keep their answerId
-      adapter.updateMany(state, action.payload.created);
+      adapter.updateMany(state, action.payload.created)
     },
   },
   extraReducers: (builder) => {
     builder.addCase(statusAct.initialized, (state, action) => {
-      const sanitized = sanitizeAnswers(action.payload.answers);
-      adapter.setAll(state, sanitized);
+      const sanitized = sanitizeAnswers(action.payload.answers)
+      adapter.setAll(state, sanitized)
     });
   },
 });

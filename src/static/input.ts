@@ -4,12 +4,13 @@ export const t = {
   placeholder: "Renseigner votre réponse",
   removing_confirmation: "Supprimer le champs",
   delete_all_inputs: "Supprimer toutes les questions de cette page",
-  verify: "Tester",
+  verify: "Vérifier",
   publish: "Publier",
   preview: "Prévisualiser",
+  tryout: "Tester",
   save: "Sauvegarder le brouillon",
   no_results: "Il n'a pas de champs sur cette page",
   help: "Seuls les champs de type Select, Radio, Checkbox antérieurs au champs séléctionné sont visibles",
   expand_view: "Voir plus de détails",
   collapse_view: "Voir moins de détails",
-};
+}

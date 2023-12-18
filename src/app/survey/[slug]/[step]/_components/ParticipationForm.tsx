@@ -1,7 +1,7 @@
 'use client'
 
-import { useCallback, useEffect, useState } from "react";
-import { Box, Button, Center, Flex, Text } from "@chakra-ui/react";
+import { useCallback, useContext, useEffect, useState } from "react"
+import { Box, Button, Center, Flex, Text } from "@chakra-ui/react"
 import { useRouter } from "next/navigation.js"
 
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
@@ -10,13 +10,14 @@ import { PageParticipationRedux, selectors } from "@/redux/slices/participation/
 import { selectors as scientistDataSelectors } from "@/redux/slices/scientistData.js"
 import { client } from "@/api/gql-client.js"
 import { useSurveyQuery } from "@/api/graphql/queries/survey.gql.generated.js"
-import { useFinishParticipationMutation } from "@/api/graphql/queries/participation.gql.generated.js";
+import { useFinishParticipationMutation } from "@/api/graphql/queries/participation.gql.generated.js"
 import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
 import { useLocalParticipation } from "@/utils/participations/localstorage-handlers.js"
 import Error from "@/components/Error/index.tsx"
 import Loader from "@/components/Spinner/index.tsx"
 import ParticipationMenu from "./ParticipationMenu.tsx"
 import Page from "./form/Page.tsx"
+import { ParticipationFormContext } from "../../create/form/preview/page.tsx"
 
 // ---- TYPES
 
@@ -33,7 +34,10 @@ export enum DIRECTION {
 // ---- COMPONENT
 
 export default function ParticipationForm({ surveyId, participationId }: Props): JSX.Element {
+  const { mode } = useContext(ParticipationFormContext)
+  const { isTablet } = useMediaQueries()
   const router = useRouter()
+
   const dispatch = useAppDispatch()
   const [isSuccess, setIsSuccess] = useState(false)
   const [isFailed, setIsFailed] = useState(false)
@@ -43,36 +47,26 @@ export default function ParticipationForm({ surveyId, participationId }: Props):
   const survey = useAppSelector(scientistDataSelectors.survey.getSelectedSurvey)
   const slug = survey.attributes.slug
   const attributes = data?.survey?.data?.attributes
+  const currentColor = attributes?.landing?.data?.attributes?.color_theme?.button || "black"
+  const order = attributes?.order
 
-  const { isTablet } = useMediaQueries()
-
+  // Effect to initialize the participation
   useEffect(() => {
-    dispatch(actions.initialize({ surveyId, participationId, slug }))
-  }, [surveyId, participationId, dispatch, slug])
+    dispatch(actions.initialize({ surveyId, participationId, slug, mode: mode }))
+  }, [surveyId, participationId, dispatch, slug, mode])
 
+  // Various handlers
   const { isFirstPage, isLastPage, selectedPage, nextPage, previousPage, selectIndex } = useNavigationHandlers(pages)
   const { onFinish } = useFinishHandler(participationId, slug)
   
-  // Missing data checks
+  const handleSubmit = useCallback(() => {
+    // If we're in preview mode, we don't need to save the participation
+    if (mode === "preview") {
+      setIsSuccess(true)
+      return
+    }
 
-  if (isLoading || !selectedPage)
-    return (
-      <Center>
-        <Loader />
-      </Center>
-    )
-
-  if (isError || !data)
-    return (
-      <Center>
-        <Error message="Il n'y a pas de donnée sur le formulaire." />
-      </Center>
-    )
-
-  const currentColor = attributes?.landing?.data?.attributes?.color_theme?.button || "black";
-  const order = attributes?.order;
-
-  const handleSubmit = () => {
+    // Otherwise, we save the participation
     onFinish()
       .then(() => {
         setIsSuccess(true)
@@ -81,30 +75,38 @@ export default function ParticipationForm({ surveyId, participationId }: Props):
         setIsFailed(true);
         console.log(err);
       })
-  }
+  }, [mode, onFinish])
 
-  if (isSuccess) {
+  const handleExit = useCallback(() => {
+    router.push(`/survey/${slug}/create/form`)
+  }, [router, slug])
+
+  // Missing data checks
+
+  // Render loader
+  if (isLoading || !selectedPage) {
     return (
-      <Center h="100vh" display="flex" flexDirection="column" backgroundColor="gray.100">
-        <Box
-          backgroundColor="white"
-          p={isTablet ? "30px 20px" : "50px"}
-          border="1px solid"
-          borderColor="brand.line"
-          w={isTablet ? "90%" : "480px"}
-        >
-          <Text variant="xl" mb="20px">
-            🎉
-          </Text>
-          <Text>Votre participation à bien été enregistrée, merci beaucoup !</Text>
-          <Button mt="50px" variant="roundedBlue" minW="200px" onClick={() => router.push("/")}>
-            Revenir au portail
-          </Button>
-        </Box>
+      <Center>
+        <Loader />
       </Center>
-    );
+    )
   }
 
+  // Render error
+  if (isError || !data) {
+    return (
+      <Center>
+        <Error message="Il n'y a pas de donnée sur le formulaire." />
+      </Center>
+    )
+  }
+
+  // Render success
+  if (isSuccess) {
+    return <ParticipationSaved />
+  }
+
+  // Render form
   return (
     <Box>
       <Flex
@@ -123,6 +125,12 @@ export default function ParticipationForm({ surveyId, participationId }: Props):
           }
           textAlign="left"
         >
+          { mode === "preview" && (
+            <Button variant="roundedBlue" pos="absolute" className="top-5" onClick={handleExit}>
+              Retour à l&apos;édition
+            </Button>
+          )}
+
           <Box w="100%" pr="50px">
             <Text
               variant={isTablet ? "xl" : "xxl"}
@@ -149,6 +157,7 @@ export default function ParticipationForm({ surveyId, participationId }: Props):
             color={currentColor}
             selectedPage={selectedPage}
           />
+
           {!isTablet && (
             <Text
               variant="current"
@@ -205,7 +214,7 @@ function useFinishHandler(participationId: string, slug: string) {
 
   return {
     onFinish,
-  };
+  }
 }
 
 function useNavigationHandlers(pages: PageParticipationRedux[] | undefined) {
@@ -228,7 +237,7 @@ function useNavigationHandlers(pages: PageParticipationRedux[] | undefined) {
       setSelectedIdx(newIdx)
     },
     [pages?.length, selectedIdx]
-  );
+  )
 
   const nextPage = useCallback(() => onNavigate(DIRECTION.Next), [onNavigate])
   const previousPage = useCallback(() => onNavigate(DIRECTION.Previous), [onNavigate])
@@ -241,4 +250,31 @@ function useNavigationHandlers(pages: PageParticipationRedux[] | undefined) {
     nextPage,
     previousPage,
   }
+}
+
+// ---- SUB COMPONENTS
+
+function ParticipationSaved() {
+  const router = useRouter()
+  const { isTablet } = useMediaQueries()
+
+  return (
+    <Center h="100vh" display="flex" flexDirection="column" backgroundColor="gray.100">
+      <Box
+        backgroundColor="white"
+        p={isTablet ? "30px 20px" : "50px"}
+        border="1px solid"
+        borderColor="brand.line"
+        w={isTablet ? "90%" : "480px"}
+      >
+        <Text variant="xl" mb="20px">
+          🎉
+        </Text>
+        <Text>Votre participation à bien été enregistrée, merci beaucoup !</Text>
+        <Button mt="50px" variant="roundedBlue" minW="200px" onClick={() => router.push("/")}>
+          Revenir au portail
+        </Button>
+      </Box>
+    </Center>
+  )
 }

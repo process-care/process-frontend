@@ -17,13 +17,13 @@ import Error from "@/components/Error/index.tsx"
 import Loader from "@/components/Spinner/index.tsx"
 import ParticipationMenu from "./ParticipationMenu.tsx"
 import Page from "./form/Page.tsx"
-import { ParticipationFormContext } from "../../create/form/preview/page.tsx"
 
 // ---- TYPES
 
 interface Props {
-  surveyId: string;
-  participationId: string;
+  surveyId: string
+  participationId: string
+  mode: "preview" | "participant"
 }
 
 export enum DIRECTION {
@@ -33,8 +33,7 @@ export enum DIRECTION {
 
 // ---- COMPONENT
 
-export default function ParticipationForm({ surveyId, participationId }: Props): JSX.Element {
-  const { mode } = useContext(ParticipationFormContext)
+export default function ParticipationForm({ surveyId, participationId, mode }: Props): JSX.Element {
   const { isTablet } = useMediaQueries()
   const router = useRouter()
 
@@ -52,7 +51,7 @@ export default function ParticipationForm({ surveyId, participationId }: Props):
 
   // Effect to initialize the participation
   useEffect(() => {
-    dispatch(actions.initialize({ surveyId, participationId, slug, mode: mode }))
+    dispatch(actions.initialize({ surveyId, participationId, slug, mode }))
   }, [surveyId, participationId, dispatch, slug, mode])
 
   // Various handlers

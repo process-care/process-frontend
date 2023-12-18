@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useEffect } from "react"
+import { useEffect } from "react"
 import { useDispatch } from "react-redux"
 
 import { actions, selectors } from "@/redux/slices/scientistData.js"
@@ -11,13 +11,11 @@ import ParticipationForm from "../../../[step]/_components/ParticipationForm"
 
 type Props = {
   params: {
-    slug: string;
+    slug: string
   }
 }
 
 // ---- COMPONENT
-
-export const ParticipationFormContext = createContext<any>(null)
 
 export default function ParticipationFormPreview({ params }: Props): JSX.Element {
   const { slug } = params
@@ -31,11 +29,10 @@ export default function ParticipationFormPreview({ params }: Props): JSX.Element
   if (!selectedSurveyId) return <div>Survey not found</div>
 
   return (
-    <ParticipationFormContext.Provider value={{ mode: "preview" }}>
-      <ParticipationForm
-        surveyId={selectedSurveyId}
-        participationId={'xx'}
-      />
-    </ParticipationFormContext.Provider>
+    <ParticipationForm
+      surveyId={selectedSurveyId}
+      participationId={'xx'}
+      mode="preview"
+    />
   )
 }

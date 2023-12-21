@@ -151,7 +151,9 @@ function Card({ index, filteredFactors, state }: CardProps) {
   return (
     <Box border="1px solid #E5E5E5" borderRadius="5px" mt="30px" w="60%">
       {filteredFactors.map((factor, idx) => {
-        const random = state.variations.length > 0 ? state.variations[state.variations.length - 1][index][idx] : 0
+        const random = state.variations.length > 0
+          ? state.variations[state.variations.length - 1][index][idx]
+          : 0
 
         return (
           <Box key={uuidv4()} p="20px" backgroundColor={idx % 2 == 0 ? "transparent" : "gray.100"}>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Flex, Text, Button, Collapse, CircularProgress } from "@chakra-ui/react"
 import { CheckIcon } from "@chakra-ui/icons"
 import { StepBackIcon } from "lucide-react"
@@ -13,6 +13,7 @@ import { selectors as globalSelectors } from "@/redux/slices/scientistData.js"
 import { useSurveyQuery } from "@/api/graphql/queries/survey.gql.generated.js"
 import { client } from "@/api/gql-client.js"
 import Loader from "@/components/Spinner/index.tsx"
+import { useRouter } from "next/navigation"
 
 // ---- STATIC
 
@@ -35,24 +36,32 @@ interface Props {
 }
 
 export default function Menu({ isLanding, surveyId }: Props): JSX.Element {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
+  const router = useRouter()
 
-  const { data, isLoading, isError } = useSurveyQuery(client, { id: surveyId });
-  const { previewMode } = useAppSelector((state) => state.application);
-  const { inProgress, done } = useChangesNotifier(isLanding);
+  const { data, isLoading, isError } = useSurveyQuery(client, { id: surveyId })
+  const { previewMode } = useAppSelector((state) => state.application)
+  const { inProgress, done } = useChangesNotifier(isLanding)
 
+  const handleVerify = useCallback(() => {
+    dispatch(globalActions.checkSurvey(true))
+  }, [dispatch])
+
+  const handleFormPreview = useCallback(() => {
+    router.push('form/preview')
+  }, [router])
+
+  // Render loader
   if (isLoading) {
-    return <Loader />;
+    return <Loader />
   }
 
+  // Render error
   if (isError) {
-    return <p>Une erreur est survenue</p>;
+    return <p>Une erreur est survenue</p>
   }
 
-  const handleVerify = () => {
-    dispatch(globalActions.checkSurvey(true));
-  };
-
+  // Render component
   return (
     <>
       {previewMode === "landing" && (
@@ -120,14 +129,18 @@ export default function Menu({ isLanding, surveyId }: Props): JSX.Element {
                 <Button variant="roundedBlue" mr={5} onClick={handleVerify}>
                   {t.verify}
                 </Button>
+
+                <Button variant="roundedBlue" mr={5} onClick={handleFormPreview}>
+                  {t.tryout}
+                </Button>
               </Flex>
             )}
           </Flex>
         </Flex>
       </Collapse>
     </>
-  );
-};
+  )
+}
 
 // ---- SUB COMPONENTS
 

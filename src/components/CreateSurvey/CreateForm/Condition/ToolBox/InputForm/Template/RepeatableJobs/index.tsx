@@ -1,4 +1,4 @@
-import { FieldArray, useField, useFormikContext } from "formik"
+import { FieldArray, useField } from "formik"
 import { Flex, Box, Button, Text } from "@chakra-ui/react"
 
 import { useAppSelector } from "@/redux/hooks/index.js"
@@ -15,7 +15,6 @@ interface Props {
 
 export default function RepeatableJobs({ name, onlyUpload, cta }: Props): JSX.Element {
   const [field, meta] = useField(name)
-  const { setFieldValue } = useFormikContext()
   const isEditing = useAppSelector(selectorsApplication.isEditing)
   const fields = field.value
 
@@ -69,8 +68,8 @@ export default function RepeatableJobs({ name, onlyUpload, cta }: Props): JSX.El
                         ml={3}
                         type="button"
                         onClick={() => {
-                          arrayHelpers.remove(index);
-                          setFieldValue(`${name}.${index}`, undefined);
+                          // Remove the item from the field values
+                          arrayHelpers.remove(index)
                         }}
                         variant="link"
                         color="brand.blue"
@@ -109,6 +108,7 @@ export default function RepeatableJobs({ name, onlyUpload, cta }: Props): JSX.El
                 >
                   {cta}
                 </Button>
+                
                 <Text mt={1} fontSize="10px" color="red">
                   {meta.error}
                 </Text>

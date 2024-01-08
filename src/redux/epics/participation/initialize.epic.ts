@@ -15,28 +15,28 @@ const initializeEpic: Epic = (action$) =>
     ofType(statusAct.initialize.type),
     filter((action) => action.payload.surveyId && action.payload.participationId),
     switchMap(async (action) => {
-      const { participationId, surveyId, slug } = action.payload;
+      const { participationId, surveyId, slug, mode } = action.payload
 
       const pages = sdk.survey({ id: surveyId }).then((res) => {
-        const data = res.survey?.data?.attributes?.pages?.data;
-        return sanitizeEntities(data);
-      });
+        const data = res.survey?.data?.attributes?.pages?.data
+        return sanitizeEntities(data)
+      })
 
-      const questions = sdk.questionsBySurveySlug({ slug }).then(processQuestions);
+      const questions = sdk.questionsBySurveySlug({ slug }).then(processQuestions)
 
-      const answers = sdk.AnswersByParticipation({ participationId }).then(processAnswers);
+      const answers = (mode === 'preview') ? [] : sdk.AnswersByParticipation({ participationId }).then(processAnswers)
 
-      return Promise.all([pages, questions, answers]);
+      return Promise.all([pages, questions, answers])
     }),
     map((results) => {
-      const pages = results[0];
-      const questions = results[1];
-      const answers = results[2];
+      const pages = results[0]
+      const questions = results[1]
+      const answers = results[2]
 
-      const payload = { pages, questions, answers };
-      return statusAct.initialized(payload);
+      const payload = { pages, questions, answers }
+      return statusAct.initialized(payload)
     })
-  );
+  )
 
 // ---- UTILS
 

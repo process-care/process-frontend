@@ -1,10 +1,12 @@
-import { useMemo } from "react";
-import { Box } from "@chakra-ui/react";
+import { useMemo } from "react"
+import { Box } from "@chakra-ui/react"
 
-import { PageParticipationRedux } from "@/redux/slices/participation/page.js"
-import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
-import SummaryMobile from "./SummaryMobile.tsx"
-import PageEntry from "./PageEntry.tsx"
+import { useMediaQueries } from "@/utils/hooks/mediaqueries"
+import { useAppSelector } from "@/redux/hooks/index"
+import { selectors } from "@/redux/slices/participation/status"
+import { PageParticipationRedux } from "@/redux/slices/participation/page"
+import SummaryMobile from "./SummaryMobile"
+import PageEntry from "./PageEntry"
 
 // ---- TYPES
 
@@ -19,7 +21,7 @@ type MenuProps = {
 // ---- COMPONENT
 
 export default function ParticipationMenu({ pages, selectIndex, color, selectedPage }: MenuProps): JSX.Element {
-  const { isTablet } = useMediaQueries();
+  const { isTablet } = useMediaQueries()
 
   const navigables = useMemo(() => {
     let isBlocked = false;
@@ -35,7 +37,7 @@ export default function ParticipationMenu({ pages, selectIndex, color, selectedP
       if (!isNavigable) isBlocked = true;
       return isNavigable;
     });
-  }, [pages]);
+  }, [pages])
 
   return (
     <Box

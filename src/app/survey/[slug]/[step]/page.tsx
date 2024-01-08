@@ -82,7 +82,11 @@ export default function Participation({ params }: Props): JSX.Element {
       return <Box mt="60">{NL.msg.missingConsent}</Box>;
     }
 
-    return <ParticipationForm surveyId={surveyId} participationId={participation.id} />;
+    return <ParticipationForm
+      surveyId={surveyId}
+      participationId={participation.id}
+      mode="participant"
+    />
   }
 
   return <Box mt="60">Something went wrong...</Box>;

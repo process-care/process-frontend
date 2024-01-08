@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect } from "react";
-import { Box, Collapse } from "@chakra-ui/react";
+import { useEffect } from "react"
+import { Box, Collapse } from "@chakra-ui/react"
 
 import { client } from "@/api/gql-client.js"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"

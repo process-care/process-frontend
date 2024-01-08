@@ -14,16 +14,16 @@ import Questionator from "./Questionator.tsx"
 // ---- TYPES
 
 type Props = {
-  pageId: string;
-  participationId: string;
-  order: string[];
-  isFirstPage: boolean;
-  isLastPage: boolean;
-  nextPage: () => void;
-  previousPage: () => void;
-  currentColor: string;
-  onFinish: () => void;
-  isFailed: boolean;
+  pageId: string
+  participationId: string
+  order: string[]
+  isFirstPage: boolean
+  isLastPage: boolean
+  nextPage: () => void
+  previousPage: () => void
+  currentColor: string
+  onFinish: () => void
+  isFailed: boolean
 }
 
 // ---- COMPONENT
@@ -62,8 +62,8 @@ export default function Page({
         validationSchema={formSchema(questions)}
         initialValues={initialAnswers}
         onSubmit={(data, { setSubmitting, validateForm }) => {
-          validateForm(data);
-          setSubmitting(true);
+          validateForm(data)
+          setSubmitting(true)
         }}
       >
         {({ isValid }) => <DisplayForm

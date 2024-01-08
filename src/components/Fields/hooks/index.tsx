@@ -24,7 +24,7 @@ export const useAssociatedLogic = (
   factors: Factor[],
   name: string,
   maxLoop: number,
-  TOTAL_CARDS: number
+  nbCards: number
 ) => {
   const [field, , helpers] = useField(name)
   const [state, setState] = useState<FactorState>({ variations: [], isMounted: false })
@@ -36,29 +36,30 @@ export const useAssociatedLogic = (
   )
 
   const modalitiesPerFactor = useMemo(() =>
-    filteredFactors?.map((f) => f.modalities?.length).filter((m) => m !== 0),
+    filteredFactors?.map((f) => f.modalities?.length ?? 0).filter((m) => m !== 0),
     [filteredFactors]
   )
-  
+
   const maxVariations = useMemo(() => {
-    const totalVariations = modalitiesPerFactor?.reduce((a, b) => a * b, 1)
-    return getMaxVariation(totalVariations, TOTAL_CARDS)
-  }, [TOTAL_CARDS, modalitiesPerFactor])
+    const totalVariations = modalitiesPerFactor?.reduce((a, b) => a * b, 1) ?? 0
+    if (totalVariations === 0) return 0
+    return getMaxVariation(totalVariations, nbCards)
+  }, [nbCards, modalitiesPerFactor])
 
   // Callback to add a new variation to the stack
   const generate = useCallback(() => { 
-    if (maxVariations - 1 === state.variations.length) return
+    if (maxVariations === state.variations.length) return
     if (!modalitiesPerFactor) return
 
     // Generate a random and unique variation
-    const variation = generateUniqueVariation(modalitiesPerFactor, state.variations)
+    const variation = generateUniqueVariation(nbCards, modalitiesPerFactor, state.variations)
 
     // Save the new variation in the state
     setState({
       variations: [...state.variations, variation],
       isMounted: true,
     })
-  }, [maxVariations, modalitiesPerFactor, state.variations])
+  }, [nbCards, maxVariations, modalitiesPerFactor, state.variations])
 
   // Callback to save the new value in the formik field and generate a new variation
   const handleClick = useCallback((cardIdx: number, values?: any) => {
@@ -67,7 +68,7 @@ export const useAssociatedLogic = (
 
     // Sanitize the new payload
     const lastVariation = state.variations[state.variations.length - 1]
-    const payload = formatPayload(values, cardIdx, TOTAL_CARDS, lastVariation, filteredFactors)
+    const payload = formatPayload(values, cardIdx, nbCards, lastVariation, filteredFactors)
 
     // Save the new value in the formik field
     if (!field.value) {
@@ -78,7 +79,7 @@ export const useAssociatedLogic = (
 
     // Regenerate a new variation on the stack
     generate()
-  }, [field.value, filteredFactors, generate, helpers, state.variations, TOTAL_CARDS])
+  }, [field.value, filteredFactors, generate, helpers, state.variations, nbCards])
 
   // console.group("Algo vignette")
   // console.log("max variations", maxVariations)
@@ -109,7 +110,35 @@ export const useAssociatedLogic = (
 // Max number of tries to generate a variation
 const TIMEOUT = 1000
 
-function generateVariation(modalitiesPerFactor: number[]): number[][] {
+function generateUniqueVariation(nbCards: number, modalitiesPerFactor: number[], existingVariations: number[][][]): number[][] {
+  let created: number[][]
+  let i = 0
+
+  // Generate a variation until it is not in the existing variations
+  do {
+    created = generateVariation(nbCards, modalitiesPerFactor)
+    i++ // Safety system to avoid infinite loop
+  } while (existingVariations.some((v) => variationsAreSame(v, created)) && i < TIMEOUT)
+
+  if (i > TIMEOUT) {
+    console.error("Timeout reached - Could not generate a unique variation.")
+  }
+
+  return created
+}
+
+// FIXME: refactor this to handle more than 2 cards and in a generic way
+function generateVariation(nbCards: number, modalitiesPerFactor: number[]): number[][] {
+  if (nbCards > 2) {
+    throw new Error("Generated variations only handle 2 cards for now.")
+  }
+
+  // If we have only one card, we generate a single variation
+  if (nbCards === 1) {
+    return [randomize(modalitiesPerFactor)]
+  }
+
+  // Else, we generate a couple variation
   let cardA: number[]
   let cardB: number[]
   let i = 0
@@ -121,31 +150,11 @@ function generateVariation(modalitiesPerFactor: number[]): number[][] {
     i++ // Safety system to avoid infinite loop
   } while (arraysAreSame(cardA, cardB) && i < TIMEOUT)
 
-  if (i > TIMEOUT || arraysAreSame(cardA, cardB)) {
-    console.error("Timeout reached - Could not generate a correct variation.")
-    console.error("Card A", cardA)
-    console.error("Card B", cardB)
+  if (arraysAreSame(cardA, cardB)) {
+    console.error("Timeout reached - Could not generate a distinct couple for a new variation.")
   }
 
   return [cardA, cardB]
-}
-
-function generateUniqueVariation(modalitiesPerFactor: number[], existingVariations: number[][][]): number[][] {
-  let created: number[][]
-  let i = 0
-
-  // Generate a variation until it is not in the existing variations
-  do {
-    created = generateVariation(modalitiesPerFactor)
-    i++ // Safety system to avoid infinite loop
-  } while (existingVariations.some((v) => variationsAreSame(v, created)) && i < TIMEOUT)
-
-  if (i > TIMEOUT) {
-    console.error("Timeout reached - Could not generate a unique variation.")
-    console.error("Variation ", created)
-  }
-
-  return created
 }
 
 function formatPayload(values: any, cardIdx: number, TOTAL_CARDS: number, lastVariation: number[][], factors: Factor[]) {
@@ -179,13 +188,18 @@ function getMaxVariation(n: number, k: number): number {
 }
 
 function factorialize(num: number): number {
-  if (num < 0) return -1
-  if (num === 0) return 1
+  if (isNaN(num)) {
+    throw new Error('Input is not a number')
+  }
   
+  if (num < 0) throw new Error('Factorial is not defined for negative numbers')
+  if (num === 0) return 1
+
   return num * factorialize(num - 1)
 }
 
 function permutations(n: number, k: number): number {
+  if (n < k) return 0
   return factorialize(n) / factorialize(n - k)
 }
 

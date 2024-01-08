@@ -10,12 +10,12 @@ const loadEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.load.type),
     switchMap(async (action) => {
-      const landing = await sdk.landing({ id: action.payload }).then((res) => res.landing?.data);
-      if (landing) return sanitizeEntity(landing);
+      const landing = await sdk.landing({ id: action.payload }).then((res) => res.landing?.data)
+      if (landing) return sanitizeEntity(landing)
     }),
     map((landing) => {
-      if (landing) return actions.loaded(landing);
-      else return actions.loadFailed();
+      if (landing) return actions.loaded(landing)
+      else return actions.loadFailed()
 
       // TODO:ERROR: Handle error
     })

@@ -50,8 +50,7 @@ export default function Preview({ isUserView, data, author, needConsent, surveyI
   const isEditingAbout = useAppSelector(selectors.isEditingAbout)
 
   // Get the about page raw data and serialize it for display
-  const aboutPage = useAppSelector(selectors.about)
-  const aboutHtml = useWysiwygSerializer(aboutPage)
+  const aboutHtml = useWysiwygSerializer(data?.attributes.about)
 
   // Actions
   const { mutateAsync: createParticipation } = useCreateParticipationMutation(client)

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo } from "react"
 import { Box, Button, FormLabel, Spinner, Text } from "@chakra-ui/react"
 import { v4 as uuidv4 } from "uuid"
 import { Form, Formik } from "formik"
@@ -7,7 +7,6 @@ import Image from "next/image.js"
 import { useAppSelector } from "@/redux/hooks/index.js"
 import { selectors } from "@/redux/slices/application/index.js"
 import { QuestionRedux } from "@/redux/slices/types/index.js"
-import { Maybe } from "@/api/graphql/types.generated.ts"
 import { FactorState, useAssociatedLogic } from "./hooks/index.tsx"
 import RenderInput from "@/components/CreateSurvey/CreateForm/InputsPreview/Card/utils/index.tsx"
 import TitleDivider from "@/components/TitleDivider/index.tsx"
@@ -152,7 +151,9 @@ function Card({ index, filteredFactors, state }: CardProps) {
   return (
     <Box border="1px solid #E5E5E5" borderRadius="5px" mt="30px" w="60%">
       {filteredFactors.map((factor, idx) => {
-        const random = state.variations.length > 0 ? state.variations[state.variations.length - 1][index][idx] : 0
+        const random = state.variations.length > 0
+          ? state.variations[state.variations.length - 1][index][idx]
+          : 0
 
         return (
           <Box key={uuidv4()} p="20px" backgroundColor={idx % 2 == 0 ? "transparent" : "gray.100"}>

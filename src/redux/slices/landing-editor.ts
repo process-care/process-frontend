@@ -40,9 +40,9 @@ export const landingEditorSlice = createSlice({
       state.isLoading = true;
     },
     loaded: (state, action: PayloadAction<LandingRedux>) => {
-      state.isLoading = false;
-      const landing = action.payload;
-      state.data = landing;
+      state.isLoading = false
+      const landing = action.payload
+      state.data = landing
     },
     loadFailed: (state) => {
       state.isLoading = false;
@@ -65,7 +65,7 @@ export const landingEditorSlice = createSlice({
 // ---- SELECTORS
 
 function getAttributes(state: RootState): LandingRedux["attributes"] | undefined {
-  return state.editor.landing.data?.attributes;
+  return state.editor.landing.data?.attributes
 }
 
 export const error = (state: RootState): string | undefined => state.editor.landing.error;
@@ -107,9 +107,9 @@ export const selectors = {
   getLanding,
   members,
   about,
-};
+}
 
 // ---- EXPORTS
 
-export const actions = landingEditorSlice.actions;
-export default landingEditorSlice.reducer;
+export const actions = landingEditorSlice.actions
+export default landingEditorSlice.reducer

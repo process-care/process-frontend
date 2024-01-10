@@ -124,7 +124,7 @@ export default function ProfilForm(): JSX.Element {
                 isCollapsed={false}
                 rows={Enum_Question_Rows.Small}
                 label="Prénom"
-                placeholder="Renseigner votre prénom"
+                placeholder="John"
                 id="firstName"
                 isRequired
               />
@@ -133,7 +133,7 @@ export default function ProfilForm(): JSX.Element {
                 isCollapsed={false}
                 rows={Enum_Question_Rows.Small}
                 label="Nom"
-                placeholder="Renseigner votre nom"
+                placeholder="Do"
                 id="lastName"
                 isRequired
               />
@@ -142,7 +142,7 @@ export default function ProfilForm(): JSX.Element {
                 isCollapsed={false}
                 rows={Enum_Question_Rows.Small}
                 label="Email de contact"
-                placeholder="Renseigner votre email"
+                placeholder="john@do.com"
                 id="email"
                 isRequired
               />
@@ -151,7 +151,7 @@ export default function ProfilForm(): JSX.Element {
                 isCollapsed={false}
                 rows={Enum_Question_Rows.Small}
                 label="Profession"
-                placeholder="Renseigner votre profession"
+                placeholder="Médecin, chercheur, etc."
                 id="job"
               />
 
@@ -159,7 +159,7 @@ export default function ProfilForm(): JSX.Element {
                 isCollapsed={false}
                 rows={Enum_Question_Rows.Small}
                 label="Institution"
-                placeholder="Renseigner votre institution"
+                placeholder="Hôpital, université, etc."
                 id="institution"
               />
 
@@ -170,14 +170,14 @@ export default function ProfilForm(): JSX.Element {
               <Input
                 isCollapsed={false}
                 label="Mot de passe actuel"
-                placeholder="Renseigner votre mot de passe actuel"
+                placeholder="Mot de passe actuel"
                 name="currentPassword"
                 type="password"
               />
               <Input
                 isCollapsed={false}
                 label="Nouveau mot de passe"
-                placeholder="Renseigner votre nouveau mot de passe"
+                placeholder="Nouveau mot de passe"
                 name="newPassword"
                 type="password"
               />
@@ -185,7 +185,7 @@ export default function ProfilForm(): JSX.Element {
               <Input
                 isCollapsed={false}
                 label="Confirmation du nouveau mot de passe"
-                placeholder="Confimer votre nouveau mot de passe"
+                placeholder="Confirmation du nouveau mot de passe"
                 name="confirmNewPassword"
                 type="password"
               />

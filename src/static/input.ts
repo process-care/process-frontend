@@ -1,7 +1,7 @@
 export const t = {
   label: "Label à remplir",
   help_text: "",
-  placeholder: "Renseigner votre réponse",
+  placeholder: "Votre réponse",
   removing_confirmation: "Supprimer le champs",
   delete_all_inputs: "Supprimer toutes les questions de cette page",
   verify: "Vérifier",

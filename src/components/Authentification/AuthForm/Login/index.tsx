@@ -47,7 +47,7 @@ export default function LoginForm(): JSX.Element {
                 <Input
                   isCollapsed={false}
                   label="E-mail"
-                  placeholder="Renseigner votre email"
+                  placeholder="Votre e-mail"
                   name="identifier"
                   isRequired="true"
                   autoComplete="email"
@@ -55,7 +55,7 @@ export default function LoginForm(): JSX.Element {
                 <Input
                   isCollapsed={false}
                   label="Mot de passe"
-                  placeholder="Renseigner votre mot de passe"
+                  placeholder="Votre mot de passe"
                   name="password"
                   type="password"
                   isRequired="true"

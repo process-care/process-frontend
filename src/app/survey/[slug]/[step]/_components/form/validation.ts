@@ -33,7 +33,7 @@ export const formSchema: any = (questions: QuestionEntity[] | undefined) => {
     return {
       ...obj,
       [item.id]: item.attributes?.required
-        ? getTypeValidation(item).required("Merci de bien vouloir renseigner ce champs")
+        ? getTypeValidation(item).required("Merci de bien vouloir renseigner ce champ.")
         : getTypeValidation(item),
     };
   }, {} as Record<string, any>);

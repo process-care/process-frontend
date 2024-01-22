@@ -82,7 +82,7 @@ export default function CustomSlider({
               range
               reverse={reverse ?? false}
               dots
-              dotStyle={{ height: 18, width: 18, bottom: -7 }}
+              dotStyle={{ height: 24, width: 24, bottom: -10 }}
               min={cleanValue(min, 0)}
               max={cleanValue(max, 10)}
               step={cleanValue(step, 1)}
@@ -90,14 +90,17 @@ export default function CustomSlider({
               vertical={!!vertical}
               onChange={(value: any) => helpers.setValue(value)}
               value={field.value}
+              styles={{
+                handle: { height: 24, width: 24, top: 0, backgroundColor: "#57c5f7"  },
+              }}
             />
 
-            <Flex w="100%" h="100%" marginTop={1} justifyContent="space-between" flexDirection={vertical ? "column" : "row"}>
-              <Text fontSize="12px" ml="-2px">
+            <Flex w="100%" h="100%" marginTop={2} justifyContent="space-between" flexDirection={vertical ? "column" : "row"}>
+              <Text fontSize="16px" ml="-4px">
                 {reverse || vertical ? max : min}
               </Text>
 
-              <Text fontSize="12px" mr="-7px">
+              <Text fontSize="16px" mr="-5px">
                 {reverse || vertical ? min : max}
               </Text>
             </Flex>

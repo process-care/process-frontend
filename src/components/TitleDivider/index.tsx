@@ -1,14 +1,14 @@
 import { Flex, Divider, Text, Box } from "@chakra-ui/react";
 
 interface Props {
-  title: string;
+  title?: string;
   children?: React.ReactNode;
   mt?: string;
   mb?: string;
 }
 
 export default function TitleDivider({
-  title,
+  title = "",
   mt = "10",
   mb = "5",
   children,

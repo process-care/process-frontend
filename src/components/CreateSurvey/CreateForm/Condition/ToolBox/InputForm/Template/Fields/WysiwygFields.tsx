@@ -1,4 +1,4 @@
-import Wysiwyg from "@/components/Fields/Wysiwyg/Wysiwyg.tsx"
+import Wysiwyg from "@/components/Fields/Wysiwyg"
 
 export default function WysiwygFields(): JSX.Element {
   return (

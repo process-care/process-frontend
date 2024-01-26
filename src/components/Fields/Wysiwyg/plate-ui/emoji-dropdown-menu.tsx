@@ -4,30 +4,28 @@ import {
   useEmojiDropdownMenuState,
 } from '@udecode/plate-emoji';
 
-import { Icons } from '@/components/icons.tsx'
-import { EmojiToolbarDropdown } from '@/components/Fields/Wysiwyg/plate-ui/emoji-toolbar-dropdown.tsx'
-import {
-  ToolbarButton,
-  ToolbarButtonProps,
-} from '@/components/Fields/Wysiwyg/plate-ui/toolbar.tsx'
+import { Icons } from '@/components/icons';
 
-import { emojiCategoryIcons, emojiSearchIcons } from './emoji-icons.tsx'
-import { EmojiPicker } from './emoji-picker.tsx'
+import { emojiCategoryIcons, emojiSearchIcons } from './emoji-icons';
+import { EmojiPicker } from './emoji-picker';
+import { EmojiToolbarDropdown } from './emoji-toolbar-dropdown';
+import { ToolbarButton } from './toolbar';
 
 type EmojiDropdownMenuProps = {
   options?: EmojiDropdownMenuOptions;
-} & ToolbarButtonProps;
+} & React.ComponentPropsWithoutRef<typeof ToolbarButton>;
 
 export function EmojiDropdownMenu({
   options,
   ...props
 }: EmojiDropdownMenuProps) {
-  const { isOpen, setIsOpen, emojiPickerState } = useEmojiDropdownMenuState(options)
+  const { isOpen, setIsOpen, emojiPickerState } =
+    useEmojiDropdownMenuState(options);
 
   return (
     <EmojiToolbarDropdown
       control={
-        <ToolbarButton pressed={isOpen} isDropdown {...props} type="button">
+        <ToolbarButton pressed={isOpen} isDropdown tooltip="Emoji" {...props}>
           <Icons.emoji />
         </ToolbarButton>
       }

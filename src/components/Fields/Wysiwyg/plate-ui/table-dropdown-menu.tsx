@@ -3,7 +3,8 @@ import { DropdownMenuProps } from '@radix-ui/react-dropdown-menu';
 import {
   focusEditor,
   someNode,
-  usePlateEditorState,
+  useEditorRef,
+  useEditorSelector,
 } from '@udecode/plate-common';
 import {
   deleteColumn,
@@ -15,7 +16,7 @@ import {
   insertTableRow,
 } from '@udecode/plate-table';
 
-import { Icons, iconVariants } from '@/components/icons.tsx'
+import { Icons, iconVariants } from '@/components/icons';
 
 import {
   DropdownMenu,
@@ -26,20 +27,20 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
   useOpenState,
-} from './dropdown-menu.tsx'
-import { ToolbarButton } from './toolbar.tsx'
+} from './dropdown-menu';
+import { ToolbarButton } from './toolbar';
 
 export function TableDropdownMenu(props: DropdownMenuProps) {
-  const editor = usePlateEditorState();
+  const tableSelected = useEditorSelector(
+    (editor) => someNode(editor, { match: { type: ELEMENT_TABLE } }),
+    []
+  );
 
-  const tableSelected = someNode(editor, {
-    match: { type: ELEMENT_TABLE },
-  });
-
+  const editor = useEditorRef();
   const openState = useOpenState();
 
   return (
-    <DropdownMenu modal={true} {...openState} {...props}>
+    <DropdownMenu modal={false} {...openState} {...props}>
       <DropdownMenuTrigger asChild>
         <ToolbarButton pressed={openState.open} tooltip="Table" isDropdown>
           <Icons.table />

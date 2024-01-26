@@ -5,7 +5,7 @@ import {
   useLineHeightDropdownMenuState,
 } from '@udecode/plate-line-height';
 
-import { Icons } from '@/components/icons.tsx'
+import { Icons } from '@/components/icons';
 
 import {
   DropdownMenu,
@@ -14,8 +14,8 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
   useOpenState,
-} from './dropdown-menu.tsx'
-import { ToolbarButton } from './toolbar.tsx'
+} from './dropdown-menu';
+import { ToolbarButton } from './toolbar';
 
 export function LineHeightDropdownMenu({ ...props }: DropdownMenuProps) {
   const openState = useOpenState();

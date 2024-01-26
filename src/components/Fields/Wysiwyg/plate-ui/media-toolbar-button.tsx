@@ -1,24 +1,26 @@
 import React from 'react';
+import { withRef } from '@udecode/cn';
 import {
   ELEMENT_IMAGE,
   ELEMENT_MEDIA_EMBED,
   useMediaToolbarButton,
 } from '@udecode/plate-media';
 
-import { Icons } from '@/components/icons.tsx'
+import { Icons } from '@/components/icons';
 
-import { ToolbarButton } from './toolbar.tsx'
+import { ToolbarButton } from './toolbar';
 
-export function MediaToolbarButton({
-  nodeType,
-}: {
-  nodeType?: typeof ELEMENT_IMAGE | typeof ELEMENT_MEDIA_EMBED;
-}) {
+export const MediaToolbarButton = withRef<
+  typeof ToolbarButton,
+  {
+    nodeType?: typeof ELEMENT_IMAGE | typeof ELEMENT_MEDIA_EMBED;
+  }
+>(({ nodeType, ...rest }, ref) => {
   const { props } = useMediaToolbarButton({ nodeType });
 
   return (
-    <ToolbarButton {...props}>
+    <ToolbarButton ref={ref} {...props} {...rest}>
       <Icons.image />
     </ToolbarButton>
   );
-}
+});

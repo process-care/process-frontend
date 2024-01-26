@@ -2,18 +2,14 @@
 
 import React from 'react';
 import { DropdownMenuItemProps } from '@radix-ui/react-dropdown-menu';
+import { cn } from '@udecode/cn';
 
-import { cn } from '@/utils/ui.ts'
-import { Icons } from '@/components/icons.tsx'
-import { buttonVariants } from '@/components/Fields/Wysiwyg/plate-ui/button.tsx'
-import { DropdownMenuItem } from '@/components/Fields/Wysiwyg/plate-ui/dropdown-menu.tsx'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/Fields/Wysiwyg/plate-ui/tooltip.tsx'
+import { Icons } from '@/components/icons';
 
-import { TColor } from './color-dropdown-menu.tsx'
+import { buttonVariants } from './button';
+import { TColor } from './color-dropdown-menu';
+import { DropdownMenuItem } from './dropdown-menu';
+import { Tooltip, TooltipContent, TooltipTrigger } from './tooltip';
 
 type ColorDropdownMenuItemProps = {
   value: string;

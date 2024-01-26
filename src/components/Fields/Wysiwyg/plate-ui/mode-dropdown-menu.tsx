@@ -2,12 +2,12 @@ import React from 'react';
 import { DropdownMenuProps } from '@radix-ui/react-dropdown-menu';
 import {
   focusEditor,
-  usePlateEditorState,
-  usePlateReadOnly,
+  useEditorReadOnly,
+  useEditorRef,
   usePlateStore,
 } from '@udecode/plate-common';
 
-import { Icons } from '@/components/icons.tsx'
+import { Icons } from '@/components/icons';
 
 import {
   DropdownMenu,
@@ -16,13 +16,13 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
   useOpenState,
-} from './dropdown-menu.tsx'
-import { ToolbarButton } from './toolbar.tsx'
+} from './dropdown-menu';
+import { ToolbarButton } from './toolbar';
 
 export function ModeDropdownMenu(props: DropdownMenuProps) {
-  const editor = usePlateEditorState();
+  const editor = useEditorRef();
   const setReadOnly = usePlateStore().set.readOnly();
-  const readOnly = usePlateReadOnly();
+  const readOnly = useEditorReadOnly();
   const openState = useOpenState();
 
   let value = 'editing';

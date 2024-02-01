@@ -24,21 +24,25 @@ export const plugins = createPlugins(
 
 export default function WysiwygReader({ content }: Props): JSX.Element {
   const editorRef = useRef<PlateEditor | null>(null)
-  
+
+  // Hack to reload the content of the reader when content changes
+  // See : https://github.com/udecode/plate/discussions/2206
   useEffect(() => {
-    console.log('content is new')
-    console.log('content : ', content)
+    if (!editorRef.current?.children) return
+    editorRef.current.children = content
+    editorRef.current.onChange()
   }, [content])
 
   return (
     <Plate
       editorRef={editorRef}
       plugins={plugins}
-      value={content}
+      initialValue={content}
     >
       <PlateContent
         className="text-base h-full overflow-auto text-left"
         readOnly={true}
+        value={content}
       />
     </Plate>
   )

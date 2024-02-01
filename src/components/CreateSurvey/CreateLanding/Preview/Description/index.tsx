@@ -13,7 +13,6 @@ interface Props {
 }
 
 export default function Description({ inactiveSubmit, data, onParticipate }: Props): JSX.Element {
-  const attributes = data?.attributes
   const { isTablet } = useMediaQueries()
 
   return (
@@ -30,7 +29,7 @@ export default function Description({ inactiveSubmit, data, onParticipate }: Pro
           }
         </Box>
 
-        {attributes?.partners_logos?.map((logo: any, idx: number) => {
+        {data?.attributes?.partners_logos?.map((logo: any, idx: number) => {
           return (
             <Box key={idx}>
               <Image alt="Logo" src={logo?.image} width={120} height={120} />
@@ -40,7 +39,7 @@ export default function Description({ inactiveSubmit, data, onParticipate }: Pro
       </Flex>
 
       <WysiwygReader
-        content={attributes?.presentation}
+        content={data?.attributes?.presentation}
         className="max-h-[350px]"
       />
 
@@ -51,7 +50,7 @@ export default function Description({ inactiveSubmit, data, onParticipate }: Pro
           margin="0 auto"
           left="0"
           right="0"
-          backgroundColor={attributes?.color_theme?.button || "brand.blue"}
+          backgroundColor={data?.attributes?.color_theme?.button || "brand.blue"}
           onClick={onParticipate}
           disabled={inactiveSubmit}
         >

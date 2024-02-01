@@ -36,12 +36,6 @@ export const useAssociatedLogic = (
   const [state, setState] = useState<FactorState>({ variations: [], isMounted: false })
   const [step, setStep] = useState(0)
 
-  console.group('Vignette')
-  console.log('Vignette values: ', field.value)
-  console.log('Vignette variations: ', state.variations)
-  console.log('Vignette step: ', step)
-  console.groupEnd()
-
   const filteredFactors = useMemo(
     () => factors?.filter((f) => f !== null),
     [factors]

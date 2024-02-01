@@ -126,34 +126,6 @@ function FormDisplay({ landing, values, setFieldValue, isValid, isSubmitting }: 
           />
 
           <Text variant="currentBold" mt="5">
-            {t.label_logo}
-          </Text>
-
-          <UploadFileRemote
-            accept="image/*"
-            onChange={logOnChange}
-            label={t.logo_cta}
-            target={ { field: "logo" } }
-            helpText={t.logo_helptext}
-            urlOnly={true}
-          />
-
-          <Text variant="currentBold" mt={9}>
-            {t.theme_label}
-          </Text>
-          <ColorPicker />
-        </Box>
-
-        <TitleDivider title="Corps" />
-
-        <Box border="1px solid #F7F7F7F7" p="5" backgroundColor="#fdfdfdf1">
-          <Text variant="currentBold" mt={2} mb={2}>
-            {t.content_label}
-          </Text>
-
-          <Wysiwyg id="presentation" />
-
-          <Text variant="currentBold" mt="5">
             {t.add_image}
           </Text>
 
@@ -182,33 +154,53 @@ function FormDisplay({ landing, values, setFieldValue, isValid, isSubmitting }: 
             </Box>
           </Flex>
 
-          <Text variant="currentBold" mt="5">
-            {t.see_more_cta}
+          <Text variant="currentBold" mt={9}>
+            {t.theme_label}
           </Text>
-
-          <Button variant="roundedTransparent" mt={4} onClick={onEditAbout}>
-            {t.cta_show_more}
-          </Button>
+          <ColorPicker />
         </Box>
 
-        <TitleDivider title="Page équipe" />
+        <TitleDivider title="Description" />
 
         <Box border="1px solid #F7F7F7F7" p="5" backgroundColor="#fdfdfdf1">
-          <Text variant="currentBold" mt="5">
-            {t.team_label}
+          <Text variant="currentBold" mt={2} mb={2}>
+            {t.content_label}
           </Text>
 
-          <RepeatableJobs name="members" cta="Ajouter un membre de l'équipe" />
-        </Box>
+          <Wysiwyg id="presentation" />
 
-        <TitleDivider title="Logos" />
+          <Text variant="currentBold" mt="5">
+            {t.label_logo}
+          </Text>
 
-        <Box border="1px solid #F7F7F7F7" p="5" backgroundColor="#fdfdfdf1">
+          <UploadFileRemote
+            accept="image/*"
+            onChange={logOnChange}
+            label={t.logo_cta}
+            target={ { field: "logo" } }
+            helpText={t.logo_helptext}
+            urlOnly={true}
+          />
+
           <Text variant="currentBold" mt="5">
             {t.partners}
           </Text>
           
           <RepeatableJobs name="partners_logos" onlyUpload cta="Ajouter un logo partenaire" />
+        </Box>
+
+        <TitleDivider title="Page équipe" />
+
+        <Box border="1px solid #F7F7F7F7" p="5" backgroundColor="#fdfdfdf1">
+          <RepeatableJobs name="members" cta="Ajouter un membre de l'équipe" />
+        </Box>
+
+        <TitleDivider title="A propos" />
+
+        <Box border="1px solid #F7F7F7F7" p="5" backgroundColor="#fdfdfdf1">
+          <Button variant="rounded" mt={4} minW="280px" onClick={onEditAbout}>
+            {t.cta_show_more}
+          </Button>
         </Box>
       </div>
 

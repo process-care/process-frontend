@@ -1,5 +1,5 @@
 import React, { useCallback } from "react"
-import { Box, Flex, Text } from "@chakra-ui/layout"
+import { Box, Flex, Text } from "@chakra-ui/react"
 
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
 import { setIsRemoving } from "@/redux/slices/formBuilder/index.ts"

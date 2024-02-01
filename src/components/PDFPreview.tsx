@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useState } from "react"
-import { Text, Flex, Button, Box } from "@chakra-ui/react"
+import { Text, Flex, Button } from "@chakra-ui/react"
 import { Document, Page, pdfjs } from "react-pdf"
 import 'react-pdf/dist/Page/TextLayer.css'
 import 'react-pdf/dist/Page/AnnotationLayer.css'

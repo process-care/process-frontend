@@ -29,7 +29,7 @@ export default function WysiwygReader({ content }: Props): JSX.Element {
   // See : https://github.com/udecode/plate/discussions/2206
   useEffect(() => {
     if (!editorRef.current?.children) return
-    editorRef.current.children = content
+    editorRef.current.children = content ?? []
     editorRef.current.onChange()
   }, [content])
 
@@ -42,7 +42,6 @@ export default function WysiwygReader({ content }: Props): JSX.Element {
       <PlateContent
         className="text-base h-full overflow-auto text-left"
         readOnly={true}
-        value={content}
       />
     </Plate>
   )

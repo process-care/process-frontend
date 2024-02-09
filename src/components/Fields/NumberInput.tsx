@@ -27,6 +27,7 @@ interface Props {
   isCollapsed?: boolean;
   appearance?: "light" | "big";
 }
+
 export default function CustomNumberInput({
   label,
   helpText,
@@ -54,7 +55,6 @@ export default function CustomNumberInput({
               min={min ?? undefined}
               max={max ?? undefined}
               precision={precision ?? 0}
-              allowMouseWheel
               w="100%"
               fontSize="12px"
               value={field.value ?? ''}

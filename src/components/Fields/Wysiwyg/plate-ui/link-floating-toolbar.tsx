@@ -1,34 +1,66 @@
+'use client';
+
 import React from 'react';
-import { TEditableProps } from '@udecode/plate-common';
+import { cn } from '@udecode/cn';
+import {
+  flip,
+  offset,
+  UseVirtualFloatingOptions,
+} from '@udecode/plate-floating';
 import {
   FloatingLinkUrlInput,
+  LinkFloatingToolbarState,
   LinkOpenButton,
   useFloatingLinkEdit,
   useFloatingLinkEditState,
   useFloatingLinkInsert,
   useFloatingLinkInsertState,
-  useFloatingLinkSelectors,
 } from '@udecode/plate-link';
 
-import { cn } from '@/utils/ui.ts'
-import { Icons } from '@/components/icons.tsx'
+import { Icons } from '@/components/icons';
 
-import { buttonVariants } from './button.tsx'
-import { inputVariants } from './input.tsx'
-import { popoverVariants } from './popover.tsx'
-import { Separator } from './separator.tsx'
+import { buttonVariants } from './button';
+import { inputVariants } from './input';
+import { popoverVariants } from './popover';
+import { Separator } from './separator';
 
-export function LinkFloatingToolbar({ readOnly }: TEditableProps) {
-  const isEditing = useFloatingLinkSelectors().isEditing();
+const floatingOptions: UseVirtualFloatingOptions = {
+  placement: 'bottom-start',
+  middleware: [
+    offset(12),
+    flip({
+      padding: 12,
+      fallbackPlacements: ['bottom-end', 'top-start', 'top-end'],
+    }),
+  ],
+};
 
-  const state = useFloatingLinkInsertState();
+export interface LinkFloatingToolbarProps {
+  state?: LinkFloatingToolbarState;
+}
+
+export function LinkFloatingToolbar({ state }: LinkFloatingToolbarProps) {
+  const insertState = useFloatingLinkInsertState({
+    ...state,
+    floatingOptions: {
+      ...floatingOptions,
+      ...state?.floatingOptions,
+    },
+  });
   const {
     props: insertProps,
     ref: insertRef,
+    hidden,
     textInputProps,
-  } = useFloatingLinkInsert(state);
+  } = useFloatingLinkInsert(insertState);
 
-  const editState = useFloatingLinkEditState();
+  const editState = useFloatingLinkEditState({
+    ...state,
+    floatingOptions: {
+      ...floatingOptions,
+      ...state?.floatingOptions,
+    },
+  });
   const {
     props: editProps,
     ref: editRef,
@@ -36,10 +68,10 @@ export function LinkFloatingToolbar({ readOnly }: TEditableProps) {
     unlinkButtonProps,
   } = useFloatingLinkEdit(editState);
 
-  if (readOnly) return null;
+  if (hidden) return null;
 
   const input = (
-    <div className="z-[2000] flex w-[330px] flex-col">
+    <div className="flex w-[330px] flex-col">
       <div className="flex items-center">
         <div className="flex items-center pl-3 text-muted-foreground">
           <Icons.link className="h-4 w-4" />
@@ -66,7 +98,7 @@ export function LinkFloatingToolbar({ readOnly }: TEditableProps) {
     </div>
   );
 
-  const editContent = isEditing ? (
+  const editContent = editState.isEditing ? (
     input
   ) : (
     <div className="box-content flex h-9 items-center gap-1">

@@ -138,15 +138,15 @@ function FormDisplay({
                 isCollapsed={false}
                 rows={Enum_Question_Rows.Medium}
                 label="Label"
-                placeholder="Renseigner le label de votre question"
+                placeholder="Label de votre question"
                 id="label"
                 isRequired
               />
 
               <Input
                 isCollapsed={false}
-                label="Id dans la base de donnée"
-                placeholder="Renseigner le nom interne de votre question"
+                label="ID dans la base de donnée"
+                placeholder="Nom interne de votre question"
                 name="internal_title"
                 helpText="Ce champ vous permet de donner un titre à la question, il n'est pas visible par les utilisateurs."
                 isRequired="false"

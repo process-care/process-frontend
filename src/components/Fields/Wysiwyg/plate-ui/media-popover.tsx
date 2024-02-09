@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import {
-  isCollapsed,
+  isSelectionExpanded,
+  useEditorSelector,
   useElement,
-  usePlateEditorState,
   useRemoveNodeButton,
 } from '@udecode/plate-common';
 import {
@@ -12,12 +12,12 @@ import {
 } from '@udecode/plate-media';
 import { useReadOnly, useSelected } from 'slate-react';
 
-import { Icons } from '@/components/icons.tsx'
+import { Icons } from '@/components/icons';
 
-import { Button, buttonVariants } from './button.tsx'
-import { inputVariants } from './input.tsx'
-import { Popover, PopoverAnchor, PopoverContent } from './popover.tsx'
-import { Separator } from './separator.tsx'
+import { Button, buttonVariants } from './button';
+import { inputVariants } from './input';
+import { Popover, PopoverAnchor, PopoverContent } from './popover';
+import { Separator } from './separator';
 
 export interface MediaPopoverProps {
   pluginKey?: string;
@@ -27,9 +27,12 @@ export interface MediaPopoverProps {
 export function MediaPopover({ pluginKey, children }: MediaPopoverProps) {
   const readOnly = useReadOnly();
   const selected = useSelected();
-  const editor = usePlateEditorState();
 
-  const isOpen = !readOnly && selected && isCollapsed(editor.selection);
+  const selectionCollapsed = useEditorSelector(
+    (editor) => !isSelectionExpanded(editor),
+    []
+  );
+  const isOpen = !readOnly && selected && selectionCollapsed;
   const isEditing = useFloatingMediaSelectors().isEditing();
 
   useEffect(() => {
@@ -45,10 +48,13 @@ export function MediaPopover({ pluginKey, children }: MediaPopoverProps) {
   if (readOnly) return <>{children}</>;
 
   return (
-    <Popover open={isOpen}>
+    <Popover open={isOpen} modal={false}>
       <PopoverAnchor>{children}</PopoverAnchor>
 
-      <PopoverContent className="w-auto p-1">
+      <PopoverContent
+        className="w-auto p-1"
+        onOpenAutoFocus={(e) => e.preventDefault()}
+      >
         {isEditing ? (
           <div className="flex w-[330px] flex-col">
             <div className="flex items-center">

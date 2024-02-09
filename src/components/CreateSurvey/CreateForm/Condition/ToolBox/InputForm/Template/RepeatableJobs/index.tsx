@@ -34,7 +34,7 @@ export default function RepeatableJobs({ name, onlyUpload, cta }: Props): JSX.El
                           <Textarea
                             id={`${name}.${index}.name`}
                             label="Nom"
-                            placeholder="Renseigner le nom"
+                            placeholder="John Do"
                             rows={Enum_Question_Rows.Small}
                             isRequired
                             isCollapsed={false}
@@ -44,7 +44,7 @@ export default function RepeatableJobs({ name, onlyUpload, cta }: Props): JSX.El
                           <Textarea
                             id={`${name}.${index}.job`}
                             label="Job"
-                            placeholder="Renseigner l'emploi"
+                            placeholder="Médecin, chercheur, etc."
                             rows={Enum_Question_Rows.Small}
                             isRequired
                             isCollapsed={false}

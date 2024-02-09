@@ -248,7 +248,7 @@ const NavigateBtn = ({
       variant="roundedBlue"
       minW="150px"
     >
-      {previous ? "Précédant" : "Suivant"}
+      {previous ? "Précédent" : "Suivant"}
     </Button>
   );
 };

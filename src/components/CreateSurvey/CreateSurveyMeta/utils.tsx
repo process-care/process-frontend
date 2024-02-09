@@ -36,7 +36,7 @@ const KeyWords = () => {
       appearance="big"
       id="keywords"
       placeholder="Mots clés publics"
-      label="Renseigner les mots clés"
+      label="Mots clés"
       helpText="Ces mots clés serviront à référencer votre projet sur la page Process, ils sont publiques."
       answers={t.keywords}
       defaultValue={t.keywords[0].value}
@@ -50,7 +50,7 @@ const Language = () => {
       appearance="big"
       id="language"
       placeholder="Langue du projet"
-      label="Renseigner la langue du projet"
+      label="Langue du projet"
       answers={t.language}
       defaultValue={t.language[0].value}
       helpText="Langue affichée dans votre projet"
@@ -64,12 +64,12 @@ export const renderInputs = (step: number): React.ReactElement => {
   switch (step) {
     case 1:
       return (
-        <Input appearance="big" name="title" placeholder="Titre du projet" label="Renseigner le titre du projet" />
+        <Input appearance="big" name="title" placeholder="Titre du projet" label="Titre du projet" />
       )
 
     case 2:
       return (
-        <Input appearance="big" name="slug" placeholder="Url du projet" label="Valider ou modifier l'url du projet" />
+        <Input appearance="big" name="slug" placeholder="Url du projet" label="Url du projet" />
       )
 
     case 3:
@@ -79,7 +79,7 @@ export const renderInputs = (step: number): React.ReactElement => {
           id="description"
           rows={Enum_Question_Rows.Medium}
           placeholder="Description du projet"
-          label="Renseigner la description du projet"
+          label="Description du projet"
           helpText="Description publique, affichée aux utilisateurs de PROCESS. 500 signes max"
         />
       )
@@ -92,7 +92,7 @@ export const renderInputs = (step: number): React.ReactElement => {
 
     case 6:
       return (
-        <Input appearance="big" name="email" placeholder="Email de contact" label="Renseigner l'email de contact" />
+        <Input appearance="big" name="email" placeholder="Email de contact" label="Email de contact" />
       )
 
     default:

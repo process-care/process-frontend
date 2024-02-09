@@ -5,7 +5,6 @@ import Link from "next/link.js"
 
 import { API_URL_ROOT } from "@/constants/api.ts"
 import { useNavigator } from "@/components/CreateSurvey/hooks/index.tsx"
-// import { Chart } from "../Chart";
 import { renderStatus } from "@/utils/application/renderStatus.tsx"
 import { actions, selectors } from "@/redux/slices/scientistData.js"
 import { useAppSelector } from "@/redux/hooks/index.js"

@@ -9,12 +9,13 @@ import {
   isCollapsed,
   TElement,
   toggleNodeType,
-  usePlateEditorState,
+  useEditorRef,
+  useEditorSelector,
 } from '@udecode/plate-common';
 import { ELEMENT_H1, ELEMENT_H2, ELEMENT_H3 } from '@udecode/plate-heading';
 import { ELEMENT_PARAGRAPH } from '@udecode/plate-paragraph';
 
-import { Icons } from '@/components/icons.tsx'
+import { Icons } from '@/components/icons';
 
 import {
   DropdownMenu,
@@ -24,38 +25,38 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
   useOpenState,
-} from './dropdown-menu.tsx'
-import { ToolbarButton } from './toolbar.tsx'
+} from './dropdown-menu';
+import { ToolbarButton } from './toolbar';
 
 const items = [
   {
     value: ELEMENT_PARAGRAPH,
-    label: 'Paragraph',
-    description: 'Paragraph',
+    label: 'Paragraphe',
+    description: 'Paragraphe',
     icon: Icons.paragraph,
   },
   {
     value: ELEMENT_H1,
-    label: 'Heading 1',
-    description: 'Heading 1',
+    label: 'Titre 1',
+    description: 'HeadTitreing 1',
     icon: Icons.h1,
   },
   {
     value: ELEMENT_H2,
-    label: 'Heading 2',
-    description: 'Heading 2',
+    label: 'Titre 2',
+    description: 'Titre 2',
     icon: Icons.h2,
   },
   {
     value: ELEMENT_H3,
-    label: 'Heading 3',
-    description: 'Heading 3',
+    label: 'Titre 3',
+    description: 'Titre 3',
     icon: Icons.h3,
   },
   {
     value: ELEMENT_BLOCKQUOTE,
-    label: 'Quote',
-    description: 'Quote (⌘+⇧+.)',
+    label: 'Citation',
+    description: 'Citation (⌘+⇧+.)',
     icon: Icons.blockquote,
   },
   // {
@@ -75,33 +76,38 @@ const items = [
 const defaultItem = items.find((item) => item.value === ELEMENT_PARAGRAPH)!;
 
 export function TurnIntoDropdownMenu(props: DropdownMenuProps) {
-  const editor = usePlateEditorState()
-  const openState = useOpenState()
+  const value: string = useEditorSelector((editor) => {
+    if (isCollapsed(editor.selection)) {
+      const entry = findNode<TElement>(editor, {
+        match: (n) => isBlock(editor, n),
+      });
 
-  let value: string = ELEMENT_PARAGRAPH;
-  if (isCollapsed(editor?.selection)) {
-    const entry = findNode<TElement>(editor!, {
-      match: (n) => isBlock(editor, n),
-    });
-    if (entry) {
-      value =
-        items.find((item) => item.value === entry[0].type)?.value ??
-        ELEMENT_PARAGRAPH;
+      if (entry) {
+        return (
+          items.find((item) => item.value === entry[0].type)?.value ??
+          ELEMENT_PARAGRAPH
+        );
+      }
     }
-  }
 
-  const selectedItem = items.find((item) => item.value === value) ?? defaultItem
-  const { icon: SelectedItemIcon, label: selectedItemLabel } = selectedItem
+    return ELEMENT_PARAGRAPH;
+  }, []);
+
+  const editor = useEditorRef();
+  const openState = useOpenState();
+
+  const selectedItem =
+    items.find((item) => item.value === value) ?? defaultItem;
+  const { icon: SelectedItemIcon, label: selectedItemLabel } = selectedItem;
 
   return (
-    <DropdownMenu modal={true} {...openState} {...props}>
-      <DropdownMenuTrigger asChild type="button">
+    <DropdownMenu modal={false} {...openState} {...props}>
+      <DropdownMenuTrigger asChild>
         <ToolbarButton
           pressed={openState.open}
           tooltip="Turn into"
           isDropdown
           className="lg:min-w-[130px]"
-          type="button"
         >
           <SelectedItemIcon className="h-5 w-5 lg:hidden" />
           <span className="max-lg:hidden">{selectedItemLabel}</span>
@@ -109,7 +115,7 @@ export function TurnIntoDropdownMenu(props: DropdownMenuProps) {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="start" className="z-[2000] min-w-0">
-        <DropdownMenuLabel>Turn into</DropdownMenuLabel>
+        <DropdownMenuLabel>Transformer en</DropdownMenuLabel>
 
         <DropdownMenuRadioGroup
           className="flex flex-col gap-0.5"
@@ -129,7 +135,7 @@ export function TurnIntoDropdownMenu(props: DropdownMenuProps) {
             // }
 
             collapseSelection(editor);
-            // focusEditor(editor);
+            focusEditor(editor);
           }}
         >
           {items.map(({ value: itemValue, label, icon: Icon }) => (

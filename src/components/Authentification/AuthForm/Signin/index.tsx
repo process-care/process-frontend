@@ -81,7 +81,7 @@ export default function SigninForm({ cancel }: Props): JSX.Element {
                 <Input
                   isCollapsed={false}
                   label="E-mail"
-                  placeholder="Renseigner votre email"
+                  placeholder="Votre e-mail"
                   name="username"
                   isRequired="true"
                   autoComplete="email"
@@ -89,7 +89,7 @@ export default function SigninForm({ cancel }: Props): JSX.Element {
                 <Input
                   isCollapsed={false}
                   label="Mot de passe"
-                  placeholder="Renseigner votre mot de passe"
+                  placeholder="Votre mot de passe"
                   name="password"
                   type="password"
                   isRequired="true"
@@ -99,7 +99,7 @@ export default function SigninForm({ cancel }: Props): JSX.Element {
                 <Input
                   isCollapsed={false}
                   label="Confirmation du mot de passe"
-                  placeholder="Confimer votre  mot de passe"
+                  placeholder="Confimez votre mot de passe"
                   name="confirmPassword"
                   type="password"
                   isRequired="true"

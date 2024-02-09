@@ -4,6 +4,7 @@ import { Box } from "@chakra-ui/react"
 import { use100vh } from "react-div-100vh"
 
 import NewPasswordForm from "@/components/Authentification/NewPassword/index.tsx"
+import { Suspense } from "react"
 
 export default function NewPassword(): JSX.Element {
   const height = use100vh()
@@ -16,7 +17,9 @@ export default function NewPassword(): JSX.Element {
         justifyContent="center"
         className="background__grid"
       >
-        <NewPasswordForm />
+        <Suspense>
+          <NewPasswordForm />
+        </Suspense>
       </Box>
   )
 }

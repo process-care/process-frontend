@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState } from "react"
 import { useField } from "formik"
+import { QuestionRedux } from "@/redux/slices/types"
 
 // ---- TYPES & STATICS
 
@@ -16,6 +17,11 @@ export interface Modality {
 export interface FactorState {
   variations: number[][][]
   isMounted: boolean
+}
+
+export type AssociatedAnswer = {
+  value: any
+  associatedInput: QuestionRedux
 }
 
 // ---- HOOKS
@@ -46,9 +52,17 @@ export const useAssociatedLogic = (
     return getMaxVariation(totalVariations, nbCards)
   }, [nbCards, modalitiesPerFactor])
 
+  // TODO: Having a function to generate a new variation is useless.
+  // We should generate all the variations at once and then just pick them from the stack.
   // Callback to add a new variation to the stack
-  const generate = useCallback(() => { 
-    if (maxVariations === state.variations.length) return
+  const generate = useCallback(() => {
+    const nbVariations = state.variations.length
+
+    // Don't generate a new variation if there is already enough
+    if (nbVariations >= maxLoop) return
+    // Can't generate more variations than what is possible
+    if (maxVariations === nbVariations) return
+    // Can't generate variations if there is no modalities available
     if (!modalitiesPerFactor) return
 
     // Generate a random and unique variation
@@ -59,49 +73,61 @@ export const useAssociatedLogic = (
       variations: [...state.variations, variation],
       isMounted: true,
     })
-  }, [nbCards, maxVariations, modalitiesPerFactor, state.variations])
+  }, [state.variations, maxLoop, maxVariations, modalitiesPerFactor, nbCards])
 
   // Callback to save the new value in the formik field and generate a new variation
-  const handleClick = useCallback((cardIdx: number, values?: any) => {
-    // Record new click
-    setStep(prev => prev + 1)
-
+  const handleValidate = useCallback((cardIdx: number, associatedAnswer?: AssociatedAnswer) => {
     // Sanitize the new payload
-    const lastVariation = state.variations[state.variations.length - 1]
-    const payload = formatPayload(values, cardIdx, nbCards, lastVariation, filteredFactors)
+    const currentVariation = state.variations[step]
+    const payload = formatPayload(
+      cardIdx,
+      nbCards,
+      currentVariation,
+      filteredFactors,
+      associatedAnswer,
+    )
 
     // Save the new value in the formik field
     if (!field.value) {
       helpers.setValue([payload])
+    // If we already have values, save the payload to the corresponding step
     } else {
-      helpers.setValue([...field.value, payload])
+      const newValues = [...field.value]
+      newValues[step] = payload
+      helpers.setValue(newValues)
     }
 
     // Regenerate a new variation on the stack
     generate()
-  }, [field.value, filteredFactors, generate, helpers, state.variations, nbCards])
+    // Progress to next step (only if we are not at the last step already)
+    setStep(prev => {
+      return (prev + 1 === maxLoop) ? prev : prev + 1
+    })
+  }, [state.variations, step, nbCards, filteredFactors, field.value, generate, helpers, maxLoop])
 
-  // console.group("Algo vignette")
-  // console.log("max variations", maxVariations)
-  // console.log("max loop", maxLoop)
-  // console.log("step number", step)
-  // console.groupEnd()
+  // Callback to see a specific step
+  const navigateToStep = useCallback((step: number) => {
+    setStep(step)
+  }, [])
 
   // TODO: refactor this
-
+  // Flags
   const isFinished =
     step === Math.min(maxVariations, maxLoop)
     || field.value?.length === Math.min(maxLoop, maxVariations)
+  const nbAnswers = field?.value?.length ?? 0
 
   return {
     generate,
-    handleClick,
-    setState,
+    navigateToStep,
+    handleValidate,
     state,
     filteredFactors,
     step,
+    nbAnswers,
     maxVariations,
     isFinished,
+    answers: field.value,
   }
 }
 
@@ -157,15 +183,15 @@ function generateVariation(nbCards: number, modalitiesPerFactor: number[]): numb
   return [cardA, cardB]
 }
 
-function formatPayload(values: any, cardIdx: number, TOTAL_CARDS: number, lastVariation: number[][], factors: Factor[]) {
+function formatPayload(cardIdx: number, TOTAL_CARDS: number, lastVariation: number[][], factors: Factor[], associatedAnswer?: AssociatedAnswer) {
   const format = (el: number) => {
     return factors?.map((f, idx) => (
       { [f.title]: f.modalities[lastVariation[el][idx]].description }
     ))
   }
 
-  // If values !== undefined, it means that the we are on AssociatedClassification, we need choice but we dont need associated_input
-  if (!values) {
+  // If associatedAnswer !== undefined, it means that the we are on AssociatedClassification, we need choice but we dont need associated_input
+  if (!associatedAnswer) {
     return {
       variations: [...Array(TOTAL_CARDS)].map((_, idx) => format(idx)),
       choice: cardIdx,
@@ -173,11 +199,12 @@ function formatPayload(values: any, cardIdx: number, TOTAL_CARDS: number, lastVa
   }
 
   // Else, that means we are on MonoThumbnail, we dont need choice but we need associated_input
-  const isRadiobox = Boolean(values.attributes.radio)
+  // const isRadiobox = Boolean(associatedAnswer.associatedInput.attributes.radio)
   return {
     variations: [...Array(TOTAL_CARDS)].map((_, idx) => format(idx))[0],
-    associated_input: values,
-    value: isRadiobox ? values.attributes.radio : values[values.attributes.type],
+    associated_input: associatedAnswer.associatedInput,
+    value: associatedAnswer.value
+    // value: isRadiobox ? values.attributes.radio : values[values.attributes.type],
   }
 }
 

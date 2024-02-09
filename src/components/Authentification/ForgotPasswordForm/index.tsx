@@ -80,8 +80,8 @@ export default function ForgotPasswordForm(): JSX.Element {
                   </Text>
                   <Input
                     isCollapsed={false}
-                    label="Renseigner votre email"
-                    placeholder="Email"
+                    label="Votre email"
+                    placeholder="john@do.com"
                     name="email"
                     isRequired
                     autoComplete="email"

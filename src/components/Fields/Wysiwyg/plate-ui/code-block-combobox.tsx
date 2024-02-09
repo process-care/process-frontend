@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { cn } from '@udecode/cn';
 import {
   CODE_BLOCK_LANGUAGES,
   CODE_BLOCK_LANGUAGES_POPULAR,
@@ -8,18 +9,17 @@ import {
   useCodeBlockComboboxState,
 } from '@udecode/plate-code-block';
 
-import { cn } from '@/utils/ui.ts'
-import { Icons } from '@/components/icons.tsx'
+import { Icons } from '@/components/icons';
 
-import { Button } from './button.tsx'
+import { Button } from './button';
 import {
   Command,
   CommandEmpty,
   CommandInput,
   CommandItem,
   CommandList,
-} from './command.tsx'
-import { Popover, PopoverContent, PopoverTrigger } from './popover.tsx'
+} from './command';
+import { Popover, PopoverContent, PopoverTrigger } from './popover';
 
 const languages: { value: string; label: string }[] = [
   { value: 'text', label: 'Plain Text' },

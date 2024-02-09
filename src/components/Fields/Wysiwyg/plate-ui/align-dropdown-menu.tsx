@@ -7,7 +7,7 @@ import {
   useAlignDropdownMenuState,
 } from '@udecode/plate-alignment';
 
-import { Icons, iconVariants } from '@/components/icons.tsx'
+import { Icons, iconVariants } from '@/components/icons';
 
 import {
   DropdownMenu,
@@ -16,8 +16,8 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
   useOpenState,
-} from './dropdown-menu.tsx'
-import { ToolbarButton } from './toolbar.tsx'
+} from './dropdown-menu';
+import { ToolbarButton } from './toolbar';
 
 const items = [
   {
@@ -38,12 +38,7 @@ const items = [
   },
 ];
 
-export interface AlignDropdownMenuProps extends DropdownMenuProps {}
-
-export function AlignDropdownMenu({
-  children,
-  ...props
-}: AlignDropdownMenuProps) {
+export function AlignDropdownMenu({ children, ...props }: DropdownMenuProps) {
   const state = useAlignDropdownMenuState();
   const { radioGroupProps } = useAlignDropdownMenu(state);
 
@@ -52,10 +47,8 @@ export function AlignDropdownMenu({
     items.find((item) => item.value === radioGroupProps.value)?.icon ??
     Icons.alignLeft;
 
-  // console.log('AlignDropdownMenu', props, state, radioGroupProps, children)
-
   return (
-    <DropdownMenu modal={true} {...openState} {...props}>
+    <DropdownMenu modal={false} {...openState} {...props}>
       <DropdownMenuTrigger asChild>
         <ToolbarButton pressed={openState.open} tooltip="Align" isDropdown>
           <IconValue />

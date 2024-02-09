@@ -14,7 +14,7 @@ export default function CommonFields({ noPlacehoder = false }: Props): JSX.Eleme
           name="placeholder"
           type="text"
           label="Placeholder"
-          placeholder="le placeholder s'affiche ici."
+          placeholder="Le placeholder s'affiche ici."
           isAccordion
         />
       )}
@@ -22,7 +22,7 @@ export default function CommonFields({ noPlacehoder = false }: Props): JSX.Eleme
       <Input
         isCollapsed={false}
         label="Champ d'aide"
-        placeholder="Renseigner le texte d'aide de votre question.Il s'affichera sous le champ. "
+        placeholder="Texte d'aide de votre question. Il s'affichera sous le champ."
         name="help_text"
         isAccordion
       />

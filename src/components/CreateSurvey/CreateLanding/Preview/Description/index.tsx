@@ -4,7 +4,7 @@ import Image from "next/image.js"
 import { t } from "@/static/createLanding.ts"
 import { LandingRedux } from "@/redux/slices/types/index.js"
 import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
-import { useWysiwygSerializer } from "@/components/Fields/Wysiwyg/Wysiwyg"
+import WysiwygReader from "@/components/Fields/Wysiwyg/Reader"
 
 interface Props {
   inactiveSubmit: boolean;
@@ -13,10 +13,7 @@ interface Props {
 }
 
 export default function Description({ inactiveSubmit, data, onParticipate }: Props): JSX.Element {
-  const attributes = data?.attributes
   const { isTablet } = useMediaQueries()
-
-  const html = useWysiwygSerializer(attributes?.presentation)
 
   return (
     <Flex className="w-full h-full flex-col">
@@ -32,21 +29,19 @@ export default function Description({ inactiveSubmit, data, onParticipate }: Pro
           }
         </Box>
 
-        {attributes?.partners_logos?.map((logo: any, idx: number) => {
+        {data?.attributes?.partners_logos?.map((logo: any, idx: number) => {
           return (
             <Box key={idx}>
               <Image alt="Logo" src={logo?.image} width={120} height={120} />
             </Box>
-          );
+          )
         })}
       </Flex>
 
-      <div
-        className="font-light text-sm max-h-[350px] overflow-auto text-left"
-        dangerouslySetInnerHTML={{
-          __html: html ?? "",
-        }}
-      ></div>
+      <WysiwygReader
+        content={data?.attributes?.presentation}
+        className="max-h-[350px]"
+      />
 
       <Flex mt={10} justifyContent="space-between" flexDirection={isTablet ? "column" : "row"}>
         <Button
@@ -55,7 +50,7 @@ export default function Description({ inactiveSubmit, data, onParticipate }: Pro
           margin="0 auto"
           left="0"
           right="0"
-          backgroundColor={attributes?.color_theme?.button || "brand.blue"}
+          backgroundColor={data?.attributes?.color_theme?.button || "brand.blue"}
           onClick={onParticipate}
           disabled={inactiveSubmit}
         >

@@ -18,7 +18,7 @@ import { useAppSelector } from "@/redux/hooks/index.js"
 import { selectors } from "@/redux/slices/formBuilder/index.ts"
 import { Enum_Question_Type } from "@/api/graphql/types.generated.ts"
 import { QuestionWithSamples } from "@/redux/slices/participation/status.ts"
-import { useWysiwygSerializer } from "@/components/Fields/Wysiwyg/Wysiwyg"
+import WysiwygReader from "@/components/Fields/Wysiwyg/Reader"
 
 interface Options {
   value: string;
@@ -48,9 +48,6 @@ export default function RenderInput({ input }: Props): JSX.Element {
       return arr as Options[];
     } else return [];
   };
-
-// Serialize the wysiwyg raw value if there is one
-const infozoneHtml = useWysiwygSerializer(input?.attributes?.infozone)
 
   switch (attributes?.type) {
     case Enum_Question_Type.NumberInput:
@@ -149,14 +146,10 @@ const infozoneHtml = useWysiwygSerializer(input?.attributes?.infozone)
 
     case Enum_Question_Type.Wysiwyg:
       return (
-        <Box
-          id={input.id || "wysiwyg"}
-          className="text-left text-sm"
-          dangerouslySetInnerHTML={{
-            __html: infozoneHtml ?? '',
-          }}
+        <WysiwygReader
+          content={input?.attributes?.infozone}
         />
-      );
+      )
 
     case Enum_Question_Type.FreeClassification:
       return (

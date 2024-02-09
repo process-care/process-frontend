@@ -6,7 +6,7 @@ import { initialValues } from "./utils/initialValues.ts"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
 import { actions, selectors } from "@/redux/slices/landing-editor.ts"
 import Footer from "@/components/CreateSurvey/CreateForm/Condition/ToolBox/InputForm/Template/Footer/index.tsx"
-import Wysiwyg from "@/components/Fields/Wysiwyg/Wysiwyg.tsx"
+import Wysiwyg from "@/components/Fields/Wysiwyg/index.tsx"
 import { LandingRedux } from "@/redux/slices/types/index.js"
 
 export default function AboutForm(): JSX.Element {

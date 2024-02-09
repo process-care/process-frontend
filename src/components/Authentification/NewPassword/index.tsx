@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { Box, Button, Flex, Text } from "@chakra-ui/react"
 import { Form, Formik } from "formik"
-import { useRouter, useSearchParams } from "next/navigation.js"
+import { useSearchParams } from "next/navigation.js"
 import Link from "next/link.js"
 
 import { Input } from "@/components/Fields/index.ts"
@@ -16,7 +16,6 @@ export default function NewPasswordForm(): JSX.Element {
   const [isSuccess, setSuccess] = useState<boolean>(false);
   const [errors, setError] = useState<any>([]);
 
-  const router = useRouter()
   const searchParams = useSearchParams()
   const code = searchParams.get('code')
 

@@ -3,13 +3,14 @@
   "style": "default",
   "rsc": true,
   "tailwind": {
-    "config": "tailwind.config.js",
+    "config": "tailwind.config.cjs",
     "css": "src/app/globals.css",
     "baseColor": "slate",
-    "cssVariables": true
+    "cssVariables": true,
+    "prefix": ""
   },
   "aliases": {
     "components": "@/components/Shadcn",
-    "utils": "@/utils/ui"
+    "plate-ui": "@/components/Fields/Wysiwyg/plate-ui"
   }
 }

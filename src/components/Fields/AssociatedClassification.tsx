@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react"
-import { Box, Flex, FormLabel, Spinner, Text } from "@chakra-ui/react"
+import { Box, Button, Flex, FormLabel, Spinner, Text } from "@chakra-ui/react"
 import { v4 as uuidv4 } from "uuid"
 import Image from "next/image.js"
 
@@ -42,16 +42,21 @@ export default function AssociatedClassification({
 }: Props): JSX.Element {
   const { isTablet } = useMediaQueries()
   const drawerIsOpen = useAppSelector(selectors.drawerIsOpen)
-
   const nbMaxLoops = maxLoop ?? DEFAULT_MAX_LOOP
 
-  const { generate, handleClick, state, filteredFactors, step, maxVariations, isFinished } = useAssociatedLogic(
-    factors,
-    name,
-    nbMaxLoops,
-    SHOWN_CARD
-  )
+  const {
+    generate,
+    navigateToStep,
+    handleValidate,
+    state,
+    filteredFactors,
+    step,
+    maxVariations,
+    nbAnswers,
+    answers,
+  } = useAssociatedLogic(factors, name, nbMaxLoops, SHOWN_CARD)
 
+  // Generate a first combination when the component is mounted
   useEffect(() => {
     // Generate only if drawer is close (mean no adding new factors /modalities)
     if (drawerIsOpen) return
@@ -60,14 +65,14 @@ export default function AssociatedClassification({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [drawerIsOpen])
 
-  if (isFinished) {
-    return <Text variant="smallTitle">Nous avons bien pris en compte votre sélection !</Text>
-  }
-  
+  // Select card mechanism
+  const { selected, handleSelect } = useSelector(step, handleValidate, answers)
+
   return (
     <Box>
       <FormLabel>{label}</FormLabel>
 
+      {/* Loop numbering */}
       { (maxVariations >= 1) && (
         <Text mt="15px" fontSize="xs">
           { `${ step + 1 } / ${ Math.min(nbMaxLoops, maxVariations) }` }
@@ -76,60 +81,95 @@ export default function AssociatedClassification({
 
       { !isCollapsed && (
         <Flex flexDir="column">
-          <Box>
-            <Box display="flex" justifyContent="space-around" flexDirection={isTablet ? "column" : "row"} w="100%">
-              {[...Array(SHOWN_CARD)].map((_, i) => (
-                <Card
-                  key={i}
-                  index={i}
-                  handleClick={handleClick}
-                  filteredFactors={filteredFactors}
-                  state={state}
-                />
-              ))}
-            </Box>
-
-            <Text mt="15px" fontSize="xs">
-              {helpText}
-            </Text>
+          {/* Double combination displayed to the user */}
+          <Box display="flex" justifyContent="space-around" flexDirection={isTablet ? "column" : "row"} w="100%">
+            {[...Array(SHOWN_CARD)].map((_, i) => (
+              <Card
+                key={i}
+                index={i}
+                handleSelect={handleSelect}
+                filteredFactors={filteredFactors}
+                state={state}
+                step={step}
+                selected={selected}
+              />
+            ))}
           </Box>
+
+          {/* Help text to guide the user */}
+          <Text mt="15px" fontSize="xs">
+            {helpText}
+          </Text>
+
+          {/* Buttons */}
+          <Actions
+            step={step}
+            nbAnswers={nbAnswers}
+            nbMaxLoops={nbMaxLoops}
+            navigateToStep={navigateToStep}
+          />
         </Flex>
       )}
     </Box>
   )
 }
 
+// ---- HOOKS
+
+function useSelector(step: number, handleValidate: (cardIdx: number) => void, answers: any) {
+  const [selected, setSelected] = useState<number | null>(null)
+
+  const handleSelect = useCallback((index: number) => {
+    setSelected(index)
+    // Leave a moment to transition smoothly
+    setTimeout(() => handleValidate(index), 400)
+  }, [handleValidate])
+
+  // Update what's selected when the step changes
+  useEffect(() => {
+    setSelected(answers?.[step]?.choice)
+  // We update the selected value ONLY when the step changes
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step])
+
+  return {
+    selected,
+    handleSelect,
+  }
+}
+
 // ---- SUB COMPONENTS
+
+// -- Card
 
 interface CardProps {
   index: number
-  handleClick: (cardIdx: number, values?: any) => void
+  selected: number | null
+  handleSelect: (cardIdx: number) => void
   filteredFactors?: Factor[]
   state: FactorState
+  step: number
 }
 
-function Card({ index, handleClick, filteredFactors, state }: CardProps) {
+function Card({ index, selected, handleSelect, filteredFactors, state, step }: CardProps) {
   const { isTablet } = useMediaQueries()
-  const [selected, setSelected] = useState<number | null>(null)
 
-  const handleSelect = useCallback(() => {
-    setSelected(index)
-    setTimeout(() => {
-      handleClick(index)
-      setSelected(null)
-    }, 500)
-  }, [handleClick, index])
+  // Memoized select function
+  const onSelect = useCallback(() => {
+    handleSelect(index)
+  }, [handleSelect, index])
 
-  if (filteredFactors === undefined) {
-    return <></>
-  }
+  // If there is no factors, we don't display anything
+  if (filteredFactors === undefined) return <></>
+
+  // Flags
+  const isSelected = selected === index
 
   return (
     <Box
       className="flex flex-col"
-      border={`${selected === index ? "1px solid blue" : "1px solid #E5E5E5"} `}
-      backgroundColor={`${selected === index ? " blue" : ""} `}
-      color={`${selected === index ? " white" : "black"} `}
+      border={`${ isSelected ? "1px solid blue" : "1px solid #E5E5E5" } `}
+      color={`${ isSelected ? " white" : "black" } `}
       borderRadius="5px"
       mt="30px"
       w={isTablet ? "100%" : "40%"}
@@ -140,15 +180,20 @@ function Card({ index, handleClick, filteredFactors, state }: CardProps) {
         border: "1px solid #9f9f9f",
         cursor: "pointer",
       }}
-      onClick={handleSelect}
+      onClick={onSelect}
     >
       {filteredFactors.map((factor, idx) => {
-        const random = state.variations.length > 0 ? state.variations[state.variations.length - 1][index][idx] : 0
+        // Get the index of the modality to display
+        // -> For the current step, for the current card (index), for the current factor (idx)
+        const idxModa = (step >= 0) ? state.variations?.[step]?.[index]?.[idx] : 0
+        const bgColor = isSelected
+          ? idx % 2 == 0 ? "rgba(0, 0, 255, 0.6)" : "rgba(0, 0, 255, 1)"
+          : idx % 2 == 0 ? "transparent" : "gray.100"
 
         return (
           <Box
             key={uuidv4()}
-            backgroundColor={selected === index ? "blue" : idx % 2 == 0 ? "transparent" : "gray.100"}
+            backgroundColor={bgColor}
             className="p-5 grow flex flex-col"
           >
             {filteredFactors.length > 1 && (
@@ -161,22 +206,66 @@ function Card({ index, handleClick, filteredFactors, state }: CardProps) {
               <Spinner size="xs" bottom="5px" pos="relative" />
             ) : (
               <Box className="relative">
-                {factor?.modalities[random]?.file && (
+                {factor?.modalities[idxModa]?.file && (
                   <Image
-                    src={factor?.modalities[random]?.file}
-                    alt={factor?.modalities[random]?.description}
+                    src={factor?.modalities[idxModa]?.file}
+                    alt={factor?.modalities[idxModa]?.description}
                     width={180}
                     height={180}
                     sizes="20vw"
                     className="object-contain my-3 mx-auto"
                   />
                 )}
-                <Text variant="xs">{factor?.modalities[random]?.description}</Text>
+                <Text variant="xs">{factor?.modalities[idxModa]?.description}</Text>
               </Box>
             )}
           </Box>
         )
       })}
+    </Box>
+  )
+}
+
+// -- Actions
+
+interface ActionsProps {
+  step: number
+  nbAnswers: number
+  nbMaxLoops: number
+  navigateToStep: (step: number) => void
+}
+
+function Actions({
+  step,
+  nbAnswers,
+  nbMaxLoops,
+  navigateToStep,
+}: ActionsProps) {
+  // Flags
+  const canForward = nbAnswers > step
+
+  return (
+    <Box display="flex" justifyContent="space-between" w="100%" mt="20px" px="5%">
+      { step > 0 && (
+        <Button type="button" variant="rounded" w={125} onClick={() => navigateToStep(step - 1)}>
+          Précédent
+        </Button>
+      )}
+      
+      {/* This div is here to force the buttons on the sides even when one of them is hidden */}
+      <div className="flex-grow"></div>
+
+      {step < (nbMaxLoops - 1) && (
+        <Button 
+          type="button"
+          variant="rounded"
+          w={125}
+          onClick={() => navigateToStep(step + 1)}
+          isDisabled={!canForward}
+        >
+          Suivant
+        </Button>
+      )}
     </Box>
   )
 }

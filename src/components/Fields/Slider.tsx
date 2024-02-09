@@ -66,6 +66,15 @@ export default function CustomSlider({
     return cleanValue(min, 0)
   }, [defaultValue, reverse, cleanValue, max, min])
 
+  // Marks to display under the slider
+  const marks = useMemo(() => {
+    const marks: Record<number, number> = {}
+    for (let i = cleanValue(min, 0); i <= cleanValue(max, 10); i += cleanValue(step, 1)) {
+      marks[i] = i
+    }
+    return marks
+  }, [min, max, step, cleanValue])
+
   return (
     <FormControl isRequired={isRequired} id="email" textAlign="left" h={vertical ? "700px" : "fit-content"}>
       <FormLabel>{label}</FormLabel>
@@ -82,25 +91,19 @@ export default function CustomSlider({
               range
               reverse={reverse ?? false}
               dots
-              dotStyle={{ height: 18, width: 18, bottom: -7 }}
+              dotStyle={{ height: 20, width: 20, bottom: -8 }}
               min={cleanValue(min, 0)}
               max={cleanValue(max, 10)}
               step={cleanValue(step, 1)}
+              marks={marks}
               defaultValue={initValue}
               vertical={!!vertical}
               onChange={(value: any) => helpers.setValue(value)}
               value={field.value}
+              styles={{
+                handle: { height: 22, width: 22, top: 0, backgroundColor: "#57c5f7"  },
+              }}
             />
-
-            <Flex w="100%" h="100%" marginTop={1} justifyContent="space-between" flexDirection={vertical ? "column" : "row"}>
-              <Text fontSize="12px" ml="-2px">
-                {reverse || vertical ? max : min}
-              </Text>
-
-              <Text fontSize="12px" mr="-7px">
-                {reverse || vertical ? min : max}
-              </Text>
-            </Flex>
           </Flex>
 
           <FormHelperText fontSize="xs" mt={10}>

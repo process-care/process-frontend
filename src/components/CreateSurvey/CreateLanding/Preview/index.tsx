@@ -17,12 +17,24 @@ import Video from "@/components/Video/index.tsx"
 import Description from "./Description/index.tsx"
 import Legals from "./Legals/index.tsx"
 import Team from "./Team/index.tsx"
-import { useWysiwygSerializer } from "@/components/Fields/Wysiwyg/Wysiwyg.tsx";
+import WysiwygReader from "@/components/Fields/Wysiwyg/Reader.tsx";
 
 // ---- STATICS
 
-const big_placeholder =
-  "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et. <br/> <br/> quo velit tenetur labore at reprehenderit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.<br/> <br/> Blanditiis et, quo velit tenetur labore at reprehenderit.";
+const big_placeholder = [
+  {
+    type: 'p',
+    children: [{ text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.' }],
+  },
+  {
+    type: 'p',
+    children: [{ text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.' }],
+  },
+  {
+    type: 'p',
+    children: [{ text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt voluptate accusantium ab praesentium enim fuga, unde tempore, libero beatae ratione ea perspiciatis! Blanditiis et, quo velit tenetur labore at reprehenderit.' }],
+  }
+]
 
 // ---- TYPES
 
@@ -48,9 +60,6 @@ export default function Preview({ isUserView, data, author, needConsent, surveyI
   const coverSrc = attributes?.cover?.data?.attributes?.url ?? ""
   const coverName = attributes?.cover?.data?.attributes?.name ?? ""
   const isEditingAbout = useAppSelector(selectors.isEditingAbout)
-
-  // Get the about page raw data and serialize it for display
-  const aboutHtml = useWysiwygSerializer(data?.attributes.about)
 
   // Actions
   const { mutateAsync: createParticipation } = useCreateParticipationMutation(client)
@@ -98,13 +107,10 @@ export default function Preview({ isUserView, data, author, needConsent, surveyI
   if (isEditingAbout) {
     return (
       <Box h={height} className="overflow-auto p-10 w-full" >
-        <Text
-          textAlign="left"
-          variant="current"
-          dangerouslySetInnerHTML={{
-            __html: aboutHtml || big_placeholder,
-          }}
-        ></Text>
+        <WysiwygReader
+          className="w-full h-full max-h-[75vh]"
+          content={data?.attributes?.about ?? big_placeholder}
+        />
       </Box>
     );
   }
@@ -172,9 +178,10 @@ export default function Preview({ isUserView, data, author, needConsent, surveyI
             </TabPanel>
 
             <TabPanel>
-              <Box className="font-light text-sm w-full h-full max-h-[75vh] overflow-auto" dangerouslySetInnerHTML={{
-                __html: aboutHtml ?? "",
-              }} />
+              <WysiwygReader
+                className="w-full h-full max-h-[75vh]"
+                content={data?.attributes.about}
+              />
             </TabPanel>
           </TabPanels>
         </Tabs>

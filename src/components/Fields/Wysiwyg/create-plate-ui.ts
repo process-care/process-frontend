@@ -1,3 +1,4 @@
+import { withProps } from '@udecode/cn';
 import {
   MARK_BOLD,
   MARK_CODE,
@@ -17,7 +18,6 @@ import {
   PlateElement,
   PlateLeaf,
   PlatePluginComponent,
-  withProps,
 } from '@udecode/plate-common';
 import {
   ELEMENT_H1,

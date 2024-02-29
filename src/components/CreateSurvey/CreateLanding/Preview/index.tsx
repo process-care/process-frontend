@@ -135,7 +135,7 @@ export default function Preview({ isUserView, data, author, needConsent, surveyI
         textAlign="left"
         px="5%"
       >
-        <Text variant="xxl" fontWeight="bold" color="white" ml="-2px" wordBreak="break-word">
+        <Text variant="xxl" fontWeight="bold" color="white" ml="-2px">
           {attributes?.title}
         </Text>
 

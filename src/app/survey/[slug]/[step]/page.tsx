@@ -68,7 +68,7 @@ export default function Participation({ params }: Props): JSX.Element {
   }
 
   if (!surveyId) {
-    return <p>Une erreur est survenue</p>;
+    return <p>Une erreur est survenue</p>
   }
 
   // CONSENT
@@ -90,8 +90,8 @@ export default function Participation({ params }: Props): JSX.Element {
     />
   }
 
-  return <Box mt="60">Something went wrong...</Box>;
-};
+  return <Box mt="60">Something went wrong...</Box>
+}
 
 // ---- SUB COMPONENTS
 

@@ -13,6 +13,7 @@ import { useConsentHandlers } from "@/utils/participations/consent-handler.js"
 import Loader from "@/components/Spinner/index.tsx"
 import ParticipationConsent from "./_components/ParticipationConsent.tsx"
 import ParticipationForm from "./_components/ParticipationForm.tsx"
+import { useMediaQueries } from "@/utils/hooks/mediaqueries.ts";
 
 // ---- TYPES
 
@@ -45,7 +46,7 @@ export default function Participation({ params }: Props): JSX.Element {
 
   // If there is already a completed participation in local storage
   if (participation?.completed) {
-    return <OverWarning msg={NL.msg.thxParticipation} cta={NL.button.backToWelcome} action={goBackHome} />;
+    return <OverWarning msg={NL.msg.thxParticipation} cta={NL.button.backToWelcome} action={goBackHome} />
   }
 
   // LOADING STATE
@@ -101,15 +102,19 @@ type OverWarningProps = {
 };
 
 const OverWarning = ({ msg, cta, action }: OverWarningProps) => {
+  const { isTablet } = useMediaQueries()
+  
   return (
-    <Center h="100vh">
-      <Flex flexDir="column">
+    <Center h="100vh" display="flex" flexDirection="column" backgroundColor="gray.100">
+      <Box
+        backgroundColor="white"
+        p={isTablet ? "30px 20px" : "50px"}
+        border="1px solid"
+        borderColor="brand.line"
+        w={isTablet ? "90%" : "600px"}
+      >
         <Text variant="title">{msg}</Text>
-
-        <Button mt="40px" variant="roundedBlue" onClick={action}>
-          {cta}
-        </Button>
-      </Flex>
+      </Box>
     </Center>
-  );
-};
+  )
+}

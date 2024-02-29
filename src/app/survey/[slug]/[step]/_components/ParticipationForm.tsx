@@ -264,15 +264,16 @@ function ParticipationSaved() {
         p={isTablet ? "30px 20px" : "50px"}
         border="1px solid"
         borderColor="brand.line"
-        w={isTablet ? "90%" : "480px"}
+        w={isTablet ? "90%" : "600px"}
       >
         <Text variant="xl" mb="20px">
           🎉
         </Text>
-        <Text>Votre participation à bien été enregistrée, merci beaucoup !</Text>
-        <Button mt="50px" variant="roundedBlue" minW="200px" onClick={() => router.push("/")}>
-          Revenir au portail
-        </Button>
+
+        <Text>
+          Votre participation à bien été enregistrée.<br/>
+          Merci beaucoup !
+        </Text>
       </Box>
     </Center>
   )

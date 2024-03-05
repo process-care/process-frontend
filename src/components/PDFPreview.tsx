@@ -6,7 +6,7 @@ import { Document, Page, pdfjs } from "react-pdf"
 import 'react-pdf/dist/Page/TextLayer.css'
 import 'react-pdf/dist/Page/AnnotationLayer.css'
 
-import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
+import { cn } from "@/utils/ui"
 
 // ---- STATICS
 
@@ -21,8 +21,6 @@ interface Props {
 // ---- COMPONENT
 
 export default function PDFPreview({ url }: Props): JSX.Element {
-  const { isTablet } = useMediaQueries()
-
   const [numPages, setNumPages] = useState(1)
   const [pageNumber, setPageNumber] = useState(1)
 
@@ -31,16 +29,15 @@ export default function PDFPreview({ url }: Props): JSX.Element {
   }, [])
 
   return (
-    <div className="flex flex-col h-full justify-center">
-      <Document className="overflow-auto border shadow-sm" file={url} onLoadSuccess={onDocumentLoadSuccess}>
-        <Page pageNumber={pageNumber} height={isTablet ? 400 : 900} />
+    <div className="flex flex-col h-full w-full max-w-fit justify-center self-center min-h-[500px]">
+      <Document className="overflow-auto w-full h-full self-center" file={url} onLoadSuccess={onDocumentLoadSuccess}>
+        <Page pageNumber={pageNumber} className={cn(
+          "m-auto w-fit h-full overflow-auto border shadow-sm",
+        )}/>
       </Document>
  
       <Flex
-        mt="10px"
-        mb="10px"
-        justifyContent="space-between"
-        alignItems="center"
+        className="mt-[10px] w-full justify-between items-center self-center"
       >
         {pageNumber !== 1 ? (
           <Button variant="rounded" backgroundColor="black" p="0" onClick={() => setPageNumber(pageNumber - 1)}>

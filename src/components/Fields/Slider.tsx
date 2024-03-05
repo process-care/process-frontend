@@ -43,10 +43,10 @@ export default function CustomSlider({
   const [field, , helpers] = useField(id);
 
   useEffect(() => {
-    if (defaultValue) {
-      helpers.setValue(defaultValue);
+    if (!field.value) {
+      helpers.setValue(defaultValue ?? min)
     }
-  }, [defaultValue, helpers]);
+  }, [defaultValue, field.value, helpers, min])
 
   const cleanValue = useCallback((value: string | number | undefined | null, defaultValue: number): number => {
     if (value === undefined || value === null || value === "") {

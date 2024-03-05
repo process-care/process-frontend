@@ -7,8 +7,8 @@ import { NL } from "@/static/participation.js"
 import { useSurveyQuery } from "@/api/graphql/queries/survey.gql.generated.js"
 import { client } from "@/api/gql-client.js"
 import { useCreateParticipationMutation } from "@/api/graphql/queries/participation.gql.generated.js"
-import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
 import PDFPreview from "@/components/PDFPreview"
+import { cn } from "@/utils/ui"
 
 // ---- TYPES
 
@@ -38,48 +38,45 @@ export default function ParticipationConsent({ surveyId, onConsent, onRefuse }: 
 
   const attributes = survey?.survey?.data?.attributes
   const url = attributes?.notice_consent?.data?.attributes?.url
-  const { isTablet } = useMediaQueries()
 
   if (isLoading) return <Box mt="20">Please wait...</Box>
 
   return (
     <Box
-      display="flex"
-      justifyContent="space-around"
-      w="100%"
-      overflow="hidden"
-      h="100%"
-      flexDirection={isTablet ? "column" : "row"}
+      className="flex flex-col lg:flex-row justify-around w-full h-full min-h-0 overflow-auto"
     >
-      <Box
-        className="p-2 bg-gray-100"
-        h="100vh"
-        pb={isTablet ? "50px" : "0px"}
-        w={isTablet ? "90%" : "100%"}
-      >
+      <Box className="flex flex-col p-2 bg-gray-100 flex-grow min-h-[500px] h-full w-full">
         { url
           ? <PDFPreview url={url} />
           : <Box w="100%" h="100%" backgroundColor="gray.100" />
         }
       </Box>
 
-      <Container variant="rightPart" className={isTablet ? "background__grid" : ""}>
-        <Center h={isTablet ? "unset" : "100vh"} w={isTablet ? "100%" : "unset"}>
-          <Box display="flex" flexDir="column" w={isTablet ? "90%" : "50%"}>
-            <div className="mb-16">
-              <span className="font-light text-gray-500">Notice pour</span><br />
-              <span className="font-semibold text-2xl">{ attributes?.title }</span>
-            </div>
+      <Container className={cn (
+        'flex shrink-0 justify-center h-auto overflow-hidden',
+        'lg:shrink lg:h-full lg:overflow-auto lg:w-full lg:max-w-[53%] lg:border-l lg:border-[rgb(234, 234, 239)]',
+      )}>
+        <Box className='flex flex-col self-center w-full xl:w-2/3 p-4 lg:p-0'>
+          <div className="w-full">
+            <span className="font-light text-gray-500">Notice pour<span className="lg:hidden"> : </span></span>
+            <br className="max-lg:hidden" />
+            <span className="font-semibold text-2xl">{ attributes?.title }</span>
+          </div>
 
-            <Button className="w-full" mb="20px" variant="rounded" onClick={onAccept} mr="10">
+          <div className={cn(
+              "flex mt-4 flex-row-reverse",
+              "lg:mt-16 lg:flex-col lg:space-y-5",
+            )}
+          >
+            <Button className="w-full" variant="rounded" whiteSpace="normal" onClick={onAccept}>
               {NL.button.consent.accept}
             </Button>
 
             <Button className="w-full" variant="rounded" onClick={onDecline}>
               {NL.button.consent.refuse}
             </Button>
-          </Box>
-        </Center>
+          </div>
+        </Box>
       </Container>
     </Box>
   )

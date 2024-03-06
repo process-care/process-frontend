@@ -205,7 +205,7 @@ function AssociatedQuestion({
   }
 
   useEffect(() => {
-    helpers.setValue(mono?.value?.[step]?.value)
+    helpers.setValue(mono?.value?.[step]?.value ?? associatedInput.attributes.min)
   // We update the associated input value ONLY when the step or the input itself changes
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [associatedInput, step])

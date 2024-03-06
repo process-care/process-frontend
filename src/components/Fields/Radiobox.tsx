@@ -30,7 +30,7 @@ export default function CustomRadioBox({ label, helpText, radios, id, m, p, isRe
                   {radios ? (
                     radios.map(({ value, label }) => {
                       return (
-                        <Radio value={value} id={id} key={value} isRequired={isRequired} m={2}>
+                        <Radio display={'flex'} w={'100%'} value={value} id={id} key={value} isRequired={isRequired} m={2}>
                           {label}
                         </Radio>
                       );

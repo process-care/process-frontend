@@ -25,7 +25,7 @@ export default function CustomCheckbox({ label, helpText, checkbox, isRequired, 
               {checkbox && (
                 checkbox.map(({ value, label }) => {
                   return (
-                    <CheckboxControl key={value} name={id} value={value} isRequired={isRequired} m={2} maxW="100%" overflow="hidden">
+                    <CheckboxControl display={'flex'} w={'100%'} key={value} name={id} value={value} isRequired={isRequired} m={2} overflow="hidden">
                       {label}
                     </CheckboxControl>
                   );

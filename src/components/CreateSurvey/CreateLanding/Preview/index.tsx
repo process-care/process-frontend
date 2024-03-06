@@ -70,7 +70,13 @@ export default function Preview({ isUserView, data, author, needConsent, surveyI
   const hasImage = Boolean(coverSrc)
   const hasMedia = hasVideo || hasImage
   const hasMembers = Boolean(data?.attributes?.members?.length > 0)
-  const hasAboutPage = Boolean(data?.attributes?.about)
+  const hasAboutPage = useMemo(() => {
+    if (!Boolean(data?.attributes?.about)) return false
+    // Check if there is only one paragraph and if it's empty (and reverse the boolean result)
+    if (data?.attributes.about.length === 1) {
+      return !(data?.attributes.about[0]?.children?.length === 1 && data?.attributes.about[0]?.children[0]?.text === "")
+    }
+  }, [data?.attributes?.about])
   const isInactive = !isUserView || loading
 
   // Callback for participate button
@@ -129,7 +135,7 @@ export default function Preview({ isUserView, data, author, needConsent, surveyI
         textAlign="left"
         px="5%"
       >
-        <Text variant="xxl" fontWeight="bold" color="white" ml="-2px" wordBreak="break-word">
+        <Text variant="xxl" fontWeight="bold" color="white" ml="-2px">
           {attributes?.title}
         </Text>
 

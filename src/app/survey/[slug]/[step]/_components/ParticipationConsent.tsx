@@ -58,8 +58,6 @@ export default function ParticipationConsent({ surveyId, onConsent, onRefuse }: 
       )}>
         <Box className='flex flex-col self-center w-full xl:w-2/3 p-4 lg:p-0'>
           <div className="w-full">
-            <span className="font-light text-gray-500">Notice pour<span className="lg:hidden"> : </span></span>
-            <br className="max-lg:hidden" />
             <span className="font-semibold text-2xl">{ attributes?.title }</span>
           </div>
 

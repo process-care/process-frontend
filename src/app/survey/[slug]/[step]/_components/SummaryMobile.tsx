@@ -1,5 +1,5 @@
-import { Box } from "@chakra-ui/react";
-import { Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react"
+import { Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon } from "@chakra-ui/react"
 
 import { PageParticipationRedux } from "@/redux/slices/participation/page.js"
 import PageEntry from "./PageEntry.tsx"
@@ -11,7 +11,7 @@ type Props = {
   navigables: boolean[]
   selectedPage: PageParticipationRedux | undefined
   selectIndex: (index: number) => void
-  color: string
+  color: string,
 }
 
 // ---- COMPONENT
@@ -21,10 +21,10 @@ export default function SummaryMobile({
   navigables,
   selectedPage,
   selectIndex,
-  color
+  color,
 }: Props): JSX.Element {
   return (
-    <Accordion allowToggle>
+    <Accordion allowToggle reduceMotion>
       <AccordionItem
         border="none"
         backgroundColor="transparent"
@@ -38,17 +38,18 @@ export default function SummaryMobile({
             _focus={{ outline: "none", backgroundColor: "transparent" }}
             _hover={{ outline: "none", backgroundColor: "transparent" }}
           >
-            <Box flex="1" textAlign="left" color="black">
+            <Box flex="1" textAlign="left" color="white">
               Pages
             </Box>
-            <AccordionIcon color="black" />
+            <AccordionIcon color="white" />
           </AccordionButton>
         </h2>
+
         <AccordionPanel
           pos="absolute"
           width="100%"
-          backgroundColor="white"
-          top="70px"
+          backgroundColor={ color }
+          top="55px"
           zIndex="10"
           left="0"
           right="0"
@@ -62,7 +63,7 @@ export default function SummaryMobile({
                   key={p.id}
                   index={idx}
                   page={p}
-                  color={color}
+                  color={'white'}
                   isNavigable={navigables[idx]}
                   selectedPageId={selectedPage?.id}
                   selectIndex={selectIndex}
@@ -73,5 +74,5 @@ export default function SummaryMobile({
         </AccordionPanel>
       </AccordionItem>
     </Accordion>
-  );
-};
+  )
+}

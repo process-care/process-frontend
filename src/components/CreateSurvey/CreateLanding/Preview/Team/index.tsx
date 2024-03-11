@@ -16,7 +16,7 @@ export default function Team({ members, color_theme, isUserView }: Props): JSX.E
   }
 
   return (
-    <Box w="100%">
+    <Box w="100%" height="100%" overflow="auto">
       <Grid
         pt="40px"
         templateColumns={["repeat(2, 1fr)", "repeat(2, 1fr)", "repeat(2, 1fr)", "repeat(4, 1fr)"]}

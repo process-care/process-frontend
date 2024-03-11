@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useContext, useEffect, useState } from "react"
-import { Box, Button, Center, Flex, Text } from "@chakra-ui/react"
+import { Box, Button, Center, Flex, Text, useMediaQuery } from "@chakra-ui/react"
 import { useRouter } from "next/navigation.js"
 
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
@@ -34,7 +34,7 @@ export enum DIRECTION {
 // ---- COMPONENT
 
 export default function ParticipationForm({ surveyId, participationId, mode }: Props): JSX.Element {
-  const { isTablet } = useMediaQueries()
+  const [isTablet] = useMediaQuery('(max-width: 1024px)')
   const router = useRouter()
 
   const dispatch = useAppDispatch()
@@ -107,95 +107,85 @@ export default function ParticipationForm({ surveyId, participationId, mode }: P
 
   // Render form
   return (
-    <Box>
-      <Flex
-        direction={isTablet ? "column" : "row"}
-        h={isTablet ? "100%" : "100vh"}
-        backgroundColor={isTablet ? "gray.100" : attributes?.landing?.data?.attributes?.color_theme?.button || "black"}
+    <Flex
+      direction={isTablet ? "column" : "row"}
+      h={"100vh"} w="100%"
+    >
+      <Center
+        display="flex"
+        flexDirection="column"
+        w={isTablet ? "100%" : "33%"}
+        minW="400px"
+        borderRight="1px solid rgb(234, 234, 239)"
+        h={isTablet ? "fit-content" : "100%"}
+        py={isTablet ? "20px" : "0px"}
+        pos="relative"
+        backgroundColor={attributes?.landing?.data?.attributes?.color_theme?.button || "black"}
+        textAlign="left"
+        px="40px"
       >
-        <Center
-          display="flex"
-          flexDirection="column"
-          w={isTablet ? "100%" : "30%"}
-          minW={isTablet ? "100%" : "400px"}
-          h="100%"
-          backgroundColor={
-            isTablet ? "gray.100" : attributes?.landing?.data?.attributes?.color_theme?.button || "black"
-          }
-          textAlign="left"
-        >
-          { mode === "preview" && (
-            <Button variant="roundedBlue" pos="absolute" className="top-5" onClick={handleExit}>
-              Retour à l&apos;édition
-            </Button>
-          )}
+        { mode === "preview" && (
+          <Button variant="roundedBlue" pos="absolute" className="top-5" onClick={handleExit}>
+            Retour à l&apos;édition
+          </Button>
+        )}
 
-          <Box w="100%" pr="50px">
-            <Text
-              variant={isTablet ? "xl" : "xxl"}
-              fontWeight="bold"
-              color={isTablet ? "black" : "white"}
-              p="20px"
-              w="100%"
-              lineHeight="1"
+        <Text className="w-full text-5xl font-bold text-white ml-[-2px]">
+          {attributes?.title}
+        </Text>
+
+        {!isTablet && (
+          <Text variant="smallTitle" mt="30px" width="100%" color="white" maxHeight="300px" wordBreak="break-word">
+            {attributes?.description}
+          </Text>
+        )}
+        
+        <ParticipationMenu
+          author={attributes?.author?.data?.attributes?.email}
+          pages={pages}
+          selectIndex={selectIndex}
+          color={currentColor}
+          selectedPage={selectedPage}
+        />
+
+        {!isTablet && (
+          <Text
+            variant="current"
+            color="white"
+            pos="absolute"
+            left="0"
+            right="0"
+            bottom="20px"
+            width="30%"
+            textAlign="center"
+            opacity="0.7"
+          >
+            <a
+              href={`mailto:${attributes?.author?.data?.attributes?.email}`}
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              {attributes?.title}
-            </Text>
-          </Box>
+              {attributes?.author?.data?.attributes?.email}
+            </a>
+          </Text>
+        )}
+      </Center>
 
-          {!isTablet && (
-            <Text variant="smallTitle" color="white" p="20px">
-              {attributes?.description}
-            </Text>
-          )}
-          
-          <ParticipationMenu
-            author={attributes?.author?.data?.attributes?.email}
-            pages={pages}
-            selectIndex={selectIndex}
-            color={currentColor}
-            selectedPage={selectedPage}
-          />
-
-          {!isTablet && (
-            <Text
-              variant="current"
-              color="white"
-              pos="absolute"
-              left="0"
-              right="0"
-              bottom="20px"
-              width="30%"
-              textAlign="center"
-              opacity="0.7"
-            >
-              <a
-                href={`mailto:${attributes?.author?.data?.attributes?.email}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {attributes?.author?.data?.attributes?.email}
-              </a>
-            </Text>
-          )}
-        </Center>
-
-        <Box flexGrow={1} h="100%" backgroundColor="gray.100" overflow="auto">
-          <Page
-            isFailed={isFailed}
-            isFirstPage={isFirstPage}
-            isLastPage={isLastPage}
-            currentColor={currentColor}
-            previousPage={previousPage}
-            nextPage={nextPage}
-            onFinish={handleSubmit}
-            pageId={selectedPage.id}
-            participationId={participationId}
-            order={order}
-          />
-        </Box>
-      </Flex>
-    </Box>
+      <Box flexGrow={1} h="100%" backgroundColor="gray.100" overflow="auto">
+        <Page
+          isFailed={isFailed}
+          isFirstPage={isFirstPage}
+          isLastPage={isLastPage}
+          currentColor={currentColor}
+          previousPage={previousPage}
+          nextPage={nextPage}
+          onFinish={handleSubmit}
+          pageId={selectedPage.id}
+          participationId={participationId}
+          order={order}
+        />
+      </Box>
+    </Flex>
   )
 }
 
@@ -254,7 +244,6 @@ function useNavigationHandlers(pages: PageParticipationRedux[] | undefined) {
 // ---- SUB COMPONENTS
 
 function ParticipationSaved() {
-  const router = useRouter()
   const { isTablet } = useMediaQueries()
 
   return (

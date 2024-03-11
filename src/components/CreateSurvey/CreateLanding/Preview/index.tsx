@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useMemo } from "react";
-import { Box, Center, Flex, Text } from "@chakra-ui/react";
+import { Box, Center, Flex, Text, useMediaQuery } from "@chakra-ui/react";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import { useParams, useRouter } from "next/navigation.js"
 import Image from "next/image.js"
@@ -53,7 +53,7 @@ interface Props {
 export default function Preview({ isUserView, data, author, needConsent, surveyId, isPreview }: Props): JSX.Element {
   const router = useRouter()
   const params = useParams()
-  const { isTablet } = useMediaQueries()
+  const [isTablet] = useMediaQuery('(max-width: 1024px)')
 
   const slug = typeof params.slug === 'string' ? params.slug : ''
   const attributes = data?.attributes
@@ -66,18 +66,21 @@ export default function Preview({ isUserView, data, author, needConsent, surveyI
   const { loading, participation, onConsent } = useConsentHandlers(slug)
 
   // Flags
+  const isInactive = !isUserView || loading
   const hasVideo = Boolean(attributes?.video_url)
   const hasImage = Boolean(coverSrc)
   const hasMedia = hasVideo || hasImage
   const hasMembers = Boolean(data?.attributes?.members?.length > 0)
   const hasAboutPage = useMemo(() => {
     if (!Boolean(data?.attributes?.about)) return false
+
     // Check if there is only one paragraph and if it's empty (and reverse the boolean result)
     if (data?.attributes.about.length === 1) {
       return !(data?.attributes.about[0]?.children?.length === 1 && data?.attributes.about[0]?.children[0]?.text === "")
     }
+
+    return true
   }, [data?.attributes?.about])
-  const isInactive = !isUserView || loading
 
   // Callback for participate button
   const onParticipate = useCallback(async () => {
@@ -122,55 +125,51 @@ export default function Preview({ isUserView, data, author, needConsent, surveyI
   }
 
   return (
-    <Flex h={height} w="100%" backgroundColor="white" flexDirection={isTablet ? "column" : "row"}>
+    <Flex h={height} w="100%" flexDirection={isTablet ? "column" : "row"}>
       <Center
         className="flex flex-col"
         w={isTablet ? "100%" : "33%"}
         minW="400px"
         borderRight="1px solid rgb(234, 234, 239)"
-        h={isTablet ? "fit-content" : ""}
-        py={isTablet ? "30px" : "0px"}
+        h={isTablet ? "fit-content" : "100%"}
+        py={isTablet ? "20px" : "0px"}
         pos="relative"
-        backgroundColor={attributes?.color_theme?.button || "blue"}
+        backgroundColor={attributes?.color_theme?.button || "black"}
         textAlign="left"
-        px="5%"
+        px="40px"
       >
-        <Text variant="xxl" fontWeight="bold" color="white" ml="-2px">
+        <Text className="w-full text-5xl font-bold text-white ml-[-2px]">
           {attributes?.title}
         </Text>
 
-        <Text variant="smallTitle" color="white" mt="30px" maxHeight="300px" overflow="auto" wordBreak="break-word">
+        <Text variant="smallTitle" color="white" mt="30px" maxHeight="300px" wordBreak="break-word">
           {attributes?.subtitle}
         </Text>
 
         {hasMedia && (
-          <Box height="250px" width="100%" mt="30px" position="relative">
+          <Box height="250px" minW="100%" width="100%" my="30px" position="relative">
             {hasVideo && <Video url={attributes?.video_url ?? ""} />}
             {hasImage && <Image fill={true} objectFit="contain" src={coverSrc} alt={coverName} sizes="(max-width: 768px) 100vw, 33vw" />}
           </Box>
         )}
       </Center>
       
-      <Center
-        className="pt-10 pb-10 flex-col items-end text-left"
-        w={isTablet ? "100%" : "67%"}
-        h={isTablet ? "fit-content" : "100%"}
-      >
-        <Tabs className="h-fit" w={isTablet ? "90%" : "80%"} m={isTablet ? "30px auto" : "0 auto"}>
-          <TabList>
+      <div className="pt-10 pb-10 flex-col items-end text-left w-full h-full">
+        <Tabs isFitted={isTablet ? true : false} size={isTablet ? 'md' : 'lg'} w={isTablet ? "95%" : "90%"} h={isTablet ? 'auto' : "90%"} m={"0 auto"}>
+          <TabList >
             <Tab>Description</Tab>
             {hasMembers && <Tab>Equipe</Tab>}
             <Tab>Informations</Tab>
             {hasAboutPage && <Tab>A propos</Tab>}
           </TabList>
 
-          <TabPanels>
-            <TabPanel>
+          <TabPanels height="100%">
+            <TabPanel height="100%">
               <Description data={data} inactiveSubmit={isInactive} onParticipate={onParticipate} />
             </TabPanel>
 
             {hasMembers && (
-              <TabPanel>
+              <TabPanel height="100%">
                 <Team
                   members={data?.attributes?.members}
                   color_theme={data?.attributes?.color_theme}
@@ -179,19 +178,18 @@ export default function Preview({ isUserView, data, author, needConsent, surveyI
               </TabPanel>
             )}
 
-            <TabPanel>
+            <TabPanel height="100%">
               <Legals data={data} author={author} />
             </TabPanel>
 
-            <TabPanel>
+            <TabPanel height="100%">
               <WysiwygReader
-                className="w-full h-full max-h-[75vh]"
                 content={data?.attributes.about}
               />
             </TabPanel>
           </TabPanels>
         </Tabs>
-      </Center>
+      </div>
     </Flex>
   );
 };

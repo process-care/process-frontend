@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react"
 import { Plate, PlateEditor, PlateContent, createPlugins } from '@udecode/plate-common'
 import { createPlateUI } from '@/components/Fields/Wysiwyg/create-plate-ui.ts'
 import { basePlugins } from "./plugins.ts"
+import { cn } from "@/utils/ui.ts"
 
 // ---- TYPES
 
@@ -22,7 +23,7 @@ export const plugins = createPlugins(
 
 // ---- COMPONENT
 
-export default function WysiwygReader({ content }: Props): JSX.Element {
+export default function WysiwygReader({ className, content }: Props): JSX.Element {
   const editorRef = useRef<PlateEditor | null>(null)
 
   // Hack to reload the content of the reader when content changes
@@ -40,7 +41,10 @@ export default function WysiwygReader({ content }: Props): JSX.Element {
       initialValue={content}
     >
       <PlateContent
-        className="text-base h-full overflow-auto text-left"
+        className={cn(
+          "text-base h-full overflow-auto text-left",
+          className
+        )}
         readOnly={true}
       />
     </Plate>

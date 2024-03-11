@@ -1,9 +1,8 @@
-import { useCallback } from "react";
-import { Box, Text } from "@chakra-ui/react";
-import { ArrowForwardIcon } from "@chakra-ui/icons";
+import { useCallback } from "react"
+import { Box, Text, useMediaQuery } from "@chakra-ui/react"
+import { ArrowForwardIcon } from "@chakra-ui/icons"
 
 import { PageParticipationRedux } from "@/redux/slices/participation/page.js"
-import { useMediaQueries } from "@/utils/hooks/mediaqueries.js"
 
 // ---- TYPES
 
@@ -26,8 +25,8 @@ export default function PageEntry({
   selectIndex,
   color
 }: Props): JSX.Element {
-  const isSelected = selectedPageId === page.id;
-  const { isTablet } = useMediaQueries();
+  const isSelected = selectedPageId === page.id
+  const [isTablet] = useMediaQuery('(max-width: 1024px)')
 
   const goTo = useCallback(() => {
     if (!isNavigable) return;
@@ -38,7 +37,7 @@ export default function PageEntry({
     <Box
       _hover={{ cursor: isNavigable || isSelected ? "pointer" : "not-allowed" }}
       onClick={goTo}
-      color={isTablet ? color : "white"}
+      color={color}
       fontWeight={isSelected ? "bold" : "normal"}
       w="100%"
       textAlign="left"

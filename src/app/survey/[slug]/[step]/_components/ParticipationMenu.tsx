@@ -1,9 +1,6 @@
 import { useMemo } from "react"
-import { Box } from "@chakra-ui/react"
+import { Box, useMediaQuery } from "@chakra-ui/react"
 
-import { useMediaQueries } from "@/utils/hooks/mediaqueries"
-import { useAppSelector } from "@/redux/hooks/index"
-import { selectors } from "@/redux/slices/participation/status"
 import { PageParticipationRedux } from "@/redux/slices/participation/page"
 import SummaryMobile from "./SummaryMobile"
 import PageEntry from "./PageEntry"
@@ -21,12 +18,12 @@ type MenuProps = {
 // ---- COMPONENT
 
 export default function ParticipationMenu({ pages, selectIndex, color, selectedPage }: MenuProps): JSX.Element {
-  const { isTablet } = useMediaQueries()
+  const [isTablet] = useMediaQuery('(max-width: 1024px)')
 
   const navigables = useMemo(() => {
     let isBlocked = false;
 
-    return pages.map((p, idx) => {
+    return pages.map((_p, idx) => {
       const prevIdx = idx === 0 ? 0 : idx - 1;
       // We can navigate to a page if:
       // first page (idx = 0) OR the previous page is submitable (= valid)
@@ -55,6 +52,7 @@ export default function ParticipationMenu({ pages, selectIndex, color, selectedP
         alignItems="center"
         w="100%"
         mx="auto"
+        paddingTop={isTablet ? "0" : "20px"}
       >
         {isTablet && (
           <SummaryMobile
@@ -73,7 +71,7 @@ export default function ParticipationMenu({ pages, selectIndex, color, selectedP
                 key={p.id}
                 index={idx}
                 page={p}
-                color={color}
+                color={'white'}
                 isNavigable={navigables[idx]}
                 selectedPageId={selectedPage?.id}
                 selectIndex={selectIndex}

@@ -350,6 +350,11 @@ const theme = extendTheme({
             lineHeight: "60px",
           },
         }),
+        xxlNoMobilVariant: () => ({
+          fontWeight: 300,
+          fontSize: "75px",
+          lineHeight: "97.5px",
+        }),
       },
     },
   },

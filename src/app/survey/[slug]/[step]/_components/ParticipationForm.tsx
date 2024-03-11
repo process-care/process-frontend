@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useContext, useEffect, useState } from "react"
-import { Box, Button, Center, Flex, Text } from "@chakra-ui/react"
+import { Box, Button, Center, Flex, Text, useMediaQuery } from "@chakra-ui/react"
 import { useRouter } from "next/navigation.js"
 
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
@@ -34,7 +34,7 @@ export enum DIRECTION {
 // ---- COMPONENT
 
 export default function ParticipationForm({ surveyId, participationId, mode }: Props): JSX.Element {
-  const { isTablet } = useMediaQueries()
+  const [isTablet] = useMediaQuery('(max-width: 1024px)')
   const router = useRouter()
 
   const dispatch = useAppDispatch()
@@ -110,18 +110,15 @@ export default function ParticipationForm({ surveyId, participationId, mode }: P
     <Box>
       <Flex
         direction={isTablet ? "column" : "row"}
-        h={isTablet ? "100%" : "100vh"}
-        backgroundColor={isTablet ? "gray.100" : attributes?.landing?.data?.attributes?.color_theme?.button || "black"}
+        h={"100vh"}
+        backgroundColor={attributes?.landing?.data?.attributes?.color_theme?.button || "black"}
       >
         <Center
           display="flex"
           flexDirection="column"
           w={isTablet ? "100%" : "30%"}
           minW={isTablet ? "100%" : "400px"}
-          h="100%"
-          backgroundColor={
-            isTablet ? "gray.100" : attributes?.landing?.data?.attributes?.color_theme?.button || "black"
-          }
+          backgroundColor={attributes?.landing?.data?.attributes?.color_theme?.button || "black"}
           textAlign="left"
         >
           { mode === "preview" && (
@@ -132,10 +129,12 @@ export default function ParticipationForm({ surveyId, participationId, mode }: P
 
           <Box w="100%" pr="50px">
             <Text
-              variant={isTablet ? "xl" : "xxl"}
+              variant={isTablet ? "xlNoMobilVariant" : "xxlNoMobilVariant"}
               fontWeight="bold"
-              color={isTablet ? "black" : "white"}
-              p="20px"
+              color={"white"}
+              paddingLeft="20px"
+              paddingTop={isTablet ? "20px" : "0"}
+              paddingBottom={isTablet ? "20px" : "0"}
               w="100%"
               lineHeight="1"
             >
@@ -144,7 +143,7 @@ export default function ParticipationForm({ surveyId, participationId, mode }: P
           </Box>
 
           {!isTablet && (
-            <Text variant="smallTitle" color="white" p="20px">
+            <Text variant="smallTitle" width="100%" color="white" p="20px">
               {attributes?.description}
             </Text>
           )}
@@ -254,7 +253,6 @@ function useNavigationHandlers(pages: PageParticipationRedux[] | undefined) {
 // ---- SUB COMPONENTS
 
 function ParticipationSaved() {
-  const router = useRouter()
   const { isTablet } = useMediaQueries()
 
   return (

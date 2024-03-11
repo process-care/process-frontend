@@ -49,7 +49,7 @@ export default function SummaryMobile({
           pos="absolute"
           width="100%"
           backgroundColor={ color }
-          top="59px"
+          top="55px"
           zIndex="10"
           left="0"
           right="0"

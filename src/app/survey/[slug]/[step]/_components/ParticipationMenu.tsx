@@ -39,46 +39,39 @@ export default function ParticipationMenu({ pages, selectIndex, color, selectedP
   return (
     <Box
       display="flex"
-      alignItems="center"
       flexDirection={isTablet ? "row" : "column"}
+      justifyContent="flex-end"
+      alignItems="center"
       w="100%"
-      p={isTablet ? "10px" : "0 20px"}
+      mx="auto"
+      paddingTop={isTablet ? "0" : "20px"}
       pos={isTablet ? "absolute" : "relative"}
+      pr={isTablet ? "40px" : "unset"}
     >
-      <Box
-        display="flex"
-        flexDirection={isTablet ? "row" : "column"}
-        justifyContent="flex-end"
-        alignItems="center"
-        w="100%"
-        mx="auto"
-        paddingTop={isTablet ? "0" : "20px"}
-      >
-        {isTablet && (
-          <SummaryMobile
-            pages={pages}
-            navigables={navigables}
-            color={color}
-            selectedPage={selectedPage}
-            selectIndex={selectIndex}
-          />
-        )}
+      {isTablet && (
+        <SummaryMobile
+          pages={pages}
+          navigables={navigables}
+          color={color}
+          selectedPage={selectedPage}
+          selectIndex={selectIndex}
+        />
+      )}
 
-        {!isTablet &&
-          pages.map((p, idx) => {
-            return (
-              <PageEntry
-                key={p.id}
-                index={idx}
-                page={p}
-                color={'white'}
-                isNavigable={navigables[idx]}
-                selectedPageId={selectedPage?.id}
-                selectIndex={selectIndex}
-              />
-            );
-          })}
-      </Box>
+      {!isTablet &&
+        pages.map((p, idx) => {
+          return (
+            <PageEntry
+              key={p.id}
+              index={idx}
+              page={p}
+              color={'white'}
+              isNavigable={navigables[idx]}
+              selectedPageId={selectedPage?.id}
+              selectIndex={selectIndex}
+            />
+          );
+        })}
     </Box>
-  );
-};
+  )
+}

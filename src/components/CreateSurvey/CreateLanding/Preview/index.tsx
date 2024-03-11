@@ -125,20 +125,20 @@ export default function Preview({ isUserView, data, author, needConsent, surveyI
   }
 
   return (
-    <Flex h={height} w="100%" backgroundColor="white" flexDirection={isTablet ? "column" : "row"}>
+    <Flex h={height} w="100%" flexDirection={isTablet ? "column" : "row"}>
       <Center
         className="flex flex-col"
         w={isTablet ? "100%" : "33%"}
         minW="400px"
         borderRight="1px solid rgb(234, 234, 239)"
         h={isTablet ? "fit-content" : "100%"}
-        py={isTablet ? "30px" : "0px"}
+        py={isTablet ? "20px" : "0px"}
         pos="relative"
-        backgroundColor={attributes?.color_theme?.button || "blue"}
+        backgroundColor={attributes?.color_theme?.button || "black"}
         textAlign="left"
         px="40px"
       >
-        <Text className="text-5xl font-bold text-white ml-[-2px]">
+        <Text className="w-full text-5xl font-bold text-white ml-[-2px]">
           {attributes?.title}
         </Text>
 

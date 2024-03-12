@@ -18,6 +18,7 @@ import Description from "./Description/index.tsx"
 import Legals from "./Legals/index.tsx"
 import Team from "./Team/index.tsx"
 import WysiwygReader from "@/components/Fields/Wysiwyg/Reader.tsx";
+import { cn } from "@/utils/ui.ts";
 
 // ---- STATICS
 
@@ -129,7 +130,7 @@ export default function Preview({ isUserView, data, author, needConsent, surveyI
       <Center
         className="flex flex-col"
         w={isTablet ? "100%" : "33%"}
-        minW="400px"
+        minW={isTablet ? "unset" : "400px"}
         borderRight="1px solid rgb(234, 234, 239)"
         h={isTablet ? "fit-content" : "100%"}
         py={isTablet ? "20px" : "0px"}
@@ -154,10 +155,13 @@ export default function Preview({ isUserView, data, author, needConsent, surveyI
         )}
       </Center>
       
-      <div className="pt-10 pb-10 flex-col items-end text-left w-full h-full">
-        <Tabs isFitted={isTablet ? true : false} size={isTablet ? 'md' : 'lg'} w={isTablet ? "95%" : "90%"} h={isTablet ? 'auto' : "90%"} m={"0 auto"}>
-          <TabList >
-            <Tab>Description</Tab>
+      <div className={cn(
+        "pb-10 text-left w-full h-full",
+        isTablet ? "pt-0" : "pt-10",
+        )}>
+        <Tabs isFitted={isTablet ? true : false} size={isTablet ? 'sm' : 'lg'} w={isTablet ? "100%" : "90%"} h={isTablet ? 'auto' : "90%"} m={"0 auto"}>
+          <TabList>
+            <Tab py={isTablet ? '25px' : 'unset'}>Description</Tab>
             {hasMembers && <Tab>Equipe</Tab>}
             <Tab>Informations</Tab>
             {hasAboutPage && <Tab>A propos</Tab>}

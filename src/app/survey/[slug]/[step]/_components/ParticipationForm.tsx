@@ -115,7 +115,7 @@ export default function ParticipationForm({ surveyId, participationId, mode }: P
         display="flex"
         flexDirection="column"
         w={isTablet ? "100%" : "33%"}
-        minW="400px"
+        minW={isTablet ? "unset" : "400px"}
         borderRight="1px solid rgb(234, 234, 239)"
         h={isTablet ? "fit-content" : "100%"}
         py={isTablet ? "20px" : "0px"}

@@ -46,7 +46,7 @@ export default function PageEntry({
       mb="5px"
     >
       {isSelected && <ArrowForwardIcon />}
-      <Text variant={isTablet ? "current" : "smallTitle"} fontWeight={isSelected ? "bold" : "normal"} ml="5px">
+      <Text variant="smallTitle" fontWeight={isSelected ? "bold" : "normal"} ml="5px">
         {page.attributes.name ?? "Short name missing 😣"}
       </Text>
     </Box>

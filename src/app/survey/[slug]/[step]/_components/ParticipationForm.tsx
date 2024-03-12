@@ -17,6 +17,7 @@ import Error from "@/components/Error/index.tsx"
 import Loader from "@/components/Spinner/index.tsx"
 import ParticipationMenu from "./ParticipationMenu.tsx"
 import Page from "./form/Page.tsx"
+import { cn } from "@/utils/ui.ts"
 
 // ---- TYPES
 
@@ -111,18 +112,19 @@ export default function ParticipationForm({ surveyId, participationId, mode }: P
       direction={isTablet ? "column" : "row"}
       h={"100vh"} w="100%"
     >
-      <Center
+      <Flex
         display="flex"
         flexDirection="column"
+        justifyContent='center'
+        pos="relative"
+        h={isTablet ? "fit-content" : "100%"}
         w={isTablet ? "100%" : "33%"}
         minW={isTablet ? "unset" : "400px"}
-        borderRight="1px solid rgb(234, 234, 239)"
-        h={isTablet ? "fit-content" : "100%"}
         py={isTablet ? "20px" : "0px"}
-        pos="relative"
+        px={isTablet ? '20px' : "40px"}
+        borderRight="1px solid rgb(234, 234, 239)"
         backgroundColor={attributes?.landing?.data?.attributes?.color_theme?.button || "black"}
         textAlign="left"
-        px="40px"
       >
         { mode === "preview" && (
           <Button variant="roundedBlue" pos="absolute" className="top-5" onClick={handleExit}>
@@ -130,7 +132,10 @@ export default function ParticipationForm({ surveyId, participationId, mode }: P
           </Button>
         )}
 
-        <Text className="w-full text-5xl font-bold text-white ml-[-2px]">
+        <Text className={cn(
+          "text-5xl font-bold text-white ml-[-2px]",
+          isTablet ? 'w-3/4' : 'w-full'
+        )}>
           {attributes?.title}
         </Text>
 
@@ -156,7 +161,7 @@ export default function ParticipationForm({ surveyId, participationId, mode }: P
             left="0"
             right="0"
             bottom="20px"
-            width="30%"
+            width="100%"
             textAlign="center"
             opacity="0.7"
           >
@@ -169,7 +174,7 @@ export default function ParticipationForm({ surveyId, participationId, mode }: P
             </a>
           </Text>
         )}
-      </Center>
+      </Flex>
 
       <Box flexGrow={1} h="100%" backgroundColor="gray.100" overflow="auto">
         <Page

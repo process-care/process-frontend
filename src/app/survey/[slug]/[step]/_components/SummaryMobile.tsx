@@ -51,8 +51,7 @@ export default function SummaryMobile({
           backgroundColor={ color }
           top="55px"
           zIndex="10"
-          left="0"
-          right="0"
+          left="15px"
           padding="10px"
           borderBottom="1px solid rgb(234, 234, 239)"
         >

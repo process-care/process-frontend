@@ -129,15 +129,15 @@ export default function Preview({ isUserView, data, author, needConsent, surveyI
     <Flex h={height} w="100%" flexDirection={isTablet ? "column" : "row"}>
       <Center
         className="flex flex-col"
+        pos="relative"
+        h={isTablet ? "fit-content" : "100%"}
         w={isTablet ? "100%" : "33%"}
         minW={isTablet ? "unset" : "400px"}
-        borderRight="1px solid rgb(234, 234, 239)"
-        h={isTablet ? "fit-content" : "100%"}
         py={isTablet ? "20px" : "0px"}
-        pos="relative"
+        px="40px"
+        borderRight="1px solid rgb(234, 234, 239)"
         backgroundColor={attributes?.color_theme?.button || "black"}
         textAlign="left"
-        px="40px"
       >
         <Text className="w-full text-5xl font-bold text-white ml-[-2px]">
           {attributes?.title}

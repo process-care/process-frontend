@@ -46,7 +46,7 @@ export default function ParticipationMenu({ pages, selectIndex, color, selectedP
       mx="auto"
       paddingTop={isTablet ? "0" : "20px"}
       pos={isTablet ? "absolute" : "relative"}
-      pr={isTablet ? "40px" : "unset"}
+      right='15px'
     >
       {isTablet && (
         <SummaryMobile

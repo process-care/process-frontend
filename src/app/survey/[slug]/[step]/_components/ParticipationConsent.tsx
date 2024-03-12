@@ -43,7 +43,7 @@ export default function ParticipationConsent({ surveyId, onConsent, onRefuse }: 
 
   return (
     <Box
-      className="flex flex-col lg:flex-row justify-around w-full h-full min-h-0 overflow-auto"
+      className="flex flex-col lg:flex-row justify-around w-full h-screen min-h-0 overflow-auto"
     >
       <Box className="flex flex-col p-2 bg-gray-100 flex-grow min-h-[500px] h-full w-full">
         { url
@@ -52,18 +52,18 @@ export default function ParticipationConsent({ surveyId, onConsent, onRefuse }: 
         }
       </Box>
 
-      <Container className={cn (
+      <Container className={cn(
         'flex shrink-0 justify-center h-auto overflow-hidden',
         'lg:shrink lg:h-full lg:overflow-auto lg:w-full lg:max-w-[53%] lg:border-l lg:border-[rgb(234, 234, 239)]',
       )}>
         <Box className='flex flex-col self-center w-full xl:w-2/3 p-4 lg:p-0'>
-          <div className="w-full">
+          <div className="hidden lg:block w-full">
             <span className="font-semibold text-2xl">{ attributes?.title }</span>
           </div>
 
           <div className={cn(
-              "flex mt-4 flex-row-reverse",
-              "lg:mt-16 lg:flex-col lg:space-y-5",
+              "flex flex-row-reverse",
+              "lg:mt-12 lg:flex-col lg:space-y-5",
             )}
           >
             <Button className="w-full" variant="rounded" whiteSpace="normal" onClick={onAccept}>

@@ -43,7 +43,7 @@ export default function ParticipationConsent({ surveyId, onConsent, onRefuse }: 
 
   return (
     <Box
-      className="flex flex-col lg:flex-row justify-around w-full h-screen min-h-0 overflow-auto"
+      className="flex flex-col lg:flex-row justify-around w-full h-dvh min-h-0 overflow-auto"
     >
       <Box className="flex flex-col p-2 bg-gray-100 flex-grow min-h-[500px] h-full w-full">
         { url

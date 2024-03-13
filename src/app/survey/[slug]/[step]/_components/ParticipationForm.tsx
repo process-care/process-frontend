@@ -110,7 +110,7 @@ export default function ParticipationForm({ surveyId, participationId, mode }: P
   return (
     <Flex
       direction={isTablet ? "column" : "row"}
-      h={"100vh"} w="100%"
+      h="100dvh" w="100%"
     >
       <Flex
         display="flex"

@@ -18,6 +18,7 @@ import Loader from "@/components/Spinner/index.tsx"
 import ParticipationMenu from "./ParticipationMenu.tsx"
 import Page from "./form/Page.tsx"
 import { cn } from "@/utils/ui.ts"
+import { use100vh } from "react-div-100vh"
 
 // ---- TYPES
 
@@ -37,6 +38,7 @@ export enum DIRECTION {
 export default function ParticipationForm({ surveyId, participationId, mode }: Props): JSX.Element {
   const [isTablet] = useMediaQuery('(max-width: 1024px)')
   const router = useRouter()
+  const height = use100vh()
 
   const dispatch = useAppDispatch()
   const [isSuccess, setIsSuccess] = useState(false)
@@ -110,7 +112,7 @@ export default function ParticipationForm({ surveyId, participationId, mode }: P
   return (
     <Flex
       direction={isTablet ? "column" : "row"}
-      h="100dvh" w="100%"
+      h={height ?? "100dvh"} w="100%"
     >
       <Flex
         display="flex"

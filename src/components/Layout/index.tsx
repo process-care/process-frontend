@@ -68,7 +68,7 @@ export default function Layout({ children }: Props): JSX.Element {
 
   if ((isTablet && !isSurveyPages && !isPortail && !isAuthPage) || (isTablet && isEditor)) {
     return (
-      <Box h={height ?? '100vh'} alignItems="center" display="flex" justifyContent="center" className="background__grid">
+      <Box h={height ?? '100dvh'} alignItems="center" display="flex" justifyContent="center" className="background__grid">
         <Box
           backgroundColor="white"
           p={isTablet ? "30px 20px" : "50px"}

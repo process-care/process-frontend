@@ -44,6 +44,9 @@ export const slice = createSlice({
       // Update only those who have been created to keep their answerId
       adapter.updateMany(state, action.payload.created)
     },
+    clear: (state, action: PayloadAction<string>) => {
+      adapter.updateOne(state, { id: action.payload, changes: { value: undefined } })
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(statusAct.initialized, (state, action) => {

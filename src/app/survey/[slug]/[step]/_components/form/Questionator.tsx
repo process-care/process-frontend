@@ -26,7 +26,7 @@ export default function Questionator({ id }: Props): JSX.Element {
   const show = shouldShow(evaluations)
 
   // Bind the save mechanism
-  useAnswerSaver(id)
+  useAnswerSaver(id, show)
 
   // Intermediate displays
   if (!question) return <div>Loading...</div>

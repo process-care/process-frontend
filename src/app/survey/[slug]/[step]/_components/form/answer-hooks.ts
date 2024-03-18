@@ -69,15 +69,23 @@ export function useInitialPageContent(
  * @param id
  * @param participationId
  */
-export function useAnswerSaver(questionId: string): void {
+export function useAnswerSaver(questionId: string, shown: boolean): void {
   const dispatch = useAppDispatch()
   const [field] = useField(questionId)
   const stateValue = useAppSelector((state) => selectors.selectById(state, questionId))
 
   useEffect(() => {
+    // If the question is hidden, clear the value if needed, then stop here
+    if (!shown) {
+      if (stateValue?.value !== null && stateValue?.value !== undefined) {
+        dispatch(actions.clear(questionId))
+      }
+      return
+    }
+
     // Do not dispatch if the value isn't different between Formik / Redux
     if (stateValue?.value === field.value) return
 
     dispatch(actions.update({ questionId, value: field.value }))
-  }, [questionId, field.value, stateValue?.value, dispatch])
+  }, [questionId, field.value, stateValue?.value, dispatch, shown])
 }

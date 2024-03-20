@@ -11,7 +11,7 @@ const DEBOUNCE_TIME = 3000
 // Initialize pages-visited upon init
 const upsertAnswersEpic: Epic = (action$, state$) =>
   action$.pipe(
-    ofType(actions.update.type, actions.clear.type),
+    ofType(actions.update.type),
     filter((action) => action.payload.questionId),
     map((action) => action.payload),
     timeInterval(),

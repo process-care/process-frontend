@@ -78,7 +78,7 @@ export function useAnswerSaver(questionId: string, shown: boolean): void {
     // If the question is hidden, clear the value if needed, then stop here
     if (!shown) {
       if (stateValue?.value !== null && stateValue?.value !== undefined) {
-        dispatch(actions.clear(questionId))
+        dispatch(actions.clear({ questionId }))
       }
       return
     }

@@ -1,6 +1,7 @@
 import { map, switchMap, filter, scan, debounceTime, timeInterval } from "rxjs"
 import { combineEpics, ofType } from "redux-observable"
 import { Epic } from "@/redux/store/index.js"
+import { captureException } from "@sentry/nextjs"
 
 import { actions, selectors, UpsertedAnswerPayload } from "@/redux/slices/participation/answers.js"
 import { sdk } from "@/api/gql-client.js"
@@ -48,21 +49,28 @@ const upsertAnswersEpic: Epic = (action$, state$) =>
         }
       )
 
-      return Promise.all(allUpserts)
+      return Promise.allSettled(allUpserts)
     }),
     map((results) => {
       const upserted = results.reduce(
         (acc, res) => {
+          if (res.status === "rejected") {
+            captureException(new Error(`Error while saving an answer: ${res.reason}`))
+            return acc
+          }
+
+          const value = res.value
+
           let target
           let rawAnswer
 
           // Find the correct targets according to the operation type
-          if (res.createAnswer?.data) {
+          if (value.createAnswer?.data) {
             target = acc.created
-            rawAnswer = res.createAnswer.data
-          } else if (res.updateAnswer?.data) {
+            rawAnswer = value.createAnswer.data
+          } else if (value.updateAnswer?.data) {
             target = acc.updated
-            rawAnswer = res.updateAnswer.data
+            rawAnswer = value.updateAnswer.data
           } else {
             return acc
           }

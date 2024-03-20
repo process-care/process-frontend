@@ -1,13 +1,15 @@
 'use client'
 
-import { useCallback, useContext, useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { Box, Button, Center, Flex, Text, useMediaQuery } from "@chakra-ui/react"
 import { useRouter } from "next/navigation.js"
+import { captureMessage } from "@sentry/nextjs"
 
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
 import { actions } from "@/redux/slices/participation/status.js"
 import { PageParticipationRedux, selectors } from "@/redux/slices/participation/page.js"
 import { selectors as scientistDataSelectors } from "@/redux/slices/scientistData.js"
+import { selectors as answerSelector } from "@/redux/slices/participation/answers.ts"
 import { client } from "@/api/gql-client.js"
 import { useSurveyQuery } from "@/api/graphql/queries/survey.gql.generated.js"
 import { useFinishParticipationMutation } from "@/api/graphql/queries/participation.gql.generated.js"
@@ -17,6 +19,8 @@ import Error from "@/components/Error/index.tsx"
 import Loader from "@/components/Spinner/index.tsx"
 import ParticipationMenu from "./ParticipationMenu.tsx"
 import Page from "./form/Page.tsx"
+import { cn } from "@/utils/ui.ts"
+import { use100vh } from "react-div-100vh"
 
 // ---- TYPES
 
@@ -36,6 +40,7 @@ export enum DIRECTION {
 export default function ParticipationForm({ surveyId, participationId, mode }: Props): JSX.Element {
   const [isTablet] = useMediaQuery('(max-width: 1024px)')
   const router = useRouter()
+  const height = use100vh()
 
   const dispatch = useAppDispatch()
   const [isSuccess, setIsSuccess] = useState(false)
@@ -109,20 +114,21 @@ export default function ParticipationForm({ surveyId, participationId, mode }: P
   return (
     <Flex
       direction={isTablet ? "column" : "row"}
-      h={"100vh"} w="100%"
+      h={height ?? "100dvh"} w="100%"
     >
-      <Center
+      <Flex
         display="flex"
         flexDirection="column"
-        w={isTablet ? "100%" : "33%"}
-        minW="400px"
-        borderRight="1px solid rgb(234, 234, 239)"
-        h={isTablet ? "fit-content" : "100%"}
-        py={isTablet ? "20px" : "0px"}
+        justifyContent='center'
         pos="relative"
+        h={isTablet ? "fit-content" : "100%"}
+        w={isTablet ? "100%" : "33%"}
+        minW={isTablet ? "unset" : "400px"}
+        py={isTablet ? "20px" : "0px"}
+        px={isTablet ? '20px' : "40px"}
+        borderRight="1px solid rgb(234, 234, 239)"
         backgroundColor={attributes?.landing?.data?.attributes?.color_theme?.button || "black"}
         textAlign="left"
-        px="40px"
       >
         { mode === "preview" && (
           <Button variant="roundedBlue" pos="absolute" className="top-5" onClick={handleExit}>
@@ -130,7 +136,10 @@ export default function ParticipationForm({ surveyId, participationId, mode }: P
           </Button>
         )}
 
-        <Text className="w-full text-5xl font-bold text-white ml-[-2px]">
+        <Text className={cn(
+          "text-5xl font-bold text-white ml-[-2px]",
+          isTablet ? 'w-3/4' : 'w-full'
+        )}>
           {attributes?.title}
         </Text>
 
@@ -156,7 +165,7 @@ export default function ParticipationForm({ surveyId, participationId, mode }: P
             left="0"
             right="0"
             bottom="20px"
-            width="30%"
+            width="100%"
             textAlign="center"
             opacity="0.7"
           >
@@ -169,7 +178,7 @@ export default function ParticipationForm({ surveyId, participationId, mode }: P
             </a>
           </Text>
         )}
-      </Center>
+      </Flex>
 
       <Box flexGrow={1} h="100%" backgroundColor="gray.100" overflow="auto">
         <Page
@@ -194,12 +203,15 @@ export default function ParticipationForm({ surveyId, participationId, mode }: P
 function useFinishHandler(participationId: string, slug: string) {
   const { mutateAsync: finishParticipationApi } = useFinishParticipationMutation(client)
   const { finishParticipation } = useLocalParticipation(slug)
+  const answers = useAppSelector(answerSelector.selectAll)
 
   const onFinish = useCallback(async () => {
+    captureMessage("Participation finished", { level: 'debug', extra: { participationId, nbAnswers: answers.length, answers }})
+
     // Tell the API we're done and wait for it to be saved
     await finishParticipationApi({ id: participationId, completedAt: new Date() })
     finishParticipation()
-  }, [finishParticipationApi, participationId, finishParticipation])
+  }, [finishParticipationApi, participationId, finishParticipation, answers])
 
   return {
     onFinish,

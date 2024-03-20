@@ -11,6 +11,7 @@ import './globals.css'
 import Layout from '@/components/Layout/index.tsx'
 import { ReduxProvider } from '@/redux/ReduxProvider.tsx'
 import { ChakraProviders } from './ChakraProviders.tsx'
+import { cn } from '@/utils/ui.ts';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,8 +23,8 @@ export default function RootLayout({
   const [queryClient] = useState(() => new QueryClient())
 
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="en" className='h-[-webkit-fill-available]'>
+      <body className={cn(inter.className, 'min-h-[-webkit-fill-available]')}>
         <QueryClientProvider client={queryClient}>
           <ReduxProvider>
             <ChakraProviders>

@@ -9,6 +9,7 @@ import { client } from "@/api/gql-client.js"
 import { useCreateParticipationMutation } from "@/api/graphql/queries/participation.gql.generated.js"
 import PDFPreview from "@/components/PDFPreview"
 import { cn } from "@/utils/ui"
+import { use100vh } from "react-div-100vh"
 
 // ---- TYPES
 
@@ -23,6 +24,7 @@ type Props = {
 export default function ParticipationConsent({ surveyId, onConsent, onRefuse }: Props): JSX.Element {
   const { mutateAsync: createParticipation, isLoading } = useCreateParticipationMutation(client)
   const { data: survey } = useSurveyQuery(client, { id: surveyId })
+  const height = use100vh()
 
   const onAccept = useCallback(async () => {
     const res = await createParticipation({
@@ -42,9 +44,10 @@ export default function ParticipationConsent({ surveyId, onConsent, onRefuse }: 
   if (isLoading) return <Box mt="20">Please wait...</Box>
 
   return (
-    <Box
-      className="flex flex-col lg:flex-row justify-around w-full h-full min-h-0 overflow-auto"
-    >
+    <Box className={cn(
+      "flex flex-col lg:flex-row justify-around w-full min-h-0 overflow-auto",
+      `h-dvh h-[${height}]`
+    )}>
       <Box className="flex flex-col p-2 bg-gray-100 flex-grow min-h-[500px] h-full w-full">
         { url
           ? <PDFPreview url={url} />
@@ -52,18 +55,18 @@ export default function ParticipationConsent({ surveyId, onConsent, onRefuse }: 
         }
       </Box>
 
-      <Container className={cn (
+      <Container className={cn(
         'flex shrink-0 justify-center h-auto overflow-hidden',
         'lg:shrink lg:h-full lg:overflow-auto lg:w-full lg:max-w-[53%] lg:border-l lg:border-[rgb(234, 234, 239)]',
       )}>
         <Box className='flex flex-col self-center w-full xl:w-2/3 p-4 lg:p-0'>
-          <div className="w-full">
+          <div className="hidden lg:block w-full">
             <span className="font-semibold text-2xl">{ attributes?.title }</span>
           </div>
 
           <div className={cn(
-              "flex mt-4 flex-row-reverse",
-              "lg:mt-16 lg:flex-col lg:space-y-5",
+              "flex flex-row-reverse",
+              "lg:mt-12 lg:flex-col lg:space-y-5",
             )}
           >
             <Button className="w-full" variant="rounded" whiteSpace="normal" onClick={onAccept}>

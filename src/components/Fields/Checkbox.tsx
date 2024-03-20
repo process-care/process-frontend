@@ -21,7 +21,7 @@ export default function CustomCheckbox({ label, helpText, checkbox, isRequired, 
       <FormLabel>{label}</FormLabel>
       {!isCollapsed && (
         <>
-            <Box flexWrap="wrap" display="flex">
+            <Box flexWrap="wrap" display="flex" flexDirection="column">
               {checkbox && (
                 checkbox.map(({ value, label }) => {
                   return (

@@ -1,13 +1,15 @@
 'use client'
 
-import { useCallback, useContext, useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { Box, Button, Center, Flex, Text, useMediaQuery } from "@chakra-ui/react"
 import { useRouter } from "next/navigation.js"
+import { captureMessage } from "@sentry/nextjs"
 
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
 import { actions } from "@/redux/slices/participation/status.js"
 import { PageParticipationRedux, selectors } from "@/redux/slices/participation/page.js"
 import { selectors as scientistDataSelectors } from "@/redux/slices/scientistData.js"
+import { selectors as answerSelector } from "@/redux/slices/participation/answers.ts"
 import { client } from "@/api/gql-client.js"
 import { useSurveyQuery } from "@/api/graphql/queries/survey.gql.generated.js"
 import { useFinishParticipationMutation } from "@/api/graphql/queries/participation.gql.generated.js"
@@ -201,12 +203,15 @@ export default function ParticipationForm({ surveyId, participationId, mode }: P
 function useFinishHandler(participationId: string, slug: string) {
   const { mutateAsync: finishParticipationApi } = useFinishParticipationMutation(client)
   const { finishParticipation } = useLocalParticipation(slug)
+  const answers = useAppSelector(answerSelector.selectAll)
 
   const onFinish = useCallback(async () => {
+    captureMessage("Participation finished", { level: 'debug', extra: { participationId, nbAnswers: answers.length, answers }})
+
     // Tell the API we're done and wait for it to be saved
     await finishParticipationApi({ id: participationId, completedAt: new Date() })
     finishParticipation()
-  }, [finishParticipationApi, participationId, finishParticipation])
+  }, [finishParticipationApi, participationId, finishParticipation, answers])
 
   return {
     onFinish,

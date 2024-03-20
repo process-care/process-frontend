@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "yarn codegen && next build",
-    "start": "next start -p $PORT",
+    "build": "yarn codegen && next build && cp -r public .next/standalone/public && mkdir .next/standalone/public/_next && cp -r .next/static .next/standalone/public/_next/static",
+    "start": "node .next/standalone/server.js",
     "lint": "next lint",
     "codegen": "graphql-codegen --config codegen.ts -r dotenv/config"
   },

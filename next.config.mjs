@@ -2,6 +2,7 @@ import {withSentryConfig} from "@sentry/nextjs";
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
+  output: 'standalone',
   // experimental: {
   //   fullySpecified: true,
   // },
@@ -50,7 +51,7 @@ project: "process-frontend",
 widenClientFileUpload: true,
 
 // Transpiles SDK to be compatible with IE11 (increases bundle size)
-transpileClientSDK: true,
+transpileClientSDK: false,
 
 // Routes browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers. (increases server load)
 // Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
@@ -67,5 +68,5 @@ disableLogger: true,
 // See the following for more information:
 // https://docs.sentry.io/product/crons/
 // https://vercel.com/docs/cron-jobs
-automaticVercelMonitors: true,
+automaticVercelMonitors: false,
 });

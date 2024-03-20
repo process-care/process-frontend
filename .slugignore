@@ -1,7 +1,1 @@
-doc
-/tmp/cache
-
-/node_modules/*
-!/node_modules/next
-
-/.cache/yarn
+/node_modules/@sentry

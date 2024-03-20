@@ -32,7 +32,10 @@ const upsertAnswersEpic: Epic = (action$, state$) =>
       if (mode === "preview") return []
 
       const participationId = state$.value.participation.status.participationId
-      if (!participationId) throw new Error("Missing participation ID to save answers !")
+      if (!participationId) {
+        captureException(new Error("Missing participation ID to save answers !"))
+        return []
+      }
 
       const allUpserts: Promise<CreateAnswerMutation & UpdateAnswerMutation>[] = Object.entries(accu).map(
         ([qId, value]) => {

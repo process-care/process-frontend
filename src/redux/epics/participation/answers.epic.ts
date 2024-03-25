@@ -38,17 +38,23 @@ const upsertAnswersEpic: Epic = (action$, state$) =>
       }
 
       const allUpserts: Promise<CreateAnswerMutation & UpdateAnswerMutation>[] = Object.entries(accu).map(
-        ([qId, value]) => {
+        async ([qId, value]) => {
           const answerInState = selectors.selectById(state$.value, qId)
 
           // Wrap string so it doesn't crash in the backend (STRAPI, JSON, toussa)
           if (typeof value === "string") {
-            value = { answer: value };
+            value = { answer: value }
           }
 
-          return answerInState?.id
+          // Create or update, depending on the presence of an Answer ID
+          try {
+            return answerInState?.id
             ? sdk.updateAnswer({ id: answerInState.id, data: { value } })
-            : sdk.createAnswer({ data: { value, question: qId, participation: participationId } })
+            : sdk.createAnswer({ data: { value, question: qId, participation: participationId } })            
+          } catch (e) {
+            captureException(e, { extra: { participationId, question: qId } })
+            return Promise.reject(e)
+          }
         }
       )
 
@@ -58,7 +64,7 @@ const upsertAnswersEpic: Epic = (action$, state$) =>
       const upserted = results.reduce(
         (acc, res) => {
           if (res.status === "rejected") {
-            captureException(new Error(`Error while saving an answer: ${res.reason}`))
+            captureException(new Error('Upsert answer : promise rejected'), { extra: { reason: res.reason }})
             return acc
           }
 
@@ -75,6 +81,7 @@ const upsertAnswersEpic: Epic = (action$, state$) =>
             target = acc.updated
             rawAnswer = value.updateAnswer.data
           } else {
+            captureException(new Error('Upsert answer : no data detected in resulting promise'), { extra: { value } })
             return acc
           }
 

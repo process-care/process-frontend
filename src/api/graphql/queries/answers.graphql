@@ -9,3 +9,10 @@ mutation updateAnswer ($id: ID!, $data: AnswerInput!) {
     data { ...answerFragment }
   }
 }
+
+mutation bulkSaveAnswers ($data: [UpsertAnswerInput!]!) {
+  bulkSave(data: $data) {
+    data { ...answerFragment },
+    errors
+  }
+}

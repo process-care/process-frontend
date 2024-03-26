@@ -29,6 +29,8 @@ export type UpsertedAnswerPayload = {
   updated: Update<AnswerParticipationRedux>[]
 }
 
+export type BulkSavedPayload = Update<AnswerParticipationRedux>[]
+
 // ---- SLICE
 
 const SLICE_NAME = "answers"
@@ -50,7 +52,13 @@ export const slice = createSlice({
     },
     clear: (state, action: PayloadAction<ClearAnswerPayload>) => {
       adapter.updateOne(state, { id: action.payload.questionId, changes: { value: null } })
-    }
+    },
+    bulkSave: (state) => {},
+    bulkSaved: (state, action: PayloadAction<BulkSavedPayload>) => {
+      // Update eveyrthing with the new IDs from the backend
+      adapter.updateMany(state, action.payload)
+    },
+
   },
   extraReducers: (builder) => {
     builder.addCase(statusAct.initialized, (state, action) => {

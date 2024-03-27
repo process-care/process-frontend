@@ -18,7 +18,7 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      authorization: buildBearer(jwt ?? process.env.STRAPI_API_TOKEN),
+      authorization: buildBearer(jwt),
     }
   }
 })
@@ -39,7 +39,7 @@ export const apollo = new ApolloClient({
 export const client = new GraphQLClient(API_URL, {
   mode: "cors",
   headers: {
-    "Authorization": buildBearer(process.env.STRAPI_API_TOKEN),
+    "Authorization": "",
   }
 });
 

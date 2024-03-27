@@ -13,6 +13,7 @@ const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
   const storage = localStorage.getItem("process__user")
   const jwt = storage ? JSON.parse(storage).jwt : null
+
   // return the headers to the context so httpLink can read them
   return {
     headers: {
@@ -38,7 +39,7 @@ export const apollo = new ApolloClient({
 export const client = new GraphQLClient(API_URL, {
   mode: "cors",
   headers: {
-    "Authorization": `bearer ${ process.env.STRAPI_API_TOKEN }`,
+    "Authorization": buildBearer(process.env.STRAPI_API_TOKEN),
   }
 });
 

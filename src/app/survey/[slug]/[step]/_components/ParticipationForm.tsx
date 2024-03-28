@@ -7,6 +7,7 @@ import { captureMessage } from "@sentry/nextjs"
 
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/index.js"
 import { actions } from "@/redux/slices/participation/status.js"
+import { actions as answersActions } from "@/redux/slices/participation/answers.ts"
 import { PageParticipationRedux, selectors } from "@/redux/slices/participation/page.js"
 import { selectors as scientistDataSelectors } from "@/redux/slices/scientistData.js"
 import { selectors as answerSelector } from "@/redux/slices/participation/answers.ts"
@@ -203,15 +204,17 @@ export default function ParticipationForm({ surveyId, participationId, mode }: P
 function useFinishHandler(participationId: string, slug: string) {
   const { mutateAsync: finishParticipationApi } = useFinishParticipationMutation(client)
   const { finishParticipation } = useLocalParticipation(slug)
+  const dispatch = useAppDispatch()
   const answers = useAppSelector(answerSelector.selectAll)
 
   const onFinish = useCallback(async () => {
     captureMessage("Participation finished", { level: 'debug', extra: { participationId, nbAnswers: answers.length, answers }})
+    dispatch(answersActions.bulkSave())
 
     // Tell the API we're done and wait for it to be saved
     await finishParticipationApi({ id: participationId, completedAt: new Date() })
     finishParticipation()
-  }, [finishParticipationApi, participationId, finishParticipation, answers])
+  }, [participationId, answers, dispatch, finishParticipationApi, finishParticipation])
 
   return {
     onFinish,
